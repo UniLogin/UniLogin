@@ -1,3 +1,4 @@
+import {join} from 'path';
 import React, {useEffect} from 'react';
 import {Route, Switch, useHistory} from 'react-router';
 import {Funds, Devices, BackupCodes, Notice, TopUp} from '@universal-login/react';
@@ -6,6 +7,7 @@ import {useServices} from '../../hooks';
 import ModalTransfer from '../Modals/Transfer/ModalTransfer';
 
 const HomeScreen = () => {
+  const basePath = '/wallet';
   const {walletService, walletPresenter} = useServices();
 
   const deployedWallet = walletService.getDeployedWallet();
@@ -24,42 +26,42 @@ const HomeScreen = () => {
             <Notice message={notice} />
             <p className="dashboard-ens-name">{walletPresenter.getName()}</p>
             <Switch>
-              <Route path="/" exact>
+              <Route path={basePath} exact>
                 <Funds
                   deployedWallet={walletService.getDeployedWallet()}
-                  onTopUpClick={() => history.push('/topUp')}
-                  onSendClick={() => history.push('/transfer')}
-                  onDeviceMessageClick={() => history.push('/devices/approveDevice')}
+                  onTopUpClick={() => history.push(join(basePath, 'topUp'))}
+                  onSendClick={() => history.push(join(basePath, 'transfer'))}
+                  onDeviceMessageClick={() => history.push(join(basePath, 'devices', 'approveDevice'))}
                   className="jarvis-styles"
                 />
               </Route>
-              <Route path="/devices">
+              <Route path={join(basePath, 'devices')}>
                 <Devices
                   walletService={walletService}
                   onAccountDisconnected={() => history.push('/welcome')}
-                  basePath="/devices"
+                  basePath={join(basePath, 'devices')}
                   className="jarvis-styles"
                 />
               </Route>
-              <Route path="/backup">
+              <Route path={join(basePath, 'backup')}>
                 <BackupCodes
                   deployedWallet={walletService.getDeployedWallet()}
                   className="jarvis-backup"
                 />
               </Route>
-              <Route path="/topUp">
+              <Route path={join(basePath, 'topUp')}>
                 <TopUp
                   sdk={walletService.getDeployedWallet().sdk}
                   contractAddress={walletService.getDeployedWallet().contractAddress}
                   topUpClassName="jarvis-styles"
                   isDeployment={false}
                   logoColor="black"
-                  hideModal={() => history.push('/')}
+                  hideModal={() => history.push('/wallet')}
                 />
               </Route>
               <Route
-                path="/transfer"
-                render={() => <ModalTransfer basePath="/transfer" />}
+                path={join(basePath, 'transfer')}
+                render={() => <ModalTransfer basePath={join(basePath, 'transfer')} />}
               />
             </Switch>
           </div>

@@ -3,7 +3,8 @@ import {ReactWrapper} from 'enzyme';
 import chai, {expect} from 'chai';
 import React from 'react';
 import {setupSdk, createWallet} from '@universal-login/sdk/testutils';
-import {ETHER_NATIVE_TOKEN, waitExpect, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {waitExpect} from '@universal-login/commons/testutils';
 import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
 import {mountWithContext} from '../helpers/CustomMount';
 import {Services} from '../../../src/ui/createServices';
@@ -34,7 +35,7 @@ describe('UI: Connection flow', () => {
     await services.sdk.tokensDetailsStore.fetchTokensDetails();
     await services.sdk.start();
     ({privateKey, contractAddress} = await createWallet(name, services.sdk, wallet));
-    appWrapper = mountWithContext(<App/>, services, ['/']);
+    appWrapper = mountWithContext(<App/>, services, ['/wallet']);
   });
 
   it('Should connect to existing wallet', async () => {

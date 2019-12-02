@@ -39,6 +39,7 @@ import ExecutionWorker from '../../core/services/execution/ExecutionWorker';
 import DeploymentExecutor from '../../integration/ethereum/DeploymentExecutor';
 import {MinedTransactionHandler} from '../../core/services/execution/MinedTransactionHandler';
 import {httpsRedirect} from '../middlewares/httpsRedirect';
+import {GasComputation} from '../../core/services/GasComputation';
 
 const defaultPort = '3311';
 
@@ -78,6 +79,7 @@ class Relayer {
   protected server: Server = {} as Server;
   private walletDeployer: WalletDeployer = {} as WalletDeployer;
   publicConfig: PublicRelayerConfig;
+  private gasComputation: GasComputation = {} as GasComputation;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
@@ -86,7 +88,8 @@ class Relayer {
     this.wallet = new Wallet(config.privateKey, this.provider);
     this.database = Knex(config.database);
     this.publicConfig = getPublicConfig(this.config);
-    this.gasValidator = new GasValidator(this.publicConfig.maxGasLimit);
+    this.gasComputation = new GasComputation();
+    this.gasValidator = new GasValidator(this.publicConfig.maxGasLimit, this.gasComputation);
   }
 
   async start() {

@@ -8,25 +8,25 @@ export function Header() {
   const [newNotifications, setNewNotifications] = useState(false);
   const {contractAddress, privateKey} = walletService.getDeployedWallet();
 
-  const updateNotifictions = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
+  const updateNotifications = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
 
-  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, updateNotifictions), []);
+  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, updateNotifications), []);
 
   const {walletPresenter} = useServices();
 
   return (
     <div className="header">
-      <Link className="header-logo-link" to="/">
+      <Link className="header-logo-link" to="/wallet">
         <img className="header-logo" src={logo} />
       </Link>
       <div className="header-row">
         <ul className="header-list">
           <li className="header-list-item">
-            <NavLink exact to="/" className="header-btn header-funds-btn">Funds</NavLink>
+            <NavLink exact to="/wallet" className="header-btn header-funds-btn">Funds</NavLink>
           </li>
           <li className="header-list-item">
             <NavLink
-              to="/devices"
+              to="/wallet/devices"
               id="devicesButton"
               className="header-btn devices-btn"
             >
@@ -35,7 +35,7 @@ export function Header() {
             </NavLink>
           </li>
           <li className="header-list-item">
-            <NavLink to="/backup" className="header-btn header-backup-btn">Backup</NavLink>
+            <NavLink to="/wallet/backup" className="header-btn header-backup-btn">Backup</NavLink>
           </li>
         </ul>
         <p className="header-user-name">{walletPresenter.getName()}</p>

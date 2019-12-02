@@ -34,14 +34,14 @@ describe('UI: Startup from stored wallet state', () => {
 
   it('starts when storage is empty', async () => {
     await services.walletService.loadFromStorage();
-    appWrapper = mountWithContext(<App/>, services, ['/']);
+    appWrapper = mountWithContext(<App/>, services, ['/wallet']);
     expect(appWrapper.text().includes('Welcome in the Jarvis Network')).to.be.true;
   });
 
   it('starts when storage is None', async () => {
     services.storageService.set('wallet', JSON.stringify({kind: 'None'}));
     await services.walletService.loadFromStorage();
-    appWrapper = mountWithContext(<App/>, services, ['/']);
+    appWrapper = mountWithContext(<App/>, services, ['/wallet']);
     expect(appWrapper.text().includes('Welcome in the Jarvis Network')).to.be.true;
   });
 
@@ -55,7 +55,7 @@ describe('UI: Startup from stored wallet state', () => {
   it('starts when storage is Deployed', async () => {
     services.storageService.set('wallet', JSON.stringify({kind: 'Deployed', wallet: {name, privateKey, contractAddress}}));
     await services.walletService.loadFromStorage();
-    appWrapper = mountWithContext(<App/>, services, ['/']);
+    appWrapper = mountWithContext(<App/>, services, ['/wallet']);
     const appPage = new AppPage(appWrapper);
     await appPage.dashboard().waitForDashboard();
     expect(appWrapper.text().includes('My Assets')).to.be.true;

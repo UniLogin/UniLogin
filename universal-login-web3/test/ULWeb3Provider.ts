@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils, Wallet} from 'ethers';
-import {waitExpect} from '@universal-login/commons';
+import {waitExpect} from '@universal-login/commons/testutils';
 import Web3 from 'web3';
 import {AppProps} from '../lib/ui/App';
 import {RelayerUnderTest} from '@universal-login/relayer';

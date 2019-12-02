@@ -36,7 +36,7 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
       const {transactionHash} = await waitForTransactionHash();
       history.replace(join(basePath, 'waiting'), {transactionHash});
       await waitToBeSuccess();
-      history.replace('/');
+      history.replace('/wallet');
     } catch (e) {
       history.replace(join(basePath, 'error'), {error: `${e.name}: ${e.message}`});
     }
@@ -49,7 +49,7 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
   return (
     <Switch>
       <Route path={`${basePath}/`} exact>
-        <ModalWrapperClosable hideModal={() => history.push('/')}>
+        <ModalWrapperClosable hideModal={() => history.push('/wallet')}>
           <Transfer
             deployedWallet={deployedWallet}
             updateTransferDetailsWith={updateTransferDetailsWith}
@@ -77,7 +77,7 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
         exact
         path={join(basePath, 'error')}
         render={({location, history}) =>
-          <ModalWrapperClosable hideModal={() => history.replace('/')}>
+          <ModalWrapperClosable hideModal={() => history.replace('/wallet')}>
             <ErrorMessage
               className="jarvis-styles"
               message={location.state.error}
