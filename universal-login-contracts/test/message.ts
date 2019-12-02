@@ -29,11 +29,10 @@ describe('Message', () => {
       nonce: 0,
       gasBase: bigNumberify(58976),
       gasCall: bigNumberify(41024),
-      signature: '0x21e8b320262f1b6bf8c99997a632a86bdc0fe6424ccea8a4293766fc1c690cbd2f0dbd969bad91e9e400bc9707988fbee2adead8ba9ee0366c258b210eae61fd1c'
+      signature: '0x21e8b320262f1b6bf8c99997a632a86bdc0fe6424ccea8a4293766fc1c690cbd2f0dbd969bad91e9e400bc9707988fbee2adead8ba9ee0366c258b210eae61fd1c',
     };
     expect(actualMessage).to.deep.eq(expectedMessage);
   });
-
 
   it('messageToUnsignedMessage', async () => {
     const expectedUnsignedMessage: Partial<SignedMessage> = {
