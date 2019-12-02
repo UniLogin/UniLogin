@@ -1,6 +1,6 @@
-import {Contract, providers} from 'ethers';
-import {computeCounterfactualAddress, createKeyPair} from '@universal-login/commons';
-import WalletProxyFactory from '@universal-login/contracts/build/WalletProxyFactory.json';
+import {Contract, providers, utils} from 'ethers';
+import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotNull} from '@universal-login/commons';
+import {WalletProxyInterface, WalletProxyFactoryInterface} from '../interfaces';
 
 export class BlockchainService {
   constructor(private provider: providers.Provider) {
@@ -19,7 +19,7 @@ export class BlockchainService {
   }
 
   getInitCode = async (factoryAddress: string) => {
-    const factoryContract = new Contract(factoryAddress, WalletProxyFactory.interface as any, this.provider);
+    const factoryContract = new Contract(factoryAddress, WalletProxyFactoryInterface, this.provider);
     return factoryContract.initCode();
   };
 
@@ -28,4 +28,14 @@ export class BlockchainService {
     const futureContractAddress = computeCounterfactualAddress(factoryAddress, publicKey, await this.getInitCode(factoryAddress));
     return [privateKey, futureContractAddress, publicKey];
   };
+
+  async fetchWalletVersion(contractAddress: string) {
+    const proxyInstance = new Contract(contractAddress, WalletProxyInterface as any, this.provider);
+    const walletMasterAddress = await proxyInstance.implementation();
+    const walletMasterBytecode = await this.getCode(walletMasterAddress);
+    const walletMasterVersion = WALLET_MASTER_VERSIONS[utils.keccak256(walletMasterBytecode)];
+    ensureNotNull(walletMasterVersion, Error, 'Unsupported wallet master version');
+    return walletMasterVersion;
+  }
+
 }
