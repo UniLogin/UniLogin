@@ -1,4 +1,4 @@
-export const urlMapping = {
+export const urlMapping: Record<string, string[]> = {
   None: [
     '/welcome',
     '/privacy',
