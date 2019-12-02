@@ -73,7 +73,7 @@ export {TokensValueConverter} from './core/services/TokensValueConverter';
 export {http, HttpFunction} from './integration/http/http';
 export {getBalanceOf} from './core/utils/getBalanceOf';
 export {convertTenthGweiToWei} from './core/utils/conversion';
-export {computeGasData, GAS_FIXED} from './core/utils/messages/computeGasData';
+export {GasComputation, computeGasData, GAS_FIXED} from './core/utils/messages/computeGasData';
 export {getEnumKeys} from './core/utils/getEnumsKeys';
 export {stringToEnumKey} from './core/utils/stringToEnumKey';
 export {IPGeolocationApiConfig} from './core/models/IPGeolocationApiConfig';
