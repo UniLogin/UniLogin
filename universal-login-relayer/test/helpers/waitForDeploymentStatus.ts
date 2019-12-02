@@ -1,5 +1,6 @@
-import {DeploymentState, DeploymentStatus, waitExpect} from '@universal-login/commons';
 import chai, {expect} from 'chai';
+import {DeploymentState, DeploymentStatus} from '@universal-login/commons';
+import {waitExpect} from '@universal-login/commons/testutils';
 
 export const waitForDeploymentStatus = async (relayerUrl: string, hash: string, expectedState: DeploymentState) => {
   let deploymentStatus: DeploymentStatus;

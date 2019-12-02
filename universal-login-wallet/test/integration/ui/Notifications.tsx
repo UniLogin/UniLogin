@@ -6,7 +6,7 @@ import {deployMockToken} from '@universal-login/commons/testutils';
 import {Services} from '../../../src/ui/createServices';
 import {AppPage} from '../pages/AppPage';
 import {setupUI} from '../helpers/setupUI';
-import {waitExpect} from '@universal-login/commons';
+import {waitExpect} from '@universal-login/commons/testutils';
 import {RelayerUnderTest} from '@universal-login/relayer';
 
 describe('UI: Notifications', () => {

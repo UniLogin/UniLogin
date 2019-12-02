@@ -6,10 +6,10 @@ import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
   ETHER_NATIVE_TOKEN,
-  waitExpect,
   generateCode,
   TEST_GAS_PRICE,
 } from '@universal-login/commons';
+import {waitExpect} from '@universal-login/commons/testutils';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {setupSdk, createAndSetWallet} from '@universal-login/sdk/testutils';
 import Relayer from '@universal-login/relayer';

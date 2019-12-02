@@ -1,7 +1,8 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {GAS_BASE, GAS_FIXED, waitExpect} from '@universal-login/commons';
+import {GAS_BASE, GAS_FIXED} from '@universal-login/commons';
+import {waitExpect} from '@universal-login/commons/testutils';
 import {encodeFunction} from '@universal-login/contracts/testutils';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import MockToken from '@universal-login/contracts/build/MockToken';
