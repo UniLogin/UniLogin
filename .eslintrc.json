@@ -503,11 +503,12 @@
   },
   "overrides": [
     {
-      "files": ["test/**/*.{js,ts,tsx}"],
+      "files": ["{lib,src,test}/**/*.{js,ts,tsx}"],
       "rules": {
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
-        "no-unused-expressions": "off"
+        "no-unused-expressions": "off",
+        "@typescript-eslint/no-var-requires": "off"
       }
     }
   ]
