@@ -16,6 +16,7 @@ export const CreateAccount = () => {
     await walletService.createFutureWallet(ensName);
     history.push('/create');
   };
+
   return (
     <div className="main-bg">
       <div className="box-wrapper">

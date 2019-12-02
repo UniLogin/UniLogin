@@ -2,6 +2,7 @@ import React from 'react';
 import {Route, Redirect, RouteProps, RouteComponentProps} from 'react-router-dom';
 import {getDefaultPathForWalletState} from '../../app/getDefaultPathForWalletState';
 import {WalletState} from '@universal-login/sdk';
+import {urlMapping} from '../../app/constants/urlMapping';
 
 export interface WalletRouteProps extends RouteProps {
   walletState: WalletState;
@@ -12,7 +13,7 @@ export const WalletRoute = ({walletState, component, render, ...restProps}: Wall
   <Route
     {...restProps}
     render={props =>
-      mapping[walletState.kind as 'None'].filter(path => props.location.pathname.includes(path)).length > 0
+      urlMapping[walletState.kind as 'None'].filter(path => props.location.pathname.includes(path)).length > 0
         ? React.createElement(component, props)
         : (<Redirect
           to={{
@@ -22,27 +23,3 @@ export const WalletRoute = ({walletState, component, render, ...restProps}: Wall
         />)}
   />
 );
-
-const mapping = {
-  None: [
-    '/welcome',
-    '/privacy',
-    '/terms',
-    '/connect',
-    '/selectDeployName',
-  ],
-  Future: [
-    '/create',
-  ],
-  Deploying: [
-    '/create',
-  ],
-  Deployed: [
-    '/wallet',
-    '/connectionSuccess',
-    '/creationSuccess',
-  ],
-  Connecting: [
-    '/connect',
-  ],
-};
