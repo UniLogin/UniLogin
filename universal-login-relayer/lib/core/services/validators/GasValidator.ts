@@ -1,13 +1,13 @@
-import {calculateGasBase} from '@universal-login/contracts';
 import {SignedMessage, ensure, GAS_BASE, IMessageValidator} from '@universal-login/commons';
 import {InsufficientGas, GasLimitTooHigh} from '../../utils/errors';
+import {GasComputation} from '../GasComputation';
 
 export class GasValidator implements IMessageValidator {
-  constructor(private MAX_GAS_LIMIT: number) {}
+  constructor(private MAX_GAS_LIMIT: number, private gasComputation: GasComputation) {}
 
   async validate(signedMessage: SignedMessage) {
     const {signature, ...unsignedMessage} = signedMessage;
-    const expectedGasBase = calculateGasBase(unsignedMessage);
+    const expectedGasBase = this.gasComputation.calculateGasBase(unsignedMessage);
     const actualGasBase = Number(signedMessage.gasBase);
     ensure(expectedGasBase.eq(actualGasBase), InsufficientGas, `Got GasBase ${actualGasBase} but should be ${expectedGasBase}`);
     ensure(GAS_BASE < signedMessage.gasCall, InsufficientGas, `Got gasCall ${signedMessage.gasCall} but should greater than ${GAS_BASE}`);
