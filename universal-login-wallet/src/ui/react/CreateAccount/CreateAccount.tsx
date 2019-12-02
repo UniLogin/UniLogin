@@ -5,14 +5,17 @@ import {useServices, useWalletConfig} from '../../hooks';
 import {WalletSelector} from '@universal-login/react';
 import {WalletSuggestionAction} from '@universal-login/commons';
 import {Link} from 'react-router-dom';
+import {useHistory} from 'react-router';
 
-export interface CreateAccountProps {
-  onCreateClick: (ensName: string) => void;
-}
-
-export const CreateAccount = ({onCreateClick}: CreateAccountProps) => {
-  const {sdk} = useServices();
+export const CreateAccount = () => {
+  const {sdk, walletService} = useServices();
   const walletConfig = useWalletConfig();
+  const history = useHistory();
+
+  const onCreateClick = async (ensName: string) => {
+    await walletService.createFutureWallet(ensName);
+    history.push('/create');
+  };
 
   return (
     <div className="main-bg">
