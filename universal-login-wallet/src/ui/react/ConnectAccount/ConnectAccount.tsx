@@ -13,14 +13,20 @@ export const ConnectAccount = () => {
   const [connectModal, setConnectModal] = useState<ConnectModal>('selector');
   switch (connectModal) {
     case 'connectionFlow':
-      return <ConnectionFlow
-        name={name!}
-        sdk={sdk}
-        walletService={walletService}
-        onCancel={() => setConnectModal('selector')}
-        onSuccess={() => history.push('/connectionSuccess')}
-        className="jarvis-styles"
-      />;
+      return <div className="main-bg">
+        <div className="box-wrapper">
+          <div className="box">
+            <ConnectionFlow
+              name={name!}
+              sdk={sdk}
+              walletService={walletService}
+              onCancel={() => setConnectModal('selector')}
+              onSuccess={() => history.push('/connectionSuccess')}
+              className="jarvis-styles"
+            />
+          </div>
+        </div>
+      </div>;
     case 'selector':
       return <ConnectSelector setName={setName} setConnectModal={setConnectModal} />;
   }

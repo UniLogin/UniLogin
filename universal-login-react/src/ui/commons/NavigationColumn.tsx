@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 export const NavigationColumn = () => (
   <div className="playground-navigation">
     <ul>
-      <li><Link to="/">Home Screen</Link></li>
+      <li><Link to="/wallet">Home Screen</Link></li>
     </ul>
     <ul>
       E2E flow

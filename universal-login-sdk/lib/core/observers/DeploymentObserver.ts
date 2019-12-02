@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {ContractWhiteList, ensure, isContractExist} from '@universal-login/commons';
+import {BlockchainService} from '@universal-login/contracts';
 import {ConcurrentDeployment, UnsupportedBytecode} from '../utils/errors';
-import {BlockchainService} from '../../integration/ethereum/BlockchainService';
 import ObserverRunner from './ObserverRunner';
 
 export type OnContractDeployed = (contractAddress: string) => void;

@@ -34,7 +34,7 @@ export const ModalTxnSuccess = ({hideModal, operation, text}: ModalTxnSuccessPro
         <p className="congratulation-text">
           Congratulations! {text}
         </p>
-        <Link to="/" className="button-primary modal-success-btn">Go to your wallet</Link>
+        <Link to="/wallet" className="button-primary modal-success-btn">Go to your wallet</Link>
       </div>
     </>
   );
