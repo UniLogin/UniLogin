@@ -22,7 +22,6 @@ export const ConnectSelector = ({setName, setConnectModal}: ConnectSelectorProps
   };
 
   return (
-
     <div className="main-bg">
       <div className="box-wrapper">
         <div className="box">
