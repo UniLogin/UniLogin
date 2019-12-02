@@ -33,13 +33,13 @@ import {SdkConfig} from '../config/SdkConfig';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
 import {OnTokenPricesChange, PriceObserver} from '../core/observers/PriceObserver';
 import {TokensDetailsStore} from '../core/services/TokensDetailsStore';
-import {messageToSignedMessage} from '@universal-login/contracts';
 import {ensureSufficientGas} from '../core/utils/validation';
 import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {GasModeService} from '../core/services/GasModeService';
 import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
 import {deprecateSDKMethod} from './deprecate';
 import {DeployedWallet} from './DeployedWallet';
+import {MessageConverter} from '../core/services/MessageConverter';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -62,6 +62,7 @@ class UniversalLoginSDK {
   relayerConfig?: PublicRelayerConfig;
   factoryAddress?: string;
   featureFlagsService: FeatureFlagsService;
+  messageConverter: MessageConverter;
 
   constructor(
     relayerUrl: string,
@@ -85,6 +86,7 @@ class UniversalLoginSDK {
     this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
     this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
     this.featureFlagsService = new FeatureFlagsService();
+    this.messageConverter = new MessageConverter(this.provider);
   }
 
   private createDeployedWallet(walletContractAddress: string, privateKey = '') {
@@ -185,7 +187,7 @@ class UniversalLoginSDK {
     const nonce = message.nonce || parseInt(await this.getNonce(message.from!), 10);
     const partialMessage = {gasToken: ETHER_NATIVE_TOKEN.address, ...message, nonce};
     ensure(partialMessage.gasLimit! <= this.relayerConfig!.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${this.relayerConfig!.maxGasLimit}`);
-    const signedMessage: SignedMessage = messageToSignedMessage(partialMessage, privateKey);
+    const signedMessage: SignedMessage = await this.messageConverter.messageToSignedMessage(partialMessage, privateKey);
     ensureSufficientGas(signedMessage);
     return this.executionFactory.createExecution(signedMessage);
   }
