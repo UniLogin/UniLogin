@@ -1,14 +1,26 @@
 import {expect} from 'chai';
-import {utils} from 'ethers';
-import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {utils, Contract} from 'ethers';
+import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
 import {GasComputation} from '../../../../lib/core/services/GasComputation';
+import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {BlockchainService} from '@universal-login/contracts';
+import {setupWalletContract} from '@universal-login/contracts/testutils';
 
 describe('GasComputation', () => {
-  const gasCompution = new GasComputation();
+  let gasComputation: GasComputation;
+  let proxyWallet: Contract;
 
-  it('computes gas', () => {
+  before(async () => {
+    const provider = createMockProvider();
+    const blockchainService = new BlockchainService(provider);
+    gasComputation = new GasComputation(blockchainService);
+    const [wallet] = getWallets(provider);
+    ({proxyWallet} = await setupWalletContract(wallet));
+  });
+
+  it('computes gas', async () => {
     const message = {
-      from: TEST_CONTRACT_ADDRESS,
+      from: proxyWallet.address,
       to: TEST_CONTRACT_ADDRESS,
       value: utils.parseEther('1'),
       gasPrice: DEFAULT_GAS_PRICE,
@@ -17,7 +29,7 @@ describe('GasComputation', () => {
       gasLimit: utils.bigNumberify(100000),
       nonce: 0,
     };
-    const computedGas = gasCompution.calculateGasBase(message);
+    const computedGas = await gasComputation.calculateGasBase(message);
     expect(computedGas).to.eq(58976);
   });
 });
