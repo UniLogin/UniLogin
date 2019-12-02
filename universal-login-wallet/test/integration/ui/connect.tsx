@@ -35,7 +35,7 @@ describe('UI: Connection flow', () => {
     await services.sdk.tokensDetailsStore.fetchTokensDetails();
     await services.sdk.start();
     ({privateKey, contractAddress} = await createWallet(name, services.sdk, wallet));
-    appWrapper = mountWithContext(<App/>, services, ['/']);
+    appWrapper = mountWithContext(<App/>, services, ['/wallet']);
   });
 
   it('Should connect to existing wallet', async () => {

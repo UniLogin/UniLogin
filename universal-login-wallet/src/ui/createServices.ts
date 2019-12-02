@@ -3,7 +3,7 @@ import {providers} from 'ethers';
 import {walletFromBrain, DeepPartial} from '@universal-login/commons';
 import UniversalLoginSDK, {SdkConfig, WalletService} from '@universal-login/sdk';
 import {StorageService, WalletStorageService, WalletCreationService} from '@universal-login/react';
-import UserDropdownService from '../core/app/UserDropdownService';
+import UserDropdownService from '../app/UserDropdownService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
 
 interface Config {
