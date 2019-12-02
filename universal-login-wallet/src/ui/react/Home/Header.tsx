@@ -26,7 +26,7 @@ export function Header() {
           </li>
           <li className="header-list-item">
             <NavLink
-              to="wallet/devices"
+              to="/wallet/devices"
               id="devicesButton"
               className="header-btn devices-btn"
             >
@@ -35,7 +35,7 @@ export function Header() {
             </NavLink>
           </li>
           <li className="header-list-item">
-            <NavLink to="wallet/backup" className="header-btn header-backup-btn">Backup</NavLink>
+            <NavLink to="/wallet/backup" className="header-btn header-backup-btn">Backup</NavLink>
           </li>
         </ul>
         <p className="header-user-name">{walletPresenter.getName()}</p>
