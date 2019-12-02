@@ -81,3 +81,4 @@ export {asTransferDetails} from './core/utils/sanitizers/asTransferDetails';
 export {asHexString, asDeploymentHash} from './core/utils/sanitizers/asHexString';
 export {asExactly} from './core/utils/sanitizers/asExactly';
 export {WALLET_MASTER_VERSIONS} from './core/constants/walletMasterVersions';
+export {fetchHardforkVersion} from './integration/ethereum/fetchHardforkVersion';

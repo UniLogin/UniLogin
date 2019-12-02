@@ -1,5 +1,5 @@
 import {Contract, providers, utils} from 'ethers';
-import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotNull} from '@universal-login/commons';
+import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotNull, fetchHardforkVersion} from '@universal-login/commons';
 import {WalletProxyInterface, WalletProxyFactoryInterface} from '../interfaces';
 
 export class BlockchainService {
@@ -37,5 +37,7 @@ export class BlockchainService {
     ensureNotNull(walletMasterVersion, Error, 'Unsupported wallet master version');
     return walletMasterVersion;
   }
-
+  async fetchHardforkVersion() {
+    return fetchHardforkVersion(this.provider);
+  }
 }

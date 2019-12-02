@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {getWallets, loadFixture} from 'ethereum-waffle';
 import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS} from '@universal-login/commons';
+import {mockProviderWithBlockNumber} from '@universal-login/commons/testutils';
 import {deployWalletContract} from '../../lib/deployMaster';
 import WalletContract from '../../build/Wallet.json';
 import {BlockchainService} from '../../lib/integration/BlockchainService';
@@ -68,5 +69,27 @@ describe('INT: BlockchainService', async () => {
     const {provider, walletProxy} = await loadFixture(basicWalletAndProxy);
     blockchainService = new BlockchainService(provider);
     expect(blockchainService.fetchWalletVersion(walletProxy.address)).to.be.eventually.rejectedWith('Unsupported wallet master version');
+  });
+
+  it('fetchHardforkVersion for default provider', async () => {
+    expect(await blockchainService.fetchHardforkVersion()).to.eq('constantinople');
+  });
+
+  it('fetchHardforkVersion for mocked mainnet provider before istanbul', async () => {
+    const mockProvider = mockProviderWithBlockNumber('homestead', 1);
+    blockchainService = new BlockchainService(mockProvider as providers.Provider);
+    expect(await blockchainService.fetchHardforkVersion()).to.eq('constantinople');
+  });
+
+  it('fetchHardforkVersion for mocked mainnet provider after istanbul', async () => {
+    const mockProvider = mockProviderWithBlockNumber('homestead', 10000000000);
+    blockchainService = new BlockchainService(mockProvider as providers.Provider);
+    expect(await blockchainService.fetchHardforkVersion()).to.eq('istanbul');
+  });
+
+  it('fetchHardforkVersion for mocked kovan provider', async () => {
+    const mockProvider = mockProviderWithBlockNumber('kovan', 1);
+    blockchainService = new BlockchainService(mockProvider as providers.Provider);
+    expect(await blockchainService.fetchHardforkVersion()).to.eq('istanbul');
   });
 });
