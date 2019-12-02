@@ -17,7 +17,7 @@ export const WalletRoute = ({walletState, component, render, ...restProps}: Wall
         ? React.createElement(component, props)
         : (<Redirect
           to={{
-            pathname: getDefaultPathForWalletState(walletState.kind),
+            pathname: getDefaultPathForWalletState(walletState),
             state: {from: props.location},
           }}
         />)}

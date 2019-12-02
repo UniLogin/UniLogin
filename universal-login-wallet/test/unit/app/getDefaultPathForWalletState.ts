@@ -1,20 +1,16 @@
 import {expect} from 'chai';
 import {getDefaultPathForWalletState} from '../../../src/app/getDefaultPathForWalletState';
+import {WalletState} from '@universal-login/sdk';
 
 describe('UNIT: getDefaultPathForWalletState', () => {
-  it('return proper path for Future', () => {
-    expect(getDefaultPathForWalletState('Future')).to.be.eq('/create');
-  });
 
-  it('return proper path for Future', () => {
-    expect(getDefaultPathForWalletState('Deployed')).to.be.eq('/wallet');
-  });
+  const itGetDefaultPathFor = (kind: string, path: string) =>
+    it(`return proper path for ${kind}`, () => {
+      expect(getDefaultPathForWalletState({kind} as WalletState)).to.be.eq(path);
+    });
 
-  it('return proper path for Future', () => {
-    expect(getDefaultPathForWalletState('Deploying')).to.be.eq('/create');
-  });
-
-  it('return proper path for Future', () => {
-    expect(getDefaultPathForWalletState('None')).to.be.eq('/welcome');
-  });
+  itGetDefaultPathFor('Future', '/create');
+  itGetDefaultPathFor('Deployed', '/wallet');
+  itGetDefaultPathFor('Deploying', '/create');
+  itGetDefaultPathFor('None', '/welcome');
 });

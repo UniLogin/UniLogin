@@ -1,5 +1,7 @@
-export const getDefaultPathForWalletState = (walletState: any) => {
-  switch (walletState) {
+import {WalletState} from '@universal-login/sdk';
+
+export const getDefaultPathForWalletState = ({kind}: WalletState) => {
+  switch (kind) {
     case 'Future':
       return '/create';
     case 'Deployed':
