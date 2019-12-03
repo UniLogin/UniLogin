@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {createFullHexString, ensure, SignedMessagePaymentOptions, Message, GasComputation, GAS_FIXED, ChainVersion, WalletVersion} from '@universal-login/commons';
+import {createFullHexString, ensure, SignedMessagePaymentOptions, Message, GasComputation, GAS_FIXED, NetworkVersion, WalletVersion} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from './encode';
 
 export const calculateGasCall = (gasLimit: utils.BigNumberish, gasBase: utils.BigNumberish) => {
@@ -14,7 +14,7 @@ export const calculateFinalGasLimit = (gasCall: utils.BigNumberish, gasBase: uti
 export const calculatePaymentOptions = (msg: SignedMessagePaymentOptions) =>
   ({gasLimit: calculateFinalGasLimit(msg.gasCall, msg.gasBase)});
 
-export const calculateGasBase = (message: Omit<Message, 'gasLimit'>, networkVersion: ChainVersion, walletVersion: WalletVersion) => {
+export const calculateGasBase = (message: Omit<Message, 'gasLimit'>, networkVersion: NetworkVersion, walletVersion: WalletVersion) => {
   const encodedMessage = encodeDataForExecuteSigned({
     ...message,
     gasCall: createFullHexString(3),

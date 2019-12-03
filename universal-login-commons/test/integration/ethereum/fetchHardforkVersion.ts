@@ -18,9 +18,8 @@ describe('fetchHardforkVersion', async () => {
   itReturnsHardforkVersion('homestead', 'istanbul', ISTANBUL_BLOCK_NUMBER);
   itReturnsHardforkVersion('homestead', 'istanbul', ISTANBUL_BLOCK_NUMBER + 1);
 
-
-  it('throws exception', async () =>  {
+  it('throws exception', async () => {
     const provider = mockProviderWithBlockNumber('', 1);
     await expect(fetchHardforkVersion(provider as providers.Provider)).to.eventually.be.rejectedWith('Invalid network');
-  })
+  });
 });
