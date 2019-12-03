@@ -4,7 +4,9 @@ const cryptocompare = require('cryptocompare');
 
 export async function getPrices(fromTokens: string[], toTokens: ObservedCurrency[]): Promise<TokensPrices> {
   const result = await cryptocompare.priceMulti(fromTokens, toTokens);
-
+  result.DAI = {...result.DAI, ...{SAI: 1}};
+  result.SAI = result!.DAI;
+  result.ETH.SAI = result.ETH.DAI;
   const asTokenPrices = asRecord(fromTokens, asRecord(toTokens, asNumber));
   return cast(result, asTokenPrices);
 }

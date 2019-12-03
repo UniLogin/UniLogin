@@ -13,7 +13,7 @@ const tokenAbiBytes32 = [
 ];
 
 export class TokenDetailsService {
-  constructor(private provider: providers.Provider) {}
+  constructor(private provider: providers.Provider, private saiTokenAddress?: string) {}
 
   async getTokensDetails(tokenAddresses: string[]) {
     const tokensDetails: TokenDetails[] = [];
@@ -25,6 +25,9 @@ export class TokenDetailsService {
   }
 
   async getTokenDetails(tokenAddress: string): Promise<TokenDetails> {
+    if (tokenAddress === this.saiTokenAddress) {
+      return {address: this.saiTokenAddress, symbol: 'SAI', name: 'Sai Stablecoin v1.0'};
+    }
     const symbol = await this.getSymbol(tokenAddress);
     const name = await this.getName(tokenAddress);
     return {address: tokenAddress, symbol, name};

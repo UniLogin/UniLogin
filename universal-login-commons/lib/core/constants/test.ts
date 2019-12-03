@@ -45,7 +45,12 @@ export const TEST_TOKEN_DETAILS = [
   {
     address: TEST_TOKEN_ADDRESS,
     symbol: 'DAI',
-    name: 'MockToken',
+    name: 'MockDAIToken',
+  },
+  {
+    address: TEST_CONTRACT_ADDRESS,
+    symbol: 'SAI',
+    name: 'MockSAIToken',
   },
   ETHER_NATIVE_TOKEN,
 ];
@@ -60,6 +65,10 @@ export const TEST_GAS_MODES = [{
   {
     gasPrice: utils.bigNumberify('20000000000'),
     token: TEST_TOKEN_DETAILS[1],
+  },
+  {
+    gasPrice: utils.bigNumberify('20000000000'),
+    token: TEST_TOKEN_DETAILS[2],
   }],
 },
 {
@@ -72,6 +81,10 @@ export const TEST_GAS_MODES = [{
   {
     gasPrice: utils.bigNumberify('24000000000'),
     token: TEST_TOKEN_DETAILS[1],
+  },
+  {
+    gasPrice: utils.bigNumberify('24000000000'),
+    token: TEST_TOKEN_DETAILS[2],
   }],
 }];
 
