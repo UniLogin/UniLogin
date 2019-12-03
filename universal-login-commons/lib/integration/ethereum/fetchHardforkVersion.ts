@@ -14,6 +14,8 @@ export const fetchHardforkVersion = async (provider: providers.Provider): Promis
       return 'istanbul';
     case 'unknown':
       return 'constantinople';
+    case 'ganache':
+      return 'constantinople';
     case 'homestead':
       const blockNumber = await provider.getBlockNumber();
       if (blockNumber < ISTANBUL_BLOCK_NUMBER) {
@@ -21,6 +23,6 @@ export const fetchHardforkVersion = async (provider: providers.Provider): Promis
       }
       return 'istanbul';
     default:
-      return 'constantinople';
+      throw TypeError('Invalid network');
   }
 };
