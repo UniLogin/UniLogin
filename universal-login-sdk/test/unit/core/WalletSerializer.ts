@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {WalletSerializer} from '../../../lib/core/services/WalletSerializer';
-import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {DeployingWallet} from '../../../lib/core/models/WalletService';
+import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH} from '@universal-login/commons';
 import {DeployedWallet} from '../../../lib';
 import {Wallet} from 'ethers';
 
@@ -17,6 +18,13 @@ describe('WalletSerializer', () => {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
   };
+
+  const TEST_DEPLOYING_WALLET: DeployingWallet = {
+    name: 'name.mylogin.eth',
+    contractAddress: TEST_CONTRACT_ADDRESS,
+    privateKey: TEST_PRIVATE_KEY,
+    deploymentHash: TEST_MESSAGE_HASH,
+  } as DeployingWallet;
 
   const TEST_DEPLOYED_WALLET = new DeployedWallet(
     TEST_CONTRACT_ADDRESS,
@@ -60,7 +68,7 @@ describe('WalletSerializer', () => {
     it('for Deploying state return undefined', () => {
       expect(walletSerializer.serialize({
         kind: 'Deploying',
-        wallet: TEST_APPLICATION_WALLET,
+        wallet: TEST_DEPLOYING_WALLET,
       })).to.eq(undefined);
     });
 
