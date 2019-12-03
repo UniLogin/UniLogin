@@ -5,7 +5,7 @@ import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, MessageWithFrom, IMessageValida
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import CorrectMasterValidator from '../../../../../lib/integration/ethereum/validators/CorrectMasterValidator';
 import {getContractWhiteList} from '../../../../../lib/http/relayers/RelayerUnderTest';
-import getTestSignedMessage from '../../../../config/message';
+import {getTestSignedMessage} from '../../../../config/message';
 
 describe('INT: CorrectMasterValidator', async () => {
   let message: MessageWithFrom;

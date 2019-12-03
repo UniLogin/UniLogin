@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils, Contract} from 'ethers';
-import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
+import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {GasComputation} from '../../../../lib/core/services/GasComputation';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {BlockchainService} from '@universal-login/contracts';

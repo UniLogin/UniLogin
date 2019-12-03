@@ -37,6 +37,7 @@ export class BlockchainService {
     ensureNotNull(walletMasterVersion, Error, 'Unsupported wallet master version');
     return walletMasterVersion;
   }
+
   async fetchHardforkVersion() {
     return fetchHardforkVersion(this.provider);
   }

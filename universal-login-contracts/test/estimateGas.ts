@@ -41,32 +41,33 @@ describe('UNIT: estimateGas', () => {
     describe('constantinople', () => {
       const gasComputation = new GasComputation('constantinople');
 
-      it(`beta1 version and constantinople network`, () => {
+      it('beta1 version and constantinople network', () => {
         const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
         const expectedResult = gasData;
         expect(calculateGasBase(transferMessage, 'constantinople', 'beta1')).to.eq(expectedResult);
       });
 
-      it(`beta2 version and constantinople network`, () => {
+      it('beta2 version and constantinople network', () => {
         const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
         const expectedResult = gasData.add(GAS_FIXED);
         expect(calculateGasBase(transferMessage, 'constantinople', 'beta2')).to.eq(expectedResult);
       });
     });
+
     describe('istanbul', () => {
       const gasComputation = new GasComputation('istanbul');
 
-      it(`beta1 version and constantinople network`, () => {
+      it('beta1 version and constantinople network', () => {
         const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
         const expectedResult = gasData;
         expect(calculateGasBase(transferMessage, 'istanbul', 'beta1')).to.eq(expectedResult);
       });
 
-      it(`beta2 version and constantinople network`, () => {
+      it('beta2 version and constantinople network', () => {
         const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
         const expectedResult = gasData.add(GAS_FIXED);
         expect(calculateGasBase(transferMessage, 'istanbul', 'beta2')).to.eq(expectedResult);
       });
-    })
+    });
   });
 });

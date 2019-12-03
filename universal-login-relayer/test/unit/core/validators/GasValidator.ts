@@ -12,7 +12,7 @@ describe('UNIT: GasValidator', () => {
   const MAX_GAS_LIMIT = 500000;
   const mockedBlockchainService = {
     fetchWalletVersion: (address: string) => 'beta2',
-    fetchHardforkVersion: () => new Promise(resolve => resolve('constantinople'))
+    fetchHardforkVersion: () => new Promise(resolve => resolve('constantinople')),
   } as any as BlockchainService;
   const gasComputation = new GasComputation(mockedBlockchainService);
   const gasValidator = new GasValidator(MAX_GAS_LIMIT, gasComputation);

@@ -5,5 +5,3 @@ export const getTestSignedMessage = (overrides?: Partial<Message>, privateKey: s
   const exampleMessage = {...emptyMessage, from: TEST_ACCOUNT_ADDRESS, to: TEST_ACCOUNT_ADDRESS, ...overrides};
   return messageToSignedMessage(exampleMessage, privateKey, ACTUAL_NETWORK_VERSION, ACTUAL_WALLET_VERSION);
 };
-
-export default getTestSignedMessage;
