@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
 import {loadFixture, deployContract} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, Message, IMessageValidator} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, Message, IMessageValidator, ACTUAL_WALLET_VERSION, ACTUAL_NETWORK_VERSION} from '@universal-login/commons';
 import {messageToSignedMessage, emptyMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import MessageExecutionValidator from '../../../../../lib/integration/ethereum/validators/MessageExecutionValidator';
@@ -24,7 +24,7 @@ describe('INT: MessageExecutionValidator', async () => {
   });
 
   it('successfully pass the validation', async () => {
-    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey, ACTUAL_NETWORK_VERSION, ACTUAL_WALLET_VERSION);
     await expect(messageExecutionValidator.validate(signedMessage)).to.not.be.rejected;
   });
 
@@ -37,7 +37,7 @@ describe('INT: MessageExecutionValidator', async () => {
     const mockToken = await deployContract(wallet, MockToken);
     await mockToken.transfer(walletContract.address, 1);
 
-    const signedMessage = messageToSignedMessage({...message, gasToken: mockToken.address}, wallet.privateKey);
+    const signedMessage = messageToSignedMessage({...message, gasToken: mockToken.address}, wallet.privateKey, ACTUAL_NETWORK_VERSION, ACTUAL_WALLET_VERSION);
     await expect(messageExecutionValidator.validate(signedMessage))
       .to.be.eventually.rejectedWith('Not enough tokens');
   });
@@ -47,7 +47,7 @@ describe('INT: MessageExecutionValidator', async () => {
       wallet: contractWhiteList.wallet,
       proxy: [TEST_ACCOUNT_ADDRESS],
     });
-    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey, ACTUAL_NETWORK_VERSION, ACTUAL_WALLET_VERSION);
     await expect(messageValidatorWithInvalidProxy.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
 
@@ -56,7 +56,7 @@ describe('INT: MessageExecutionValidator', async () => {
       wallet: [TEST_ACCOUNT_ADDRESS],
       proxy: contractWhiteList.proxy,
     });
-    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey, ACTUAL_NETWORK_VERSION, ACTUAL_WALLET_VERSION);
     await expect(messageValidatorWithInvalidMaster.validate(signedMessage)).to.be.eventually
       .rejectedWith(`Invalid master at address '${master.address}'. Deployed contract bytecode hash: '${contractWhiteList.wallet[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });

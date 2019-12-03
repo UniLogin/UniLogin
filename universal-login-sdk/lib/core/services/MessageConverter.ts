@@ -6,8 +6,8 @@ export class MessageConverter {
   }
 
   async messageToSignedMessage(message: PartialRequired<Message, 'from'>, privateKey: string) {
-    const walletVersion = await this.blockchainService.fetchWalletVersion(message.from);
     const networkVersion = await this.blockchainService.fetchHardforkVersion();
-    return messageToSignedMessage(message, privateKey);
+    const walletVersion = await this.blockchainService.fetchWalletVersion(message.from);
+    return messageToSignedMessage(message, privateKey, networkVersion, walletVersion);
   }
 }

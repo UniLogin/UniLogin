@@ -10,7 +10,10 @@ chai.use(chaiAsPromised);
 
 describe('UNIT: GasValidator', () => {
   const MAX_GAS_LIMIT = 500000;
-  const mockedBlockchainService = {fetchWalletVersion: (address: string) => 'beta2'} as any as BlockchainService;
+  const mockedBlockchainService = {
+    fetchWalletVersion: (address: string) => 'beta2',
+    fetchHardforkVersion: () => new Promise(resolve => resolve('constantinople'))
+  } as any as BlockchainService;
   const gasComputation = new GasComputation(mockedBlockchainService);
   const gasValidator = new GasValidator(MAX_GAS_LIMIT, gasComputation);
   let message: SignedMessage;
@@ -36,7 +39,7 @@ describe('UNIT: GasValidator', () => {
   });
 
   it('too less', async () => {
-    const actualGasBase = gasComputation.calculateGasBase(message);
+    const actualGasBase = await gasComputation.calculateGasBase(message);
     message.gasBase = (message.gasBase as utils.BigNumber).sub(1);
     await expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`Insufficient Gas. Got GasBase ${message.gasBase} but should be ${actualGasBase}`);
   });

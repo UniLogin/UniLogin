@@ -6,8 +6,8 @@ export class GasComputation {
   }
 
   async calculateGasBase(message: Omit<Message, 'gasLimit'>) {
-    const walletVersion = await this.blockchainService.fetchWalletVersion(message.from);
     const networkVersion = await this.blockchainService.fetchHardforkVersion();
-    return calculateGasBase(message);
+    const walletVersion = await this.blockchainService.fetchWalletVersion(message.from);
+    return calculateGasBase(message, networkVersion, walletVersion);
   }
 }

@@ -1,8 +1,9 @@
 import {providers} from 'ethers';
+import {ChainVersion} from '../../core/utils/messages/computeGasData';
 
 export const ISTANBUL_BLOCK_NUMBER = 9069000;
 
-export const fetchHardforkVersion = async (provider: providers.Provider) => {
+export const fetchHardforkVersion = async (provider: providers.Provider): Promise<ChainVersion> => {
   const {name} = await provider.getNetwork();
   switch (name) {
     case 'kovan':
@@ -19,5 +20,7 @@ export const fetchHardforkVersion = async (provider: providers.Provider) => {
         return 'constantinople';
       }
       return 'istanbul';
+    default:
+      return 'constantinople';
   }
 };
