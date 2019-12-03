@@ -52,13 +52,15 @@ export class WalletService {
     const {name, wallet: {deploy, contractAddress, privateKey}} = this.state;
 
     const applicationWallet = {contractAddress, name, privateKey};
-    this.stateProperty.set({kind: 'Deploying', wallet: applicationWallet});
 
-    const {waitToBeSuccess, waitForTransactionHash} = await deploy(name, gasPrice, gasToken);
-    const {transactionHash} = await waitForTransactionHash();
-    transactionHash && this.stateProperty.set({kind: 'Deploying', wallet: applicationWallet, transactionHash});
+    const deployment = await deploy(name, gasPrice, gasToken);
+    const deployingWallet = {...applicationWallet, ...deployment};
+    this.stateProperty.set({kind: 'Deploying', wallet: deployingWallet});
 
-    const deployedWallet = await waitToBeSuccess();
+    const {transactionHash} = await deployingWallet.waitForTransactionHash();
+    transactionHash && this.stateProperty.set({kind: 'Deploying', wallet: deployingWallet, transactionHash});
+
+    const deployedWallet = await deployingWallet.waitToBeSuccess();
     this.stateProperty.set({kind: 'Deployed', wallet: deployedWallet});
     this.saveToStorage();
     return deployedWallet;

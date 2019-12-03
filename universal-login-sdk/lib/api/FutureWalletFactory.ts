@@ -22,6 +22,7 @@ export type BalanceDetails = {
 };
 
 export interface Deployment {
+  deploymentHash: string;
   waitForTransactionHash: () => Promise<MineableStatus>;
   waitToBeSuccess: () => Promise<DeployedWallet>;
 }
@@ -82,6 +83,7 @@ export class FutureWalletFactory extends MineableFactory {
         const {deploymentHash} = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
 
         return {
+          deploymentHash,
           waitForTransactionHash: this.createWaitForTransactionHash(deploymentHash),
           waitToBeSuccess: async () => {
             await this.createWaitToBeSuccess(deploymentHash)();
