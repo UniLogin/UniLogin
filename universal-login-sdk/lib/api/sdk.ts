@@ -71,7 +71,7 @@ class UniversalLoginSDK {
     sdkConfig?: DeepPartial<SdkConfig>,
   ) {
     this.provider = typeof (providerOrUrl) === 'string'
-      ? new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
+      ? new providers.JsonRpcProvider(providerOrUrl)
       : providerOrUrl;
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
     this.relayerApi = new RelayerApi(relayerUrl);
