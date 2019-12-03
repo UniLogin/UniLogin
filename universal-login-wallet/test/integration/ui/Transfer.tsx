@@ -2,8 +2,7 @@ import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
 import {providers, utils, Contract} from 'ethers';
 import {createFixtureLoader, getWallets, createMockProvider} from 'ethereum-waffle';
-import {waitExpect} from '@universal-login/commons/testutils';
-import {deployMockToken} from '@universal-login/commons/testutils';
+import {deployMockToken, waitExpect} from '@universal-login/commons/testutils';
 import {WalletService} from '@universal-login/sdk';
 import {setupSdk, createAndSetWallet} from '@universal-login/sdk/testutils';
 import {Services} from '../../../src/ui/createServices';
@@ -55,13 +54,13 @@ describe('UI: Transfer', () => {
     await waitExpect(() => expect(appPage.transfer().getErrorMessage())
       .to.be.eq('Error: pascal.mylogin.eth is not valid'));
     await appPage.dashboard().closeModal();
-    expect(appPage.dashboard().getWalletBalance()).to.eq('$1.99');
+    await waitExpect(() => expect(appPage.dashboard().getWalletBalance()).to.eq('$1.99'));
   });
 
   it('send ETH => proper contractAddress', async () => {
     await transferFlow(appPage, 'ETH', '1', receiverAddress);
     await appPage.dashboard().waitForHideModal();
-    expect(appPage.dashboard().getWalletBalance()).to.eq('$0.99');
+    await waitExpect(() => expect(appPage.dashboard().getWalletBalance()).to.eq('$0.99'));
     expect((await provider.getBalance(receiverAddress)).toString())
       .to.be.eq(initialReceiverEthBalance.add(utils.parseEther('1')));
   });
@@ -69,7 +68,7 @@ describe('UI: Transfer', () => {
   it('ETH => proper ensName', async () => {
     await transferFlow(appPage, 'ETH', '1', receiverEnsName);
     await appPage.dashboard().waitForHideModal();
-    expect(appPage.dashboard().getWalletBalance()).to.eq('$0.99');
+    await waitExpect(() => expect(appPage.dashboard().getWalletBalance()).to.eq('$0.99'));
     expect((await provider.getBalance(receiverAddress)).toString())
       .to.be.eq(initialReceiverEthBalance.add(utils.parseEther('1')));
   });
@@ -83,7 +82,7 @@ describe('UI: Transfer', () => {
     });
     await transferFlow(appPage, 'DAI', '1', receiverAddress);
     await appPage.dashboard().waitForHideModal();
-    expect(appPage.dashboard().getWalletBalance()).to.eq('$2.99');
+    await waitExpect(() => expect(appPage.dashboard().getWalletBalance()).to.eq('$2.99'));
     expect((await mockTokenContract.balanceOf(receiverAddress)).toString())
       .to.be.eq(utils.parseEther('1'));
   });
@@ -97,7 +96,7 @@ describe('UI: Transfer', () => {
     });
     await transferFlow(appPage, 'DAI', '1', receiverEnsName);
     await appPage.dashboard().waitForHideModal();
-    expect(appPage.dashboard().getWalletBalance()).to.eq('$2.99');
+    await waitExpect(() => expect(appPage.dashboard().getWalletBalance()).to.eq('$2.99'));
     expect((await mockTokenContract.balanceOf(receiverAddress)).toString())
       .to.be.eq(utils.parseEther('1'));
   });

@@ -103,7 +103,7 @@ describe('INT: MessageHandler', async () => {
       const signedMessage0 = getTestSignedMessage(msg, wallet.privateKey);
       await messageHandler.handleMessage(signedMessage0);
       await executionWorker.stopLater();
-      expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
+      await waitExpect(async () => expect(await walletContract.keyExist(otherWallet.address)).to.be.true);
       const devices = await devicesStore.get(walletContract.address);
       expect(devices.map(({publicKey}) => publicKey)).to.be.deep.eq(keys);
     });
