@@ -14,6 +14,9 @@ import {calculateFinalGasLimit} from '../../../lib/estimateGas';
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
+const networkVersion = 'constantinople';
+const walletVersion = 'beta2';
+
 describe('CONTRACT: Executor - refund', async () => {
   let provider: providers.Provider;
   let walletContract: Contract;
@@ -32,7 +35,7 @@ describe('CONTRACT: Executor - refund', async () => {
 
   it('refund works', async () => {
     const message = {...transferMessage, gasPrice: 1, from: walletContract.address, gasLimit: DEFAULT_GAS_LIMIT};
-    const signedMessage = messageToSignedMessage(message, managementKeyPair.privateKey);
+    const signedMessage = messageToSignedMessage(message, managementKeyPair.privateKey, networkVersion, walletVersion);
     const executeData = encodeDataForExecuteSigned(signedMessage);
     const gasLimit = calculateFinalGasLimit(signedMessage.gasCall, signedMessage.gasBase);
     const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit});
@@ -59,7 +62,7 @@ describe('CONTRACT: Executor - refund', async () => {
     });
 
     it('ETHER_REFUND_CHARGE is enough for ether refund', async () => {
-      const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address}, managementKeyPair.privateKey);
+      const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address}, managementKeyPair.privateKey, networkVersion, walletVersion);
       const executeData = encodeDataForExecuteSigned(signedMessage);
       const gasLimit = calculateFinalGasLimit(signedMessage.gasCall, signedMessage.gasBase);
 
@@ -76,7 +79,7 @@ describe('CONTRACT: Executor - refund', async () => {
 
     it('TOKEN_REFUND_CHARGE is enough for token refund', async () => {
       const initialTokenBalance = await mockToken.balanceOf(wallet.address);
-      const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: mockToken.address}, managementKeyPair.privateKey);
+      const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: mockToken.address}, managementKeyPair.privateKey, networkVersion, walletVersion);
       const executeData = encodeDataForExecuteSigned(signedMessage);
       const gasLimit = calculateFinalGasLimit(signedMessage.gasCall, signedMessage.gasBase);
 

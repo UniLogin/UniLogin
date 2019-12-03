@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair, TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
+import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair, TEST_ACCOUNT_ADDRESS, UnsignedMessage, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
 import {emptyMessage, messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import IMessageRepository from '../../../../lib/core/models/messages/IMessagesRepository';
@@ -39,7 +39,7 @@ for (const config of [{
       }
       messageRepository = new config.Type(args);
       const message = {...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, nonce: await walletContract.lastNonce()};
-      unsignedMessage = messageToUnsignedMessage(message);
+      unsignedMessage = messageToUnsignedMessage(message, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION);
       signedMessage = unsignedMessageToSignedMessage(unsignedMessage, wallet.privateKey);
 
       messageItem = createMessageItem(signedMessage);

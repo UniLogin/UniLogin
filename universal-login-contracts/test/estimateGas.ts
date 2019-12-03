@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {createZeroedHexString, createFullHexString, GAS_FIXED, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, computeGasData, Message} from '@universal-login/commons';
+import {createFullHexString, GAS_FIXED, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, GasComputation} from '@universal-login/commons';
 import {calculateGasCall, calculateGasBase} from '../lib/estimateGas';
 import {utils} from 'ethers';
 import {encodeDataForExecuteSigned} from '../lib';
@@ -27,14 +27,6 @@ describe('UNIT: estimateGas', () => {
   });
 
   describe('calculateGasBase', () => {
-    const itCalculatesBase = (messageType: string, message: Omit<Message, 'gasLimit'>) =>
-      it(`calculates gas base as expected for ${messageType}`, () => {
-        const encodedMessage = encodeDataForExecuteSigned({...message, gasCall: createFullHexString(3), gasBase: createFullHexString(3), signature: createFullHexString(65)});
-        const gasData = utils.bigNumberify(computeGasData(encodedMessage));
-        const expectedResult = gasData.add(GAS_FIXED);
-        expect(calculateGasBase(message)).to.eq(expectedResult);
-      });
-
     const transferMessage = {
       to: TEST_ACCOUNT_ADDRESS,
       from: TEST_ACCOUNT_ADDRESS,
@@ -44,18 +36,38 @@ describe('UNIT: estimateGas', () => {
       gasPrice: DEFAULT_GAS_PRICE,
       gasToken: ETHER_NATIVE_TOKEN.address,
     };
+    const encodedMessage = encodeDataForExecuteSigned({...transferMessage, gasCall: createFullHexString(3), gasBase: createFullHexString(3), signature: createFullHexString(65)});
 
-    const emptyMessage = {
-      from: createZeroedHexString(20),
-      nonce: 0,
-      to: createZeroedHexString(20),
-      value: 0,
-      data: createZeroedHexString(0),
-      gasPrice: 0,
-      gasToken: createZeroedHexString(20),
-    };
+    describe('constantinople', () => {
+      const gasComputation = new GasComputation('constantinople');
 
-    itCalculatesBase('transfer message', transferMessage);
-    itCalculatesBase('empty message', emptyMessage);
+      it('beta1 version and constantinople network', () => {
+        const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
+        const expectedResult = gasData;
+        expect(calculateGasBase(transferMessage, 'constantinople', 'beta1')).to.eq(expectedResult);
+      });
+
+      it('beta2 version and constantinople network', () => {
+        const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
+        const expectedResult = gasData.add(GAS_FIXED);
+        expect(calculateGasBase(transferMessage, 'constantinople', 'beta2')).to.eq(expectedResult);
+      });
+    });
+
+    describe('istanbul', () => {
+      const gasComputation = new GasComputation('istanbul');
+
+      it('beta1 version and constantinople network', () => {
+        const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
+        const expectedResult = gasData;
+        expect(calculateGasBase(transferMessage, 'istanbul', 'beta1')).to.eq(expectedResult);
+      });
+
+      it('beta2 version and constantinople network', () => {
+        const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
+        const expectedResult = gasData.add(GAS_FIXED);
+        expect(calculateGasBase(transferMessage, 'istanbul', 'beta2')).to.eq(expectedResult);
+      });
+    });
   });
 });
