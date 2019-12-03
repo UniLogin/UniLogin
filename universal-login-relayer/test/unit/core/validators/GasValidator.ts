@@ -4,11 +4,17 @@ import {SignedMessage, GAS_FIXED} from '@universal-login/commons';
 import {GasValidator} from '../../../../lib/core/services/validators/GasValidator';
 import chaiAsPromised from 'chai-as-promised';
 import {GasComputation} from '../../../../lib/core/services/GasComputation';
+import {BlockchainService} from '@universal-login/contracts';
+
 chai.use(chaiAsPromised);
 
 describe('UNIT: GasValidator', () => {
   const MAX_GAS_LIMIT = 500000;
-  const gasComputation = new GasComputation();
+  const mockedBlockchainService = {
+    fetchWalletVersion: (address: string) => 'beta2',
+    fetchHardforkVersion: () => new Promise(resolve => resolve('constantinople')),
+  } as any as BlockchainService;
+  const gasComputation = new GasComputation(mockedBlockchainService);
   const gasValidator = new GasValidator(MAX_GAS_LIMIT, gasComputation);
   let message: SignedMessage;
   const gasBase = utils.bigNumberify(11408).add(GAS_FIXED);
@@ -33,7 +39,7 @@ describe('UNIT: GasValidator', () => {
   });
 
   it('too less', async () => {
-    const actualGasBase = gasComputation.calculateGasBase(message);
+    const actualGasBase = await gasComputation.calculateGasBase(message);
     message.gasBase = (message.gasBase as utils.BigNumber).sub(1);
     await expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`Insufficient Gas. Got GasBase ${message.gasBase} but should be ${actualGasBase}`);
   });

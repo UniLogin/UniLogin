@@ -16,6 +16,8 @@ chai.use(chaiAsPromised);
 chai.use(solidity);
 
 const {parseEther} = utils;
+const networkVersion = 'constantinople';
+const walletVersion = 'beta2';
 
 describe('WalletContract', async () => {
   let provider: providers.Provider;
@@ -300,7 +302,7 @@ describe('WalletContract', async () => {
 
     it('cannot remove the last key', async () => {
       const nonce = await proxyAsWalletContract.lastNonce();
-      const removeKeySignedMessage = messageToSignedMessage({...removeKeyMessage, nonce}, privateKey);
+      const removeKeySignedMessage = messageToSignedMessage({...removeKeyMessage, nonce}, privateKey, networkVersion, walletVersion);
       await wallet.sendTransaction({to: proxyAsWalletContract.address, data: encodeDataForExecuteSigned(removeKeySignedMessage), ...calculatePaymentOptions(removeKeySignedMessage)});
       expect(await proxyAsWalletContract.keyExist(publicKey)).to.be.true;
     });
@@ -311,7 +313,7 @@ describe('WalletContract', async () => {
       await executeAddKey(proxyAsWalletContract, secondKeyPair.publicKey, privateKey);
       await executeSetRequiredSignatures(proxyAsWalletContract, 2, privateKey);
       const nonce = await proxyAsWalletContract.lastNonce();
-      const removeKeyUnsignedMessage = messageToUnsignedMessage({...removeKeyMessage, nonce});
+      const removeKeyUnsignedMessage = messageToUnsignedMessage({...removeKeyMessage, nonce}, networkVersion, walletVersion);
       removeKeyUnsignedMessage.gasBase = utils.bigNumberify(removeKeyUnsignedMessage.gasBase).add(ONE_SIGNATURE_GAS_COST);
       const signature1 = calculateMessageSignature(sortedKeys[0], removeKeyUnsignedMessage);
       const signature2 = calculateMessageSignature(sortedKeys[1], removeKeyUnsignedMessage);
@@ -365,7 +367,7 @@ describe('WalletContract', async () => {
 
     beforeEach(async () => {
       newWallet = await deployContract(wallet, UpgradedWallet);
-      signedUpdateMessage = messageToSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey);
+      signedUpdateMessage = messageToSignedMessage(await setupUpdateMessage(proxyAsWalletContract, newWallet.address), privateKey, networkVersion, walletVersion);
       updateData = encodeDataForExecuteSigned(signedUpdateMessage);
       gasLimit = calculateFinalGasLimit(signedUpdateMessage.gasCall, signedUpdateMessage.gasBase);
     });
@@ -403,7 +405,7 @@ describe('WalletContract', async () => {
     });
 
     it('execute message that has enough gas limit', async () => {
-      const gasBase = calculateGasBase(msg);
+      const gasBase = calculateGasBase(msg, 'constantinople', 'beta2');
       const validGasLimit = calculateFinalGasLimit(msg.gasCall, gasBase);
       await wallet.sendTransaction({to: walletContractProxy.address, data, gasLimit: validGasLimit});
       expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));

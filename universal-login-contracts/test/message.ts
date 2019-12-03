@@ -17,8 +17,10 @@ const message: Partial<Message> = {
 };
 
 describe('Message', () => {
-  it('messageToSignedMessage', () => {
-    const actualMessage = messageToSignedMessage(message, TEST_PRIVATE_KEY);
+  it('messageToSignedMessage for constantinople', () => {
+    const networkVersion = 'constantinople';
+    const walletVersion = 'beta2';
+    const actualMessage = messageToSignedMessage(message, TEST_PRIVATE_KEY, networkVersion, walletVersion);
     const expectedMessage = {
       from: TEST_CONTRACT_ADDRESS,
       to: TEST_CONTRACT_ADDRESS,
@@ -34,7 +36,28 @@ describe('Message', () => {
     expect(actualMessage).to.deep.eq(expectedMessage);
   });
 
-  it('messageToUnsignedMessage', async () => {
+  it('messageToSignedMessage for istanbul', () => {
+    const networkVersion = 'istanbul';
+    const walletVersion = 'beta2';
+    const actualMessage = messageToSignedMessage(message, TEST_PRIVATE_KEY, networkVersion, walletVersion);
+    const expectedMessage = {
+      from: TEST_CONTRACT_ADDRESS,
+      to: TEST_CONTRACT_ADDRESS,
+      value: utils.parseEther('1'),
+      gasPrice: DEFAULT_GAS_PRICE,
+      gasToken: ETHER_NATIVE_TOKEN.address,
+      data: '0xbeef',
+      nonce: 0,
+      gasBase: bigNumberify(53152),
+      gasCall: bigNumberify(46848),
+      signature: '0x26aaabf3c44e63238e88b3da0da13953dd4a111999b11252d45f75a18974f9665ef56d45a92d1340296241b746c8c4bb5ed511d1ee3e30d599311fdfffad27581c',
+    };
+    expect(actualMessage).to.deep.eq(expectedMessage);
+  });
+
+  it('messageToUnsignedMessage for constantinople', async () => {
+    const networkVersion = 'constantinople';
+    const walletVersion = 'beta2';
     const expectedUnsignedMessage: Partial<SignedMessage> = {
       from: TEST_CONTRACT_ADDRESS,
       to: TEST_CONTRACT_ADDRESS,
@@ -47,7 +70,26 @@ describe('Message', () => {
       nonce: 0,
     };
 
-    const actualUnsginedMessage = messageToUnsignedMessage(message);
+    const actualUnsginedMessage = messageToUnsignedMessage(message, networkVersion, walletVersion);
+    expect(actualUnsginedMessage).to.deep.equal(expectedUnsignedMessage);
+  });
+
+  it('messageToUnsignedMessage for istanbul', async () => {
+    const networkVersion = 'istanbul';
+    const walletVersion = 'beta2';
+    const expectedUnsignedMessage: Partial<SignedMessage> = {
+      from: TEST_CONTRACT_ADDRESS,
+      to: TEST_CONTRACT_ADDRESS,
+      value: utils.parseEther('1'),
+      gasPrice: DEFAULT_GAS_PRICE,
+      gasToken: ETHER_NATIVE_TOKEN.address,
+      data: '0xbeef',
+      gasBase: bigNumberify(53152),
+      gasCall: bigNumberify(100000 - 53152),
+      nonce: 0,
+    };
+
+    const actualUnsginedMessage = messageToUnsignedMessage(message, networkVersion, walletVersion);
     expect(actualUnsginedMessage).to.deep.equal(expectedUnsignedMessage);
   });
 

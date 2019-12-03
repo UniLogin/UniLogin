@@ -2,10 +2,10 @@ import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, MessageWithFrom, IMessageValidator} from '@universal-login/commons';
-import {messageToSignedMessage, emptyMessage} from '@universal-login/contracts';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
 import CorrectMasterValidator from '../../../../../lib/integration/ethereum/validators/CorrectMasterValidator';
 import {getContractWhiteList} from '../../../../../lib/http/relayers/RelayerUnderTest';
+import {getTestSignedMessage} from '../../../../config/message';
 
 describe('INT: CorrectMasterValidator', async () => {
   let message: MessageWithFrom;
@@ -18,12 +18,12 @@ describe('INT: CorrectMasterValidator', async () => {
 
   before(async () => {
     ({mockToken, master, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
-    message = {...emptyMessage, from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
+    message = {from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
     validator = new CorrectMasterValidator(wallet.provider, contractWhiteList);
   });
 
   it('successfully pass the validation', async () => {
-    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(validator.validate(signedMessage)).to.not.be.rejected;
   });
 
@@ -32,7 +32,7 @@ describe('INT: CorrectMasterValidator', async () => {
       wallet: contractWhiteList.wallet,
       proxy: [TEST_ACCOUNT_ADDRESS],
     });
-    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(validatorWithInvalidProxy.validate(signedMessage)).to.not.be.rejected;
   });
 
@@ -41,7 +41,7 @@ describe('INT: CorrectMasterValidator', async () => {
       wallet: [TEST_ACCOUNT_ADDRESS],
       proxy: contractWhiteList.proxy,
     });
-    const signedMessage = messageToSignedMessage({...message}, wallet.privateKey);
+    const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(validatorWithInvalidMaster.validate(signedMessage)).to.be.eventually
       .rejectedWith(`Invalid master at address '${master.address}'. Deployed contract bytecode hash: '${contractWhiteList.wallet[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
