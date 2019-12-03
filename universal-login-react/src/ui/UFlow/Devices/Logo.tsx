@@ -10,7 +10,7 @@ interface LogoProps {
 export const Logo = ({logo, applicationName, deviceType}: LogoProps) => {
   const src = isLogoEmpty(logo) ? DEFAULT_LOGO : logo;
   return (
-    <div className={`connected-devices-img-wrapper ${deviceType}`}>
+    <div className={`connected-devices-img-wrapper ${deviceType !== 'unknown' ? deviceType : 'default'}`}>
       <img
         src={src}
         alt={applicationName}
