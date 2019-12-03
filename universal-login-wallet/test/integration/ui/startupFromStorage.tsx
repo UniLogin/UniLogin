@@ -48,7 +48,7 @@ describe('UI: Startup from stored wallet state', () => {
   it('starts when storage is Future', async () => {
     services.storageService.set('wallet', JSON.stringify({kind: 'Future', name, wallet: {contractAddress, privateKey}}));
     await services.walletService.loadFromStorage();
-    appWrapper = mountWithContext(<App/>, services, ['/create']);
+    appWrapper = mountWithContext(<App/>, services, ['/create/topUp']);
     expect(appWrapper.text().includes('Choose a top-up method')).to.be.true;
   });
 

@@ -22,7 +22,7 @@ const App = () => {
       <WalletRoute exact walletState={walletState} path="/welcome" component={WelcomeScreen} />
       <WalletRoute exact walletState={walletState} path="/terms" component={TermsAndConditionsScreen} />
       <WalletRoute exact walletState={walletState} path="/privacy" component={PrivacyPolicy} />
-      <WalletRoute exact walletState={walletState} path="/create" component={CreateFlow} />
+      <WalletRoute exact walletState={walletState} path="/create/topUp" component={CreateFlow} />
       <WalletRoute exact walletState={walletState} path="/connectionSuccess" component={ConnectionSuccess} />
       <WalletRoute exact walletState={walletState} path="/creationSuccess" component={CreationSuccess} />
       <WalletRoute exact walletState={walletState} path="/selectDeployName" component={CreateAccount} />

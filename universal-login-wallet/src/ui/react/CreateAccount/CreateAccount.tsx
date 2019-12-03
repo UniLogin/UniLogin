@@ -14,7 +14,7 @@ export const CreateAccount = () => {
 
   const onCreateClick = async (ensName: string) => {
     await walletService.createFutureWallet(ensName);
-    history.push('/create');
+    history.push('/create/topUp');
   };
 
   return (
