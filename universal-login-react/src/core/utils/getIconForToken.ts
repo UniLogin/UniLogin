@@ -4,9 +4,9 @@ import ethIcon from '../../ui/assets/icons/ether.svg';
 
 export const getIconForToken = (symbol: string) => {
   switch (symbol) {
-    case ('DAI'):
+    case 'DAI':
       return daiIcon;
-    case ('SAI'):
+    case 'SAI':
       return saiIcon;
     default:
       return ethIcon;

@@ -4,9 +4,7 @@ const cryptocompare = require('cryptocompare');
 
 export async function getPrices(fromTokens: string[], toTokens: ObservedCurrency[]): Promise<TokensPrices> {
   const result = await cryptocompare.priceMulti(fromTokens, toTokens);
-  result.DAI = {...result.DAI, ...{SAI: 1}};
-  result.SAI = result!.DAI;
-  result.ETH.SAI = result.ETH.DAI;
+  dirtySaiToDaiHack(result);
   const asTokenPrices = asRecord(fromTokens, asRecord(toTokens, asNumber));
   return cast(result, asTokenPrices);
 }
@@ -18,3 +16,9 @@ function asRecord<K extends keyof any, V>(keys: K[], valueSanitizer: Sanitizer<V
   }
   return asObject(schema);
 }
+
+const dirtySaiToDaiHack = (result: any) => {
+  result.DAI = {...result.DAI, ...{SAI: 1}};
+  result.SAI = result.DAI;
+  result.ETH.SAI = result.ETH.DAI;
+};
