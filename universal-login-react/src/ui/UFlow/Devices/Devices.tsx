@@ -38,7 +38,7 @@ export const Devices = ({walletService, onAccountDisconnected, className, basePa
         />
       </Route>
       <Route path={join(basePath, 'connectionSuccess')} exact>
-        <ConnectionSuccessNotification className={className} />
+        <ConnectionSuccessNotification basePath={basePath} className={className} />
       </Route>
       <Route path={join(basePath, 'connectionFailed')} exact>
         <ErrorMessage className={className} />
