@@ -4,11 +4,11 @@ import {ensure} from '@universal-login/commons';
 import {TopUp} from '@universal-login/react';
 import {useServices} from '../../hooks';
 
-export function CreateFlow() {
+export function CreateTopUp() {
   const {sdk, walletService} = useServices();
   const history = useHistory();
 
-  ensure(walletService.state.kind === 'Future', Error, 'Invalid state')
+  ensure(walletService.state.kind === 'Future', Error, 'Invalid state');
   const wallet = walletService.state.wallet;
 
   useEffect(() => {
@@ -17,7 +17,6 @@ export function CreateFlow() {
       .then(() => history.push('/create/waiting'))
       .catch(console.error);
   }, []);
-
 
   return (
     <div className="main-bg">
