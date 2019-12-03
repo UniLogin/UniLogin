@@ -43,6 +43,10 @@ describe('INT: WalletService', async () => {
       await walletService.initDeploy();
       ensure(walletService.state.kind === 'Deploying', chai.AssertionError, `Expected state.kind to be 'Deploying', but was ${walletService.state.kind}`);
       expect(walletService.state.wallet.deploymentHash).to.be.properHex(64);
+      expect(walletService.state.transactionHash).to.be.undefined;
+      await walletService.waitForTransactionHash();
+      expect(walletService.state.kind).to.eq('Deploying');
+      expect(walletService.state.transactionHash).to.be.properHex(64);
     });
   });
 

@@ -1,11 +1,11 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotNull} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
-import {FutureWalletNotSet, InvalidPassphrase, WalletOverridden} from '../utils/errors';
+import {FutureWalletNotSet, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
 import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';
 import {map, State} from 'reactive-properties';
-import {WalletState} from '../models/WalletService';
+import {WalletState, DeployingWallet} from '../models/WalletService';
 import {WalletSerializer} from './WalletSerializer';
 import {NoopWalletStorage} from './NoopWalletStorage';
 
@@ -38,6 +38,11 @@ export class WalletService {
     return this.state.wallet;
   }
 
+  private getDeployingWallet(): DeployingWallet {
+    ensure(this.state.kind === 'Deploying', Error, 'Invalid state: expected deploying wallet');
+    return this.state.wallet;
+  }
+
   getConnectingWallet(): ApplicationWallet {
     ensure(this.state.kind === 'Connecting', Error, 'Invalid state: expected connecting wallet');
     return this.state.wallet;
@@ -55,6 +60,13 @@ export class WalletService {
     const applicationWallet = {contractAddress, name, privateKey};
     const deployment = await deploy(name, this.gasParameters.gasPrice.toString(), this.gasParameters.gasToken);
     this.stateProperty.set({kind: 'Deploying', wallet: {...applicationWallet, ...deployment}});
+  }
+
+  async waitForTransactionHash() {
+    const deployingWallet = this.getDeployingWallet();
+    const {transactionHash} = await deployingWallet.waitForTransactionHash();
+    ensureNotNull(transactionHash, TransactionHashNotFound);
+    this.stateProperty.set({kind: 'Deploying', wallet: deployingWallet, transactionHash});
   }
 
   async deployFutureWallet(gasPrice: string, gasToken: string) {
