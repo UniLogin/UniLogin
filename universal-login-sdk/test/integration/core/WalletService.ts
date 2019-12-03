@@ -4,6 +4,8 @@ import Relayer from '@universal-login/relayer';
 import {setupSdk} from '../../helpers/setupSdk';
 import UniversalLoginSDK from '../../../lib/api/sdk';
 import {WalletService} from '../../../lib/core/services/WalletService';
+import {Wallet, utils} from 'ethers';
+import {ETHER_NATIVE_TOKEN, ensure} from '@universal-login/commons';
 
 chai.use(solidity);
 
@@ -11,10 +13,14 @@ describe('INT: WalletService', async () => {
   let walletService: WalletService;
   let sdk: UniversalLoginSDK;
   let relayer: Relayer;
+  let wallet: Wallet;
 
   before(async () => {
-    const [wallet] = await getWallets(createMockProvider());
+    ([wallet] = await getWallets(createMockProvider()));
     ({sdk, relayer} = await setupSdk(wallet));
+  });
+
+  beforeEach(() => {
     walletService = new WalletService(sdk);
   });
 
@@ -27,6 +33,17 @@ describe('INT: WalletService', async () => {
     expect(futureWallet.deploy).to.be.a('function');
     expect(futureWallet.waitForBalance).to.be.a('function');
     expect(walletService.state).to.deep.eq({kind: 'Future', name, wallet: futureWallet});
+  });
+
+  describe('deploy, wait for transaction hash and success', () => {
+    it('transaction upfront', async () => {
+      const futureWallet = await walletService.createFutureWallet('name.mylogin.eth');
+      walletService.setGasParameters({gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: utils.bigNumberify('1')});
+      await wallet.sendTransaction({to: futureWallet.contractAddress, value: utils.parseEther('4')});
+      await walletService.initDeploy();
+      ensure(walletService.state.kind === 'Deploying', chai.AssertionError, `Expected state.kind to be 'Deploying', but was ${walletService.state.kind}`);
+      expect(walletService.state.wallet.deploymentHash).to.be.properHex(64);
+    });
   });
 
   after(async () => {

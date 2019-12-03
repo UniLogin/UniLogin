@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
 import {FutureWalletNotSet, InvalidPassphrase, WalletOverridden} from '../utils/errors';
@@ -13,6 +13,8 @@ type WalletFromBackupCodes = (username: string, password: string) => Promise<Wal
 
 export class WalletService {
   private readonly walletSerializer: WalletSerializer;
+
+  private gasParameters: GasParameters = INITIAL_GAS_PARAMETERS;
 
   stateProperty = new State<WalletState>({kind: 'None'});
 
@@ -45,6 +47,14 @@ export class WalletService {
     const futureWallet = await this.sdk.createFutureWallet();
     this.setFutureWallet(futureWallet, name);
     return futureWallet;
+  }
+
+  async initDeploy() {
+    ensure(this.state.kind === 'Future', FutureWalletNotSet);
+    const {name, wallet: {deploy, contractAddress, privateKey}} = this.state;
+    const applicationWallet = {contractAddress, name, privateKey};
+    const deployment = await deploy(name, this.gasParameters.gasPrice.toString(), this.gasParameters.gasToken);
+    this.stateProperty.set({kind: 'Deploying', wallet: {...applicationWallet, ...deployment}});
   }
 
   async deployFutureWallet(gasPrice: string, gasToken: string) {
@@ -151,5 +161,9 @@ export class WalletService {
     ensure(this.state.kind === 'None', WalletOverridden);
     const state = this.storage.load();
     this.stateProperty.set(await this.walletSerializer.deserialize(state));
+  }
+
+  setGasParameters(gasParameters: GasParameters) {
+    this.gasParameters = gasParameters;
   }
 }
