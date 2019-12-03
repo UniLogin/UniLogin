@@ -1,23 +1,24 @@
-@startuml WalletServiceStates
+@startuml WalletStates
 
-title Wallet Service States
+title Wallet States
 
-[*] --> None
-None --> Future
-None --> Connecting
-Connecting --> Deployed
-Future --> Deploying
-Deploying --> Future
-Deploying --> Deployed
+None --> Future: createFuture
+None --> Connecting: connect
+Connecting --> Deployed: waitForSuccess
+Future --> Deploying: waitForDeploy
+Deploying --> Deployed: waitForSuccess
+Deploying --> Deploying: waitForTransactionHash
+Deployed --> None: disconnect
 
 Future: FutureWallet
 Future: - contractAddress
 Future: - privateKey
 
-Deploying: ApplicationWallet
+Deploying: DeployingWallet
 Deploying: - contractAddress
 Deploying: - privateKey
 Deploying: - name
+Deploying: - deploymentHash
 
 Connecting: ApplicationWallet
 Connecting: - contractAddress
