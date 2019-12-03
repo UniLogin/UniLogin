@@ -5,7 +5,7 @@ describe('UNIT: needRedirect', () => {
   it('Default path for the state', () => {
     expect(needRedirect({kind: 'None'} as any, '/welcome')).to.be.false;
     expect(needRedirect({kind: 'Future'} as any, '/create/topUp')).to.be.false;
-    expect(needRedirect({kind: 'Deploying'} as any, '/create/topUp')).to.be.false;
+    expect(needRedirect({kind: 'Deploying'} as any, '/create/waiting')).to.be.false;
     expect(needRedirect({kind: 'Deployed'} as any, '/wallet')).to.be.false;
   });
 

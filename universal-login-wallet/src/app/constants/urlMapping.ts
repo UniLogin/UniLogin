@@ -10,7 +10,7 @@ export const urlMapping: Record<string, string[]> = {
     '/create/topUp',
   ],
   Deploying: [
-    '/create/topUp',
+    '/create/waiting',
   ],
   Deployed: [
     '/wallet',
