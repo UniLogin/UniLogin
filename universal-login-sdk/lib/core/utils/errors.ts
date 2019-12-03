@@ -215,7 +215,7 @@ export class Overridden extends SDKError {
 
 export class WalletOverridden extends Overridden {
   constructor() {
-    super('Wallet cannot be overridded', 'WalletOverridden');
+    super('Wallet cannot be overridden', 'WalletOverridden');
     Object.setPrototypeOf(this, WalletOverridden.prototype);
   }
 }
