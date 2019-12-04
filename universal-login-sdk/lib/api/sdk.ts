@@ -19,6 +19,7 @@ import {
   TokenDetailsService,
   TokensValueConverter,
   ETHER_NATIVE_TOKEN,
+  PartialRequired,
 } from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
@@ -70,7 +71,7 @@ class UniversalLoginSDK {
     sdkConfig?: DeepPartial<SdkConfig>,
   ) {
     this.provider = typeof (providerOrUrl) === 'string'
-      ? new providers.JsonRpcProvider(providerOrUrl, {chainId: 0} as any)
+      ? new providers.JsonRpcProvider(providerOrUrl)
       : providerOrUrl;
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
     this.relayerApi = new RelayerApi(relayerUrl);
@@ -86,7 +87,7 @@ class UniversalLoginSDK {
     this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
     this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
     this.featureFlagsService = new FeatureFlagsService();
-    this.messageConverter = new MessageConverter(this.provider);
+    this.messageConverter = new MessageConverter(this.blockchainService);
   }
 
   private createDeployedWallet(walletContractAddress: string, privateKey = '') {
@@ -182,7 +183,7 @@ class UniversalLoginSDK {
     );
   }
 
-  async execute(message: Partial<Message>, privateKey: string): Promise<Execution> {
+  async execute(message: PartialRequired<Message, 'from'>, privateKey: string): Promise<Execution> {
     ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
     const nonce = message.nonce || parseInt(await this.getNonce(message.from!), 10);
     const partialMessage = {gasToken: ETHER_NATIVE_TOKEN.address, ...message, nonce};

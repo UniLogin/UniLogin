@@ -6,10 +6,10 @@ export const NON_ZERO_BYTE_GAS_COST = 68;
 export const NEW_NON_ZERO_BYTE_GAS_COST = 16;
 export const GAS_FIXED = '50000';
 
-type ChainVersion = 'istanbul' | 'constantinople';
+export type NetworkVersion = 'istanbul' | 'constantinople';
 
 export class GasComputation {
-  constructor(private chainVersion: ChainVersion) {
+  constructor(private chainVersion: NetworkVersion) {
   }
 
   private getNonZeroByteCost() {
@@ -28,5 +28,3 @@ export class GasComputation {
       .reduce((totalGasCost, byte) => totalGasCost + this.gasCostFor(byte), 0);
   }
 }
-
-export const computeGasData = (data: string) => new GasComputation('constantinople').computeGasData(data);

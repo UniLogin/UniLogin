@@ -73,7 +73,7 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
     gasBase: utils.bigNumberify(0).add(GAS_FIXED),
     ...overrides,
   };
-  const gasBase = calculateGasBase(msg);
+  const gasBase = calculateGasBase(msg, 'constantinople', 'beta2');
   return {...msg, gasBase};
 };
 
@@ -99,7 +99,7 @@ export const selfExecute = async (proxyAsWalletContract: Contract, data: string,
     gasBase: utils.bigNumberify(0).add(GAS_FIXED),
     gasToken: '0x0000000000000000000000000000000000000000',
   };
-  const gasBase = utils.bigNumberify(calculateGasBase(msg));
+  const gasBase = utils.bigNumberify(calculateGasBase(msg, 'constantinople', 'beta2'));
   msg.gasBase = gasBase;
   const signature = calculateMessageSignature(privateKey, msg);
   return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, calculatePaymentOptions(msg));

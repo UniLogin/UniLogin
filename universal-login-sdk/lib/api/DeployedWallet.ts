@@ -106,7 +106,7 @@ export class DeployedWallet implements ApplicationWallet {
       from: this.contractAddress,
       data,
     };
-    return this.sdk.execute(message, this.privateKey);
+    return this.execute(message);
   }
 
   async generateBackupCodes(executionOptions: ExecutionOptions): Promise<BackupCodesWithExecution> {

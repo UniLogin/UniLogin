@@ -259,7 +259,7 @@ describe('CONTRACT: Executor - main', async () => {
         const signature1 = calculateMessageSignature(sortedKeys[0], msgToCall);
         const signature2 = calculateMessageSignature(sortedKeys[1], msgToCall);
         signatures = await concatenateSignatures([signature1, signature2, signature2]);
-        msgToCall = {...msgToCall, gasBase: calculateGasBase(msgToCall)};
+        msgToCall = {...msgToCall, gasBase: calculateGasBase(msgToCall, 'constantinople', 'beta2')};
         await walletContract.setRequiredSignatures(3);
         expect(await mockContract.wasCalled()).to.be.false;
         await expect(walletContract.executeSigned(...getExecutionArgs(msgToCall), signatures, calculatePaymentOptions(msgToCall)))

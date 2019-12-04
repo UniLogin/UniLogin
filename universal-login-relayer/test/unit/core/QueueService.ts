@@ -5,7 +5,7 @@ import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH} from '@unive
 import {waitExpect} from '@universal-login/commons/testutils';
 import ExecutionWorker from '../../../lib/core/services/execution/ExecutionWorker';
 import QueueMemoryStore from '../../helpers/QueueMemoryStore';
-import getTestSignedMessage from '../../config/message';
+import {getTestSignedMessage} from '../../config/message';
 import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
 import {createMessageItem} from '../../../lib/core/utils/messages/serialisation';
 import IMessageRepository from '../../../lib/core/models/messages/IMessagesRepository';

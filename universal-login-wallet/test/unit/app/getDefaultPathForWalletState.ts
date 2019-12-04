@@ -8,8 +8,8 @@ describe('UNIT: getDefaultPathForWalletState', () => {
       expect(getDefaultPathForWalletState({kind} as WalletState)).to.be.eq(path);
     });
 
-  itGetDefaultPathFor('Future', '/create');
+  itGetDefaultPathFor('Future', '/create/topUp');
   itGetDefaultPathFor('Deployed', '/wallet');
-  itGetDefaultPathFor('Deploying', '/create');
+  itGetDefaultPathFor('Deploying', '/create/waiting');
   itGetDefaultPathFor('None', '/welcome');
 });

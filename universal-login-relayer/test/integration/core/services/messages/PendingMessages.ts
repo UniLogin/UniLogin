@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon, {SinonSpy} from 'sinon';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, SignedMessage, TEST_MESSAGE_HASH, TEST_ACCOUNT_ADDRESS, UnsignedMessage} from '@universal-login/commons';
+import {calculateMessageHash, SignedMessage, TEST_MESSAGE_HASH, TEST_ACCOUNT_ADDRESS, UnsignedMessage, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
 import {emptyMessage, messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import PendingMessages from '../../../../../lib/core/services/execution/messages/PendingMessages';
@@ -36,7 +36,7 @@ describe('INT: PendingMessages', () => {
     signaturesService = new SignaturesService(wallet);
     statusService = new MessageStatusService(messageRepository, signaturesService);
     pendingMessages = new PendingMessages(wallet, messageRepository, {addMessage: spy} as any, statusService);
-    unsignedMessage = messageToUnsignedMessage({...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS});
+    unsignedMessage = messageToUnsignedMessage({...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS}, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION);
     signedMessage = unsignedMessageToSignedMessage(unsignedMessage, wallet.privateKey);
     messageHash = calculateMessageHash(signedMessage);
     await executeSetRequiredSignatures(walletContract, 2, wallet.privateKey);

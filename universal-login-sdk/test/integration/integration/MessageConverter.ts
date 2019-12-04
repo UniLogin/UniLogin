@@ -1,14 +1,27 @@
 import {expect} from 'chai';
+import {utils, Contract} from 'ethers';
+import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
+import {BlockchainService} from '@universal-login/contracts';
+import {setupWalletContract} from '@universal-login/contracts/testutils';
 import {MessageConverter} from '../../../lib/core/services/MessageConverter';
-import {utils} from 'ethers';
-import {TEST_PRIVATE_KEY, TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, Message} from '@universal-login/commons';
 
 describe('MessageConverter', () => {
-  const messageConverter = new MessageConverter({} as any);
+  let messageConverter: MessageConverter;
+  let proxyWallet: Contract;
+  let keyPair: KeyPair;
+
+  before(async () => {
+    const provider = createMockProvider();
+    const blockchainService = new BlockchainService(provider);
+    messageConverter = new MessageConverter(blockchainService);
+    const [wallet] = getWallets(provider);
+    ({proxyWallet, keyPair} = await setupWalletContract(wallet));
+  });
 
   it('Converts message to signed message', async () => {
-    const message: Partial<Message> = {
-      from: TEST_CONTRACT_ADDRESS,
+    const message = {
+      from: proxyWallet.address,
       to: TEST_CONTRACT_ADDRESS,
       value: utils.parseEther('1'),
       gasPrice: DEFAULT_GAS_PRICE,
@@ -17,7 +30,7 @@ describe('MessageConverter', () => {
       gasLimit: utils.bigNumberify(100000),
       nonce: 0,
     };
-    const actualMessage = await messageConverter.messageToSignedMessage(message, TEST_PRIVATE_KEY);
+    const actualMessage = await messageConverter.messageToSignedMessage(message, keyPair.privateKey);
     const expectedMessage = {
       gasBase: utils.bigNumberify(58976),
       gasCall: utils.bigNumberify(41024),
