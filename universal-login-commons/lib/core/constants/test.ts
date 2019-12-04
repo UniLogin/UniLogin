@@ -1,4 +1,4 @@
-import {utils} from 'ethers';
+import {utils, constants} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from './constants';
 
 export const TEST_ACCOUNT_ADDRESS = '0x0000000000000000000000000000000000000001';
@@ -22,6 +22,10 @@ export const TEST_SIGNATURE_KEY_PAIRS = [{
 export const testJsonRpcUrl = 'http://localhost:8545';
 
 export const TEST_GAS_PRICE = '1';
+
+export const TEST_GAS_LIMIT = 200000;
+
+export const TEST_EXECUTION_OPTIONS = {gasPrice: TEST_GAS_PRICE, gasLimit: TEST_GAS_LIMIT, gasToken: constants.AddressZero};
 
 export const TEST_APPLICATION_INFO = {
   applicationName: 'UniversalLogin',

@@ -5,7 +5,7 @@ import {solidity, createFixtureLoader, deployContract} from 'ethereum-waffle';
 import {utils, providers, Wallet, Contract} from 'ethers';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import Proxy from '@universal-login/contracts/build/WalletProxy.json';
-import {signRelayerRequest, Message, GAS_BASE, Device, DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, SdkExecutionOptions, PartialRequired} from '@universal-login/commons';
+import {signRelayerRequest, Message, GAS_BASE, Device, SdkExecutionOptions, PartialRequired, TEST_EXECUTION_OPTIONS} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../lib/api/sdk';
@@ -34,7 +34,7 @@ describe('E2E: SDK', async () => {
   beforeEach(async () => {
     ({wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
     message = {...transferMessage, from: contractAddress, gasToken: mockToken.address, data: '0x'};
-    executionOptions = {gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT, gasToken: mockToken.address};
+    executionOptions = {...TEST_EXECUTION_OPTIONS, gasToken: mockToken.address};
   });
 
   afterEach(async () => {
