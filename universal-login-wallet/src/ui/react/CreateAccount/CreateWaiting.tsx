@@ -3,6 +3,7 @@ import {useHistory} from 'react-router';
 import {ModalWrapper, useProperty, WaitingForDeployment} from '@universal-login/react';
 import {useServices} from '../../hooks';
 import {ensure} from '@universal-login/commons';
+import {InvalidWalletState} from '@universal-login/sdk';
 
 export function CreateWaiting() {
   const {sdk, walletService} = useServices();
@@ -16,7 +17,7 @@ export function CreateWaiting() {
   }, []);
 
   const walletState = useProperty(walletService.stateProperty);
-  ensure(walletState.kind === 'Deploying', Error, 'Invalid state');
+  ensure(walletState.kind === 'Deploying', InvalidWalletState, 'Deploying', walletState.kind);
 
   return (
     <div className="main-bg">

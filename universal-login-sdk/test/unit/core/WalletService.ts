@@ -127,7 +127,7 @@ describe('UNIT: WalletService', () => {
   });
 
   it('should throw if future wallet is not set', () => {
-    expect(() => walletService.setDeployed()).to.throw('Future wallet was not set');
+    expect(() => walletService.setDeployed()).to.throw('Wallet state is None, but expected Future');
   });
 
   it('should throw if wallet is overridden', () => {
