@@ -1,11 +1,11 @@
 import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotNull} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
-import {FutureWallet} from '../../api/FutureWalletFactory';
-import {InvalidPassphrase, WalletOverridden, TransactionHashNotFound, InvalidWalletState} from '../utils/errors';
+import {FutureWallet, DeployingWallet} from '../../api/FutureWalletFactory';
+import {InvalidWalletState, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
 import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';
 import {map, State} from 'reactive-properties';
-import {WalletState, DeployingWallet} from '../models/WalletService';
+import {WalletState} from '../models/WalletService';
 import {WalletSerializer} from './WalletSerializer';
 import {NoopWalletStorage} from './NoopWalletStorage';
 import {ConnectingWallet} from '../../api/DeployedWallet';
@@ -57,10 +57,9 @@ export class WalletService {
 
   async initDeploy() {
     ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
-    const {name, wallet: {deploy, contractAddress, privateKey}} = this.state;
-    const applicationWallet = {contractAddress, name, privateKey};
-    const deployment = await deploy(name, this.gasParameters.gasPrice.toString(), this.gasParameters.gasToken);
-    this.stateProperty.set({kind: 'Deploying', wallet: {...applicationWallet, ...deployment}});
+    const {name, wallet: {deploy}} = this.state;
+    const deployingWallet = await deploy(name, this.gasParameters.gasPrice.toString(), this.gasParameters.gasToken);
+    this.stateProperty.set({kind: 'Deploying', wallet: deployingWallet});
     return this.getDeployingWallet();
   }
 
