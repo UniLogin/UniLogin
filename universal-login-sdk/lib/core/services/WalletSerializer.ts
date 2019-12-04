@@ -24,7 +24,7 @@ export class WalletSerializer {
         return {
           kind: 'Deploying',
           wallet: serializedWallet,
-        }
+        };
       case 'Deployed':
         return {
           kind: 'Deployed',
@@ -46,10 +46,7 @@ export class WalletSerializer {
       case 'Deploying':
         return {
           kind: 'Deploying',
-          wallet: {
-            ...state.wallet,
-            ...this.sdk.getFutureWalletFactory().createDeployingWallet(state.wallet)
-          },
+          wallet: this.sdk.getFutureWalletFactory().createDeployingWallet(state.wallet),
         };
       case 'Deployed':
         return {

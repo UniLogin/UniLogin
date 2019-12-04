@@ -121,7 +121,7 @@ describe('UNIT: WalletSerializer', () => {
       });
     });
 
-    it('for Deploying returns Deploying', async() => {
+    it('for Deploying returns Deploying', async () => {
       const state = await walletSerializer.deserialize({
         kind: 'Deploying',
         wallet: {

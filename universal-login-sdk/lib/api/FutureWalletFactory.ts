@@ -68,8 +68,8 @@ export class FutureWalletFactory extends MineableFactory {
       waitToBeSuccess: async () => {
         await this.createWaitToBeSuccess(deploymentHash)();
         return new DeployedWallet(contractAddress, name, privateKey, this.sdk);
-      }
-    }
+      },
+    };
   }
 
   async createFromExistingCounterfactual(wallet: SerializableFutureWallet): Promise<FutureWallet> {

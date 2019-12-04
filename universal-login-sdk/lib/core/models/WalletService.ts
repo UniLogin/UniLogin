@@ -3,7 +3,7 @@ import {DeployedWallet, FutureWallet} from '../..';
 import {ConnectingWallet} from '../../api/DeployedWallet';
 import {DeployingWallet} from '../../api/FutureWalletFactory';
 
-export type SerializedDeployingWallet = ApplicationWallet & {deploymentHash: string}
+export type SerializedDeployingWallet = ApplicationWallet & {deploymentHash: string};
 
 export type WalletState = {
   kind: 'None';
