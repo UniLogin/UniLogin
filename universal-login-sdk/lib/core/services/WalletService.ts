@@ -1,7 +1,7 @@
 import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotNull} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/FutureWalletFactory';
-import {FutureWalletNotSet, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
+import {InvalidPassphrase, WalletOverridden, TransactionHashNotFound, InvalidWalletState} from '../utils/errors';
 import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';
 import {map, State} from 'reactive-properties';
@@ -34,17 +34,17 @@ export class WalletService {
   }
 
   getDeployedWallet(): DeployedWallet {
-    ensure(this.state.kind === 'Deployed', Error, 'Invalid state: expected deployed wallet');
+    ensure(this.state.kind === 'Deployed', InvalidWalletState, 'Deployed', this.state.kind);
     return this.state.wallet;
   }
 
   private getDeployingWallet(): DeployingWallet {
-    ensure(this.state.kind === 'Deploying', Error, 'Invalid state: expected deploying wallet');
+    ensure(this.state.kind === 'Deploying', InvalidWalletState, 'Deploying', this.state.kind);
     return this.state.wallet;
   }
 
   getConnectingWallet(): ApplicationWallet {
-    ensure(this.state.kind === 'Connecting', Error, 'Invalid state: expected connecting wallet');
+    ensure(this.state.kind === 'Connecting', InvalidWalletState, 'Connecting', this.state.kind);
     return this.state.wallet;
   }
 
@@ -55,7 +55,7 @@ export class WalletService {
   }
 
   async initDeploy() {
-    ensure(this.state.kind === 'Future', FutureWalletNotSet);
+    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
     const {name, wallet: {deploy, contractAddress, privateKey}} = this.state;
     const applicationWallet = {contractAddress, name, privateKey};
     const deployment = await deploy(name, this.gasParameters.gasPrice.toString(), this.gasParameters.gasToken);
@@ -92,7 +92,7 @@ export class WalletService {
   }
 
   setDeployed() {
-    ensure(this.state.kind === 'Future', FutureWalletNotSet);
+    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
     const {name, wallet: {contractAddress, privateKey}} = this.state;
     const wallet = new DeployedWallet(contractAddress, name, privateKey, this.sdk);
     this.stateProperty.set({kind: 'Deployed', wallet});
