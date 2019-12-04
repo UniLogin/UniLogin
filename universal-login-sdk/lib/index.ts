@@ -9,3 +9,4 @@ export {TransferService} from './core/services/TransferService';
 export {DeployedWallet} from './api/DeployedWallet';
 export {setBetaNotice} from './core/utils/setBetaNotice';
 export {encodeERC20Transfer} from './core/utils/encodeTransferToMessage';
+export {InvalidWalletState} from './core/utils/errors';

@@ -12,11 +12,11 @@ type ErrorType =
   'TokenNotFound' |
   'MissingMessageHash' |
   'InvalidPassphrase' |
+  'InvalidWalletState'|
   'TimeoutError' |
   'InvalidEvent' |
   'Overridden' |
   'WalletOverridden' |
-  'FutureWalletNotSet' |
   'InvalidContract' |
   'InvalidENSRecord' |
   'NoSet' |
@@ -126,6 +126,13 @@ export class InvalidPassphrase extends ValidationFailed {
   }
 }
 
+export class InvalidWalletState extends ValidationFailed {
+  constructor(expectedState: string, currentState: string) {
+    super(`Wallet state is ${currentState}, but expected ${expectedState}`, 'InvalidWalletState');
+    Object.setPrototypeOf(this, InvalidWalletState.prototype);
+  }
+}
+
 export class InsufficientGas extends ValidationFailed {
   constructor(message: string) {
     super(`Insufficient Gas. ${message}`, 'InsufficientGas');
@@ -187,21 +194,6 @@ export class TimeoutError extends SDKError {
   constructor() {
     super('Timeout exceeded', 'TimeoutError');
     Object.setPrototypeOf(this, TimeoutError.prototype);
-  }
-}
-
-export class NotSet extends SDKError {
-  constructor(message: string, errorType: ErrorType) {
-    super(message, errorType);
-    this.errorType = errorType;
-    Object.setPrototypeOf(this, NotSet.prototype);
-  }
-}
-
-export class FutureWalletNotSet extends NotSet {
-  constructor() {
-    super('Future wallet was not set', 'FutureWalletNotSet');
-    Object.setPrototypeOf(this, FutureWalletNotSet.prototype);
   }
 }
 
