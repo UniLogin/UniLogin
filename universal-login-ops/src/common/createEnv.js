@@ -1,8 +1,9 @@
-function createEnv({jsonRpcUrl, tokenAddress, ensAddress, ensDomains, walletContractAddress}) {
+function createEnv({jsonRpcUrl, daiTokenAddress, saiTokenAddress, ensAddress, ensDomains, walletContractAddress}) {
   const env = {
     ENS_ADDRESS: ensAddress,
     JSON_RPC_URL: jsonRpcUrl,
-    TOKEN_CONTRACT_ADDRESS: tokenAddress,
+    DAI_TOKEN_ADDRESS: daiTokenAddress,
+    SAI_TOKEN_ADDRESS: saiTokenAddress,
     RELAYER_URL: 'http://localhost:3311',
     WALLET_MASTER_ADDRESS: walletContractAddress,
   };

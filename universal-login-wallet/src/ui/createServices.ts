@@ -11,6 +11,7 @@ interface Config {
   relayerUrl: string;
   jsonRpcUrl: string;
   tokens: string[];
+  saiTokenAddress?: string;
 }
 
 interface Overrides {
@@ -29,6 +30,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     },
     paymentOptions: {},
     observedTokensAddresses: config.tokens,
+    saiTokenAddress: config.saiTokenAddress,
   };
   const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(

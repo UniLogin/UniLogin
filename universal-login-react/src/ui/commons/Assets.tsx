@@ -2,20 +2,17 @@ import React, {useState} from 'react';
 import {utils} from 'ethers';
 import {DeployedWallet} from '@universal-login/sdk';
 import {TokenDetailsWithBalance} from '@universal-login/commons';
-import daiIcon from './../assets/icons/dai.svg';
-import ethIcon from './../assets/icons/ether.svg';
 import {Asset} from './Asset';
 import './../styles/assetsList.sass';
 import './../styles/assetsListDefaults.sass';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import {getIconForToken} from '../../core/utils/getIconForToken';
 
 export interface AssetsProps {
   deployedWallet: DeployedWallet;
   className?: string;
 }
-
-const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
 
 export const Assets = ({deployedWallet, className}: AssetsProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
@@ -35,7 +32,7 @@ export const Assets = ({deployedWallet, className}: AssetsProps) => {
                 name={name}
                 symbol={symbol}
                 balance={utils.formatEther(balance)}
-                icon={iconForToken(symbol)}
+                icon={getIconForToken(symbol)}
                 className={className}
               />
             ))}
