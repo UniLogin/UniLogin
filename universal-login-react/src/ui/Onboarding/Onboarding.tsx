@@ -23,13 +23,11 @@ export interface OnboardingProps {
 export const Onboarding = (props: OnboardingProps) => {
   const [walletCreationService] = useState(() => props.walletCreationService || new WalletCreationService(props.walletService));
 
-  const onSuccess = () => {
-    props.onConnect && props.onConnect();
-  };
+  const onSuccess = () => props.onConnect?.();
 
-  const onCreateClick = async (ensName: string) => {
-    await walletCreationService.initiateCreationFlow(ensName);
-  };
+  const onCreateClick = (ensName: string) => {
+    props.walletService.createFutureWallet(ensName);
+  }
 
   useEffect(() => {
     setImmediate(async () => {
