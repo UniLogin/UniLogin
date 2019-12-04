@@ -17,6 +17,7 @@ export const fetchHardforkVersion = async (provider: providers.Provider): Promis
     case 'ganache':
       return 'constantinople';
     case 'homestead':
+    case 'mainnet':
       const blockNumber = await provider.getBlockNumber();
       if (blockNumber < ISTANBUL_BLOCK_NUMBER) {
         return 'constantinople';
