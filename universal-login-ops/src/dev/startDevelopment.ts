@@ -4,6 +4,8 @@ import {providers, Wallet, utils} from 'ethers';
 import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@universal-login/commons';
 import {RelayerClass, Config} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
+import SaiToken from '@universal-login/contracts/build/MockSai.json';
+import DaiToken from '@universal-login/contracts/build/MockDai.json';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
 import {startGanache} from './startGanache';
@@ -29,9 +31,13 @@ const databaseConfig = {
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
-function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, tokenAddress: string) {
+function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, daiTokenAddress: string, saiTokenAddress: string) {
   const supportedTokens: SupportedToken[] = [{
-    address: tokenAddress,
+    address: daiTokenAddress,
+    minimalAmount: utils.parseEther('0.05').toString(),
+  },
+  {
+    address: saiTokenAddress,
     minimalAmount: utils.parseEther('0.05').toString(),
   },
   {
@@ -52,7 +58,6 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
     contractWhiteList,
     factoryAddress,
     supportedTokens,
-    tokenContractAddress: tokenAddress,
     localization: {
       language: 'en',
       country: 'any',
@@ -107,15 +112,16 @@ async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrid
   const {address, walletContractHash} = await deployWalletContractOnDev(deployWallet);
   const proxyContractHash = getProxyContractHash();
   const factoryAddress = await deployFactory(deployWallet, {walletContractAddress: address, nodeUrl: 'dev', privateKey: 'dev'});
-  const tokenAddress = await deployToken(deployWallet);
+  const saiTokenAddress = await deployToken(deployWallet, SaiToken);
+  const daiTokenAddress = await deployToken(deployWallet, DaiToken);
   await ensureDatabaseExist(databaseConfig);
   const contractWhiteList = {
     wallet: [walletContractHash],
     proxy: [proxyContractHash],
   };
-  const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, tokenAddress);
+  const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, daiTokenAddress, saiTokenAddress);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
-  return {jsonRpcUrl, deployWallet, walletContractAddress: address, tokenAddress, ensAddress, ensDomains};
+  return {jsonRpcUrl, deployWallet, walletContractAddress: address, saiTokenAddress, daiTokenAddress, ensAddress, ensDomains};
 }
 
 export default startDevelopment;

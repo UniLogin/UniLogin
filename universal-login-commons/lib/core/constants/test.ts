@@ -45,11 +45,18 @@ export const TEST_DEVICE_INFO = {
 
 export const TEST_TOKEN_ADDRESS = '0x490932174cc4B7a0f546924a070D151D156095f0';
 
+export const TEST_SAI_TOKEN_ADDRESS = '0x05b954633faf5ceeecdf945c13ad825faabbf66f';
+
 export const TEST_TOKEN_DETAILS = [
   {
     address: TEST_TOKEN_ADDRESS,
     symbol: 'DAI',
-    name: 'MockToken',
+    name: 'MockDAIToken',
+  },
+  {
+    address: TEST_SAI_TOKEN_ADDRESS,
+    symbol: 'SAI',
+    name: 'MockSAIToken',
   },
   ETHER_NATIVE_TOKEN,
 ];
@@ -64,6 +71,10 @@ export const TEST_GAS_MODES = [{
   {
     gasPrice: utils.bigNumberify('20000000000'),
     token: TEST_TOKEN_DETAILS[1],
+  },
+  {
+    gasPrice: utils.bigNumberify('20000000000'),
+    token: TEST_TOKEN_DETAILS[2],
   }],
 },
 {
@@ -76,6 +87,10 @@ export const TEST_GAS_MODES = [{
   {
     gasPrice: utils.bigNumberify('24000000000'),
     token: TEST_TOKEN_DETAILS[1],
+  },
+  {
+    gasPrice: utils.bigNumberify('24000000000'),
+    token: TEST_TOKEN_DETAILS[2],
   }],
 }];
 

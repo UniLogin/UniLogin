@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import {Omit} from '@universal-login/commons';
-import daiIcon from './../assets/topUp/tokensIcons/DAI.svg';
-import EthereumIcon from './../assets/topUp/tokensIcons/ETH.svg';
+import daiIcon from './../assets/icons/dai.svg';
+import EthereumIcon from './../assets/icons/ether.svg';
 import cardIcon from './../assets/topUp/card.svg';
 import bankIcon from './../assets/topUp/bank.svg';
 

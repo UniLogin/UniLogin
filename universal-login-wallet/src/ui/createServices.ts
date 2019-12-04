@@ -2,7 +2,7 @@ import React from 'react';
 import {providers} from 'ethers';
 import {walletFromBrain, DeepPartial} from '@universal-login/commons';
 import UniversalLoginSDK, {SdkConfig, WalletService} from '@universal-login/sdk';
-import {StorageService, WalletStorageService, WalletCreationService} from '@universal-login/react';
+import {StorageService, WalletStorageService} from '@universal-login/react';
 import UserDropdownService from '../app/UserDropdownService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
 
@@ -11,6 +11,7 @@ interface Config {
   relayerUrl: string;
   jsonRpcUrl: string;
   tokens: string[];
+  saiTokenAddress?: string;
 }
 
 interface Overrides {
@@ -29,6 +30,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     },
     paymentOptions: {},
     observedTokensAddresses: config.tokens,
+    saiTokenAddress: config.saiTokenAddress,
   };
   const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(
@@ -40,7 +42,6 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
   const storageService = overrides.storageService || new StorageService();
   const walletStorageService = new WalletStorageService(storageService);
   const walletService = new WalletService(sdk, walletFromBrain, walletStorageService);
-  const walletCreationService = new WalletCreationService(walletService);
   const walletPresenter = new WalletPresenter(walletService);
   sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
   return {
@@ -49,7 +50,6 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     userDropdownService,
     walletService,
     storageService,
-    walletCreationService,
     walletPresenter,
     start: () => sdk.start(),
   };

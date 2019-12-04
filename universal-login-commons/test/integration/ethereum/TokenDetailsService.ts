@@ -1,4 +1,4 @@
-import {providers, Wallet} from 'ethers';
+import {providers, Wallet, Contract} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import {expect} from 'chai';
 import {TokenDetailsService} from '../../../lib/integration/ethereum/TokenDetailsService';
@@ -10,11 +10,13 @@ describe('INT: TokenDetailsService', () => {
   let provider: providers.Provider;
   let tokenDetailsService: TokenDetailsService;
   let wallet: Wallet;
+  let mockSai: Contract;
 
   beforeEach(async () => {
     provider = createMockProvider();
-    [wallet] = await getWallets(provider);
-    tokenDetailsService = new TokenDetailsService(provider);
+    [wallet] = getWallets(provider);
+    mockSai = await deployContract(wallet, MockDai, []);
+    tokenDetailsService = new TokenDetailsService(provider, mockSai.address);
   });
 
   it('ether', async () => {
@@ -63,5 +65,12 @@ describe('INT: TokenDetailsService', () => {
     expect(details.symbol).to.eq('DAI');
     expect(details.name).to.eq('Dai Stablecoin v1.0');
     expect(details.address).to.eq(mockDai.address);
+  });
+
+  it('works for SAI', async () => {
+    const details = await tokenDetailsService.getTokenDetails(mockSai.address);
+    expect(details.symbol).to.eq('SAI');
+    expect(details.name).to.eq('Sai Stablecoin v1.0');
+    expect(details.address).to.eq(mockSai.address);
   });
 });
