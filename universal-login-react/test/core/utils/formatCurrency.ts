@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {formatCurrency, formatCurrencyWithTilda} from '../../../src/core/utils/formatCurrency';
+import {formatCurrency, getTildeGivenAmount} from '../../../src/core/utils/formatCurrency';
 
 describe('UNIT: formatCurrency', () => {
   it('Empty', () => {
@@ -22,23 +22,18 @@ describe('UNIT: formatCurrency', () => {
   });
 });
 
-describe('UNIT: formatCurrencyWithTilda', () => {
+describe('UNIT: getTildeGivenAmount', () => {
   it('Empty', () => {
-    expect(formatCurrencyWithTilda('')).to.eq('$0.00');
+    expect(getTildeGivenAmount('')).to.eq('');
   });
 
   it('Zero', () => {
-    expect(formatCurrencyWithTilda('0')).to.eq('$0.00');
+    expect(getTildeGivenAmount('0')).to.eq('');
   });
 
-  it('add tilda to non-zero value', () => {
-    expect(formatCurrencyWithTilda('123.409')).to.eq('~ $123.40');
-    expect(formatCurrencyWithTilda('123.405')).to.eq('~ $123.40');
-    expect(formatCurrencyWithTilda('123.404')).to.eq('~ $123.40');
-    expect(formatCurrencyWithTilda('123.401')).to.eq('~ $123.40');
-  });
-
-  it('add tilda to non-zero value with no currency', () => {
-    expect(formatCurrencyWithTilda('123.4567', '')).to.eq('~ 123.45');
+  it('Return tide', () => {
+    expect(getTildeGivenAmount('123.409')).to.eq('~');
+    expect(getTildeGivenAmount('5555')).to.eq('~');
+    expect(getTildeGivenAmount('12.33')).to.eq('~');
   });
 });
