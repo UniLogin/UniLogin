@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
 import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, ApplicationWallet, TEST_MESSAGE_HASH, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {WalletService} from '../../../lib/core/services/WalletService';
-import {Wallet} from 'ethers';
+import {Wallet, constants} from 'ethers';
 import {DeployedWallet} from '../../../lib/api/DeployedWallet';
 import {FutureWallet} from '../../../lib/api/FutureWalletFactory';
 import {SerializedWalletState} from '../../../lib/core/models/WalletService';
@@ -146,6 +146,10 @@ describe('UNIT: WalletService', () => {
 
     walletService.setFutureWallet(futureWallet, 'justyna.mylogin.eth');
     expect(walletService.state).to.deep.eq({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet});
-    expect(await walletService.deployFutureWallet('1', ETHER_NATIVE_TOKEN.address)).to.deep.include(applicationWallet);
+    walletService.setGasParameters({
+      gasPrice: constants.One,
+      gasToken: ETHER_NATIVE_TOKEN.address,
+    });
+    expect(await walletService.deployFutureWallet()).to.deep.include(applicationWallet);
   });
 });
