@@ -10,7 +10,7 @@ export {TransactionOverrides, TransferDetails} from './core/models/transactions'
 export {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from './core/models/WalletSuggestionAction';
 export {ApplicationWallet} from './core/models/ApplicationWallet';
 export {SerializableFutureWallet} from './core/models/SerializableFutureWallet';
-export {TEST_ACCOUNT_ADDRESS, TEST_APPLICATION_INFO, TEST_CONTRACT_ADDRESS, TEST_TOKEN_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH, TEST_SIGNATURE_KEY_PAIRS, testJsonRpcUrl, TEST_GAS_PRICE, TEST_DEVICE_INFO, TEST_TOKEN_DETAILS, TEST_GAS_MODES, TEST_SDK_CONFIG} from './core/constants/test';
+export {TEST_ACCOUNT_ADDRESS, TEST_APPLICATION_INFO, TEST_CONTRACT_ADDRESS, TEST_TOKEN_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH, TEST_SIGNATURE_KEY_PAIRS, testJsonRpcUrl, TEST_GAS_PRICE, TEST_DEVICE_INFO, TEST_TOKEN_DETAILS, TEST_GAS_MODES, TEST_SDK_CONFIG, TEST_EXECUTION_OPTIONS} from './core/constants/test';
 export {EMOJI_COLORS} from './core/constants/emojiColors';
 export {EMPTY_DEVICE_INFO} from './core/constants/device';
 export {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, DEFAULT_GAS_LIMIT_EXECUTION, DEPLOYMENT_REFUND, EMPTY_GAS_OPTION, GAS_BASE, INITIAL_GAS_PARAMETERS, MINIMAL_DEPLOYMENT_GAS_LIMIT} from './core/constants/gas';

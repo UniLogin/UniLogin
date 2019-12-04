@@ -21,20 +21,31 @@ interface BackupCodesWithExecution {
   waitForTransactionHash: () => Promise<MessageStatus>;
 }
 
-export class DeployedWallet implements ApplicationWallet {
-  private contractInstance: Contract;
+class AbstractWallet implements ApplicationWallet {
+  constructor(public readonly contractAddress: string, public readonly name: string, public readonly privateKey: string) {
 
-  constructor(
-    public readonly contractAddress: string,
-    public readonly name: string,
-    public readonly privateKey: string,
-    public readonly sdk: UniversalLoginSDK,
-  ) {
-    this.contractInstance = new Contract(this.contractAddress, WalletContractInterface, this.sdk.provider);
   }
 
   get publicKey() {
     return utils.computeAddress(this.privateKey);
+  }
+}
+
+export class ConnectingWallet extends AbstractWallet {
+
+}
+
+export class DeployedWallet extends AbstractWallet {
+  private contractInstance: Contract;
+
+  constructor(
+    contractAddress: string,
+    name: string,
+    privateKey: string,
+    public readonly sdk: UniversalLoginSDK,
+  ) {
+    super(contractAddress, name, privateKey);
+    this.contractInstance = new Contract(this.contractAddress, WalletContractInterface, this.sdk.provider);
   }
 
   get asApplicationWallet(): ApplicationWallet {

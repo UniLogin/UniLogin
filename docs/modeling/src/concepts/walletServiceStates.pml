@@ -4,7 +4,7 @@ title Wallet States
 
 None --> Future: createFuture
 None --> Connecting: connect
-Connecting --> Deployed: waitForSuccess
+Connecting --> Deployed: waitForConnect
 Future --> Deploying: waitForDeploy
 Deploying --> Deployed: waitForSuccess
 Deploying --> Deploying: waitForTransactionHash

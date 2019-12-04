@@ -1,7 +1,7 @@
-import {utils} from 'ethers';
+import {utils, constants} from 'ethers';
 
 export const ETHER_NATIVE_TOKEN = {
-  address: '0x0000000000000000000000000000000000000000',
+  address: constants.AddressZero,
   symbol: 'ETH',
   name: 'ether',
 };
