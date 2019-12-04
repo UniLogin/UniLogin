@@ -13,6 +13,8 @@ export const getSuggestion = (
     return {kind: 'KeepTyping'};
   } else if (isTakenOrInvalid(actions, filteredCreations, source)) {
     return {kind: 'TakenOrInvalid'};
+  } else if (isInvalidForSuggestion(actions, filteredConnections, source)) {
+    return {kind: 'InvalidForConnection'};
   } else if (isNone(filteredCreations, filteredConnections, source)) {
     return {kind: 'None'};
   } else if (isSingleCreation(filteredCreations, filteredConnections)) {
@@ -43,4 +45,10 @@ const isTakenOrInvalid = (actions: WalletSuggestionAction[], creations: string[]
   const isOnlyCreateAction =
     actions.includes(WalletSuggestionAction.create) && actions.length === 1;
   return creations.length === 0 && isOnlyCreateAction && source.length > 0;
+};
+
+const isInvalidForSuggestion = (actions: WalletSuggestionAction[], connections: string[], source: string) => {
+  const isOnlyConnectAction =
+    actions.includes(WalletSuggestionAction.connect) && !actions.includes(WalletSuggestionAction.create);
+  return isOnlyConnectAction && connections.length === 0 && source.length > 0;
 };
