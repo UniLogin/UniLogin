@@ -1,35 +1,40 @@
-import {ModalWrapper, TopUp, useProperty, WaitingForDeployment, WalletCreationService} from '../..';
+import {ModalWrapper, TopUp, useProperty, WaitingForDeployment} from '../..';
 import React, {useEffect} from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {ApplicationWallet} from '@universal-login/commons';
+import {ApplicationWallet, ensure} from '@universal-login/commons';
+import {useHistory} from 'react-router';
 
 interface OnboardingStepsProps {
   sdk: UniversalLoginSDK;
   walletService: WalletService;
-  walletCreationService: WalletCreationService;
   onCreate?: (arg: ApplicationWallet) => void;
   className?: string;
 }
 
-export function OnboardingSteps({sdk, walletService, walletCreationService, className, onCreate}: OnboardingStepsProps) {
+export function OnboardingSteps({sdk, walletService, className, onCreate}: OnboardingStepsProps) {
+  const walletState = useProperty(walletService.stateProperty);
+
   useEffect(() => {
-    setImmediate(async () => {
-      const wallet = await walletCreationService.deployWhenReady();
-      onCreate?.(wallet);
-    });
+    ensure(walletState.kind === 'Future', Error, 'Invalid state');
+    walletState.wallet.waitForBalance()
+      .then(() => walletService.deployFutureWallet())
+      .then((wallet) => onCreate?.(wallet));
   }, []);
 
-  const walletState = useProperty(walletService.stateProperty);
+  const history = useHistory();
   switch (walletState.kind) {
     case 'Future':
       return (
         <TopUp
           modalClassName={className}
           contractAddress={walletState.wallet.contractAddress}
-          onGasParametersChanged={(gasParameters) => walletCreationService.setGasParameters(gasParameters)}
+          onGasParametersChanged={(gasParameters) => walletService.setGasParameters(gasParameters)}
           sdk={sdk}
           isDeployment
-          hideModal={() => walletService.disconnect()}
+          hideModal={async () => {
+            await walletService.disconnect();
+            history.push('/selector');
+          }}
           isModal
         />
       );

@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import {ApplicationWallet, WalletSuggestionAction} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {WalletCreationService, ConnectionFlow, ModalWrapper} from '../..';
+import {ConnectionFlow, ModalWrapper} from '../..';
 import {OnboardingSteps} from './OnboardingSteps';
 import {Route, MemoryRouter} from 'react-router-dom';
 import {Switch} from 'react-router';
@@ -11,7 +11,6 @@ import {Switch} from 'react-router';
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
   walletService: WalletService;
-  walletCreationService?: WalletCreationService;
   onConnect?: () => void;
   onCreate?: (arg: ApplicationWallet) => void;
   domains: string[];
@@ -21,8 +20,6 @@ export interface OnboardingProps {
 }
 
 export const Onboarding = (props: OnboardingProps) => {
-  const [walletCreationService] = useState(() => props.walletCreationService || new WalletCreationService(props.walletService));
-
   const onSuccess = () => props.onConnect?.();
 
   return (
@@ -58,7 +55,6 @@ export const Onboarding = (props: OnboardingProps) => {
                 <OnboardingSteps
                   sdk={props.sdk}
                   walletService={props.walletService}
-                  walletCreationService={walletCreationService}
                   onCreate={props.onCreate}
                 />}
             />

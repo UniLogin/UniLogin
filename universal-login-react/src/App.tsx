@@ -58,16 +58,31 @@ export const App = () => {
                 <LogoButton walletService={walletService} />
               </div>
             </Route>
-            <Route exact path="/onboarding">
-              <Onboarding
-                sdk={sdk}
-                walletService={walletService}
-                domains={['mylogin.eth', 'universal-id.eth']}
-                tryEnablingMetamask={tryEnablingMetamask}
-                onConnect={() => console.log('connected')}
-                onCreate={() => console.log('created')}
-              />
-            </Route>
+            <Route
+              exact
+              path="/onboarding/success"
+              render={({history}) => <>
+                <div> Success!!! </div>
+                <br />
+                <button onClick={() => {
+                  walletService.disconnect();
+                  history.push('/onboarding');
+                }}>Disconnect</button>
+              </>}
+            />
+            <Route
+              exact
+              path="/onboarding"
+              render={({history}) =>
+                <Onboarding
+                  sdk={sdk}
+                  walletService={walletService}
+                  domains={['mylogin.eth', 'universal-id.eth']}
+                  tryEnablingMetamask={tryEnablingMetamask}
+                  onConnect={() => console.log('connected')}
+                  onCreate={() => history.push('/onboarding/success')}
+                />}
+            />
             <Route exact path="/walletSelector">
               <WalletSelector
                 onCreateClick={() => {console.log('create');}}
@@ -147,7 +162,7 @@ export const App = () => {
           </Switch>
         </div>
       </div>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 };
 
