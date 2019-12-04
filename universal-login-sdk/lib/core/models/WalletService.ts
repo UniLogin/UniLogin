@@ -5,6 +5,8 @@ import {ConnectingWallet} from '../../api/DeployedWallet';
 
 export type DeployingWallet = Deployment & ApplicationWallet;
 
+export type SerializedDeployingWallet = ApplicationWallet & Pick<DeployingWallet, 'deploymentHash'>
+
 export type WalletState = {
   kind: 'None';
 } | {
@@ -29,6 +31,9 @@ export type SerializedWalletState = {
   kind: 'Future';
   name: string;
   wallet: SerializableFutureWallet;
+} | {
+  kind: 'Deploying';
+  wallet: SerializedDeployingWallet;
 } | {
   kind: 'Deployed';
   wallet: ApplicationWallet;

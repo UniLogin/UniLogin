@@ -4,8 +4,7 @@ import UniversalLoginSDK, {DeployedWallet} from '../..';
 export class WalletSerializer {
   constructor(
     private readonly sdk: UniversalLoginSDK,
-  ) {
-  }
+  ) {}
 
   serialize(state: WalletState): SerializedWalletState | undefined {
     switch (state.kind) {
@@ -20,6 +19,12 @@ export class WalletSerializer {
             privateKey: state.wallet.privateKey,
           },
         };
+      case 'Deploying':
+        const {waitForTransactionHash, waitToBeSuccess, ...serializedWallet} = state.wallet;
+        return {
+          kind: 'Deploying',
+          wallet: serializedWallet,
+        }
       case 'Deployed':
         return {
           kind: 'Deployed',

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {WalletSerializer} from '../../../lib/core/services/WalletSerializer';
 import {DeployingWallet} from '../../../lib/core/models/WalletService';
-import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH} from '@universal-login/commons';
+import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, stringToEnumKey} from '@universal-login/commons';
 import {DeployedWallet} from '../../../lib';
 import {Wallet} from 'ethers';
 import {ConnectingWallet} from '../../../lib/api/DeployedWallet';
@@ -72,7 +72,13 @@ describe('WalletSerializer', () => {
       expect(walletSerializer.serialize({
         kind: 'Deploying',
         wallet: TEST_DEPLOYING_WALLET,
-      })).to.eq(undefined);
+      })).to.deep.eq({
+        kind: 'Deploying',
+        wallet: {
+          ...TEST_APPLICATION_WALLET,
+          deploymentHash: TEST_DEPLOYING_WALLET.deploymentHash,
+        },
+      });
     });
 
     it('for Connecting state return undefined', () => {
