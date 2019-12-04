@@ -2,9 +2,8 @@ import React from 'react';
 import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
-import daiIcon from '../../assets/icons/dai.svg';
-import ethIcon from '../../assets/icons/ethereum.svg';
 import {useToggler} from '../../hooks/useToggler';
+import {getIconForToken} from '../../../core/utils/getIconForToken';
 
 interface TransferDropdownProps {
   sdk: UniversalLoginSDK;
@@ -22,8 +21,6 @@ export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, se
     setToken(token);
   };
 
-  const iconForToken = (symbol: string) => symbol === 'ETH' ? ethIcon : daiIcon;
-
   const renderTransferDropdownItems = (tokensDetails: TokenDetails[], predicate: (tokenDetails: TokenDetails) => boolean, dropdownClassName: string) =>
     tokensDetails
       .filter(predicate)
@@ -36,7 +33,7 @@ export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, se
       dropdownClassName={dropdownClassName}
       className={className}
       tokenDetails={tokenDetails}
-      icon={iconForToken(tokenDetails.symbol)}
+      icon={getIconForToken(tokenDetails.symbol)}
       balance={getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance)}
       onClick={onClick}
     />

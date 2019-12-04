@@ -5,5 +5,6 @@ export interface Config {
   relayerUrl: string;
   jsonRpcUrl: string;
   tokens: string[];
+  saiTokenAddress?: string;
   ipGeolocationApi: IPGeolocationApiConfig;
 }

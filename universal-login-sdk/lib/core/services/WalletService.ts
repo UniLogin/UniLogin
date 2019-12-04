@@ -79,23 +79,10 @@ export class WalletService {
     return deployedWallet;
   }
 
-  async deployFutureWallet(gasPrice: string, gasToken: string) {
-    ensure(this.state.kind === 'Future', FutureWalletNotSet);
-    const {name, wallet: {deploy, contractAddress, privateKey}} = this.state;
-
-    const applicationWallet = {contractAddress, name, privateKey};
-
-    const deployment = await deploy(name, gasPrice, gasToken);
-    const deployingWallet = {...applicationWallet, ...deployment};
-    this.stateProperty.set({kind: 'Deploying', wallet: deployingWallet});
-
-    const {transactionHash} = await deployingWallet.waitForTransactionHash();
-    transactionHash && this.stateProperty.set({kind: 'Deploying', wallet: deployingWallet, transactionHash});
-
-    const deployedWallet = await deployingWallet.waitToBeSuccess();
-    this.stateProperty.set({kind: 'Deployed', wallet: deployedWallet});
-    this.saveToStorage();
-    return deployedWallet;
+  async deployFutureWallet() {
+    await this.initDeploy();
+    await this.waitForTransactionHash();
+    return this.waitToBeSuccess();
   }
 
   setFutureWallet(wallet: FutureWallet, name: string) {

@@ -1,4 +1,4 @@
-export type ObservedCurrency = 'USD' | 'ETH' | 'DAI';
+export type ObservedCurrency = 'USD' | 'ETH' | 'DAI' | 'SAI';
 
 export type CurrencyToValue = Record<ObservedCurrency, number>;
 

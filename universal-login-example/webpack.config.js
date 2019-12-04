@@ -1,5 +1,5 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
@@ -7,27 +7,27 @@ module.exports = {
   entry: './src/index.tsx',
   output: {
     filename: 'main.[hash].js',
-    path: path.join(__dirname, '/dist/html')
+    path: path.join(__dirname, '/dist/html'),
   },
   devtool: 'source-map',
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
-      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
+      {enforce: 'pre', test: /\.js$/, loader: 'source-map-loader'},
       {
         test: /\.(png|jpg|gif|svg|woff|woff2)$/,
         use: [
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash].[ext]'
+              name: '[name].[hash].[ext]',
             },
           },
         ],
@@ -37,10 +37,10 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          'sass-loader'
-        ]
-      }
-    ]
+          'sass-loader',
+        ],
+      },
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({
@@ -51,19 +51,20 @@ module.exports = {
       template: 'src/index.html',
     }),
     new webpack.DefinePlugin({
-      'process.env.TOKEN_CONTRACT_ADDRESS': JSON.stringify(process.env.TOKEN_CONTRACT_ADDRESS),
+      'process.env.DAI_TOKEN_ADDRESS': JSON.stringify(process.env.DAI_TOKEN_ADDRESS),
+      'process.env.SAI_TOKEN_ADDRESS': JSON.stringify(process.env.SAI_TOKEN_ADDRESS),
       'process.env.RELAYER_URL': JSON.stringify(process.env.RELAYER_URL),
       'process.env.ENS_DOMAIN_1': JSON.stringify(process.env.ENS_DOMAIN_1),
-      'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL)
-    })
+      'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL),
+    }),
   ],
   devServer: {
     historyApiFallback: true,
     host: '0.0.0.0',
-    compress: true
+    compress: true,
   },
   node: {
-    fs: 'empty'
+    fs: 'empty',
   },
   stats: 'minimal',
-}
+};

@@ -17,8 +17,9 @@ describe('UNIT: GasModeService', () => {
   const gasPriceOracle: any = {getGasPrices: sinon.stub().resolves(gasPrices)};
 
   const tokenPrices: TokensPrices = {
-    ETH: {USD: 1838.51, DAI: 1494.71, ETH: 1},
-    DAI: {USD: 0.2391, DAI: 0.1942, ETH: 0.00001427},
+    ETH: {USD: 1838.51, DAI: 1494.71, SAI: 1494.71, ETH: 1},
+    DAI: {USD: 0.2391, DAI: 1, SAI: 0.1942, ETH: 0.00001427},
+    SAI: {USD: 0.2391, DAI: 0.1942, SAI: 1, ETH: 0.00001427},
   };
   const priceObserver: any = {
     getCurrentPrices: sinon.stub().resolves(tokenPrices),
@@ -35,11 +36,13 @@ describe('UNIT: GasModeService', () => {
 
     expect(getCurrencyAmountSpy.getCall(0)).calledWith(gasPrices.cheap, 'USD');
     expect(getCurrencyAmountSpy.getCall(1)).calledWith(gasPrices.cheap, 'DAI');
-    expect(getCurrencyAmountSpy.getCall(2)).calledWith(gasPrices.cheap, 'ETH');
-    expect(getCurrencyAmountSpy.getCall(3)).calledWith(gasPrices.fast, 'USD');
-    expect(getCurrencyAmountSpy.getCall(4)).calledWith(gasPrices.fast, 'DAI');
-    expect(getCurrencyAmountSpy.getCall(5)).calledWith(gasPrices.fast, 'ETH');
-    expect(getCurrencyAmountSpy.callCount).to.eq(6);
+    expect(getCurrencyAmountSpy.getCall(2)).calledWith(gasPrices.cheap, 'SAI');
+    expect(getCurrencyAmountSpy.getCall(3)).calledWith(gasPrices.cheap, 'ETH');
+    expect(getCurrencyAmountSpy.getCall(4)).calledWith(gasPrices.fast, 'USD');
+    expect(getCurrencyAmountSpy.getCall(5)).calledWith(gasPrices.fast, 'DAI');
+    expect(getCurrencyAmountSpy.getCall(6)).calledWith(gasPrices.fast, 'SAI');
+    expect(getCurrencyAmountSpy.getCall(7)).calledWith(gasPrices.fast, 'ETH');
+    expect(getCurrencyAmountSpy.callCount).to.eq(8);
 
     expect(modes).to.be.deep.eq([
       {
@@ -50,8 +53,12 @@ describe('UNIT: GasModeService', () => {
           token: TEST_TOKEN_DETAILS[0],
         },
         {
-          gasPrice: gasPrices.cheap,
+          gasPrice: utils.bigNumberify('29894200000000'),
           token: TEST_TOKEN_DETAILS[1],
+        },
+        {
+          gasPrice: gasPrices.cheap,
+          token: TEST_TOKEN_DETAILS[2],
         }],
       },
       {
@@ -62,8 +69,12 @@ describe('UNIT: GasModeService', () => {
           token: TEST_TOKEN_DETAILS[0],
         },
         {
-          gasPrice: gasPrices.fast,
+          gasPrice: utils.bigNumberify('35873040000000'),
           token: TEST_TOKEN_DETAILS[1],
+        },
+        {
+          gasPrice: gasPrices.fast,
+          token: TEST_TOKEN_DETAILS[2],
         }],
       },
     ]);
