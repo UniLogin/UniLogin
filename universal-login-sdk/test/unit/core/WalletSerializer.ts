@@ -1,12 +1,12 @@
-import {expect} from 'chai';
+import {AssertionError, expect} from 'chai';
+import sinon from 'sinon';
 import {WalletSerializer} from '../../../lib/core/services/WalletSerializer';
-import {DeployingWallet} from '../../../lib/core/models/WalletService';
-import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, stringToEnumKey} from '@universal-login/commons';
-import {DeployedWallet} from '../../../lib';
+import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure} from '@universal-login/commons';
+import {DeployedWallet, DeployingWallet} from '../../../lib';
 import {Wallet} from 'ethers';
 import {ConnectingWallet} from '../../../lib/api/DeployedWallet';
 
-describe('WalletSerializer', () => {
+describe('UNIT: WalletSerializer', () => {
   const TEST_FUTURE_WALLET = {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
@@ -25,7 +25,9 @@ describe('WalletSerializer', () => {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     deploymentHash: TEST_MESSAGE_HASH,
-  } as DeployingWallet;
+    waitForTransactionHash: sinon.mock(),
+    waitToBeSuccess: sinon.mock(),
+  };
 
   const TEST_DEPLOYED_WALLET = new DeployedWallet(
     TEST_CONTRACT_ADDRESS,
@@ -92,6 +94,7 @@ describe('WalletSerializer', () => {
   describe('deserialize', () => {
     const futureWalletFactory = {
       createFromExistingCounterfactual: () => TEST_FUTURE_WALLET,
+      createDeployingWallet: () => TEST_DEPLOYING_WALLET,
     };
     const sdk = {
       getFutureWalletFactory: () => futureWalletFactory,
@@ -116,6 +119,23 @@ describe('WalletSerializer', () => {
         name: 'name.mylogin.eth',
         wallet: TEST_FUTURE_WALLET,
       });
+    });
+
+    it('for Deploying returns Deploying', async() => {
+      const state = await walletSerializer.deserialize({
+        kind: 'Deploying',
+        wallet: {
+          ...TEST_APPLICATION_WALLET,
+          deploymentHash: TEST_DEPLOYING_WALLET.deploymentHash,
+        },
+      });
+      ensure(state.kind === 'Deploying', AssertionError, `Expected state.kind to be 'Deploying', but was ${state.kind}`);
+      expect(state.wallet).to.be.deep.include({
+        ...TEST_APPLICATION_WALLET,
+        deploymentHash: TEST_DEPLOYING_WALLET.deploymentHash,
+      });
+      expect(state.wallet).to.haveOwnProperty('waitForTransactionHash');
+      expect(state.wallet).to.haveOwnProperty('waitToBeSuccess');
     });
 
     it('for Deployed returns Deployed', async () => {

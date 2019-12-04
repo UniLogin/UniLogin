@@ -43,6 +43,14 @@ export class WalletSerializer {
           name: state.name,
           wallet: await this.sdk.getFutureWalletFactory().createFromExistingCounterfactual(state.wallet),
         };
+      case 'Deploying':
+        return {
+          kind: 'Deploying',
+          wallet: {
+            ...state.wallet,
+            ...this.sdk.getFutureWalletFactory().createDeployingWallet(state.wallet)
+          },
+        };
       case 'Deployed':
         return {
           kind: 'Deployed',
