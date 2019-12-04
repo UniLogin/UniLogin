@@ -28,5 +28,3 @@ export class GasComputation {
       .reduce((totalGasCost, byte) => totalGasCost + this.gasCostFor(byte), 0);
   }
 }
-
-export const computeGasData = (data: string) => new GasComputation('constantinople').computeGasData(data);
