@@ -17,6 +17,10 @@ describe('fetchHardforkVersion', async () => {
   itReturnsHardforkVersion('homestead', 'constantinople', ISTANBUL_BLOCK_NUMBER - 1);
   itReturnsHardforkVersion('homestead', 'istanbul', ISTANBUL_BLOCK_NUMBER);
   itReturnsHardforkVersion('homestead', 'istanbul', ISTANBUL_BLOCK_NUMBER + 1);
+  itReturnsHardforkVersion('mainnet', 'constantinople', 1000);
+  itReturnsHardforkVersion('mainnet', 'constantinople', ISTANBUL_BLOCK_NUMBER - 1);
+  itReturnsHardforkVersion('mainnet', 'istanbul', ISTANBUL_BLOCK_NUMBER);
+  itReturnsHardforkVersion('mainnet', 'istanbul', ISTANBUL_BLOCK_NUMBER + 1);
 
   it('throws exception', async () => {
     const provider = mockProviderWithBlockNumber('', 1);
