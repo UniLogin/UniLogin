@@ -79,7 +79,6 @@ export class WalletService {
     return deployedWallet;
   }
 
-
   async waitForConnect() {
 
   }
