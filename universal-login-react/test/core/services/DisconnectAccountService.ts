@@ -40,7 +40,7 @@ describe('DisconnectAccountService', () => {
     await promise;
     expect(setErrors).to.be.calledOnce;
     expect(onAccountDisconnected).to.be.calledOnce;
-    expect(() => walletService.getDeployedWallet()).to.throw('Invalid state: expected deployed wallet');
+    expect(() => walletService.getDeployedWallet()).to.throw('Wallet state is None, but expected Deployed');
   });
 
   it('dont disconnect account if username are invalid', async () => {
