@@ -25,17 +25,6 @@ export const Onboarding = (props: OnboardingProps) => {
 
   const onSuccess = () => props.onConnect?.();
 
-  const onCreateClick = (ensName: string) => {
-    props.walletService.createFutureWallet(ensName);
-  }
-
-  useEffect(() => {
-    setImmediate(async () => {
-      const wallet = await walletCreationService.deployWhenReady();
-      props.onCreate?.(wallet);
-    });
-  }, []);
-
   return (
     <div className="universal-login">
       <div className={getStyleForTopLevelComponent(props.className)}>
@@ -50,19 +39,28 @@ export const Onboarding = (props: OnboardingProps) => {
                   <div className="perspective">
                     <WalletSelector
                       sdk={props.sdk}
-                      onCreateClick={onCreateClick}
+                      onCreateClick={async (ensName) => {
+                        await props.walletService.createFutureWallet(ensName);
+                        history.push('/create');
+                      }}
                       onConnectClick={(ensName) => history.push('/connectFlow', {ensName})}
                       domains={props.domains}
                       tryEnablingMetamask={props.tryEnablingMetamask}
                       actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
                     />
                   </div>
-                  <OnboardingSteps
-                    sdk={props.sdk}
-                    walletService={props.walletService}
-                    walletCreationService={walletCreationService}
-                  />
                 </>}
+            />
+            <Route
+              exact
+              path="/create"
+              render={({history}) =>
+                <OnboardingSteps
+                  sdk={props.sdk}
+                  walletService={props.walletService}
+                  walletCreationService={walletCreationService}
+                  onCreate={props.onCreate}
+                />}
             />
             <Route
               exact
