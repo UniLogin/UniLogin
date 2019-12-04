@@ -79,6 +79,10 @@ export class WalletService {
     return deployedWallet;
   }
 
+  async waitForConnect() {
+
+  }
+
   async deployFutureWallet(gasPrice: string, gasToken: string) {
     ensure(this.state.kind === 'Future', FutureWalletNotSet);
     const {name, wallet: {deploy, contractAddress, privateKey}} = this.state;
