@@ -23,6 +23,6 @@ export const fetchHardforkVersion = async (provider: providers.Provider): Promis
       }
       return 'istanbul';
     default:
-      throw TypeError('Invalid network');
+      throw TypeError(`Invalid network: ${name}`);
   }
 };
