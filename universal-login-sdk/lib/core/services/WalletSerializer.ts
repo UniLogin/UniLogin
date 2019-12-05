@@ -1,5 +1,6 @@
 import {SerializedWalletState, WalletState} from '../models/WalletService';
 import UniversalLoginSDK, {DeployedWallet} from '../..';
+import {ConnectingWallet} from '../../api/DeployedWallet';
 
 export class WalletSerializer {
   constructor(
@@ -25,6 +26,15 @@ export class WalletSerializer {
           kind: 'Deploying',
           wallet: serializedWallet,
         };
+      case 'Connecting':
+        return {
+          kind: 'Connecting',
+          wallet: {
+            contractAddress: state.wallet.contractAddress,
+            privateKey: state.wallet.privateKey,
+            name: state.wallet.name,
+          },
+        };
       case 'Deployed':
         return {
           kind: 'Deployed',
@@ -48,6 +58,11 @@ export class WalletSerializer {
           kind: 'Deploying',
           wallet: this.sdk.getFutureWalletFactory().createDeployingWallet(state.wallet),
         };
+      case 'Connecting':
+        return {
+          kind: 'Connecting',
+          wallet: await new ConnectingWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey),
+        }
       case 'Deployed':
         return {
           kind: 'Deployed',
