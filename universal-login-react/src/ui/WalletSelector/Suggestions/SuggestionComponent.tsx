@@ -5,6 +5,7 @@ import {MissingParameter} from '../../../core/utils/errors';
 import {SingleSuggestion} from './SingleSuggestion';
 import {MultipleSuggestion} from './MultipleSuggestion';
 import {TakenOrInvalidSuggestion} from './TakenOrInvalidSuggestion';
+import {InvalidForConnectionSuggestion} from './InvalidForConnectionSuggestion';
 import {Suggestion} from '../../../core/models/Suggestion';
 
 interface SuggestionComponentProps {
@@ -35,6 +36,8 @@ export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, sug
       return <KeepTypingSuggestion />;
     case 'TakenOrInvalid':
       return <TakenOrInvalidSuggestion />;
+    case 'InvalidForConnection':
+      return <InvalidForConnectionSuggestion />;
     case 'Connection':
       return (
         <ul className="suggestions-list">
