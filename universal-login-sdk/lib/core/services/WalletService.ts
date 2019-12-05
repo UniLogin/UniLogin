@@ -79,6 +79,10 @@ export class WalletService {
     return deployedWallet;
   }
 
+  async waitForConnect() {
+
+  }
+
   async deployFutureWallet() {
     await this.initDeploy();
     await this.waitForTransactionHash();
