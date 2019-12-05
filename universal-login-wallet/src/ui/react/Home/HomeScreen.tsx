@@ -28,7 +28,7 @@ const HomeScreen = () => {
             <Switch>
               <Route path={basePath} exact>
                 <Funds
-                  deployedWallet={walletService.getDeployedWallet()}
+                  deployedWallet={deployedWallet}
                   onTopUpClick={() => history.push(join(basePath, 'topUp'))}
                   onSendClick={() => history.push(join(basePath, 'transfer'))}
                   onDeviceMessageClick={() => history.push(join(basePath, 'devices', 'approveDevice'))}
@@ -45,14 +45,14 @@ const HomeScreen = () => {
               </Route>
               <Route path={join(basePath, 'backup')}>
                 <BackupCodes
-                  deployedWallet={walletService.getDeployedWallet()}
+                  deployedWallet={deployedWallet}
                   className="jarvis-backup"
                 />
               </Route>
               <Route path={join(basePath, 'topUp')}>
                 <TopUp
-                  sdk={walletService.getDeployedWallet().sdk}
-                  contractAddress={walletService.getDeployedWallet().contractAddress}
+                  sdk={deployedWallet.sdk}
+                  contractAddress={deployedWallet.contractAddress}
                   topUpClassName="jarvis-styles"
                   isDeployment={false}
                   logoColor="black"
