@@ -61,7 +61,7 @@ export class WalletSerializer {
       case 'Connecting':
         return {
           kind: 'Connecting',
-          wallet: await new ConnectingWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey),
+          wallet: new ConnectingWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey),
         }
       case 'Deployed':
         return {
