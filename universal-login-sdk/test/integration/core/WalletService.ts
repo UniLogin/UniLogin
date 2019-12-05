@@ -67,20 +67,25 @@ describe('INT: WalletService', async () => {
     expect(walletService.state.wallet.contractAddress).to.eq(existingDeployedWallet.contractAddress);
     expect(walletService.state.wallet.name).to.eq(ensName);
     expect(walletService.state.wallet.privateKey).to.be.properHex(64);
-    const promise = walletService.waitForConnection();
     existingDeployedWallet.addKey(walletService.getConnectingWallet().publicKey, TEST_EXECUTION_OPTIONS);
-    await promise;
+    await walletService.waitForConnection();
     await sdk.finalizeAndStop();
     expect(walletService.state).to.deep.include({kind: 'Deployed'});
   });
 
-  xit('connect wallet cancelation', async () => {
-    const ensName = 'name2.mylogin.eth';
+  it('connect wallet cancelation', async () => {
+    sdk.start();
+    const ensName = 'name3.mylogin.eth';
     const existingDeployedWallet = await createWallet(ensName, sdk, wallet);
     expect(walletService.state).to.deep.eq({kind: 'None'});
     await walletService.initializeConnection(ensName);
     ensure(walletService.state.kind === 'Connecting', chai.AssertionError, `Expected state.kind to be 'Connecting', but was ${walletService.state.kind}`);
-    await walletService.cancelWaitForConnection();
+    walletService.waitForConnection();
+    const publicKey = walletService.getConnectingWallet().publicKey;
+    walletService.cancelWaitForConnection();
+    const execution = await existingDeployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
+    await execution.waitToBeSuccess();
+    await sdk.finalizeAndStop();
     expect(walletService.state).to.deep.eq({kind: 'None'});
   });
 

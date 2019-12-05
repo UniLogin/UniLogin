@@ -143,11 +143,13 @@ export class WalletService {
         subscription.remove();
         resolve();
       });
+      connectingWallet.setSubscription(subscription);
     });
   }
 
   async cancelWaitForConnection() {
-
+    this.getConnectingWallet().subscription && this.getConnectingWallet().subscription!.remove();
+    this.disconnect();
   }
 
   async connect(name: string, callback: Procedure) {
