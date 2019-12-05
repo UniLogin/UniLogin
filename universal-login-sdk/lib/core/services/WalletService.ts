@@ -131,6 +131,8 @@ export class WalletService {
   }
 
   async waitForConnection() {
+    if (this.state.kind === 'Deployed') return;
+    ensure(this.state.kind === 'Connecting', InvalidWalletState, 'Connecting', this.state.kind);
     const connectingWallet = this.getConnectingWallet();
     const filter = {
       contractAddress: connectingWallet.contractAddress,
@@ -148,6 +150,7 @@ export class WalletService {
   }
 
   async cancelWaitForConnection() {
+    if (this.state.kind === 'Deployed') return;
     this.getConnectingWallet().subscription && this.getConnectingWallet().subscription!.remove();
     this.disconnect();
   }
