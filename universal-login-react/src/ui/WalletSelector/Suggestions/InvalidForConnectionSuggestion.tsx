@@ -1,5 +1,5 @@
 import React from 'react';
 
 export const InvalidForConnectionSuggestion = () => (
-  <div className="hint">Name is invalid for connection</div>
+  <div className="hint">An account with this name does not exist</div>
 );
