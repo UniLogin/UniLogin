@@ -3,7 +3,7 @@ import {ModalWrapper, WaitingForDeployment, useAsyncEffect} from '@universal-log
 import {useServices} from '../../hooks';
 import {ensure} from '@universal-login/commons';
 import {InvalidWalletState, WalletState} from '@universal-login/sdk';
-import {useHistory} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 interface CreateWaitingProps {
   walletState: WalletState;
@@ -11,28 +11,30 @@ interface CreateWaitingProps {
 
 export function CreateWaiting({walletState}: CreateWaitingProps) {
   const {sdk, walletService} = useServices();
-  const history = useHistory();
 
   useAsyncEffect(async () => {
     try {
       await walletService.waitForTransactionHash();
       await walletService.waitToBeSuccess();
-      await history.push('/creationSuccess');
     } catch (e) {
       console.error(e);
     }
   }, []);
 
-  ensure(walletState.kind === 'Deploying', InvalidWalletState, 'Deploying', walletState.kind);
-  return (
-    <div className="main-bg">
-      <ModalWrapper modalClassName="jarvis-modal">
-        <WaitingForDeployment
-          transactionHash={walletState.transactionHash}
-          relayerConfig={sdk.getRelayerConfig()}
-          className="jarvis-styles"
-        />
-      </ModalWrapper>
-    </div>
-  );
+  if (walletState.kind === 'Deployed') {
+    return <Redirect to="/creationSuccess" />;
+  } else {
+    ensure(walletState.kind === 'Deploying', InvalidWalletState, 'Deploying', walletState.kind);
+    return (
+      <div className="main-bg">
+        <ModalWrapper modalClassName="jarvis-modal">
+          <WaitingForDeployment
+            transactionHash={walletState.transactionHash}
+            relayerConfig={sdk.getRelayerConfig()}
+            className="jarvis-styles"
+          />
+        </ModalWrapper>
+      </div>
+    );
+  };
 }

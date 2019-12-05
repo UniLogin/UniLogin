@@ -69,7 +69,7 @@ export class WalletService {
   }
 
   async waitForTransactionHash() {
-    if(this.state.kind === 'Deployed') {
+    if (this.state.kind === 'Deployed') {
       return this.state.wallet;
     }
     const deployingWallet = this.getDeployingWallet();
@@ -80,12 +80,12 @@ export class WalletService {
   }
 
   async waitToBeSuccess() {
-    if(this.state.kind === 'Deployed') {
+    if (this.state.kind === 'Deployed') {
       return this.state.wallet;
     }
     const deployingWallet = this.getDeployingWallet();
     const deployedWallet = await deployingWallet.waitToBeSuccess();
-    this.setState({kind: 'Deployed', wallet: deployedWallet})
+    this.setState({kind: 'Deployed', wallet: deployedWallet});
     return deployedWallet;
   }
 
