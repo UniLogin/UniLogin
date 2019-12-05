@@ -4,6 +4,7 @@ import {DeployingWallet} from '../../../lib/core/models/WalletService';
 import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH} from '@universal-login/commons';
 import {DeployedWallet} from '../../../lib';
 import {Wallet} from 'ethers';
+import {ConnectingWallet} from '../../../lib/api/DeployedWallet';
 
 describe('WalletSerializer', () => {
   const TEST_FUTURE_WALLET = {
@@ -32,6 +33,8 @@ describe('WalletSerializer', () => {
     TEST_PRIVATE_KEY,
     {provider: Wallet.createRandom()} as any,
   );
+
+  const TEST_CONNECTING_WALLET = new ConnectingWallet(TEST_CONTRACT_ADDRESS, 'name.mylogin.eth', TEST_PRIVATE_KEY);
 
   describe('serialize', () => {
     const walletSerializer = new WalletSerializer({} as any);
@@ -75,7 +78,7 @@ describe('WalletSerializer', () => {
     it('for Connecting state return undefined', () => {
       expect(walletSerializer.serialize({
         kind: 'Connecting',
-        wallet: TEST_APPLICATION_WALLET,
+        wallet: TEST_CONNECTING_WALLET,
       })).to.eq(undefined);
     });
   });

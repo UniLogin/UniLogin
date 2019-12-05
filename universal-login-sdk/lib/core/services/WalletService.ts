@@ -8,6 +8,7 @@ import {map, State} from 'reactive-properties';
 import {WalletState, DeployingWallet} from '../models/WalletService';
 import {WalletSerializer} from './WalletSerializer';
 import {NoopWalletStorage} from './NoopWalletStorage';
+import {ConnectingWallet} from '../../api/DeployedWallet';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
@@ -43,8 +44,8 @@ export class WalletService {
     return this.state.wallet;
   }
 
-  getConnectingWallet(): ApplicationWallet {
-    ensure(this.state.kind === 'Connecting', InvalidWalletState, 'Connecting', this.state.kind);
+  getConnectingWallet(): ConnectingWallet {
+    ensure(this.state.kind === 'Connecting', Error, 'Invalid state: expected connecting wallet');
     return this.state.wallet;
   }
 
@@ -79,10 +80,6 @@ export class WalletService {
     return deployedWallet;
   }
 
-  async waitForConnect() {
-
-  }
-
   async deployFutureWallet() {
     await this.initDeploy();
     await this.waitForTransactionHash();
@@ -103,7 +100,7 @@ export class WalletService {
     this.saveToStorage();
   }
 
-  setConnecting(wallet: ApplicationWallet) {
+  setConnecting(wallet: ConnectingWallet) {
     ensure(this.state.kind === 'None', WalletOverridden);
     this.stateProperty.set({kind: 'Connecting', wallet});
   }
@@ -125,11 +122,39 @@ export class WalletService {
     this.setWallet(applicationWallet);
   }
 
+  async initializeConnection(name: string): Promise<number[]> {
+    const contractAddress = await this.sdk.getWalletContractAddress(name);
+    const {privateKey, securityCode} = await this.sdk.connect(contractAddress);
+    const connectingWallet: ConnectingWallet = new ConnectingWallet(contractAddress, name, privateKey);
+    this.setConnecting(connectingWallet);
+    return securityCode;
+  }
+
+  async waitForConnection() {
+    const connectingWallet = this.getConnectingWallet();
+    const filter = {
+      contractAddress: connectingWallet.contractAddress,
+      key: connectingWallet.publicKey,
+    };
+    return new Promise((resolve, reject) => {
+      const setWallet = this.setWallet.bind(this);
+      const subscription = this.sdk.subscribe('KeyAdded', filter, () => {
+        setWallet(connectingWallet);
+        subscription.remove();
+        resolve();
+      });
+    });
+  }
+
+  async cancelWaitForConnection() {
+
+  }
+
   async connect(name: string, callback: Procedure) {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const {privateKey, securityCode} = await this.sdk.connect(contractAddress);
-    const applicationWallet: ApplicationWallet = {privateKey, contractAddress, name};
-    this.setConnecting(applicationWallet);
+    const connectingWallet: ConnectingWallet = new ConnectingWallet(contractAddress, name, privateKey);
+    this.setConnecting(connectingWallet);
 
     const filter = {
       contractAddress,
@@ -137,7 +162,7 @@ export class WalletService {
     };
 
     const subscription = this.sdk.subscribe('KeyAdded', filter, () => {
-      this.setWallet(applicationWallet);
+      this.setWallet(connectingWallet);
       subscription.remove();
       callback();
     });

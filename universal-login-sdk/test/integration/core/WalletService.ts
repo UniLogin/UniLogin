@@ -5,7 +5,8 @@ import {setupSdk} from '../../helpers/setupSdk';
 import UniversalLoginSDK from '../../../lib/api/sdk';
 import {WalletService} from '../../../lib/core/services/WalletService';
 import {Wallet, utils} from 'ethers';
-import {ETHER_NATIVE_TOKEN, ensure} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, ensure, TEST_EXECUTION_OPTIONS} from '@universal-login/commons';
+import {createWallet} from '../../helpers';
 
 chai.use(solidity);
 
@@ -53,6 +54,34 @@ describe('INT: WalletService', async () => {
       expect(walletService.state.kind).to.eq('Deployed');
       expect(walletService.getDeployedWallet().name).to.eq('name.mylogin.eth');
     });
+  });
+
+  it('connect wallet', async () => {
+    sdk.start();
+    const ensName = 'name2.mylogin.eth';
+    const existingDeployedWallet = await createWallet(ensName, sdk, wallet);
+    expect(walletService.state).to.deep.eq({kind: 'None'});
+    await walletService.initializeConnection(ensName);
+    expect(walletService.state.kind).to.eq('Connecting');
+    ensure(walletService.state.kind === 'Connecting', chai.AssertionError, `Expected state.kind to be 'Connecting', but was ${walletService.state.kind}`);
+    expect(walletService.state.wallet.contractAddress).to.eq(existingDeployedWallet.contractAddress);
+    expect(walletService.state.wallet.name).to.eq(ensName);
+    expect(walletService.state.wallet.privateKey).to.be.properHex(64);
+    const promise = walletService.waitForConnection();
+    existingDeployedWallet.addKey(walletService.getConnectingWallet().publicKey, TEST_EXECUTION_OPTIONS);
+    await promise;
+    await sdk.finalizeAndStop();
+    expect(walletService.state).to.deep.include({kind: 'Deployed'});
+  });
+
+  xit('connect wallet cancelation', async () => {
+    const ensName = 'name2.mylogin.eth';
+    const existingDeployedWallet = await createWallet(ensName, sdk, wallet);
+    expect(walletService.state).to.deep.eq({kind: 'None'});
+    await walletService.initializeConnection(ensName);
+    ensure(walletService.state.kind === 'Connecting', chai.AssertionError, `Expected state.kind to be 'Connecting', but was ${walletService.state.kind}`);
+    await walletService.cancelWaitForConnection();
+    expect(walletService.state).to.deep.eq({kind: 'None'});
   });
 
   after(async () => {
