@@ -64,6 +64,7 @@ export const Onboarding = (props: OnboardingProps) => {
               render={({history, location}) =>
                 <ModalWrapper hideModal={() => history.goBack()}>
                   <ConnectionFlow
+                    basePath="/connect"
                     onCancel={() => history.goBack()}
                     name={location.state.ensName}
                     sdk={props.sdk}

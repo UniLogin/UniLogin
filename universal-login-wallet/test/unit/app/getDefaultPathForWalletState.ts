@@ -12,4 +12,5 @@ describe('UNIT: getDefaultPathForWalletState', () => {
   itGetDefaultPathFor('Deployed', '/wallet');
   itGetDefaultPathFor('Deploying', '/create/waiting');
   itGetDefaultPathFor('None', '/welcome');
+  itGetDefaultPathFor('Connecting', '/connect/emoji');
 });

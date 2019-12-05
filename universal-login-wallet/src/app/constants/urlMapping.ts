@@ -3,7 +3,9 @@ export const urlMapping: Record<string, string[]> = {
     '/welcome',
     '/privacy',
     '/terms',
-    '/connect',
+    '/connect/chooseMethod',
+    '/connect/emoji',
+    '/connect/recover',
     '/selectDeployName',
   ],
   Future: [
@@ -18,6 +20,6 @@ export const urlMapping: Record<string, string[]> = {
     '/creationSuccess',
   ],
   Connecting: [
-    '/connect',
+    '/connect/emoji',
   ],
 };

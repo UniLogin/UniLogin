@@ -10,5 +10,7 @@ export const getDefaultPathForWalletState = ({kind}: WalletState) => {
       return '/welcome';
     case 'Deploying':
       return '/create/waiting';
+    case 'Connecting':
+      return '/connect/emoji';
   }
 };

@@ -5,6 +5,8 @@ export type Suggestion = {
 } | {
   kind: 'TakenOrInvalid';
 } | {
+  kind: 'InvalidForConnection';
+} | {
   kind: 'Available';
   suggestions: SuggestionItem[];
 } | SuggestionItem;

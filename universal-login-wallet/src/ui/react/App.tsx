@@ -28,7 +28,7 @@ const App = () => {
       <WalletRoute exact walletState={walletState} path="/connectionSuccess" component={ConnectionSuccess} />
       <WalletRoute exact walletState={walletState} path="/creationSuccess" component={CreationSuccess} />
       <WalletRoute exact walletState={walletState} path="/selectDeployName" component={CreateAccount} />
-      <WalletRoute exact walletState={walletState} path="/connect" component={ConnectAccount} />
+      <WalletRoute walletState={walletState} path="/connect" component={ConnectAccount} />
       <WalletRoute walletState={walletState} path="/wallet" component={HomeScreen} />
       <WalletRoute walletState={walletState} component={NotFound} />
     </Switch>

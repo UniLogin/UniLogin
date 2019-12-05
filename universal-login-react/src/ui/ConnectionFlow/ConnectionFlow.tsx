@@ -1,12 +1,16 @@
-import React, {useState} from 'react';
+import {join} from 'path';
+import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {ChooseConnectionMethod} from './ChooseConnectionMethod';
 import {ConnectWithPassphrase} from './ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectWithEmoji';
+import {Switch, Route} from 'react-router-dom';
+import {useHistory} from 'react-router';
 
 export type ConnectModal = 'chooseMethod' | 'emoji' | 'recover';
 
 export interface ConnectionFlowProps {
+  basePath: string;
   name: string;
   onCancel: () => void;
   onSuccess: () => void;
@@ -15,39 +19,35 @@ export interface ConnectionFlowProps {
   className?: string;
 }
 
-export const ConnectionFlow = ({name, onCancel, onSuccess, sdk, walletService, className}: ConnectionFlowProps) => {
-  const [connectModal, setConnectModal] = useState<ConnectModal>('chooseMethod');
-
-  switch (connectModal) {
-    case 'chooseMethod':
-      return (
-        <ChooseConnectionMethod
-          onConnectWithDeviceClick={() => setConnectModal('emoji')}
-          onConnectWithPassphraseClick={() => setConnectModal('recover')}
-          onCancel={onCancel}
-          className={className}
-        />
-      );
-    case 'recover':
-      return (
-        <ConnectWithPassphrase
-          name={name}
-          walletService={walletService}
-          onRecover={onSuccess}
-          className={className}
-          onCancel={() => setConnectModal('chooseMethod')}
-        />
-      );
-    case 'emoji':
-      return (
-        <ConnectWithEmoji
-          name={name}
-          sdk={sdk}
-          walletService={walletService}
-          onConnect={onSuccess}
-          onCancel={() => setConnectModal('chooseMethod')}
-          className={className}
-        />
-      );
-  }
+export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, sdk, walletService, className}: ConnectionFlowProps) => {
+  const history = useHistory();
+  return <Switch>
+    <Route exact path={join(basePath, 'chooseMethod')}>
+      <ChooseConnectionMethod
+        onConnectWithDeviceClick={() => history.push(join(basePath, 'emoji'))}
+        onConnectWithPassphraseClick={() => history.push(join(basePath, 'recover'))}
+        onCancel={onCancel}
+        className={className}
+      />
+    </Route>
+    <Route exact path={join(basePath, 'recover')}>
+      <ConnectWithPassphrase
+        name={name}
+        walletService={walletService}
+        onRecover={onSuccess}
+        className={className}
+        onCancel={() => history.push(join(basePath, 'chooseMethod'))}
+      />
+    </Route>
+    <Route exact path={join(basePath, 'emoji')}>
+      <ConnectWithEmoji
+        name={name}
+        sdk={sdk}
+        walletService={walletService}
+        onConnect={onSuccess}
+        onCancel={() => history.push(join(basePath, 'chooseMethod'))}
+        className={className}
+      />
+    </Route>
+  </Switch>;
 };

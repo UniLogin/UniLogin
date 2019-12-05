@@ -50,6 +50,18 @@ describe('getSuggestion', () => {
     });
   });
 
+  describe('isInvalidForConnection', () => {
+    it('empty connections, empty creations, invalid name', () => {
+      expect(getSuggestion({creations: [], connections: []}, [WalletSuggestionAction.connect], 'user'))
+        .be.deep.eq({kind: 'InvalidForConnection'});
+    });
+
+    it('non-empty connections, empty creations, invalid name', () => {
+      expect(getSuggestion({creations: ['user.mylogin.eth'], connections: []}, [WalletSuggestionAction.connect], 'user'))
+        .be.deep.eq({kind: 'InvalidForConnection'});
+    });
+  });
+
   describe('KeepTyping', () => {
     const shortEnsName = 'us';
     it('empty connections, empty creations', () => {
@@ -95,8 +107,6 @@ describe('getSuggestion', () => {
     });
 
     it('single creation without creation action', () => {
-      expect(getSuggestion({creations: ['user.mylogin.eth'], connections: []}, [WalletSuggestionAction.connect], 'user'))
-        .be.deep.eq({kind: 'None'});
       expect(getSuggestion({creations: ['user.mylogin.eth'], connections: []}, [], 'user'))
         .be.deep.eq({kind: 'None'});
     });
