@@ -15,11 +15,11 @@ export function CreateWaiting({walletState}: CreateWaitingProps) {
 
   useAsyncEffect(async () => {
     try {
-      await walletService.waitForTransactionHash()
-      await walletService.waitToBeSuccess()
-      await history.push('/creationSuccess')
+      await walletService.waitForTransactionHash();
+      await walletService.waitToBeSuccess();
+      await history.push('/creationSuccess');
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   }, []);
 
