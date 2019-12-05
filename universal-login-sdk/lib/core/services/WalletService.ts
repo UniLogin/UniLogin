@@ -1,11 +1,11 @@
 import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotNull} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
-import {FutureWallet} from '../../api/FutureWalletFactory';
-import {InvalidPassphrase, WalletOverridden, TransactionHashNotFound, InvalidWalletState} from '../utils/errors';
+import {FutureWallet, DeployingWallet} from '../../api/FutureWalletFactory';
+import {InvalidWalletState, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
 import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';
 import {map, State} from 'reactive-properties';
-import {WalletState, DeployingWallet} from '../models/WalletService';
+import {WalletState} from '../models/WalletService';
 import {WalletSerializer} from './WalletSerializer';
 import {NoopWalletStorage} from './NoopWalletStorage';
 import {ConnectingWallet} from '../../api/DeployedWallet';
@@ -24,6 +24,11 @@ export class WalletService {
 
   get state() {
     return this.stateProperty.get();
+  }
+
+  private setState(state: WalletState) {
+    this.saveToStorage(state);
+    this.stateProperty.set(state);
   }
 
   constructor(
@@ -57,26 +62,30 @@ export class WalletService {
 
   async initDeploy() {
     ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
-    const {name, wallet: {deploy, contractAddress, privateKey}} = this.state;
-    const applicationWallet = {contractAddress, name, privateKey};
-    const deployment = await deploy(name, this.gasParameters.gasPrice.toString(), this.gasParameters.gasToken);
-    this.stateProperty.set({kind: 'Deploying', wallet: {...applicationWallet, ...deployment}});
+    const {name, wallet: {deploy}} = this.state;
+    const deployingWallet = await deploy(name, this.gasParameters.gasPrice.toString(), this.gasParameters.gasToken);
+    this.setState({kind: 'Deploying', wallet: deployingWallet});
     return this.getDeployingWallet();
   }
 
   async waitForTransactionHash() {
+    if (this.state.kind === 'Deployed') {
+      return this.state.wallet;
+    }
     const deployingWallet = this.getDeployingWallet();
     const {transactionHash} = await deployingWallet.waitForTransactionHash();
     ensureNotNull(transactionHash, TransactionHashNotFound);
-    this.stateProperty.set({kind: 'Deploying', wallet: deployingWallet, transactionHash});
+    this.setState({kind: 'Deploying', wallet: deployingWallet, transactionHash});
     return deployingWallet;
   }
 
   async waitToBeSuccess() {
+    if (this.state.kind === 'Deployed') {
+      return this.state.wallet;
+    }
     const deployingWallet = this.getDeployingWallet();
     const deployedWallet = await deployingWallet.waitToBeSuccess();
-    this.stateProperty.set({kind: 'Deployed', wallet: deployedWallet});
-    this.saveToStorage();
+    this.setState({kind: 'Deployed', wallet: deployedWallet});
     return deployedWallet;
   }
 
@@ -88,16 +97,14 @@ export class WalletService {
 
   setFutureWallet(wallet: FutureWallet, name: string) {
     ensure(this.state.kind === 'None', WalletOverridden);
-    this.stateProperty.set({kind: 'Future', name, wallet});
-    this.saveToStorage();
+    this.setState({kind: 'Future', name, wallet});
   }
 
   setDeployed() {
     ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
     const {name, wallet: {contractAddress, privateKey}} = this.state;
     const wallet = new DeployedWallet(contractAddress, name, privateKey, this.sdk);
-    this.stateProperty.set({kind: 'Deployed', wallet});
-    this.saveToStorage();
+    this.setState({kind: 'Deployed', wallet});
   }
 
   setConnecting(wallet: ConnectingWallet) {
@@ -107,11 +114,10 @@ export class WalletService {
 
   setWallet(wallet: ApplicationWallet) {
     ensure(this.state.kind === 'None' || this.state.kind === 'Connecting', WalletOverridden);
-    this.stateProperty.set({
+    this.setState({
       kind: 'Deployed',
       wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
     });
-    this.saveToStorage();
   }
 
   async recover(name: string, passphrase: string) {
@@ -189,12 +195,11 @@ export class WalletService {
   }
 
   disconnect(): void {
-    this.stateProperty.set({kind: 'None'});
-    this.saveToStorage();
+    this.setState({kind: 'None'});
   }
 
-  saveToStorage() {
-    const serialized = this.walletSerializer.serialize(this.state);
+  saveToStorage(state: WalletState) {
+    const serialized = this.walletSerializer.serialize(state);
     if (serialized !== undefined) {
       this.storage.save(serialized);
     }

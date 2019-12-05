@@ -50,6 +50,9 @@ describe('UNIT: WalletService', () => {
       contractAddress: TEST_ACCOUNT_ADDRESS,
       privateKey: TEST_PRIVATE_KEY,
       deploy: async () => ({
+        contractAddress: TEST_ACCOUNT_ADDRESS,
+        name: 'justyna.mylogin.eth',
+        privateKey: TEST_PRIVATE_KEY,
         deploymentHash: TEST_MESSAGE_HASH,
         waitForTransactionHash: sinon.stub().returns({transactionHash: '0x123'}),
         waitToBeSuccess: async () => new DeployedWallet(TEST_ACCOUNT_ADDRESS, 'justyna.mylogin.eth', TEST_PRIVATE_KEY, sdk),

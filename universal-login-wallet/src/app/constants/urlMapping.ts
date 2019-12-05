@@ -16,6 +16,7 @@ export const urlMapping: Record<string, string[]> = {
   ],
   Deployed: [
     '/wallet',
+    '/create/waiting',
     '/connectionSuccess',
     '/creationSuccess',
   ],

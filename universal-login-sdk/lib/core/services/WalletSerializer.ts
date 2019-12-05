@@ -4,8 +4,7 @@ import UniversalLoginSDK, {DeployedWallet} from '../..';
 export class WalletSerializer {
   constructor(
     private readonly sdk: UniversalLoginSDK,
-  ) {
-  }
+  ) {}
 
   serialize(state: WalletState): SerializedWalletState | undefined {
     switch (state.kind) {
@@ -19,6 +18,12 @@ export class WalletSerializer {
             contractAddress: state.wallet.contractAddress,
             privateKey: state.wallet.privateKey,
           },
+        };
+      case 'Deploying':
+        const {waitForTransactionHash, waitToBeSuccess, ...serializedWallet} = state.wallet;
+        return {
+          kind: 'Deploying',
+          wallet: serializedWallet,
         };
       case 'Deployed':
         return {
@@ -37,6 +42,11 @@ export class WalletSerializer {
           kind: 'Future',
           name: state.name,
           wallet: await this.sdk.getFutureWalletFactory().createFromExistingCounterfactual(state.wallet),
+        };
+      case 'Deploying':
+        return {
+          kind: 'Deploying',
+          wallet: this.sdk.getFutureWalletFactory().createDeployingWallet(state.wallet),
         };
       case 'Deployed':
         return {

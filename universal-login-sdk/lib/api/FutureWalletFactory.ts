@@ -15,21 +15,21 @@ import {DeployedWallet} from './DeployedWallet';
 import UniversalLoginSDK from './sdk';
 import {MineableFactory} from '../core/services/MineableFactory';
 import {InvalidAddressOrEnsName} from '../core/utils/errors';
+import {SerializedDeployingWallet} from '../core/models/WalletService';
 
 export type BalanceDetails = {
   tokenAddress: string;
   contractAddress: string;
 };
 
-export interface Deployment {
-  deploymentHash: string;
+export interface DeployingWallet extends SerializedDeployingWallet {
   waitForTransactionHash: () => Promise<MineableStatus>;
   waitToBeSuccess: () => Promise<DeployedWallet>;
 }
 
 export interface FutureWallet extends SerializableFutureWallet {
   waitForBalance: () => Promise<BalanceDetails>;
-  deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<Deployment>;
+  deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<DeployingWallet>;
 }
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
@@ -60,6 +60,18 @@ export class FutureWalletFactory extends MineableFactory {
     return encodeInitializeWithENSData(initArgs);
   }
 
+  createDeployingWallet(serializedDeployingWallet: SerializedDeployingWallet): DeployingWallet {
+    const {deploymentHash, contractAddress, name, privateKey} = serializedDeployingWallet;
+    return {
+      ...serializedDeployingWallet,
+      waitForTransactionHash: this.createWaitForTransactionHash(deploymentHash),
+      waitToBeSuccess: async () => {
+        await this.createWaitToBeSuccess(deploymentHash)();
+        return new DeployedWallet(contractAddress, name, privateKey, this.sdk);
+      },
+    };
+  }
+
   async createFromExistingCounterfactual(wallet: SerializableFutureWallet): Promise<FutureWallet> {
     const {privateKey, contractAddress} = wallet;
     const publicKey = utils.computeAddress(privateKey);
@@ -76,20 +88,12 @@ export class FutureWalletFactory extends MineableFactory {
           ).catch(console.error);
         },
       ),
-      deploy: async (ensName: string, gasPrice: string, gasToken: string): Promise<Deployment> => {
+      deploy: async (ensName: string, gasPrice: string, gasToken: string): Promise<DeployingWallet> => {
         ensure(isValidEnsName(ensName), InvalidAddressOrEnsName, ensName);
         const initData = await this.setupInitData(publicKey, ensName, gasPrice, gasToken);
         const signature = await calculateInitializeSignature(initData, privateKey);
         const {deploymentHash} = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
-
-        return {
-          deploymentHash,
-          waitForTransactionHash: this.createWaitForTransactionHash(deploymentHash),
-          waitToBeSuccess: async () => {
-            await this.createWaitToBeSuccess(deploymentHash)();
-            return new DeployedWallet(contractAddress, ensName, privateKey, this.sdk);
-          },
-        };
+        return this.createDeployingWallet({deploymentHash, contractAddress, name: ensName, privateKey});
       },
     };
   }

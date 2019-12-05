@@ -1,33 +1,40 @@
-import React, {useEffect} from 'react';
-import {useHistory} from 'react-router';
-import {ModalWrapper, useProperty, WaitingForDeployment} from '@universal-login/react';
+import React from 'react';
+import {ModalWrapper, WaitingForDeployment, useAsyncEffect} from '@universal-login/react';
 import {useServices} from '../../hooks';
 import {ensure} from '@universal-login/commons';
-import {InvalidWalletState} from '@universal-login/sdk';
+import {InvalidWalletState, WalletState} from '@universal-login/sdk';
+import {Redirect} from 'react-router-dom';
 
-export function CreateWaiting() {
+interface CreateWaitingProps {
+  walletState: WalletState;
+}
+
+export function CreateWaiting({walletState}: CreateWaitingProps) {
   const {sdk, walletService} = useServices();
-  const history = useHistory();
 
-  useEffect(() => {
-    walletService.waitForTransactionHash()
-      .then(() => walletService.waitToBeSuccess())
-      .then(() => history.push('/creationSuccess'))
-      .catch(console.error);
+  useAsyncEffect(async () => {
+    try {
+      await walletService.waitForTransactionHash();
+      await walletService.waitToBeSuccess();
+    } catch (e) {
+      console.error(e);
+    }
   }, []);
 
-  const walletState = useProperty(walletService.stateProperty);
-  ensure(walletState.kind === 'Deploying', InvalidWalletState, 'Deploying', walletState.kind);
-
-  return (
-    <div className="main-bg">
-      <ModalWrapper modalClassName="jarvis-modal">
-        <WaitingForDeployment
-          transactionHash={walletState.transactionHash}
-          relayerConfig={sdk.getRelayerConfig()}
-          className="jarvis-styles"
-        />
-      </ModalWrapper>
-    </div>
-  );
+  if (walletState.kind === 'Deployed') {
+    return <Redirect to="/creationSuccess" />;
+  } else {
+    ensure(walletState.kind === 'Deploying', InvalidWalletState, 'Deploying', walletState.kind);
+    return (
+      <div className="main-bg">
+        <ModalWrapper modalClassName="jarvis-modal">
+          <WaitingForDeployment
+            transactionHash={walletState.transactionHash}
+            relayerConfig={sdk.getRelayerConfig()}
+            className="jarvis-styles"
+          />
+        </ModalWrapper>
+      </div>
+    );
+  };
 }
