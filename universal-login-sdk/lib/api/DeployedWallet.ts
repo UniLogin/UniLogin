@@ -32,7 +32,11 @@ class AbstractWallet implements ApplicationWallet {
 }
 
 export class ConnectingWallet extends AbstractWallet {
+  subscription?: {remove: () => void};
 
+  setSubscription(subscription: {remove: () => void}) {
+    this.subscription = subscription;
+  }
 }
 
 export class DeployedWallet extends AbstractWallet {
