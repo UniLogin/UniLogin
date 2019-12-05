@@ -62,7 +62,7 @@ export class WalletSerializer {
         return {
           kind: 'Connecting',
           wallet: new ConnectingWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey),
-        }
+        };
       case 'Deployed':
         return {
           kind: 'Deployed',
