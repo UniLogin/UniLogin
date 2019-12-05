@@ -17,6 +17,7 @@ export const ConnectAccount = () => {
         <div className="box-wrapper">
           <div className="box">
             <ConnectionFlow
+              basePath="/connect"
               name={name!}
               sdk={sdk}
               walletService={walletService}
