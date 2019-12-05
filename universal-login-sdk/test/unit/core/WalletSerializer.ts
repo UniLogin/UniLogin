@@ -103,11 +103,11 @@ describe('UNIT: WalletSerializer', () => {
     const walletSerializer = new WalletSerializer(sdk as any);
 
     it('for None returns None', async () => {
-      expect(await walletSerializer.deserialize({kind: 'None'})).to.deep.eq({kind: 'None'});
+      expect(walletSerializer.deserialize({kind: 'None'})).to.deep.eq({kind: 'None'});
     });
 
     it('for Future returns Future', async () => {
-      expect(await walletSerializer.deserialize({
+      expect(walletSerializer.deserialize({
         kind: 'Future',
         name: 'name.mylogin.eth',
         wallet: {
@@ -122,7 +122,7 @@ describe('UNIT: WalletSerializer', () => {
     });
 
     it('for Deploying returns Deploying', async () => {
-      const state = await walletSerializer.deserialize({
+      const state = walletSerializer.deserialize({
         kind: 'Deploying',
         wallet: {
           ...TEST_APPLICATION_WALLET,
@@ -139,7 +139,7 @@ describe('UNIT: WalletSerializer', () => {
     });
 
     it('for Deployed returns Deployed', async () => {
-      const state = await walletSerializer.deserialize({
+      const state = walletSerializer.deserialize({
         kind: 'Deployed',
         wallet: TEST_APPLICATION_WALLET,
       });

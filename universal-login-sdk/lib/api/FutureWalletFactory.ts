@@ -72,7 +72,7 @@ export class FutureWalletFactory extends MineableFactory {
     };
   }
 
-  async createFromExistingCounterfactual(wallet: SerializableFutureWallet): Promise<FutureWallet> {
+  createFromExistingCounterfactual(wallet: SerializableFutureWallet): FutureWallet {
     const {privateKey, contractAddress} = wallet;
     const publicKey = utils.computeAddress(privateKey);
 

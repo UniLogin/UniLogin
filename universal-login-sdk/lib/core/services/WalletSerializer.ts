@@ -33,7 +33,7 @@ export class WalletSerializer {
     }
   }
 
-  async deserialize(state: SerializedWalletState): Promise<WalletState> {
+  deserialize(state: SerializedWalletState): WalletState {
     switch (state.kind) {
       case 'None':
         return {kind: 'None'};
@@ -41,7 +41,7 @@ export class WalletSerializer {
         return {
           kind: 'Future',
           name: state.name,
-          wallet: await this.sdk.getFutureWalletFactory().createFromExistingCounterfactual(state.wallet),
+          wallet: this.sdk.getFutureWalletFactory().createFromExistingCounterfactual(state.wallet),
         };
       case 'Deploying':
         return {
