@@ -60,6 +60,7 @@ export class WalletService {
     const {name, wallet: {deploy}} = this.state;
     const deployingWallet = await deploy(name, this.gasParameters.gasPrice.toString(), this.gasParameters.gasToken);
     this.stateProperty.set({kind: 'Deploying', wallet: deployingWallet});
+    this.saveToStorage();
     return this.getDeployingWallet();
   }
 
@@ -68,6 +69,7 @@ export class WalletService {
     const {transactionHash} = await deployingWallet.waitForTransactionHash();
     ensureNotNull(transactionHash, TransactionHashNotFound);
     this.stateProperty.set({kind: 'Deploying', wallet: deployingWallet, transactionHash});
+    this.saveToStorage();
     return deployingWallet;
   }
 

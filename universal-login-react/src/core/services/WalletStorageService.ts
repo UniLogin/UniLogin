@@ -1,7 +1,7 @@
 import {StorageEntry, StorageService} from './StorageService';
 import {ApplicationWallet, asExactly, SerializableFutureWallet} from '@universal-login/commons';
 import {asAnyOf, asObject, asString, cast} from '@restless/sanitizers';
-import {WalletStorage, SerializedWalletState} from '@universal-login/sdk';
+import {WalletStorage, SerializedDeployingWallet, SerializedWalletState} from '@universal-login/sdk';
 
 const STORAGE_KEY = 'wallet';
 
@@ -49,6 +49,13 @@ const asApplicationWallet = asObject<ApplicationWallet>({
   privateKey: asString,
 });
 
+const asSerializedDeployingWallet = asObject<SerializedDeployingWallet>({
+  deploymentHash: asString,
+  name: asString,
+  contractAddress: asString,
+  privateKey: asString,
+});
+
 const asSerializedState = asAnyOf([
   asObject<SerializedWalletState>({
     kind: asExactly('None'),
@@ -57,6 +64,10 @@ const asSerializedState = asAnyOf([
     kind: asExactly('Future'),
     name: asString,
     wallet: asSerializableFutureWallet,
+  }),
+  asObject<SerializedWalletState>({
+    kind: asExactly('Deploying'),
+    wallet: asSerializedDeployingWallet,
   }),
   asObject<SerializedWalletState>({
     kind: asExactly('Deployed'),

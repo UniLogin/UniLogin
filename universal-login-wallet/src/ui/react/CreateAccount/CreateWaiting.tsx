@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useHistory} from 'react-router';
-import {ModalWrapper, useProperty, WaitingForDeployment} from '@universal-login/react';
+import {ModalWrapper, useProperty, WaitingForDeployment, useAsyncEffect} from '@universal-login/react';
 import {useServices} from '../../hooks';
 import {ensure} from '@universal-login/commons';
 import {InvalidWalletState} from '@universal-login/sdk';
@@ -9,14 +9,17 @@ export function CreateWaiting() {
   const {sdk, walletService} = useServices();
   const history = useHistory();
 
-  useEffect(() => {
-    walletService.waitForTransactionHash()
-      .then(() => walletService.waitToBeSuccess())
-      .then(() => history.push('/creationSuccess'))
-      .catch(console.error);
-  }, []);
+  useAsyncEffect(() => walletService.waitForTransactionHash()
+    .then(() => walletService.waitToBeSuccess())
+    .then(() => history.push('/creationSuccess'))
+    .catch(console.error), []);
 
   const walletState = useProperty(walletService.stateProperty);
+
+  if (walletService.state.kind === 'Deployed') {
+    return null;
+  }
+
   ensure(walletState.kind === 'Deploying', InvalidWalletState, 'Deploying', walletState.kind);
 
   return (
