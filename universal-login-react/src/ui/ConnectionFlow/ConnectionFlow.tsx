@@ -49,5 +49,5 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, sdk, w
         className={className}
       />
     </Route>
-  </Switch>
+  </Switch>;
 };
