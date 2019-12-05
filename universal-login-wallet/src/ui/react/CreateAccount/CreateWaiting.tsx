@@ -1,27 +1,29 @@
 import React from 'react';
-import {useHistory} from 'react-router';
-import {ModalWrapper, useProperty, WaitingForDeployment, useAsyncEffect} from '@universal-login/react';
+import {ModalWrapper, WaitingForDeployment, useAsyncEffect} from '@universal-login/react';
 import {useServices} from '../../hooks';
 import {ensure} from '@universal-login/commons';
-import {InvalidWalletState} from '@universal-login/sdk';
+import {InvalidWalletState, WalletState} from '@universal-login/sdk';
+import {useHistory} from 'react-router-dom';
 
-export function CreateWaiting() {
+interface CreateWaitingProps {
+  walletState: WalletState;
+}
+
+export function CreateWaiting({walletState}: CreateWaitingProps) {
   const {sdk, walletService} = useServices();
   const history = useHistory();
 
-  useAsyncEffect(() => walletService.waitForTransactionHash()
-    .then(() => walletService.waitToBeSuccess())
-    .then(() => history.push('/creationSuccess'))
-    .catch(console.error), []);
-
-  const walletState = useProperty(walletService.stateProperty);
-
-  if (walletService.state.kind === 'Deployed') {
-    return null;
-  }
+  useAsyncEffect(async () => {
+    try {
+      await walletService.waitForTransactionHash()
+      await walletService.waitToBeSuccess()
+      await history.push('/creationSuccess')
+    } catch (e) {
+      console.error(e)
+    }
+  }, []);
 
   ensure(walletState.kind === 'Deploying', InvalidWalletState, 'Deploying', walletState.kind);
-
   return (
     <div className="main-bg">
       <ModalWrapper modalClassName="jarvis-modal">

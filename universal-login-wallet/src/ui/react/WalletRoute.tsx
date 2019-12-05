@@ -19,6 +19,6 @@ export const WalletRoute = ({walletState, component, render, ...restProps}: Wall
           state: {from: props.location},
         }}
       />)
-      : React.createElement(component, props)}
+      : React.createElement(component, {...props, walletState})}
   />
 );
