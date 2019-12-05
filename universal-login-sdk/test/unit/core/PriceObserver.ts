@@ -15,16 +15,16 @@ describe('UNIT: PriceObserver', () => {
 
     const unsubscribe = mockedPriceObserver.subscribe(callback);
     await waitUntil(() => !!callback.firstCall);
-    expect(callback).to.have.been.calledOnce;
+    expect(callback).to.have.been.calledTwice;
 
     await mockedPriceObserver.execute();
 
     await waitUntil(() => !!callback.secondCall);
-    expect(callback).to.have.been.calledTwice;
+    expect(callback).to.have.been.calledThrice;
     unsubscribe();
 
-    expect(callback.firstCall.args[0]).to.deep.equal(PRICES_BEFORE);
-    expect(callback.secondCall.args[0]).to.deep.equal(PRICES_AFTER);
+    expect(callback.secondCall.args[0]).to.deep.equal(PRICES_BEFORE);
+    expect(callback.thirdCall.args[0]).to.deep.equal(PRICES_AFTER);
   });
 
   it('2 subscription', async () => {
@@ -39,10 +39,10 @@ describe('UNIT: PriceObserver', () => {
 
     unsubscribe1();
 
-    expect(callback1).to.have.been.calledOnce;
+    expect(callback1).to.have.been.calledTwice;
     expect(callback2).to.have.been.calledOnce;
 
-    expect(callback1.firstCall.args[0]).to.deep.equal(PRICES_BEFORE);
+    expect(callback1.secondCall.args[0]).to.deep.equal(PRICES_BEFORE);
     expect(callback2.firstCall.args[0]).to.deep.equal(PRICES_BEFORE);
 
     await mockedPriceObserver.execute();
@@ -50,7 +50,7 @@ describe('UNIT: PriceObserver', () => {
 
     unsubscribe2();
 
-    expect(callback1).to.have.been.calledOnce;
+    expect(callback1).to.have.been.calledTwice;
     expect(callback2).to.have.been.calledTwice;
 
     expect(callback2.secondCall.args[0]).to.deep.equal(PRICES_AFTER);

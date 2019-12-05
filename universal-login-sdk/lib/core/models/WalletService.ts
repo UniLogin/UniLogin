@@ -1,6 +1,7 @@
 import {ApplicationWallet, SerializableFutureWallet} from '@universal-login/commons';
 import {DeployedWallet, FutureWallet} from '../..';
 import {Deployment} from '../../api/FutureWalletFactory';
+import {ConnectingWallet} from '../../api/DeployedWallet';
 
 export type DeployingWallet = Deployment & ApplicationWallet;
 
@@ -12,7 +13,7 @@ export type WalletState = {
   wallet: FutureWallet;
 } | {
   kind: 'Connecting';
-  wallet: ApplicationWallet;
+  wallet: ConnectingWallet;
 } | {
   kind: 'Deploying';
   wallet: DeployingWallet;
