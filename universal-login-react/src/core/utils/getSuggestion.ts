@@ -49,6 +49,6 @@ const isTakenOrInvalid = (actions: WalletSuggestionAction[], creations: string[]
 
 const isInvalidForSuggestion = (actions: WalletSuggestionAction[], connections: string[], source: string) => {
   const isOnlyConnectAction =
-    actions.includes(WalletSuggestionAction.connect) && !actions.includes(WalletSuggestionAction.create);
+    actions.includes(WalletSuggestionAction.connect) && !actions.includes(WalletSuggestionAction.create) && actions.length === 1;
   return isOnlyConnectAction && connections.length === 0 && source.length > 0;
 };
