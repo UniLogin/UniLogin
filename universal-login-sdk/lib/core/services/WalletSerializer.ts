@@ -33,7 +33,7 @@ export class WalletSerializer {
     }
   }
 
-  async deserialize(state: SerializedWalletState): Promise<WalletState> {
+  deserialize(state: SerializedWalletState): WalletState {
     switch (state.kind) {
       case 'None':
         return {kind: 'None'};

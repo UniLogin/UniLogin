@@ -208,7 +208,7 @@ export class WalletService {
   async loadFromStorage() {
     ensure(this.state.kind === 'None', WalletOverridden);
     const state = this.storage.load();
-    this.stateProperty.set(await this.walletSerializer.deserialize(state));
+    this.stateProperty.set(this.walletSerializer.deserialize(state));
   }
 
   setGasParameters(gasParameters: GasParameters) {
