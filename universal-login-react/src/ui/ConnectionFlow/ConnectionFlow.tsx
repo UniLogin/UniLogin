@@ -52,7 +52,7 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, sdk, w
         sdk={sdk}
         walletService={walletService}
         onConnect={onSuccess}
-        onCancel={() => history.push(join(basePath, 'chooseMethod'))}
+        onCancel={() => history.push(join(basePath))}
         className={className}
       />
     </Route>

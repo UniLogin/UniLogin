@@ -20,15 +20,15 @@ export const ConnectWithEmoji = ({sdk, onCancel, walletService, className}: Conn
   const [securityCodes, setSecurityCodes] = useState<number[] | undefined>(undefined);
 
   useEffect(() => {
-    if(walletService.state.kind === 'Connecting') {
+    if (walletService.state.kind === 'Connecting') {
       setSecurityCodes(generateCode(walletService.state.wallet.publicKey));
     };
-  })
+  }, []);
 
   const onCancelClick = async () => {
     const {contractAddress, privateKey} = walletService.getConnectingWallet();
     await cancelRequest(contractAddress, privateKey);
-    await walletService.cancelWaitForConnection()
+    await walletService.cancelWaitForConnection();
     onCancel();
   };
 
