@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {BrowserRouter, Route, Switch, Link} from 'react-router-dom';
 import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
@@ -12,17 +12,16 @@ import {useServices} from './core/services/useServices';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
-import {DeployedWallet} from '@universal-login/sdk';
+import {DeployedWallet, WalletService} from '@universal-login/sdk';
 import {Spinner} from './ui/commons/Spinner';
 import {useAsync} from './ui/hooks/useAsync';
-import {WalletService} from '@universal-login/sdk';
 import {mockNotifications, CONNECTION_REAL_ADDRESS} from './ui/PlaygroundUtils/mockNotifications';
 import {ModalWrapper} from './ui/Modals/ModalWrapper';
 import {WaitingForOnRampProvider} from './ui/TopUp/Fiat/WaitingForOnRampProvider';
 import {TopUp} from './ui/TopUp/TopUp';
 
 export const App = () => {
-  const {sdk} = useServices();
+  const {sdk, web3, ulWeb3} = useServices();
   const [relayerConfig] = useAsync(async () => {
     await sdk.fetchRelayerConfig();
     return sdk.getRelayerConfig();
@@ -40,6 +39,26 @@ export const App = () => {
       } catch (error) {
       }
     }
+  }
+
+  const ulButton = useRef<HTMLDivElement | null>(null);
+
+  async function sendTx() {
+    try {
+      const res = await web3.eth.sendTransaction({
+        from: (await web3.eth.getAccounts())[0],
+        to: '0x7ffC57839B00206D1ad20c69A1981b489f772031',
+        value: '500000000000000',
+      });
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function create() {
+    await ulWeb3.create();
+    ulWeb3.initWeb3Button(ulButton.current!);
   }
 
   return (
@@ -157,6 +176,14 @@ export const App = () => {
               <ModalWrapper>
                 <WaitingForOnRampProvider onRampProviderName={'ramp'} />
               </ModalWrapper>
+            </Route>
+            <Route exact path="/web3">
+              <div>
+                Hello from host app!
+                <button onClick={sendTx}>Send TX</button>
+                <button onClick={create}>Create wallet</button>
+                <div ref={ref => {ulButton.current = ref;}} />
+              </div>
             </Route>
             <Route component={() => (<p>not found</p>)} />
           </Switch>
