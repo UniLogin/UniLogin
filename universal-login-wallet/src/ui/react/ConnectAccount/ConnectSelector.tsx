@@ -22,34 +22,30 @@ export const ConnectSelector = ({setName}: ConnectSelectorProps) => {
   };
 
   return (
-    <div className="main-bg">
-      <div className="box-wrapper">
-        <div className="box">
-          <div className="box-header">
-            <h1 className="box-title">Connect with another device</h1>
-          </div>
-          <div className="box-content connect-account-content">
-            <img
-              src={girlWithDocument1x}
-              srcSet={girlWithDocument2x}
-              alt="girl with document"
-              className="connect-account-img"
-            />
-            <div className="connect-accoutn-selector-block">
-              <label htmlFor="loginInput" className="jarvis-input-label">Type your username</label>
-              <WalletSelector
-                onConnectClick={onConnectClick}
-                sdk={sdk}
-                domains={walletConfig.domains}
-                actions={[WalletSuggestionAction.connect]}
-                className="jarvis"
-                placeholder="e.g. satoshi"
-              />
-              <Link to="/welcome" className="button-secondary connect-account-cancel">Cancel</Link>
-            </div>
-          </div>
+    <>
+      <div className="box-header">
+        <h1 className="box-title">Connect with another device</h1>
+      </div>
+      <div className="box-content connect-account-content">
+        <img
+          src={girlWithDocument1x}
+          srcSet={girlWithDocument2x}
+          alt="girl with document"
+          className="connect-account-img"
+        />
+        <div className="connect-accoutn-selector-block">
+          <label htmlFor="loginInput" className="jarvis-input-label">Type your username</label>
+          <WalletSelector
+            onConnectClick={onConnectClick}
+            sdk={sdk}
+            domains={walletConfig.domains}
+            actions={[WalletSuggestionAction.connect]}
+            className="jarvis"
+            placeholder="e.g. satoshi"
+          />
+          <Link to="/welcome" className="button-secondary connect-account-cancel">Cancel</Link>
         </div>
       </div>
-    </div>
+    </>
   );
 };
