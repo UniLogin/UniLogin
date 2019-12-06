@@ -59,8 +59,8 @@ describe('UI: Connection flow', () => {
     appPage.connection().clickConnectWithAnotherDevice();
     await appPage.connection().waitForEmojiView();
     appPage.connection().clickCancel();
-    await appPage.dashboard().waitForWelcomeScreen();
-    expect(appWrapper.text().includes('Welcome in the Jarvis Network')).to.be.true;
+    await appPage.connection().waitForConnectionChoiceView();
+    expect(appWrapper.text()).to.startWith('Connect with another device');
   });
 
   afterEach(async () => {
