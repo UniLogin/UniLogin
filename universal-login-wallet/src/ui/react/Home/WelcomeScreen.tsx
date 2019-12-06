@@ -15,7 +15,7 @@ export const WelcomeScreen = () => {
           <Notice message={notice} />
           <div className="welcome-box-content">
             <h1 className="welcome-box-title">Welcome in the<br/> <span>Jarvis Network</span></h1>
-            <button onClick={() => history.push('/connect/chooseMethod')} className="welcome-box-connect">
+            <button onClick={() => history.push('/connect/selector')} className="welcome-box-connect">
               Connect to existing account
             </button>
             <div className="row justify-content-center align-items-center">

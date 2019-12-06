@@ -5,20 +5,20 @@ import {WalletSuggestionAction} from '@universal-login/commons';
 import girlWithDocument1x from './../../assets/illustrations/girlWithDocument@1x.png';
 import girlWithDocument2x from './../../assets/illustrations/girlWithDocument@2x.png';
 import {Link} from 'react-router-dom';
-import {ConnectModal} from './ConnectAccount';
+import {useHistory} from 'react-router';
 
 interface ConnectSelectorProps {
   setName: (name: string) => void;
-  setConnectModal: (modal: ConnectModal) => void;
 }
 
-export const ConnectSelector = ({setName, setConnectModal}: ConnectSelectorProps) => {
+export const ConnectSelector = ({setName}: ConnectSelectorProps) => {
   const {sdk} = useServices();
   const walletConfig = useWalletConfig();
+  const history = useHistory();
 
   const onConnectClick = async (name: string) => {
     setName(name);
-    setConnectModal('connectionFlow');
+    history.push('/connect/chooseMethod');
   };
 
   return (
