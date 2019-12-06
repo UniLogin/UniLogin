@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService, InvalidWalletState} from '@universal-login/sdk';
 import {LogoColor, TopUpWithFiat} from './Fiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
@@ -10,8 +10,8 @@ import {
   ensureNotNull,
   GasParameters,
   MINIMAL_DEPLOYMENT_GAS_LIMIT,
-  OnGasParametersChanged,
   safeMultiply,
+  ensure,
 } from '@universal-login/commons';
 import {MissingParameter} from '../../core/utils/errors';
 import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
@@ -29,20 +29,21 @@ export interface ChooseTopUpMethodProps {
   topUpClassName?: string;
   logoColor?: LogoColor;
   isDeployment: boolean;
-  onGasParametersChanged?: OnGasParametersChanged;
+  walletService?: WalletService;
 }
 
-export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassName, logoColor, isDeployment, onGasParametersChanged}: ChooseTopUpMethodProps) => {
-  const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
-  if (isDeployment) {
-    ensureNotNull(onGasParametersChanged, MissingParameter, 'onGasParametersChanged');
-  }
-  const gasParametersChanged = (gasParameters: GasParameters) => {
-    setGasParameters(gasParameters);
-    onGasParametersChanged!(gasParameters);
+export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassName, logoColor, isDeployment, walletService}: ChooseTopUpMethodProps) => {
+  const [minimalAmount, setMinimalAmount] = useState('0');
+
+  const onGasParametersChanged = (gasParameters: GasParameters) => {
+    ensureNotNull(walletService, MissingParameter, 'walletService');
+    ensure(walletService.state.kind === 'Future', InvalidWalletState, 'Future', walletService.state.kind);
+    setMinimalAmount(safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice));
+    walletService.setGasParameters(gasParameters);
+    walletService.state.wallet.setSupportedTokens([{address: gasParameters.gasToken, minimalAmount}]);
   };
+
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
-  const minimalAmount = gasParameters && safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice);
 
   const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
 
@@ -74,7 +75,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
           <GasPrice
             isDeployed={false}
             sdk={sdk}
-            onGasParametersChanged={gasParametersChanged}
+            onGasParametersChanged={onGasParametersChanged}
             gasLimit={DEPLOYMENT_REFUND}
             className={topUpClassName}
           />}

@@ -15,6 +15,10 @@ export class DeploymentReadyObserver extends ObserverRunner {
     this.requiredBalanceChecker = new RequiredBalanceChecker(new BalanceChecker(this.provider));
   }
 
+  setSupportedTokens(supportedTokens: SupportedToken[]) {
+    this.supportedTokens = supportedTokens;
+  }
+
   async startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {
     ensure(this.isStopped(), ConcurrentDeployment);
     this.contractAddress = contractAddress;

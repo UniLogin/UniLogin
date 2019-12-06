@@ -6,6 +6,7 @@ import {
   PublicRelayerConfig,
   ensure,
   isValidEnsName,
+  SupportedToken,
 } from '@universal-login/commons';
 import {encodeInitializeWithENSData, BlockchainService} from '@universal-login/contracts';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
@@ -30,12 +31,14 @@ export interface DeployingWallet extends SerializedDeployingWallet {
 export interface FutureWallet extends SerializableFutureWallet {
   waitForBalance: () => Promise<BalanceDetails>;
   deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<DeployingWallet>;
+  setSupportedTokens: (supportedTokens: SupportedToken[]) => void;
 }
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
 
 export class FutureWalletFactory extends MineableFactory {
   private ensService: ENSService;
+  private deploymentReadyObserver: DeploymentReadyObserver;
 
   constructor(
     private config: FutureFactoryConfig,
@@ -52,6 +55,7 @@ export class FutureWalletFactory extends MineableFactory {
       (hash: string) => this.relayerApi.getDeploymentStatus(hash),
     );
     this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
+    this.deploymentReadyObserver = new DeploymentReadyObserver(this.config.supportedTokens, this.provider);
   }
 
   private async setupInitData(publicKey: string, ensName: string, gasPrice: string, gasToken: string) {
@@ -81,8 +85,7 @@ export class FutureWalletFactory extends MineableFactory {
       contractAddress,
       waitForBalance: async () => new Promise<BalanceDetails>(
         (resolve) => {
-          const deploymentReadyObserver = new DeploymentReadyObserver(this.config.supportedTokens, this.provider);
-          deploymentReadyObserver.startAndSubscribe(
+          this.deploymentReadyObserver.startAndSubscribe(
             contractAddress,
             (tokenAddress, contractAddress) => resolve({tokenAddress, contractAddress}),
           ).catch(console.error);
@@ -94,6 +97,9 @@ export class FutureWalletFactory extends MineableFactory {
         const signature = await calculateInitializeSignature(initData, privateKey);
         const {deploymentHash} = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
         return this.createDeployingWallet({deploymentHash, contractAddress, name: ensName, privateKey});
+      },
+      setSupportedTokens: (supportedTokens: SupportedToken[]) => {
+        this.deploymentReadyObserver.setSupportedTokens(supportedTokens);
       },
     };
   }
