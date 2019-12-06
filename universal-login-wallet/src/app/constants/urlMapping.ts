@@ -3,7 +3,6 @@ export const urlMapping: Record<string, string[]> = {
     '/welcome',
     '/privacy',
     '/terms',
-    '/connect',
     '/connect/selector',
     '/connect/chooseMethod',
     '/connect/emoji',
