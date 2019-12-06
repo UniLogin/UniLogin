@@ -169,10 +169,4 @@ export const countries: Country[] = [
     currency: 'GBP',
     isEU: true,
   },
-  {
-    name: 'United States',
-    code: 'US',
-    currency: 'USD',
-    isEU: false,
-  },
 ];
