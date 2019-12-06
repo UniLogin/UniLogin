@@ -21,10 +21,17 @@ export interface ConnectionFlowProps {
 
 export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, sdk, walletService, className}: ConnectionFlowProps) => {
   const history = useHistory();
+
+  const onConnectWithDeviceClick = () => {
+    walletService.initializeConnection(name).then(() => {
+      history.push('/connect/emoji');
+    });
+  };
+
   return <Switch>
     <Route exact path={join(basePath, 'chooseMethod')}>
       <ChooseConnectionMethod
-        onConnectWithDeviceClick={() => history.push(join(basePath, 'emoji'))}
+        onConnectWithDeviceClick={onConnectWithDeviceClick}
         onConnectWithPassphraseClick={() => history.push(join(basePath, 'recover'))}
         onCancel={onCancel}
         className={className}
@@ -45,7 +52,7 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, sdk, w
         sdk={sdk}
         walletService={walletService}
         onConnect={onSuccess}
-        onCancel={() => history.push(join(basePath, 'chooseMethod'))}
+        onCancel={() => history.push(join(basePath, 'selector'))}
         className={className}
       />
     </Route>

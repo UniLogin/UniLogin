@@ -70,7 +70,7 @@ describe('UNIT: WalletSerializer', () => {
       });
     });
 
-    it('for Deploying state return undefined', () => {
+    it('for Deploying state returns Deploying', () => {
       expect(walletSerializer.serialize({
         kind: 'Deploying',
         wallet: TEST_DEPLOYING_WALLET,
@@ -83,11 +83,14 @@ describe('UNIT: WalletSerializer', () => {
       });
     });
 
-    it('for Connecting state return undefined', () => {
+    it('for Connecting state returns Connecting', () => {
       expect(walletSerializer.serialize({
         kind: 'Connecting',
         wallet: TEST_CONNECTING_WALLET,
-      })).to.eq(undefined);
+      })).to.deep.eq({
+        kind: 'Connecting',
+        wallet: TEST_APPLICATION_WALLET,
+      });
     });
   });
 

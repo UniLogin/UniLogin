@@ -133,6 +133,7 @@ export class WalletService {
     const {privateKey, securityCode} = await this.sdk.connect(contractAddress);
     const connectingWallet: ConnectingWallet = new ConnectingWallet(contractAddress, name, privateKey);
     this.setConnecting(connectingWallet);
+    this.setState({kind: 'Connecting', wallet: connectingWallet});
     return securityCode;
   }
 
@@ -166,6 +167,7 @@ export class WalletService {
     const {privateKey, securityCode} = await this.sdk.connect(contractAddress);
     const connectingWallet: ConnectingWallet = new ConnectingWallet(contractAddress, name, privateKey);
     this.setConnecting(connectingWallet);
+    this.setState({kind: 'Connecting', wallet: connectingWallet});
 
     const filter = {
       contractAddress,

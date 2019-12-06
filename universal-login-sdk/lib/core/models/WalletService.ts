@@ -33,6 +33,9 @@ export type SerializedWalletState = {
   kind: 'Deploying';
   wallet: SerializedDeployingWallet;
 } | {
+  kind: 'Connecting';
+  wallet: ApplicationWallet;
+} | {
   kind: 'Deployed';
   wallet: ApplicationWallet;
 };

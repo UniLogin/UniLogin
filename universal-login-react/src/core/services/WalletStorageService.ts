@@ -70,6 +70,10 @@ const asSerializedState = asAnyOf([
     wallet: asSerializedDeployingWallet,
   }),
   asObject<SerializedWalletState>({
+    kind: asExactly('Connecting'),
+    wallet: asApplicationWallet,
+  }),
+  asObject<SerializedWalletState>({
     kind: asExactly('Deployed'),
     wallet: asApplicationWallet,
   }),
