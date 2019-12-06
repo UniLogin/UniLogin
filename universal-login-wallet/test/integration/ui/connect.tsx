@@ -60,7 +60,7 @@ describe('UI: Connection flow', () => {
     await appPage.connection().waitForEmojiView();
     appPage.connection().clickCancel();
     await appPage.connection().waitForConnectionChoiceView();
-    expect(appPage.connection().getConnectionWithPassphraseText()).to.startWith('Connect with passphrase');
+    expect(appWrapper.text()).to.startWith('Connect with another device');
   });
 
   afterEach(async () => {

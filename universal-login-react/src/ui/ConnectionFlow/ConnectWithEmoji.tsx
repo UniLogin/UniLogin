@@ -1,13 +1,12 @@
-import React from 'react';
-import {ensure} from '@universal-login/commons';
+import React, {useState} from 'react';
+import {ensure, generateCode} from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {useAsync} from '../hooks/useAsync';
 import {EmojiPanel} from '../WalletSelector/EmojiPanel';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/emoji.sass';
 import './../styles/emojiDefaults.sass';
 import Spinner from '../commons/Spinner';
-import {ErrorMessage} from '../commons/ErrorMessage';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 interface ConnectWithEmojiProps {
   name: string;
@@ -18,14 +17,21 @@ interface ConnectWithEmojiProps {
   className?: string;
 }
 
-export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService, className}: ConnectWithEmojiProps) => {
-  const [connectValues, error] = useAsync(async () => walletService.connect(name, onConnect), []);
+export const ConnectWithEmoji = ({sdk, onCancel, onConnect, walletService, className}: ConnectWithEmojiProps) => {
+  const [securityCodes, setSecurityCodes] = useState<number[] | undefined>(undefined);
+
+  useAsyncEffect(async () => {
+    if (walletService.state.kind === 'Connecting') {
+      setSecurityCodes(generateCode(walletService.state.wallet.publicKey));
+      await walletService.waitForConnection();
+      onConnect();
+    };
+  }, []);
 
   const onCancelClick = async () => {
     const {contractAddress, privateKey} = walletService.getConnectingWallet();
     await cancelRequest(contractAddress, privateKey);
-    walletService.disconnect();
-    connectValues!.unsubscribe();
+    await walletService.cancelWaitForConnection();
     onCancel();
   };
 
@@ -41,23 +47,18 @@ export const ConnectWithEmoji = ({name, sdk, onCancel, onConnect, walletService,
     <div className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="connect-emoji">
-          {error && <ErrorMessage className={className}>
-            <button onClick={onCancel} className="connect-emoji-btn">Return</button>
-          </ErrorMessage>}
-          {!error && <>
-            <h1 className="connect-emoji-title">Connect to your account</h1>
-            <div className="connect-emoji-content">
-              <div className="connect-emoji-section">
-                <p className="connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
-                {!connectValues && <Spinner className="spinner-center" />}
-                {connectValues && <div className="universal-login-emojis">
-                  <EmojiPanel className="jarvis-styles" code={connectValues!.securityCode} />
-                </div>}
-                <p className="connect-emoji-warning">Do not close this window, until the connection is completed.</p>
-                <button onClick={onCancelClick} className="connect-emoji-btn">Cancel Request</button>
-              </div>
+          <h1 className="connect-emoji-title">Connect to your account</h1>
+          <div className="connect-emoji-content">
+            <div className="connect-emoji-section">
+              <p className="connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
+              {!securityCodes && <Spinner className="spinner-center" />}
+              {securityCodes && <div className="universal-login-emojis">
+                <EmojiPanel className="jarvis-styles" code={securityCodes} />
+              </div>}
+              <p className="connect-emoji-warning">Do not close this window, until the connection is completed.</p>
+              <button onClick={onCancelClick} className="connect-emoji-btn">Cancel Request</button>
             </div>
-          </>}
+          </div>
         </div>
       </div>
     </div>
