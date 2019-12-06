@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotNull} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotNull, SupportedToken} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet, DeployingWallet} from '../../api/FutureWalletFactory';
 import {InvalidWalletState, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
@@ -215,5 +215,10 @@ export class WalletService {
 
   setGasParameters(gasParameters: GasParameters) {
     this.gasParameters = gasParameters;
+  }
+
+  setSupportedTokens(supportedTokens: SupportedToken[]) {
+    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
+    this.state.wallet.setSupportedTokens(supportedTokens);
   }
 }

@@ -55,7 +55,7 @@ export class FutureWalletFactory extends MineableFactory {
       (hash: string) => this.relayerApi.getDeploymentStatus(hash),
     );
     this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
-    this.deploymentReadyObserver = new DeploymentReadyObserver(this.config.supportedTokens, this.provider);
+    this.deploymentReadyObserver = new DeploymentReadyObserver(config.supportedTokens, provider);
   }
 
   private async setupInitData(publicKey: string, ensName: string, gasPrice: string, gasToken: string) {

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK, {WalletService, InvalidWalletState} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {LogoColor, TopUpWithFiat} from './Fiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
@@ -11,7 +11,6 @@ import {
   GasParameters,
   MINIMAL_DEPLOYMENT_GAS_LIMIT,
   safeMultiply,
-  ensure,
 } from '@universal-login/commons';
 import {MissingParameter} from '../../core/utils/errors';
 import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
@@ -37,10 +36,9 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
 
   const onGasParametersChanged = (gasParameters: GasParameters) => {
     ensureNotNull(walletService, MissingParameter, 'walletService');
-    ensure(walletService.state.kind === 'Future', InvalidWalletState, 'Future', walletService.state.kind);
     setMinimalAmount(safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice));
     walletService.setGasParameters(gasParameters);
-    walletService.state.wallet.setSupportedTokens([{address: gasParameters.gasToken, minimalAmount}]);
+    walletService.setSupportedTokens([{address: gasParameters.gasToken, minimalAmount}]);
   };
 
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
