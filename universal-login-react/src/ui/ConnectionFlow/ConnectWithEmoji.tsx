@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {ensure, generateCode} from '@universal-login/commons';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {EmojiPanel} from '../WalletSelector/EmojiPanel';
@@ -6,6 +6,7 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import './../styles/emoji.sass';
 import './../styles/emojiDefaults.sass';
 import Spinner from '../commons/Spinner';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 interface ConnectWithEmojiProps {
   name: string;
@@ -16,12 +17,14 @@ interface ConnectWithEmojiProps {
   className?: string;
 }
 
-export const ConnectWithEmoji = ({sdk, onCancel, walletService, className}: ConnectWithEmojiProps) => {
+export const ConnectWithEmoji = ({sdk, onCancel, onConnect, walletService, className}: ConnectWithEmojiProps) => {
   const [securityCodes, setSecurityCodes] = useState<number[] | undefined>(undefined);
 
-  useEffect(() => {
+  useAsyncEffect(async () => {
     if (walletService.state.kind === 'Connecting') {
       setSecurityCodes(generateCode(walletService.state.wallet.publicKey));
+      await walletService.waitForConnection();
+      onConnect();
     };
   }, []);
 

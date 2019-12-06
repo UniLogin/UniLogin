@@ -20,8 +20,4 @@ export default class ConnectionFlow {
   async waitForConnectionChoiceView(timeout?: number) {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes('Connect with another device'), timeout);
   }
-
-  getConnectionWithPassphraseText() {
-    return this.wrapper.find('button#recover').text();
-  }
 }

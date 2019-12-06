@@ -89,7 +89,7 @@ describe('UNIT: WalletSerializer', () => {
         wallet: TEST_CONNECTING_WALLET,
       })).to.deep.eq({
         kind: 'Connecting',
-        wallet: TEST_APPLICATION_WALLET
+        wallet: TEST_APPLICATION_WALLET,
       });
     });
   });

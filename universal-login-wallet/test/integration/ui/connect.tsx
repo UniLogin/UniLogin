@@ -59,8 +59,8 @@ describe('UI: Connection flow', () => {
     appPage.connection().clickConnectWithAnotherDevice();
     await appPage.connection().waitForEmojiView();
     appPage.connection().clickCancel();
-    await appPage.connection().waitForConnectionChoiceView();
-    expect(appPage.connection().getConnectionWithPassphraseText()).to.startWith('Connect with passphrase');
+    await appPage.dashboard().waitForWelcomeScreen();
+    expect(appWrapper.text().includes('Welcome in the Jarvis Network')).to.be.true;
   });
 
   afterEach(async () => {
