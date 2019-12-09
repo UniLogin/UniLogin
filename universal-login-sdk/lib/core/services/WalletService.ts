@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotNull, SupportedToken} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotNull, safeMultiply, MINIMAL_DEPLOYMENT_GAS_LIMIT} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet, DeployingWallet} from '../../api/FutureWalletFactory';
 import {InvalidWalletState, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
@@ -21,6 +21,7 @@ export class WalletService {
 
   walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed'));
   isAuthorized = this.walletDeployed;
+  requiredDeploymentBalance = '0';
 
   get state() {
     return this.stateProperty.get();
@@ -214,11 +215,13 @@ export class WalletService {
   }
 
   setGasParameters(gasParameters: GasParameters) {
+    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
     this.gasParameters = gasParameters;
+    this.requiredDeploymentBalance = safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice);
+    this.state.wallet.setSupportedToken({address: gasParameters.gasToken, minimalAmount: this.requiredDeploymentBalance});
   }
 
-  setSupportedTokens(supportedTokens: SupportedToken[]) {
-    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
-    this.state.wallet.setSupportedTokens(supportedTokens);
+  getRequiredDeploymentBalance() {
+    return this.requiredDeploymentBalance;
   }
 }

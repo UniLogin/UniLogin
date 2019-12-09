@@ -25,7 +25,8 @@ describe('INT: DeploymentReadyObserver', () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     mockToken = await deployContract(wallet, MockToken);
-    supportedTokens = [...supportedTokens, {address: mockToken.address, minimalAmount}];
+    supportedTokens = [{address: ETHER_NATIVE_TOKEN.address, minimalAmount},
+      {address: mockToken.address, minimalAmount}];
     callback = sinon.spy();
     deploymentReadyObserver = new DeploymentReadyObserver(supportedTokens, provider);
     deploymentReadyObserver.tick = 10;
@@ -59,16 +60,10 @@ describe('INT: DeploymentReadyObserver', () => {
       .to.be.rejectedWith('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.');
   });
 
-  it('#setSupportedTokens, minimalAmount > 9', () => {
-    expect(deploymentReadyObserver.setSupportedTokens(supportedTokens)).to.deep.eq(supportedTokens);
-  });
-
-  it('#setSupportedTokens, minimalAmount = 0', () => {
-    let supportedTokens = [{address: ETHER_NATIVE_TOKEN.address, minimalAmount: '0'}];
-    expect(deploymentReadyObserver.setSupportedTokens(supportedTokens)).to.deep.eq([]);
-    const supportedMockToken = {address: mockToken.address, minimalAmount};
-    supportedTokens = [...supportedTokens, supportedMockToken];
-    expect(deploymentReadyObserver.setSupportedTokens(supportedTokens)).to.deep.eq([supportedMockToken]);
+  it('set supported tokens', () => {
+    deploymentReadyObserver.setSupportedToken({address: ETHER_NATIVE_TOKEN.address, minimalAmount: '1'});
+    const expectedSupportedTokens = [{address: ETHER_NATIVE_TOKEN.address, minimalAmount: '1'}, {address: mockToken.address, minimalAmount}];
+    expect(deploymentReadyObserver.getSupportedToken()).to.deep.eq(expectedSupportedTokens);
   });
 
   afterEach(async () => {

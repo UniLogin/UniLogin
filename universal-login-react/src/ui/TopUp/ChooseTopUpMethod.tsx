@@ -7,12 +7,8 @@ import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
 import {
   DEPLOYMENT_REFUND,
-  ensureNotNull,
   GasParameters,
-  MINIMAL_DEPLOYMENT_GAS_LIMIT,
-  safeMultiply,
 } from '@universal-login/commons';
-import {MissingParameter} from '../../core/utils/errors';
 import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
 import {countries} from '../../core/utils/countries';
 import {PayButton} from './PayButton';
@@ -32,14 +28,11 @@ export interface ChooseTopUpMethodProps {
 }
 
 export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassName, logoColor, isDeployment, walletService}: ChooseTopUpMethodProps) => {
-  const [minimalAmount, setMinimalAmount] = useState('0');
+  const [minimalAmount, setMinimalAmount] = useState(walletService!.getRequiredDeploymentBalance());
 
   const onGasParametersChanged = (gasParameters: GasParameters) => {
-    ensureNotNull(walletService, MissingParameter, 'walletService');
-    const minimalAmountCalculated = safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice);
-    setMinimalAmount(minimalAmountCalculated);
-    walletService.setGasParameters(gasParameters);
-    walletService.setSupportedTokens([{address: gasParameters.gasToken, minimalAmount: minimalAmountCalculated}]);
+    walletService!.setGasParameters(gasParameters);
+    setMinimalAmount(walletService!.getRequiredDeploymentBalance());
   };
 
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);

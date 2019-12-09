@@ -31,7 +31,7 @@ export interface DeployingWallet extends SerializedDeployingWallet {
 export interface FutureWallet extends SerializableFutureWallet {
   waitForBalance: () => Promise<BalanceDetails>;
   deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<DeployingWallet>;
-  setSupportedTokens: (supportedTokens: SupportedToken[]) => void;
+  setSupportedToken: (supportedToken: SupportedToken) => void;
 }
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
@@ -98,8 +98,8 @@ export class FutureWalletFactory extends MineableFactory {
         const {deploymentHash} = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
         return this.createDeployingWallet({deploymentHash, contractAddress, name: ensName, privateKey});
       },
-      setSupportedTokens: (supportedTokens: SupportedToken[]) => {
-        this.deploymentReadyObserver.setSupportedTokens(supportedTokens);
+      setSupportedToken: (supportedToken: SupportedToken) => {
+        this.deploymentReadyObserver.setSupportedToken(supportedToken);
       },
     };
   }

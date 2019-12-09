@@ -1,4 +1,4 @@
-import {providers, utils} from 'ethers';
+import {providers} from 'ethers';
 import {SupportedToken, ensure, RequiredBalanceChecker, BalanceChecker} from '@universal-login/commons';
 import {ConcurrentDeployment} from '../utils/errors';
 import ObserverRunner from './ObserverRunner';
@@ -15,13 +15,14 @@ export class DeploymentReadyObserver extends ObserverRunner {
     this.requiredBalanceChecker = new RequiredBalanceChecker(new BalanceChecker(this.provider));
   }
 
-  setSupportedTokens(supportedTokens: SupportedToken[]) {
-    const tokensWithValidMinimaAmount =
-      supportedTokens.filter(supportedToken => utils.parseEther(supportedToken.minimalAmount).gt(0));
-    if (tokensWithValidMinimaAmount.length > 0) {
-      this.supportedTokens = supportedTokens;
-    }
-    return tokensWithValidMinimaAmount;
+  setSupportedToken(supportedToken: SupportedToken) {
+    const newSupportedTokens = this.supportedTokens.map(token =>
+      (token.address === supportedToken.address) ? supportedToken : token);
+    this.supportedTokens = newSupportedTokens;
+  }
+
+  getSupportedToken() {
+    return this.supportedTokens;
   }
 
   async startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {

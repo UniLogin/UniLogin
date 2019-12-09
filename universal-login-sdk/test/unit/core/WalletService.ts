@@ -58,7 +58,7 @@ describe('UNIT: WalletService', () => {
         waitToBeSuccess: async () => new DeployedWallet(TEST_ACCOUNT_ADDRESS, 'justyna.mylogin.eth', TEST_PRIVATE_KEY, sdk),
       }),
       waitForBalance: (async () => { }) as any,
-      setSupportedTokens: (() => {}) as any,
+      setSupportedToken: (() => {}) as any,
     };
 
     storage = {
