@@ -1,6 +1,7 @@
 import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotNull} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
-import {FutureWallet, DeployingWallet} from '../../api/FutureWalletFactory';
+import {FutureWallet} from '../../api/FutureWalletFactory';
+import {DeployingWallet} from '../../api/wallet/DeployingWallet';
 import {InvalidWalletState, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
 import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';

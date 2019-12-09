@@ -2,7 +2,6 @@ import {providers, utils} from 'ethers';
 import {
   calculateInitializeSignature,
   SerializableFutureWallet,
-  MineableStatus,
   PublicRelayerConfig,
   ensure,
   isValidEnsName,
@@ -16,16 +15,12 @@ import UniversalLoginSDK from './sdk';
 import {MineableFactory} from '../core/services/MineableFactory';
 import {InvalidAddressOrEnsName} from '../core/utils/errors';
 import {SerializedDeployingWallet} from '../core/models/WalletService';
+import {DeployingWallet} from './wallet/DeployingWallet';
 
 export type BalanceDetails = {
   tokenAddress: string;
   contractAddress: string;
 };
-
-export interface DeployingWallet extends SerializedDeployingWallet {
-  waitForTransactionHash: () => Promise<MineableStatus>;
-  waitToBeSuccess: () => Promise<DeployedWallet>;
-}
 
 export interface FutureWallet extends SerializableFutureWallet {
   waitForBalance: () => Promise<BalanceDetails>;
