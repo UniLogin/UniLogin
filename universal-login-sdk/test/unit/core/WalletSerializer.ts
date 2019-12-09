@@ -2,7 +2,7 @@ import {AssertionError, expect} from 'chai';
 import sinon from 'sinon';
 import {WalletSerializer} from '../../../lib/core/services/WalletSerializer';
 import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure, TEST_TRANSACTION_HASH} from '@universal-login/commons';
-import {DeployedWallet, DeployingWallet} from '../../../lib';
+import {DeployedWallet, DeployingWallet, FutureWallet} from '../../../lib';
 import {Wallet} from 'ethers';
 import {ConnectingWallet} from '../../../lib/api/wallet/ConnectingWallet';
 
@@ -16,13 +16,14 @@ describe('UNIT: WalletSerializer', () => {
       mineableFactoryTimeout: 100,
     },
   } as any;
-  const TEST_FUTURE_WALLET = {
+
+  const TEST_FUTURE_WALLET: FutureWallet = {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     deploy: (() => {}) as any,
     waitForBalance: (() => {}) as any,
     setSupportedToken: (() => {}) as any,
-  };
+  } as any;
 
   const TEST_APPLICATION_WALLET = {
     name: 'name.mylogin.eth',

@@ -27,7 +27,8 @@ import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {InvalidContract, InvalidEvent, InvalidGasLimit, MissingConfiguration, InvalidENSRecord} from '../core/utils/errors';
-import {FutureWalletFactory, FutureWallet} from './FutureWalletFactory';
+import {FutureWalletFactory} from './FutureWalletFactory';
+import {FutureWallet} from './wallet/FutureWallet';
 import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';
 import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
@@ -81,7 +82,7 @@ class UniversalLoginSDK {
     this.blockchainService = new BlockchainService(this.provider);
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
     this.balanceChecker = new BalanceChecker(this.provider);
-    this.tokenDetailsService = new TokenDetailsService(this.provider, sdkConfig?.saiTokenAddress);
+    this.tokenDetailsService = new TokenDetailsService(this.provider, sdkConfig ?.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokensAddresses);
     this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.sdkConfig.observedCurrencies, this.sdkConfig.priceObserverTick);
     this.gasPriceOracle = new GasPriceOracle(this.provider);

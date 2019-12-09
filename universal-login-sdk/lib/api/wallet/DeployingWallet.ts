@@ -11,8 +11,7 @@ export class DeployingWallet extends MineableFactory implements SerializedDeploy
 
   constructor(
     serializedDeployingWallet: SerializedDeployingWallet,
-    private sdk: UniversalLoginSDK,
-  ) {
+    private sdk: UniversalLoginSDK) {
     super(
       sdk.sdkConfig.mineableFactoryTick,
       sdk.sdkConfig.mineableFactoryTimeout,
