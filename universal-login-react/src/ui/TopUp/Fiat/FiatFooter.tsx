@@ -13,9 +13,10 @@ import {TopUpProvider} from '../../../core/models/TopUpProvider';
 
 interface FiatFooterProps {
   paymentMethod?: TopUpProvider;
+  minimalAmount?: string;
 }
 
-export const FiatFooter = ({paymentMethod}: FiatFooterProps) => {
+export const FiatFooter = ({paymentMethod, minimalAmount}: FiatFooterProps) => {
   switch (paymentMethod) {
     case TopUpProvider.RAMP:
       return (
@@ -28,6 +29,9 @@ export const FiatFooter = ({paymentMethod}: FiatFooterProps) => {
           </div>
           <div className="info-block info-row">
             <p className="info-text info-text-hint">Minimum amount is 1£</p>
+          </div>
+          <div className="info-block info-row">
+            <p className="info-text info-text-hint">Minimum amount required to deploy contract is {minimalAmount} ETH</p>
           </div>
         </>
       );

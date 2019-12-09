@@ -18,9 +18,10 @@ export interface TopUpWithFiatProps {
   paymentMethod?: TopUpProvider;
   onPaymentMethodChange: (value: TopUpProvider | undefined) => void;
   logoColor?: LogoColor;
+  minimalAmount?: string;
 }
 
-export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange, minimalAmount}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
 
@@ -86,7 +87,11 @@ export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amou
             />
           </>}
           <div className="fiat-bottom">
-            {!!country && <FiatFooter paymentMethod={paymentMethod} />}
+            {!!country &&
+            <FiatFooter
+              paymentMethod={paymentMethod}
+              minimalAmount={minimalAmount}
+            />}
           </div>
         </div>
       </div>

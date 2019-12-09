@@ -68,6 +68,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
         paymentMethod={paymentMethod}
         onPaymentMethodChange={setPaymentMethod}
         logoColor={logoColor}
+        minimalAmount={minimalAmount}
       />}
       {topUpMethod && <FooterSection className={topUpClassName}>
         {isDeployment &&
