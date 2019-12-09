@@ -21,10 +21,10 @@ export class WalletSerializer {
           },
         };
       case 'Deploying':
-        const {waitForTransactionHash, waitToBeSuccess, ...serializedWallet} = state.wallet;
+        const {name, privateKey, contractAddress, deploymentHash} = state.wallet;
         return {
           kind: 'Deploying',
-          wallet: serializedWallet,
+          wallet: {name, privateKey, contractAddress, deploymentHash},
         };
       case 'Connecting':
         return {

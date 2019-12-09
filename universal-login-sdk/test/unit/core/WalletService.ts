@@ -1,12 +1,13 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
-import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, ApplicationWallet, TEST_MESSAGE_HASH, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, ApplicationWallet, TEST_MESSAGE_HASH, ETHER_NATIVE_TOKEN, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import {WalletService} from '../../../lib/core/services/WalletService';
 import {Wallet, constants} from 'ethers';
 import {DeployedWallet} from '../../../lib/api/wallet/DeployedWallet';
 import {FutureWallet} from '../../../lib/api/FutureWalletFactory';
 import {SerializedWalletState} from '../../../lib/core/models/WalletService';
+import {DeployingWallet} from '../../../lib';
 
 chai.use(chaiAsPromised);
 
@@ -45,18 +46,22 @@ describe('UNIT: WalletService', () => {
 
     deployedWallet = new DeployedWallet(TEST_ACCOUNT_ADDRESS, 'justyna.mylogin.eth', TEST_PRIVATE_KEY, sdk);
     applicationWallet = deployedWallet.asApplicationWallet;
-
-    futureWallet = {
-      contractAddress: TEST_ACCOUNT_ADDRESS,
-      privateKey: TEST_PRIVATE_KEY,
-      deploy: async () => ({
+    const deployingWallet = new DeployingWallet({
         contractAddress: TEST_ACCOUNT_ADDRESS,
         name: 'justyna.mylogin.eth',
         privateKey: TEST_PRIVATE_KEY,
         deploymentHash: TEST_MESSAGE_HASH,
-        waitForTransactionHash: sinon.stub().returns({transactionHash: '0x123'}),
-        waitToBeSuccess: async () => new DeployedWallet(TEST_ACCOUNT_ADDRESS, 'justyna.mylogin.eth', TEST_PRIVATE_KEY, sdk),
-      }),
+      },
+      sinon.stub().resolves({transactionHash: TEST_TRANSACTION_HASH, state: 'Success'}),
+      sdk,
+      20,
+      100,
+    );
+
+    futureWallet = {
+      contractAddress: TEST_ACCOUNT_ADDRESS,
+      privateKey: TEST_PRIVATE_KEY,
+      deploy: async () => deployingWallet,
       waitForBalance: (async () => { }) as any,
     };
 

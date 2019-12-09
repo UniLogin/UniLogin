@@ -10,7 +10,6 @@ import {encodeInitializeWithENSData, BlockchainService} from '@universal-login/c
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {ENSService} from '../integration/ethereum/ENSService';
-import {DeployedWallet} from './wallet/DeployedWallet';
 import UniversalLoginSDK from './sdk';
 import {MineableFactory} from '../core/services/MineableFactory';
 import {InvalidAddressOrEnsName} from '../core/utils/errors';
@@ -56,15 +55,7 @@ export class FutureWalletFactory extends MineableFactory {
   }
 
   createDeployingWallet(serializedDeployingWallet: SerializedDeployingWallet): DeployingWallet {
-    const {deploymentHash, contractAddress, name, privateKey} = serializedDeployingWallet;
-    return {
-      ...serializedDeployingWallet,
-      waitForTransactionHash: this.createWaitForTransactionHash(deploymentHash),
-      waitToBeSuccess: async () => {
-        await this.createWaitToBeSuccess(deploymentHash)();
-        return new DeployedWallet(contractAddress, name, privateKey, this.sdk);
-      },
-    };
+    return new DeployingWallet(serializedDeployingWallet, (hash: string) => this.relayerApi.getDeploymentStatus(hash), this.sdk);
   }
 
   createFromExistingCounterfactual(wallet: SerializableFutureWallet): FutureWallet {
