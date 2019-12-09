@@ -8,7 +8,7 @@ import {map, State} from 'reactive-properties';
 import {WalletState} from '../models/WalletService';
 import {WalletSerializer} from './WalletSerializer';
 import {NoopWalletStorage} from './NoopWalletStorage';
-import {ConnectingWallet} from '../../api/DeployedWallet';
+import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 

@@ -1,6 +1,6 @@
 import {ApplicationWallet, SerializableFutureWallet} from '@universal-login/commons';
 import {DeployedWallet, FutureWallet} from '../..';
-import {ConnectingWallet} from '../../api/DeployedWallet';
+import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 import {DeployingWallet} from '../../api/FutureWalletFactory';
 
 export type SerializedDeployingWallet = ApplicationWallet & {deploymentHash: string};

@@ -1,6 +1,6 @@
 import {SerializedWalletState, WalletState} from '../models/WalletService';
 import UniversalLoginSDK, {DeployedWallet} from '../..';
-import {ConnectingWallet} from '../../api/DeployedWallet';
+import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 
 export class WalletSerializer {
   constructor(
