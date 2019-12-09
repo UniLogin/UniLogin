@@ -8,14 +8,14 @@ import {
   DEFAULT_GAS_LIMIT,
   SdkExecutionOptions,
 } from '@universal-login/commons';
-import UniversalLoginSDK from './sdk';
-import {Execution} from '../core/services/ExecutionFactory';
+import UniversalLoginSDK from '../sdk';
+import {Execution} from '../../core/services/ExecutionFactory';
 import {Contract, utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
-import {OnBalanceChange} from '../core/observers/BalanceObserver';
+import {OnBalanceChange} from '../../core/observers/BalanceObserver';
 import {WalletContractInterface} from '@universal-login/contracts';
-import {AbstractWallet} from './wallet/AbstractWallet';
-import {BackupCodesWithExecution} from './wallet/BackupCodesWithExecution';
+import {AbstractWallet} from './AbstractWallet';
+import {BackupCodesWithExecution} from './BackupCodesWithExecution';
 
 export class DeployedWallet extends AbstractWallet {
   private contractInstance: Contract;

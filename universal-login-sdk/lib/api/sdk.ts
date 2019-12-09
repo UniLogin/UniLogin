@@ -39,7 +39,7 @@ import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {GasModeService} from '../core/services/GasModeService';
 import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
 import {deprecateSDKMethod} from './deprecate';
-import {DeployedWallet} from './DeployedWallet';
+import {DeployedWallet} from './wallet/DeployedWallet';
 import {MessageConverter} from '../core/services/MessageConverter';
 
 class UniversalLoginSDK {

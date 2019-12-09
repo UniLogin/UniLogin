@@ -6,7 +6,7 @@ export {FutureWallet, BalanceDetails, DeployingWallet} from './api/FutureWalletF
 export {WalletService} from './core/services/WalletService';
 export {WalletStorage, SerializedWalletState, WalletState, SerializedDeployingWallet} from './core/models/WalletService';
 export {TransferService} from './core/services/TransferService';
-export {DeployedWallet} from './api/DeployedWallet';
+export {DeployedWallet} from './api/wallet/DeployedWallet';
 export {setBetaNotice} from './core/utils/setBetaNotice';
 export {encodeERC20Transfer} from './core/utils/encodeTransferToMessage';
 export {InvalidWalletState} from './core/utils/errors';

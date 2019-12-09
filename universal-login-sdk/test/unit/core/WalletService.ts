@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, ApplicationWallet, TEST_MESSAGE_HASH, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {WalletService} from '../../../lib/core/services/WalletService';
 import {Wallet, constants} from 'ethers';
-import {DeployedWallet} from '../../../lib/api/DeployedWallet';
+import {DeployedWallet} from '../../../lib/api/wallet/DeployedWallet';
 import {FutureWallet} from '../../../lib/api/FutureWalletFactory';
 import {SerializedWalletState} from '../../../lib/core/models/WalletService';
 

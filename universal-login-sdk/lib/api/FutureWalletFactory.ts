@@ -11,7 +11,7 @@ import {encodeInitializeWithENSData, BlockchainService} from '@universal-login/c
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {ENSService} from '../integration/ethereum/ENSService';
-import {DeployedWallet} from './DeployedWallet';
+import {DeployedWallet} from './wallet/DeployedWallet';
 import UniversalLoginSDK from './sdk';
 import {MineableFactory} from '../core/services/MineableFactory';
 import {InvalidAddressOrEnsName} from '../core/utils/errors';
