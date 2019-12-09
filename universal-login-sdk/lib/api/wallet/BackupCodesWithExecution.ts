@@ -5,12 +5,10 @@ export class BackupCodesWithExecution {
   constructor(private execution: Execution, private codes: string[]) {
   }
 
-  async waitToBeSuccess(): Promise<string[]> {
+  waitToBeSuccess = async (): Promise<string[]> => {
     await this.execution.waitToBeSuccess();
     return this.codes;
-  }
+  };
 
-  async waitForTransactionHash(): Promise<MessageStatus> {
-    return this.execution.waitForTransactionHash();
-  }
+  waitForTransactionHash = (): Promise<MessageStatus> => this.execution.waitForTransactionHash();
 }
