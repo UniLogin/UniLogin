@@ -42,15 +42,13 @@ export class ULWeb3Provider implements Provider {
 
   readonly isLoggedIn: Property<boolean>;
 
-  constructor(options: ULWeb3ProviderOptions) {
-    const {
-      provider,
-      relayerUrl,
-      ensDomains,
-      uiInitializer = initUi,
-      storageService = new StorageService(),
-    } = options;
-
+  constructor({
+    provider,
+    relayerUrl,
+    ensDomains,
+    uiInitializer = initUi,
+    storageService = new StorageService(),
+  }: ULWeb3ProviderOptions) {
     this.provider = provider;
     this.sdk = new UniversalLoginSDK(
       relayerUrl,
