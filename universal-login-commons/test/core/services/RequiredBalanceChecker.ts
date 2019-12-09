@@ -21,11 +21,11 @@ describe('INT: RequiredBalanceChecker', () => {
     supportedTokens = [
       {
         address: ETHER_NATIVE_TOKEN.address,
-        minimalAmount: utils.parseEther('0.5').toString(),
+        minimalAmount: '0.5',
       },
       {
         address: mockToken.address,
-        minimalAmount: utils.parseEther('0.3').toString(),
+        minimalAmount: '0.3',
       },
     ];
   });

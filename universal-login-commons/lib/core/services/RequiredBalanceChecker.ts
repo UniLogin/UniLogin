@@ -1,3 +1,4 @@
+import {utils} from 'ethers';
 import {BalanceChecker} from '../../integration/ethereum/BalanceChecker';
 import {SupportedToken} from '../models/relayer';
 
@@ -7,7 +8,7 @@ export class RequiredBalanceChecker {
   async findTokenWithRequiredBalance(supportedTokens: SupportedToken[], contractAddress: string) {
     for (const supportedToken of supportedTokens) {
       const balance = await this.balanceChecker.getBalance(contractAddress, supportedToken.address);
-      if (balance.gte(supportedToken.minimalAmount)) {
+      if (balance.gte(utils.parseEther(supportedToken.minimalAmount))) {
         return supportedToken.address;
       }
     }
