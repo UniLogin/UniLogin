@@ -15,21 +15,13 @@ import {Contract, utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
 import {WalletContractInterface} from '@universal-login/contracts';
+import {AbstractWallet} from './wallet/AbstractWallet';
 
 interface BackupCodesWithExecution {
   waitToBeSuccess: () => Promise<string[]>;
   waitForTransactionHash: () => Promise<MessageStatus>;
 }
 
-class AbstractWallet implements ApplicationWallet {
-  constructor(public readonly contractAddress: string, public readonly name: string, public readonly privateKey: string) {
-
-  }
-
-  get publicKey() {
-    return utils.computeAddress(this.privateKey);
-  }
-}
 
 export class ConnectingWallet extends AbstractWallet {
   subscription?: {remove: () => void};
