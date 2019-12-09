@@ -4,7 +4,7 @@ import {WalletSerializer} from '../../../lib/core/services/WalletSerializer';
 import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure} from '@universal-login/commons';
 import {DeployedWallet, DeployingWallet} from '../../../lib';
 import {Wallet} from 'ethers';
-import {ConnectingWallet} from '../../../lib/api/DeployedWallet';
+import {ConnectingWallet} from '../../../lib/api/wallet/ConnectingWallet';
 
 describe('UNIT: WalletSerializer', () => {
   const TEST_FUTURE_WALLET = {

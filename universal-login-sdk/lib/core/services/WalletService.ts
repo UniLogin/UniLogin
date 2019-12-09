@@ -1,6 +1,7 @@
 import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotNull} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
-import {FutureWallet, DeployingWallet} from '../../api/FutureWalletFactory';
+import {FutureWallet} from '../../api/FutureWalletFactory';
+import {DeployingWallet} from '../../api/wallet/DeployingWallet';
 import {InvalidWalletState, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
 import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';
@@ -8,7 +9,7 @@ import {map, State} from 'reactive-properties';
 import {WalletState} from '../models/WalletService';
 import {WalletSerializer} from './WalletSerializer';
 import {NoopWalletStorage} from './NoopWalletStorage';
-import {ConnectingWallet} from '../../api/DeployedWallet';
+import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 

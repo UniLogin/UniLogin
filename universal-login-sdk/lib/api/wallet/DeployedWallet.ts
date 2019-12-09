@@ -4,40 +4,18 @@ import {
   generateBackupCode,
   walletFromBrain,
   sign,
-  MessageStatus,
   ExecutionOptions,
   DEFAULT_GAS_LIMIT,
   SdkExecutionOptions,
 } from '@universal-login/commons';
-import UniversalLoginSDK from './sdk';
-import {Execution} from '../core/services/ExecutionFactory';
+import UniversalLoginSDK from '../sdk';
+import {Execution} from '../../core/services/ExecutionFactory';
 import {Contract, utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
-import {OnBalanceChange} from '../core/observers/BalanceObserver';
+import {OnBalanceChange} from '../../core/observers/BalanceObserver';
 import {WalletContractInterface} from '@universal-login/contracts';
-
-interface BackupCodesWithExecution {
-  waitToBeSuccess: () => Promise<string[]>;
-  waitForTransactionHash: () => Promise<MessageStatus>;
-}
-
-class AbstractWallet implements ApplicationWallet {
-  constructor(public readonly contractAddress: string, public readonly name: string, public readonly privateKey: string) {
-
-  }
-
-  get publicKey() {
-    return utils.computeAddress(this.privateKey);
-  }
-}
-
-export class ConnectingWallet extends AbstractWallet {
-  subscription?: {remove: () => void};
-
-  setSubscription(subscription: {remove: () => void}) {
-    this.subscription = subscription;
-  }
-}
+import {AbstractWallet} from './AbstractWallet';
+import {BackupCodesWithExecution} from './BackupCodesWithExecution';
 
 export class DeployedWallet extends AbstractWallet {
   private contractInstance: Contract;
@@ -134,13 +112,7 @@ export class DeployedWallet extends AbstractWallet {
     }
 
     const execution = await this.addKeys(addresses, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
-    return {
-      waitToBeSuccess: async () => {
-        await execution.waitToBeSuccess();
-        return codes;
-      },
-      waitForTransactionHash: execution.waitForTransactionHash,
-    };
+    return new BackupCodesWithExecution(execution, codes);
   }
 
   signMessage(bytes: Uint8Array) {
