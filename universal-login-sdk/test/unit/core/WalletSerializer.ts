@@ -7,7 +7,11 @@ import {Wallet} from 'ethers';
 import {ConnectingWallet} from '../../../lib/api/wallet/ConnectingWallet';
 
 describe('UNIT: WalletSerializer', () => {
-  const mockSDK = {provider: Wallet.createRandom()} as any;
+  const mockSDK = {provider: Wallet.createRandom(),
+    relayerApi: {
+      getDeploymentHash: sinon.stub().resolves({transactionHash: TEST_TRANSACTION_HASH, state: 'Success'}),
+    },
+  } as any;
   const TEST_FUTURE_WALLET = {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
@@ -26,11 +30,10 @@ describe('UNIT: WalletSerializer', () => {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     deploymentHash: TEST_MESSAGE_HASH,
-  }
+  };
 
   const TEST_DEPLOYING_WALLET = new DeployingWallet(
     TEST_SERIALIZED_WALLET,
-    sinon.stub().resolves({transactionHash: TEST_TRANSACTION_HASH, state: 'Success'}),
     mockSDK,
   );
 

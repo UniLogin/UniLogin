@@ -1,27 +1,23 @@
-import {DeploymentStatus} from '@universal-login/commons';
 import {SerializedDeployingWallet} from '../..';
 import {DeployedWallet} from './DeployedWallet';
 import {MineableFactory} from '../../core/services/MineableFactory';
 import UniversalLoginSDK from '../sdk';
 
-type GetDeploymentStatus = (hash: string) => Promise<DeploymentStatus>
-
 export class DeployingWallet extends MineableFactory implements SerializedDeployingWallet {
-  public name: string;
-  public contractAddress: string;
-  public privateKey: string;
-  public deploymentHash: string;
+  name: string;
+  contractAddress: string;
+  privateKey: string;
+  deploymentHash: string;
 
   constructor(
     serializedDeployingWallet: SerializedDeployingWallet,
-    getDeploymentStatus: GetDeploymentStatus,
     private sdk: UniversalLoginSDK,
     tick?: number,
     timeout?: number) {
     super(
       tick,
       timeout,
-      getDeploymentStatus,
+      (hash: string) => sdk.relayerApi.getDeploymentStatus(hash),
     );
     this.contractAddress = serializedDeployingWallet.contractAddress;
     this.deploymentHash = serializedDeployingWallet.deploymentHash;

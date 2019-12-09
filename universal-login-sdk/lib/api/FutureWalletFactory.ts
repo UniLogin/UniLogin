@@ -55,7 +55,7 @@ export class FutureWalletFactory extends MineableFactory {
   }
 
   createDeployingWallet(serializedDeployingWallet: SerializedDeployingWallet): DeployingWallet {
-    return new DeployingWallet(serializedDeployingWallet, (hash: string) => this.relayerApi.getDeploymentStatus(hash), this.sdk);
+    return new DeployingWallet(serializedDeployingWallet, this.sdk);
   }
 
   createFromExistingCounterfactual(wallet: SerializableFutureWallet): FutureWallet {

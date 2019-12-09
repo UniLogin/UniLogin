@@ -10,7 +10,7 @@ chai.use(sinonChai);
 
 describe('DeployingWallet', () => {
   const serializedDeplpoyingWallet: SerializedDeployingWallet = {
-    name:'name.mylogin.eth',
+    name: 'name.mylogin.eth',
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     deploymentHash: TEST_MESSAGE_HASH,
@@ -18,8 +18,8 @@ describe('DeployingWallet', () => {
   const deploymentStatusWithoutHash = {
     deploymentHash: TEST_MESSAGE_HASH,
     error: null,
-    transactionHash:  null,
-    state: 'Queued'
+    transactionHash: null,
+    state: 'Queued',
   };
   const pendingStatus = {
     ...deploymentStatusWithoutHash,
@@ -28,24 +28,27 @@ describe('DeployingWallet', () => {
 
   const successStatus = {...pendingStatus, state: 'Success'};
   const getStatus = sinon.stub()
-      .onFirstCall().resolves(deploymentStatusWithoutHash)
-      .onSecondCall().resolves(pendingStatus)
-      .resolves(successStatus);
+    .onFirstCall().resolves(deploymentStatusWithoutHash)
+    .onSecondCall().resolves(pendingStatus)
+    .resolves(successStatus);
   let deployingWallet: DeployingWallet;
   const sdk = {
     provider: Wallet.createRandom(),
+    relayerApi: {
+      getDeploymentStatus: getStatus,
+    },
   } as any;
 
   beforeEach(() => {
-    deployingWallet = new DeployingWallet(serializedDeplpoyingWallet, getStatus, sdk, 20, 100);
+    deployingWallet = new DeployingWallet(serializedDeplpoyingWallet, sdk, 20, 100);
   });
 
   it('waits for transaction hash', async () => {
     expect(await deployingWallet.waitForTransactionHash()).to.deep.eq(pendingStatus);
   });
 
-  it('waits to be success', async () =>{
-    const expectedDeployedWallet = new DeployedWallet(serializedDeplpoyingWallet.contractAddress, serializedDeplpoyingWallet.name, serializedDeplpoyingWallet.privateKey, sdk)
+  it('waits to be success', async () => {
+    const expectedDeployedWallet = new DeployedWallet(serializedDeplpoyingWallet.contractAddress, serializedDeplpoyingWallet.name, serializedDeplpoyingWallet.privateKey, sdk);
     const deployedWallet = await deployingWallet.waitToBeSuccess();
     expect(deployedWallet.contractAddress).to.deep.eq(expectedDeployedWallet.contractAddress);
     expect(deployedWallet.name).to.deep.eq(expectedDeployedWallet.name);

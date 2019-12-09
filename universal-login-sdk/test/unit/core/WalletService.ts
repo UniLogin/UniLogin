@@ -32,6 +32,9 @@ describe('UNIT: WalletService', () => {
       getWalletContractAddress: sinon.stub().withArgs(name).returns(TEST_CONTRACT_ADDRESS),
       keyExist,
       provider: Wallet.createRandom(),
+      relayerApi: {
+        getDeploymentStatus: sinon.stub().resolves({transactionHash: TEST_TRANSACTION_HASH, state: 'Success'}),
+      },
     };
 
     walletFromPassphrase.withArgs(name, passphrase).resolves({
@@ -47,15 +50,14 @@ describe('UNIT: WalletService', () => {
     deployedWallet = new DeployedWallet(TEST_ACCOUNT_ADDRESS, 'justyna.mylogin.eth', TEST_PRIVATE_KEY, sdk);
     applicationWallet = deployedWallet.asApplicationWallet;
     const deployingWallet = new DeployingWallet({
-        contractAddress: TEST_ACCOUNT_ADDRESS,
-        name: 'justyna.mylogin.eth',
-        privateKey: TEST_PRIVATE_KEY,
-        deploymentHash: TEST_MESSAGE_HASH,
-      },
-      sinon.stub().resolves({transactionHash: TEST_TRANSACTION_HASH, state: 'Success'}),
-      sdk,
-      20,
-      100,
+      contractAddress: TEST_ACCOUNT_ADDRESS,
+      name: 'justyna.mylogin.eth',
+      privateKey: TEST_PRIVATE_KEY,
+      deploymentHash: TEST_MESSAGE_HASH,
+    },
+    sdk,
+    20,
+    100,
     );
 
     futureWallet = {
