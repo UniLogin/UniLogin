@@ -8,8 +8,7 @@ export const createWallet = async (name: string, sdk: UniversalLoginSDK, wallet:
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
   await waitForBalance();
   const {waitToBeSuccess} = await deploy(name, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
-  await waitToBeSuccess();
-  return new DeployedWallet(contractAddress, name, privateKey, sdk);
+  return waitToBeSuccess();
 };
 
 export const createAndSetWallet = async (name: string, walletService: WalletService, wallet: Wallet, sdk: UniversalLoginSDK) => {

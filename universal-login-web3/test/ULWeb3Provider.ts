@@ -4,7 +4,7 @@ import {waitExpect} from '@universal-login/commons/testutils';
 import Web3 from 'web3';
 import {AppProps} from '../lib/ui/App';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import {createWallet} from './helpers/createWallet';
+import {createWallet} from '@universal-login/sdk/testutils';
 import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWeb3';
 import {ULWeb3Provider} from '../lib';
 
