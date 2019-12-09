@@ -4,7 +4,6 @@ import {
   generateBackupCode,
   walletFromBrain,
   sign,
-  MessageStatus,
   ExecutionOptions,
   DEFAULT_GAS_LIMIT,
   SdkExecutionOptions,
@@ -16,11 +15,7 @@ import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../core/observers/BalanceObserver';
 import {WalletContractInterface} from '@universal-login/contracts';
 import {AbstractWallet} from './wallet/AbstractWallet';
-
-interface BackupCodesWithExecution {
-  waitToBeSuccess: () => Promise<string[]>;
-  waitForTransactionHash: () => Promise<MessageStatus>;
-}
+import {BackupCodesWithExecution} from './wallet/BackupCodesWithExecution';
 
 export class DeployedWallet extends AbstractWallet {
   private contractInstance: Contract;
@@ -117,13 +112,7 @@ export class DeployedWallet extends AbstractWallet {
     }
 
     const execution = await this.addKeys(addresses, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
-    return {
-      waitToBeSuccess: async () => {
-        await execution.waitToBeSuccess();
-        return codes;
-      },
-      waitForTransactionHash: execution.waitForTransactionHash,
-    };
+    return new BackupCodesWithExecution(execution, codes);
   }
 
   signMessage(bytes: Uint8Array) {
