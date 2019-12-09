@@ -8,7 +8,7 @@ import {Wallet} from 'ethers';
 
 chai.use(sinonChai);
 
-describe('DeployingWallet', () => {
+describe('UNIT: DeployingWallet', () => {
   const serializedDeplpoyingWallet: SerializedDeployingWallet = {
     name: 'name.mylogin.eth',
     contractAddress: TEST_CONTRACT_ADDRESS,
