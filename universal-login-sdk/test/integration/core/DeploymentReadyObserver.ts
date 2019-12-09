@@ -59,6 +59,18 @@ describe('INT: DeploymentReadyObserver', () => {
       .to.be.rejectedWith('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.');
   });
 
+  it('#setSupportedTokens, minimalAmount > 9', () => {
+    expect(deploymentReadyObserver.setSupportedTokens(supportedTokens)).to.deep.eq(supportedTokens);
+  });
+
+  it('#setSupportedTokens, minimalAmount = 0', () => {
+    let supportedTokens = [{address: ETHER_NATIVE_TOKEN.address, minimalAmount: '0'}];
+    expect(deploymentReadyObserver.setSupportedTokens(supportedTokens)).to.deep.eq([]);
+    const supportedMockToken = {address: mockToken.address, minimalAmount};
+    supportedTokens = [...supportedTokens, supportedMockToken];
+    expect(deploymentReadyObserver.setSupportedTokens(supportedTokens)).to.deep.eq([supportedMockToken]);
+  });
+
   afterEach(async () => {
     await deploymentReadyObserver.finalizeAndStop();
   });

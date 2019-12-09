@@ -21,6 +21,7 @@ export class DeploymentReadyObserver extends ObserverRunner {
     if (tokensWithValidMinimaAmount.length > 0) {
       this.supportedTokens = supportedTokens;
     }
+    return tokensWithValidMinimaAmount;
   }
 
   async startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {

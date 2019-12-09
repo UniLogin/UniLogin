@@ -36,9 +36,10 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
 
   const onGasParametersChanged = (gasParameters: GasParameters) => {
     ensureNotNull(walletService, MissingParameter, 'walletService');
-    setMinimalAmount(safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice));
+    const minimalAmountCalculated = safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice);
+    setMinimalAmount(minimalAmountCalculated);
     walletService.setGasParameters(gasParameters);
-    walletService.setSupportedTokens([{address: gasParameters.gasToken, minimalAmount}]);
+    walletService.setSupportedTokens([{address: gasParameters.gasToken, minimalAmount: minimalAmountCalculated}]);
   };
 
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
