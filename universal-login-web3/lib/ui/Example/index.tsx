@@ -1,6 +1,7 @@
 import React, {useRef} from 'react';
 import Web3 from 'web3';
-import {ULWeb3Provider} from '@universal-login/web3';
+import ReactDOM from 'react-dom';
+import {ULWeb3Provider} from '../../ULWeb3Provider';
 
 const config = {
   relayerUrl: process.env.RELAYER_URL!,
@@ -45,4 +46,4 @@ function App() {
   );
 }
 
-export default App;
+ReactDOM.render(<App />, document.getElementById('root'));

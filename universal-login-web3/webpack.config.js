@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: './lib/ui/Example/index.tsx',
   output: {
     filename: 'main.[hash].js',
     path: path.join(__dirname, '/dist/html'),
@@ -48,7 +48,7 @@ module.exports = {
       chunkFilename: '[id].[hash].css',
     }),
     new HtmlWebpackPlugin({
-      template: 'src/index.html',
+      template: './lib/ui/Example/index.html',
     }),
     new webpack.DefinePlugin({
       'process.env.DAI_TOKEN_ADDRESS': JSON.stringify(process.env.DAI_TOKEN_ADDRESS),
@@ -62,6 +62,7 @@ module.exports = {
     historyApiFallback: true,
     host: '0.0.0.0',
     compress: true,
+    stats: 'minimal',
   },
   node: {
     fs: 'empty',
