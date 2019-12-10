@@ -5,7 +5,6 @@ export interface SdkConfig {
   observedTokensAddresses: string[];
   saiTokenAddress?: string;
   observedCurrencies: ObservedCurrency[];
-  executionFactoryTick: number;
   notice: string;
   authorizationsObserverTick: number;
   balanceObserverTick: number;

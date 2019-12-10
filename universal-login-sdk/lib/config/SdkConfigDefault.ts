@@ -16,7 +16,6 @@ export const SdkConfigDefault: SdkConfig = {
     'SAI',
     'ETH',
   ],
-  executionFactoryTick: 1000,
   notice: '',
   authorizationsObserverTick: 1000,
   balanceObserverTick: 1000 * 3,
