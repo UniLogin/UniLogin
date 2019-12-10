@@ -24,7 +24,7 @@
     "build": "tsc --build tsconfig.json",
     "lint": "eslint '{lib,test}/**/*.{ts,tsx}'",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./test/helpers/nullCompiler.ts -t 10000 \"dist/test/**/*.js\"",
+    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./test/config -t 10000 \"dist/test/**/*.js\"",
     "clean": "rimraf dist",
     "start": "webpack-dev-server --mode development",
     "start:example": "ts-node lib/scripts/dev-start.ts"
