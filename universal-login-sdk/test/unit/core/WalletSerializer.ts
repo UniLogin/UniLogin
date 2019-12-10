@@ -1,12 +1,17 @@
 import {AssertionError, expect} from 'chai';
 import sinon from 'sinon';
 import {WalletSerializer} from '../../../lib/core/services/WalletSerializer';
-import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure} from '@universal-login/commons';
+import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import {DeployedWallet, DeployingWallet} from '../../../lib';
 import {Wallet} from 'ethers';
 import {ConnectingWallet} from '../../../lib/api/wallet/ConnectingWallet';
 
 describe('UNIT: WalletSerializer', () => {
+  const mockSDK = {provider: Wallet.createRandom(),
+    relayerApi: {
+      getDeploymentHash: sinon.stub().resolves({transactionHash: TEST_TRANSACTION_HASH, state: 'Success'}),
+    },
+  } as any;
   const TEST_FUTURE_WALLET = {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
@@ -20,20 +25,23 @@ describe('UNIT: WalletSerializer', () => {
     privateKey: TEST_PRIVATE_KEY,
   };
 
-  const TEST_DEPLOYING_WALLET: DeployingWallet = {
+  const TEST_SERIALIZED_WALLET = {
     name: 'name.mylogin.eth',
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     deploymentHash: TEST_MESSAGE_HASH,
-    waitForTransactionHash: sinon.mock(),
-    waitToBeSuccess: sinon.mock(),
   };
+
+  const TEST_DEPLOYING_WALLET = new DeployingWallet(
+    TEST_SERIALIZED_WALLET,
+    mockSDK,
+  );
 
   const TEST_DEPLOYED_WALLET = new DeployedWallet(
     TEST_CONTRACT_ADDRESS,
     'name.mylogin.eth',
     TEST_PRIVATE_KEY,
-    {provider: Wallet.createRandom()} as any,
+    mockSDK,
   );
 
   const TEST_CONNECTING_WALLET = new ConnectingWallet(TEST_CONTRACT_ADDRESS, 'name.mylogin.eth', TEST_PRIVATE_KEY);
@@ -76,10 +84,7 @@ describe('UNIT: WalletSerializer', () => {
         wallet: TEST_DEPLOYING_WALLET,
       })).to.deep.eq({
         kind: 'Deploying',
-        wallet: {
-          ...TEST_APPLICATION_WALLET,
-          deploymentHash: TEST_DEPLOYING_WALLET.deploymentHash,
-        },
+        wallet: TEST_SERIALIZED_WALLET,
       });
     });
 
@@ -97,7 +102,6 @@ describe('UNIT: WalletSerializer', () => {
   describe('deserialize', () => {
     const futureWalletFactory = {
       createFromExistingCounterfactual: () => TEST_FUTURE_WALLET,
-      createDeployingWallet: () => TEST_DEPLOYING_WALLET,
     };
     const sdk = {
       getFutureWalletFactory: () => futureWalletFactory,

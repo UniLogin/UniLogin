@@ -1,8 +1,34 @@
-import {MineableStatus} from '@universal-login/commons';
 import {SerializedDeployingWallet} from '../..';
 import {DeployedWallet} from './DeployedWallet';
+import {MineableFactory} from '../../core/services/MineableFactory';
+import UniversalLoginSDK from '../sdk';
 
-export interface DeployingWallet extends SerializedDeployingWallet {
-  waitForTransactionHash: () => Promise<MineableStatus>;
-  waitToBeSuccess: () => Promise<DeployedWallet>;
-}
+export class DeployingWallet extends MineableFactory implements SerializedDeployingWallet {
+  name: string;
+  contractAddress: string;
+  privateKey: string;
+  deploymentHash: string;
+
+  constructor(
+    serializedDeployingWallet: SerializedDeployingWallet,
+    private sdk: UniversalLoginSDK,
+    tick?: number,
+    timeout?: number) {
+    super(
+      tick,
+      timeout,
+      (hash: string) => sdk.relayerApi.getDeploymentStatus(hash),
+    );
+    this.contractAddress = serializedDeployingWallet.contractAddress;
+    this.deploymentHash = serializedDeployingWallet.deploymentHash;
+    this.name = serializedDeployingWallet.name;
+    this.privateKey = serializedDeployingWallet.privateKey;
+  }
+
+  waitForTransactionHash = () => this.createWaitForTransactionHash(this.deploymentHash)();
+
+  waitToBeSuccess = async () => {
+    await this.createWaitToBeSuccess(this.deploymentHash)();
+    return new DeployedWallet(this.contractAddress, this.name, this.privateKey, this.sdk);
+  };
+};

@@ -45,7 +45,7 @@ describe('INT: FutureWalletFactory', async () => {
       provider,
       blockchainService,
       relayerApi,
-      {sdkConfig: {applicationInfo: TEST_APPLICATION_INFO}, provider} as any,
+      {sdkConfig: {applicationInfo: TEST_APPLICATION_INFO}, provider, relayerApi} as any,
     );
   });
 
