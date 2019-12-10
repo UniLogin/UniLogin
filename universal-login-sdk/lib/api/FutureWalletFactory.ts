@@ -11,7 +11,6 @@ import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {ENSService} from '../integration/ethereum/ENSService';
 import UniversalLoginSDK from './sdk';
-import {MineableFactory} from '../core/services/MineableFactory';
 import {InvalidAddressOrEnsName} from '../core/utils/errors';
 import {SerializedDeployingWallet} from '../core/models/WalletService';
 import {DeployingWallet} from './wallet/DeployingWallet';
@@ -28,7 +27,7 @@ export interface FutureWallet extends SerializableFutureWallet {
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
 
-export class FutureWalletFactory extends MineableFactory {
+export class FutureWalletFactory {
   private ensService: ENSService;
 
   constructor(
@@ -37,14 +36,7 @@ export class FutureWalletFactory extends MineableFactory {
     private blockchainService: BlockchainService,
     private relayerApi: RelayerApi,
     private sdk: UniversalLoginSDK,
-    tick?: number,
-    timeout?: number,
   ) {
-    super(
-      tick,
-      timeout,
-      (hash: string) => this.relayerApi.getDeploymentStatus(hash),
-    );
     this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
