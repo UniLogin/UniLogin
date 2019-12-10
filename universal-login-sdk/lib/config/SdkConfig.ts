@@ -10,4 +10,6 @@ export interface SdkConfig {
   authorizationsObserverTick: number;
   balanceObserverTick: number;
   priceObserverTick: number;
+  mineableFactoryTick: number;
+  mineableFactoryTimeout: number;
 }

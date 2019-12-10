@@ -11,6 +11,10 @@ describe('UNIT: WalletSerializer', () => {
     relayerApi: {
       getDeploymentHash: sinon.stub().resolves({transactionHash: TEST_TRANSACTION_HASH, state: 'Success'}),
     },
+    sdkConfig: {
+      mineableFactoryTick: 10,
+      mineableFactoryTimeout: 100,
+    }
   } as any;
   const TEST_FUTURE_WALLET = {
     contractAddress: TEST_CONTRACT_ADDRESS,
@@ -104,8 +108,8 @@ describe('UNIT: WalletSerializer', () => {
       createFromExistingCounterfactual: () => TEST_FUTURE_WALLET,
     };
     const sdk = {
+      ...mockSDK,
       getFutureWalletFactory: () => futureWalletFactory,
-      provider: Wallet.createRandom(),
     };
     const walletSerializer = new WalletSerializer(sdk as any);
 

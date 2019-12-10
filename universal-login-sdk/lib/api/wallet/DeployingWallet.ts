@@ -12,11 +12,10 @@ export class DeployingWallet extends MineableFactory implements SerializedDeploy
   constructor(
     serializedDeployingWallet: SerializedDeployingWallet,
     private sdk: UniversalLoginSDK,
-    tick?: number,
-    timeout?: number) {
+  ) {
     super(
-      tick,
-      timeout,
+      sdk.sdkConfig.mineableFactoryTick,
+      sdk.sdkConfig.mineableFactoryTimeout,
       (hash: string) => sdk.relayerApi.getDeploymentStatus(hash),
     );
     this.contractAddress = serializedDeployingWallet.contractAddress;

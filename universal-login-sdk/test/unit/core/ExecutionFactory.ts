@@ -30,7 +30,7 @@ describe('UNIT: ExecutionFactory', async () => {
       execute,
       getStatus,
     } as any;
-    executionFactory = new ExecutionFactory(relayerApi, 10);
+    executionFactory = new ExecutionFactory(relayerApi, 10, 200);
   });
 
   beforeEach(() => {

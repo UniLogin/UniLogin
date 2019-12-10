@@ -21,4 +21,6 @@ export const SdkConfigDefault: SdkConfig = {
   authorizationsObserverTick: 1000,
   balanceObserverTick: 1000 * 3,
   priceObserverTick: 1000 * 60 * 5,
+  mineableFactoryTick: 1000,
+  mineableFactoryTimeout: 600000,
 };
