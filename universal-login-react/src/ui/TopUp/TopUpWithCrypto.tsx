@@ -1,18 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {QRCode} from 'react-qr-svg';
 import {copy} from '@universal-login/commons';
+import {MinimalAmountInfo} from './MinimalAmountInfo';
 
 interface TopUpWithCryptoProps {
   contractAddress: string;
-  isDeployment: boolean;
   minimalAmount?: string;
 }
-
-const DeploymentWithCryptoInfo = ({minimalAmount}: {minimalAmount?: string}) =>
-  <>
-    <p className="info-text">Send {minimalAmount || '...'} ETH to this address</p>
-    <p className="info-text">This screen will update itself as soon as we detect a mined transaction</p>
-  </>;
 
 const TopUpCryptoInfo = () =>
   <>
@@ -20,7 +14,7 @@ const TopUpCryptoInfo = () =>
     <p className="info-text">Only send Ethereum tokens to this address</p>
   </>;
 
-export const TopUpWithCrypto = ({contractAddress, isDeployment, minimalAmount}: TopUpWithCryptoProps) => {
+export const TopUpWithCrypto = ({contractAddress, minimalAmount}: TopUpWithCryptoProps) => {
   const [cryptoClass, setCryptoClass] = useState('');
 
   useEffect(() => {
@@ -54,8 +48,8 @@ export const TopUpWithCrypto = ({contractAddress, isDeployment, minimalAmount}: 
               value={contractAddress}
             />
           </div>
-          {isDeployment
-            ? <DeploymentWithCryptoInfo minimalAmount = {minimalAmount}/>
+          {minimalAmount
+            ? <MinimalAmountInfo minimalAmount = {minimalAmount}/>
             : <TopUpCryptoInfo/>
           }
         </div>

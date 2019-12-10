@@ -57,7 +57,6 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
       />
       {topUpMethod === 'crypto' && <TopUpWithCrypto
         contractAddress={contractAddress}
-        isDeployment={isDeployment}
         minimalAmount={minimalAmount}
       />}
       {topUpMethod === 'fiat' && <TopUpWithFiat

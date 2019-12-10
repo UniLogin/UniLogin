@@ -10,6 +10,7 @@ import Yoti2x from './../../assets/logos/yoti@2x.jpg';
 import ApplePay from './../../assets/logos/applePay.jpg';
 import ApplePay2x from './../../assets/logos/applePay@2x.jpg';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
+import {MinimalAmountInfo} from '../MinimalAmountInfo';
 
 interface FiatFooterProps {
   paymentMethod?: TopUpProvider;
@@ -30,9 +31,12 @@ export const FiatFooter = ({paymentMethod, minimalAmount}: FiatFooterProps) => {
           <div className="info-block info-row">
             <p className="info-text info-text-hint">Minimum amount is 1£</p>
           </div>
-          <div className="info-block info-row">
-            <p className="info-text info-text-hint">Minimum amount required to deploy contract is {minimalAmount} ETH</p>
-          </div>
+          {minimalAmount &&
+            <MinimalAmountInfo
+              minimalAmount={minimalAmount}
+              isFiatMethod={true}
+            />
+          }
         </>
       );
 
