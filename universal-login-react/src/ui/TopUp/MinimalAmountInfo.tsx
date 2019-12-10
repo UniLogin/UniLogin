@@ -2,10 +2,10 @@ import React from 'react';
 
 interface MinimalAmountInfoProps {
   minimalAmount?: string;
-  isFiatMethod?: boolean;
+  paymentMethod: 'crypto' | 'fiat';
 };
 
-export const MinimalAmountInfo = ({minimalAmount, isFiatMethod}: MinimalAmountInfoProps) => {
+export const MinimalAmountInfo = ({minimalAmount, paymentMethod}: MinimalAmountInfoProps) => {
   const fiatTopUpMinimalAmountInfo = () =>
     <p className="info-text info-text-hint">Send {minimalAmount || '...'} ETH to this address</p>;
 
@@ -17,7 +17,7 @@ export const MinimalAmountInfo = ({minimalAmount, isFiatMethod}: MinimalAmountIn
   );
 
   return (
-    isFiatMethod
+    paymentMethod === 'fiat'
       ? fiatTopUpMinimalAmountInfo()
       : cryptoTopUpMinimalAmountInfo()
   );

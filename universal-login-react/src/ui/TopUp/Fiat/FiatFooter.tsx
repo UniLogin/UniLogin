@@ -35,7 +35,7 @@ export const FiatFooter = ({paymentMethod, minimalAmount, isDeployment}: FiatFoo
           {isDeployment &&
             <MinimalAmountInfo
               minimalAmount={minimalAmount}
-              isFiatMethod={true}
+              paymentMethod='fiat'
             />
           }
         </>

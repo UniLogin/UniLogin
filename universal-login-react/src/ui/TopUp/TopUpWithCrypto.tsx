@@ -50,7 +50,7 @@ export const TopUpWithCrypto = ({contractAddress, minimalAmount, isDeployment}: 
             />
           </div>
           {isDeployment
-            ? <MinimalAmountInfo minimalAmount = {minimalAmount}/>
+            ? <MinimalAmountInfo minimalAmount={minimalAmount} paymentMethod='crypto' />
             : <TopUpCryptoInfo/>
           }
         </div>
