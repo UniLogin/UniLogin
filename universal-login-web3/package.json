@@ -25,7 +25,9 @@
     "lint": "eslint '{lib,test}/**/*.{ts,tsx}'",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha --require ./test/helpers/nullCompiler.ts -t 10000 \"dist/test/**/*.js\"",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "start": "webpack-dev-server --mode development",
+    "start:example": "ts-node lib/scripts/dev-start.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -47,12 +49,16 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "ethereum-waffle": "2.0.15",
     "ganache-core": "^2.2.1",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
     "mocha": "^5.2.0",
     "node-fetch": "^2.6.0",
+    "path": "^0.12.7",
     "rimraf": "^2.6.3",
     "sinon": "^6.3.1",
     "sinon-chai": "^3.2.0",
     "ts-node": "^8.0.2",
-    "typescript": "^3.7.0"
+    "typescript": "^3.7.0",
+    "webpack": "^4.41.2"
   }
 }

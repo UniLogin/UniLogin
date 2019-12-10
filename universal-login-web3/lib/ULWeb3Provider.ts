@@ -7,8 +7,8 @@ import {providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {ensure, Message, walletFromBrain} from '@universal-login/commons';
 import {waitForTrue} from './utils';
-import {initUi} from './ui';
-import {AppProps} from './ui/App';
+import {initUi} from './ui/utils/initUi';
+import {OnboardingProps} from './ui/Onboarding';
 import {StorageService, WalletStorageService} from '@universal-login/react';
 import {combine, Property} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
@@ -17,7 +17,7 @@ export interface ULWeb3ProviderOptions {
   provider: Provider;
   relayerUrl: string;
   ensDomains: string[];
-  uiInitializer?: (services: AppProps) => void;
+  uiInitializer?: (services: OnboardingProps) => void;
   storageService?: StorageService;
 }
 
