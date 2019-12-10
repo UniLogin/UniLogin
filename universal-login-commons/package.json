@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/commons",
-  "version": "0.3.56",
+  "version": "0.4.0",
   "description": "Unviersal Login Common source code",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
@@ -22,8 +22,8 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "ens-builder": "^2.0.1",
-    "ethereum-waffle": "^2.1.0",
     "eslint": "^6.5.0",
+    "ethereum-waffle": "^2.1.0",
     "lodash.range": "^3.2.0",
     "node-fetch": "^2.6.0",
     "rimraf": "^2.6.3",
