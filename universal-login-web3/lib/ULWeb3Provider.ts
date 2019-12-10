@@ -7,7 +7,7 @@ import {providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {ensure, Message, walletFromBrain} from '@universal-login/commons';
 import {waitForTrue} from './utils';
-import {initUi} from './ui/initUi';
+import {initUi} from './ui/utils/initUi';
 import {AppProps} from './ui/App';
 import {StorageService, WalletStorageService} from '@universal-login/react';
 import {combine, Property} from 'reactive-properties';
