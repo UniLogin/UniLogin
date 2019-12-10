@@ -9,7 +9,7 @@ import {Wallet} from 'ethers';
 chai.use(sinonChai);
 
 describe('UNIT: DeployingWallet', () => {
-  const serializedDeplpoyingWallet: SerializedDeployingWallet = {
+  const serializedDeployingWallet: SerializedDeployingWallet = {
     name: 'name.mylogin.eth',
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
@@ -40,7 +40,7 @@ describe('UNIT: DeployingWallet', () => {
   } as any;
 
   beforeEach(() => {
-    deployingWallet = new DeployingWallet(serializedDeplpoyingWallet, sdk, 20, 100);
+    deployingWallet = new DeployingWallet(serializedDeployingWallet, sdk, 20, 100);
   });
 
   it('waits for transaction hash', async () => {
@@ -48,7 +48,7 @@ describe('UNIT: DeployingWallet', () => {
   });
 
   it('waits to be success', async () => {
-    const expectedDeployedWallet = new DeployedWallet(serializedDeplpoyingWallet.contractAddress, serializedDeplpoyingWallet.name, serializedDeplpoyingWallet.privateKey, sdk);
+    const expectedDeployedWallet = new DeployedWallet(serializedDeployingWallet.contractAddress, serializedDeployingWallet.name, serializedDeployingWallet.privateKey, sdk);
     const deployedWallet = await deployingWallet.waitToBeSuccess();
     expect(deployedWallet.contractAddress).to.deep.eq(expectedDeployedWallet.contractAddress);
     expect(deployedWallet.name).to.deep.eq(expectedDeployedWallet.name);
