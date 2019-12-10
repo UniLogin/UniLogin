@@ -1,6 +1,6 @@
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, TEST_SDK_CONFIG, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_SDK_CONFIG} from '@universal-login/commons';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {RelayerUnderTest} from '@universal-login/relayer';

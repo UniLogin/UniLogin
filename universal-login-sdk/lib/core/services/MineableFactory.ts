@@ -2,13 +2,10 @@ import {MineableState, MineableStatus, ensureNotNull, ensure} from '@universal-l
 import {TransactionHashNotFound} from '../utils/errors';
 import {retry} from '../utils/retry';
 
-const DEFAULT_TIMEOUT = 600000;
-const DEFAULT_TICK = 1000;
-
 export class MineableFactory {
   constructor(
-    protected tick: number = DEFAULT_TICK,
-    protected timeout: number = DEFAULT_TIMEOUT,
+    protected tick: number,
+    protected timeout: number,
     protected getStatus: (hash: string) => Promise<any>,
   ) {}
 

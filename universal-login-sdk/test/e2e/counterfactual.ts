@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG} from '@universal-login/commons';
 import {emptyMessage} from '@universal-login/contracts';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
@@ -20,7 +20,7 @@ describe('E2E: SDK counterfactual deployment', () => {
     [wallet] = getWallets(provider);
     ({relayer, provider} = await RelayerUnderTest.createPreconfigured(wallet));
     await relayer.start();
-    sdk = new UniversalLoginSDK(relayer.url(), provider);
+    sdk = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
     await sdk.fetchRelayerConfig();
   });
 

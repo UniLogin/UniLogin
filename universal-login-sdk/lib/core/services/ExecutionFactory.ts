@@ -12,8 +12,8 @@ export interface Execution {
 export class ExecutionFactory extends MineableFactory {
   constructor(
     private relayerApi: RelayerApi,
-    tick?: number,
-    timeout?: number,
+    tick: number,
+    timeout: number,
   ) {
     super(
       tick,

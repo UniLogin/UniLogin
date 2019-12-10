@@ -35,6 +35,10 @@ describe('UNIT: WalletService', () => {
       relayerApi: {
         getDeploymentStatus: sinon.stub().resolves({transactionHash: TEST_TRANSACTION_HASH, state: 'Success'}),
       },
+      sdkConfig: {
+        mineableFactoryTick: 10,
+        mineableFactoryTimeout: 100,
+      },
     };
 
     walletFromPassphrase.withArgs(name, passphrase).resolves({
@@ -56,8 +60,6 @@ describe('UNIT: WalletService', () => {
       deploymentHash: TEST_MESSAGE_HASH,
     },
     sdk,
-    20,
-    100,
     );
 
     futureWallet = {

@@ -95,8 +95,9 @@ export const TEST_GAS_MODES = [{
 }];
 
 export const TEST_SDK_CONFIG = {
-  executionFactoryTick: 10,
-  authorizationsObserverTick: 10,
-  balanceObserverTick: 10,
-  priceObserverTick: 10,
+  authorizationsObserverTick: 3,
+  balanceObserverTick: 3,
+  priceObserverTick: 3,
+  mineableFactoryTick: 3,
+  mineableFactoryTimeout: 1000,
 };

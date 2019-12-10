@@ -37,10 +37,14 @@ describe('UNIT: DeployingWallet', () => {
     relayerApi: {
       getDeploymentStatus: getStatus,
     },
+    sdkConfig: {
+      mineableFactoryTick: 10,
+      mineableFactoryTimeout: 100,
+    },
   } as any;
 
   beforeEach(() => {
-    deployingWallet = new DeployingWallet(serializedDeployingWallet, sdk, 20, 100);
+    deployingWallet = new DeployingWallet(serializedDeployingWallet, sdk);
   });
 
   it('waits for transaction hash', async () => {
