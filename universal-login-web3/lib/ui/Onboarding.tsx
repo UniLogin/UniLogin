@@ -1,7 +1,7 @@
 import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {UIController} from '../services/UIController';
 import {OnboardingModal, useProperty} from '@universal-login/react';
+import {UIController} from '../services/UIController';
 import {MetamaskService} from '../services/MetamaskService';
 
 export interface OnboardingProps {
