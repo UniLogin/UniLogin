@@ -1,10 +1,10 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {App, AppProps} from '../App';
+import {Onboarding, OnboardingProps} from '../Onboarding';
 
-export function initUi(props: AppProps) {
+export function initUi(props: OnboardingProps) {
   const reactRootElement = createReactRoot();
-  render(<App {...props}/>, reactRootElement);
+  render(<Onboarding {...props}/>, reactRootElement);
 }
 
 function createReactRoot() {
