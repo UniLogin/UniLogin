@@ -102,7 +102,6 @@ describe('UNIT: WalletSerializer', () => {
   describe('deserialize', () => {
     const futureWalletFactory = {
       createFromExistingCounterfactual: () => TEST_FUTURE_WALLET,
-      createDeployingWallet: () => TEST_DEPLOYING_WALLET,
     };
     const sdk = {
       getFutureWalletFactory: () => futureWalletFactory,

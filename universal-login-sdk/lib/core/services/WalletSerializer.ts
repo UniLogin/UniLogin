@@ -1,6 +1,7 @@
 import {SerializedWalletState, WalletState} from '../models/WalletService';
 import UniversalLoginSDK, {DeployedWallet} from '../..';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
+import {DeployingWallet} from '../../api/wallet/DeployingWallet';
 
 export class WalletSerializer {
   constructor(
@@ -56,7 +57,7 @@ export class WalletSerializer {
       case 'Deploying':
         return {
           kind: 'Deploying',
-          wallet: this.sdk.getFutureWalletFactory().createDeployingWallet(state.wallet),
+          wallet: new DeployingWallet(state.wallet, this.sdk),
         };
       case 'Connecting':
         return {

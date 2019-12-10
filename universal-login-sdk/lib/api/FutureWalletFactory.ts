@@ -12,7 +12,6 @@ import {RelayerApi} from '../integration/http/RelayerApi';
 import {ENSService} from '../integration/ethereum/ENSService';
 import UniversalLoginSDK from './sdk';
 import {InvalidAddressOrEnsName} from '../core/utils/errors';
-import {SerializedDeployingWallet} from '../core/models/WalletService';
 import {DeployingWallet} from './wallet/DeployingWallet';
 
 export type BalanceDetails = {
@@ -46,10 +45,6 @@ export class FutureWalletFactory {
     return encodeInitializeWithENSData(initArgs);
   }
 
-  createDeployingWallet(serializedDeployingWallet: SerializedDeployingWallet): DeployingWallet {
-    return new DeployingWallet(serializedDeployingWallet, this.sdk);
-  }
-
   createFromExistingCounterfactual(wallet: SerializableFutureWallet): FutureWallet {
     const {privateKey, contractAddress} = wallet;
     const publicKey = utils.computeAddress(privateKey);
@@ -71,7 +66,7 @@ export class FutureWalletFactory {
         const initData = await this.setupInitData(publicKey, ensName, gasPrice, gasToken);
         const signature = await calculateInitializeSignature(initData, privateKey);
         const {deploymentHash} = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
-        return this.createDeployingWallet({deploymentHash, contractAddress, name: ensName, privateKey});
+        return new DeployingWallet({deploymentHash, contractAddress, name: ensName, privateKey}, this.sdk);
       },
     };
   }
