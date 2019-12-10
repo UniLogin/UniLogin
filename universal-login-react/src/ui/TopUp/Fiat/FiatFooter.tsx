@@ -15,9 +15,10 @@ import {MinimalAmountInfo} from '../MinimalAmountInfo';
 interface FiatFooterProps {
   paymentMethod?: TopUpProvider;
   minimalAmount?: string;
+  isDeployment: boolean;
 }
 
-export const FiatFooter = ({paymentMethod, minimalAmount}: FiatFooterProps) => {
+export const FiatFooter = ({paymentMethod, minimalAmount, isDeployment}: FiatFooterProps) => {
   switch (paymentMethod) {
     case TopUpProvider.RAMP:
       return (
@@ -31,7 +32,7 @@ export const FiatFooter = ({paymentMethod, minimalAmount}: FiatFooterProps) => {
           <div className="info-block info-row">
             <p className="info-text info-text-hint">Minimum amount is 1£</p>
           </div>
-          {minimalAmount &&
+          {isDeployment &&
             <MinimalAmountInfo
               minimalAmount={minimalAmount}
               isFiatMethod={true}

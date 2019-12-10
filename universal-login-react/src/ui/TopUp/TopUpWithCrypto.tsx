@@ -6,6 +6,7 @@ import {MinimalAmountInfo} from './MinimalAmountInfo';
 interface TopUpWithCryptoProps {
   contractAddress: string;
   minimalAmount?: string;
+  isDeployment: boolean;
 }
 
 const TopUpCryptoInfo = () =>
@@ -14,7 +15,7 @@ const TopUpCryptoInfo = () =>
     <p className="info-text">Only send Ethereum tokens to this address</p>
   </>;
 
-export const TopUpWithCrypto = ({contractAddress, minimalAmount}: TopUpWithCryptoProps) => {
+export const TopUpWithCrypto = ({contractAddress, minimalAmount, isDeployment}: TopUpWithCryptoProps) => {
   const [cryptoClass, setCryptoClass] = useState('');
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export const TopUpWithCrypto = ({contractAddress, minimalAmount}: TopUpWithCrypt
               value={contractAddress}
             />
           </div>
-          {minimalAmount
+          {isDeployment
             ? <MinimalAmountInfo minimalAmount = {minimalAmount}/>
             : <TopUpCryptoInfo/>
           }

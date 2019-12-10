@@ -19,9 +19,10 @@ export interface TopUpWithFiatProps {
   onPaymentMethodChange: (value: TopUpProvider | undefined) => void;
   logoColor?: LogoColor;
   minimalAmount?: string;
+  isDeployment: boolean;
 }
 
-export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange, minimalAmount}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange, minimalAmount, isDeployment}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
 
@@ -91,6 +92,7 @@ export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amou
             <FiatFooter
               paymentMethod={paymentMethod}
               minimalAmount={minimalAmount}
+              isDeployment={isDeployment}
             />}
           </div>
         </div>

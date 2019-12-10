@@ -58,6 +58,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
       {topUpMethod === 'crypto' && <TopUpWithCrypto
         contractAddress={contractAddress}
         minimalAmount={minimalAmount}
+        isDeployment={isDeployment}
       />}
       {topUpMethod === 'fiat' && <TopUpWithFiat
         sdk={sdk}
@@ -68,6 +69,7 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
         onPaymentMethodChange={setPaymentMethod}
         logoColor={logoColor}
         minimalAmount={minimalAmount}
+        isDeployment={isDeployment}
       />}
       {topUpMethod && <FooterSection className={topUpClassName}>
         {isDeployment &&
