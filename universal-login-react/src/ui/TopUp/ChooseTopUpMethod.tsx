@@ -28,7 +28,7 @@ export interface ChooseTopUpMethodProps {
 }
 
 export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassName, logoColor, isDeployment, walletService}: ChooseTopUpMethodProps) => {
-  const [minimalAmount, setMinimalAmount] = useState(walletService!.getRequiredDeploymentBalance());
+  const [minimalAmount, setMinimalAmount] = useState<string | undefined>(walletService?.getRequiredDeploymentBalance());
 
   const onGasParametersChanged = (gasParameters: GasParameters) => {
     walletService!.setGasParameters(gasParameters);
