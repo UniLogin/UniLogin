@@ -2,9 +2,6 @@ import {MineableState, MineableStatus, ensureNotNull, ensure} from '@universal-l
 import {TransactionHashNotFound} from '../utils/errors';
 import {retry} from '../utils/retry';
 
-// const DEFAULT_TIMEOUT = ;
-// const DEFAULT_TICK = ;
-
 export class MineableFactory {
   constructor(
     protected tick: number,

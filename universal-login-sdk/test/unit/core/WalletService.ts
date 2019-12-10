@@ -38,7 +38,7 @@ describe('UNIT: WalletService', () => {
       sdkConfig: {
         mineableFactoryTick: 10,
         mineableFactoryTimeout: 100,
-      }
+      },
     };
 
     walletFromPassphrase.withArgs(name, passphrase).resolves({

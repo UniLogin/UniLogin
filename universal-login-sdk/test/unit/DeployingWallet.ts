@@ -40,7 +40,7 @@ describe('UNIT: DeployingWallet', () => {
     sdkConfig: {
       mineableFactoryTick: 10,
       mineableFactoryTimeout: 100,
-    }
+    },
   } as any;
 
   beforeEach(() => {

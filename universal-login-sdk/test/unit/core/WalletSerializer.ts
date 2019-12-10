@@ -14,7 +14,7 @@ describe('UNIT: WalletSerializer', () => {
     sdkConfig: {
       mineableFactoryTick: 10,
       mineableFactoryTimeout: 100,
-    }
+    },
   } as any;
   const TEST_FUTURE_WALLET = {
     contractAddress: TEST_CONTRACT_ADDRESS,
