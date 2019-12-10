@@ -5,7 +5,7 @@ import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, Applicati
 import {WalletService} from '../../../lib/core/services/WalletService';
 import {Wallet, constants} from 'ethers';
 import {DeployedWallet} from '../../../lib/api/wallet/DeployedWallet';
-import {FutureWallet} from '../../../lib/api/FutureWalletFactory';
+import {FutureWallet} from '../../../lib/api/wallet/FutureWallet';
 import {SerializedWalletState} from '../../../lib/core/models/WalletService';
 import {DeployingWallet} from '../../../lib';
 
@@ -55,16 +55,16 @@ describe('UNIT: WalletService', () => {
       privateKey: TEST_PRIVATE_KEY,
       deploymentHash: TEST_MESSAGE_HASH,
     },
-    sdk,
-    20,
-    100,
+      sdk,
+      20,
+      100,
     );
 
     futureWallet = {
       contractAddress: TEST_ACCOUNT_ADDRESS,
       privateKey: TEST_PRIVATE_KEY,
       deploy: async () => deployingWallet,
-      waitForBalance: (async () => { }) as any,
+      waitForBalance: (async () => {}) as any,
     };
 
     storage = {

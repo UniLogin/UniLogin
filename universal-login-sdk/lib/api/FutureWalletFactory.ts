@@ -13,16 +13,12 @@ import {ENSService} from '../integration/ethereum/ENSService';
 import UniversalLoginSDK from './sdk';
 import {InvalidAddressOrEnsName} from '../core/utils/errors';
 import {DeployingWallet} from './wallet/DeployingWallet';
+import {FutureWallet} from './wallet/FutureWallet';
 
 export type BalanceDetails = {
   tokenAddress: string;
   contractAddress: string;
 };
-
-export interface FutureWallet extends SerializableFutureWallet {
-  waitForBalance: () => Promise<BalanceDetails>;
-  deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<DeployingWallet>;
-}
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
 
