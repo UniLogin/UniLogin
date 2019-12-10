@@ -55,9 +55,9 @@ describe('UNIT: WalletService', () => {
       privateKey: TEST_PRIVATE_KEY,
       deploymentHash: TEST_MESSAGE_HASH,
     },
-      sdk,
-      20,
-      100,
+    sdk,
+    20,
+    100,
     );
 
     futureWallet = {
@@ -65,7 +65,7 @@ describe('UNIT: WalletService', () => {
       privateKey: TEST_PRIVATE_KEY,
       deploy: async () => deployingWallet,
       waitForBalance: (async () => {}) as any,
-    };
+    } as any;
 
     storage = {
       load: (): SerializedWalletState => ({kind: 'Deployed', wallet: applicationWallet}),
