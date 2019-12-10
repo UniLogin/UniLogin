@@ -99,4 +99,6 @@ export const TEST_SDK_CONFIG = {
   authorizationsObserverTick: 10,
   balanceObserverTick: 10,
   priceObserverTick: 10,
+  mineableFactoryTick: 10,
+  mineableFactoryTimeout: 1000,
 };
