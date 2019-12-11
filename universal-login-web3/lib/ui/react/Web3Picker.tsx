@@ -13,7 +13,6 @@ export interface CustomProvider {
 
 export class Web3Picker {
   private isVisible = new State(false);
-  private rootId = 'universal-login-web3-picker';
   private created = false;
 
   constructor(private parentSelector?: string) {}
@@ -21,7 +20,7 @@ export class Web3Picker {
   lazyCreateReactRoot() {
     if (!this.created) {
       this.created = true;
-      const root = this.createReactRoot(this.rootId, this.parentSelector);
+      const root = this.createReactRoot('universal-login-web3-picker', this.parentSelector);
       render(<Web3PickerComponent isVisibleProp={this.isVisible} hideModal={() => this.hideChooser()}/>, root);
     }
   }
