@@ -7,7 +7,7 @@ export function initUi(props: OnboardingProps) {
   render(<Onboarding {...props}/>, reactRootElement);
 }
 
-function createReactRoot() {
+export function createReactRoot() {
   const reactRoot = document.createElement('div');
   reactRoot.setAttribute('id', 'universal-login-modal-root');
   document.getElementsByTagName('body')[0].appendChild(reactRoot);
