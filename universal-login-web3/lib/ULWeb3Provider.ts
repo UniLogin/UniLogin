@@ -8,7 +8,7 @@ import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {ensure, Message, walletFromBrain} from '@universal-login/commons';
 import {waitForTrue} from './utils';
 import {initUi} from './ui/utils/initUi';
-import {OnboardingProps} from './ui/Onboarding';
+import {OnboardingProps} from './ui/react/Onboarding';
 import {StorageService, WalletStorageService} from '@universal-login/react';
 import {combine, Property} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
