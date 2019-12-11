@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {WalletService} from '@universal-login/sdk';
 import {CountryDropdown} from './CountryDropdown';
 import {AmountInput} from './AmountInput';
 import {FiatFooter} from './FiatFooter';
@@ -11,7 +11,7 @@ import {IPGeolocationService} from '../../../integration/http/IPGeolocationServi
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
 
 export interface TopUpWithFiatProps {
-  sdk: UniversalLoginSDK;
+  walletService: WalletService;
   topUpProviderSupportService: TopUpProviderSupportService;
   amount: string;
   onAmountChange: (value: string) => void;
@@ -20,7 +20,7 @@ export interface TopUpWithFiatProps {
   logoColor?: LogoColor;
 }
 
-export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({walletService, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
 
@@ -38,7 +38,7 @@ export const TopUpWithFiat = ({sdk, logoColor, topUpProviderSupportService, amou
   };
 
   async function recognizeUserCountry() {
-    const {ipGeolocationApi} = sdk.getRelayerConfig();
+    const {ipGeolocationApi} = walletService.sdk.getRelayerConfig();
     const ipGeolocationService = new IPGeolocationService(ipGeolocationApi.baseUrl, ipGeolocationApi.accessKey);
     const userCountryCode = await ipGeolocationService.getCountryCode().catch(console.error);
 

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import {WalletService} from '@universal-login/sdk';
 import {LogoColor, TopUpWithFiat} from './Fiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
@@ -18,29 +18,23 @@ import {ChooseTopUpMethodWrapper} from './ChooseTopUpMethodWrapper';
 import {ChooseTopUpMethodHeader} from './ChooseTopUpMethodHeader';
 
 export interface ChooseTopUpMethodProps {
-  sdk: UniversalLoginSDK;
-  contractAddress: string;
+  walletService: WalletService;
   onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
   topUpClassName?: string;
   logoColor?: LogoColor;
-  isDeployment: boolean;
-  walletService?: WalletService;
 }
 
-export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassName, logoColor, isDeployment, walletService}: ChooseTopUpMethodProps) => {
-  const [minimalAmount, setMinimalAmount] = useState<string | undefined>(walletService?.getRequiredDeploymentBalance());
-
-  const onGasParametersChanged = (gasParameters: GasParameters) => {
-    walletService!.setGasParameters(gasParameters);
-    setMinimalAmount(walletService!.getRequiredDeploymentBalance());
-  };
-
+export const ChooseTopUpMethod = ({walletService, onPayClick, topUpClassName, logoColor}: ChooseTopUpMethodProps) => {
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
-
   const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
-
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
+  const [, setMinimalAmount] = useState<string | undefined>(walletService.getRequiredDeploymentBalance());
+
+  const onGasParametersChanged = (gasParameters: GasParameters) => {
+    walletService.setGasParameters(gasParameters);
+    setMinimalAmount(walletService.getRequiredDeploymentBalance());
+  };
 
   return (
     <ChooseTopUpMethodWrapper className={topUpClassName} topUpMethod={topUpMethod}>
@@ -49,12 +43,10 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
         setTopUpMethod={setTopUpMethod}
       />
       {topUpMethod === 'crypto' && <TopUpWithCrypto
-        contractAddress={contractAddress}
-        isDeployment={isDeployment}
-        minimalAmount={minimalAmount}
+        walletService={walletService}
       />}
       {topUpMethod === 'fiat' && <TopUpWithFiat
-        sdk={sdk}
+        walletService={walletService}
         topUpProviderSupportService={topUpProviderSupportService}
         amount={amount}
         onAmountChange={setAmount}
@@ -63,10 +55,10 @@ export const ChooseTopUpMethod = ({sdk, contractAddress, onPayClick, topUpClassN
         logoColor={logoColor}
       />}
       {topUpMethod && <FooterSection className={topUpClassName}>
-        {isDeployment &&
+        {walletService.isFutureWallet() &&
           <GasPrice
             isDeployed={false}
-            sdk={sdk}
+            sdk={walletService.sdk}
             onGasParametersChanged={onGasParametersChanged}
             gasLimit={DEPLOYMENT_REFUND}
             className={topUpClassName}

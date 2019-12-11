@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {QRCode} from 'react-qr-svg';
 import {copy} from '@universal-login/commons';
+import {WalletService} from '@universal-login/sdk';
 
 interface TopUpWithCryptoProps {
-  contractAddress: string;
-  isDeployment: boolean;
-  minimalAmount?: string;
+  walletService: WalletService;
 }
 
 const DeploymentWithCryptoInfo = ({minimalAmount}: {minimalAmount?: string}) =>
@@ -20,8 +19,9 @@ const TopUpCryptoInfo = () =>
     <p className="info-text">Only send Ethereum tokens to this address</p>
   </>;
 
-export const TopUpWithCrypto = ({contractAddress, isDeployment, minimalAmount}: TopUpWithCryptoProps) => {
+export const TopUpWithCrypto = ({walletService}: TopUpWithCryptoProps) => {
   const [cryptoClass, setCryptoClass] = useState('');
+  const contractAddress = walletService.getContractAddress();
 
   useEffect(() => {
     setCryptoClass('crypto-selected');
@@ -54,8 +54,8 @@ export const TopUpWithCrypto = ({contractAddress, isDeployment, minimalAmount}: 
               value={contractAddress}
             />
           </div>
-          {isDeployment
-            ? <DeploymentWithCryptoInfo minimalAmount = {minimalAmount}/>
+          {walletService.isFutureWallet()
+            ? <DeploymentWithCryptoInfo minimalAmount={walletService.getRequiredDeploymentBalance()}/>
             : <TopUpCryptoInfo/>
           }
         </div>

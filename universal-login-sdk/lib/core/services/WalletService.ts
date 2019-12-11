@@ -225,4 +225,13 @@ export class WalletService {
   getRequiredDeploymentBalance() {
     return this.requiredDeploymentBalance;
   }
+
+  isFutureWallet() {
+    return this.state.kind === 'Future';
+  }
+
+  getContractAddress() {
+    ensure(this.state.kind === 'Future' || this.state.kind === 'Deployed', InvalidWalletState, 'Future or Deployed', this.state.kind);
+    return this.state.wallet.contractAddress;
+  }
 }
