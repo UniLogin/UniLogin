@@ -128,7 +128,6 @@ export const App = () => {
                   hideModal={() => history.back()}
                   contractAddress={Wallet.createRandom().address}
                   sdk={sdk}
-                  onGasParametersChanged={console.log}
                   isDeployment={false}
                   isModal
                 />;
@@ -145,7 +144,7 @@ export const App = () => {
                   hideModal={() => history.back()}
                   contractAddress={Wallet.createRandom().address}
                   sdk={sdk}
-                  onGasParametersChanged={console.log}
+                  walletService={new WalletService(sdk)}
                   isDeployment
                   isModal
                 />;

@@ -26,7 +26,7 @@ export function CreateTopUp() {
         contractAddress={wallet.contractAddress}
         isDeployment
         isModal
-        onGasParametersChanged={(gasParameters) => walletService.setGasParameters(gasParameters)}
+        walletService={walletService}
         hideModal={() => {
           walletService.disconnect();
           history.push('/selectDeployName');

@@ -1,4 +1,3 @@
-import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {deployFactory} from '@universal-login/contracts';
@@ -36,11 +35,11 @@ async function startRelayer(wallet, RelayerConstructor) {
     supportedTokens: [
       {
         address: tokenContract.address,
-        minimalAmount: utils.parseEther('0.5').toString(),
+        minimalAmount: '0.5',
       },
       {
         address: ETHER_NATIVE_TOKEN.address,
-        minimalAmount: '500000',
+        minimalAmount: '0.5',
       },
     ],
   });

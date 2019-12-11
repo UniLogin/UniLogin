@@ -21,6 +21,7 @@ describe('UNIT: WalletSerializer', () => {
     privateKey: TEST_PRIVATE_KEY,
     deploy: (() => {}) as any,
     waitForBalance: (() => {}) as any,
+    setSupportedToken: (() => {}) as any,
   };
 
   const TEST_APPLICATION_WALLET = {

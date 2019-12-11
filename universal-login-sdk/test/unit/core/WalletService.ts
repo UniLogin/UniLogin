@@ -67,6 +67,7 @@ describe('UNIT: WalletService', () => {
       privateKey: TEST_PRIVATE_KEY,
       deploy: async () => deployingWallet,
       waitForBalance: (async () => { }) as any,
+      setSupportedToken: (() => {}) as any,
     };
 
     storage = {

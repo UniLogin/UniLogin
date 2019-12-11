@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {OnGasParametersChanged, stringToEther} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {stringToEther} from '@universal-login/commons';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {Safello} from './OnRamp/Safello';
 import {Ramp} from './OnRamp/Ramp';
 import {Wyre} from './OnRamp/Wyre';
@@ -18,7 +18,7 @@ import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
 interface TopUpProps {
   sdk: UniversalLoginSDK;
   contractAddress: string;
-  onGasParametersChanged?: OnGasParametersChanged;
+  walletService?: WalletService;
   startModal?: TopUpComponentType;
   topUpClassName?: string;
   modalClassName?: string;
@@ -28,7 +28,7 @@ interface TopUpProps {
   isDeployment: boolean;
 }
 
-export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor}: TopUpProps) => {
+export const TopUp = ({sdk, walletService, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -46,7 +46,7 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
       onPayClick={onPayClick}
       topUpClassName={topUpClassName}
       logoColor={logoColor}
-      onGasParametersChanged={onGasParametersChanged}
+      walletService={walletService}
       isDeployment={isDeployment}
     />
   );

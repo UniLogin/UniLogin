@@ -28,7 +28,7 @@ export function OnboardingSteps({sdk, walletService, className, onCreate}: Onboa
         <TopUp
           modalClassName={className}
           contractAddress={walletState.wallet.contractAddress}
-          onGasParametersChanged={(gasParameters) => walletService.setGasParameters(gasParameters)}
+          walletService={walletService}
           sdk={sdk}
           isDeployment
           hideModal={async () => {
