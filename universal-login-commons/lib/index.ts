@@ -1,11 +1,11 @@
 export {Omit, PartialRequired, Procedure, Predicate, DeepPartial, Nullable} from './core/types/common';
-export {ApplicationInfo, DeviceInfo, Notification} from './core/models/notifications';
-export {Device} from './core/models/Device';
+export {ApplicationInfo, DeviceInfo, Notification, Device} from './core/models/notifications';
 export {PaymentOptions, Message, MessageWithFrom, MessageWithoutFrom, DecodedMessage, DecodedMessageWithFrom, SignedMessage, UnsignedMessage, MessageStatus, DeploymentStatus, DeploymentState, MessageState, MineableState, MineableStatus, CollectedSignatureKeyPair, SignedMessagePaymentOptions, ExecutionOptions, SdkExecutionOptions} from './core/models/message';
 export * from './core/models/ContractJSON';
 export {SupportedToken, ContractWhiteList, ChainSpec, OnRampConfig, PublicRelayerConfig} from './core/models/relayer';
 export {LocalizationConfig, SafelloConfig, RampConfig, WyreConfig} from './core/models/onRamp';
-export {createKeyPair, KeyPair} from './core/models/keyPair';
+export {KeyPair} from './core/models/keyPair';
+export {createKeyPair} from './core/utils/keyPair';
 export {TransactionOverrides, TransferDetails} from './core/models/transactions';
 export {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from './core/models/WalletSuggestionAction';
 export {ApplicationWallet} from './core/models/ApplicationWallet';

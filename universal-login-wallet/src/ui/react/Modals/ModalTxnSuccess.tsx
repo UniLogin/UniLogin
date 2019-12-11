@@ -6,12 +6,11 @@ import {Link} from 'react-router-dom';
 import {useServices} from '../../hooks';
 
 interface ModalTxnSuccessProps {
-  hideModal?: () => void;
   operation: string;
   text: string;
 }
 
-export const ModalTxnSuccess = ({hideModal, operation, text}: ModalTxnSuccessProps) => {
+export const ModalTxnSuccess = ({operation, text}: ModalTxnSuccessProps) => {
   const {walletPresenter} = useServices();
   return (
     <>

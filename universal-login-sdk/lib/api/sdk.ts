@@ -39,7 +39,7 @@ import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {GasModeService} from '../core/services/GasModeService';
 import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
 import {deprecateSDKMethod} from './deprecate';
-import {DeployedWallet} from './DeployedWallet';
+import {DeployedWallet} from './wallet/DeployedWallet';
 import {MessageConverter} from '../core/services/MessageConverter';
 
 class UniversalLoginSDK {
@@ -76,7 +76,7 @@ class UniversalLoginSDK {
     this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
     this.relayerApi = new RelayerApi(relayerUrl);
     this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.sdkConfig.authorizationsObserverTick);
-    this.executionFactory = new ExecutionFactory(this.relayerApi, this.sdkConfig.executionFactoryTick);
+    this.executionFactory = new ExecutionFactory(this.relayerApi, this.sdkConfig.mineableFactoryTick, this.sdkConfig.mineableFactoryTimeout);
     this.blockchainService = new BlockchainService(this.provider);
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
     this.balanceChecker = new BalanceChecker(this.provider);

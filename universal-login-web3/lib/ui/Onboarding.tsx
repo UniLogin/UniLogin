@@ -1,10 +1,10 @@
 import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {UIController} from '../services/UIController';
 import {OnboardingModal, useProperty} from '@universal-login/react';
+import {UIController} from '../services/UIController';
 import {MetamaskService} from '../services/MetamaskService';
 
-export interface AppProps {
+export interface OnboardingProps {
   sdk: UniversalLoginSDK;
   walletService: WalletService;
   uiController: UIController;
@@ -12,7 +12,7 @@ export interface AppProps {
   domains: string[];
 }
 
-export const App = ({sdk, walletService, uiController, domains, metamaskService}: AppProps) => {
+export const Onboarding = ({sdk, walletService, uiController, domains, metamaskService}: OnboardingProps) => {
   const showOnboarding = useProperty(uiController.showOnboarding);
 
   return (

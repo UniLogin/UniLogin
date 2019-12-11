@@ -1,6 +1,7 @@
 import {SerializedWalletState, WalletState} from '../models/WalletService';
 import UniversalLoginSDK, {DeployedWallet} from '../..';
-import {ConnectingWallet} from '../../api/DeployedWallet';
+import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
+import {DeployingWallet} from '../../api/wallet/DeployingWallet';
 
 export class WalletSerializer {
   constructor(
@@ -21,10 +22,10 @@ export class WalletSerializer {
           },
         };
       case 'Deploying':
-        const {waitForTransactionHash, waitToBeSuccess, ...serializedWallet} = state.wallet;
+        const {name, privateKey, contractAddress, deploymentHash} = state.wallet;
         return {
           kind: 'Deploying',
-          wallet: serializedWallet,
+          wallet: {name, privateKey, contractAddress, deploymentHash},
         };
       case 'Connecting':
         return {
@@ -56,7 +57,7 @@ export class WalletSerializer {
       case 'Deploying':
         return {
           kind: 'Deploying',
-          wallet: this.sdk.getFutureWalletFactory().createDeployingWallet(state.wallet),
+          wallet: new DeployingWallet(state.wallet, this.sdk),
         };
       case 'Connecting':
         return {

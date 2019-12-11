@@ -20,3 +20,9 @@ export interface ApplicationInfo {
   type: string;
   logo: string;
 }
+
+export interface Device {
+  contractAddress: string;
+  publicKey: string;
+  deviceInfo: DeviceInfo;
+}

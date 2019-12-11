@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {ensure, ensureNotNull, TransferDetails, isValidRecipient, isValidAmount, DEFAULT_GAS_LIMIT, Nullable} from '@universal-login/commons';
 import {InvalidAddressOrEnsName, WalletNotFound, InvalidAmount, InvalidAmountAndRecipient} from '../utils/errors';
-import {DeployedWallet} from '../../api/DeployedWallet';
+import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {encodeTransferToMessage} from '../utils/encodeTransferToMessage';
 import {getTargetAddress} from '../utils/getTargetAddress';
 

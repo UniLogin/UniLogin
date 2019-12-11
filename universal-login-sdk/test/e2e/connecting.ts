@@ -4,7 +4,7 @@ import {utils, providers} from 'ethers';
 import basicSDK from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../lib/api/sdk';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import {isValidCode, isProperSecurityCode} from '@universal-login/commons';
+import {isValidCode, isProperSecurityCode, TEST_SDK_CONFIG} from '@universal-login/commons';
 
 const loadFixture = createFixtureLoader();
 
@@ -17,7 +17,7 @@ describe('E2E: SDK connecting', async () => {
 
   beforeEach(async () => {
     ({provider, sdk, contractAddress, relayer} = await loadFixture(basicSDK));
-    sdk2 = new UniversalLoginSDK(relayer.url(), provider);
+    sdk2 = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
   });
 
   it('security code roundtrip', async () => {
