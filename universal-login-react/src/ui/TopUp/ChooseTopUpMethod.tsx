@@ -29,7 +29,7 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, topUpClassName, lo
   const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
-  const [, setMinimalAmount] = useState<string | undefined>(walletService.getRequiredDeploymentBalance());
+  const [, setMinimalAmount] = useState<string>(walletService.getRequiredDeploymentBalance());
 
   const onGasParametersChanged = (gasParameters: GasParameters) => {
     walletService.setGasParameters(gasParameters);
@@ -55,7 +55,7 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, topUpClassName, lo
         logoColor={logoColor}
       />}
       {topUpMethod && <FooterSection className={topUpClassName}>
-        {walletService.isFutureWallet() &&
+        {walletService.isKind('Future') &&
           <GasPrice
             isDeployed={false}
             sdk={walletService.sdk}

@@ -54,7 +54,7 @@ export const TopUpWithCrypto = ({walletService}: TopUpWithCryptoProps) => {
               value={contractAddress}
             />
           </div>
-          {walletService.isFutureWallet()
+          {walletService.isKind('Future')
             ? <DeploymentWithCryptoInfo minimalAmount={walletService.getRequiredDeploymentBalance()}/>
             : <TopUpCryptoInfo/>
           }

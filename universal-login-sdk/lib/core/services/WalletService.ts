@@ -226,12 +226,12 @@ export class WalletService {
     return this.requiredDeploymentBalance;
   }
 
-  isFutureWallet() {
-    return this.state.kind === 'Future';
+  isKind(kind: string) {
+    return this.state.kind === kind;
   }
 
   getContractAddress() {
-    ensure(this.state.kind === 'Future' || this.state.kind === 'Deployed', InvalidWalletState, 'Future or Deployed', this.state.kind);
+    ensure(this.state.kind !== 'None', InvalidWalletState, 'not None', this.state.kind);
     return this.state.wallet.contractAddress;
   }
 }

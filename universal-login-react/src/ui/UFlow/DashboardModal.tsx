@@ -21,7 +21,7 @@ export interface DashboardModalProps {
 export const DashboardModal = ({walletService, onClose}: DashboardModalProps) => {
   const deployedWallet = walletService.getDeployedWallet();
   const {sdk, name} = deployedWallet;
-  const {relayerConfig} = sdk;
+  const relayerConfig = sdk.getRelayerConfig();
 
   const [transferDetails, setTransferDetails] = useState<TransferDetails>({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
   const selectedToken = sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken!);
