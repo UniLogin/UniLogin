@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import Web3 from 'web3';
-import {ULWeb3Provider} from '../ULWeb3Provider';
+import {ULWeb3Provider} from '../../ULWeb3Provider';
 
 const config = {
   relayerUrl: process.env.RELAYER_URL!,
