@@ -14,7 +14,7 @@ const universalLogin = ULWeb3Provider.getDefaultProvider({
 });
 const web3 = new Web3(universalLogin);
 
-export const Example = () => {
+export const ExamplePlayground = () => {
   const ulButton = useRef<HTMLDivElement | null>(null);
 
   async function sendTx() {
