@@ -22,7 +22,7 @@ export const Web3PickerComponent = ({customProviders, isVisibleProp, hideModal, 
   return isVisible
     ? <ModalWrapper hideModal={hideModal}>
       <div className="modal-box">
-        <h3 className="title-container">Choose your provider</h3>
+        <h3 className="title-container">How would you like to connect to blockchain?</h3>
         <div className="providers-container">
           <>
             {customProviders.map(({name, icon}) =>

@@ -10,6 +10,6 @@ export class Web3PickerPage {
 
   isOpen() {
     this.appWrapper.update();
-    return this.appWrapper.text().includes('Choose provider');
+    return this.appWrapper.text().includes('How would you like to connect to blockchain?');
   }
 }
