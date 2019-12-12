@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {ensure, ensureNotNull, TransferDetails, isValidRecipient, isValidAmount, DEFAULT_GAS_LIMIT, Nullable, GasParameters} from '@universal-login/commons';
+import {ensure, ensureNotNull, TransferDetails, isValidRecipient, isValidAmount, DEFAULT_GAS_LIMIT, Nullable, GasParameters, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {InvalidAddressOrEnsName, WalletNotFound, InvalidAmount, InvalidAmountAndRecipient} from '../utils/errors';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {encodeTransferToMessage} from '../utils/encodeTransferToMessage';
@@ -29,7 +29,10 @@ export class TransferService {
 
   getEtherMaxAmount(gasParameters: GasParameters, balance: Nullable<string>) {
     ensureNotNull(balance, Error, 'Balance is null');
-    const {gasPrice} = gasParameters;
+    const {gasPrice, gasToken} = gasParameters;
+    if (gasToken !== ETHER_NATIVE_TOKEN.address) {
+      return balance;
+    }
     const gasCostInWei = utils.bigNumberify(DEFAULT_GAS_LIMIT.toString()).mul(gasPrice);
     const maxAmountAsBigNumber = utils.parseEther(balance).sub(gasCostInWei);
     const maxAmountValidated = isBiggerThan(maxAmountAsBigNumber, utils.parseEther('0'));

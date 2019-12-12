@@ -20,6 +20,7 @@ export const TransferAmount = ({updateTransferDetailsWith, tokenDetails, amountE
   };
 
   const onMaxButtonClick = () => {
+    setAmountError(false);
     const etherMaxAmount = getEtherMaxAmount();
     setAmountValue(etherMaxAmount);
     updateTransferDetailsWith({amount: etherMaxAmount});
