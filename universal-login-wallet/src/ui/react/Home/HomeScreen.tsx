@@ -51,10 +51,8 @@ const HomeScreen = () => {
               </Route>
               <Route path={join(basePath, 'topUp')}>
                 <TopUp
-                  sdk={deployedWallet.sdk}
-                  contractAddress={deployedWallet.contractAddress}
+                  walletService={walletService}
                   topUpClassName="jarvis-styles"
-                  isDeployment={false}
                   logoColor="black"
                   hideModal={() => history.push('/wallet')}
                 />

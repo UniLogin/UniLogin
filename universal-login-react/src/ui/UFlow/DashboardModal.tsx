@@ -19,10 +19,9 @@ export interface DashboardModalProps {
 }
 
 export const DashboardModal = ({walletService, onClose}: DashboardModalProps) => {
-  const {relayerConfig} = walletService.sdk;
-
   const deployedWallet = walletService.getDeployedWallet();
-  const {contractAddress, sdk, name} = deployedWallet;
+  const {sdk, name} = deployedWallet;
+  const relayerConfig = sdk.getRelayerConfig();
 
   const [transferDetails, setTransferDetails] = useState<TransferDetails>({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
   const selectedToken = sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken!);
@@ -74,10 +73,8 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
           <Route path="/dashboard/topUp" exact>
             <SubDialogWrapper message={notice} ensName={name}>
               <TopUp
-                sdk={sdk}
+                walletService={walletService}
                 hideModal={onClose}
-                contractAddress={contractAddress}
-                isDeployment={false}
               />
             </SubDialogWrapper>
           </Route>

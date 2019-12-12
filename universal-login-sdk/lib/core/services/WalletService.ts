@@ -225,4 +225,13 @@ export class WalletService {
   getRequiredDeploymentBalance() {
     return this.requiredDeploymentBalance;
   }
+
+  isKind(kind: string) {
+    return this.state.kind === kind;
+  }
+
+  getContractAddress() {
+    ensure(this.state.kind !== 'None', InvalidWalletState, 'not None', this.state.kind);
+    return this.state.wallet.contractAddress;
+  }
 }

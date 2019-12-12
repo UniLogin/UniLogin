@@ -27,12 +27,9 @@ export function OnboardingSteps({sdk, walletService, className, onCreate}: Onboa
       return (
         <TopUp
           modalClassName={className}
-          contractAddress={walletState.wallet.contractAddress}
           walletService={walletService}
-          sdk={sdk}
-          isDeployment
           hideModal={async () => {
-            await walletService.disconnect();
+            walletService.disconnect();
             history.push('/selector');
           }}
           isModal
