@@ -9,8 +9,7 @@ export class Web3PickerPage {
   }
 
   isOpen() {
-    this.appWrapper.update()
-    console.log(this.appWrapper.debug())
+    this.appWrapper.update();
     return this.appWrapper.text().includes('Choose provider');
   }
 }

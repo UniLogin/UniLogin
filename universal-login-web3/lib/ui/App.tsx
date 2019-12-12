@@ -7,15 +7,15 @@ import {Web3PickerPlayground} from './react/Web3PickerPlayground';
 export const App = () => {
   return (
     <>
-    <BrowserRouter>
-     <div>
-       <Link to="/chooser">Chooser</Link>
-       <br />
-       <Link to="/example">Example</Link>
-     </div>
+      <BrowserRouter>
+        <div>
+          <Link to="/chooser">Chooser</Link>
+          <br />
+          <Link to="/example">Example</Link>
+        </div>
         <Route exact path="/example" component={ExamplePlayground} />
         <Route exact path="/chooser" component={Web3PickerPlayground} />
       </BrowserRouter>
     </>
   );
-}
+};
