@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Web3Picker, CustomProvider} from './Web3Picker';
+import {Web3Picker, CustomProvider} from '../Web3Picker';
 
 interface Web3PickerPlaygroundProps {
   web3Picker?: Web3Picker;
