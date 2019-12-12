@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {BrowserRouter, Route, Switch, Link} from 'react-router-dom';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
@@ -27,7 +27,7 @@ export const App = () => {
     return sdk.getRelayerConfig();
   }, []);
 
-  const walletService = new WalletService(sdk);
+  const [walletService] = useState(() => new WalletService(sdk));
 
   const name = 'test.mylogin.eth';
 
