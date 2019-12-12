@@ -52,11 +52,12 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
         <ModalWrapperClosable hideModal={() => history.push('/wallet')}>
           <Transfer
             deployedWallet={deployedWallet}
+            transferDetails={transferDetails}
             updateTransferDetailsWith={updateTransferDetailsWith}
             tokenDetailsWithBalance={tokenDetailsWithBalance}
             tokenDetails={selectedToken}
             onSendClick={onGenerateClick}
-            transferDetails={transferDetails}
+            getEtherMaxAmount={() => transferService.getEtherMaxAmount(transferDetails.gasParameters, balance)}
             transferClassName="jarvis-styles"
           />
         </ModalWrapperClosable>

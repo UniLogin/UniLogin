@@ -12,11 +12,12 @@ import {TransferDropdown} from './Amount/TransferDropdown';
 
 export interface TransferProps {
   deployedWallet: DeployedWallet;
-  transferDetails: Partial<TransferDetails>;
+  transferDetails: TransferDetails;
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
   tokenDetailsWithBalance: TokenDetailsWithBalance[];
   tokenDetails: TokenDetails;
   onSendClick: () => Promise<void>;
+  getEtherMaxAmount: () => string;
   transferClassName?: string;
 }
 
@@ -25,7 +26,7 @@ interface ErrorsProps {
   recipientError: boolean;
 }
 
-export const Transfer = ({deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, transferClassName}: TransferProps) => {
+export const Transfer = ({deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, getEtherMaxAmount, transferClassName}: TransferProps) => {
   const [errors, setErrors] = useState<ErrorsProps>({amountError: false, recipientError: false});
 
   const onTransferClick = async () => {
@@ -51,7 +52,7 @@ export const Transfer = ({deployedWallet, transferDetails, updateTransferDetails
             className={transferClassName}
           />
           <TransferAmount
-            deployedWallet={deployedWallet}
+            getEtherMaxAmount={getEtherMaxAmount}
             updateTransferDetailsWith={updateTransferDetailsWith}
             tokenDetails={tokenDetails}
             setAmountError={(isAmountInvalid: boolean) => setErrors({...errors, amountError: isAmountInvalid})}

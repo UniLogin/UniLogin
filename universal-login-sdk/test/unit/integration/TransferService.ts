@@ -146,4 +146,19 @@ describe('UNIT: TransferService', () => {
       gasParameters,
     }, balance)).to.throw('Amount 350 and recipient 0x is not ');
   });
+
+  it('get Ethereum max amount', () => {
+    const {transferService, balance} = setup();
+    expect(transferService.getEtherMaxAmount(gasParameters, balance)).to.eq('299.9999999999998');
+  });
+
+  it('get 0 if Ethereum max amount is below 0', () => {
+    const {transferService} = setup();
+    expect(transferService.getEtherMaxAmount(gasParameters, '0')).to.eq('0.0');
+  });
+
+  it('throw error if balance is null', () => {
+    const {transferService} = setup();
+    expect(() => transferService.getEtherMaxAmount(gasParameters, null)).to.throw('Balance is null');
+  });
 });

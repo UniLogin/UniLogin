@@ -90,32 +90,72 @@ describe('INT: TransferService', () => {
   it('throw error if there is no such ens name', async () => {
     const targetENSName = 'not-existing.mylogin.eth';
     const amount = '0.5';
-    await expect(transferService.transfer({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount})).to.be.rejectedWith(`${targetENSName} is not valid`);
+    await expect(transferService.transfer({
+      to: targetENSName,
+      transferToken: mockTokenContract.address,
+      gasParameters,
+      amount,
+    })).to.be.rejectedWith(`${targetENSName} is not valid`);
   });
 
   it('throw error if invalid amount and ens name', async () => {
     const targetENSName = 'test';
     const amount = '0.5';
-    expect(() => transferService.validateInputs({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount}, balance)).to.throw(`${targetENSName} is not valid`);
+    expect(() => transferService.validateInputs({
+      to: targetENSName,
+      transferToken: mockTokenContract.address,
+      gasParameters,
+      amount,
+    }, balance)).to.throw(`${targetENSName} is not valid`);
   });
 
   it('throw error if invalid amount', async () => {
     const targetENSName = 'ether-test.mylogin.eth';
     await createWallet(targetENSName, sdk, wallet);
     const amount = '7';
-    expect(() => transferService.validateInputs({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount}, balance)).to.throw(`Amount ${amount} is not valid`);
+    expect(() => transferService.validateInputs({
+      to: targetENSName,
+      transferToken: mockTokenContract.address,
+      gasParameters,
+      amount,
+    }, balance)).to.throw(`Amount ${amount} is not valid`);
   });
 
   it('throw error if invalid amount and address', async () => {
     const to = `${TEST_ACCOUNT_ADDRESS}3`;
     const amount = '7';
-    expect(() => transferService.validateInputs({to, transferToken: mockTokenContract.address, gasParameters, amount}, balance)).to.throw(`Amount ${amount} and recipient ${to} is not valid`);
+    expect(() => transferService.validateInputs({
+      to,
+      transferToken: mockTokenContract.address,
+      gasParameters,
+      amount,
+    }, balance)).to.throw(`Amount ${amount} and recipient ${to} is not valid`);
   });
 
   it('throw error if invalid amount and ens name', async () => {
     const targetENSName = 'test';
     const amount = '7';
-    expect(() => transferService.validateInputs({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount}, balance)).to.throw(`Amount ${amount} and recipient ${targetENSName} is not valid`);
+    expect(() => transferService.validateInputs({
+      to: targetENSName,
+      transferToken: mockTokenContract.address,
+      gasParameters,
+      amount,
+    }, balance)).to.throw(`Amount ${amount} and recipient ${targetENSName} is not valid`);
+  });
+
+  it('get Ethereum max amount', async () => {
+    const {address} = Wallet.createRandom();
+    const amount = '0.5';
+    const {waitToBeSuccess} = await transferService.transfer({to: address, amount, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters});
+    await waitToBeSuccess();
+    const balance = await provider.getBalance(address);
+    expect(transferService.getEtherMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.4999999999998');
+  });
+
+  it('get 0 if Ethereum max amount is below 0', async () => {
+    const {address} = Wallet.createRandom();
+    const balance = await provider.getBalance(address);
+    expect(transferService.getEtherMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.0');
   });
 
   after(async () => {
