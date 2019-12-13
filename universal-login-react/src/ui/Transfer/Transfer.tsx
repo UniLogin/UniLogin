@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {DeployedWallet} from '@universal-login/sdk';
-import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, TokenDetailsWithBalance, GasParameters} from '@universal-login/commons';
+import {DeployedWallet, TransferService, TransferErrors} from '@universal-login/sdk';
+import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, TokenDetailsWithBalance, GasParameters, getBalanceOf} from '@universal-login/commons';
 import '../styles/transfer.sass';
 import '../styles/transferDefaults.sass';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
@@ -11,6 +11,7 @@ import {TransferRecipient} from './Recipient/TransferRecipient';
 import {TransferDropdown} from './Amount/TransferDropdown';
 
 export interface TransferProps {
+  transferService: TransferService;
   deployedWallet: DeployedWallet;
   transferDetails: TransferDetails;
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
@@ -21,22 +22,15 @@ export interface TransferProps {
   transferClassName?: string;
 }
 
-interface ErrorsProps {
-  amount: string[];
-  to: string[];
-}
+export const Transfer = ({transferService, deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, getEtherMaxAmount, transferClassName}: TransferProps) => {
+  const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
 
-export const Transfer = ({deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, getEtherMaxAmount, transferClassName}: TransferProps) => {
-  const [errors, setErrors] = useState<ErrorsProps>({amount: [], to: []});
+  const balance = getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance);
 
   const onTransferClick = async () => {
-    try {
-      await onSendClick();
-    } catch (error) {
-      setErrors({
-        amount: error.errorType !== 'InvalidAddressOrEnsName' ? ['Invalid amount'] : [],
-        to: error.errorType !== 'InvalidAmount' ? ['Invalid recipient'] : [],
-      });
+    setErrors(transferService.validateInputs(transferDetails, balance));
+    if (transferService.areInputsValid()) {
+      onSendClick();
     }
   };
 

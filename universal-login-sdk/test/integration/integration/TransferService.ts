@@ -98,49 +98,38 @@ describe('INT: TransferService', () => {
     })).to.be.rejectedWith(`${targetENSName} is not valid`);
   });
 
-  it('throw error if invalid amount and ens name', async () => {
-    const targetENSName = 'test';
-    const amount = '0.5';
-    expect(() => transferService.validateInputs({
-      to: targetENSName,
-      transferToken: mockTokenContract.address,
-      gasParameters,
-      amount,
-    }, balance)).to.throw(`${targetENSName} is not valid`);
-  });
-
-  it('throw error if invalid amount', async () => {
+  it('return an error if invalid amount', async () => {
     const targetENSName = 'ether-test.mylogin.eth';
     await createWallet(targetENSName, sdk, wallet);
     const amount = '7';
-    expect(() => transferService.validateInputs({
+    expect(transferService.validateInputs({
       to: targetENSName,
       transferToken: mockTokenContract.address,
       gasParameters,
       amount,
-    }, balance)).to.throw(`Amount ${amount} is not valid`);
+    }, balance).amount[0]).to.eq(`Amount ${amount} is not valid`);
   });
 
-  it('throw error if invalid amount and address', async () => {
-    const to = `${TEST_ACCOUNT_ADDRESS}3`;
-    const amount = '7';
-    expect(() => transferService.validateInputs({
-      to,
+  it('return an error if invalid address', async () => {
+    const invalidAddress = '0x123';
+    const amount = '0.5';
+    expect(transferService.validateInputs({
+      to: invalidAddress,
       transferToken: mockTokenContract.address,
       gasParameters,
       amount,
-    }, balance)).to.throw(`Amount ${amount} and recipient ${to} is not valid`);
+    }, balance).to[0]).to.eq(`Recipient ${invalidAddress} is not valid`);
   });
 
-  it('throw error if invalid amount and ens name', async () => {
-    const targetENSName = 'test';
-    const amount = '7';
-    expect(() => transferService.validateInputs({
-      to: targetENSName,
+  it('return an error if invalid ENS name', async () => {
+    const invalidENSName = 'test';
+    const amount = '0.5';
+    expect(transferService.validateInputs({
+      to: invalidENSName,
       transferToken: mockTokenContract.address,
       gasParameters,
       amount,
-    }, balance)).to.throw(`Amount ${amount} and recipient ${targetENSName} is not valid`);
+    }, balance).to[0]).to.eq(`Recipient ${invalidENSName} is not valid`);
   });
 
   it('get Ethereum max amount', async () => {

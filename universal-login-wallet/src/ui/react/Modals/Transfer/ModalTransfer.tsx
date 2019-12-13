@@ -29,7 +29,6 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
 
   const transferService = new TransferService(deployedWallet);
   const onGenerateClick = async () => {
-    transferService.validateInputs(transferDetails, balance);
     history.push(join(basePath, 'waiting'));
     try {
       const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetails);
@@ -51,6 +50,7 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
       <Route path={`${basePath}/`} exact>
         <ModalWrapperClosable hideModal={() => history.push('/wallet')}>
           <Transfer
+            transferService={transferService}
             deployedWallet={deployedWallet}
             transferDetails={transferDetails}
             updateTransferDetailsWith={updateTransferDetailsWith}

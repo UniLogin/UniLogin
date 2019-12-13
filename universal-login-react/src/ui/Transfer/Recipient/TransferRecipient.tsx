@@ -19,7 +19,7 @@ export const TransferRecipient = ({onChange, errors}: TransferRecipientProps) =>
             onChange={event => onChange(event.target.value)}
           />
         </div>
-        {errors.length > 0 && <div className="hint transfer-recipient-hint">Invalid recipient</div>}
+        {errors.length > 0 && <div className="hint transfer-recipient-hint">{errors[0]}</div>}
       </div>
     </>
   );
