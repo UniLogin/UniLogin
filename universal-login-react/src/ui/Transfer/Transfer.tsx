@@ -22,22 +22,27 @@ export interface TransferProps {
 }
 
 interface ErrorsProps {
-  amountError: boolean;
-  recipientError: boolean;
+  amount: string[];
+  recipient: boolean;
 }
 
 export const Transfer = ({deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, getEtherMaxAmount, transferClassName}: TransferProps) => {
-  const [errors, setErrors] = useState<ErrorsProps>({amountError: false, recipientError: false});
+  const [errors, setErrors] = useState<ErrorsProps>({amount: [], recipient: false});
 
   const onTransferClick = async () => {
     try {
       await onSendClick();
     } catch (error) {
       setErrors({
-        amountError: error.errorType !== 'InvalidAddressOrEnsName' && true,
-        recipientError: error.errorType !== 'InvalidAmount' && true,
+        amount: error.errorType !== 'InvalidAddressOrEnsName' ? ['Invalid amount'] : [],
+        recipient: error.errorType !== 'InvalidAmount' && true,
       });
     }
+  };
+
+  const updateAmount = (amount: string) => {
+    updateTransferDetailsWith({amount});
+    setErrors({...errors, amount: []});
   };
 
   return (
@@ -52,22 +57,16 @@ export const Transfer = ({deployedWallet, transferDetails, updateTransferDetails
             className={transferClassName}
           />
           <TransferAmount
-            onMaxClick={() => {
-              updateTransferDetailsWith({amount: getEtherMaxAmount()});
-              setErrors({...errors, amountError: false});
-            }}
-            onChange={(value) => {
-              updateTransferDetailsWith({amount: value});
-              setErrors({...errors, amountError: false});
-            }}
-            tokenSymbol={tokenDetails.symbol}
-            errors={errors.amountError ? ['Invalid amount'] : []}
             value={transferDetails.amount}
+            tokenSymbol={tokenDetails.symbol}
+            errors={errors.amount}
+            onChange={updateAmount}
+            onMaxClick={() => updateAmount(getEtherMaxAmount())}
           />
           <TransferRecipient
             updateTransferDetailsWith={updateTransferDetailsWith}
-            recipientError={errors.recipientError}
-            setRecipientError={(isRecipientInvalid: boolean) => setErrors({...errors, recipientError: isRecipientInvalid})}
+            recipientError={errors.recipient}
+            setRecipientError={(isRecipientInvalid: boolean) => setErrors({...errors, recipient: isRecipientInvalid})}
           />
         </div>
         <FooterSection className={transferClassName}>
