@@ -52,11 +52,17 @@ export const Transfer = ({deployedWallet, transferDetails, updateTransferDetails
             className={transferClassName}
           />
           <TransferAmount
-            getEtherMaxAmount={getEtherMaxAmount}
-            updateTransferDetailsWith={updateTransferDetailsWith}
-            tokenDetails={tokenDetails}
-            setAmountError={(isAmountInvalid: boolean) => setErrors({...errors, amountError: isAmountInvalid})}
-            amountError={errors.amountError}
+            onMaxClick={() => {
+              updateTransferDetailsWith({amount: getEtherMaxAmount()});
+              setErrors({...errors, amountError: false});
+            }}
+            onChange={(value) => {
+              updateTransferDetailsWith({amount: value});
+              setErrors({...errors, amountError: false});
+            }}
+            tokenSymbol={tokenDetails.symbol}
+            errors={errors.amountError ? ['Invalid amount'] : []}
+            value={transferDetails.amount}
           />
           <TransferRecipient
             updateTransferDetailsWith={updateTransferDetailsWith}

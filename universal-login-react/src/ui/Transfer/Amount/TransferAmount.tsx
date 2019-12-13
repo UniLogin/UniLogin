@@ -1,36 +1,19 @@
-import React, {useState} from 'react';
-import {TransferDetails, TokenDetails} from '@universal-login/commons';
+import React from 'react';
 
 export interface TransferAmountProps {
-  updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
-  tokenDetails: TokenDetails;
-  amountError: boolean;
-  setAmountError: (isAmountInvalid: boolean) => void;
-  getEtherMaxAmount: () => string;
-  transferAmountClassName?: string;
+  value: string;
+  tokenSymbol: string;
+  errors: string [];
+  onChange: (value: string) => void;
+  onMaxClick: () => void;
 }
 
-export const TransferAmount = ({updateTransferDetailsWith, tokenDetails, amountError, getEtherMaxAmount, setAmountError}: TransferAmountProps) => {
-  const [amountValue, setAmountValue] = useState<string>('');
-
-  const onChange = (amount: string) => {
-    setAmountError(false);
-    setAmountValue(amount);
-    updateTransferDetailsWith({amount});
-  };
-
-  const onMaxButtonClick = () => {
-    setAmountError(false);
-    const etherMaxAmount = getEtherMaxAmount();
-    setAmountValue(etherMaxAmount);
-    updateTransferDetailsWith({amount: etherMaxAmount});
-  };
-
+export const TransferAmount = ({value, tokenSymbol, errors, onChange, onMaxClick}: TransferAmountProps) => {
   return (
     <>
       <div className="transfer-amount-row">
         <label className="transfer-amount-label" htmlFor="amount-eth">Amount</label>
-        <button className="transfer-amount-max" onClick={onMaxButtonClick}>Max</button>
+        <button className="transfer-amount-max" onClick={onMaxClick}>Max</button>
       </div>
       <div className="transfer-amount-input-wrapper">
         <div className="transfer-amount-input-content">
@@ -38,12 +21,12 @@ export const TransferAmount = ({updateTransferDetailsWith, tokenDetails, amountE
             id="amount-eth"
             type="number"
             className="transfer-amount-input"
-            value={amountValue}
+            value={value}
             onChange={event => onChange(event.target.value)}
           />
-          <span className="transfer-amount-code">{tokenDetails.symbol}</span>
+          <span className="transfer-amount-code">{tokenSymbol}</span>
         </div>
-        {amountError && <div className="hint transfer-amount-hint">Invalid amount</div>}
+        {errors.length > 0 && <div className="hint transfer-amount-hint">{ errors[0] }</div>}
       </div>
     </>
   );
