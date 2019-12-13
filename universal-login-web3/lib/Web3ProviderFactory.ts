@@ -21,7 +21,7 @@ export const browserWeb3ProviderFactory: Web3ProviderFactory = {
   create: () => {
     if (window.ethereum) {
       return window.ethereum;
-    } else if (window.web3) {
+    } else if (window.web3 && window.web3.currentProvider) {
       return window.web3.currentProvider;
     } else {
       throw new Web3ProviderNotFound();
