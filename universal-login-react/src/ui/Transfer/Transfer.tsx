@@ -23,11 +23,11 @@ export interface TransferProps {
 
 interface ErrorsProps {
   amount: string[];
-  recipient: boolean;
+  recipient: string[];
 }
 
 export const Transfer = ({deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, getEtherMaxAmount, transferClassName}: TransferProps) => {
-  const [errors, setErrors] = useState<ErrorsProps>({amount: [], recipient: false});
+  const [errors, setErrors] = useState<ErrorsProps>({amount: [], recipient: []});
 
   const onTransferClick = async () => {
     try {
@@ -35,7 +35,7 @@ export const Transfer = ({deployedWallet, transferDetails, updateTransferDetails
     } catch (error) {
       setErrors({
         amount: error.errorType !== 'InvalidAddressOrEnsName' ? ['Invalid amount'] : [],
-        recipient: error.errorType !== 'InvalidAmount' && true,
+        recipient: error.errorType !== 'InvalidAmount' ? ['Invalid recipient'] : [],
       });
     }
   };
@@ -43,6 +43,11 @@ export const Transfer = ({deployedWallet, transferDetails, updateTransferDetails
   const updateAmount = (amount: string) => {
     updateTransferDetailsWith({amount});
     setErrors({...errors, amount: []});
+  };
+
+  const updateRecipient = (recipient: string) => {
+    updateTransferDetailsWith({to: recipient});
+    setErrors({...errors, recipient: []});
   };
 
   return (
@@ -64,9 +69,8 @@ export const Transfer = ({deployedWallet, transferDetails, updateTransferDetails
             onMaxClick={() => updateAmount(getEtherMaxAmount())}
           />
           <TransferRecipient
-            updateTransferDetailsWith={updateTransferDetailsWith}
-            recipientError={errors.recipient}
-            setRecipientError={(isRecipientInvalid: boolean) => setErrors({...errors, recipient: isRecipientInvalid})}
+            onChange={updateRecipient}
+            errors={errors.recipient}
           />
         </div>
         <FooterSection className={transferClassName}>
