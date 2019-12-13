@@ -4,7 +4,7 @@ import {render} from 'react-dom';
 import {Web3PickerComponent} from './Web3PickerComponent';
 import {State} from 'reactive-properties';
 import {ensure, ensureNotNull} from '@universal-login/commons';
-import {waitForFalse} from '../../utils';
+import {waitForFalse} from '../utils/utils';
 import {Web3ProviderFactory, metaMaskProviderFactory} from '../../Web3ProviderFactory';
 import {Web3Strategy} from '../../Web3Strategy';
 import {JsonRPCRequest} from '../../models/rpc';

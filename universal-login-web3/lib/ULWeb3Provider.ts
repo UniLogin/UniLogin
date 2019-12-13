@@ -6,7 +6,7 @@ import {UIController} from './services/UIController';
 import {providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {ensure, Message, walletFromBrain} from '@universal-login/commons';
-import {waitForTrue} from './utils';
+import {waitForTrue} from './ui/utils/utils';
 import {initUi} from './ui/utils/initUi';
 import {OnboardingProps} from './ui/react/Onboarding';
 import {StorageService, WalletStorageService} from '@universal-login/react';
