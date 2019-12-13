@@ -1,6 +1,7 @@
 import {expect} from 'chai';
-import {Web3Picker, universalLoginCustomProvider} from '../lib/ui/react/Web3Picker';
+import {Web3Picker} from '../lib/ui/react/Web3Picker';
 import {getConfigForNetwork} from '../lib/config';
+import {universalLoginCustomProvider} from '../lib/Web3ProviderFactory';
 
 const expectedProviders = [
   {name: 'UniversalLogin', icon: 'UniversalLogin logo'},
@@ -8,10 +9,10 @@ const expectedProviders = [
 
 describe('UNIT: Web3Picker', () => {
   const {provider} = getConfigForNetwork('kovan');
-  const web3Picker = new Web3Picker(provider, 'kovan');
+  const web3Picker = new Web3Picker(provider);
 
   it('Init provider', () => {
-    expect(web3Picker.currentProvider).deep.eq(provider);
+    expect(web3Picker.get()).deep.eq(provider);
   });
 
   it('Pick not existed provider', () => {

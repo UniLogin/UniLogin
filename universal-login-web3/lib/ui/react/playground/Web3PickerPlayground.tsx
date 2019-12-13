@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {Web3Picker, Web3ProviderFactory} from '../Web3Picker';
+import {Web3Picker} from '../Web3Picker';
 import {getConfigForNetwork} from '../../../config';
+import {Web3ProviderFactory} from '../../../Web3ProviderFactory';
 
 interface Web3PickerPlaygroundProps {
   web3Picker?: Web3Picker;

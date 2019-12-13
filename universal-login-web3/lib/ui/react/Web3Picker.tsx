@@ -2,53 +2,32 @@ import React from 'react';
 import {Provider} from 'web3/providers';
 import {render} from 'react-dom';
 import {Web3PickerComponent} from './Web3PickerComponent';
-import {State, waitFor} from 'reactive-properties';
-import {ULWeb3Provider} from '../../ULWeb3Provider';
+import {State} from 'reactive-properties';
 import {ensure, ensureNotNull} from '@universal-login/commons';
-import {Network, getConfigForNetwork} from '../../config';
 import {waitForFalse} from '../../utils';
+import {Web3ProviderFactory, universalLoginCustomProvider, metaMaskProvider} from '../../Web3ProviderFactory';
 
-export interface CustomProvider {
-  getProvider: (network: Network) => Provider;
-  icon: string;
-  name: string;
+type OnPickProvider = (providerName?: Web3ProviderFactory) => void;
+
+const setProviderForWeb3 = (provider: Provider) => {
+
 }
-
-export const universalLoginCustomProvider: CustomProvider = {
-  name: 'UniversalLogin',
-  icon: 'UniversalLogin logo',
-  getProvider: (network) => new ULWeb3Provider(getConfigForNetwork(network)),
-};
-
-const metaMaskProvider: CustomProvider = {
-  name: 'MetaMask',
-  icon: 'MetaMask logo',
-  getProvider: () => {
-    ensureNotNull(window.ethereum, Error, 'MetaMask is not enabled');
-    return window.ethereum;
-  },
-};
-
-type OnPickProvider = (providerName?: CustomProvider) => void;
-
-export class Web3Picker {
+export class Web3Picker implements Provider {
   private isVisible = new State(false);
   private created = false;
   private onPickProvider?: OnPickProvider = undefined;
-  private providers: CustomProvider[] = [
+  private providers: Web3ProviderFactory[] = [
     universalLoginCustomProvider,
   ];
 
-  currentCustomProvider?: CustomProvider = undefined;
+  currentCustomProvider?: Web3ProviderFactory = undefined;
 
-  get currentProvider() {
+  get() {
     return this.getCurrentProvider();
   }
 
   constructor(
     private readonly defaultProvider: Provider,
-    private network: Network = 'mainnet',
-    private parentSelector?: string,
   ) {
     if (window.ethereum) {
       this.providers = this.providers.concat(metaMaskProvider);
@@ -65,7 +44,7 @@ export class Web3Picker {
     this.onPickProvider?.(this.currentCustomProvider);
   }
 
-  private getCustomProvider(name: string): CustomProvider {
+  private getCustomProvider(name: string): Web3ProviderFactory {
     const customProvider = this.findCustomProvider(name);
     ensureNotNull(customProvider, Error, `Provider with given name(${name}) is not exist`);
     return customProvider;
@@ -75,7 +54,7 @@ export class Web3Picker {
 
   private getCurrentProvider() {
     if (!!this.currentCustomProvider) {
-      return this.currentCustomProvider.getProvider(this.network);
+      return this.currentCustomProvider.create();
     } else {
       return this.defaultProvider;
     }
@@ -84,7 +63,7 @@ export class Web3Picker {
   private lazyCreateReactRoot() {
     if (!this.created) {
       this.created = true;
-      const root = this.createReactRoot('universal-login-web3-picker', this.parentSelector);
+      const root = this.createReactRoot('universal-login-web3-picker');
       render(
         <Web3PickerComponent
           isVisibleProp={this.isVisible}
@@ -107,8 +86,13 @@ export class Web3Picker {
     this.lazyCreateReactRoot();
     this.isVisible.set(true);
     return {
-      waitForPick: waitForFalse(this.isVisible),
+      waitForPick: () => waitForFalse(this.isVisible),
     }
+  }
+
+  async send() {
+    const {waitForPick} = this.show();
+    return waitForPick();
   }
 
 

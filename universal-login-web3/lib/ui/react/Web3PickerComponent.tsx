@@ -3,12 +3,12 @@ import {ModalWrapper, useProperty} from '@universal-login/react';
 import {Property} from 'reactive-properties';
 import '../styles/web3Picker.css';
 import U from '../assets/U.svg';
-import {CustomProvider} from './Web3Picker';
+import {Web3ProviderFactory} from '../../Web3ProviderFactory';
 
 interface Web3PickerComponentProps {
   isVisibleProp: Property<boolean>;
   hideModal: () => void;
-  customProviders: CustomProvider[];
+  customProviders: Web3ProviderFactory[];
   setProvider: (providerName: string) => void;
 }
 
