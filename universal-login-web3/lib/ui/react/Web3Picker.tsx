@@ -5,10 +5,10 @@ import {Web3PickerComponent} from './Web3PickerComponent';
 import {State} from 'reactive-properties';
 import {ensure, ensureNotNull} from '@universal-login/commons';
 import {waitForFalse} from '../utils/utils';
-import {Web3ProviderFactory, metaMaskProviderFactory} from '../../Web3ProviderFactory';
+import {Web3ProviderFactory} from '../../Web3ProviderFactory';
 import {Web3Strategy} from '../../Web3Strategy';
 import {JsonRPCRequest} from '../../models/rpc';
-import {InvalidProvider} from '../utils/error';
+import {InvalidProvider} from '../utils/errors';
 
 export class Web3Picker implements Provider {
   private isVisible = new State(false);

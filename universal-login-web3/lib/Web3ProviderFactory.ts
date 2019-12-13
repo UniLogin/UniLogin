@@ -1,7 +1,7 @@
 import {Provider} from 'web3/providers';
 import {ULWeb3Provider} from './ULWeb3Provider';
-import {ensureNotNull} from '@universal-login/commons';
 import {getConfigForNetwork} from './config';
+import {Web3ProviderNotFound} from './ui/utils/errors';
 
 export interface Web3ProviderFactory {
   icon: string;
@@ -15,11 +15,16 @@ export const universalLoginProviderFactory: Web3ProviderFactory = {
   create: () => new ULWeb3Provider(getConfigForNetwork('kovan')),
 };
 
-export const metaMaskProviderFactory: Web3ProviderFactory = {
-  name: 'MetaMask',
-  icon: 'MetaMask logo',
+export const browserWeb3ProviderFactory: Web3ProviderFactory = {
+  name: 'Browser Web3',
+  icon: 'Browser Web3 logo',
   create: () => {
-    ensureNotNull(window.ethereum, Error, 'MetaMask is not enabled');
-    return window.ethereum;
+    if (window.ethereum) {
+      return window.ethereum;
+    } else if (window.web3) {
+      return window.web3.currentProvider;
+    } else {
+      throw new Web3ProviderNotFound();
+    }
   },
 };

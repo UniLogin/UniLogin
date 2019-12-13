@@ -23,3 +23,9 @@ export class InvalidProvider extends ValidationFailed {
     Object.setPrototypeOf(this, InvalidProvider.prototype);
   }
 }
+export class Web3ProviderNotFound extends ValidationFailed {
+  constructor() {
+    super('Browser Web3 provider not found', 'InvalidProvider');
+    Object.setPrototypeOf(this, InvalidProvider.prototype);
+  }
+}
