@@ -22,8 +22,10 @@ export class Web3Picker implements Provider {
     }
   }
 
+  private hasProvider = (providerName: string) => this.factories.some(({name}) => name === providerName)
+
   setProvider(providerName: string) {
-    ensure(this.factories.some(({name}) => name === providerName), Error, `Provider is not exist. Invalid name: ${providerName}`);
+    ensure(this.hasProvider(providerName), Error, `Provider does not exist. Invalid name: ${providerName}`);
     this.web3Strategy.currentProvider = this.getCustomProvider(providerName).create();
     this.isVisible.set(false);
   }

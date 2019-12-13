@@ -14,10 +14,6 @@ interface Web3PickerComponentProps {
 
 export const Web3PickerComponent = ({customProviders, isVisibleProp, hideModal, setProvider}: Web3PickerComponentProps) => {
   const isVisible = useProperty(isVisibleProp);
-  // const getOnClick = (name: string) => () => {
-  //   setProvider(name);
-  //   hideModal();
-  // };
 
   return isVisible
     ? <ModalWrapper>
