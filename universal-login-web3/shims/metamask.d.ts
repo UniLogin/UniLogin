@@ -1,9 +1,9 @@
-import {MetamaskEthereum} from '../lib/models/metamask';
+import {BrowserWeb3Provider} from '../lib/models/BrowserWeb3Provider';
 
 declare global {
-  const ethereum: MetamaskEthereum | undefined;
+  const ethereum: BrowserWeb3Provider | undefined;
 
   interface Window {
-    ethereum: MetamaskEthereum | undefined;
+    ethereum: BrowserWeb3Provider | undefined;
   }
 }

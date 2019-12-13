@@ -1,8 +1,8 @@
-import {MetamaskEthereum} from '../models/metamask';
+import {BrowserWeb3Provider} from '../models/BrowserWeb3Provider';
 import {State} from 'reactive-properties';
 
 export class MetamaskService {
-  metamaskProvider = new State<MetamaskEthereum | undefined>(undefined);
+  metamaskProvider = new State<BrowserWeb3Provider | undefined>(undefined);
 
   async tryEnablingMetamask(): Promise<string | undefined> {
     if (window.ethereum) {
