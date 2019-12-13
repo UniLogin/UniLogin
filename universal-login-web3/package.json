@@ -21,7 +21,7 @@
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "tsc --build tsconfig.json",
+    "build": "tsc --build tsconfig.json && cpx \"lib/ui/assets/**/*\" dist/lib/ui/assets && cpx \"lib/ui/styles/**/*\" dist/lib/ui/styles",
     "lint": "eslint '{lib,test}/**/*.{ts,tsx}'",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/test/config -t 10000 \"dist/test/**/*.js\"",
