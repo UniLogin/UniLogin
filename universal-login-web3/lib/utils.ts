@@ -17,3 +17,5 @@ export function waitFor<T>(predicate: (value: T) => boolean): (prop: Property<T>
 }
 
 export const waitForTrue = waitFor((x: boolean) => x);
+
+export const waitForFalse = waitFor((x: boolean) => !x);
