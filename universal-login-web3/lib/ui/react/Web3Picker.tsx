@@ -17,11 +17,7 @@ export class Web3Picker implements Provider {
   constructor(
     private web3Strategy: Web3Strategy,
     private readonly factories: Web3ProviderFactory[],
-  ) {
-    if (window.ethereum) {
-      this.factories = this.factories.concat(metaMaskProviderFactory);
-    }
-  }
+  ) {}
 
   private hasProvider = (providerName: string) => this.factories.some(({name}) => name === providerName);
 
