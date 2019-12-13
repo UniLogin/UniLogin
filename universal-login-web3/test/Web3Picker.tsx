@@ -37,6 +37,4 @@ describe('UNIT: Web3Picker', () => {
     expect(() => web3Picker.setProvider('non-exist-name'))
       .throws('Provider is not exist. Invalid name: non-exist-name');
   });
-
-  xit('Pick custom web3', () => {});
 });
