@@ -1,30 +1,41 @@
 import {expect} from 'chai';
+import sinon from 'sinon';
 import {Web3Picker} from '../lib/ui/react/Web3Picker';
-import {getConfigForNetwork} from '../lib/config';
-import {universalLoginCustomProvider} from '../lib/Web3ProviderFactory';
-
-const expectedProviders = [
-  {name: 'UniversalLogin', icon: 'UniversalLogin logo'},
-];
+import {Web3Strategy} from '../lib/Web3Strategy';
+import {Web3ProviderFactory} from '../lib/Web3ProviderFactory';
 
 describe('UNIT: Web3Picker', () => {
-  const {provider} = getConfigForNetwork('kovan');
-  const web3Picker = new Web3Picker(provider);
+  const sendSpy = sinon.spy();
+  const universalLoginProviderFactory: Web3ProviderFactory = {
+    name: 'UniversalLogin',
+    icon: 'UniversalLogin logo',
+    create: () => ({send: sendSpy()}),
+  };
+  const createSpy = sinon.spy(universalLoginProviderFactory, 'create');
+  const factories = [
+    universalLoginProviderFactory,
+  ];
+  const web3Strategy = new Web3Strategy(factories);
+  const web3Picker = new Web3Picker(web3Strategy, factories);
+  web3Picker.show = sinon.stub().returns({waitForPick: async () => {}});
+  web3Strategy.web3picker = web3Picker;
+  const jsonRpcReq = {
+    jsonrpc: 'jsonrpc',
+    method: 'GET',
+    params: [],
+    id: 1,
+  };
 
-  it('Init provider', () => {
-    expect(web3Picker.get()).deep.eq(provider);
+  it('Pick ul provider', () => {
+    web3Strategy.send(jsonRpcReq, () => {});
+    web3Picker.setProvider(universalLoginProviderFactory.name);
+    expect(createSpy.calledOnce).to.be.true;
+    expect(sendSpy.calledOnce).to.be.true;
   });
 
   it('Pick not existed provider', () => {
     expect(() => web3Picker.setProvider('non-exist-name'))
       .throws('Provider is not exist. Invalid name: non-exist-name');
-  });
-
-  it('Pick ul web3', () => {
-    const expectedProviderName = universalLoginCustomProvider.name;
-    console.log('expectedProvider is created');
-    web3Picker.setProvider(universalLoginCustomProvider.name);
-    expect(web3Picker.currentCustomProvider?.name).to.be.deep.eq(expectedProviderName);
   });
 
   xit('Pick custom web3', () => {});

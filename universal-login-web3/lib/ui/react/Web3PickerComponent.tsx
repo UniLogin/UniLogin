@@ -14,19 +14,19 @@ interface Web3PickerComponentProps {
 
 export const Web3PickerComponent = ({customProviders, isVisibleProp, hideModal, setProvider}: Web3PickerComponentProps) => {
   const isVisible = useProperty(isVisibleProp);
-  const getOnClick = (name: string) => () => {
-    setProvider(name);
-    hideModal();
-  };
+  // const getOnClick = (name: string) => () => {
+  //   setProvider(name);
+  //   hideModal();
+  // };
 
   return isVisible
-    ? <ModalWrapper hideModal={hideModal}>
+    ? <ModalWrapper>
       <div className="modal-box">
         <h3 className="title-container">How would you like to connect to blockchain?</h3>
         <div className="providers-container">
           <>
             {customProviders.map(({name, icon}) =>
-              <button key={name} className="logo-button" onClick={getOnClick(name)}>
+              <button key={name} className="logo-button" onClick={() => setProvider(name)}>
                 <div className="logo-text">
                   {name}
                 </div>

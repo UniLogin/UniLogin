@@ -1,30 +1,26 @@
 import React, {useState} from 'react';
-import {Web3Picker} from '../Web3Picker';
-import {getConfigForNetwork} from '../../../config';
-import {Web3ProviderFactory} from '../../../Web3ProviderFactory';
-
-interface Web3PickerPlaygroundProps {
-  web3Picker?: Web3Picker;
-}
+import {universalLoginProviderFactory} from '../../../Web3ProviderFactory';
+import {Web3Strategy} from '../../../Web3Strategy';
+import {Provider} from 'web3/providers';
 
 export const Web3PickerPlayground = () => {
-  const [currentProvider, setCurrentProvider] = useState<Web3ProviderFactory | undefined>(undefined);
-  const {provider} = getConfigForNetwork('kovan')
-  const [web3Picker] = useState(() => new Web3Picker(provider));
-  web3Picker.setOnPickProvider(setCurrentProvider);
+  const [currentProvider, setCurrentProvider] = useState<Provider | undefined>(undefined);
+
+  const [web3Strategy] = useState(() => new Web3Strategy([
+    universalLoginProviderFactory,
+  ]));
 
   const onClick = async () => {
-    console.log('clicked button')
-    const {waitForPick} = web3Picker.show();
-    console.log('executed show')
-    await waitForPick();
-    console.log('Picked')
-  }
+    console.log('clicked button');
+    await web3Strategy.send({} as any, {} as any);
+    console.log('Picked');
+    setCurrentProvider(web3Strategy.currentProvider);
+  };
   return (
     <div className="web3-picker-playground">
       <button id="test-button" onClick={onClick}>Show chooser</button>
       <br />
-      CurrentProvider: {currentProvider?.name}
+      CurrentProvider: {currentProvider?.toString()}
     </div>
   );
 };

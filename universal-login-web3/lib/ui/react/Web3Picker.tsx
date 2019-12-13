@@ -1,47 +1,31 @@
 import React from 'react';
-import {Provider} from 'web3/providers';
+import {Provider, JsonRPCResponse, Callback} from 'web3/providers';
 import {render} from 'react-dom';
 import {Web3PickerComponent} from './Web3PickerComponent';
 import {State} from 'reactive-properties';
 import {ensure, ensureNotNull} from '@universal-login/commons';
 import {waitForFalse} from '../../utils';
-import {Web3ProviderFactory, universalLoginCustomProvider, metaMaskProvider} from '../../Web3ProviderFactory';
+import {Web3ProviderFactory, metaMaskProviderFactory} from '../../Web3ProviderFactory';
+import {Web3Strategy} from '../../Web3Strategy';
+import {JsonRPCRequest} from '../../models/rpc';
 
-type OnPickProvider = (providerName?: Web3ProviderFactory) => void;
-
-const setProviderForWeb3 = (provider: Provider) => {
-
-}
 export class Web3Picker implements Provider {
   private isVisible = new State(false);
   private created = false;
-  private onPickProvider?: OnPickProvider = undefined;
-  private providers: Web3ProviderFactory[] = [
-    universalLoginCustomProvider,
-  ];
-
-  currentCustomProvider?: Web3ProviderFactory = undefined;
-
-  get() {
-    return this.getCurrentProvider();
-  }
 
   constructor(
-    private readonly defaultProvider: Provider,
+    private web3Strategy: Web3Strategy,
+    private readonly factories: Web3ProviderFactory[],
   ) {
     if (window.ethereum) {
-      this.providers = this.providers.concat(metaMaskProvider);
+      this.factories = this.factories.concat(metaMaskProviderFactory);
     }
   }
 
-  getProviders() {
-    return this.providers;
-  }
-
   setProvider(providerName: string) {
-    ensure(this.providers.some(({name}) => name === providerName), Error, `Provider is not exist. Invalid name: ${providerName}`);
-    this.currentCustomProvider = this.getCustomProvider(providerName)
-    this.onPickProvider?.(this.currentCustomProvider);
+    ensure(this.factories.some(({name}) => name === providerName), Error, `Provider is not exist. Invalid name: ${providerName}`);
+    this.web3Strategy.currentProvider = this.getCustomProvider(providerName).create();
+    this.isVisible.set(false);
   }
 
   private getCustomProvider(name: string): Web3ProviderFactory {
@@ -50,15 +34,7 @@ export class Web3Picker implements Provider {
     return customProvider;
   }
 
-  private findCustomProvider = (name: string) => this.providers.find((customProvider) => customProvider.name === name);
-
-  private getCurrentProvider() {
-    if (!!this.currentCustomProvider) {
-      return this.currentCustomProvider.create();
-    } else {
-      return this.defaultProvider;
-    }
-  }
+  private findCustomProvider = (name: string) => this.factories.find((customProvider) => customProvider.name === name);
 
   private lazyCreateReactRoot() {
     if (!this.created) {
@@ -69,7 +45,7 @@ export class Web3Picker implements Provider {
           isVisibleProp={this.isVisible}
           hideModal={() => this.hideChooser()}
           setProvider={this.setProvider.bind(this)}
-          customProviders={this.providers}
+          customProviders={this.factories}
         />, root);
     }
   }
@@ -78,23 +54,19 @@ export class Web3Picker implements Provider {
     this.isVisible.set(false);
   }
 
-  setOnPickProvider(onPickProvider: OnPickProvider) {
-    this.onPickProvider = onPickProvider;
-  }
-
   show() {
     this.lazyCreateReactRoot();
     this.isVisible.set(true);
     return {
       waitForPick: () => waitForFalse(this.isVisible),
-    }
+    };
   }
 
-  async send() {
+  async send(jsonRpcReq: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
     const {waitForPick} = this.show();
-    return waitForPick();
+    await waitForPick();
+    return this.web3Strategy.currentProvider.send(jsonRpcReq, callback);
   }
-
 
   private createReactRoot(rootId: string, parentSelector = 'body') {
     const parentElement = document.querySelector(parentSelector);

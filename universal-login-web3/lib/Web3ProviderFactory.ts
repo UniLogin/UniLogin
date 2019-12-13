@@ -9,13 +9,13 @@ export interface Web3ProviderFactory {
   create: () => Provider;
 }
 
-export const universalLoginCustomProvider: Web3ProviderFactory = {
+export const universalLoginProviderFactory: Web3ProviderFactory = {
   name: 'UniversalLogin',
   icon: 'UniversalLogin logo',
   create: () => new ULWeb3Provider(getConfigForNetwork('kovan')),
 };
 
-export const metaMaskProvider: Web3ProviderFactory = {
+export const metaMaskProviderFactory: Web3ProviderFactory = {
   name: 'MetaMask',
   icon: 'MetaMask logo',
   create: () => {

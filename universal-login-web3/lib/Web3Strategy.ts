@@ -3,13 +3,15 @@ import {Web3Picker} from '.';
 import {Web3ProviderFactory} from './Web3ProviderFactory';
 
 export class Web3Strategy implements Provider {
-  public web3picker = new Web3Picker(this);
-  public currentProvider : Provider = this.web3picker;
+  web3picker: Web3Picker;
+  currentProvider: Provider;
 
   constructor(public readonly factories: Web3ProviderFactory[]) {
+    this.web3picker = new Web3Picker(this, factories);
+    this.currentProvider = this.web3picker;
   }
 
   send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    this.currentProvider.send(payload, callback)
+    return this.currentProvider.send(payload, callback);
   }
 }
