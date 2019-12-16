@@ -23,6 +23,7 @@ export type PaymentOptions = {
   gasLimit: utils.BigNumberish;
   gasPrice: utils.BigNumberish;
   gasToken: string;
+  refundReceiver: string;
 };
 
 export type ExecutionOptions = {
@@ -39,7 +40,6 @@ export type SignedMessagePaymentOptions = {
   gasBase: utils.BigNumberish;
   gasPrice: utils.BigNumberish;
   gasToken: string;
-  refundReceiver: string;
 };
 
 export type UnsignedMessage = Omit<SignedMessage, 'signature'>;

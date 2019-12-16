@@ -6,6 +6,7 @@ import {hasEnoughToken} from '../../../../lib/integration/ethereum/validators/Su
 import {TEST_CONTRACT_ADDRESS} from '../../../../lib/core/constants/test';
 import {BalanceChecker} from '../../../../lib/integration/ethereum/BalanceChecker';
 import {ETHER_NATIVE_TOKEN} from '../../../../lib/core/constants/constants.js';
+import {AddressZero} from 'ethers/constants';
 
 describe('INT: hasEnoughToken', async () => {
   const provider = createMockProvider();
@@ -15,7 +16,7 @@ describe('INT: hasEnoughToken', async () => {
   const gasPrice = '2';
   let token: Contract;
   let wallet: Wallet;
-  const createPaymentOptions = (gasToken: string, gasLimit: utils.BigNumberish, gasPrice: utils.BigNumberish) => ({gasToken, gasLimit, gasPrice});
+  const createPaymentOptions = (gasToken: string, gasLimit: utils.BigNumberish, gasPrice: utils.BigNumberish, refundReceiver: string) => ({gasToken, gasLimit, gasPrice, refundReceiver});
 
   before(async () => {
     [wallet] = await getWallets(provider);
@@ -25,34 +26,34 @@ describe('INT: hasEnoughToken', async () => {
   });
 
   it('Should return true if contract has enough token', async () => {
-    expect(await hasEnoughToken(createPaymentOptions(token.address, gasLimit, gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
-    expect(await hasEnoughToken(createPaymentOptions(token.address, gasLimit * 2, gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
-    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('0.09'), '10'), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
-    expect(await hasEnoughToken(createPaymentOptions(token.address, '10', utils.parseEther('0.09')), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
-    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('0.9'), '1'), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
-    expect(await hasEnoughToken(createPaymentOptions(token.address, '1', utils.parseEther('0.9')), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
+    expect(await hasEnoughToken(createPaymentOptions(token.address, gasLimit, gasPrice, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
+    expect(await hasEnoughToken(createPaymentOptions(token.address, gasLimit * 2, gasPrice, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
+    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('0.09'), '10', AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
+    expect(await hasEnoughToken(createPaymentOptions(token.address, '10', utils.parseEther('0.09'), AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
+    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('0.9'), '1', AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
+    expect(await hasEnoughToken(createPaymentOptions(token.address, '1', utils.parseEther('0.9'), AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
   });
 
   it('Should return false if contract has not enough token', async () => {
-    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('1.00001'), gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
-    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('1.1'), gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
-    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('2'), gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
-    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('10'), gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
+    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('1.00001'), gasPrice, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
+    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('1.1'), gasPrice, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
+    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('2'), gasPrice, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
+    expect(await hasEnoughToken(createPaymentOptions(token.address, utils.parseEther('10'), gasPrice, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
   });
 
   it('Should return true if contract has enough ethers', async () => {
-    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, gasLimit, gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
-    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, walletBalance.div(gasPrice), gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
-    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, walletBalance, '1'), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
-    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, '1', walletBalance), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
+    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, gasLimit, gasPrice, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
+    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, walletBalance.div(gasPrice), gasPrice, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
+    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, walletBalance, '1', AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
+    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, '1', walletBalance, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.true;
   });
 
   it('Should return false if contract has not enough ethers', async () => {
-    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, utils.parseEther('1.01'), gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
-    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, utils.parseEther('2.0'), gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
+    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, utils.parseEther('1.01'), gasPrice, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
+    expect(await hasEnoughToken(createPaymentOptions(ETHER_NATIVE_TOKEN.address, utils.parseEther('2.0'), gasPrice, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.false;
   });
 
   it('Should throw error, when passed address is not a token address', async () => {
-    await expect(hasEnoughToken(createPaymentOptions(wallet.address, utils.parseEther('2'), gasPrice), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.eventually.rejectedWith(`Invalid contract address: ${wallet.address}`);
+    await expect(hasEnoughToken(createPaymentOptions(wallet.address, utils.parseEther('2'), gasPrice, AddressZero), TEST_CONTRACT_ADDRESS, balanceChecker)).to.be.eventually.rejectedWith(`Invalid contract address: ${wallet.address}`);
   });
 });
