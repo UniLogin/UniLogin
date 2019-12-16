@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {Web3Picker} from '../lib/ui/react/Web3Picker';
 import {Web3Strategy} from '../lib/Web3Strategy';
-import {Web3ProviderFactory} from '../lib/Web3ProviderFactory';
+import {Web3ProviderFactory} from '../lib/models/Web3ProviderFactory';
 
 describe('UNIT: Web3Picker', () => {
   const sendSpy = sinon.spy();

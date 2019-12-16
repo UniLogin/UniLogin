@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {universalLoginProviderFactory} from '../../../Web3ProviderFactory';
-import {Web3Strategy} from '../../../Web3Strategy';
 import {Provider} from 'web3/providers';
+import {universalLoginProviderFactory} from '../../../constants/universalLoginProviderFactory';
+import {Web3Strategy} from '../../../Web3Strategy';
 
 export const Web3PickerPlayground = () => {
   const [web3Strategy] = useState(() => new Web3Strategy([

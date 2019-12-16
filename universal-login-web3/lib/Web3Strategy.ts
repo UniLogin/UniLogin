@@ -1,6 +1,6 @@
 import {Provider, Callback, JsonRPCResponse, JsonRPCRequest} from 'web3/providers';
 import {Web3Picker} from '.';
-import {Web3ProviderFactory} from './Web3ProviderFactory';
+import {Web3ProviderFactory} from './models/Web3ProviderFactory';
 
 export class Web3Strategy implements Provider {
   web3picker: Web3Picker;

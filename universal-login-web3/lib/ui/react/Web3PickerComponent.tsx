@@ -3,7 +3,7 @@ import {ModalWrapper, useProperty} from '@universal-login/react';
 import {Property} from 'reactive-properties';
 import '../styles/web3Picker.css';
 import U from '../assets/U.svg';
-import {Web3ProviderFactory} from '../../Web3ProviderFactory';
+import {Web3ProviderFactory} from '../../models/Web3ProviderFactory';
 
 interface Web3PickerComponentProps {
   isVisibleProp: Property<boolean>;
