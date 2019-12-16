@@ -107,7 +107,8 @@ describe('INT: TransferService', () => {
       transferToken: mockTokenContract.address,
       gasParameters,
       amount,
-    }, balance).amount[0]).to.eq(`Amount ${amount} is not valid`);
+    }, balance))
+    .to.deep.eq({amount: [`Amount ${amount} is not valid`], to: []});
   });
 
   it('return an error if invalid address', async () => {
@@ -118,7 +119,8 @@ describe('INT: TransferService', () => {
       transferToken: mockTokenContract.address,
       gasParameters,
       amount,
-    }, balance).to[0]).to.eq(`Recipient ${invalidAddress} is not valid`);
+    }, balance))
+    .to.deep.eq({to: [`Recipient ${invalidAddress} is not valid`], amount: []});
   });
 
   it('return an error if invalid ENS name', async () => {
@@ -129,7 +131,8 @@ describe('INT: TransferService', () => {
       transferToken: mockTokenContract.address,
       gasParameters,
       amount,
-    }, balance).to[0]).to.eq(`Recipient ${invalidENSName} is not valid`);
+    }, balance))
+    .to.deep.eq({to: [`Recipient ${invalidENSName} is not valid`], amount: []});
   });
 
   it('get Ethereum max amount', async () => {
