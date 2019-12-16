@@ -1,6 +1,7 @@
 import chai, {expect} from 'chai';
 import {utils} from 'ethers';
-import {SignedMessage, GAS_FIXED} from '@universal-login/commons';
+import {AddressZero} from 'ethers/constants';
+import {SignedMessage, GAS_FIXED, OperationType} from '@universal-login/commons';
 import {GasValidator} from '../../../../lib/core/services/validators/GasValidator';
 import chaiAsPromised from 'chai-as-promised';
 import {GasComputation} from '../../../../lib/core/services/GasComputation';
@@ -25,6 +26,8 @@ describe('UNIT: GasValidator', () => {
       value: 0,
       data: '0x5f7b68be00000000000000000000000063fc2ad3d021a4d7e64323529a55a9442c444da0',
       nonce: 0,
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
       gasPrice: 10000000000,
       gasBase,
       gasCall: utils.bigNumberify(MAX_GAS_LIMIT).sub(gasBase),

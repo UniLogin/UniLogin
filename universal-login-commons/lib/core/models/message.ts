@@ -77,7 +77,7 @@ export type CollectedSignatureKeyPair = {
   signature: string;
 };
 
-export type DecodedMessage = Omit<MessageWithoutFrom, 'nonce'>;
+export type DecodedMessage = Omit<MessageWithoutFrom, 'nonce'|'refundReceiver'|'operationType'>;
 
 export interface DecodedMessageWithFrom extends DecodedMessage {
   from: string;
