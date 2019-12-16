@@ -40,7 +40,7 @@ export const Onboarding = (props: OnboardingProps) => {
                         await props.walletService.createFutureWallet(ensName);
                         history.push('/create');
                       }}
-                      onConnectClick={(ensName) => history.push('/connectFlow', {ensName})}
+                      onConnectClick={(ensName) => history.push('/connectFlow/chooseMethod', {ensName})}
                       domains={props.domains}
                       tryEnablingMetamask={props.tryEnablingMetamask}
                       actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
@@ -59,12 +59,11 @@ export const Onboarding = (props: OnboardingProps) => {
                 />}
             />
             <Route
-              exact
               path="/connectFlow"
               render={({history, location}) =>
                 <ModalWrapper hideModal={() => history.goBack()}>
                   <ConnectionFlow
-                    basePath="/connect"
+                    basePath="/connectFlow"
                     onCancel={() => history.goBack()}
                     name={location.state.ensName}
                     sdk={props.sdk}
