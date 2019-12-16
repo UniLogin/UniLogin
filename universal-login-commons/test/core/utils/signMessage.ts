@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
+import {AddressZero} from 'ethers/constants';
 import {
   DEFAULT_GAS_PRICE,
   DEFAULT_GAS_LIMIT,
@@ -8,6 +9,7 @@ import {
   TEST_SIGNATURE_KEY_PAIRS,
   getMessageWithSignatures,
   EMPTY_DATA,
+  OperationType,
 } from '../../../lib';
 
 const expectedMessage = {
@@ -16,10 +18,12 @@ const expectedMessage = {
   value: utils.parseEther('0.5'),
   data: EMPTY_DATA,
   nonce: '0',
+  operationType: OperationType.call,
   gasPrice: DEFAULT_GAS_PRICE,
   gasCall: DEFAULT_GAS_LIMIT,
   gasBase: '0',
-  gasToken: '0x0000000000000000000000000000000000000000',
+  gasToken: AddressZero,
+  refundReceiver: AddressZero,
   signature: '0xea229e2779a9838b660b3c45e12f96c07ea838de3ffef621f4b73ae29c9feda06adb51c4c130d063e2aa251759f442a27109e74faddd8665b73072edd4c924b41c',
 };
 

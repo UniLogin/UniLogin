@@ -1,11 +1,12 @@
 import {expect} from 'chai';
 import {SufficientBalanceValidator} from '../../../../lib/integration/ethereum/validators/SufficientBalanceValidator';
 import {utils, providers} from 'ethers';
+import {AddressZero} from 'ethers/constants';
 import {EMPTY_DATA} from '../../../../lib/core/constants/constants';
 import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE} from '../../../../lib/core/constants/test';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import MockToken from '../../../fixtures/MockToken.json';
-import {SignedMessage, calculateMessageSignature} from '../../../../lib';
+import {SignedMessage, calculateMessageSignature, OperationType} from '../../../../lib';
 
 describe('INT: SufficientBalanceValidator', () => {
   const provider: providers.Provider = createMockProvider();
@@ -22,6 +23,8 @@ describe('INT: SufficientBalanceValidator', () => {
       value: utils.parseEther('1.0'),
       data: EMPTY_DATA,
       nonce: 0,
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
       gasPrice: TEST_GAS_PRICE,
       gasCall: utils.bigNumberify(190000),
       gasBase: utils.bigNumberify(10000),
