@@ -148,8 +148,8 @@
   opacity: 0.7;
 }
 
-.universal-login .single-suggestions-hint {
-  margin: 0 auto 7px;
+.universal-login .single-suggestion-hint {
+  margin: 0 7px 7px;
   text-align: center;
   font-size: 12px;
   color: #fff;
