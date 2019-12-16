@@ -16,9 +16,10 @@ export const SdkConfigDefault: SdkConfig = {
     'SAI',
     'ETH',
   ],
-  executionFactoryTick: 1000,
   notice: '',
   authorizationsObserverTick: 1000,
   balanceObserverTick: 1000 * 3,
   priceObserverTick: 1000 * 60 * 5,
+  mineableFactoryTick: 1000,
+  mineableFactoryTimeout: 600000,
 };

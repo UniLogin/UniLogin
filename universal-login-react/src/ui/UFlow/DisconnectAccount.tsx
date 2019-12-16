@@ -26,7 +26,7 @@ export const DisconnectAccount = ({walletService, onDisconnectProgress, onAccoun
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="disconnect-account">
           <h2 className="disconnect-account-title">Are you sure you want to disconnect this device? </h2>
-          <p className="disconnect-account-subtitle">You will lost access to your funds from this device.</p>
+          <p className="disconnect-account-subtitle">You will lose access to your funds from this device.</p>
           <div className="disconnect-account-form">
             <div className="disconnect-account-input-wrapper">
               <label htmlFor="username" className="disconnect-account-label">Type your username</label>

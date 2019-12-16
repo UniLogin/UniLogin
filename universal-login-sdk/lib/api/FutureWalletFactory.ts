@@ -5,6 +5,7 @@ import {
   PublicRelayerConfig,
   ensure,
   isValidEnsName,
+  SupportedToken,
 } from '@universal-login/commons';
 import {encodeInitializeWithENSData, BlockchainService} from '@universal-login/contracts';
 import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
@@ -22,12 +23,14 @@ export type BalanceDetails = {
 export interface FutureWallet extends SerializableFutureWallet {
   waitForBalance: () => Promise<BalanceDetails>;
   deploy: (ensName: string, gasPrice: string, gasToken: string) => Promise<DeployingWallet>;
+  setSupportedToken: (supportedToken: SupportedToken) => void;
 }
 
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
 
 export class FutureWalletFactory {
   private ensService: ENSService;
+  private deploymentReadyObserver: DeploymentReadyObserver;
 
   constructor(
     private config: FutureFactoryConfig,
@@ -37,6 +40,7 @@ export class FutureWalletFactory {
     private sdk: UniversalLoginSDK,
   ) {
     this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
+    this.deploymentReadyObserver = new DeploymentReadyObserver(config.supportedTokens, provider);
   }
 
   private async setupInitData(publicKey: string, ensName: string, gasPrice: string, gasToken: string) {
@@ -54,8 +58,7 @@ export class FutureWalletFactory {
       contractAddress,
       waitForBalance: async () => new Promise<BalanceDetails>(
         (resolve) => {
-          const deploymentReadyObserver = new DeploymentReadyObserver(this.config.supportedTokens, this.provider);
-          deploymentReadyObserver.startAndSubscribe(
+          this.deploymentReadyObserver.startAndSubscribe(
             contractAddress,
             (tokenAddress, contractAddress) => resolve({tokenAddress, contractAddress}),
           ).catch(console.error);
@@ -67,6 +70,9 @@ export class FutureWalletFactory {
         const signature = await calculateInitializeSignature(initData, privateKey);
         const {deploymentHash} = await this.relayerApi.deploy(publicKey, ensName, gasPrice, gasToken, signature, this.sdk.sdkConfig.applicationInfo);
         return new DeployingWallet({deploymentHash, contractAddress, name: ensName, privateKey}, this.sdk);
+      },
+      setSupportedToken: (supportedToken: SupportedToken) => {
+        this.deploymentReadyObserver.setSupportedToken(supportedToken);
       },
     };
   }

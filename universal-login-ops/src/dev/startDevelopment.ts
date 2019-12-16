@@ -1,6 +1,6 @@
 import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
-import {providers, Wallet, utils} from 'ethers';
+import {providers, Wallet} from 'ethers';
 import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@universal-login/commons';
 import {RelayerClass, Config} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
@@ -34,15 +34,15 @@ const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, daiTokenAddress: string, saiTokenAddress: string) {
   const supportedTokens: SupportedToken[] = [{
     address: daiTokenAddress,
-    minimalAmount: utils.parseEther('0.05').toString(),
+    minimalAmount: '0.05',
   },
   {
     address: saiTokenAddress,
-    minimalAmount: utils.parseEther('0.05').toString(),
+    minimalAmount: '0.05',
   },
   {
     address: ETHER_NATIVE_TOKEN.address,
-    minimalAmount: '500000',
+    minimalAmount: '0.05',
   }];
   return {
     jsonRpcUrl,

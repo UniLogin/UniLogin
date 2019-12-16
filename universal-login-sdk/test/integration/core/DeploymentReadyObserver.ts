@@ -11,7 +11,7 @@ describe('INT: DeploymentReadyObserver', () => {
   let provider: providers.Provider;
   let wallet: Wallet;
   let mockToken: Contract;
-  const minimalAmount = utils.parseEther('0.5').toString();
+  const minimalAmount = '0.5';
   let supportedTokens = [
     {
       address: ETHER_NATIVE_TOKEN.address,
@@ -25,7 +25,8 @@ describe('INT: DeploymentReadyObserver', () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     mockToken = await deployContract(wallet, MockToken);
-    supportedTokens = [...supportedTokens, {address: mockToken.address, minimalAmount}];
+    supportedTokens = [{address: ETHER_NATIVE_TOKEN.address, minimalAmount},
+      {address: mockToken.address, minimalAmount}];
     callback = sinon.spy();
     deploymentReadyObserver = new DeploymentReadyObserver(supportedTokens, provider);
     deploymentReadyObserver.tick = 10;
@@ -57,6 +58,32 @@ describe('INT: DeploymentReadyObserver', () => {
   it('should throw error if is already started', () => {
     expect(deploymentReadyObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback))
       .to.be.rejectedWith('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.');
+  });
+
+  it('set supported tokens, none token', () => {
+    const deploymentReadyObserver = new DeploymentReadyObserver([], provider);
+    deploymentReadyObserver.setSupportedToken({address: ETHER_NATIVE_TOKEN.address, minimalAmount: '1'});
+    expect(deploymentReadyObserver.getSupportedToken()).to.deep.eq([]);
+  });
+
+  it('set supported tokens, 1 token', () => {
+    const deploymentReadyObserver = new DeploymentReadyObserver([{address: ETHER_NATIVE_TOKEN.address, minimalAmount: '0.5'}], provider);
+    const newSupportedTokens = {address: ETHER_NATIVE_TOKEN.address, minimalAmount: '1'};
+    deploymentReadyObserver.setSupportedToken(newSupportedTokens);
+    expect(deploymentReadyObserver.getSupportedToken()).to.deep.eq([newSupportedTokens]);
+  });
+
+  it('set supported tokens, 1 token and trying to add new one', () => {
+    const deploymentReadyObserver = new DeploymentReadyObserver([{address: ETHER_NATIVE_TOKEN.address, minimalAmount: '0.5'}], provider);
+    deploymentReadyObserver.setSupportedToken({address: mockToken.address, minimalAmount: '1'});
+    const expectedSupportedTokens = [{address: ETHER_NATIVE_TOKEN.address, minimalAmount: '0.5'}];
+    expect(deploymentReadyObserver.getSupportedToken()).to.deep.eq(expectedSupportedTokens);
+  });
+
+  it('set supported tokens, 2 tokens', () => {
+    deploymentReadyObserver.setSupportedToken({address: ETHER_NATIVE_TOKEN.address, minimalAmount: '1'});
+    const expectedSupportedTokens = [{address: ETHER_NATIVE_TOKEN.address, minimalAmount: '1'}, {address: mockToken.address, minimalAmount}];
+    expect(deploymentReadyObserver.getSupportedToken()).to.deep.eq(expectedSupportedTokens);
   });
 
   afterEach(async () => {

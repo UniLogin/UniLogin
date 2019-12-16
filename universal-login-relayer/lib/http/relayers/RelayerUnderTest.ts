@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {Contract, providers, utils, Wallet} from 'ethers';
+import {Contract, providers, Wallet} from 'ethers';
 import {
   ContractJSON,
   deepMerge,
@@ -51,11 +51,11 @@ export class RelayerUnderTest extends Relayer {
     const supportedTokens = [
       {
         address: mockToken.address,
-        minimalAmount: utils.parseEther('0.05').toString(),
+        minimalAmount: '0.05',
       },
       {
         address: ETHER_NATIVE_TOKEN.address,
-        minimalAmount: '500000',
+        minimalAmount: '0.05',
       },
     ];
     const overrideConfig: DeepPartial<Config> = {

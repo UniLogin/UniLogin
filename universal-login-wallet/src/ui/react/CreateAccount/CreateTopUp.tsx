@@ -6,7 +6,7 @@ import {useServices} from '../../hooks';
 import {InvalidWalletState} from '@universal-login/sdk';
 
 export function CreateTopUp() {
-  const {sdk, walletService} = useServices();
+  const {walletService} = useServices();
   const history = useHistory();
 
   ensure(walletService.state.kind === 'Future', InvalidWalletState, 'Future', walletService.state.kind);
@@ -22,11 +22,8 @@ export function CreateTopUp() {
   return (
     <div className="main-bg">
       <TopUp
-        sdk={sdk}
-        contractAddress={wallet.contractAddress}
-        isDeployment
+        walletService={walletService}
         isModal
-        onGasParametersChanged={(gasParameters) => walletService.setGasParameters(gasParameters)}
         hideModal={() => {
           walletService.disconnect();
           history.push('/selectDeployName');

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {OnGasParametersChanged, stringToEther} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {stringToEther} from '@universal-login/commons';
+import {WalletService} from '@universal-login/sdk';
 import {Safello} from './OnRamp/Safello';
 import {Ramp} from './OnRamp/Ramp';
 import {Wyre} from './OnRamp/Wyre';
@@ -16,23 +16,21 @@ import './../styles/topUpDefaults.sass';
 import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
 
 interface TopUpProps {
-  sdk: UniversalLoginSDK;
-  contractAddress: string;
-  onGasParametersChanged?: OnGasParametersChanged;
+  walletService: WalletService;
   startModal?: TopUpComponentType;
   topUpClassName?: string;
   modalClassName?: string;
   hideModal?: () => void;
   isModal?: boolean;
   logoColor?: LogoColor;
-  isDeployment: boolean;
 }
 
-export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal, modalClassName, hideModal, isModal, isDeployment, topUpClassName, logoColor}: TopUpProps) => {
+export const TopUp = ({walletService, startModal, modalClassName, hideModal, isModal, topUpClassName, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
-  const relayerConfig = sdk.getRelayerConfig();
+  const relayerConfig = walletService.sdk.getRelayerConfig();
+  const contractAddress = walletService.getContractAddress();
 
   const onPayClick = (provider: TopUpProvider, amount: string) => {
     setModal(toTopUpComponentType(provider));
@@ -41,13 +39,10 @@ export const TopUp = ({sdk, onGasParametersChanged, contractAddress, startModal,
 
   const getTopUpMethodChooser = () => (
     <ChooseTopUpMethod
-      sdk={sdk}
-      contractAddress={contractAddress}
+      walletService={walletService}
       onPayClick={onPayClick}
       topUpClassName={topUpClassName}
       logoColor={logoColor}
-      onGasParametersChanged={onGasParametersChanged}
-      isDeployment={isDeployment}
     />
   );
 

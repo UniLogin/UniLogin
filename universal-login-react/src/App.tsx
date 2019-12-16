@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import {BrowserRouter, Route, Switch, Link} from 'react-router-dom';
-import {Wallet} from 'ethers';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
@@ -12,7 +11,7 @@ import {useServices} from './core/services/useServices';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
-import {DeployedWallet} from '@universal-login/sdk';
+import {DeployedWallet, DeployingWallet} from '@universal-login/sdk';
 import {Spinner} from './ui/commons/Spinner';
 import {useAsync} from './ui/hooks/useAsync';
 import {WalletService} from '@universal-login/sdk';
@@ -28,7 +27,24 @@ export const App = () => {
     return sdk.getRelayerConfig();
   }, []);
 
-  const [walletService] = useState(new WalletService(sdk));
+  const [walletService] = useState(() => new WalletService(sdk));
+
+  const name = 'test.mylogin.eth';
+
+  const deployingWallet = new DeployingWallet({
+    contractAddress: TEST_ACCOUNT_ADDRESS,
+    name,
+    privateKey: TEST_PRIVATE_KEY,
+    deploymentHash: TEST_MESSAGE_HASH,
+  }, sdk);
+
+  const futureWallet = {
+    contractAddress: TEST_ACCOUNT_ADDRESS,
+    privateKey: TEST_PRIVATE_KEY,
+    deploy: async () => deployingWallet,
+    waitForBalance: (async () => { }) as any,
+    setSupportedToken: (() => {}) as any,
+  };
 
   async function tryEnablingMetamask() {
     const ethereum = (window as any).ethereum;
@@ -121,15 +137,15 @@ export const App = () => {
               exact
               path="/topUpRegular"
               render={() => {
+                const topUpWalletService = new WalletService(sdk);
+                const topUpDeployedWallet = new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk);
+                topUpWalletService.setWallet(topUpDeployedWallet.asApplicationWallet);
                 if (!relayerConfig) {
                   return <Spinner />;
                 }
                 return <TopUp
+                  walletService={topUpWalletService}
                   hideModal={() => history.back()}
-                  contractAddress={Wallet.createRandom().address}
-                  sdk={sdk}
-                  onGasParametersChanged={console.log}
-                  isDeployment={false}
                   isModal
                 />;
               }}
@@ -138,15 +154,14 @@ export const App = () => {
               exact
               path="/topUpDeployment"
               render={() => {
+                const topUpWalletService = new WalletService(sdk);
+                topUpWalletService.setFutureWallet(futureWallet, name);
                 if (!relayerConfig) {
                   return <Spinner />;
                 }
                 return <TopUp
+                  walletService={topUpWalletService}
                   hideModal={() => history.back()}
-                  contractAddress={Wallet.createRandom().address}
-                  sdk={sdk}
-                  onGasParametersChanged={console.log}
-                  isDeployment
                   isModal
                 />;
               }}

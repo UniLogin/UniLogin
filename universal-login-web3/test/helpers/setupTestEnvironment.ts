@@ -1,7 +1,7 @@
 import {createFixtureLoader} from 'ethereum-waffle';
 import {prerequisites} from '../fixtures/prerequisites';
 import {DeepPartial, ETHER_NATIVE_TOKEN, withENS} from '@universal-login/commons';
-import {providers, utils} from 'ethers';
+import {providers} from 'ethers';
 import {Config, getContractWhiteList, RelayerUnderTest} from '@universal-login/relayer';
 
 const loadFixture = createFixtureLoader();
@@ -25,11 +25,11 @@ export async function setupTestEnvironment() {
   const supportedTokens = [
     {
       address: mockToken.address,
-      minimalAmount: utils.parseEther('0.05').toString(),
+      minimalAmount: '0.05',
     },
     {
       address: ETHER_NATIVE_TOKEN.address,
-      minimalAmount: '500000',
+      minimalAmount: '0.05',
     },
   ];
   const overrideConfig: DeepPartial<Config> = {
