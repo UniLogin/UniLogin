@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import Web3 from 'web3';
-import {ULWeb3Provider} from '../ULWeb3Provider';
+import {ULWeb3Provider} from '../../../ULWeb3Provider';
 
 const config = {
   relayerUrl: process.env.RELAYER_URL!,
@@ -14,7 +14,7 @@ const universalLogin = ULWeb3Provider.getDefaultProvider({
 });
 const web3 = new Web3(universalLogin);
 
-export const Example = () => {
+export const ExamplePlayground = () => {
   const ulButton = useRef<HTMLDivElement | null>(null);
 
   async function sendTx() {

@@ -21,10 +21,10 @@
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "tsc --build tsconfig.json",
+    "build": "tsc --build tsconfig.json && cpx \"lib/ui/assets/**/*\" dist/lib/ui/assets && cpx \"lib/ui/styles/**/*\" dist/lib/ui/styles",
     "lint": "eslint '{lib,test}/**/*.{ts,tsx}'",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./test/helpers/nullCompiler.ts -t 10000 \"dist/test/**/*.js\"",
+    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/test/config -t 10000 \"dist/test/**/*.js\"",
     "clean": "rimraf dist",
     "start": "webpack-dev-server --mode development",
     "start:example": "ts-node lib/scripts/dev-start.ts"
@@ -44,6 +44,7 @@
     "chai-as-promised": "^7.1.1",
     "cross-env": "^5.2.0",
     "ens-builder": "^2.0.2",
+    "enzyme": "^3.10.0",
     "eslint": "^6.1.0",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
