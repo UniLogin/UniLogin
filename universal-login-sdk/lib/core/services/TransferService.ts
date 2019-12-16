@@ -1,10 +1,11 @@
+import {DEFAULT_GAS_LIMIT, ensureNotNull, ETHER_NATIVE_TOKEN, GasParameters, isValidRecipient, Nullable, TransferDetails} from '@universal-login/commons';
 import {utils} from 'ethers';
-import {ensureNotNull, TransferDetails, isValidRecipient, isValidAmount, DEFAULT_GAS_LIMIT, Nullable, GasParameters, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {WalletNotFound} from '../utils/errors';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
-import {encodeTransferToMessage} from '../utils/encodeTransferToMessage';
-import {getTargetAddress} from '../utils/getTargetAddress';
 import {bigNumberMax} from '../utils/bigNumberMax';
+import {encodeTransferToMessage} from '../utils/encodeTransferToMessage';
+import {WalletNotFound} from '../utils/errors';
+import {getTargetAddress} from '../utils/getTargetAddress';
+import {validateAmount} from './validations/validateAmount';
 
 export type TransferErrors = Record<string, string[]>;
 
@@ -22,13 +23,8 @@ export class TransferService {
 
   validateInputs(transferDetails: TransferDetails, balance: Nullable<string>) {
     this.errors = {amount: [], to: []};
-    const {gasPrice, gasToken} = transferDetails.gasParameters;
-    const gasCostInWei = utils.bigNumberify(DEFAULT_GAS_LIMIT.toString()).mul(gasPrice);
     ensureNotNull(balance, Error, 'Balance is null');
-    const isAmountValid = isValidAmount(transferDetails.transferToken, balance, gasToken, gasCostInWei, transferDetails.amount);
-    if (!isAmountValid) {
-      this.errors.amount.push(`Amount ${transferDetails.amount} is not valid`);
-    }
+    this.errors['amount'] = validateAmount(transferDetails, balance);
     const isRecipientValid = isValidRecipient(transferDetails.to);
     if (!isRecipientValid) {
       this.errors.to.push(`Recipient ${transferDetails.to} is not valid`);

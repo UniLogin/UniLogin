@@ -115,7 +115,7 @@ describe('UNIT: TransferService', () => {
       transferToken: ETHER_NATIVE_TOKEN.address,
       gasParameters,
     }, balance))
-    .to.deep.eq({amount: ['Amount 350 is not valid'], to: []});
+      .to.deep.eq({amount: ['Insufficient funds. Sending 350.0 eth, got only 300.0 eth'], to: []});
   });
 
   it('return an error if address is not valid', async () => {
@@ -126,7 +126,7 @@ describe('UNIT: TransferService', () => {
       transferToken: ETHER_NATIVE_TOKEN.address,
       gasParameters,
     }, balance))
-    .to.deep.eq({to: ['Recipient 0x is not valid'], amount: []});
+      .to.deep.eq({to: ['Recipient 0x is not valid'], amount: []});
   });
 
   it('return an error if ENS name is not valid', async () => {
@@ -137,7 +137,7 @@ describe('UNIT: TransferService', () => {
       transferToken: ETHER_NATIVE_TOKEN.address,
       gasParameters,
     }, balance))
-    .to.deep.eq({to: ['Recipient test is not valid'], amount: []});
+      .to.deep.eq({to: ['Recipient test is not valid'], amount: []});
   });
 
   it('get Ethereum max amount', () => {
