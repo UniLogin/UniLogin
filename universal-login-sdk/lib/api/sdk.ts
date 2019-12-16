@@ -20,6 +20,7 @@ import {
   TokensValueConverter,
   ETHER_NATIVE_TOKEN,
   PartialRequired,
+  OperationType,
 } from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
@@ -186,7 +187,7 @@ class UniversalLoginSDK {
   async execute(message: PartialRequired<Message, 'from'>, privateKey: string): Promise<Execution> {
     ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
     const nonce = message.nonce || parseInt(await this.getNonce(message.from!), 10);
-    const partialMessage = {gasToken: ETHER_NATIVE_TOKEN.address, ...message, nonce};
+    const partialMessage = {gasToken: ETHER_NATIVE_TOKEN.address, ...message, nonce, refundReceiver: this.relayerConfig.relayerAddress, operationType: OperationType.call};
     ensure(partialMessage.gasLimit! <= this.relayerConfig!.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${this.relayerConfig!.maxGasLimit}`);
     const signedMessage: SignedMessage = await this.messageConverter.messageToSignedMessage(partialMessage, privateKey);
     ensureSufficientGas(signedMessage);

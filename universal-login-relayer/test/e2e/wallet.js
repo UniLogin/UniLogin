@@ -1,7 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
-import {createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields} from '@universal-login/commons';
+import {AddressZero} from 'ethers/constants';
+import {createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
 import {startRelayerWithRefund, createWalletCounterfactually} from '../helpers/http';
 import {getTestSignedMessage} from '../config/message';
@@ -62,6 +63,8 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       value: '500000000000000000',
       data: '0x0',
       nonce: utils.bigNumberify(2),
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
       gasPrice: '1000000000',
       gasCall: '1000000',
       gasBase: '0',

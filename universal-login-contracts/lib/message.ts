@@ -1,5 +1,6 @@
 import {utils} from 'ethers';
-import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, NetworkVersion, WalletVersion} from '@universal-login/commons';
+import {AddressZero} from 'ethers/constants';
+import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, NetworkVersion, WalletVersion, OperationType} from '@universal-login/commons';
 import {calculateGasCall, calculateGasBase} from './estimateGas';
 
 export const messageToSignedMessage = (message: Partial<Message>, privateKey: string, networkVersion: NetworkVersion, walletVersion: WalletVersion): SignedMessage => {
@@ -17,6 +18,8 @@ export const messageToUnsignedMessage = (message: Partial<Message>, networkVersi
     nonce: message.nonce!,
     gasPrice: message.gasPrice!,
     gasToken: message.gasToken!,
+    operationType: message.operationType!,
+    refundReceiver: message.refundReceiver!,
   };
   const gasBase = calculateGasBase(messageWithoutGasEstimates, networkVersion, walletVersion);
   const gasCall = calculateGasCall(message.gasLimit!, gasBase);
@@ -28,9 +31,11 @@ export const emptyMessage = {
   value: utils.parseEther('0.0'),
   data: EMPTY_DATA,
   nonce: 0,
+  operationType: OperationType.call,
+  refundReceiver: AddressZero,
   gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE),
   gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT),
-  gasToken: '0x0000000000000000000000000000000000000000',
+  gasToken: AddressZero,
 };
 
 export const unsignedMessageToSignedMessage = (unsignedMessage: UnsignedMessage, privateKey: string) => {

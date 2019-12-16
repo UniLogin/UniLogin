@@ -5,18 +5,25 @@ export type Message = MessageCore & PaymentOptions;
 
 export type SignedMessage = MessageCore & SignedMessagePaymentOptions & {signature: string};
 
+export enum OperationType {
+  call,
+  externalCall,
+}
+
 export type MessageCore = {
   to: string;
   from: string;
   nonce: string | number;
   data: utils.Arrayish;
   value: utils.BigNumberish;
+  operationType: OperationType;
 };
 
 export type PaymentOptions = {
   gasLimit: utils.BigNumberish;
   gasPrice: utils.BigNumberish;
   gasToken: string;
+  refundReceiver: string;
 };
 
 export type ExecutionOptions = {
@@ -33,6 +40,7 @@ export type SignedMessagePaymentOptions = {
   gasBase: utils.BigNumberish;
   gasPrice: utils.BigNumberish;
   gasToken: string;
+  refundReceiver: string;
 };
 
 export type UnsignedMessage = Omit<SignedMessage, 'signature'>;
@@ -69,7 +77,7 @@ export type CollectedSignatureKeyPair = {
   signature: string;
 };
 
-export type DecodedMessage = Omit<MessageWithoutFrom, 'nonce'>;
+export type DecodedMessage = Omit<MessageWithoutFrom, 'nonce'|'refundReceiver'|'operationType'>;
 
 export interface DecodedMessageWithFrom extends DecodedMessage {
   from: string;

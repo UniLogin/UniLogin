@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {AddressZero} from 'ethers/constants';
+import {TEST_ACCOUNT_ADDRESS, OperationType} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '@universal-login/contracts';
 import {messageToTransaction, GAS_LIMIT_MARGIN} from '../../../lib/core/utils/messages/serialisation';
 
@@ -21,6 +22,8 @@ describe('UNIT: MessageToTransaction', () => {
       gasCall,
       gasPrice,
       gasBase,
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
       signature: '0x592fa743889fc7f92ac2a37bb1f5ba1daf2a5c84741ca0e0061d243a2e6707ba',
     };
 
