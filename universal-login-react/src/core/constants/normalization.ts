@@ -1,0 +1,3 @@
+export const GET_PRICE_IN_ETHER_NORMALIZE_TO_INTEGER = 100;
+
+export const GET_PRICE_IN_ETHER_NORMALIZE_TO_UNITS = Math.pow(10, 18).toString();
