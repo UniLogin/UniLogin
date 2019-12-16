@@ -40,7 +40,6 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
   const transferService = new TransferService(deployedWallet);
 
   const onTransferSendClick = async (changeContent: (argument: string) => void) => {
-    transferService.validateInputs(transferDetails, balance);
     const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetails);
     changeContent('waitingForTransfer');
     const {transactionHash} = await waitForTransactionHash();
@@ -84,12 +83,14 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
             render={({history}) => (
               <SubDialogWrapper message={notice} ensName={name}>
                 <Transfer
+                  transferService={transferService}
                   deployedWallet={deployedWallet}
+                  transferDetails={transferDetails}
                   tokenDetails={selectedToken}
                   updateTransferDetailsWith={updateTransferDetailsWith}
                   tokenDetailsWithBalance={tokenDetailsWithBalance}
                   onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
-                  transferDetails={transferDetails}
+                  getMaxAmount={() => transferService.getMaxAmount(transferDetails.gasParameters, balance)}
                 />
               </SubDialogWrapper>
             )}

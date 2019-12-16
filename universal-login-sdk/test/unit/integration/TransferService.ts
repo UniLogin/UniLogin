@@ -107,43 +107,48 @@ describe('UNIT: TransferService', () => {
     })).to.be.rejectedWith('Not enough tokens');
   });
 
-  it('throw an error if address is not valid', async () => {
+  it('return an error if amount is not valid', async () => {
     const {transferService, balance} = setup();
-    expect(() => transferService.validateInputs({
-      to: '0x',
-      amount: '123',
-      transferToken: ETHER_NATIVE_TOKEN.address,
-      gasParameters,
-    }, balance)).to.throw('0x is not valid');
-  });
-
-  it('throw an error if ens name is not valid', async () => {
-    const {transferService, balance} = setup();
-    expect(() => transferService.validateInputs({
-      to: 'test',
-      amount: '123',
-      transferToken: ETHER_NATIVE_TOKEN.address,
-      gasParameters,
-    }, balance)).to.throw('test is not valid');
-  });
-
-  it('throw an error if amount is not valid', async () => {
-    const {transferService, balance} = setup();
-    expect(() => transferService.validateInputs({
+    expect(transferService.validateInputs({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '350',
       transferToken: ETHER_NATIVE_TOKEN.address,
       gasParameters,
-    }, balance)).to.throw('Amount 350 is not valid');
+    }, balance).amount[0]).to.eq('Amount 350 is not valid');
   });
 
-  it('throw an error if amount and recipient is not valid', async () => {
+  it('return an error if address is not valid', async () => {
     const {transferService, balance} = setup();
-    expect(() => transferService.validateInputs({
+    expect(transferService.validateInputs({
       to: '0x',
-      amount: '350',
+      amount: '123',
       transferToken: ETHER_NATIVE_TOKEN.address,
       gasParameters,
-    }, balance)).to.throw('Amount 350 and recipient 0x is not ');
+    }, balance).to[0]).to.eq('Recipient 0x is not valid');
+  });
+
+  it('return an error if ENS name is not valid', async () => {
+    const {transferService, balance} = setup();
+    expect(transferService.validateInputs({
+      to: 'test',
+      amount: '123',
+      transferToken: ETHER_NATIVE_TOKEN.address,
+      gasParameters,
+    }, balance).to[0]).to.eq('Recipient test is not valid');
+  });
+
+  it('get Ethereum max amount', () => {
+    const {transferService, balance} = setup();
+    expect(transferService.getMaxAmount(gasParameters, balance)).to.eq('299.9999999999998');
+  });
+
+  it('get 0 if Ethereum max amount is below 0', () => {
+    const {transferService} = setup();
+    expect(transferService.getMaxAmount(gasParameters, '0')).to.eq('0.0');
+  });
+
+  it('throw error if balance is null', () => {
+    const {transferService} = setup();
+    expect(() => transferService.getMaxAmount(gasParameters, null)).to.throw('Balance is null');
   });
 });
