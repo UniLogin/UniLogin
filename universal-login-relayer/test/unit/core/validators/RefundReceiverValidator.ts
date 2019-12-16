@@ -5,7 +5,7 @@ import {TEST_ACCOUNT_ADDRESS, SignedMessage, OperationType} from '@universal-log
 import {RefundReceiverValidator} from '../../../../lib/core/services/validators/RefundReceiverValidator';
 
 describe('RefundReceiverValidator', () => {
-  const wallet = {address: TEST_ACCOUNT_ADDRESS}
+  const wallet = {address: TEST_ACCOUNT_ADDRESS};
   const validator = new RefundReceiverValidator(wallet as Wallet);
   const message: SignedMessage = {
     to: '0xa3697367b0e19F6E9E3E7Fa1bC8b566106C68e1b',
