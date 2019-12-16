@@ -1,9 +1,10 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
+import {utils} from 'ethers';
+import {PublicRelayerConfig} from '@universal-login/commons';
 import {startRelayer} from '../helpers/http';
 import {getPublicConfig} from '../../lib/http/routes/config';
 import {RelayerUnderTest} from '../../lib';
-import {PublicRelayerConfig} from '@universal-login/commons';
 
 chai.use(chaiHttp);
 
@@ -15,7 +16,7 @@ describe('E2E: Relayer - Config routes', async () => {
   });
 
   it('should return public config', async () => {
-    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi} = relayer.getConfig();
+    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey} = relayer.getConfig();
     const expectedConfig: PublicRelayerConfig = {
       supportedTokens,
       chainSpec,
@@ -25,6 +26,7 @@ describe('E2E: Relayer - Config routes', async () => {
       onRampProviders,
       maxGasLimit,
       ipGeolocationApi,
+      relayerAddress: utils.computeAddress(privateKey),
     };
     const result = await chai.request(relayer.getServer())
       .get('/config');
@@ -32,7 +34,7 @@ describe('E2E: Relayer - Config routes', async () => {
   });
 
   it('getPublicConfig should return PublicConfig', () => {
-    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi} = relayer.getConfig();
+    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey} = relayer.getConfig();
     const expectedConfig: PublicRelayerConfig = {
       supportedTokens,
       chainSpec,
@@ -42,6 +44,7 @@ describe('E2E: Relayer - Config routes', async () => {
       onRampProviders,
       maxGasLimit,
       ipGeolocationApi,
+      relayerAddress: utils.computeAddress(privateKey),
     };
     const publicConfig = getPublicConfig(relayer.getConfig());
 
