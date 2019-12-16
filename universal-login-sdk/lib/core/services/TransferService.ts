@@ -4,7 +4,7 @@ import {WalletNotFound} from '../utils/errors';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {encodeTransferToMessage} from '../utils/encodeTransferToMessage';
 import {getTargetAddress} from '../utils/getTargetAddress';
-import {isBiggerThan} from '../utils/isBiggerThan';
+import {bigNumberMax} from '../utils/bigNumberMax';
 
 export type TransferErrors = Record<string, string[]>;
 
@@ -48,7 +48,7 @@ export class TransferService {
     }
     const gasCostInWei = utils.bigNumberify(DEFAULT_GAS_LIMIT.toString()).mul(gasPrice);
     const maxAmountAsBigNumber = utils.parseEther(balance).sub(gasCostInWei);
-    const maxAmountValidated = isBiggerThan(maxAmountAsBigNumber, utils.parseEther('0'));
+    const maxAmountValidated = bigNumberMax(maxAmountAsBigNumber, utils.parseEther('0'));
     return utils.formatEther(maxAmountValidated);
   }
 }
