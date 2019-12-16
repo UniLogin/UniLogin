@@ -1,4 +1,4 @@
-import {DEFAULT_GAS_LIMIT, ensureNotNull, ETHER_NATIVE_TOKEN, GasParameters, isValidRecipient, Nullable, TransferDetails} from '@universal-login/commons';
+import {DEFAULT_GAS_LIMIT, ensureNotNull, ETHER_NATIVE_TOKEN, GasParameters, Nullable, TransferDetails} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {bigNumberMax} from '../utils/bigNumberMax';
@@ -6,6 +6,7 @@ import {encodeTransferToMessage} from '../utils/encodeTransferToMessage';
 import {WalletNotFound} from '../utils/errors';
 import {getTargetAddress} from '../utils/getTargetAddress';
 import {AmountValidator} from './validations/AmountValidator';
+import {RecipientValidator} from './validations/RecipientValidator';
 
 export type TransferErrors = Record<string, string[]>;
 
@@ -24,11 +25,8 @@ export class TransferService {
   validateInputs(transferDetails: TransferDetails, balance: Nullable<string>) {
     this.errors = {amount: [], to: []};
     ensureNotNull(balance, Error, 'Balance is null');
-    this.errors['amount'] = new AmountValidator(balance).validate(transferDetails, this.errors);
-    const isRecipientValid = isValidRecipient(transferDetails.to);
-    if (!isRecipientValid) {
-      this.errors.to.push(`Recipient ${transferDetails.to} is not valid`);
-    }
+    new AmountValidator(balance).validate(transferDetails, this.errors);
+    new RecipientValidator().validate(transferDetails, this.errors);
     return this.errors;
   }
 

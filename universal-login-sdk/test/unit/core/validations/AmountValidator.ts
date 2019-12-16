@@ -2,6 +2,7 @@ import {TransferDetails} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {expect} from 'chai';
 import {AmountValidator} from '../../../../lib/core/services/validations/AmountValidator';
+import {TransferErrors} from '../../../../lib';
 
 const TEST_TRANSFER_DETAILS: TransferDetails = {
   to: '0x',
@@ -14,29 +15,34 @@ const TEST_TRANSFER_DETAILS: TransferDetails = {
 };
 
 describe('UNIT: AmountValidator', () => {
+  let errors: TransferErrors;
+
+  beforeEach(() => {
+    errors = {amount: [], to: []};
+  });
 
   it('proper balance', () => {
-    const result = new AmountValidator('10').validate({...TEST_TRANSFER_DETAILS, amount: '1'}, {amount: []});
-    expect(result).to.deep.eq([]);
+    new AmountValidator('10').validate({...TEST_TRANSFER_DETAILS, amount: '1'}, errors);
+    expect(errors).to.deep.eq({amount: [], to: []});
   });
 
   it('negative amount', () => {
-    const result = new AmountValidator('1').validate({...TEST_TRANSFER_DETAILS, amount: '-1'}, {amount: []});
-    expect(result).to.deep.eq(['Amount -1 is not a valid number']);
+    new AmountValidator('1').validate({...TEST_TRANSFER_DETAILS, amount: '-1'}, errors);
+    expect(errors).to.deep.eq({amount: ['Amount -1 is not a valid number'], to: []});
   });
 
   it('amount as word', () => {
-    const result = new AmountValidator('1').validate({...TEST_TRANSFER_DETAILS, amount: 'test'}, {amount: []});
-    expect(result).to.deep.eq(['Amount test is not a valid number']);
+    new AmountValidator('1').validate({...TEST_TRANSFER_DETAILS, amount: 'test'}, errors);
+    expect(errors).to.deep.eq({amount: ['Amount test is not a valid number'], to: []});
   });
 
   it('balance too low', () => {
-    const result = new AmountValidator('1').validate({...TEST_TRANSFER_DETAILS, amount: '10'}, {amount: []});
-    expect(result).to.deep.eq(['Insufficient funds. Sending 10.0 eth, got only 1.0 eth']);
+    new AmountValidator('1').validate({...TEST_TRANSFER_DETAILS, amount: '10'}, errors);
+    expect(errors).to.deep.eq({amount: ['Insufficient funds. Sending 10.0 eth, got only 1.0 eth'], to: []});
   });
 
   it('balance too low with fee', () => {
-    const result = new AmountValidator('1').validate({...TEST_TRANSFER_DETAILS, transferToken: '0x', amount: '1'}, {amount: []});
-    expect(result).to.deep.eq(['Insufficient funds. Sending 1.0 eth, got only 1.0 eth + 0.0002 eth fee']);
+    new AmountValidator('1').validate({...TEST_TRANSFER_DETAILS, transferToken: '0x', amount: '1'}, errors);
+    expect(errors).to.deep.eq({amount: ['Insufficient funds. Sending 1.0 eth, got only 1.0 eth + 0.0002 eth fee'], to: []});
   });
 });

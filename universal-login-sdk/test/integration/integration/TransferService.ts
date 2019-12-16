@@ -120,7 +120,7 @@ describe('INT: TransferService', () => {
       gasParameters,
       amount,
     }, balance))
-      .to.deep.eq({to: [`Recipient ${invalidAddress} is not valid`], amount: []});
+      .to.deep.eq({to: [`${invalidAddress} is not a valid address`], amount: []});
   });
 
   it('return an error if invalid ENS name', async () => {
@@ -132,7 +132,7 @@ describe('INT: TransferService', () => {
       gasParameters,
       amount,
     }, balance))
-      .to.deep.eq({to: [`Recipient ${invalidENSName} is not valid`], amount: []});
+      .to.deep.eq({to: [`${invalidENSName} is not a valid address or ENS name`], amount: []});
   });
 
   it('get Ethereum max amount', async () => {
