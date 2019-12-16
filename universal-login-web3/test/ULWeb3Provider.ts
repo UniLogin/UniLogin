@@ -4,11 +4,11 @@ import {utils, Wallet} from 'ethers';
 import {waitExpect} from '@universal-login/commons/testutils';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {createWallet} from '@universal-login/sdk/testutils';
-import {OnboardingProps} from '../lib/ui/Onboarding';
+import {OnboardingProps} from '../lib/ui/react/Onboarding';
 import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWeb3';
 import {ULWeb3Provider} from '../lib';
 
-describe('ULWeb3Provier', () => {
+describe('ULWeb3Provider', () => {
   let relayer: RelayerUnderTest;
   let deployer: Wallet;
   let services: OnboardingProps;
