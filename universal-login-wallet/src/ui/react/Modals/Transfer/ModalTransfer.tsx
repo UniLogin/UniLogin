@@ -57,7 +57,7 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
             tokenDetailsWithBalance={tokenDetailsWithBalance}
             tokenDetails={selectedToken}
             onSendClick={onGenerateClick}
-            getEtherMaxAmount={() => transferService.getEtherMaxAmount(transferDetails.gasParameters, balance)}
+            getMaxAmount={() => transferService.getMaxAmount(transferDetails.gasParameters, balance)}
             transferClassName="jarvis-styles"
           />
         </ModalWrapperClosable>

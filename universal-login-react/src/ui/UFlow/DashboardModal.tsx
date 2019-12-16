@@ -90,7 +90,7 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
                   updateTransferDetailsWith={updateTransferDetailsWith}
                   tokenDetailsWithBalance={tokenDetailsWithBalance}
                   onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
-                  getEtherMaxAmount={() => transferService.getEtherMaxAmount(transferDetails.gasParameters, balance)}
+                  getMaxAmount={() => transferService.getMaxAmount(transferDetails.gasParameters, balance)}
                 />
               </SubDialogWrapper>
             )}

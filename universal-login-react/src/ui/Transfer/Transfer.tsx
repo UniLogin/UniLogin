@@ -18,11 +18,11 @@ export interface TransferProps {
   tokenDetailsWithBalance: TokenDetailsWithBalance[];
   tokenDetails: TokenDetails;
   onSendClick: () => Promise<void>;
-  getEtherMaxAmount: () => string;
+  getMaxAmount: () => string;
   transferClassName?: string;
 }
 
-export const Transfer = ({transferService, deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, getEtherMaxAmount, transferClassName}: TransferProps) => {
+export const Transfer = ({transferService, deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, getMaxAmount, transferClassName}: TransferProps) => {
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
 
   const balance = getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance);
@@ -55,7 +55,7 @@ export const Transfer = ({transferService, deployedWallet, transferDetails, upda
             tokenSymbol={tokenDetails.symbol}
             errors={errors.amount}
             onChange={updateField('amount')}
-            onMaxClick={() => updateField('amount')(getEtherMaxAmount())}
+            onMaxClick={() => updateField('amount')(getMaxAmount())}
           />
           <TransferRecipient
             onChange={updateField('to')}

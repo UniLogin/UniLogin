@@ -40,7 +40,7 @@ export class TransferService {
     return this.errors.amount.length === 0 && this.errors.to.length === 0;
   }
 
-  getEtherMaxAmount(gasParameters: GasParameters, balance: Nullable<string>) {
+  getMaxAmount(gasParameters: GasParameters, balance: Nullable<string>) {
     ensureNotNull(balance, Error, 'Balance is null');
     const {gasPrice, gasToken} = gasParameters;
     if (gasToken !== ETHER_NATIVE_TOKEN.address) {
