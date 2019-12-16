@@ -13,7 +13,9 @@ function isProperAddress(recipient: string): boolean {
 
 export class RecipientValidator extends Validator<TransferDetails> {
   validate(transferDetails: TransferDetails, errors: TransferErrors) {
-    if (isProperAddress(transferDetails.to)) {
+    if (!transferDetails.to) {
+      errors['to'].push('Empty recipient');
+    } else if (isProperAddress(transferDetails.to)) {
       return true;
     } else if (isValidEnsName(transferDetails.to)) {
       return true; // resolve ENS name

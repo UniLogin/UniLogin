@@ -21,6 +21,12 @@ describe('UNIT: AmountValidator', () => {
     errors = {amount: [], to: []};
   });
 
+  it('empty amount', () => {
+    const emptyAmountTransferDetails = {...TEST_TRANSFER_DETAILS, amount: null} as unknown as TransferDetails;
+    new AmountValidator('10').validate(emptyAmountTransferDetails, errors);
+    expect(errors).to.deep.eq({amount: ['Empty amount'], to: []});
+  });
+
   it('proper balance', () => {
     new AmountValidator('10').validate({...TEST_TRANSFER_DETAILS, amount: '1'}, errors);
     expect(errors).to.deep.eq({amount: [], to: []});

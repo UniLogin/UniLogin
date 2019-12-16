@@ -21,6 +21,12 @@ describe('UNIT: RecipientValidator', () => {
     errors = {amount: [], to: []};
   });
 
+  it('empty recipient', () => {
+    const emptyRecipientTransferDetails = {...TEST_TRANSFER_DETAILS, to: null} as unknown as TransferDetails;
+    new RecipientValidator().validate(emptyRecipientTransferDetails, errors);
+    expect(errors).to.deep.eq({to: ['Empty recipient'], amount: []});
+  });
+
   it('proper ens name', () => {
     new RecipientValidator().validate({...TEST_TRANSFER_DETAILS, to: 'test.mylogin.eth'}, errors);
     expect(errors).to.deep.eq({to: [], amount: []});

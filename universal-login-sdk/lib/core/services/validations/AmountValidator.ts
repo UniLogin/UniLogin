@@ -13,6 +13,10 @@ export class AmountValidator extends Validator<TransferDetails> {
 
   validate(transferDetails: TransferDetails, errors: TransferErrors) {
     const {amount, transferToken} = transferDetails;
+    if (!amount) {
+      errors['amount'].push('Empty amount');
+      return false;
+    }
     if (!amount.match(isNumber)) {
       errors['amount'].push(`Amount ${transferDetails.amount} is not a valid number`);
       return false;
