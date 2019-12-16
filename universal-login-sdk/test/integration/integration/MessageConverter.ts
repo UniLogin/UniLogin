@@ -32,7 +32,7 @@ describe('MessageConverter', () => {
     };
     const actualMessage = await messageConverter.messageToSignedMessage(message, keyPair.privateKey);
     const expectedMessage = {
-      gasBase: utils.bigNumberify(58976),
+      baseGas: utils.bigNumberify(58976),
       gasCall: utils.bigNumberify(41024),
     };
     expect(actualMessage).to.deep.include(expectedMessage);

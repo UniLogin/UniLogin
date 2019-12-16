@@ -18,7 +18,7 @@ describe('UNIT: GasValidator', () => {
   const gasComputation = new GasComputation(mockedBlockchainService);
   const gasValidator = new GasValidator(MAX_GAS_LIMIT, gasComputation);
   let message: SignedMessage;
-  const gasBase = utils.bigNumberify(11408).add(GAS_FIXED);
+  const baseGas = utils.bigNumberify(11408).add(GAS_FIXED);
 
   beforeEach(() => {
     message = {
@@ -29,8 +29,8 @@ describe('UNIT: GasValidator', () => {
       operationType: OperationType.call,
       refundReceiver: AddressZero,
       gasPrice: 10000000000,
-      gasBase,
-      gasCall: utils.bigNumberify(MAX_GAS_LIMIT).sub(gasBase),
+      baseGas,
+      gasCall: utils.bigNumberify(MAX_GAS_LIMIT).sub(baseGas),
       gasToken: '0xFDFEF9D10d929cB3905C71400ce6be1990EA0F34',
       from: '0xa3697367b0e19F6E9E3E7Fa1bC8b566106C68e1b',
       signature: '0x0302cfd70e07e8d348e2b84803689fc44c1393ad6f02be5b1f2b4747eebd3d180ebfc4946f7f51235876313a11596e0ee55cd692275ca0f0cc30d79f5fba80e01b',
@@ -42,9 +42,9 @@ describe('UNIT: GasValidator', () => {
   });
 
   it('too less', async () => {
-    const actualGasBase = await gasComputation.calculateGasBase(message);
-    message.gasBase = (message.gasBase as utils.BigNumber).sub(1);
-    await expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`Insufficient Gas. Got GasBase ${message.gasBase} but should be ${actualGasBase}`);
+    const actualbaseGas = await gasComputation.calculatebaseGas(message);
+    message.baseGas = (message.baseGas as utils.BigNumber).sub(1);
+    await expect(gasValidator.validate(message)).to.be.eventually.rejectedWith(`Insufficient Gas. Got baseGas ${message.baseGas} but should be ${actualbaseGas}`);
   });
 
   it('gas limit too high', async () => {

@@ -9,7 +9,7 @@ describe('UNIT: MessageToTransaction', () => {
   const gasCall = utils.bigNumberify(23000);
   const gasPrice = utils.bigNumberify(9000000);
   const contractAddress = '0x0000000000000000000000000000000000000002';
-  const gasBase = utils.bigNumberify(120000);
+  const baseGas = utils.bigNumberify(120000);
 
   it('should create transaction from transfer message', () => {
     const transferMessage = {
@@ -21,7 +21,7 @@ describe('UNIT: MessageToTransaction', () => {
       gasToken: '0x0000000000000000000000000000000000000000',
       gasCall,
       gasPrice,
-      gasBase,
+      baseGas,
       operationType: OperationType.call,
       refundReceiver: AddressZero,
       signature: '0x592fa743889fc7f92ac2a37bb1f5ba1daf2a5c84741ca0e0061d243a2e6707ba',
@@ -29,7 +29,7 @@ describe('UNIT: MessageToTransaction', () => {
 
     const expectedTransaction = {
       gasPrice,
-      gasLimit: gasCall.add(gasBase).add(GAS_LIMIT_MARGIN),
+      gasLimit: gasCall.add(baseGas).add(GAS_LIMIT_MARGIN),
       to: contractAddress,
       value: 0,
       data: encodeDataForExecuteSigned(transferMessage),

@@ -56,8 +56,8 @@ describe('INT: MultiSignatureExecute', async () => {
     await messageHandler.handleMessage(signedMessage0);
 
     const gasCall = 1;
-    const gasBase = 7696;
-    const gasLimit = utils.bigNumberify(gasBase + gasCall).add(GAS_FIXED);
+    const baseGas = 7696;
+    const gasLimit = utils.bigNumberify(baseGas + gasCall).add(GAS_FIXED);
     const message1 = {...msg, gasLimit};
     const signedMessage1 = getTestSignedMessage(message1, actionKey);
     await expect(messageHandler.handleMessage(signedMessage1)).to.be.rejectedWith(`Insufficient Gas. Got gasCall 1 but should greater than ${GAS_BASE}`);

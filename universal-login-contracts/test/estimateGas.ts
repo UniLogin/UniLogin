@@ -2,32 +2,32 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {createFullHexString, GAS_FIXED, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, GasComputation, OperationType} from '@universal-login/commons';
-import {calculateGasCall, calculateGasBase} from '../lib/estimateGas';
+import {calculateGasCall, calculatebaseGas} from '../lib/estimateGas';
 import {encodeDataForExecuteSigned} from '../lib';
 
 describe('UNIT: estimateGas', () => {
   describe('calculateGasCall', () => {
-    it('gasBase is smaller than gasLimit', () => {
-      const gasBase = '3000';
+    it('baseGas is smaller than gasLimit', () => {
+      const baseGas = '3000';
       const gasLimit = '10000';
       const expectedgasCall = '7000';
-      expect(calculateGasCall(gasLimit, gasBase)).to.eq(expectedgasCall);
+      expect(calculateGasCall(gasLimit, baseGas)).to.eq(expectedgasCall);
     });
 
-    it('throw an error if gasBase is higher than gasLimit', () => {
-      const gasBase = '10000';
+    it('throw an error if baseGas is higher than gasLimit', () => {
+      const baseGas = '10000';
       const gasLimit = '3000';
-      expect(() => calculateGasCall(gasLimit, gasBase)).to.throw('Gas limit too low');
+      expect(() => calculateGasCall(gasLimit, baseGas)).to.throw('Gas limit too low');
     });
 
-    it('throw an error if gasBase and gasLimit are equal', () => {
-      const gasBase = '10000';
+    it('throw an error if baseGas and gasLimit are equal', () => {
+      const baseGas = '10000';
       const gasLimit = '10000';
-      expect(() => calculateGasCall(gasLimit, gasBase)).to.throw('Gas limit too low');
+      expect(() => calculateGasCall(gasLimit, baseGas)).to.throw('Gas limit too low');
     });
   });
 
-  describe('calculateGasBase', () => {
+  describe('calculatebaseGas', () => {
     const transferMessage = {
       to: TEST_ACCOUNT_ADDRESS,
       from: TEST_ACCOUNT_ADDRESS,
@@ -39,7 +39,7 @@ describe('UNIT: estimateGas', () => {
       operationType: OperationType.call,
       refundReceiver: AddressZero,
     };
-    const encodedMessage = encodeDataForExecuteSigned({...transferMessage, gasCall: createFullHexString(3), gasBase: createFullHexString(3), signature: createFullHexString(65)});
+    const encodedMessage = encodeDataForExecuteSigned({...transferMessage, gasCall: createFullHexString(3), baseGas: createFullHexString(3), signature: createFullHexString(65)});
 
     describe('constantinople', () => {
       const gasComputation = new GasComputation('constantinople');
@@ -47,13 +47,13 @@ describe('UNIT: estimateGas', () => {
       it('beta1 version and constantinople network', () => {
         const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
         const expectedResult = gasData;
-        expect(calculateGasBase(transferMessage, 'constantinople', 'beta1')).to.eq(expectedResult);
+        expect(calculatebaseGas(transferMessage, 'constantinople', 'beta1')).to.eq(expectedResult);
       });
 
       it('beta2 version and constantinople network', () => {
         const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
         const expectedResult = gasData.add(GAS_FIXED);
-        expect(calculateGasBase(transferMessage, 'constantinople', 'beta2')).to.eq(expectedResult);
+        expect(calculatebaseGas(transferMessage, 'constantinople', 'beta2')).to.eq(expectedResult);
       });
     });
 
@@ -63,13 +63,13 @@ describe('UNIT: estimateGas', () => {
       it('beta1 version and constantinople network', () => {
         const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
         const expectedResult = gasData;
-        expect(calculateGasBase(transferMessage, 'istanbul', 'beta1')).to.eq(expectedResult);
+        expect(calculatebaseGas(transferMessage, 'istanbul', 'beta1')).to.eq(expectedResult);
       });
 
       it('beta2 version and constantinople network', () => {
         const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
         const expectedResult = gasData.add(GAS_FIXED);
-        expect(calculateGasBase(transferMessage, 'istanbul', 'beta2')).to.eq(expectedResult);
+        expect(calculatebaseGas(transferMessage, 'istanbul', 'beta2')).to.eq(expectedResult);
       });
     });
   });

@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, NetworkVersion, WalletVersion, OperationType} from '@universal-login/commons';
-import {calculateGasCall, calculateGasBase} from './estimateGas';
+import {calculateGasCall, calculatebaseGas} from './estimateGas';
 
 export const messageToSignedMessage = (message: Partial<Message>, privateKey: string, networkVersion: NetworkVersion, walletVersion: WalletVersion): SignedMessage => {
   const unsignedMessage = messageToUnsignedMessage(message, networkVersion, walletVersion);
@@ -21,9 +21,9 @@ export const messageToUnsignedMessage = (message: Partial<Message>, networkVersi
     operationType: message.operationType!,
     refundReceiver: message.refundReceiver!,
   };
-  const gasBase = calculateGasBase(messageWithoutGasEstimates, networkVersion, walletVersion);
-  const gasCall = calculateGasCall(message.gasLimit!, gasBase);
-  return {...messageWithoutGasEstimates, gasBase, gasCall};
+  const baseGas = calculatebaseGas(messageWithoutGasEstimates, networkVersion, walletVersion);
+  const gasCall = calculateGasCall(message.gasLimit!, baseGas);
+  return {...messageWithoutGasEstimates, baseGas, gasCall};
 };
 
 export const emptyMessage = {

@@ -37,7 +37,7 @@ export type SdkExecutionOptions = ExecutionOptions & Required<Pick<ExecutionOpti
 
 export type SignedMessagePaymentOptions = {
   gasCall: utils.BigNumberish;
-  gasBase: utils.BigNumberish;
+  baseGas: utils.BigNumberish;
   gasPrice: utils.BigNumberish;
   gasToken: string;
   refundReceiver: string;

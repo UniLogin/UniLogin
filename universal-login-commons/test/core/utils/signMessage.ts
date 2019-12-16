@@ -21,7 +21,7 @@ const expectedMessage = {
   operationType: OperationType.call,
   gasPrice: DEFAULT_GAS_PRICE,
   gasCall: DEFAULT_GAS_LIMIT,
-  gasBase: '0',
+  baseGas: '0',
   gasToken: AddressZero,
   refundReceiver: AddressZero,
   signature: '0xea229e2779a9838b660b3c45e12f96c07ea838de3ffef621f4b73ae29c9feda06adb51c4c130d063e2aa251759f442a27109e74faddd8665b73072edd4c924b41c',

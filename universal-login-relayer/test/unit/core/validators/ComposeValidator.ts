@@ -16,7 +16,7 @@ describe('UNIT: ComposeValidator', () => {
     operationType: OperationType.call,
     refundReceiver: AddressZero,
     gasPrice: 10000000000,
-    gasBase: 11408,
+    baseGas: 11408,
     gasCall: 1000000 - 11408,
     gasToken: '0xFDFEF9D10d929cB3905C71400ce6be1990EA0F34',
     from: '0xa3697367b0e19F6E9E3E7Fa1bC8b566106C68e1b',

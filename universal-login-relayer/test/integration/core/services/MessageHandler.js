@@ -51,8 +51,8 @@ describe('INT: MessageHandler', async () => {
 
   it('Error when not enough gas', async () => {
     const gasCall = 1;
-    const gasBase = 7696;
-    const gasLimit = utils.bigNumberify(gasBase + gasCall).add(GAS_FIXED);
+    const baseGas = 7696;
+    const gasLimit = utils.bigNumberify(baseGas + gasCall).add(GAS_FIXED);
     const signedMessage = getTestSignedMessage({...msg, gasLimit}, wallet.privateKey);
     await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got gasCall 1 but should greater than ${GAS_BASE}`);
   });

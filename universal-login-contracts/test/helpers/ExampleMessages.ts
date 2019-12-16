@@ -4,7 +4,7 @@ import {deployContract} from 'ethereum-waffle';
 import MockContract from '../../build/MockContract.json';
 import {encodeFunction, getExecutionArgs} from '../helpers/argumentsEncoding';
 import Loop from '../../build/Loop.json';
-import {calculatePaymentOptions, calculateGasBase} from '../../lib/estimateGas';
+import {calculatePaymentOptions, calculatebaseGas} from '../../lib/estimateGas';
 import {AddressZero} from 'ethers/constants';
 
 const {parseEther} = utils;
@@ -18,7 +18,7 @@ export const transferMessage = {
   refundReceiver: AddressZero,
   gasPrice: DEFAULT_GAS_PRICE,
   gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasBase: utils.bigNumberify('7440').add(GAS_FIXED),
+  baseGas: utils.bigNumberify('7440').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -31,7 +31,7 @@ export const failedTransferMessage = {
   refundReceiver: AddressZero,
   gasPrice: DEFAULT_GAS_PRICE,
   gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasBase: utils.bigNumberify('7440').add(GAS_FIXED),
+  baseGas: utils.bigNumberify('7440').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -45,7 +45,7 @@ export const callMessage = {
   refundReceiver: AddressZero,
   gasPrice: DEFAULT_GAS_PRICE,
   gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasBase: utils.bigNumberify('8720').add(GAS_FIXED),
+  baseGas: utils.bigNumberify('8720').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -59,7 +59,7 @@ export const failedCallMessage = {
   refundReceiver: AddressZero,
   gasPrice: DEFAULT_GAS_PRICE,
   gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
-  gasBase: utils.bigNumberify('8720').add(GAS_FIXED),
+  baseGas: utils.bigNumberify('8720').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
@@ -81,11 +81,11 @@ export const createInfiniteCallMessage = async (deployer: Wallet, overrides: Inf
     gasPrice: 1,
     gasToken: '0x0',
     gasCall: utils.bigNumberify('240000'),
-    gasBase: utils.bigNumberify(0).add(GAS_FIXED),
+    baseGas: utils.bigNumberify(0).add(GAS_FIXED),
     ...overrides,
   };
-  const gasBase = calculateGasBase(msg, 'constantinople', 'beta2');
-  return {...msg, gasBase};
+  const baseGas = calculatebaseGas(msg, 'constantinople', 'beta2');
+  return {...msg, baseGas};
 };
 
 export const executeSetRequiredSignatures = async (proxyAsWalletContract: Contract, requiredSignatures: number, privateKey: string) => {
@@ -109,11 +109,11 @@ export const selfExecute = async (proxyAsWalletContract: Contract, data: string,
     refundReceiver: AddressZero,
     gasPrice: DEFAULT_GAS_PRICE,
     gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
-    gasBase: utils.bigNumberify(0).add(GAS_FIXED),
+    baseGas: utils.bigNumberify(0).add(GAS_FIXED),
     gasToken: '0x0000000000000000000000000000000000000000',
   };
-  const gasBase = utils.bigNumberify(calculateGasBase(msg, 'constantinople', 'beta2'));
-  msg.gasBase = gasBase;
+  const baseGas = utils.bigNumberify(calculatebaseGas(msg, 'constantinople', 'beta2'));
+  msg.baseGas = baseGas;
   const signature = calculateMessageSignature(privateKey, msg);
   return proxyAsWalletContract.executeSigned(...getExecutionArgs(msg), signature, calculatePaymentOptions(msg));
 };
