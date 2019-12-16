@@ -50,7 +50,7 @@ describe('UI: Transfer', () => {
       : '0x0';
   });
 
-  xit('send ETH => invalid ensName', async () => {
+  it('send ETH => invalid ensName', async () => {
     await transferFlow(appPage, 'ETH', '1', 'pascal.mylogin.eth');
     await waitExpect(() => expect(appPage.transfer().getErrorMessage())
       .to.be.eq('Error: pascal.mylogin.eth is not valid'));
