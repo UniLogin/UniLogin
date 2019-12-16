@@ -1,7 +1,8 @@
 import {utils} from 'ethers';
 import {expect} from 'chai';
-import {SignedMessage, TEST_CONTRACT_ADDRESS, Message, TEST_ACCOUNT_ADDRESS, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {SignedMessage, TEST_CONTRACT_ADDRESS, Message, TEST_ACCOUNT_ADDRESS, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_PRIVATE_KEY, OperationType} from '@universal-login/commons';
 import {messageToUnsignedMessage, unsignedMessageToSignedMessage, messageToSignedMessage} from '../lib/message';
+import {AddressZero} from 'ethers/constants';
 
 const {bigNumberify} = utils;
 
@@ -14,6 +15,8 @@ const message: Partial<Message> = {
   data: '0xbeef',
   gasLimit: bigNumberify(100000),
   nonce: 0,
+  operationType: OperationType.call,
+  refundReceiver: AddressZero,
 };
 
 describe('Message', () => {
@@ -29,6 +32,8 @@ describe('Message', () => {
       gasToken: ETHER_NATIVE_TOKEN.address,
       data: '0xbeef',
       nonce: 0,
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
       gasBase: bigNumberify(58976),
       gasCall: bigNumberify(41024),
       signature: '0x21e8b320262f1b6bf8c99997a632a86bdc0fe6424ccea8a4293766fc1c690cbd2f0dbd969bad91e9e400bc9707988fbee2adead8ba9ee0366c258b210eae61fd1c',
@@ -48,6 +53,8 @@ describe('Message', () => {
       gasToken: ETHER_NATIVE_TOKEN.address,
       data: '0xbeef',
       nonce: 0,
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
       gasBase: bigNumberify(53152),
       gasCall: bigNumberify(46848),
       signature: '0x26aaabf3c44e63238e88b3da0da13953dd4a111999b11252d45f75a18974f9665ef56d45a92d1340296241b746c8c4bb5ed511d1ee3e30d599311fdfffad27581c',
@@ -68,6 +75,8 @@ describe('Message', () => {
       gasBase: bigNumberify(58976),
       gasCall: bigNumberify(100000 - 58976),
       nonce: 0,
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
     };
 
     const actualUnsginedMessage = messageToUnsignedMessage(message, networkVersion, walletVersion);
@@ -87,6 +96,8 @@ describe('Message', () => {
       gasBase: bigNumberify(53152),
       gasCall: bigNumberify(100000 - 53152),
       nonce: 0,
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
     };
 
     const actualUnsginedMessage = messageToUnsignedMessage(message, networkVersion, walletVersion);
@@ -99,6 +110,8 @@ describe('Message', () => {
       value: utils.parseEther('0.5'),
       data: EMPTY_DATA,
       nonce: '0',
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
       gasPrice: DEFAULT_GAS_PRICE,
       gasCall: DEFAULT_GAS_LIMIT,
       gasBase: '0',
@@ -111,6 +124,8 @@ describe('Message', () => {
       value: utils.parseEther('0.5'),
       data: EMPTY_DATA,
       nonce: '0',
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
       gasPrice: transferMessage.gasPrice,
       gasCall: transferMessage.gasCall,
       gasBase: '0',
