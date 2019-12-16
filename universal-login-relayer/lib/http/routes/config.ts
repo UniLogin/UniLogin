@@ -1,10 +1,11 @@
 import {Router, Request, Response} from 'express';
+import {utils} from 'ethers';
+import {PublicRelayerConfig} from '@universal-login/commons';
 import asyncMiddleware from '../middlewares/async_middleware';
 import {Config} from '../../config/relayer';
-import {PublicRelayerConfig} from '@universal-login/commons';
 
 export function getPublicConfig(config: Config): PublicRelayerConfig {
-  const {chainSpec, supportedTokens, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi} = config;
+  const {chainSpec, supportedTokens, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey} = config;
   return {
     chainSpec,
     supportedTokens,
@@ -14,6 +15,7 @@ export function getPublicConfig(config: Config): PublicRelayerConfig {
     onRampProviders,
     maxGasLimit,
     ipGeolocationApi,
+    relayerAddress: utils.computeAddress(privateKey),
   };
 }
 
