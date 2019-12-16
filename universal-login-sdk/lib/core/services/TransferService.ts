@@ -5,7 +5,7 @@ import {bigNumberMax} from '../utils/bigNumberMax';
 import {encodeTransferToMessage} from '../utils/encodeTransferToMessage';
 import {WalletNotFound} from '../utils/errors';
 import {getTargetAddress} from '../utils/getTargetAddress';
-import {validateAmount} from './validations/validateAmount';
+import {AmountValidator} from './validations/AmountValidator';
 
 export type TransferErrors = Record<string, string[]>;
 
@@ -24,7 +24,7 @@ export class TransferService {
   validateInputs(transferDetails: TransferDetails, balance: Nullable<string>) {
     this.errors = {amount: [], to: []};
     ensureNotNull(balance, Error, 'Balance is null');
-    this.errors['amount'] = validateAmount(transferDetails, balance);
+    this.errors['amount'] = new AmountValidator(balance).validate(transferDetails, this.errors);
     const isRecipientValid = isValidRecipient(transferDetails.to);
     if (!isRecipientValid) {
       this.errors.to.push(`Recipient ${transferDetails.to} is not valid`);

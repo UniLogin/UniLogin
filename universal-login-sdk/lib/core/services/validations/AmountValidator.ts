@@ -4,6 +4,8 @@ import {Validator, TransferErrors} from './Validator';
 
 const {formatEther} = utils;
 
+const isNumber = /^[0-9]+(\.[0-9]+)?$/;
+
 export class AmountValidator extends Validator<TransferDetails> {
   constructor(private readonly balance: string) {
     super();
@@ -11,6 +13,10 @@ export class AmountValidator extends Validator<TransferDetails> {
 
   validate(transferDetails: TransferDetails, errors: TransferErrors) {
     const {amount, transferToken} = transferDetails;
+    if (!amount.match(isNumber)) {
+      errors['amount'].push(`Amount ${transferDetails.amount} is not a valid number`);
+      return errors['amount'];
+    }
     const {gasPrice, gasToken} = transferDetails.gasParameters;
     const amountAsBigNumber = utils.parseEther(amount);
     const balanceAsBigNumber = utils.parseEther(this.balance);
@@ -21,5 +27,6 @@ export class AmountValidator extends Validator<TransferDetails> {
     } else if (gasToken === transferToken && amountWithFee.gt(balanceAsBigNumber)) {
       errors['amount'].push(`Insufficient funds. Sending ${formatEther(amountAsBigNumber)} eth, got only ${formatEther(balanceAsBigNumber)} eth + ${formatEther(gasCostInWei)} eth fee`);
     }
+    return errors['amount'];
   }
 }
