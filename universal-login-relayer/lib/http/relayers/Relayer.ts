@@ -30,7 +30,6 @@ import MessageExecutor from '../../integration/ethereum/MessageExecutor';
 import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig, IMessageValidator} from '@universal-login/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
-import {GasValidator} from '../../core/services/validators/GasValidator';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
 import IRepository from '../../core/models/messages/IRepository';
 import Deployment from '../../core/models/Deployment';
@@ -41,6 +40,7 @@ import {MinedTransactionHandler} from '../../core/services/execution/MinedTransa
 import {httpsRedirect} from '../middlewares/httpsRedirect';
 import {GasComputation} from '../../core/services/GasComputation';
 import {BlockchainService} from '@universal-login/contracts';
+import {MessageHandlerValidator} from '../../core/services/validators/MessageExecutionValidator';
 
 const defaultPort = '3311';
 
@@ -66,7 +66,7 @@ class Relayer {
   private executionQueue: IExecutionQueue = {} as IExecutionQueue;
   private messageHandler: MessageHandler = {} as MessageHandler;
   private deploymentHandler: DeploymentHandler = {} as DeploymentHandler;
-  private gasValidator: GasValidator = {} as GasValidator;
+  private messageHandlerValidator: MessageHandlerValidator = {} as MessageHandlerValidator;
   private messageRepository: IMessageRepository = {} as IMessageRepository;
   private deploymentRepository: IRepository<Deployment> = {} as IRepository<Deployment>;
   private signaturesService: SignaturesService = {} as SignaturesService;
@@ -90,7 +90,7 @@ class Relayer {
     this.publicConfig = getPublicConfig(this.config);
     const blockchainService = new BlockchainService(this.provider);
     const gasComputation = new GasComputation(blockchainService);
-    this.gasValidator = new GasValidator(this.publicConfig.maxGasLimit, gasComputation);
+    this.messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet);
   }
 
   async start() {
@@ -131,7 +131,7 @@ class Relayer {
     this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList);
     this.deploymentHandler = new DeploymentHandler(this.deploymentRepository, this.executionQueue);
     this.minedTransactionHandler = new MinedTransactionHandler(this.hooks, this.authorisationStore, this.devicesService);
-    this.messageHandler = new MessageHandler(this.wallet, this.messageRepository, this.statusService, this.gasValidator, this.executionQueue);
+    this.messageHandler = new MessageHandler(this.wallet, this.messageRepository, this.statusService, this.messageHandlerValidator, this.executionQueue);
     this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.minedTransactionHandler);
     this.deploymentExecutor = new DeploymentExecutor(this.deploymentRepository, this.walletContractService);
     this.executionWorker = new ExecutionWorker([this.messageExecutor, this.deploymentExecutor], this.executionQueue);

@@ -4,7 +4,7 @@ import PendingMessages from './PendingMessages';
 import IMessageRepository from '../../../models/messages/IMessagesRepository';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
 import {MessageStatusService} from './MessageStatusService';
-import {GasValidator} from '../../validators/GasValidator';
+import {MessageHandlerValidator} from '../../validators/MessageExecutionValidator';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;
@@ -13,14 +13,14 @@ class MessageHandler {
     wallet: Wallet,
     messageRepository: IMessageRepository,
     statusService: MessageStatusService,
-    private gasValidator: GasValidator,
+    private validator: MessageHandlerValidator,
     private executionQueue: IExecutionQueue,
   ) {
     this.pendingMessages = new PendingMessages(wallet, messageRepository, this.executionQueue, statusService);
   }
 
   async handleMessage(message: SignedMessage) {
-    await this.gasValidator.validate(message);
+    await this.validator.validate(message);
     return this.pendingMessages.add(message);
   }
 

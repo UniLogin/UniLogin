@@ -36,6 +36,8 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       value: 1000000000,
       data: [],
       nonce: '0',
+      operationType: OperationType.call,
+      refundReceiver: deployer.address,
       gasToken: mockToken.address,
       gasPrice: 110000000,
       gasLimit: DEFAULT_GAS_LIMIT,
@@ -55,6 +57,28 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       expect(statusById.body.transactionHash).to.not.be.null;
     };
     await waitExpect(() => checkStatusId());
+  });
+
+  it('status is 400 if refundReceiver isn`t relayer', async () => {
+    const msg = {
+      from: contract.address,
+      to: otherWallet.address,
+      value: 1000000000,
+      data: [],
+      nonce: '0',
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
+      gasToken: mockToken.address,
+      gasPrice: 110000000,
+      gasLimit: DEFAULT_GAS_LIMIT,
+    };
+    const signedMessage = getTestSignedMessage(msg, keyPair.privateKey);
+    const stringifiedMessage = stringifySignedMessageFields(signedMessage);
+    const {status, body} = await chai.request(relayer.server)
+      .post('/wallet/execution')
+      .send(stringifiedMessage);
+    expect(status).to.eq(400);
+    expect(body.error).to.eq(`Error: Invalid refund receiver. Expected address: ${deployer.address}`);
   });
 
   it('Execution returns 400 if validations fails', async () => {
