@@ -5,7 +5,7 @@ import {MetamaskService} from './services/MetamaskService';
 import {UIController} from './services/UIController';
 import {providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
-import {ensure, Message, walletFromBrain} from '@universal-login/commons';
+import {ensure, Message, walletFromBrain, ApplicationInfo} from '@universal-login/commons';
 import {waitForTrue} from './ui/utils/utils';
 import {initUi} from './ui/utils/initUi';
 import {OnboardingProps} from './ui/react/Onboarding';
@@ -17,18 +17,20 @@ export interface ULWeb3ProviderOptions {
   provider: Provider;
   relayerUrl: string;
   ensDomains: string[];
+  applicationInfo?: ApplicationInfo;
   uiInitializer?: (services: OnboardingProps) => void;
   storageService?: StorageService;
 }
 
 export class ULWeb3Provider implements Provider {
-  static getDefaultProvider(networkOrConfig: Network | Config) {
+  static getDefaultProvider(networkOrConfig: Network | Config, applicationInfo?: ApplicationInfo) {
     const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
 
     return new ULWeb3Provider({
       provider: config.provider,
       relayerUrl: config.relayerUrl,
       ensDomains: config.ensDomains,
+      applicationInfo,
     });
   }
 
@@ -46,6 +48,7 @@ export class ULWeb3Provider implements Provider {
     provider,
     relayerUrl,
     ensDomains,
+    applicationInfo,
     uiInitializer = initUi,
     storageService = new StorageService(),
   }: ULWeb3ProviderOptions) {
@@ -53,6 +56,7 @@ export class ULWeb3Provider implements Provider {
     this.sdk = new UniversalLoginSDK(
       relayerUrl,
       new providers.Web3Provider(this.provider as any),
+      {applicationInfo},
     );
     const walletStorageService = new WalletStorageService(storageService);
     this.walletService = new WalletService(this.sdk, walletFromBrain, walletStorageService);
@@ -79,6 +83,10 @@ export class ULWeb3Provider implements Provider {
     const metamaskProvider = this.metamaskService.metamaskProvider.get();
     if (metamaskProvider) {
       return metamaskProvider.sendAsync(payload, callback);
+    }
+
+    if (this.walletService.state.kind === 'None') {
+      await this.create();
     }
 
     switch (payload.method) {
@@ -129,10 +137,7 @@ export class ULWeb3Provider implements Provider {
   async sendTransaction(tx: Partial<Message>): Promise<string> {
     await this.ensureWalletIsDeployed();
 
-    const execution = await this.walletService.getDeployedWallet().execute({
-      ...tx,
-      from: this.walletService.getDeployedWallet().contractAddress,
-    });
+    const execution = await this.walletService.getDeployedWallet().execute(tx);
     const succeeded = await execution.waitForTransactionHash();
     if (!succeeded.transactionHash) {
       throw new Error('Expected tx hash to not be null');
@@ -150,6 +155,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async create() {
+    await this.walletService.loadFromStorage()
     this.uiController.requireWallet();
 
     await waitForTrue(this.isLoggedIn);
