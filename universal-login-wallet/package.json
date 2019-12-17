@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/wallet",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -18,9 +18,9 @@
   },
   "dependencies": {
     "@restless/sanitizers": "^0.2.2",
-    "@universal-login/commons": "0.4.0",
-    "@universal-login/react": "0.4.0",
-    "@universal-login/sdk": "0.4.0",
+    "@universal-login/commons": "0.4.1",
+    "@universal-login/react": "0.4.1",
+    "@universal-login/sdk": "0.4.1",
     "create-react-context": "^0.2.3",
     "dotenv": "^6.2.0",
     "ethers": "^4.0.39",
@@ -49,7 +49,7 @@
     "@types/sinon-chai": "^3.2.2",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
-    "@universal-login/relayer": "0.4.0",
+    "@universal-login/relayer": "0.4.1",
     "canvas": "^2.5.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
