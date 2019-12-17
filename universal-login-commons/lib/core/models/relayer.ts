@@ -32,4 +32,5 @@ export interface PublicRelayerConfig {
   onRampProviders: OnRampConfig;
   maxGasLimit: number;
   ipGeolocationApi: IPGeolocationApiConfig;
+  relayerAddress: string;
 }

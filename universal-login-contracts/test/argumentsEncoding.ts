@@ -1,9 +1,10 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity} from 'ethereum-waffle';
-import {getExecutionArgs} from './helpers/argumentsEncoding';
 import {utils, Wallet} from 'ethers';
-import {concatenateSignatures, TEST_ACCOUNT_ADDRESS, UnsignedMessage, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT_EXECUTION, calculateMessageSignature} from '@universal-login/commons';
+import {AddressZero} from 'ethers/constants';
+import {concatenateSignatures, TEST_ACCOUNT_ADDRESS, UnsignedMessage, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT_EXECUTION, calculateMessageSignature, OperationType} from '@universal-login/commons';
+import {getExecutionArgs} from './helpers/argumentsEncoding';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -24,6 +25,8 @@ describe('UNIT: argumentsEncoding', async () => {
       gasPrice: DEFAULT_GAS_PRICE,
       gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
       gasBase: '100000',
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
     };
 
     before(async () => {
@@ -62,6 +65,8 @@ describe('UNIT: argumentsEncoding', async () => {
         gasCall: 0,
         gasToken: '0x0000000000000000000000000000000000000000',
         gasBase: 68,
+        operationType: OperationType.call,
+        refundReceiver: AddressZero,
       };
 
       const expectedResult = [

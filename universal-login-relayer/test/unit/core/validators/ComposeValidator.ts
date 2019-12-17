@@ -1,7 +1,8 @@
 import chai, {expect} from 'chai';
-import {SignedMessage, IMessageValidator} from '@universal-login/commons';
-import {ComposeValidator} from '../../../../lib/core/services/validators/ComposeValidator';
 import chaiAsPromised from 'chai-as-promised';
+import {AddressZero} from 'ethers/constants';
+import {SignedMessage, IMessageValidator, OperationType} from '@universal-login/commons';
+import {ComposeValidator} from '../../../../lib/core/services/validators/ComposeValidator';
 chai.use(chaiAsPromised);
 
 describe('UNIT: ComposeValidator', () => {
@@ -12,6 +13,8 @@ describe('UNIT: ComposeValidator', () => {
     value: 0,
     data: '0x5f7b68be00000000000000000000000063fc2ad3d021a4d7e64323529a55a9442c444da0',
     nonce: 0,
+    operationType: OperationType.call,
+    refundReceiver: AddressZero,
     gasPrice: 10000000000,
     gasBase: 11408,
     gasCall: 1000000 - 11408,

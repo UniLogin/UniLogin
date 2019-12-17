@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {loadFixture, solidity, deployContract} from 'ethereum-waffle';
 import {utils, Contract, providers, Wallet} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair, Message, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair, Message, DEFAULT_GAS_LIMIT, OperationType} from '@universal-login/commons';
 import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage} from '../../helpers/ExampleMessages';
 import Loop from '../../../build/Loop.json';
@@ -10,6 +10,7 @@ import {encodeFunction} from '../../helpers/argumentsEncoding';
 import {encodeDataForExecuteSigned} from '../../../lib/encode';
 import {messageToSignedMessage} from '../../../lib/message';
 import {calculateFinalGasLimit} from '../../../lib/estimateGas';
+import {AddressZero} from 'ethers/constants';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -55,6 +56,8 @@ describe('CONTRACT: Executor - refund', async () => {
         value: utils.parseEther('0'),
         data: loopFunctionData,
         nonce: 0,
+        operationType: OperationType.call,
+        refundReceiver: AddressZero,
         gasPrice: 1,
         gasToken: '0x0',
         gasLimit: DEFAULT_GAS_LIMIT,

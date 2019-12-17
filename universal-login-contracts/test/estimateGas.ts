@@ -1,7 +1,8 @@
 import {expect} from 'chai';
-import {createFullHexString, GAS_FIXED, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, GasComputation} from '@universal-login/commons';
-import {calculateGasCall, calculateGasBase} from '../lib/estimateGas';
 import {utils} from 'ethers';
+import {AddressZero} from 'ethers/constants';
+import {createFullHexString, GAS_FIXED, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, GasComputation, OperationType} from '@universal-login/commons';
+import {calculateGasCall, calculateGasBase} from '../lib/estimateGas';
 import {encodeDataForExecuteSigned} from '../lib';
 
 describe('UNIT: estimateGas', () => {
@@ -35,6 +36,8 @@ describe('UNIT: estimateGas', () => {
       value: '1',
       gasPrice: DEFAULT_GAS_PRICE,
       gasToken: ETHER_NATIVE_TOKEN.address,
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
     };
     const encodedMessage = encodeDataForExecuteSigned({...transferMessage, gasCall: createFullHexString(3), gasBase: createFullHexString(3), signature: createFullHexString(65)});
 

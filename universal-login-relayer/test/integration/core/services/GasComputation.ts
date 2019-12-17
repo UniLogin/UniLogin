@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {utils, Contract} from 'ethers';
-import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {AddressZero} from 'ethers/constants';
+import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType} from '@universal-login/commons';
 import {GasComputation} from '../../../../lib/core/services/GasComputation';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {BlockchainService} from '@universal-login/contracts';
@@ -28,6 +29,8 @@ describe('GasComputation', () => {
       data: '0xbeef',
       gasLimit: utils.bigNumberify(100000),
       nonce: 0,
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
     };
     const computedGas = await gasComputation.calculateGasBase(message);
     expect(computedGas).to.eq(58976);

@@ -9,7 +9,6 @@ import Spinner from '../commons/Spinner';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 interface ConnectWithEmojiProps {
-  name: string;
   sdk: UniversalLoginSDK;
   walletService: WalletService;
   onCancel: () => void;
@@ -19,7 +18,6 @@ interface ConnectWithEmojiProps {
 
 export const ConnectWithEmoji = ({sdk, onCancel, onConnect, walletService, className}: ConnectWithEmojiProps) => {
   const [securityCodes, setSecurityCodes] = useState<number[] | undefined>(undefined);
-
   useAsyncEffect(async () => {
     if (walletService.state.kind === 'Connecting') {
       setSecurityCodes(generateCode(walletService.state.wallet.publicKey));

@@ -24,7 +24,7 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, sdk, w
 
   const onConnectWithDeviceClick = () => {
     walletService.initializeConnection(name).then(() => {
-      history.push('/connect/emoji');
+      history.push(join(basePath, 'emoji'), {ensName: name});
     });
   };
 
@@ -32,7 +32,7 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, sdk, w
     <Route exact path={join(basePath, 'chooseMethod')}>
       <ChooseConnectionMethod
         onConnectWithDeviceClick={onConnectWithDeviceClick}
-        onConnectWithPassphraseClick={() => history.push(join(basePath, 'recover'))}
+        onConnectWithPassphraseClick={() => history.push(join(basePath, 'recover'), {ensName: name})}
         onCancel={onCancel}
         className={className}
       />
@@ -43,16 +43,15 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, sdk, w
         walletService={walletService}
         onRecover={onSuccess}
         className={className}
-        onCancel={() => history.push(join(basePath, 'chooseMethod'))}
+        onCancel={() => history.goBack()}
       />
     </Route>
     <Route exact path={join(basePath, 'emoji')}>
       <ConnectWithEmoji
-        name={name}
         sdk={sdk}
         walletService={walletService}
         onConnect={onSuccess}
-        onCancel={() => history.push(join(basePath, 'selector'))}
+        onCancel={onCancel}
         className={className}
       />
     </Route>
