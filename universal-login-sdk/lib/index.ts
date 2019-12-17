@@ -11,3 +11,4 @@ export {DeployedWallet} from './api/wallet/DeployedWallet';
 export {setBetaNotice} from './core/utils/setBetaNotice';
 export {encodeERC20Transfer} from './core/utils/encodeTransferToMessage';
 export {InvalidWalletState} from './core/utils/errors';
+export {Execution} from './core/services/ExecutionFactory';

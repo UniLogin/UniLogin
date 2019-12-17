@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {DeployedWallet, TransferService, TransferErrors} from '@universal-login/sdk';
+import {TransferService, TransferErrors, Execution} from '@universal-login/sdk';
 import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, TokenDetailsWithBalance, GasParameters, getBalanceOf} from '@universal-login/commons';
 import '../styles/transfer.sass';
 import '../styles/transferDefaults.sass';
@@ -16,11 +16,11 @@ export interface TransferProps {
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
   tokenDetailsWithBalance: TokenDetailsWithBalance[];
   tokenDetails: TokenDetails;
-  onSendClick: () => Promise<void>;
+  onTransferTriggered: (transfer: () => Promise<Execution>) => Promise<void>;
   transferClassName?: string;
 }
 
-export const Transfer = ({transferService, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, transferClassName}: TransferProps) => {
+export const Transfer = ({transferService, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onTransferTriggered, transferClassName}: TransferProps) => {
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
 
   const balance = getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance);
@@ -28,7 +28,7 @@ export const Transfer = ({transferService, transferDetails, updateTransferDetail
   const onTransferClick = async () => {
     setErrors(await transferService.validateInputs(transferDetails, balance));
     if (transferService.areInputsValid()) {
-      onSendClick();
+      await onTransferTriggered(() => transferService.transfer(transferDetails));
     }
   };
 

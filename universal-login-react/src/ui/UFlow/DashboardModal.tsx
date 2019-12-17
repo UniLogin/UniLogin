@@ -1,7 +1,7 @@
-import {TransferService, WalletService} from '@universal-login/sdk';
+import {TransferService, WalletService, Execution} from '@universal-login/sdk';
 import React, {useState} from 'react';
 import {TransferDetails, TokenDetailsWithBalance} from '@universal-login/commons';
-import {Route, Switch} from 'react-router';
+import {Route, Switch, useHistory} from 'react-router';
 import {TopUp} from '../TopUp/TopUp';
 import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
@@ -37,14 +37,15 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
   };
 
   const transferService = new TransferService(deployedWallet);
+  const history = useHistory();
 
-  const onTransferSendClick = async (changeContent: (argument: string) => void) => {
-    const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetails);
-    changeContent('waitingForTransfer');
+  const onTransferTriggered = async (transfer: () => Promise<Execution>) => {
+    history.replace('/dashboard/waitingForTransfer');
+    const {waitToBeSuccess, waitForTransactionHash} = await transfer();
     const {transactionHash} = await waitForTransactionHash();
     setTransactionHash(transactionHash!);
     await waitToBeSuccess();
-    changeContent('funds');
+    history.replace('/dashboard/funds');
   };
 
   return (
@@ -79,7 +80,7 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
           <Route
             path="/dashboard/transferAmount"
             exact
-            render={({history}) => (
+            render={() => (
               <SubDialogWrapper message={notice} ensName={name}>
                 <Transfer
                   transferService={transferService}
@@ -87,7 +88,7 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
                   tokenDetails={selectedToken}
                   updateTransferDetailsWith={updateTransferDetailsWith}
                   tokenDetailsWithBalance={tokenDetailsWithBalance}
-                  onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
+                  onTransferTriggered={onTransferTriggered}
                 />
               </SubDialogWrapper>
             )}

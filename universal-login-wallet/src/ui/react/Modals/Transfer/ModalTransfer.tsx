@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {useHistory, Switch} from 'react-router';
 import {Route} from 'react-router-dom';
 import {TransferDetails, ETHER_NATIVE_TOKEN, TokenDetailsWithBalance} from '@universal-login/commons';
-import {TransferService} from '@universal-login/sdk';
+import {TransferService, Execution} from '@universal-login/sdk';
 import {ModalTransfer as Transfer, WaitingForTransaction, useAsyncEffect, ErrorMessage} from '@universal-login/react';
 import {useServices} from '../../../hooks';
 import ModalWrapperClosable from '../ModalWrapperClosable';
@@ -27,10 +27,11 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
   useAsyncEffect(() => deployedWallet.sdk.subscribeToBalances(deployedWallet.contractAddress, setTokenDetailsWithBalance), []);
 
   const transferService = new TransferService(deployedWallet);
-  const onGenerateClick = async () => {
+
+  const onTransferTriggered = async (transfer: () => Promise<Execution>) => {
     history.push(join(basePath, 'waiting'));
     try {
-      const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetails);
+      const {waitToBeSuccess, waitForTransactionHash} = await transfer();
       const {transactionHash} = await waitForTransactionHash();
       history.replace(join(basePath, 'waiting'), {transactionHash});
       await waitToBeSuccess();
@@ -54,7 +55,7 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
             updateTransferDetailsWith={updateTransferDetailsWith}
             tokenDetailsWithBalance={tokenDetailsWithBalance}
             tokenDetails={selectedToken}
-            onSendClick={onGenerateClick}
+            onTransferTriggered={onTransferTriggered}
             transferClassName="jarvis-styles"
           />
         </ModalWrapperClosable>
