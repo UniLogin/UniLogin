@@ -12,7 +12,6 @@ import {TransferDropdown} from './Amount/TransferDropdown';
 
 export interface TransferProps {
   transferService: TransferService;
-  deployedWallet: DeployedWallet;
   transferDetails: TransferDetails;
   updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
   tokenDetailsWithBalance: TokenDetailsWithBalance[];
@@ -21,7 +20,7 @@ export interface TransferProps {
   transferClassName?: string;
 }
 
-export const Transfer = ({transferService, deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, transferClassName}: TransferProps) => {
+export const Transfer = ({transferService, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, transferClassName}: TransferProps) => {
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
 
   const balance = getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance);
@@ -43,7 +42,7 @@ export const Transfer = ({transferService, deployedWallet, transferDetails, upda
       <div className={getStyleForTopLevelComponent(transferClassName)}>
         <div className="transfer">
           <TransferDropdown
-            sdk={deployedWallet.sdk}
+            sdk={transferService.deployedWallet.sdk}
             tokenDetailsWithBalance={tokenDetailsWithBalance}
             tokenDetails={tokenDetails}
             setToken={(token: TokenDetails) => updateField('transferToken')(token.address)}
@@ -64,7 +63,7 @@ export const Transfer = ({transferService, deployedWallet, transferDetails, upda
         <FooterSection className={transferClassName}>
           <GasPrice
             isDeployed={true}
-            deployedWallet={deployedWallet}
+            deployedWallet={transferService.deployedWallet}
             gasLimit={DEFAULT_GAS_LIMIT}
             onGasParametersChanged={(gasParameters: GasParameters) => updateField('gasParameters')(gasParameters)}
             className={transferClassName}

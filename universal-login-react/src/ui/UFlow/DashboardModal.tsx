@@ -83,7 +83,6 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
               <SubDialogWrapper message={notice} ensName={name}>
                 <Transfer
                   transferService={transferService}
-                  deployedWallet={deployedWallet}
                   transferDetails={transferDetails}
                   tokenDetails={selectedToken}
                   updateTransferDetailsWith={updateTransferDetailsWith}

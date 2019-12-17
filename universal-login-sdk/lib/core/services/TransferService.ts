@@ -14,7 +14,7 @@ export type TransferErrors = Record<string, string[]>;
 export class TransferService {
   private errors: TransferErrors = {amount: [], to: []};
 
-  constructor(private deployedWallet: DeployedWallet) {}
+  constructor(public deployedWallet: DeployedWallet) {}
 
   async transfer(transferDetails: TransferDetails) {
     ensureNotNull(this.deployedWallet, WalletNotFound);

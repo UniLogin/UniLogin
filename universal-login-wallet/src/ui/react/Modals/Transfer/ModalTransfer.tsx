@@ -50,7 +50,6 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
         <ModalWrapperClosable hideModal={() => history.push('/wallet')}>
           <Transfer
             transferService={transferService}
-            deployedWallet={deployedWallet}
             transferDetails={transferDetails}
             updateTransferDetailsWith={updateTransferDetailsWith}
             tokenDetailsWithBalance={tokenDetailsWithBalance}
