@@ -63,6 +63,12 @@ export class Web3Picker implements Provider {
   }
 
   async send(jsonRpcReq: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
+    if (this.isVisible.get()) {
+      return;
+    }
+    if (jsonRpcReq.method === 'eth_accounts') {
+      return [];
+    }
     const {waitForPick} = this.show();
     await waitForPick();
     return this.web3Strategy.currentProvider.send(jsonRpcReq, callback);
