@@ -3,8 +3,8 @@ import {createMockProvider, deployContract, getWallets} from 'ethereum-waffle';
 import Executor from '../../../build/TestableExecutor.json';
 import {constants, Contract} from 'ethers';
 import {transferMessage} from '../../helpers/ExampleMessages';
-import {getExecutionArgs, estimateBaseGasForNoSignature} from '../../helpers/argumentsEncoding';
-import {calculateFinalGasLimit} from '../../../lib/estimateGas';
+import {getExecutionArgs} from '../../helpers/argumentsEncoding';
+import {calculateFinalGasLimit, estimateBaseGasForNoSignature} from '../../helpers/calculations';
 
 describe('Void Executor', () => {
   let provider;

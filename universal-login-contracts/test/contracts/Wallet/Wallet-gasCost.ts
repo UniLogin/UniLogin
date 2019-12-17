@@ -5,7 +5,7 @@ import {providers, Contract, Wallet, utils} from 'ethers';
 import {createKeyPair, ETHER_NATIVE_TOKEN, getDeployTransaction, ContractJSON, KeyPair} from '@universal-login/commons';
 import WalletContract from '../../../build/Wallet.json';
 import {ensAndMasterFixture, walletContractFixture} from '../../fixtures/walletContract';
-import {EnsDomainData, createFutureDeploymentWithENS, createFutureDeployment} from '../../../lib';
+import {createFutureDeploymentWithENS, createFutureDeployment, EnsDomainData} from '../../helpers/FutureDeployment';
 import {executeAddKey} from '../../helpers/ExampleMessages';
 
 chai.use(chaiAsPromised);

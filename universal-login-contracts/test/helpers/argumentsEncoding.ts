@@ -1,8 +1,7 @@
-import {UnsignedMessage, createFullHexString, GAS_FIXED, CURRENT_NETWORK_VERSION, GasDataComputation} from '@universal-login/commons';
 import {Interface} from 'ethers/utils';
 import {utils, Contract} from 'ethers';
+import {UnsignedMessage} from '@universal-login/commons';
 import {WalletProxyInterface} from '../../lib/interfaces';
-import {encodeDataForExecuteSigned} from '../../lib';
 
 export const switchENSNameInInitializeArgs = (initializeArgs: string[], label: string, domain = 'mylogin.eth') => {
   const ensName = `${label}.${domain}`;
@@ -32,15 +31,4 @@ export const setupUpdateMessage = async (proxyAsWalletContract: Contract, newWal
     gasPrice: '1',
     gasToken: '0x0000000000000000000000000000000000000000',
   };
-};
-
-export const estimateBaseGasForNoSignature = (unsignedMessage: UnsignedMessage) => {
-  const encodedMessage = encodeDataForExecuteSigned({
-    ...unsignedMessage,
-    safeTxGas: createFullHexString(3),
-    baseGas: createFullHexString(3),
-    signature: '0x0',
-  });
-  const gasData = new GasDataComputation(CURRENT_NETWORK_VERSION).computeGasData(encodedMessage);
-  return utils.bigNumberify(gasData).add(GAS_FIXED);
 };

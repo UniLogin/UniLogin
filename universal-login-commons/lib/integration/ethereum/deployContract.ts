@@ -8,6 +8,9 @@ export async function deployContract(wallet: Wallet, contractJSON: ContractJSON,
   return factory.deploy(...args, overrides);
 }
 
+export const getDeployData = (contractJSON: ContractJSON, args: any[]) =>
+  new utils.Interface(contractJSON.interface).deployFunction.encode(`0x${contractJSON.bytecode}`, args);
+
 export async function deployContractAndWait(wallet: Wallet, contractJSON: ContractJSON, args = [], overrides?: TransactionOverrides) {
   const deployTransaction = {
     ...defaultDeployOptions,
