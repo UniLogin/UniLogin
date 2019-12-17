@@ -22,11 +22,11 @@ export class TransferService {
     return this.deployedWallet.execute(message);
   }
 
-  validateInputs(transferDetails: TransferDetails, balance: Nullable<string>) {
+  async validateInputs(transferDetails: TransferDetails, balance: Nullable<string>) {
     this.errors = {amount: [], to: []};
     ensureNotNull(balance, Error, 'Balance is null');
     new AmountValidator(balance).validate(transferDetails, this.errors);
-    new RecipientValidator().validate(transferDetails, this.errors);
+    await new RecipientValidator(this.deployedWallet.sdk).validate(transferDetails, this.errors);
     return this.errors;
   }
 

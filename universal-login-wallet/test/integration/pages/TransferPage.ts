@@ -19,13 +19,13 @@ export default class TransferPage {
     this.appWrapper.find('#send-button').first().simulate('click');
   }
 
-  doesAmountErrorExists() {
-    this.appWrapper.update();
+  async doesAmountErrorExists() {
+    await waitForUI(this.appWrapper, () => this.appWrapper.find('.transfer-amount-hint').exists());
     return this.appWrapper.find('.transfer-amount-hint').exists();
   }
 
-  doesRecipientErrorExists() {
-    this.appWrapper.update();
+  async doesRecipientErrorExists() {
+    await waitForUI(this.appWrapper, () => this.appWrapper.find('.transfer-recipient-hint').exists());
     return this.appWrapper.find('.transfer-recipient-hint').exists();
   }
 

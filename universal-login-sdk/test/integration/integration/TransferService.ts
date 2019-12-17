@@ -102,7 +102,7 @@ describe('INT: TransferService', () => {
     const targetENSName = 'ether-test.mylogin.eth';
     await createWallet(targetENSName, sdk, wallet);
     const amount = '7';
-    expect(transferService.validateInputs({
+    expect(await transferService.validateInputs({
       to: targetENSName,
       transferToken: mockTokenContract.address,
       gasParameters,
@@ -114,7 +114,7 @@ describe('INT: TransferService', () => {
   it('return an error if invalid address', async () => {
     const invalidAddress = '0x123';
     const amount = '0.5';
-    expect(transferService.validateInputs({
+    expect(await transferService.validateInputs({
       to: invalidAddress,
       transferToken: mockTokenContract.address,
       gasParameters,
@@ -126,13 +126,25 @@ describe('INT: TransferService', () => {
   it('return an error if invalid ENS name', async () => {
     const invalidENSName = 'test';
     const amount = '0.5';
-    expect(transferService.validateInputs({
+    expect(await transferService.validateInputs({
       to: invalidENSName,
       transferToken: mockTokenContract.address,
       gasParameters,
       amount,
     }, balance))
       .to.deep.eq({to: [`${invalidENSName} is not a valid address or ENS name`], amount: []});
+  });
+
+  it('return an error if not-existing ENS name', async () => {
+    const invalidENSName = 'not-existing.mylogin.eth';
+    const amount = '0.5';
+    expect(await transferService.validateInputs({
+      to: invalidENSName,
+      transferToken: mockTokenContract.address,
+      gasParameters,
+      amount,
+    }, balance))
+      .to.deep.eq({to: [`${invalidENSName} is not a valid ENS name`], amount: []});
   });
 
   it('get Ethereum max amount', async () => {
