@@ -155,7 +155,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async create() {
-    await this.walletService.loadFromStorage()
+    await this.walletService.loadFromStorage();
     this.uiController.requireWallet();
 
     await waitForTrue(this.isLoggedIn);

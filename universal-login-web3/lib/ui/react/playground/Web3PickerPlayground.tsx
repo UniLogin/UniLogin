@@ -7,7 +7,7 @@ export const Web3PickerPlayground = () => {
   const [web3Strategy] = useState(() => new Web3Strategy([
     universalLoginProviderFactory,
   ],
-    {} as Provider,
+  {} as Provider,
   ));
   const [currentProvider, setCurrentProvider] = useState<Provider>(web3Strategy.currentProvider);
 

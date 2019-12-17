@@ -24,7 +24,8 @@ export class Web3Picker implements Provider {
   setProvider(providerName: string) {
     ensure(this.hasProvider(providerName), InvalidProvider, providerName);
     this.web3Strategy.currentProvider = this.getFactory(providerName).create();
-    this.web3Strategy.readProvider = this.getFactory(providerName).create();
+    this.web3Strategy.providerName = providerName;
+    this.web3Strategy.readProvider = this.web3Strategy.currentProvider;
     this.isVisible.set(false);
   }
 
@@ -67,7 +68,11 @@ export class Web3Picker implements Provider {
       return;
     }
     if (jsonRpcReq.method === 'eth_accounts') {
-      return [];
+      return callback(null, {
+        jsonrpc: jsonRpcReq.jsonrpc,
+        id: jsonRpcReq.id,
+        result: [],
+      });
     }
     const {waitForPick} = this.show();
     await waitForPick();
