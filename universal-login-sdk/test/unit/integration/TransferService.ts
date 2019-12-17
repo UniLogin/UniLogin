@@ -109,7 +109,7 @@ describe('UNIT: TransferService', () => {
 
   it('return an error if amount is not valid', async () => {
     const {transferService, balance} = setup();
-    expect(transferService.validateInputs({
+    expect(await transferService.validateInputs({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '350',
       transferToken: ETHER_NATIVE_TOKEN.address,
@@ -120,7 +120,7 @@ describe('UNIT: TransferService', () => {
 
   it('return an error if address is not valid', async () => {
     const {transferService, balance} = setup();
-    expect(transferService.validateInputs({
+    expect(await transferService.validateInputs({
       to: '0x',
       amount: '123',
       transferToken: ETHER_NATIVE_TOKEN.address,
@@ -131,7 +131,7 @@ describe('UNIT: TransferService', () => {
 
   it('return an error if ENS name is not valid', async () => {
     const {transferService, balance} = setup();
-    expect(transferService.validateInputs({
+    expect(await transferService.validateInputs({
       to: 'test',
       amount: '123',
       transferToken: ETHER_NATIVE_TOKEN.address,
