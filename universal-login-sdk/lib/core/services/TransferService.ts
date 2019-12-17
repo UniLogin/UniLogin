@@ -7,6 +7,7 @@ import {WalletNotFound} from '../utils/errors';
 import {getTargetAddress} from '../utils/getTargetAddress';
 import {AmountValidator} from './validations/AmountValidator';
 import {RecipientValidator} from './validations/RecipientValidator';
+import {ChainValidator} from './validations/ChainValidator';
 
 export type TransferErrors = Record<string, string[]>;
 
@@ -22,11 +23,13 @@ export class TransferService {
     return this.deployedWallet.execute(message);
   }
 
-  validateInputs(transferDetails: TransferDetails, balance: Nullable<string>) {
+  async validateInputs(transferDetails: TransferDetails, balance: Nullable<string>) {
     this.errors = {amount: [], to: []};
     ensureNotNull(balance, Error, 'Balance is null');
-    new AmountValidator(balance).validate(transferDetails, this.errors);
-    new RecipientValidator().validate(transferDetails, this.errors);
+    await new ChainValidator([
+      new AmountValidator(balance),
+      new RecipientValidator(this.deployedWallet.sdk),
+    ]).validate(transferDetails, this.errors);
     return this.errors;
   }
 

@@ -28,7 +28,7 @@ export const Transfer = ({transferService, deployedWallet, transferDetails, upda
   const balance = getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance);
 
   const onTransferClick = async () => {
-    setErrors(transferService.validateInputs(transferDetails, balance));
+    setErrors(await transferService.validateInputs(transferDetails, balance));
     if (transferService.areInputsValid()) {
       onSendClick();
     }
