@@ -30,7 +30,7 @@ export {InvalidContract, NotEnoughTokens, ValidationError, PaymentError} from '.
 export {computeCounterfactualAddress, computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';
 export {RequiredBalanceChecker} from './core/services/RequiredBalanceChecker';
-export {deployContract, deployContractAndWait, DEPLOY_GAS_LIMIT} from './integration/ethereum/deployContract';
+export {deployContract, deployContractAndWait, DEPLOY_GAS_LIMIT, getDeployData} from './integration/ethereum/deployContract';
 export {withENS} from './integration/ethereum/ens';
 export {getContractHash, getDeployedBytecode, isContractExist, isContract} from './core/utils/contracts/contractHelpers';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './core/utils/messages/changingMessageFields';

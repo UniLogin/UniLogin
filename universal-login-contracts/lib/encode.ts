@@ -26,9 +26,6 @@ export const encodeDataForExecuteSigned = (message: SignedMessage) =>
     message.signature,
   ]);
 
-export const getDeployData = (contractJSON: ContractJSON, args: any[]) =>
-  new utils.Interface(contractJSON.interface).deployFunction.encode(`0x${contractJSON.bytecode}`, args);
-
 type SetupInitializeWithENSArgs = {
   keyPair: KeyPair;
   ensDomainData: EnsDomainData;

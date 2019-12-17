@@ -1,7 +1,7 @@
 import {Contract} from 'ethers';
-import {computeCounterfactualAddress, KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {computeCounterfactualAddress, KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN, getDeployData} from '@universal-login/commons';
 import ProxyContract from '../../build/WalletProxy.json';
-import {EnsDomainData, getDeployData, encodeInitializeData} from '../../lib';
+import {EnsDomainData, encodeInitializeData} from '../../lib';
 import {createProxyDeployWithENSArgs} from './ProxyUtils';
 
 type FutureDeployment = {
