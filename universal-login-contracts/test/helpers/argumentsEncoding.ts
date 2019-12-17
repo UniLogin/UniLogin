@@ -1,4 +1,4 @@
-import {UnsignedMessage, createFullHexString, GAS_FIXED, CURRENT_NETWORK_VERSION, GasComputation} from '@universal-login/commons';
+import {UnsignedMessage, createFullHexString, GAS_FIXED, CURRENT_NETWORK_VERSION, GasDataComputation} from '@universal-login/commons';
 import {Interface} from 'ethers/utils';
 import {utils, Contract} from 'ethers';
 import {WalletProxyInterface} from '../../lib/interfaces';
@@ -41,6 +41,6 @@ export const estimateBaseGasForNoSignature = (unsignedMessage: UnsignedMessage) 
     baseGas: createFullHexString(3),
     signature: '0x0',
   });
-  const gasData = new GasComputation(CURRENT_NETWORK_VERSION).computeGasData(encodedMessage);
+  const gasData = new GasDataComputation(CURRENT_NETWORK_VERSION).computeGasData(encodedMessage);
   return utils.bigNumberify(gasData).add(GAS_FIXED);
 };
