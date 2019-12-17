@@ -25,20 +25,3 @@ export const encodeDataForExecuteSigned = (message: SignedMessage) =>
     message.baseGas,
     message.signature,
   ]);
-
-type SetupInitializeWithENSArgs = {
-  keyPair: KeyPair;
-  ensDomainData: EnsDomainData;
-  name?: string;
-  domain?: string;
-  gasPrice: string;
-  gasToken: string;
-};
-
-export function setupInitializeWithENSArgs({keyPair, ensDomainData, gasPrice, gasToken, name = 'name', domain = 'mylogin.eth'}: SetupInitializeWithENSArgs) {
-  const ensName = `${name}.${domain}`;
-  const hashLabel = utils.keccak256(utils.toUtf8Bytes(name));
-  const node = utils.namehash(ensName);
-  const args = [keyPair.publicKey, hashLabel, ensName, node, ensDomainData.ensAddress, ensDomainData.registrarAddress, ensDomainData.resolverAddress, gasPrice, gasToken];
-  return args;
-}

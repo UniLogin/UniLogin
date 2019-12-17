@@ -3,11 +3,12 @@ import {Contract, providers, utils, Wallet} from 'ethers';
 import {deployContract, getWallets, loadFixture, solidity} from 'ethereum-waffle';
 import {createKeyPair, DEPLOYMENT_REFUND, ETHER_NATIVE_TOKEN, signString} from '@universal-login/commons';
 import MockToken from '../../../build/MockToken.json';
-import {encodeInitializeWithENSData, EnsDomainData, setupInitializeWithENSArgs} from '../../../lib';
+import {encodeInitializeWithENSData, EnsDomainData} from '../../../lib';
 import {createFutureDeploymentWithENS, CreateFutureDeploymentWithENS} from '../../helpers/FutureDeployment';
 import {ensAndMasterFixture} from '../../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../../helpers/argumentsEncoding';
 import {WalletContractInterface, WalletProxyFactoryInterface} from '../../../lib/interfaces';
+import {setupInitializeWithENSArgs} from '../../helpers/ProxyUtils';
 
 chai.use(solidity);
 
