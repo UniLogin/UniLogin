@@ -6,12 +6,23 @@ export class Web3Strategy implements Provider {
   web3picker: Web3Picker;
   currentProvider: Provider;
 
-  constructor(public readonly factories: Web3ProviderFactory[]) {
+  constructor(public readonly factories: Web3ProviderFactory[], public readProvider: Provider) {
+    console.log('Create Web3Strategy')
     this.web3picker = new Web3Picker(this, factories);
     this.currentProvider = this.web3picker;
   }
 
   send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    return this.currentProvider.send(payload, callback);
+    console.log(payload.method)
+    switch (payload.method) {
+      case 'eth_sendTransaction':
+      case 'eth_sendRawTransaction':
+      case 'eth_accounts':
+      case 'eth_sign':
+      case 'personal_sign':
+        return this.currentProvider.send(payload, callback);
+      default:
+        return this.readProvider.send(payload, callback);
+    }
   }
 }

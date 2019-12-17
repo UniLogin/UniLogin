@@ -6,7 +6,9 @@ import {Web3Strategy} from '../../../Web3Strategy';
 export const Web3PickerPlayground = () => {
   const [web3Strategy] = useState(() => new Web3Strategy([
     universalLoginProviderFactory,
-  ]));
+  ],
+    {} as Provider,
+  ));
   const [currentProvider, setCurrentProvider] = useState<Provider>(web3Strategy.currentProvider);
 
   const onClick = async () => {

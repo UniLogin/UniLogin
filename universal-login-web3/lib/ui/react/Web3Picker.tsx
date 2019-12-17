@@ -24,6 +24,7 @@ export class Web3Picker implements Provider {
   setProvider(providerName: string) {
     ensure(this.hasProvider(providerName), InvalidProvider, providerName);
     this.web3Strategy.currentProvider = this.getFactory(providerName).create();
+    this.web3Strategy.readProvider = this.getFactory(providerName).create();
     this.isVisible.set(false);
   }
 

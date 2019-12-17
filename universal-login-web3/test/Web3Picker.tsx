@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import {Web3Picker} from '../lib/ui/react/Web3Picker';
 import {Web3Strategy} from '../lib/Web3Strategy';
 import {Web3ProviderFactory} from '../lib/models/Web3ProviderFactory';
+import {Provider} from 'web3/providers';
 
 describe('UNIT: Web3Picker', () => {
   const sendSpy = sinon.spy();
@@ -15,7 +16,7 @@ describe('UNIT: Web3Picker', () => {
   const factories = [
     universalLoginProviderFactory,
   ];
-  const web3Strategy = new Web3Strategy(factories);
+  const web3Strategy = new Web3Strategy(factories, {} as Provider);
   const web3Picker = new Web3Picker(web3Strategy, factories);
   web3Picker.show = sinon.stub().returns({waitForPick: async () => {}});
   web3Strategy.web3picker = web3Picker;
