@@ -1,12 +1,11 @@
 import {IMessageValidator, SignedMessage, ensure} from '@universal-login/commons';
-import {Wallet} from 'ethers';
 import {InvalidRefundReceiver} from '../../utils/errors';
 
 export class RefundReceiverValidator implements IMessageValidator {
-  constructor(private wallet: Wallet) {
+  constructor(private walletAddress: string) {
   }
 
   validate(signedMessage: SignedMessage) {
-    ensure(this.wallet.address === signedMessage.refundReceiver, InvalidRefundReceiver, `Expected address: ${this.wallet.address}`);
+    ensure(this.walletAddress === signedMessage.refundReceiver, InvalidRefundReceiver, `Expected address: ${this.walletAddress}`);
   }
 }

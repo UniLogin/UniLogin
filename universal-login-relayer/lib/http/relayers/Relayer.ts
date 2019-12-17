@@ -90,7 +90,7 @@ class Relayer {
     this.publicConfig = getPublicConfig(this.config);
     const blockchainService = new BlockchainService(this.provider);
     const gasComputation = new GasComputation(blockchainService);
-    this.messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet);
+    this.messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address);
   }
 
   async start() {
