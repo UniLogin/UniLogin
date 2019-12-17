@@ -21,8 +21,8 @@ export const encodeDataForExecuteSigned = (message: SignedMessage) =>
     message.data,
     message.gasPrice,
     message.gasToken,
-    message.gasCall,
-    message.gasBase,
+    message.safeTxGas,
+    message.baseGas,
     message.signature,
   ]);
 

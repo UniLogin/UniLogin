@@ -15,7 +15,7 @@ export const switchENSNameInInitializeArgs = (initializeArgs: string[], label: s
 };
 
 export const getExecutionArgs = (msg: UnsignedMessage) =>
-  [msg.to, msg.value, msg.data, msg.gasPrice, msg.gasToken, msg.gasCall, msg.gasBase];
+  [msg.to, msg.value, msg.data, msg.gasPrice, msg.gasToken, msg.safeTxGas, msg.baseGas];
 
 export const encodeFunction = (ContractJSON: any, functionName: string, args: string[] = []) =>
   new Interface(ContractJSON.interface).functions[`${functionName}`].encode(args);
@@ -34,11 +34,11 @@ export const setupUpdateMessage = async (proxyAsWalletContract: Contract, newWal
   };
 };
 
-export const estimateGasBaseForNoSignature = (unsignedMessage: UnsignedMessage) => {
+export const estimateBaseGasForNoSignature = (unsignedMessage: UnsignedMessage) => {
   const encodedMessage = encodeDataForExecuteSigned({
     ...unsignedMessage,
-    gasCall: createFullHexString(3),
-    gasBase: createFullHexString(3),
+    safeTxGas: createFullHexString(3),
+    baseGas: createFullHexString(3),
     signature: '0x0',
   });
   const gasData = new GasComputation(CURRENT_NETWORK_VERSION).computeGasData(encodedMessage);

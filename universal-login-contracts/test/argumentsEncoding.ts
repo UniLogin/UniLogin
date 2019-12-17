@@ -23,8 +23,8 @@ describe('UNIT: argumentsEncoding', async () => {
       nonce: 0,
       gasToken: ETHER_NATIVE_TOKEN.address,
       gasPrice: DEFAULT_GAS_PRICE,
-      gasCall: DEFAULT_GAS_LIMIT_EXECUTION,
-      gasBase: '100000',
+      safeTxGas: DEFAULT_GAS_LIMIT_EXECUTION,
+      baseGas: '100000',
       operationType: OperationType.call,
       refundReceiver: AddressZero,
     };
@@ -62,9 +62,9 @@ describe('UNIT: argumentsEncoding', async () => {
         data: '0x0',
         nonce: 0,
         gasPrice: 0,
-        gasCall: 0,
+        safeTxGas: 0,
         gasToken: '0x0000000000000000000000000000000000000000',
-        gasBase: 68,
+        baseGas: 68,
         operationType: OperationType.call,
         refundReceiver: AddressZero,
       };
