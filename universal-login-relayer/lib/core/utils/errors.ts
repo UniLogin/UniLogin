@@ -20,7 +20,8 @@ type ErrorType =
   'InvalidTransaction' |
   'InvalidHexData' |
   'EnsNameTaken' |
-  'UnauthorisedAddress';
+  'UnauthorisedAddress' |
+  'InvalidRefundReceiver';
 
 export class RelayerError extends Error {
   errorType: ErrorType;
@@ -107,6 +108,13 @@ export class GasLimitTooHigh extends ValidationFailed {
   constructor(msg: string) {
     super(`GasLimit is too high. ${msg}`, 'GasLimitTooHigh');
     Object.setPrototypeOf(this, GasLimitTooHigh.prototype);
+  }
+}
+
+export class InvalidRefundReceiver extends ValidationFailed {
+  constructor(msg: string) {
+    super(`Invalid refund receiver. ${msg}`, 'InvalidRefundReceiver');
+    Object.setPrototypeOf(this, InvalidRefundReceiver.prototype);
   }
 }
 

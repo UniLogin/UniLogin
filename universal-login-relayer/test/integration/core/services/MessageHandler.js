@@ -29,7 +29,7 @@ describe('INT: MessageHandler', async () => {
 
   beforeEach(async () => {
     ({wallet, provider, messageHandler, authorisationStore, walletContract, otherWallet, devicesStore, executionWorker} = await setupMessageService(knex, config));
-    msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce()};
+    msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
     executionWorker.start();
   });
 
@@ -72,7 +72,7 @@ describe('INT: MessageHandler', async () => {
 
   describe('Add Key', async () => {
     it('execute add key', async () => {
-      msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
+      msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
       const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
 
       await messageHandler.handleMessage(signedMessage);
@@ -84,7 +84,7 @@ describe('INT: MessageHandler', async () => {
       it('should remove request from pending authorisations if addKey', async () => {
         const request = {walletContractAddress: walletContract.address, key: otherWallet.address, deviceInfo: defaultDeviceInfo};
         await authorisationStore.addRequest(request);
-        msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
+        msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
         const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
         await messageHandler.handleMessage(signedMessage);
         await executionWorker.stopLater();
@@ -99,7 +99,7 @@ describe('INT: MessageHandler', async () => {
     it('execute add key', async () => {
       const keys = [otherWallet.address];
       const data = encodeFunction(WalletContract, 'addKeys', [keys]);
-      msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), data};
+      msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), data, refundReceiver: wallet.address};
       const signedMessage0 = getTestSignedMessage(msg, wallet.privateKey);
       await messageHandler.handleMessage(signedMessage0);
       await executionWorker.stopLater();
@@ -111,7 +111,7 @@ describe('INT: MessageHandler', async () => {
 
   describe('Remove key ', async () => {
     beforeEach(async () => {
-      const message = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
+      const message = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
       const signedMessage = getTestSignedMessage(message, wallet.privateKey);
 
       await messageHandler.handleMessage(signedMessage);
@@ -119,7 +119,7 @@ describe('INT: MessageHandler', async () => {
 
     it('should remove key', async () => {
       await waitExpect(async () => expect((await walletContract.keyExist(otherWallet.address))).to.be.true);
-      const message = {...removeKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce()};
+      const message = {...removeKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
       const signedMessage = getTestSignedMessage(message, wallet.privateKey);
 
       await messageHandler.handleMessage(signedMessage);
