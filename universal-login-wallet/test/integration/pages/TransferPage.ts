@@ -51,4 +51,8 @@ export default class TransferPage {
   waitForGasMode() {
     return this.gasModePage.waitForGasMode();
   }
+
+  async waitForBalance() {
+    await waitForUI(this.appWrapper, () => this.appWrapper.find('.assets-balance').exists());
+  }
 }

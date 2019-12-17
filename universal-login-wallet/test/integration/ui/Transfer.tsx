@@ -29,6 +29,7 @@ describe('UI: Transfer', () => {
     receiver: string,
   ) => {
     appPage.dashboard().goToTransferPage();
+    await appPage.transfer().waitForBalance();
     await appPage.transfer().chooseCurrency(symbol);
     appPage.transfer().enterTransferAmount(amount);
     appPage.transfer().enterRecipient(receiver);
@@ -48,14 +49,6 @@ describe('UI: Transfer', () => {
     senderAddress = services.walletService.state.kind === 'Deployed'
       ? services.walletService.getDeployedWallet().contractAddress
       : '0x0';
-  });
-
-  xit('send ETH => invalid ensName', async () => {
-    await transferFlow(appPage, 'ETH', '1', 'pascal.mylogin.eth');
-    await waitExpect(() => expect(appPage.transfer().getErrorMessage())
-      .to.be.eq('Error: pascal.mylogin.eth is not valid'));
-    await appPage.dashboard().closeModal();
-    expect(appPage.dashboard().getWalletBalance()).to.eq('$1.99');
   });
 
   it('send ETH => proper contractAddress', async () => {
