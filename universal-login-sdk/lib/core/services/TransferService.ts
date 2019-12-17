@@ -48,4 +48,8 @@ export class TransferService {
     const maxAmountValidated = bigNumberMax(maxAmountAsBigNumber, utils.parseEther('0'));
     return utils.formatEther(maxAmountValidated);
   }
+
+  getTokenDetails(tokenAddress: string) {
+    return this.deployedWallet.sdk.tokensDetailsStore.getTokenByAddress(tokenAddress);
+  }
 }

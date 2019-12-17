@@ -2,7 +2,7 @@ import {join} from 'path';
 import React, {useState} from 'react';
 import {useHistory, Switch} from 'react-router';
 import {Route} from 'react-router-dom';
-import {TransferDetails, ETHER_NATIVE_TOKEN, TokenDetailsWithBalance} from '@universal-login/commons';
+import {TokenDetailsWithBalance} from '@universal-login/commons';
 import {TransferService, Execution} from '@universal-login/sdk';
 import {ModalTransfer as Transfer, WaitingForTransaction, useAsyncEffect, ErrorMessage} from '@universal-login/react';
 import {useServices} from '../../../hooks';
@@ -15,14 +15,10 @@ export interface ModalTransferProps {
 const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
   const history = useHistory();
 
-  const [transferDetails, setTransferDetails] = useState(
-    {transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails,
-  );
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
   const {walletService} = useServices();
   const deployedWallet = walletService.getDeployedWallet();
-  const selectedToken = deployedWallet.sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken);
 
   useAsyncEffect(() => deployedWallet.sdk.subscribeToBalances(deployedWallet.contractAddress, setTokenDetailsWithBalance), []);
 
@@ -41,20 +37,13 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
     }
   };
 
-  const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
-    setTransferDetails({...transferDetails, ...args});
-  };
-
   return (
     <Switch>
       <Route path={`${basePath}/`} exact>
         <ModalWrapperClosable hideModal={() => history.push('/wallet')}>
           <Transfer
             transferService={transferService}
-            transferDetails={transferDetails}
-            updateTransferDetailsWith={updateTransferDetailsWith}
             tokenDetailsWithBalance={tokenDetailsWithBalance}
-            tokenDetails={selectedToken}
             onTransferTriggered={onTransferTriggered}
             transferClassName="jarvis-styles"
           />

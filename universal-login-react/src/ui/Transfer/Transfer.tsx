@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {TransferService, TransferErrors, Execution} from '@universal-login/sdk';
-import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, TokenDetailsWithBalance, GasParameters, getBalanceOf} from '@universal-login/commons';
+import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, TokenDetailsWithBalance, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import '../styles/transfer.sass';
 import '../styles/transferDefaults.sass';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
@@ -12,18 +12,17 @@ import {TransferDropdown} from './Amount/TransferDropdown';
 
 export interface TransferProps {
   transferService: TransferService;
-  transferDetails: TransferDetails;
-  updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
   tokenDetailsWithBalance: TokenDetailsWithBalance[];
-  tokenDetails: TokenDetails;
   onTransferTriggered: (transfer: () => Promise<Execution>) => Promise<void>;
   transferClassName?: string;
 }
 
-export const Transfer = ({transferService, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onTransferTriggered, transferClassName}: TransferProps) => {
+export const Transfer = ({transferService, tokenDetailsWithBalance, onTransferTriggered, transferClassName}: TransferProps) => {
+  const [transferDetails, setTransferDetails] = useState({transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails);
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
 
-  const balance = getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance);
+  const selectedToken = transferService.getTokenDetails(transferDetails.transferToken);
+  const balance = getBalanceOf(selectedToken.symbol, tokenDetailsWithBalance);
 
   const onTransferClick = async () => {
     setErrors(await transferService.validateInputs(transferDetails, balance));
@@ -33,7 +32,7 @@ export const Transfer = ({transferService, transferDetails, updateTransferDetail
   };
 
   const updateField = (field: string) => (value: string | GasParameters) => {
-    updateTransferDetailsWith({[field]: value});
+    setTransferDetails({...transferDetails, ...{[field]: value}});
     setErrors({...errors, [field]: []});
   };
 
@@ -44,13 +43,13 @@ export const Transfer = ({transferService, transferDetails, updateTransferDetail
           <TransferDropdown
             sdk={transferService.deployedWallet.sdk}
             tokenDetailsWithBalance={tokenDetailsWithBalance}
-            tokenDetails={tokenDetails}
+            tokenDetails={selectedToken}
             setToken={(token: TokenDetails) => updateField('transferToken')(token.address)}
             className={transferClassName}
           />
           <TransferAmount
             value={transferDetails.amount}
-            tokenSymbol={tokenDetails.symbol}
+            tokenSymbol={selectedToken.symbol}
             errors={errors.amount}
             onChange={updateField('amount')}
             onMaxClick={() => updateField('amount')(transferService.getMaxAmount(transferDetails.gasParameters, balance))}
