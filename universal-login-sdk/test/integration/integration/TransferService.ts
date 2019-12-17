@@ -144,7 +144,7 @@ describe('INT: TransferService', () => {
       gasParameters,
       amount,
     }, balance))
-      .to.deep.eq({to: [`${invalidENSName} is not a valid ENS name`], amount: []});
+      .to.deep.eq({to: [`Can't resolve ENS address: ${invalidENSName}`], amount: []});
   });
 
   it('get Ethereum max amount', async () => {

@@ -5,6 +5,7 @@ import {TEST_ACCOUNT_ADDRESS, TransferDetails} from '@universal-login/commons';
 import {RecipientValidator} from '../../../../lib/core/services/validations/RecipientValidator';
 import {TransferErrors} from '../../../../lib/core/services/validations/Validator';
 import UniversalLoginSDK from '../../../../lib';
+import {AddressZero} from 'ethers/constants';
 
 const TEST_TRANSFER_DETAILS: TransferDetails = {
   to: '0x',
@@ -53,7 +54,15 @@ describe('UNIT: RecipientValidator', () => {
       resolveName: sinon.stub().resolves(null),
     } as unknown as UniversalLoginSDK;
     await new RecipientValidator(sdkWithNullResolveName).validate({...TEST_TRANSFER_DETAILS, to: 'test.mylogin.eth'}, errors);
-    expect(errors).to.deep.eq({to: ['test.mylogin.eth is not a valid ENS name'], amount: []});
+    expect(errors).to.deep.eq({to: ['Can\'t resolve ENS address: test.mylogin.eth'], amount: []});
+  });
+
+  it('invalid ens name', async () => {
+    const sdkWithNullResolveName = {
+      resolveName: sinon.stub().resolves(AddressZero),
+    } as unknown as UniversalLoginSDK;
+    await new RecipientValidator(sdkWithNullResolveName).validate({...TEST_TRANSFER_DETAILS, to: 'test.mylogin.eth'}, errors);
+    expect(errors).to.deep.eq({to: ['Can\'t resolve ENS address: test.mylogin.eth'], amount: []});
   });
 
   it('invalid ens name and address', async () => {

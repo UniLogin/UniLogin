@@ -2,6 +2,7 @@ import {Validator, TransferErrors} from './Validator';
 import {utils} from 'ethers';
 import {isValidEnsName, TransferDetails} from '@universal-login/commons';
 import UniversalLoginSDK from '../../../api/sdk';
+import {AddressZero} from 'ethers/constants';
 
 const isProperAddress = (recipient: string): boolean => {
   try {
@@ -12,9 +13,8 @@ const isProperAddress = (recipient: string): boolean => {
   return true;
 };
 
-export class RecipientValidator extends Validator<TransferDetails> {
+export class RecipientValidator implements Validator<TransferDetails> {
   constructor(private readonly sdk: UniversalLoginSDK) {
-    super();
   }
 
   async validate(transferDetails: TransferDetails, errors: TransferErrors) {
@@ -22,13 +22,12 @@ export class RecipientValidator extends Validator<TransferDetails> {
     if (!recipient) {
       errors['to'].push('Empty recipient');
     } else if (isProperAddress(recipient)) {
-      return true;
     } else if (isValidEnsName(recipient)) {
       const resolvedEnsName = await this.sdk.resolveName(recipient);
-      if (resolvedEnsName) {
-        return true;
+      if (resolvedEnsName && resolvedEnsName !== AddressZero) {
+        return;
       }
-      errors['to'].push(`${recipient} is not a valid ENS name`);
+      errors['to'].push(`Can't resolve ENS address: ${recipient}`);
     } else if (recipient.startsWith('0x')) {
       errors['to'].push(`${recipient} is not a valid address`);
     } else {

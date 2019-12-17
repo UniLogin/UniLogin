@@ -1,24 +1,24 @@
 import {utils} from 'ethers';
 import {DEFAULT_GAS_LIMIT, TransferDetails} from '@universal-login/commons';
 import {Validator, TransferErrors} from './Validator';
-import {NumberValidator} from './NumberValidator';
 
 const {formatEther} = utils;
 
-export class AmountValidator extends Validator<TransferDetails> {
+const isNumber = /^[0-9]+(\.[0-9]+)?$/;
+
+export class AmountValidator implements Validator<TransferDetails> {
   constructor(private readonly balance: string) {
-    super();
   }
 
-  validate(transferDetails: TransferDetails, errors: TransferErrors) {
+  async validate(transferDetails: TransferDetails, errors: TransferErrors) {
     const {amount, transferToken} = transferDetails;
     if (!amount) {
       errors['amount'].push('Empty amount');
-      return false;
+      return;
     }
-    const isNumber = new NumberValidator().validate(transferDetails, errors);
-    if (!isNumber) {
-      return false;
+    if (!amount.match(isNumber)) {
+      errors['amount'].push(`Amount ${amount} is not a valid number`);
+      return;
     }
     const {gasPrice, gasToken} = transferDetails.gasParameters;
     const amountAsBigNumber = utils.parseEther(amount);
