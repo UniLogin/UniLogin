@@ -1,12 +1,5 @@
-import {utils} from 'ethers';
-import {ContractJSON, KeyPair, SignedMessage} from '@universal-login/commons';
+import {SignedMessage} from '@universal-login/commons';
 import {WalletContractInterface} from './interfaces';
-
-export type EnsDomainData = {
-  ensAddress: string;
-  registrarAddress: string;
-  resolverAddress: string;
-};
 
 export const encodeInitializeWithENSData = (args: string[]) => WalletContractInterface.functions.initializeWithENS.encode(args);
 

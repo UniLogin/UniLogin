@@ -1,4 +1,4 @@
-export {encodeInitializeWithENSData, encodeInitializeData, encodeDataForExecuteSigned, EnsDomainData} from './encode';
+export {encodeInitializeWithENSData, encodeInitializeData, encodeDataForExecuteSigned} from './encode';
 export {deployFactory} from './deployFactory';
 export {deployWalletContract} from './deployMaster';
 export {calculateBaseGas} from './estimateGas';

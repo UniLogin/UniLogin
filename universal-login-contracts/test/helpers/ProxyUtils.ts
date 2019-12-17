@@ -1,6 +1,7 @@
 import {utils} from 'ethers';
 import {KeyPair} from '@universal-login/commons';
-import {EnsDomainData, encodeInitializeWithENSData} from '../../lib';
+import {encodeInitializeWithENSData} from '../../lib';
+import {EnsDomainData} from './FutureDeployment';
 
 export function createProxyDeployWithENSArgs(keyPair: KeyPair, ensDomainData: EnsDomainData, walletContractAddress: string, gasPrice: string, gasToken: string, name = 'name') {
   const walletArgs = setupInitializeWithENSArgs({keyPair, ensDomainData, name, gasPrice, gasToken});
