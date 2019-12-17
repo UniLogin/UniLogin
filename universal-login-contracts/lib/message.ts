@@ -1,6 +1,5 @@
 import {utils} from 'ethers';
-import {AddressZero} from 'ethers/constants';
-import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, NetworkVersion, WalletVersion, OperationType} from '@universal-login/commons';
+import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature, NetworkVersion, WalletVersion} from '@universal-login/commons';
 import {calculateSafeTxGas, calculateBaseGas} from './estimateGas';
 
 export const messageToSignedMessage = (message: Partial<Message>, privateKey: string, networkVersion: NetworkVersion, walletVersion: WalletVersion): SignedMessage => {
