@@ -71,7 +71,7 @@ export {TokensValueConverter} from './core/services/TokensValueConverter';
 export {http, HttpFunction} from './integration/http/http';
 export {getBalanceOf} from './core/utils/getBalanceOf';
 export {convertTenthGweiToWei} from './core/utils/conversion';
-export {GasComputation, GAS_FIXED, NetworkVersion} from './core/utils/messages/computeGasData';
+export {GasDataComputation, NetworkVersion} from './core/utils/messages/computeGasData';
 export {getEnumKeys} from './core/utils/getEnumsKeys';
 export {stringToEnumKey} from './core/utils/stringToEnumKey';
 export {IPGeolocationApiConfig} from './core/models/IPGeolocationApiConfig';
@@ -80,3 +80,4 @@ export {asHexString, asDeploymentHash} from './core/utils/sanitizers/asHexString
 export {asExactly} from './core/utils/sanitizers/asExactly';
 export {WALLET_MASTER_VERSIONS, WalletVersion} from './core/constants/walletMasterVersions';
 export {fetchHardforkVersion} from './integration/ethereum/fetchHardforkVersion';
+export {GAS_FIXED} from './core/constants/gas';

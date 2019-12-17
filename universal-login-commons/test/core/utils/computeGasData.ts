@@ -1,9 +1,9 @@
 import {expect} from 'chai';
-import {GasComputation} from '../../../lib/core/utils/messages/computeGasData';
+import {GasDataComputation} from '../../../lib/core/utils/messages/computeGasData';
 
-describe('UNIT: GasComputation', async () => {
+describe('UNIT: GasDataComputation', async () => {
   describe('before Istanbul', () => {
-    const gasComputation = new GasComputation('constantinople');
+    const gasComputation = new GasDataComputation('constantinople');
 
     it('0x', async () => {
       const data = '0x';
@@ -45,7 +45,7 @@ describe('UNIT: GasComputation', async () => {
   });
 
   describe('post Istanbul', async () => {
-    const gasComputation = new GasComputation('istanbul');
+    const gasComputation = new GasDataComputation('istanbul');
     const itComputesCostForData = (data: string, expectedResult: number) =>
       it(`${data} costs ${expectedResult}`, async () => {
         expect(gasComputation.computeGasData(data)).to.equal(expectedResult);
