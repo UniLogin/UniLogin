@@ -98,7 +98,7 @@ export class ULWeb3Provider implements Provider {
         }
         break;
       default:
-        return this.provider.send(payload, callback as any);
+        return this.provider.send(payload, callback);
     }
   }
 
