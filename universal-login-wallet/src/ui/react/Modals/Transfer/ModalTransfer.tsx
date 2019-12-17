@@ -2,7 +2,7 @@ import {join} from 'path';
 import React, {useState} from 'react';
 import {useHistory, Switch} from 'react-router';
 import {Route} from 'react-router-dom';
-import {TransferDetails, ETHER_NATIVE_TOKEN, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
+import {TransferDetails, ETHER_NATIVE_TOKEN, TokenDetailsWithBalance} from '@universal-login/commons';
 import {TransferService} from '@universal-login/sdk';
 import {ModalTransfer as Transfer, WaitingForTransaction, useAsyncEffect, ErrorMessage} from '@universal-login/react';
 import {useServices} from '../../../hooks';
@@ -25,7 +25,6 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
   const selectedToken = deployedWallet.sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken);
 
   useAsyncEffect(() => deployedWallet.sdk.subscribeToBalances(deployedWallet.contractAddress, setTokenDetailsWithBalance), []);
-  const balance = getBalanceOf(selectedToken.symbol, tokenDetailsWithBalance);
 
   const transferService = new TransferService(deployedWallet);
   const onGenerateClick = async () => {
@@ -57,7 +56,6 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
             tokenDetailsWithBalance={tokenDetailsWithBalance}
             tokenDetails={selectedToken}
             onSendClick={onGenerateClick}
-            getMaxAmount={() => transferService.getMaxAmount(transferDetails.gasParameters, balance)}
             transferClassName="jarvis-styles"
           />
         </ModalWrapperClosable>

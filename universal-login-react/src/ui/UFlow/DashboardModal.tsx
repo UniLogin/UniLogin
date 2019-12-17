@@ -1,6 +1,6 @@
 import {TransferService, WalletService} from '@universal-login/sdk';
 import React, {useState} from 'react';
-import {TransferDetails, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
+import {TransferDetails, TokenDetailsWithBalance} from '@universal-login/commons';
 import {Route, Switch} from 'react-router';
 import {TopUp} from '../TopUp/TopUp';
 import {Devices} from './Devices/Devices';
@@ -29,7 +29,6 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
   useAsyncEffect(() => deployedWallet.sdk.subscribeToBalances(deployedWallet.contractAddress, setTokenDetailsWithBalance), []);
-  const balance = getBalanceOf(selectedToken.symbol, tokenDetailsWithBalance);
 
   const notice = sdk.getNotice();
 
@@ -90,7 +89,6 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
                   updateTransferDetailsWith={updateTransferDetailsWith}
                   tokenDetailsWithBalance={tokenDetailsWithBalance}
                   onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
-                  getMaxAmount={() => transferService.getMaxAmount(transferDetails.gasParameters, balance)}
                 />
               </SubDialogWrapper>
             )}
