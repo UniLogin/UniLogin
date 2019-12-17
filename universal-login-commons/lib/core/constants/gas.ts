@@ -29,5 +29,5 @@ export const EMPTY_GAS_OPTION = {
 
 export const ZERO_BYTE_GAS_COST = 4;
 export const NON_ZERO_BYTE_GAS_COST = 68;
-export const NEW_NON_ZERO_BYTE_GAS_COST = 16;
+export const ISTANBUL_NON_ZERO_BYTE_GAS_COST = 16;
 export const GAS_FIXED = '50000';

@@ -1,6 +1,6 @@
 import {ensure} from '../errors/heplers';
 import {isProperHexString} from '../hexStrings';
-import {NEW_NON_ZERO_BYTE_GAS_COST, NON_ZERO_BYTE_GAS_COST, ZERO_BYTE_GAS_COST} from '../../constants/gas';
+import {ISTANBUL_NON_ZERO_BYTE_GAS_COST, NON_ZERO_BYTE_GAS_COST, ZERO_BYTE_GAS_COST} from '../../constants/gas';
 
 export type NetworkVersion = 'istanbul' | 'constantinople';
 
@@ -9,7 +9,7 @@ export class GasDataComputation {
   }
 
   private getNonZeroByteCost() {
-    return this.chainVersion === 'istanbul' ? NEW_NON_ZERO_BYTE_GAS_COST : NON_ZERO_BYTE_GAS_COST;
+    return this.chainVersion === 'istanbul' ? ISTANBUL_NON_ZERO_BYTE_GAS_COST : NON_ZERO_BYTE_GAS_COST;
   }
 
   private gasCostFor(byte: string) {
