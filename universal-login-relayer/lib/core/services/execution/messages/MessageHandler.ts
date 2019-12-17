@@ -4,7 +4,7 @@ import PendingMessages from './PendingMessages';
 import IMessageRepository from '../../../models/messages/IMessagesRepository';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
 import {MessageStatusService} from './MessageStatusService';
-import {MessageHandlerValidator} from '../../validators/MessageExecutionValidator';
+import {MessageHandlerValidator} from '../../validators/MessageHandlerValidator';
 
 class MessageHandler {
   private pendingMessages: PendingMessages;

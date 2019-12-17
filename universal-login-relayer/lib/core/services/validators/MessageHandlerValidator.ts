@@ -1,6 +1,6 @@
 import {Wallet} from 'ethers';
-import {GasComputation} from '../../services/GasComputation';
-import {ComposeValidator} from '../../../core/services/validators/ComposeValidator';
+import {GasComputation} from '../GasComputation';
+import {ComposeValidator} from './ComposeValidator';
 import {GasValidator} from './GasValidator';
 import {RefundReceiverValidator} from './RefundReceiverValidator';
 

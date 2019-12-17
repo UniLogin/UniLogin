@@ -40,7 +40,7 @@ import {MinedTransactionHandler} from '../../core/services/execution/MinedTransa
 import {httpsRedirect} from '../middlewares/httpsRedirect';
 import {GasComputation} from '../../core/services/GasComputation';
 import {BlockchainService} from '@universal-login/contracts';
-import {MessageHandlerValidator} from '../../core/services/validators/MessageExecutionValidator';
+import {MessageHandlerValidator} from '../../core/services/validators/MessageHandlerValidator';
 
 const defaultPort = '3311';
 
