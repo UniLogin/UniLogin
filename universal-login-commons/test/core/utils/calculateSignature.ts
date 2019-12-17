@@ -36,8 +36,8 @@ describe('Calculate signatures', () => {
     gasPrice: DEFAULT_GAS_PRICE,
     gasToken: ETHER_NATIVE_TOKEN.address,
     data: '0xbeef',
-    gasBase: '100000',
-    gasCall: '200000',
+    baseGas: '100000',
+    safeTxGas: '200000',
     nonce: 0,
     operationType: OperationType.call,
     refundReceiver: AddressZero,
@@ -49,6 +49,6 @@ describe('Calculate signatures', () => {
     const signature1 = calculateMessageSignature(privateKey1, message);
     const signature2 = calculateMessageSignature(privateKey2, message);
     const calculatedSignatures = calculateMessageSignatures([privateKey1, privateKey2], message);
-    expect(calculatedSignatures).to.eq(`0x${signature2.slice(2)}${signature1.slice(2)}`)
+    expect(calculatedSignatures).to.eq(`0x${signature2.slice(2)}${signature1.slice(2)}`);
   });
 });
