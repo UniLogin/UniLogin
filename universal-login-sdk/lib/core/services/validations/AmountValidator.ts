@@ -1,10 +1,9 @@
 import {utils} from 'ethers';
 import {DEFAULT_GAS_LIMIT, TransferDetails} from '@universal-login/commons';
 import {Validator, TransferErrors} from './Validator';
+import {NumberValidator} from './NumberValidator';
 
 const {formatEther} = utils;
-
-const isNumber = /^[0-9]+(\.[0-9]+)?$/;
 
 export class AmountValidator extends Validator<TransferDetails> {
   constructor(private readonly balance: string) {
@@ -17,8 +16,8 @@ export class AmountValidator extends Validator<TransferDetails> {
       errors['amount'].push('Empty amount');
       return false;
     }
-    if (!amount.match(isNumber)) {
-      errors['amount'].push(`Amount ${transferDetails.amount} is not a valid number`);
+    const isNumber = new NumberValidator().validate(transferDetails, errors);
+    if (!isNumber) {
       return false;
     }
     const {gasPrice, gasToken} = transferDetails.gasParameters;
@@ -29,7 +28,7 @@ export class AmountValidator extends Validator<TransferDetails> {
     if (amountAsBigNumber.gt(balanceAsBigNumber)) {
       errors['amount'].push(`Insufficient funds. Sending ${formatEther(amountAsBigNumber)} eth, got only ${formatEther(balanceAsBigNumber)} eth`);
     } else if (gasToken === transferToken && amountWithFee.gt(balanceAsBigNumber)) {
-      errors['amount'].push(`Insufficient funds. Sending ${formatEther(amountAsBigNumber)} eth, got only ${formatEther(balanceAsBigNumber)} eth + ${formatEther(gasCostInWei)} eth fee`);
+      errors['amount'].push(`Insufficient funds. Sending ${formatEther(amountAsBigNumber)} eth + ${formatEther(gasCostInWei)} eth fee, got only ${formatEther(balanceAsBigNumber)} eth`);
     }
   }
 }
