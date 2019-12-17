@@ -6,7 +6,8 @@ import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} 
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, KeyPair, ONE_SIGNATURE_GAS_COST} from '@universal-login/commons';
 import {getExecutionArgs, estimateBaseGasForNoSignature} from '../../helpers/argumentsEncoding';
-import {calculatePaymentOptions, calculateBaseGas} from '../../../lib/estimateGas';
+import {calculateBaseGas} from '../../../lib/estimateGas';
+import {calculatePaymentOptions} from '../../helpers/calculations';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

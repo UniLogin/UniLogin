@@ -9,7 +9,8 @@ import {getExecutionArgs, setupUpdateMessage, estimateBaseGasForNoSignature} fro
 import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
 import {encodeDataForExecuteSigned, messageToSignedMessage, emptyMessage, messageToUnsignedMessage} from '../../../lib/index';
-import {calculateFinalGasLimit, calculatePaymentOptions, calculateBaseGas} from '../../../lib/estimateGas';
+import {calculateBaseGas} from '../../../lib/estimateGas';
+import {calculateFinalGasLimit, calculatePaymentOptions} from '../../helpers/calculations';
 import {UpgradedWalletInterface, WalletContractInterface} from '../../../lib/interfaces';
 
 chai.use(chaiAsPromised);

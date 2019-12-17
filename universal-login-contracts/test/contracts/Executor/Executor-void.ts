@@ -4,7 +4,7 @@ import Executor from '../../../build/TestableExecutor.json';
 import {constants, Contract} from 'ethers';
 import {transferMessage} from '../../helpers/ExampleMessages';
 import {getExecutionArgs, estimateBaseGasForNoSignature} from '../../helpers/argumentsEncoding';
-import {calculateFinalGasLimit} from '../../../lib/estimateGas';
+import {calculateFinalGasLimit} from '../../helpers/calculations';
 
 describe('Void Executor', () => {
   let provider;
