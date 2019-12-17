@@ -6,7 +6,7 @@ import {encodeDataForExecuteSigned} from '@universal-login/contracts';
 import {messageToTransaction, GAS_LIMIT_MARGIN} from '../../../lib/core/utils/messages/serialisation';
 
 describe('UNIT: MessageToTransaction', () => {
-  const gasCall = utils.bigNumberify(23000);
+  const safeTxGas = utils.bigNumberify(23000);
   const gasPrice = utils.bigNumberify(9000000);
   const contractAddress = '0x0000000000000000000000000000000000000002';
   const baseGas = utils.bigNumberify(120000);
@@ -19,7 +19,7 @@ describe('UNIT: MessageToTransaction', () => {
       data: '0x0',
       nonce: 0,
       gasToken: '0x0000000000000000000000000000000000000000',
-      gasCall,
+      safeTxGas,
       gasPrice,
       baseGas,
       operationType: OperationType.call,
@@ -29,7 +29,7 @@ describe('UNIT: MessageToTransaction', () => {
 
     const expectedTransaction = {
       gasPrice,
-      gasLimit: gasCall.add(baseGas).add(GAS_LIMIT_MARGIN),
+      gasLimit: safeTxGas.add(baseGas).add(GAS_LIMIT_MARGIN),
       to: contractAddress,
       value: 0,
       data: encodeDataForExecuteSigned(transferMessage),

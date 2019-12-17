@@ -35,7 +35,7 @@ describe('Message', () => {
       operationType: OperationType.call,
       refundReceiver: AddressZero,
       baseGas: bigNumberify(58976),
-      gasCall: bigNumberify(41024),
+      safeTxGas: bigNumberify(41024),
       signature: '0x21e8b320262f1b6bf8c99997a632a86bdc0fe6424ccea8a4293766fc1c690cbd2f0dbd969bad91e9e400bc9707988fbee2adead8ba9ee0366c258b210eae61fd1c',
     };
     expect(actualMessage).to.deep.eq(expectedMessage);
@@ -56,7 +56,7 @@ describe('Message', () => {
       operationType: OperationType.call,
       refundReceiver: AddressZero,
       baseGas: bigNumberify(53152),
-      gasCall: bigNumberify(46848),
+      safeTxGas: bigNumberify(46848),
       signature: '0x26aaabf3c44e63238e88b3da0da13953dd4a111999b11252d45f75a18974f9665ef56d45a92d1340296241b746c8c4bb5ed511d1ee3e30d599311fdfffad27581c',
     };
     expect(actualMessage).to.deep.eq(expectedMessage);
@@ -73,7 +73,7 @@ describe('Message', () => {
       gasToken: ETHER_NATIVE_TOKEN.address,
       data: '0xbeef',
       baseGas: bigNumberify(58976),
-      gasCall: bigNumberify(100000 - 58976),
+      safeTxGas: bigNumberify(100000 - 58976),
       nonce: 0,
       operationType: OperationType.call,
       refundReceiver: AddressZero,
@@ -94,7 +94,7 @@ describe('Message', () => {
       gasToken: ETHER_NATIVE_TOKEN.address,
       data: '0xbeef',
       baseGas: bigNumberify(53152),
-      gasCall: bigNumberify(100000 - 53152),
+      safeTxGas: bigNumberify(100000 - 53152),
       nonce: 0,
       operationType: OperationType.call,
       refundReceiver: AddressZero,
@@ -113,7 +113,7 @@ describe('Message', () => {
       operationType: OperationType.call,
       refundReceiver: AddressZero,
       gasPrice: DEFAULT_GAS_PRICE,
-      gasCall: DEFAULT_GAS_LIMIT,
+      safeTxGas: DEFAULT_GAS_LIMIT,
       baseGas: '0',
       gasToken: '0x0000000000000000000000000000000000000000',
     };
@@ -127,7 +127,7 @@ describe('Message', () => {
       operationType: OperationType.call,
       refundReceiver: AddressZero,
       gasPrice: transferMessage.gasPrice,
-      gasCall: transferMessage.gasCall,
+      safeTxGas: transferMessage.safeTxGas,
       baseGas: '0',
       gasToken: '0x0000000000000000000000000000000000000000',
       signature: '0x6da7c3dfa9aaa0f07b7be6f7338de2a5cf6719ee523f40560f79ace402a9008f79cd86bd59709d5947e0228fe596e9188fc508889984aabebe504d6b8a9a5cdd1c',

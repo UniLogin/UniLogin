@@ -20,7 +20,7 @@ const expectedMessage = {
   nonce: '0',
   operationType: OperationType.call,
   gasPrice: DEFAULT_GAS_PRICE,
-  gasCall: DEFAULT_GAS_LIMIT,
+  safeTxGas: DEFAULT_GAS_LIMIT,
   baseGas: '0',
   gasToken: AddressZero,
   refundReceiver: AddressZero,

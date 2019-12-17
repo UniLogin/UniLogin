@@ -55,12 +55,12 @@ describe('INT: MultiSignatureExecute', async () => {
     const signedMessage0 = getTestSignedMessage(message0, wallet.privateKey);
     await messageHandler.handleMessage(signedMessage0);
 
-    const gasCall = 1;
+    const safeTxGas = 1;
     const baseGas = 7696;
-    const gasLimit = utils.bigNumberify(baseGas + gasCall).add(GAS_FIXED);
+    const gasLimit = utils.bigNumberify(baseGas + safeTxGas).add(GAS_FIXED);
     const message1 = {...msg, gasLimit};
     const signedMessage1 = getTestSignedMessage(message1, actionKey);
-    await expect(messageHandler.handleMessage(signedMessage1)).to.be.rejectedWith(`Insufficient Gas. Got gasCall 1 but should greater than ${GAS_BASE}`);
+    await expect(messageHandler.handleMessage(signedMessage1)).to.be.rejectedWith(`Insufficient Gas. Got safeTxGas 1 but should greater than ${GAS_BASE}`);
   });
 
   describe('Transfer', async () => {

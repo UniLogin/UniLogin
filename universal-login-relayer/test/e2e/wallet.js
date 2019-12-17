@@ -90,7 +90,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       operationType: OperationType.call,
       refundReceiver: AddressZero,
       gasPrice: '1000000000',
-      gasCall: '1000000',
+      safeTxGas: '1000000',
       baseGas: '0',
       gasToken: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
       from: '0xd9822CF2a4C3AccD2AF175A5dF0376D46Dcb848d',

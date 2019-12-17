@@ -17,7 +17,7 @@ export class SufficientBalanceValidator implements IMessageValidator {
   async validate(signedMessage: SignedMessage) {
     const paymentOptions: Omit<PaymentOptions, 'refundReceiver'> = {
       gasToken: signedMessage.gasToken,
-      gasLimit: utils.bigNumberify(signedMessage.gasCall).add(signedMessage.baseGas),
+      gasLimit: utils.bigNumberify(signedMessage.safeTxGas).add(signedMessage.baseGas),
       gasPrice: signedMessage.gasPrice,
     };
     ensure(await hasEnoughToken(paymentOptions, signedMessage.from, this.balanceChecker), NotEnoughTokens);

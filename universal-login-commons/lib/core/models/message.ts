@@ -36,7 +36,7 @@ export type ExecutionOptions = {
 export type SdkExecutionOptions = ExecutionOptions & Required<Pick<ExecutionOptions, 'gasLimit'>>;
 
 export type SignedMessagePaymentOptions = {
-  gasCall: utils.BigNumberish;
+  safeTxGas: utils.BigNumberish;
   baseGas: utils.BigNumberish;
   gasPrice: utils.BigNumberish;
   gasToken: string;
