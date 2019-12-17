@@ -1,6 +1,5 @@
 import {TransferService, WalletService, Execution} from '@universal-login/sdk';
 import React, {useState} from 'react';
-import {TokenDetailsWithBalance} from '@universal-login/commons';
 import {Route, Switch, useHistory} from 'react-router';
 import {TopUp} from '../TopUp/TopUp';
 import {Devices} from './Devices/Devices';
@@ -11,7 +10,6 @@ import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
 import {Transfer} from '../Transfer/Transfer';
-import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface DashboardModalProps {
   walletService: WalletService;
@@ -19,19 +17,15 @@ export interface DashboardModalProps {
 }
 
 export const DashboardModal = ({walletService, onClose}: DashboardModalProps) => {
+  const history = useHistory();
+  const [transactionHash, setTransactionHash] = useState('');
+
   const deployedWallet = walletService.getDeployedWallet();
   const {sdk, name} = deployedWallet;
   const relayerConfig = sdk.getRelayerConfig();
-
-  const [transactionHash, setTransactionHash] = useState('');
-  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
-
-  useAsyncEffect(() => deployedWallet.sdk.subscribeToBalances(deployedWallet.contractAddress, setTokenDetailsWithBalance), []);
-
   const notice = sdk.getNotice();
 
   const transferService = new TransferService(deployedWallet);
-  const history = useHistory();
 
   const onTransferTriggered = async (transfer: () => Promise<Execution>) => {
     history.replace('/dashboard/waitingForTransfer');
@@ -78,7 +72,6 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
               <SubDialogWrapper message={notice} ensName={name}>
                 <Transfer
                   transferService={transferService}
-                  tokenDetailsWithBalance={tokenDetailsWithBalance}
                   onTransferTriggered={onTransferTriggered}
                 />
               </SubDialogWrapper>

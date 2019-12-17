@@ -9,17 +9,20 @@ import {GasPrice} from '../commons/GasPrice';
 import {TransferAmount} from './Amount/TransferAmount';
 import {TransferRecipient} from './Recipient/TransferRecipient';
 import {TransferDropdown} from './Amount/TransferDropdown';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface TransferProps {
   transferService: TransferService;
-  tokenDetailsWithBalance: TokenDetailsWithBalance[];
   onTransferTriggered: (transfer: () => Promise<Execution>) => Promise<void>;
   transferClassName?: string;
 }
 
-export const Transfer = ({transferService, tokenDetailsWithBalance, onTransferTriggered, transferClassName}: TransferProps) => {
+export const Transfer = ({transferService, onTransferTriggered, transferClassName}: TransferProps) => {
   const [transferDetails, setTransferDetails] = useState({transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails);
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
+  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
+
+  useAsyncEffect(() => transferService.subscribeToBalances(setTokenDetailsWithBalance), []);
 
   const selectedToken = transferService.getTokenDetails(transferDetails.transferToken);
   const balance = getBalanceOf(selectedToken.symbol, tokenDetailsWithBalance);

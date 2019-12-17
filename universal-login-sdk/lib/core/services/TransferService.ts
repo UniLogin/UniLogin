@@ -8,6 +8,7 @@ import {getTargetAddress} from '../utils/getTargetAddress';
 import {AmountValidator} from './validations/AmountValidator';
 import {RecipientValidator} from './validations/RecipientValidator';
 import {ChainValidator} from './validations/ChainValidator';
+import {OnBalanceChange} from '../observers/BalanceObserver';
 
 export type TransferErrors = Record<string, string[]>;
 
@@ -51,5 +52,9 @@ export class TransferService {
 
   getTokenDetails(tokenAddress: string) {
     return this.deployedWallet.sdk.tokensDetailsStore.getTokenByAddress(tokenAddress);
+  }
+
+  subscribeToBalances(callback: OnBalanceChange) {
+    return this.deployedWallet.sdk.subscribeToBalances(this.deployedWallet.contractAddress, callback);
   }
 }

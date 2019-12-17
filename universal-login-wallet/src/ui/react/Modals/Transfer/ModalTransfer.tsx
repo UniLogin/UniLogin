@@ -1,10 +1,9 @@
 import {join} from 'path';
-import React, {useState} from 'react';
+import React from 'react';
 import {useHistory, Switch} from 'react-router';
 import {Route} from 'react-router-dom';
-import {TokenDetailsWithBalance} from '@universal-login/commons';
 import {TransferService, Execution} from '@universal-login/sdk';
-import {ModalTransfer as Transfer, WaitingForTransaction, useAsyncEffect, ErrorMessage} from '@universal-login/react';
+import {ModalTransfer as Transfer, WaitingForTransaction, ErrorMessage} from '@universal-login/react';
 import {useServices} from '../../../hooks';
 import ModalWrapperClosable from '../ModalWrapperClosable';
 
@@ -14,13 +13,9 @@ export interface ModalTransferProps {
 
 const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
   const history = useHistory();
-
-  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
-
   const {walletService} = useServices();
-  const deployedWallet = walletService.getDeployedWallet();
 
-  useAsyncEffect(() => deployedWallet.sdk.subscribeToBalances(deployedWallet.contractAddress, setTokenDetailsWithBalance), []);
+  const deployedWallet = walletService.getDeployedWallet();
 
   const transferService = new TransferService(deployedWallet);
 
@@ -43,7 +38,6 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
         <ModalWrapperClosable hideModal={() => history.push('/wallet')}>
           <Transfer
             transferService={transferService}
-            tokenDetailsWithBalance={tokenDetailsWithBalance}
             onTransferTriggered={onTransferTriggered}
             transferClassName="jarvis-styles"
           />
