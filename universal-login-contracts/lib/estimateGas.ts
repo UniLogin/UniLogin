@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {createFullHexString, ensure, SignedMessagePaymentOptions, Message, GasComputation, GAS_FIXED, NetworkVersion, WalletVersion} from '@universal-login/commons';
+import {createFullHexString, ensure, SignedMessagePaymentOptions, Message, GasDataComputation, GAS_FIXED, NetworkVersion, WalletVersion} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from './encode';
 
 export const calculateSafeTxGas = (gasLimit: utils.BigNumberish, baseGas: utils.BigNumberish) => {
@@ -21,6 +21,6 @@ export const calculateBaseGas = (message: Omit<Message, 'gasLimit'>, networkVers
     baseGas: createFullHexString(3),
     signature: createFullHexString(65),
   });
-  const gasData = new GasComputation(networkVersion).computeGasData(encodedMessage);
+  const gasData = new GasDataComputation(networkVersion).computeGasData(encodedMessage);
   return walletVersion === 'beta2' ? utils.bigNumberify(gasData).add(GAS_FIXED) : gasData;
 };

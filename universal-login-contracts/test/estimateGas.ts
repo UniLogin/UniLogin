@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {createFullHexString, GAS_FIXED, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, GasComputation, OperationType} from '@universal-login/commons';
+import {createFullHexString, GAS_FIXED, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, GasDataComputation, OperationType} from '@universal-login/commons';
 import {calculateSafeTxGas, calculateBaseGas} from '../lib/estimateGas';
 import {encodeDataForExecuteSigned} from '../lib';
 
@@ -42,7 +42,7 @@ describe('UNIT: estimateGas', () => {
     const encodedMessage = encodeDataForExecuteSigned({...transferMessage, safeTxGas: createFullHexString(3), baseGas: createFullHexString(3), signature: createFullHexString(65)});
 
     describe('constantinople', () => {
-      const gasComputation = new GasComputation('constantinople');
+      const gasComputation = new GasDataComputation('constantinople');
 
       it('beta1 version and constantinople network', () => {
         const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));
@@ -58,7 +58,7 @@ describe('UNIT: estimateGas', () => {
     });
 
     describe('istanbul', () => {
-      const gasComputation = new GasComputation('istanbul');
+      const gasComputation = new GasDataComputation('istanbul');
 
       it('beta1 version and constantinople network', () => {
         const gasData = utils.bigNumberify(gasComputation.computeGasData(encodedMessage));

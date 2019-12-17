@@ -8,7 +8,7 @@ export const GAS_FIXED = '50000';
 
 export type NetworkVersion = 'istanbul' | 'constantinople';
 
-export class GasComputation {
+export class GasDataComputation {
   constructor(private chainVersion: NetworkVersion) {
   }
 
