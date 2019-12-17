@@ -12,12 +12,8 @@ import {
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import ENS from '@universal-login/contracts/build/ENS.json';
 import chai from 'chai';
-import {
-  deployFactory,
-  deployWalletContract,
-  encodeInitializeWithENSData,
-  getFutureAddress,
-} from '@universal-login/contracts';
+import {deployFactory, deployWalletContract, encodeInitializeWithENSData} from '@universal-login/contracts';
+import {getFutureAddress} from '@universal-login/contracts/testutils';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
 import {WalletContractInterface} from '@universal-login/contracts';
 
