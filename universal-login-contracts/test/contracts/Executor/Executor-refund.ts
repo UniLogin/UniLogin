@@ -38,12 +38,12 @@ describe('CONTRACT: Executor - refund', async () => {
     const message = {...transferMessage, gasPrice: 1, from: walletContract.address, gasLimit: DEFAULT_GAS_LIMIT};
     const signedMessage = messageToSignedMessage(message, managementKeyPair.privateKey, networkVersion, walletVersion);
     const executeData = encodeDataForExecuteSigned(signedMessage);
-    const gasLimit = calculateFinalGasLimit(signedMessage.gasCall, signedMessage.gasBase);
+    const gasLimit = calculateFinalGasLimit(signedMessage.safeTxGas, signedMessage.baseGas);
     const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit});
     const receipt = await provider.getTransactionReceipt(transaction.hash as string);
 
     expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(utils.parseEther('1'));
-    const expectedBalance = initialBalance.sub(receipt.gasUsed!).add(utils.bigNumberify(signedMessage.gasBase));
+    const expectedBalance = initialBalance.sub(receipt.gasUsed!).add(utils.bigNumberify(signedMessage.baseGas));
     expect(await wallet.getBalance()).to.be.above(expectedBalance);
   });
 
@@ -67,7 +67,7 @@ describe('CONTRACT: Executor - refund', async () => {
     it('ETHER_REFUND_CHARGE is enough for ether refund', async () => {
       const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: ETHER_NATIVE_TOKEN.address}, managementKeyPair.privateKey, networkVersion, walletVersion);
       const executeData = encodeDataForExecuteSigned(signedMessage);
-      const gasLimit = calculateFinalGasLimit(signedMessage.gasCall, signedMessage.gasBase);
+      const gasLimit = calculateFinalGasLimit(signedMessage.safeTxGas, signedMessage.baseGas);
 
       const transaction = await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit});
       const receipt = await provider.getTransactionReceipt(transaction.hash as string);
@@ -75,8 +75,8 @@ describe('CONTRACT: Executor - refund', async () => {
       const balanceAfter = await wallet.getBalance();
       const expectedBalance = initialBalance
         .sub(receipt.gasUsed!)
-        .add(utils.bigNumberify(signedMessage.gasBase))
-        .add(signedMessage.gasCall);
+        .add(utils.bigNumberify(signedMessage.baseGas))
+        .add(signedMessage.safeTxGas);
       expect(balanceAfter).to.be.above(expectedBalance);
     });
 
@@ -84,14 +84,14 @@ describe('CONTRACT: Executor - refund', async () => {
       const initialTokenBalance = await mockToken.balanceOf(wallet.address);
       const signedMessage = messageToSignedMessage({...infiniteCallMessage, gasToken: mockToken.address}, managementKeyPair.privateKey, networkVersion, walletVersion);
       const executeData = encodeDataForExecuteSigned(signedMessage);
-      const gasLimit = calculateFinalGasLimit(signedMessage.gasCall, signedMessage.gasBase);
+      const gasLimit = calculateFinalGasLimit(signedMessage.safeTxGas, signedMessage.baseGas);
 
       await wallet.sendTransaction({to: walletContract.address, data: executeData, gasPrice: 1, gasLimit});
 
       const balanceAfter = await mockToken.balanceOf(wallet.address);
       const expectedBalance = initialTokenBalance
-        .add(signedMessage.gasBase)
-        .add(signedMessage.gasCall);
+        .add(signedMessage.baseGas)
+        .add(signedMessage.safeTxGas);
       expect(balanceAfter).to.be.above(expectedBalance);
     });
   });

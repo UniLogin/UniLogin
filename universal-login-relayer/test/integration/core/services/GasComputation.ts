@@ -32,7 +32,7 @@ describe('GasComputation', () => {
       operationType: OperationType.call,
       refundReceiver: AddressZero,
     };
-    const computedGas = await gasComputation.calculateGasBase(message);
+    const computedGas = await gasComputation.calculateBaseGas(message);
     expect(computedGas).to.eq(58976);
   });
 });

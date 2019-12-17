@@ -8,13 +8,13 @@ export class GasValidator implements IMessageValidator {
 
   async validate(signedMessage: SignedMessage) {
     const {signature, ...unsignedMessage} = signedMessage;
-    const expectedGasBase = utils.bigNumberify(await this.gasComputation.calculateGasBase(unsignedMessage));
-    const actualGasBase = Number(signedMessage.gasBase);
-    ensure(expectedGasBase.eq(actualGasBase), InsufficientGas, `Got GasBase ${actualGasBase} but should be ${expectedGasBase}`);
-    ensure(GAS_BASE < signedMessage.gasCall, InsufficientGas, `Got gasCall ${signedMessage.gasCall} but should greater than ${GAS_BASE}`);
+    const expectedBaseGas = utils.bigNumberify(await this.gasComputation.calculateBaseGas(unsignedMessage));
+    const actualBaseGas = Number(signedMessage.baseGas);
+    ensure(expectedBaseGas.eq(actualBaseGas), InsufficientGas, `Got baseGas ${actualBaseGas} but should be ${expectedBaseGas}`);
+    ensure(GAS_BASE < signedMessage.safeTxGas, InsufficientGas, `Got safeTxGas ${signedMessage.safeTxGas} but should greater than ${GAS_BASE}`);
 
-    const gasCall = Number(signedMessage.gasCall);
-    const totalGasLimit = gasCall + actualGasBase;
+    const safeTxGas = Number(signedMessage.safeTxGas);
+    const totalGasLimit = safeTxGas + actualBaseGas;
     ensure(totalGasLimit <= this.MAX_GAS_LIMIT, GasLimitTooHigh, `Got ${totalGasLimit} but should be less than ${this.MAX_GAS_LIMIT}`);
   }
 }
