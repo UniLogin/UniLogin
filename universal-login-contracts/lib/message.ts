@@ -26,18 +26,6 @@ export const messageToUnsignedMessage = (message: Partial<Message>, networkVersi
   return {...messageWithoutGasEstimates, baseGas, safeTxGas};
 };
 
-export const emptyMessage = {
-  to: '',
-  value: utils.parseEther('0.0'),
-  data: EMPTY_DATA,
-  nonce: 0,
-  operationType: OperationType.call,
-  refundReceiver: AddressZero,
-  gasPrice: utils.bigNumberify(DEFAULT_GAS_PRICE),
-  gasLimit: utils.bigNumberify(DEFAULT_GAS_LIMIT),
-  gasToken: AddressZero,
-};
-
 export const unsignedMessageToSignedMessage = (unsignedMessage: UnsignedMessage, privateKey: string) => {
   const signature = calculateMessageSignature(privateKey, unsignedMessage);
   return {...unsignedMessage, signature};
