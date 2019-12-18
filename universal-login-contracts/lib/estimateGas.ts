@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {createFullHexString, ensure, Message, GasDataComputation, GAS_FIXED, NetworkVersion, WalletVersion} from '@universal-login/commons';
+import {createFullHexString, ensure, Message, GasDataComputation, GAS_FIXED, NetworkVersion, WalletVersion, CONSTANT_EXECUTION_COSTS, SIGNATURE_CHECK_COST, ZERO_NONCE_COST} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from './encode';
 
 export const calculateSafeTxGas = (gasLimit: utils.BigNumberish, baseGas: utils.BigNumberish) => {
@@ -16,5 +16,14 @@ export const calculateBaseGas = (message: Omit<Message, 'gasLimit'>, networkVers
     signature: createFullHexString(65),
   });
   const gasData = new GasDataComputation(networkVersion).computeGasData(encodedMessage);
-  return walletVersion === 'beta2' ? utils.bigNumberify(gasData).add(GAS_FIXED) : gasData;
+  switch (walletVersion) {
+    case 'beta1':
+      return gasData;
+    case 'beta2':
+      return utils.bigNumberify(gasData).add(GAS_FIXED);
+    case 'beta3':
+      return utils.bigNumberify(gasData).add(ZERO_NONCE_COST).add(SIGNATURE_CHECK_COST).add(CONSTANT_EXECUTION_COSTS);
+    default:
+      throw TypeError(`Invalid wallet version: ${walletVersion}`);
+  }
 };
