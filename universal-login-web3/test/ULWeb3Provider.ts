@@ -1,4 +1,5 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
 import Web3 from 'web3';
 import {utils, Wallet} from 'ethers';
@@ -8,6 +9,8 @@ import {createWallet} from '@universal-login/sdk/testutils';
 import {OnboardingProps} from '../lib/ui/react/Onboarding';
 import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWeb3';
 import {ULWeb3Provider} from '../lib';
+
+chai.use(chaiAsPromised);
 
 describe('ULWeb3Provider', () => {
   let relayer: RelayerUnderTest;
@@ -122,12 +125,11 @@ describe('ULWeb3Provider', () => {
       expect(services.uiController.showOnboarding.get()).to.be.false;
     });
 
-    it('doesnt show the UI if wallet is already there', async () => {
+    it('throw error if wallet is already there', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
-      await ulProvider.create();
-      expect(services.uiController.showOnboarding.get()).to.be.false;
+      await expect(ulProvider.create()).to.be.rejectedWith('Wallet cannot be overridden');
     });
   });
 });

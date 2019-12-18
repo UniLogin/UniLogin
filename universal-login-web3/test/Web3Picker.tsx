@@ -8,12 +8,12 @@ import {Provider} from 'web3/providers';
 describe('UNIT: Web3Picker', () => {
   const sendSpy = sinon.spy();
   const sendReadSpy = sinon.spy();
+  const createStub = sinon.stub().returns({send: () => sendSpy()});
   const universalLoginProviderFactory: Web3ProviderFactory = {
     name: 'UniversalLogin',
     icon: 'UniversalLogin logo',
-    create: () => ({send: sendSpy}),
+    create: createStub,
   };
-  const createSpy = sinon.spy(universalLoginProviderFactory, 'create');
   const factories = [
     universalLoginProviderFactory,
   ];
@@ -37,7 +37,7 @@ describe('UNIT: Web3Picker', () => {
 
   it('Pick ul provider', () => {
     web3Picker.setProvider(universalLoginProviderFactory.name);
-    expect(createSpy.calledOnce).to.be.true;
+    expect(createStub.calledOnce).to.be.true;
     web3Strategy.send(jsonRpcReq, () => {});
     expect(sendSpy.calledOnce).to.be.true;
     expect(sendReadSpy.called).to.be.false;
@@ -51,13 +51,13 @@ describe('UNIT: Web3Picker', () => {
   it('Send read method should use readonlyProvider', () => {
     web3Strategy.send({...jsonRpcReq, method: 'eth_blockNumber'}, () => {});
     expect(sendReadSpy.calledOnce).to.be.true;
-    expect(createSpy.called).to.be.false;
+    expect(createStub.called).to.be.false;
     expect(sendSpy.called).to.be.false;
   });
 
   afterEach(() => {
-    createSpy.resetHistory();
-    sendSpy.resetHistory();
     sendReadSpy.resetHistory();
+    sendSpy.resetHistory();
+    createStub.resetHistory();
   });
 });
