@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import sinon from 'sinon';
 import Web3 from 'web3';
 import {utils, Wallet} from 'ethers';
 import {waitExpect} from '@universal-login/commons/testutils';
@@ -42,7 +43,6 @@ describe('ULWeb3Provider', () => {
     it('can send a simple eth transfer', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
-
       const {transactionHash} = await web3.eth.sendTransaction({
         to: Wallet.createRandom().address,
         value: utils.parseEther('0.005').toString(),
@@ -68,8 +68,12 @@ describe('ULWeb3Provider', () => {
   });
 
   describe('get accounts', () => {
-    it('returns empty array when wallet does not exist', async () => {
+    it('initialize onboarding when wallet does not exist', async () => {
+      const createSpy = sinon.spy(() => null);
+      sinon.replace(ulProvider, 'create', createSpy);
       expect(await web3.eth.getAccounts()).to.deep.eq([]);
+      expect(createSpy.calledOnce).to.be.true;
+      sinon.restore();
     });
 
     it('returns single address when wallet is connected', async () => {

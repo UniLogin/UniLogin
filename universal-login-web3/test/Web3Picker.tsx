@@ -7,35 +7,57 @@ import {Provider} from 'web3/providers';
 
 describe('UNIT: Web3Picker', () => {
   const sendSpy = sinon.spy();
+  const sendReadSpy = sinon.spy();
   const universalLoginProviderFactory: Web3ProviderFactory = {
     name: 'UniversalLogin',
     icon: 'UniversalLogin logo',
-    create: () => ({send: sendSpy()}),
+    create: () => ({send: sendSpy}),
   };
   const createSpy = sinon.spy(universalLoginProviderFactory, 'create');
   const factories = [
     universalLoginProviderFactory,
   ];
-  const web3Strategy = new Web3Strategy(factories, {} as Provider);
-  const web3Picker = new Web3Picker(web3Strategy, factories);
-  web3Picker.show = sinon.stub().returns({waitForPick: async () => {}});
-  web3Strategy.web3picker = web3Picker;
+
   const jsonRpcReq = {
     jsonrpc: 'jsonrpc',
-    method: 'GET',
+    method: 'eth_accounts',
     params: [],
     id: 1,
   };
 
+  let web3Strategy: Web3Strategy;
+  let web3Picker: Web3Picker;
+
+  beforeEach(() => {
+    web3Strategy = new Web3Strategy(factories, {send: () => sendReadSpy()} as Provider);
+    web3Picker = new Web3Picker(web3Strategy, factories);
+    web3Picker.show = sinon.stub().returns({waitForPick: async () => {}});
+    web3Strategy.web3picker = web3Picker;
+  });
+
   it('Pick ul provider', () => {
-    web3Strategy.send(jsonRpcReq, () => {});
     web3Picker.setProvider(universalLoginProviderFactory.name);
     expect(createSpy.calledOnce).to.be.true;
+    web3Strategy.send(jsonRpcReq, () => {});
     expect(sendSpy.calledOnce).to.be.true;
+    expect(sendReadSpy.called).to.be.false;
   });
 
   it('Pick not existed provider', () => {
     expect(() => web3Picker.setProvider('non-exist-name'))
       .throws('Invalid provider: non-exist-name');
+  });
+
+  it('Send read method should use readonlyProvider', () => {
+    web3Strategy.send({...jsonRpcReq, method: 'eth_blockNumber'}, () => {});
+    expect(sendReadSpy.calledOnce).to.be.true;
+    expect(createSpy.called).to.be.false;
+    expect(sendSpy.called).to.be.false;
+  });
+
+  afterEach(() => {
+    createSpy.resetHistory();
+    sendSpy.resetHistory();
+    sendReadSpy.resetHistory();
   });
 });

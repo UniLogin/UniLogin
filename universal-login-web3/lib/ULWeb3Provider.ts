@@ -56,7 +56,7 @@ export class ULWeb3Provider implements Provider {
     this.sdk = new UniversalLoginSDK(
       relayerUrl,
       new providers.Web3Provider(this.provider as any),
-      {applicationInfo},
+      applicationInfo && {applicationInfo},
     );
     const walletStorageService = new WalletStorageService(storageService);
     this.walletService = new WalletService(this.sdk, walletFromBrain, walletStorageService);
@@ -138,6 +138,7 @@ export class ULWeb3Provider implements Provider {
     await this.ensureWalletIsDeployed();
 
     const execution = await this.walletService.getDeployedWallet().execute(tx);
+
     const succeeded = await execution.waitForTransactionHash();
     if (!succeeded.transactionHash) {
       throw new Error('Expected tx hash to not be null');
@@ -155,7 +156,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async create() {
-    await this.walletService.loadFromStorage();
+    this.walletService.loadFromStorage();
     this.uiController.requireWallet();
 
     await waitForTrue(this.isLoggedIn);
