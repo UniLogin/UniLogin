@@ -29,6 +29,7 @@ describe('UI: Transfer', () => {
     receiver: string,
   ) => {
     appPage.dashboard().goToTransferPage();
+    await appPage.transfer().waitForBalance();
     await appPage.transfer().chooseCurrency(symbol);
     appPage.transfer().enterTransferAmount(amount);
     appPage.transfer().enterRecipient(receiver);
@@ -50,17 +51,10 @@ describe('UI: Transfer', () => {
       : '0x0';
   });
 
-  it('send ETH => invalid ensName', async () => {
-    await transferFlow(appPage, 'ETH', '1', 'pascal.mylogin.eth');
-    await waitExpect(() => expect(appPage.transfer().getErrorMessage())
-      .to.be.eq('Error: pascal.mylogin.eth is not valid'));
-    await appPage.dashboard().closeModal();
-    expect(appPage.dashboard().getWalletBalance()).to.eq('$1.99');
-  });
-
   it('send ETH => proper contractAddress', async () => {
     await transferFlow(appPage, 'ETH', '1', receiverAddress);
     await appPage.dashboard().waitForHideModal();
+    await appPage.dashboard().waitForBalanceUpdate('$1.99');
     expect(appPage.dashboard().getWalletBalance()).to.eq('$0.99');
     expect((await provider.getBalance(receiverAddress)).toString())
       .to.be.eq(initialReceiverEthBalance.add(utils.parseEther('1')));
@@ -69,6 +63,7 @@ describe('UI: Transfer', () => {
   it('ETH => proper ensName', async () => {
     await transferFlow(appPage, 'ETH', '1', receiverEnsName);
     await appPage.dashboard().waitForHideModal();
+    await appPage.dashboard().waitForBalanceUpdate('$1.99');
     expect(appPage.dashboard().getWalletBalance()).to.eq('$0.99');
     expect((await provider.getBalance(receiverAddress)).toString())
       .to.be.eq(initialReceiverEthBalance.add(utils.parseEther('1')));
@@ -83,6 +78,7 @@ describe('UI: Transfer', () => {
     });
     await transferFlow(appPage, 'DAI', '1', receiverAddress);
     await appPage.dashboard().waitForHideModal();
+    await appPage.dashboard().waitForBalanceUpdate('$3.99');
     expect(appPage.dashboard().getWalletBalance()).to.eq('$2.99');
     expect((await mockTokenContract.balanceOf(receiverAddress)).toString())
       .to.be.eq(utils.parseEther('1'));
@@ -97,6 +93,7 @@ describe('UI: Transfer', () => {
     });
     await transferFlow(appPage, 'DAI', '1', receiverEnsName);
     await appPage.dashboard().waitForHideModal();
+    await appPage.dashboard().waitForBalanceUpdate('$3.99');
     expect(appPage.dashboard().getWalletBalance()).to.eq('$2.99');
     expect((await mockTokenContract.balanceOf(receiverAddress)).toString())
       .to.be.eq(utils.parseEther('1'));
@@ -104,23 +101,23 @@ describe('UI: Transfer', () => {
 
   it('Shows error if invalid amount', async () => {
     await transferFlow(appPage, 'ETH', '10', receiverEnsName);
-    expect(appPage.transfer().doesAmountErrorExists()).to.be.true;
+    expect(await appPage.transfer().doesAmountErrorExists()).to.be.true;
   });
 
   it('Shows error if invalid recipient address', async () => {
     await transferFlow(appPage, 'ETH', '1', '0x123');
-    expect(appPage.transfer().doesRecipientErrorExists()).to.be.true;
+    expect(await appPage.transfer().doesRecipientErrorExists()).to.be.true;
   });
 
   it('Shows error if invalid recipient ens name', async () => {
     await transferFlow(appPage, 'ETH', '1', 'test');
-    expect(appPage.transfer().doesRecipientErrorExists()).to.be.true;
+    expect(await appPage.transfer().doesRecipientErrorExists()).to.be.true;
   });
 
   it('Shows errors if invalid amount and recipient', async () => {
     await transferFlow(appPage, 'ETH', '10', '0x123');
-    expect(appPage.transfer().doesAmountErrorExists()).to.be.true;
-    expect(appPage.transfer().doesRecipientErrorExists()).to.be.true;
+    expect(await appPage.transfer().doesAmountErrorExists()).to.be.true;
+    expect(await appPage.transfer().doesRecipientErrorExists()).to.be.true;
   });
 
   afterEach(async () => {

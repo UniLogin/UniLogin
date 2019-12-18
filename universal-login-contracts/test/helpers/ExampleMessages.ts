@@ -1,13 +1,26 @@
-import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION, DEFAULT_GAS_PRICE, GAS_FIXED, OperationType} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION, DEFAULT_GAS_PRICE, GAS_FIXED, OperationType, EMPTY_DATA, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {utils, Wallet, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import MockContract from '../../build/MockContract.json';
 import {encodeFunction, getExecutionArgs} from '../helpers/argumentsEncoding';
 import Loop from '../../build/Loop.json';
-import {calculatePaymentOptions, calculateBaseGas} from '../../lib/estimateGas';
+import {calculateBaseGas} from '../../lib/estimateGas';
+import {calculatePaymentOptions} from '../helpers/calculations';
 import {AddressZero} from 'ethers/constants';
 
-const {parseEther} = utils;
+const {parseEther, bigNumberify} = utils;
+
+export const emptyMessage = {
+  to: '',
+  value: parseEther('0.0'),
+  data: EMPTY_DATA,
+  nonce: 0,
+  operationType: OperationType.call,
+  refundReceiver: AddressZero,
+  gasPrice: bigNumberify(DEFAULT_GAS_PRICE),
+  gasLimit: bigNumberify(DEFAULT_GAS_LIMIT),
+  gasToken: AddressZero,
+};
 
 export const transferMessage = {
   to: TEST_ACCOUNT_ADDRESS,

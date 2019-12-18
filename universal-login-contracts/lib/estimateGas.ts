@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {createFullHexString, ensure, SignedMessagePaymentOptions, Message, GasComputation, GAS_FIXED, NetworkVersion, WalletVersion} from '@universal-login/commons';
+import {createFullHexString, ensure, Message, GasDataComputation, GAS_FIXED, NetworkVersion, WalletVersion, CONSTANT_EXECUTION_COSTS, SIGNATURE_CHECK_COST, ZERO_NONCE_COST} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from './encode';
 
 export const calculateSafeTxGas = (gasLimit: utils.BigNumberish, baseGas: utils.BigNumberish) => {
@@ -8,12 +8,6 @@ export const calculateSafeTxGas = (gasLimit: utils.BigNumberish, baseGas: utils.
   return safeTxGas;
 };
 
-export const calculateFinalGasLimit = (safeTxGas: utils.BigNumberish, baseGas: utils.BigNumberish) =>
-  utils.bigNumberify(safeTxGas).add(baseGas).add('30000');
-
-export const calculatePaymentOptions = (msg: SignedMessagePaymentOptions) =>
-  ({gasLimit: calculateFinalGasLimit(msg.safeTxGas, msg.baseGas)});
-
 export const calculateBaseGas = (message: Omit<Message, 'gasLimit'>, networkVersion: NetworkVersion, walletVersion: WalletVersion) => {
   const encodedMessage = encodeDataForExecuteSigned({
     ...message,
@@ -21,6 +15,15 @@ export const calculateBaseGas = (message: Omit<Message, 'gasLimit'>, networkVers
     baseGas: createFullHexString(3),
     signature: createFullHexString(65),
   });
-  const gasData = new GasComputation(networkVersion).computeGasData(encodedMessage);
-  return walletVersion === 'beta2' ? utils.bigNumberify(gasData).add(GAS_FIXED) : gasData;
+  const gasData = new GasDataComputation(networkVersion).computeGasData(encodedMessage);
+  switch (walletVersion) {
+    case 'beta1':
+      return gasData;
+    case 'beta2':
+      return utils.bigNumberify(gasData).add(GAS_FIXED);
+    case 'beta3':
+      return utils.bigNumberify(gasData).add(ZERO_NONCE_COST).add(SIGNATURE_CHECK_COST).add(CONSTANT_EXECUTION_COSTS);
+    default:
+      throw TypeError(`Invalid wallet version: ${walletVersion}`);
+  }
 };

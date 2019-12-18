@@ -1,7 +1,6 @@
-import {TransferService, WalletService} from '@universal-login/sdk';
+import {TransferService, WalletService, Execution} from '@universal-login/sdk';
 import React, {useState} from 'react';
-import {TransferDetails, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
-import {Route, Switch} from 'react-router';
+import {Route, Switch, useHistory} from 'react-router';
 import {TopUp} from '../TopUp/TopUp';
 import {Devices} from './Devices/Devices';
 import BackupCodes from '../BackupCodes/BackupCodes';
@@ -11,7 +10,6 @@ import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
 import {Transfer} from '../Transfer/Transfer';
-import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface DashboardModalProps {
   walletService: WalletService;
@@ -19,33 +17,23 @@ export interface DashboardModalProps {
 }
 
 export const DashboardModal = ({walletService, onClose}: DashboardModalProps) => {
+  const history = useHistory();
+  const [transactionHash, setTransactionHash] = useState('');
+
   const deployedWallet = walletService.getDeployedWallet();
   const {sdk, name} = deployedWallet;
   const relayerConfig = sdk.getRelayerConfig();
-
-  const [transferDetails, setTransferDetails] = useState<TransferDetails>({transferToken: sdk.tokensDetailsStore.tokensDetails[0].address} as TransferDetails);
-  const selectedToken = sdk.tokensDetailsStore.getTokenByAddress(transferDetails.transferToken!);
-  const [transactionHash, setTransactionHash] = useState('');
-  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
-
-  useAsyncEffect(() => deployedWallet.sdk.subscribeToBalances(deployedWallet.contractAddress, setTokenDetailsWithBalance), []);
-  const balance = getBalanceOf(selectedToken.symbol, tokenDetailsWithBalance);
-
   const notice = sdk.getNotice();
-
-  const updateTransferDetailsWith = (args: Partial<TransferDetails>) => {
-    setTransferDetails({...transferDetails, ...args});
-  };
 
   const transferService = new TransferService(deployedWallet);
 
-  const onTransferSendClick = async (changeContent: (argument: string) => void) => {
-    const {waitToBeSuccess, waitForTransactionHash} = await transferService.transfer(transferDetails);
-    changeContent('waitingForTransfer');
+  const onTransferTriggered = async (transfer: () => Promise<Execution>) => {
+    history.replace('/dashboard/waitingForTransfer');
+    const {waitToBeSuccess, waitForTransactionHash} = await transfer();
     const {transactionHash} = await waitForTransactionHash();
     setTransactionHash(transactionHash!);
     await waitToBeSuccess();
-    changeContent('funds');
+    history.replace('/dashboard/funds');
   };
 
   return (
@@ -80,17 +68,11 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
           <Route
             path="/dashboard/transferAmount"
             exact
-            render={({history}) => (
+            render={() => (
               <SubDialogWrapper message={notice} ensName={name}>
                 <Transfer
                   transferService={transferService}
-                  deployedWallet={deployedWallet}
-                  transferDetails={transferDetails}
-                  tokenDetails={selectedToken}
-                  updateTransferDetailsWith={updateTransferDetailsWith}
-                  tokenDetailsWithBalance={tokenDetailsWithBalance}
-                  onSendClick={() => onTransferSendClick(tab => history.replace(`/dashboard/${tab}`))}
-                  getMaxAmount={() => transferService.getMaxAmount(transferDetails.gasParameters, balance)}
+                  onTransferTriggered={onTransferTriggered}
                 />
               </SubDialogWrapper>
             )}

@@ -30,7 +30,7 @@ export {InvalidContract, NotEnoughTokens, ValidationError, PaymentError} from '.
 export {computeCounterfactualAddress, computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';
 export {RequiredBalanceChecker} from './core/services/RequiredBalanceChecker';
-export {deployContract, deployContractAndWait, DEPLOY_GAS_LIMIT} from './integration/ethereum/deployContract';
+export {deployContract, deployContractAndWait, DEPLOY_GAS_LIMIT, getDeployData} from './integration/ethereum/deployContract';
 export {withENS} from './integration/ethereum/ens';
 export {getContractHash, getDeployedBytecode, isContractExist, isContract} from './core/utils/contracts/contractHelpers';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './core/utils/messages/changingMessageFields';
@@ -71,7 +71,7 @@ export {TokensValueConverter} from './core/services/TokensValueConverter';
 export {http, HttpFunction} from './integration/http/http';
 export {getBalanceOf} from './core/utils/getBalanceOf';
 export {convertTenthGweiToWei} from './core/utils/conversion';
-export {GasComputation, GAS_FIXED, NetworkVersion} from './core/utils/messages/computeGasData';
+export {GasDataComputation, NetworkVersion} from './core/utils/messages/computeGasData';
 export {getEnumKeys} from './core/utils/getEnumsKeys';
 export {stringToEnumKey} from './core/utils/stringToEnumKey';
 export {IPGeolocationApiConfig} from './core/models/IPGeolocationApiConfig';
@@ -80,3 +80,4 @@ export {asHexString, asDeploymentHash} from './core/utils/sanitizers/asHexString
 export {asExactly} from './core/utils/sanitizers/asExactly';
 export {WALLET_MASTER_VERSIONS, WalletVersion} from './core/constants/walletMasterVersions';
 export {fetchHardforkVersion} from './integration/ethereum/fetchHardforkVersion';
+export {GAS_FIXED, CONSTANT_EXECUTION_COSTS, ZERO_NONCE_COST, NON_ZERO_NONCE_COST, SIGNATURE_CHECK_COST} from './core/constants/gas';

@@ -9,7 +9,7 @@ import Loop from '../../../build/Loop.json';
 import {encodeFunction} from '../../helpers/argumentsEncoding';
 import {encodeDataForExecuteSigned} from '../../../lib/encode';
 import {messageToSignedMessage} from '../../../lib/message';
-import {calculateFinalGasLimit} from '../../../lib/estimateGas';
+import {calculateFinalGasLimit} from '../../helpers/calculations';
 import {AddressZero} from 'ethers/constants';
 
 chai.use(chaiAsPromised);

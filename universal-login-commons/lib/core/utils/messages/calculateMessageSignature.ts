@@ -20,11 +20,11 @@ export const calculateMessageSignature = (privateKey: string, msg: UnsignedMessa
   return signHexString(calculateMessageHash(msg), privateKey);
 };
 
-export const calculateMessageSignatures = async (privateKeys: string[], msg: UnsignedMessage) => {
-  const signaturesPromises = privateKeys.map((value: string) =>
-    calculateMessageSignature(value, msg));
-  const sortedSignatures = sortPrivateKeysByAddress(await Promise.all(signaturesPromises));
-  return concatenateSignatures(sortedSignatures);
+export const calculateMessageSignatures = (privateKeys: string[], msg: UnsignedMessage) => {
+  const sortedPrivateKeys = sortPrivateKeysByAddress(privateKeys);
+  const signatures = sortedPrivateKeys.map((key: string) =>
+    calculateMessageSignature(key, msg));
+  return concatenateSignatures(signatures);
 };
 
 const removePrefix = (value: string, index: number, array: string[]) => {

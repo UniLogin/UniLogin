@@ -1,19 +1,15 @@
 import {ensure} from '../errors/heplers';
 import {isProperHexString} from '../hexStrings';
-
-export const ZERO_BYTE_GAS_COST = 4;
-export const NON_ZERO_BYTE_GAS_COST = 68;
-export const NEW_NON_ZERO_BYTE_GAS_COST = 16;
-export const GAS_FIXED = '50000';
+import {ISTANBUL_NON_ZERO_BYTE_GAS_COST, NON_ZERO_BYTE_GAS_COST, ZERO_BYTE_GAS_COST} from '../../constants/gas';
 
 export type NetworkVersion = 'istanbul' | 'constantinople';
 
-export class GasComputation {
+export class GasDataComputation {
   constructor(private chainVersion: NetworkVersion) {
   }
 
   private getNonZeroByteCost() {
-    return this.chainVersion === 'istanbul' ? NEW_NON_ZERO_BYTE_GAS_COST : NON_ZERO_BYTE_GAS_COST;
+    return this.chainVersion === 'istanbul' ? ISTANBUL_NON_ZERO_BYTE_GAS_COST : NON_ZERO_BYTE_GAS_COST;
   }
 
   private gasCostFor(byte: string) {

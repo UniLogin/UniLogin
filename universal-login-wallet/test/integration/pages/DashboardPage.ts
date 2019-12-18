@@ -32,6 +32,10 @@ export default class DashboardPage {
     return this.wrapper.find('p.balance-amount').text();
   }
 
+  async waitForBalanceUpdate(currentBalance: string) {
+    await waitForUI(this.wrapper, () => this.wrapper.find('p.balance-amount').text() !== currentBalance, 4000);
+  }
+
   isNotificationAlert(): boolean {
     this.wrapper.update();
     return this.wrapper.exists('.new-notifications');
