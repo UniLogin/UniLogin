@@ -6,20 +6,22 @@ import {Web3Strategy} from '../../../Web3Strategy';
 export const Web3PickerPlayground = () => {
   const [web3Strategy] = useState(() => new Web3Strategy([
     universalLoginProviderFactory,
-  ]));
-  const [currentProvider, setCurrentProvider] = useState<Provider>(web3Strategy.currentProvider);
+  ],
+  {} as Provider,
+  ));
+  const [providerName, setSetProviderName] = useState<string>(web3Strategy.providerName);
 
   const onClick = async () => {
     console.log('clicked button');
-    await web3Strategy.send({} as any, {} as any);
+    await web3Strategy.send({method: 'eth_sign'} as any, () => {});
     console.log('Picked');
-    setCurrentProvider(web3Strategy.currentProvider);
+    setSetProviderName(web3Strategy.providerName);
   };
   return (
     <div className="web3-picker-playground">
       <button id="test-button" onClick={onClick}>Show chooser</button>
       <br />
-      CurrentProvider: {currentProvider?.toString()}
+      CurrentProvider: {providerName}
     </div>
   );
 };

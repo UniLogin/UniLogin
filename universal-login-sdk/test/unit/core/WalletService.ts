@@ -149,7 +149,7 @@ describe('UNIT: WalletService', () => {
   });
 
   it('should load from storage', async () => {
-    await walletService.loadFromStorage();
+    walletService.loadFromStorage();
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include(applicationWallet);
   });

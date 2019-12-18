@@ -16,7 +16,7 @@ const AppBootstrapper = () => {
     const services = createServices(config);
     await services.start();
 
-    await services.walletService.loadFromStorage();
+    services.walletService.loadFromStorage();
     setBetaNotice(services.sdk);
 
     return services;
