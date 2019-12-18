@@ -83,7 +83,7 @@ class UniversalLoginSDK {
     this.blockchainService = new BlockchainService(this.provider);
     this.blockchainObserver = new BlockchainObserver(this.blockchainService);
     this.balanceChecker = new BalanceChecker(this.provider);
-    this.tokenDetailsService = new TokenDetailsService(this.provider, sdkConfig ?.saiTokenAddress);
+    this.tokenDetailsService = new TokenDetailsService(this.provider, sdkConfig?.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokensAddresses);
     this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.sdkConfig.observedCurrencies, this.sdkConfig.priceObserverTick);
     this.gasPriceOracle = new GasPriceOracle(this.provider);
