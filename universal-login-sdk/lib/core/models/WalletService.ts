@@ -1,5 +1,6 @@
 import {ApplicationWallet, SerializableFutureWallet} from '@universal-login/commons';
-import {DeployedWallet, FutureWallet} from '../..';
+import {DeployedWallet} from '../../api/wallet/DeployedWallet';
+import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
 

@@ -27,7 +27,8 @@ import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {InvalidContract, InvalidEvent, InvalidGasLimit, MissingConfiguration, InvalidENSRecord} from '../core/utils/errors';
-import {FutureWalletFactory, FutureWallet} from './FutureWalletFactory';
+import {FutureWalletFactory} from './FutureWalletFactory';
+import {FutureWallet} from './wallet/FutureWallet';
 import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';
 import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
@@ -42,6 +43,7 @@ import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
 import {deprecateSDKMethod} from './deprecate';
 import {DeployedWallet} from './wallet/DeployedWallet';
 import {MessageConverter} from '../core/services/MessageConverter';
+import {ENSService} from '../integration/ethereum/ENSService';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -110,7 +112,7 @@ class UniversalLoginSDK {
   }
 
   createFutureWallet(): Promise<FutureWallet> {
-    return this.getFutureWalletFactory().createFutureWallet();
+    return this.getFutureWalletFactory().createNew();
   }
 
   addKey(to: string, publicKey: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
@@ -177,9 +179,8 @@ class UniversalLoginSDK {
     };
     this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(
       futureWalletConfig,
-      this.provider,
+      new ENSService(this.provider, futureWalletConfig.chainSpec.ensAddress),
       this.blockchainService,
-      this.relayerApi,
       this,
     );
   }

@@ -52,7 +52,7 @@ export class WalletSerializer {
         return {
           kind: 'Future',
           name: state.name,
-          wallet: this.sdk.getFutureWalletFactory().createFromExistingCounterfactual(state.wallet),
+          wallet: this.sdk.getFutureWalletFactory().createFrom(state.wallet),
         };
       case 'Deploying':
         return {

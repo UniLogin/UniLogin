@@ -44,7 +44,7 @@ export const App = () => {
     deploy: async () => deployingWallet,
     waitForBalance: (async () => { }) as any,
     setSupportedToken: (() => {}) as any,
-  };
+  } as any;
 
   async function tryEnablingMetamask() {
     const ethereum = (window as any).ethereum;
