@@ -16,13 +16,13 @@ export const encodeDataForExecTransaction = (message: SignedMessage) =>
   ]);
 
 interface Deployment {
-  owners: string[],
-  requiredConfirmations: number,
-  deploymentCallAddress: string,
-  deploymentCallData: string,
-  fallbackHandler: string,
-  paymentToken: string,
-  payment: string,
+  owners: string[];
+  requiredConfirmations: number;
+  deploymentCallAddress: string;
+  deploymentCallData: string;
+  fallbackHandler: string;
+  paymentToken: string;
+  payment: string;
   refundReceiver: string;
 };
 

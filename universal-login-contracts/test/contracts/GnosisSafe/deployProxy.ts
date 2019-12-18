@@ -1,12 +1,12 @@
 import {expect} from 'chai';
+import {providers, Wallet, Contract, utils} from 'ethers';
+import {AddressZero} from 'ethers/constants';
 import {loadFixture, deployContract} from 'ethereum-waffle';
-import {createKeyPair, ETHER_NATIVE_TOKEN, removePrefix} from '@universal-login/commons';
+import {createKeyPair, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {basicENS} from '@universal-login/commons/testutils';
 import {deployGnosisSafe, deployProxyFactory} from '../../../lib/gnosis-safe@1.1.1/deployContracts';
 import {encodeDataForSetup} from '../../../lib/gnosis-safe@1.1.1/encode';
-import {AddressZero} from 'ethers/constants';
 import {computeGnosisCounterfactualAddress} from '../../../lib/gnosis-safe@1.1.1/utils';
-import {providers, Wallet, Contract, utils} from 'ethers';
 import ENSUtils from '../../../build/TestableENSUtils.json';
 
 describe('GnosisSafe', async () => {
@@ -43,13 +43,13 @@ describe('GnosisSafe', async () => {
       paymentToken: ETHER_NATIVE_TOKEN.address,
       payment: '0',
       refundReceiver: wallet.address,
-    }
+    };
     const setupData = encodeDataForSetup(deployment);
     const computedAddress = computeGnosisCounterfactualAddress(proxyFactory.address, 0, setupData, gnosisSafe.address);
     const transaction = await proxyFactory.createProxyWithNonce(gnosisSafe.address, setupData, 0);
     const receipt = await provider.getTransactionReceipt(transaction.hash);
     const addressFromEvent = receipt.logs && receipt.logs[0].data;
-    expect(addressFromEvent).to.include(removePrefix(computedAddress).toLowerCase());
+    expect(addressFromEvent).to.include(computedAddress.slice(2).toLowerCase());
     expect(await provider.lookupAddress(computedAddress)).to.eq(name);
     expect(await provider.resolveName('alex.mylogin.eth')).to.eq(computedAddress);
   });
