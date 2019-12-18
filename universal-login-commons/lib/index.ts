@@ -80,4 +80,4 @@ export {asHexString, asDeploymentHash} from './core/utils/sanitizers/asHexString
 export {asExactly} from './core/utils/sanitizers/asExactly';
 export {WALLET_MASTER_VERSIONS, WalletVersion} from './core/constants/walletMasterVersions';
 export {fetchHardforkVersion} from './integration/ethereum/fetchHardforkVersion';
-export {GAS_FIXED} from './core/constants/gas';
+export {GAS_FIXED, CONSTANT_EXECUTION_COSTS, ZERO_NONCE_COST, NON_ZERO_NONCE_COST, SIGNATURE_CHECK_COST} from './core/constants/gas';
