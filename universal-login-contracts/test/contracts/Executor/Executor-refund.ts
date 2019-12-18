@@ -7,7 +7,7 @@ import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage} from '../../helpers/ExampleMessages';
 import Loop from '../../../build/Loop.json';
 import {encodeFunction} from '../../helpers/argumentsEncoding';
-import {encodeDataForExecuteSigned} from '../../../lib/encode';
+import {encodeDataForExecuteSigned} from '../../../lib/beta2/encode';
 import {messageToSignedMessage} from '../../../lib/message';
 import {calculateFinalGasLimit} from '../../helpers/calculations';
 import {AddressZero} from 'ethers/constants';

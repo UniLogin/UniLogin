@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {getWallets, loadFixture} from 'ethereum-waffle';
 import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS} from '@universal-login/commons';
 import {mockProviderWithBlockNumber} from '@universal-login/commons/testutils';
-import {deployWalletContract} from '../../lib/deployMaster';
+import {deployWalletContract} from '../../lib/beta2/deployMaster';
 import WalletContract from '../../build/Wallet.json';
 import {BlockchainService} from '../../lib/integration/BlockchainService';
 import {providers, Contract, Wallet} from 'ethers';

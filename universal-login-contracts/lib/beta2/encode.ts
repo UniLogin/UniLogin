@@ -1,5 +1,5 @@
 import {SignedMessage} from '@universal-login/commons';
-import {WalletContractInterface} from './interfaces';
+import {WalletContractInterface} from '../interfaces';
 
 export const encodeInitializeWithENSData = (args: string[]) => WalletContractInterface.functions.initializeWithENS.encode(args);
 
