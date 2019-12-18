@@ -54,6 +54,7 @@ describe('UI: Transfer', () => {
   it('send ETH => proper contractAddress', async () => {
     await transferFlow(appPage, 'ETH', '1', receiverAddress);
     await appPage.dashboard().waitForHideModal();
+    await appPage.dashboard().waitForBalanceUpdate('$1.99');
     expect(appPage.dashboard().getWalletBalance()).to.eq('$0.99');
     expect((await provider.getBalance(receiverAddress)).toString())
       .to.be.eq(initialReceiverEthBalance.add(utils.parseEther('1')));
@@ -62,6 +63,7 @@ describe('UI: Transfer', () => {
   it('ETH => proper ensName', async () => {
     await transferFlow(appPage, 'ETH', '1', receiverEnsName);
     await appPage.dashboard().waitForHideModal();
+    await appPage.dashboard().waitForBalanceUpdate('$1.99');
     expect(appPage.dashboard().getWalletBalance()).to.eq('$0.99');
     expect((await provider.getBalance(receiverAddress)).toString())
       .to.be.eq(initialReceiverEthBalance.add(utils.parseEther('1')));
@@ -76,6 +78,7 @@ describe('UI: Transfer', () => {
     });
     await transferFlow(appPage, 'DAI', '1', receiverAddress);
     await appPage.dashboard().waitForHideModal();
+    await appPage.dashboard().waitForBalanceUpdate('$3.99');
     expect(appPage.dashboard().getWalletBalance()).to.eq('$2.99');
     expect((await mockTokenContract.balanceOf(receiverAddress)).toString())
       .to.be.eq(utils.parseEther('1'));
@@ -90,6 +93,7 @@ describe('UI: Transfer', () => {
     });
     await transferFlow(appPage, 'DAI', '1', receiverEnsName);
     await appPage.dashboard().waitForHideModal();
+    await appPage.dashboard().waitForBalanceUpdate('$3.99');
     expect(appPage.dashboard().getWalletBalance()).to.eq('$2.99');
     expect((await mockTokenContract.balanceOf(receiverAddress)).toString())
       .to.be.eq(utils.parseEther('1'));
