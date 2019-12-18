@@ -1,4 +1,6 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import sinon from 'sinon';
 import Web3 from 'web3';
 import {utils, Wallet} from 'ethers';
 import {waitExpect} from '@universal-login/commons/testutils';
@@ -7,6 +9,8 @@ import {createWallet} from '@universal-login/sdk/testutils';
 import {OnboardingProps} from '../lib/ui/react/Onboarding';
 import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWeb3';
 import {ULWeb3Provider} from '../lib';
+
+chai.use(chaiAsPromised);
 
 describe('ULWeb3Provider', () => {
   let relayer: RelayerUnderTest;
@@ -42,7 +46,6 @@ describe('ULWeb3Provider', () => {
     it('can send a simple eth transfer', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
-
       const {transactionHash} = await web3.eth.sendTransaction({
         to: Wallet.createRandom().address,
         value: utils.parseEther('0.005').toString(),
@@ -68,8 +71,12 @@ describe('ULWeb3Provider', () => {
   });
 
   describe('get accounts', () => {
-    it('returns empty array when wallet does not exist', async () => {
+    it('initialize onboarding when wallet does not exist', async () => {
+      const createSpy = sinon.spy(() => null);
+      sinon.replace(ulProvider, 'create', createSpy);
       expect(await web3.eth.getAccounts()).to.deep.eq([]);
+      expect(createSpy.calledOnce).to.be.true;
+      sinon.restore();
     });
 
     it('returns single address when wallet is connected', async () => {
@@ -118,12 +125,11 @@ describe('ULWeb3Provider', () => {
       expect(services.uiController.showOnboarding.get()).to.be.false;
     });
 
-    it('doesnt show the UI if wallet is already there', async () => {
+    it('throw error if wallet is already there', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
-      await ulProvider.create();
-      expect(services.uiController.showOnboarding.get()).to.be.false;
+      await expect(ulProvider.create()).to.be.rejectedWith('Wallet cannot be overridden');
     });
   });
 });

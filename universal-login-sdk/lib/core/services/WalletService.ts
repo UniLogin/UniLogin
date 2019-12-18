@@ -209,7 +209,7 @@ export class WalletService {
     }
   }
 
-  async loadFromStorage() {
+  loadFromStorage() {
     ensure(this.state.kind === 'None', WalletOverridden);
     const state = this.storage.load();
     this.stateProperty.set(this.walletSerializer.deserialize(state));

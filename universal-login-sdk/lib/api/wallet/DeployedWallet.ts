@@ -65,9 +65,9 @@ export class DeployedWallet extends AbstractWallet {
 
   execute(message: Partial<Message>): Promise<Execution> {
     return this.sdk.execute({
-      from: this.contractAddress,
       gasLimit: DEFAULT_GAS_LIMIT,
       ...message,
+      from: this.contractAddress,
     }, this.privateKey);
   }
 
