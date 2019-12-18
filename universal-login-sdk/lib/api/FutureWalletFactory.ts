@@ -1,4 +1,3 @@
-import {providers} from 'ethers';
 import {
   SerializableFutureWallet,
   PublicRelayerConfig,
@@ -13,18 +12,15 @@ export type BalanceDetails = {
   contractAddress: string;
 };
 
-type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'contractWhiteList' | 'chainSpec'>;
+type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'chainSpec'>;
 
 export class FutureWalletFactory {
-  private ensService: ENSService;
-
   constructor(
     private config: FutureFactoryConfig,
-    provider: providers.Provider,
+    private ensService: ENSService,
     private blockchainService: BlockchainService,
     private sdk: UniversalLoginSDK,
   ) {
-    this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
   }
 
   createFromExistingCounterfactual(wallet: SerializableFutureWallet): FutureWallet {

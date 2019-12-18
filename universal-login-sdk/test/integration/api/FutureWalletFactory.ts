@@ -8,6 +8,7 @@ import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {FutureWalletFactory} from '../../../lib/api/FutureWalletFactory';
 import {RelayerApi} from '../../../lib/integration/http/RelayerApi';
+import {ENSService} from '../../../lib/integration/ethereum/ENSService';
 
 chai.use(chaiHttp);
 
@@ -42,7 +43,7 @@ describe('INT: FutureWalletFactory', async () => {
     const relayerApi = new RelayerApi(relayerUrl);
     futureWalletFactory = new FutureWalletFactory(
       futureWalletConfig,
-      provider,
+      new ENSService(provider, futureWalletConfig.chainSpec.ensAddress),
       blockchainService,
       {sdkConfig: {applicationInfo: TEST_APPLICATION_INFO}, provider, relayerApi} as any,
     );

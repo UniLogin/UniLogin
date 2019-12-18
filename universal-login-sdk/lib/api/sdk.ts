@@ -43,6 +43,7 @@ import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
 import {deprecateSDKMethod} from './deprecate';
 import {DeployedWallet} from './wallet/DeployedWallet';
 import {MessageConverter} from '../core/services/MessageConverter';
+import {ENSService} from '../integration/ethereum/ENSService';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
@@ -178,7 +179,7 @@ class UniversalLoginSDK {
     };
     this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(
       futureWalletConfig,
-      this.provider,
+      new ENSService(this.provider, futureWalletConfig.chainSpec.ensAddress),
       this.blockchainService,
       this,
     );
