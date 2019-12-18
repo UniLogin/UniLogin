@@ -7,7 +7,7 @@ import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage, callMessage} from '../../helpers/ExampleMessages';
 import {getExecutionArgs} from '../../helpers/argumentsEncoding';
 import MockToken from '../../../build/MockToken.json';
-import {calculatePaymentOptions} from '../../../lib/estimateGas';
+import {calculatePaymentOptions} from '../../helpers/calculations';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

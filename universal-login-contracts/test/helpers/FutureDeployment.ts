@@ -1,7 +1,14 @@
 import {Contract} from 'ethers';
-import {computeCounterfactualAddress, KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import ProxyContract from '../build/WalletProxy.json';
-import {EnsDomainData, createProxyDeployWithENSArgs, getDeployData, encodeInitializeData} from '.';
+import {computeCounterfactualAddress, KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN, getDeployData} from '@universal-login/commons';
+import ProxyContract from '../../build/WalletProxy.json';
+import {encodeInitializeData} from '../../lib';
+import {createProxyDeployWithENSArgs} from './ProxyUtils';
+
+export type EnsDomainData = {
+  ensAddress: string;
+  registrarAddress: string;
+  resolverAddress: string;
+};
 
 type FutureDeployment = {
   initializeData: string;

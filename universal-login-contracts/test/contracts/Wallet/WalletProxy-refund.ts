@@ -6,7 +6,7 @@ import {utils, Contract, providers, Wallet} from 'ethers';
 import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '../../../lib';
 import {walletContractWithFundsFixture} from '../../fixtures/walletContract';
-import {calculateFinalGasLimit} from '../../../lib/estimateGas';
+import {calculateFinalGasLimit} from '../../helpers/calculations';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

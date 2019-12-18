@@ -3,7 +3,7 @@ import {loadFixture} from 'ethereum-waffle';
 import MessageExecutor from '../../../../lib/integration/ethereum/MessageExecutor';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {SignedMessage, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {emptyMessage} from '@universal-login/contracts';
+import {emptyMessage} from '@universal-login/contracts/testutils';
 import {providers, Wallet, Contract} from 'ethers';
 import {bigNumberify} from 'ethers/utils';
 import MessageMemoryRepository from '../../../helpers/MessageMemoryRepository';
