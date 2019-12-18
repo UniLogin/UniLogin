@@ -9,19 +9,19 @@ export const Web3PickerPlayground = () => {
   ],
   {} as Provider,
   ));
-  const [currentProvider, setCurrentProvider] = useState<Provider>(web3Strategy.currentProvider);
+  const [providerName, setSetProviderName] = useState<string>(web3Strategy.providerName);
 
   const onClick = async () => {
     console.log('clicked button');
-    await web3Strategy.send({} as any, {} as any);
+    await web3Strategy.send({method: 'eth_sign'} as any, () => {});
     console.log('Picked');
-    setCurrentProvider(web3Strategy.currentProvider);
+    setSetProviderName(web3Strategy.providerName);
   };
   return (
     <div className="web3-picker-playground">
       <button id="test-button" onClick={onClick}>Show chooser</button>
       <br />
-      CurrentProvider: {currentProvider?.toString()}
+      CurrentProvider: {providerName}
     </div>
   );
 };
