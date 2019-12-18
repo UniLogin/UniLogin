@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {DEFAULT_GAS_LIMIT, TransferDetails} from '@universal-login/commons';
+import {TransferDetails, SEND_MAX_GAS_LIMIT} from '@universal-login/commons';
 import {Validator, TransferErrors} from './Validator';
 
 const {formatEther} = utils;
@@ -23,7 +23,7 @@ export class AmountValidator implements Validator<TransferDetails> {
     const {gasPrice, gasToken} = transferDetails.gasParameters;
     const amountAsBigNumber = utils.parseEther(amount);
     const balanceAsBigNumber = utils.parseEther(this.balance);
-    const gasCostInWei = utils.bigNumberify(DEFAULT_GAS_LIMIT.toString()).mul(gasPrice);
+    const gasCostInWei = utils.bigNumberify(SEND_MAX_GAS_LIMIT.toString()).mul(gasPrice);
     const amountWithFee = amountAsBigNumber.add(gasCostInWei);
     if (amountAsBigNumber.gt(balanceAsBigNumber)) {
       errors['amount'].push(`Insufficient funds. Sending ${formatEther(amountAsBigNumber)} eth, got only ${formatEther(balanceAsBigNumber)} eth`);

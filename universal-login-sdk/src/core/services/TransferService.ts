@@ -1,4 +1,4 @@
-import {DEFAULT_GAS_LIMIT, ensureNotNull, ETHER_NATIVE_TOKEN, GasParameters, Nullable, TransferDetails} from '@universal-login/commons';
+import {ensureNotNull, GasParameters, Nullable, TransferDetails, SEND_MAX_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {bigNumberMax} from '../utils/bigNumberMax';
@@ -44,7 +44,7 @@ export class TransferService {
     if (gasToken !== ETHER_NATIVE_TOKEN.address) {
       return balance;
     }
-    const gasCostInWei = utils.bigNumberify(DEFAULT_GAS_LIMIT.toString()).mul(gasPrice);
+    const gasCostInWei = utils.bigNumberify(SEND_MAX_GAS_LIMIT.toString()).mul(gasPrice);
     const maxAmountAsBigNumber = utils.parseEther(balance).sub(gasCostInWei);
     const maxAmountValidated = bigNumberMax(maxAmountAsBigNumber, utils.parseEther('0'));
     return utils.formatEther(maxAmountValidated);
