@@ -180,7 +180,6 @@ class UniversalLoginSDK {
       futureWalletConfig,
       this.provider,
       this.blockchainService,
-      this.relayerApi,
       this,
     );
   }

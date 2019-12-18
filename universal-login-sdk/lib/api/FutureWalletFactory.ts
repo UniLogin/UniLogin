@@ -25,7 +25,6 @@ export class FutureWalletFactory {
     private config: FutureFactoryConfig,
     provider: providers.Provider,
     private blockchainService: BlockchainService,
-    private relayerApi: RelayerApi,
     private sdk: UniversalLoginSDK,
   ) {
     this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
