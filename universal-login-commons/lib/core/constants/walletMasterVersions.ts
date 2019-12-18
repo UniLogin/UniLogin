@@ -3,4 +3,4 @@ export const WALLET_MASTER_VERSIONS: Record<string, WalletVersion> = {
   '0x6575c72edecb8ce802c58b1c1b9cbb290ef2b27588b76c73302cb70b862702a7': 'beta2',
 };
 
-export type WalletVersion = 'beta1' | 'beta2';
+export type WalletVersion = 'beta1' | 'beta2' | 'beta3';

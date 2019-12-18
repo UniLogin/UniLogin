@@ -6,12 +6,13 @@ export class TopUpProviderSupportService {
   }
 
   checkRampSupport(countryName: string): boolean {
-    return countryName === 'United Kingdom';
+    const country = this.countries.find(({name}) => name === countryName);
+    return !!country && country.isEU;
   }
 
   checkSafelloSupport(countryName: string): boolean {
-    const country = this.countries.find(({name}) => name === countryName);
-    return !!country && country.isEU;
+    const scandinavianCountries = ['Denmark', 'Sweden', 'Norway'];
+    return scandinavianCountries.includes(countryName);
   }
 
   checkWyreSupport(countryName: string): boolean {
