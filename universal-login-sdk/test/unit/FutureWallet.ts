@@ -37,8 +37,7 @@ describe('UNIT: FutureWallet', () => {
     futureWallet.setSupportedToken({
       address: AddressZero,
       minimalAmount: '1',
-    }
-  )
+    });
     const result = await futureWallet.waitForBalance();
     expect(await wallet.getBalance()).to.be.above(minimalAmount);
     expect(result.contractAddress).be.eq(serializableFutureWallet.contractAddress);
