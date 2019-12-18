@@ -27,16 +27,7 @@ export const calculateMessageSignatures = (privateKeys: string[], msg: UnsignedM
   return concatenateSignatures(signatures);
 };
 
-const removePrefix = (value: string, index: number, array: string[]) => {
-  const signature = value;
-  if (value.length !== 132) {
-    throw new Error(`Invalid signature length: ${signature} should be 132`);
-  }
-  if (value.indexOf('0x') !== 0) {
-    throw new Error(`Invalid Signature: ${signature} needs prefix 0x`);
-  }
-  return signature.slice(2);
-};
+export const removePrefix = (signature: string) => signature.slice(2);
 
 export const concatenateSignatures = (signatures: string[]) =>
   `0x${signatures.map(removePrefix).join('')}`;
