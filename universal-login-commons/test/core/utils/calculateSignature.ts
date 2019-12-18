@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils, Wallet} from 'ethers';
 import {calculateInitializeWithENSSignature} from '../../../src/core/utils/calculateSignature';
-import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType, UnsignedMessage, calculateMessageSignatures, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_LIMIT_EXECUTION} from '../../../src';
+import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType, UnsignedMessage, calculateMessageSignatures, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_LIMIT_EXECUTION, TEST_ACCOUNT_ADDRESS, createKeyPair} from '../../../src';
 import {AddressZero} from 'ethers/constants';
 
 describe('Calculate Signature', () => {
@@ -56,11 +56,11 @@ describe('Calculate signatures', () => {
 describe('concatenateSignatures', () => {
   let signature1: string;
   let signature2: string;
-  const wallet1 = Wallet.createRandom();
-  const wallet2 = Wallet.createRandom();
+  const keyPair1 = createKeyPair();
+  const keyPair2 = createKeyPair();
   const message = {
-    from: wallet1.address,
-    to: wallet1.address,
+    from: TEST_CONTRACT_ADDRESS,
+    to: TEST_ACCOUNT_ADDRESS,
     value: utils.parseEther('0.1'),
     data: utils.hexlify(0),
     nonce: 0,
@@ -72,10 +72,9 @@ describe('concatenateSignatures', () => {
     refundReceiver: AddressZero,
   };
 
-  before(async () => {
-    signature1 = await calculateMessageSignature(wallet1.privateKey, message);
-    signature2 = await calculateMessageSignature(wallet2.privateKey, message);
-  });
+  signature1 = calculateMessageSignature(keyPair1.privateKey, message);
+  signature2 = calculateMessageSignature(keyPair2.privateKey, message);
+
 
   it('Should concatenate two signatures arrays', async () => {
     const expected = `${signature1}${signature2.replace('0x', '')}`;
