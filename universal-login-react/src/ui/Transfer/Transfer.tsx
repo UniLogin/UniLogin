@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {DeployedWallet, TransferService, TransferErrors} from '@universal-login/sdk';
-import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, TokenDetailsWithBalance, GasParameters, getBalanceOf} from '@universal-login/commons';
+import {TransferService, TransferErrors, Execution} from '@universal-login/sdk';
+import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, TokenDetailsWithBalance, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import '../styles/transfer.sass';
 import '../styles/transferDefaults.sass';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
@@ -9,33 +9,33 @@ import {GasPrice} from '../commons/GasPrice';
 import {TransferAmount} from './Amount/TransferAmount';
 import {TransferRecipient} from './Recipient/TransferRecipient';
 import {TransferDropdown} from './Amount/TransferDropdown';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface TransferProps {
   transferService: TransferService;
-  deployedWallet: DeployedWallet;
-  transferDetails: TransferDetails;
-  updateTransferDetailsWith: (transferDetails: Partial<TransferDetails>) => void;
-  tokenDetailsWithBalance: TokenDetailsWithBalance[];
-  tokenDetails: TokenDetails;
-  onSendClick: () => Promise<void>;
-  getMaxAmount: () => string;
+  onTransferTriggered: (transfer: () => Promise<Execution>) => Promise<void>;
   transferClassName?: string;
 }
 
-export const Transfer = ({transferService, deployedWallet, transferDetails, updateTransferDetailsWith, tokenDetailsWithBalance, tokenDetails, onSendClick, getMaxAmount, transferClassName}: TransferProps) => {
+export const Transfer = ({transferService, onTransferTriggered, transferClassName}: TransferProps) => {
+  const [transferDetails, setTransferDetails] = useState({transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails);
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
+  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
-  const balance = getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance);
+  useAsyncEffect(() => transferService.subscribeToBalances(setTokenDetailsWithBalance), []);
+
+  const selectedToken = transferService.getTokenDetails(transferDetails.transferToken);
+  const balance = getBalanceOf(selectedToken.symbol, tokenDetailsWithBalance);
 
   const onTransferClick = async () => {
     setErrors(await transferService.validateInputs(transferDetails, balance));
     if (transferService.areInputsValid()) {
-      onSendClick();
+      await onTransferTriggered(() => transferService.transfer(transferDetails));
     }
   };
 
   const updateField = (field: string) => (value: string | GasParameters) => {
-    updateTransferDetailsWith({[field]: value});
+    setTransferDetails({...transferDetails, ...{[field]: value}});
     setErrors({...errors, [field]: []});
   };
 
@@ -44,18 +44,18 @@ export const Transfer = ({transferService, deployedWallet, transferDetails, upda
       <div className={getStyleForTopLevelComponent(transferClassName)}>
         <div className="transfer">
           <TransferDropdown
-            sdk={deployedWallet.sdk}
+            sdk={transferService.deployedWallet.sdk}
             tokenDetailsWithBalance={tokenDetailsWithBalance}
-            tokenDetails={tokenDetails}
+            tokenDetails={selectedToken}
             setToken={(token: TokenDetails) => updateField('transferToken')(token.address)}
             className={transferClassName}
           />
           <TransferAmount
             value={transferDetails.amount}
-            tokenSymbol={tokenDetails.symbol}
+            tokenSymbol={selectedToken.symbol}
             errors={errors.amount}
             onChange={updateField('amount')}
-            onMaxClick={() => updateField('amount')(getMaxAmount())}
+            onMaxClick={() => updateField('amount')(transferService.getMaxAmount(transferDetails.gasParameters, balance))}
           />
           <TransferRecipient
             onChange={updateField('to')}
@@ -65,7 +65,7 @@ export const Transfer = ({transferService, deployedWallet, transferDetails, upda
         <FooterSection className={transferClassName}>
           <GasPrice
             isDeployed={true}
-            deployedWallet={deployedWallet}
+            deployedWallet={transferService.deployedWallet}
             gasLimit={DEFAULT_GAS_LIMIT}
             onGasParametersChanged={(gasParameters: GasParameters) => updateField('gasParameters')(gasParameters)}
             className={transferClassName}
