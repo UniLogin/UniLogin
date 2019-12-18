@@ -23,12 +23,12 @@ export class FutureWalletFactory {
   ) {
   }
 
-  createFromExistingCounterfactual(wallet: SerializableFutureWallet): FutureWallet {
+  createFrom(wallet: SerializableFutureWallet): FutureWallet {
     return new FutureWallet(wallet, this.config.supportedTokens, this.sdk, this.ensService);
   }
 
-  async createFutureWallet(): Promise<FutureWallet> {
+  async createNew(): Promise<FutureWallet> {
     const [privateKey, contractAddress] = await this.blockchainService.createFutureWallet(this.config.factoryAddress);
-    return this.createFromExistingCounterfactual({privateKey, contractAddress});
+    return this.createFrom({privateKey, contractAddress});
   }
 }

@@ -107,7 +107,7 @@ describe('UNIT: WalletSerializer', () => {
 
   describe('deserialize', () => {
     const futureWalletFactory = {
-      createFromExistingCounterfactual: () => TEST_FUTURE_WALLET,
+      createFrom: () => TEST_FUTURE_WALLET,
     };
     const sdk = {
       ...mockSDK,
