@@ -4,10 +4,8 @@ import {
   PublicRelayerConfig,
 } from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
-import {RelayerApi} from '../integration/http/RelayerApi';
 import {ENSService} from '../integration/ethereum/ENSService';
 import UniversalLoginSDK from './sdk';
-import {DeploymentReadyObserver} from '../core/observers/DeploymentReadyObserver';
 import {FutureWallet} from './wallet/FutureWallet';
 
 export type BalanceDetails = {
@@ -19,7 +17,6 @@ type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factor
 
 export class FutureWalletFactory {
   private ensService: ENSService;
-  private deploymentReadyObserver: DeploymentReadyObserver;
 
   constructor(
     private config: FutureFactoryConfig,
@@ -28,7 +25,6 @@ export class FutureWalletFactory {
     private sdk: UniversalLoginSDK,
   ) {
     this.ensService = new ENSService(provider, config.chainSpec.ensAddress);
-    this.deploymentReadyObserver = new DeploymentReadyObserver(config.supportedTokens, provider);
   }
 
   createFromExistingCounterfactual(wallet: SerializableFutureWallet): FutureWallet {
