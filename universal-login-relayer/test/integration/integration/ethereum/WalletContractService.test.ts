@@ -1,7 +1,22 @@
-import {createMockProvider} from 'ethereum-waffle';
+import {expect} from 'chai';
+import {providers, Contract} from 'ethers';
+import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
+import createWalletContract from '../../../helpers/createWalletContract';
 
 describe('INT: WalletContractService', () => {
-  const provider = createMockProvider();
-  const walletContractService = new WalletContractService(provider);
+  let walletContractService: WalletContractService;
+  let proxyContract: Contract;
+  before(async () => {
+    const provider = createMockProvider();
+    const [wallet] = getWallets(provider);
+    ({proxy: proxyContract} = await createWalletContract(wallet));
+    walletContractService = new WalletContractService(provider);
+  });
+
+  it('returns required signatures number', async () => {
+    const requiredSignatures = await proxyContract.requiredSignatures();
+    console.log(requiredSignatures)
+    expect(await walletContractService.getRequiredSignatures(proxyContract.address)).to.eq(requiredSignatures);
+  });
 });
