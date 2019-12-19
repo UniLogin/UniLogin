@@ -15,25 +15,29 @@ describe('INT: ENSService', async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
     [ensService, provider, ensBuilder] = await buildEnsService(wallet, domain);
-    await ensService.start();
   });
 
   describe('findRegistrar', () => {
-    it('should find resolver and registrar addresses', async () => {
+    it('should find resolver and registrar addresses', () => {
       const registrarInBuilder = ensBuilder.registrars[`${domain}`].address;
       const resolverInBuilder = ensBuilder.resolver.address;
       expect(ensService.findRegistrar(domain).registrarAddress).to.eq(registrarInBuilder);
       expect(ensService.findRegistrar(domain).resolverAddress).to.eq(resolverInBuilder);
     });
 
-    it('return null if not found', async () => {
+    it('return null if not found', () => {
       expect(ensService.findRegistrar('whatever.non-existing-id.eth')).to.be.null;
     });
   });
 
   describe('argsFor', () => {
-    it('return null if not found', async () => {
-      expect(ensService.argsFor('whatever.non-existing-id.eth')).to.be.null;
+    it('throws error if invalid ENS domain', () => {
+      const ensName = 'whatever.non-existing-id.eth';
+      expect(() => ensService.argsFor(ensName)).to.throw(`ENS domain ${ensName} does not exist or is not compatible with Universal Login`);
+    });
+
+    it('throws error if ENS name is taken', () => {
+
     });
   });
 });
