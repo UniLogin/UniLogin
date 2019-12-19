@@ -82,6 +82,13 @@ describe('concatenateSignatures', () => {
     expect(concatenate).to.be.equal(expected);
   });
 
+  it('concentrates 3 signatures', () => {
+    const keyPair3 = createKeyPair();
+    const signature3 = calculateMessageSignature(keyPair3.privateKey, message);
+    const expected = `${signature1}${signature2.replace('0x', '')}${signature3.replace('0x', '')}`;
+    expect(concatenateSignatures([signature1, signature2, signature3])).to.eq(expected);
+  });
+
   it('Should not concatenate two signatures arrays without 0x prefix', async () => {
     signature1 = `${signature1.replace('0x', '')}aa`;
     signature2 = `${signature2.replace('0x', '')}aa`;
