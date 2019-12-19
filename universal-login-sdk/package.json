@@ -40,7 +40,7 @@
     "cross-env": "^5.2.0",
     "eslint": "^6.5.0",
     "ethereum-waffle": "^2.1.2",
-    "ganache-core": "^2.2.1",
+    "ganache-core": "^2.6.1",
     "mocha": "^5.2.0",
     "node-fetch": "^2.6.0",
     "rimraf": "^2.6.3",
