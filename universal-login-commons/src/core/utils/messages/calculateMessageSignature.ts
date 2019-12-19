@@ -29,14 +29,18 @@ export const calculateMessageSignatures = (privateKeys: string[], msg: UnsignedM
   return concatenateSignatures(signatures);
 };
 
-export const removePrefix = (signature: string) => {
-  ensure(isProperHexString(signature), Error, 'Not a valid hex string');
+export const removeSignaturePrefix = (signature: string) => {
   ensure(signature.length === 132, Error, `Invalid signature length: ${signature} should be 132`);
-  return signature.slice(2);
+  return removeHexStringPrefix(signature);
+};
+
+export const removeHexStringPrefix = (hexString: string) => {
+  ensure(isProperHexString(hexString), Error, 'Not a valid hex string');
+  return hexString.slice(2);
 };
 
 export const concatenateSignatures = (signatures: string[]) =>
-  `0x${signatures.map(removePrefix).join('')}`;
+  `0x${signatures.map(removeSignaturePrefix).join('')}`;
 
 const addressComparator = (privateKey1: string, privateKey2: string) => {
   const address1 = parseInt(new Wallet(privateKey1).address, 16);
