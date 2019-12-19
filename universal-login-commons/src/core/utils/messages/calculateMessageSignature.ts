@@ -2,6 +2,9 @@ import {utils, Wallet} from 'ethers';
 import {UnsignedMessage} from '../../models/message';
 import {signHexString} from '../signatures';
 import {DeployArgs} from '../../models/deploy';
+import {ensure} from '../errors/heplers';
+import {isProperHexString} from '../hexStrings';
+import {InvalidHexString, InvalidSignatureLength} from '../errors/errors';
 
 export const calculateDeployHash = (msg: DeployArgs) => {
   return utils.solidityKeccak256(
@@ -27,19 +30,18 @@ export const calculateMessageSignatures = (privateKeys: string[], msg: UnsignedM
   return concatenateSignatures(signatures);
 };
 
-const removePrefix = (value: string, index: number, array: string[]) => {
-  const signature = value;
-  if (value.length !== 132) {
-    throw new Error(`Invalid signature length: ${signature} should be 132`);
-  }
-  if (value.indexOf('0x') !== 0) {
-    throw new Error(`Invalid Signature: ${signature} needs prefix 0x`);
-  }
-  return signature.slice(2);
+export const removeSignaturePrefix = (signature: string) => {
+  ensure(signature.length === 132, InvalidSignatureLength, signature);
+  return removeHexStringPrefix(signature);
+};
+
+export const removeHexStringPrefix = (hexString: string) => {
+  ensure(isProperHexString(hexString), InvalidHexString, hexString);
+  return hexString.slice(2);
 };
 
 export const concatenateSignatures = (signatures: string[]) =>
-  `0x${signatures.map(removePrefix).join('')}`;
+  `0x${signatures.map(removeSignaturePrefix).join('')}`;
 
 const addressComparator = (privateKey1: string, privateKey2: string) => {
   const address1 = parseInt(new Wallet(privateKey1).address, 16);

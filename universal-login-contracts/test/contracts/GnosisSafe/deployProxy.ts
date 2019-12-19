@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {providers, Wallet, Contract, utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {loadFixture, deployContract} from 'ethereum-waffle';
-import {createKeyPair, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {createKeyPair, ETHER_NATIVE_TOKEN, removeHexStringPrefix} from '@universal-login/commons';
 import {basicENS} from '@universal-login/commons/testutils';
 import {deployGnosisSafe, deployProxyFactory} from '../../../src/gnosis-safe@1.1.1/deployContracts';
 import {encodeDataForSetup} from '../../../src/gnosis-safe@1.1.1/encode';
@@ -49,7 +49,7 @@ describe('GnosisSafe', async () => {
     const transaction = await proxyFactory.createProxyWithNonce(gnosisSafe.address, setupData, 0);
     const receipt = await provider.getTransactionReceipt(transaction.hash);
     const addressFromEvent = receipt.logs && receipt.logs[0].data;
-    expect(addressFromEvent).to.include(computedAddress.slice(2).toLowerCase());
+    expect(addressFromEvent).to.include(removeHexStringPrefix(computedAddress).toLowerCase());
     expect(await provider.lookupAddress(computedAddress)).to.eq(name);
     expect(await provider.resolveName('alex.mylogin.eth')).to.eq(computedAddress);
   });
