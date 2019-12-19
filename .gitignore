@@ -14,7 +14,6 @@
 /universal-login-ops/yarn-error.log
 /universal-login-react/test/screenshots/*.png
 /universal-login-relayer/.env
-/universal-login-relayer/build/
 /universal-login-relayer/dist/
 /universal-login-relayer/node_modules
 /universal-login-relayer/yarn-error.log
