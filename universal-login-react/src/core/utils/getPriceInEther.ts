@@ -1,11 +1,12 @@
 import {utils} from 'ethers';
-import {GET_PRICE_IN_ETHER_NORMALIZE_TO_INTEGER, GET_PRICE_IN_ETHER_NORMALIZE_TO_UNITS} from '../constants/normalization';
+import {WeiPerEther} from 'ethers/constants';
+import {GET_PRICE_IN_ETHER_NORMALIZE_WEI_INTEGER} from '../constants/normalization';
+
+const {parseUnits} = utils;
 
 export const getPriceInEther = (priceInFiat: string, etherPriceInFiat: string): utils.BigNumber => {
-  const etherPriceInFiatAsBigNumber = utils.parseEther(etherPriceInFiat);
-  const etherPriceNormalizedToInteger = etherPriceInFiatAsBigNumber.mul(GET_PRICE_IN_ETHER_NORMALIZE_TO_INTEGER);
-  const etherPriceNormalizedToUnits = etherPriceNormalizedToInteger.div(GET_PRICE_IN_ETHER_NORMALIZE_TO_UNITS);
-  const priceInFiatAsWei = utils.parseEther(priceInFiat);
-  const priceInFiatNormalized = priceInFiatAsWei.mul(GET_PRICE_IN_ETHER_NORMALIZE_TO_INTEGER);
+  const etherPriceNormalizedToInteger = parseUnits(etherPriceInFiat, GET_PRICE_IN_ETHER_NORMALIZE_WEI_INTEGER);
+  const etherPriceNormalizedToUnits = etherPriceNormalizedToInteger.div(WeiPerEther.toString());
+  const priceInFiatNormalized = parseUnits(priceInFiat, GET_PRICE_IN_ETHER_NORMALIZE_WEI_INTEGER);
   return (priceInFiatNormalized).div(etherPriceNormalizedToUnits);
 };

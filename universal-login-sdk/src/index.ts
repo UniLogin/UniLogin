@@ -14,3 +14,4 @@ export {encodeERC20Transfer} from './core/utils/encodeTransferToMessage';
 export {InvalidWalletState} from './core/utils/errors';
 export {Execution} from './core/services/ExecutionFactory';
 export {getEtherPriceInCurrency} from './integration/http/cryptocompare';
+export {bigNumberMax} from './core/utils/bigNumberMax';
