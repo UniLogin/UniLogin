@@ -4,7 +4,7 @@ import {solidity, getWallets, loadFixture, deployContract} from 'ethereum-waffle
 import {constants, utils, providers, Wallet, Contract} from 'ethers';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage, executeSetRequiredSignatures, executeAddKey, emptyMessage} from '../../helpers/ExampleMessages';
 import walletAndProxy from '../../fixtures/walletAndProxy';
-import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair, SignedMessage, ONE_SIGNATURE_GAS_COST, sortPrivateKeysByAddress, concatenateSignatures, TEST_GAS_PRICE, Message} from '@universal-login/commons';
+import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair, SignedMessage, ONE_SIGNATURE_GAS_COST, sortPrivateKeysByAddress, concatenateSignatures, TEST_GAS_PRICE, Message, TEST_TRANSACTION_OVERRIDES} from '@universal-login/commons';
 import {getExecutionArgs, setupUpdateMessage} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
@@ -394,7 +394,7 @@ describe('WalletContract', async () => {
     });
 
     it('updates master fails when sender has no permission', async () => {
-      await expect(walletContractProxy.upgradeTo(newWallet.address)).to.be.revertedWith('Unauthorized');
+      await expect(walletContractProxy.upgradeTo(newWallet.address, TEST_TRANSACTION_OVERRIDES)).to.be.revertedWith('Unauthorized');
     });
   });
 
