@@ -27,7 +27,7 @@ export const calculateMessageSignatures = (privateKeys: string[], msg: UnsignedM
   return concatenateSignatures(signatures);
 };
 
-const removePrefix = (value: string, index: number, array: string[]) => {
+export const removePrefix = (value: string) => {
   const signature = value;
   if (value.length !== 132) {
     throw new Error(`Invalid signature length: ${signature} should be 132`);
