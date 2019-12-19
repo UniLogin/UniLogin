@@ -41,6 +41,7 @@ import {httpsRedirect} from '../middlewares/httpsRedirect';
 import {GasComputation} from '../../core/services/GasComputation';
 import {BlockchainService} from '@universal-login/contracts';
 import {MessageHandlerValidator} from '../../core/services/validators/MessageHandlerValidator';
+import PendingMessages from '../../core/services/execution/messages/PendingMessages';
 
 const defaultPort = '3311';
 
@@ -67,6 +68,7 @@ class Relayer {
   private messageHandler: MessageHandler = {} as MessageHandler;
   private deploymentHandler: DeploymentHandler = {} as DeploymentHandler;
   private messageHandlerValidator: MessageHandlerValidator = {} as MessageHandlerValidator;
+  private pendingMessages: PendingMessages = {} as PendingMessages;
   private messageRepository: IMessageRepository = {} as IMessageRepository;
   private deploymentRepository: IRepository<Deployment> = {} as IRepository<Deployment>;
   private signaturesService: SignaturesService = {} as SignaturesService;
@@ -131,7 +133,8 @@ class Relayer {
     this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList);
     this.deploymentHandler = new DeploymentHandler(this.deploymentRepository, this.executionQueue);
     this.minedTransactionHandler = new MinedTransactionHandler(this.hooks, this.authorisationStore, this.devicesService);
-    this.messageHandler = new MessageHandler(this.wallet, this.messageRepository, this.statusService, this.messageHandlerValidator, this.executionQueue);
+    this.pendingMessages = new PendingMessages(this.wallet, this.messageRepository, this.executionQueue, this.statusService);
+    this.messageHandler = new MessageHandler(this.pendingMessages, this.messageHandlerValidator);
     this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.minedTransactionHandler);
     this.deploymentExecutor = new DeploymentExecutor(this.deploymentRepository, this.walletContractService);
     this.executionWorker = new ExecutionWorker([this.messageExecutor, this.deploymentExecutor], this.executionQueue);
