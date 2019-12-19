@@ -1,6 +1,6 @@
 import {EventEmitter} from 'fbemitter';
 import {utils} from 'ethers';
-import {ensure, RequiredBalanceChecker, computeCounterfactualAddress, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT, DeviceInfo} from '@universal-login/commons';
+import {ensure, RequiredBalanceChecker, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT, DeviceInfo} from '@universal-login/commons';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import ENSService from './ensService';
 import {NotEnoughBalance, InvalidSignature, NotEnoughGas} from '../../core/utils/errors';
@@ -26,7 +26,7 @@ class WalletService {
 
   async deploy({publicKey, ensName, gasPrice, gasToken, signature}: DeployArgs, deviceInfo: DeviceInfo) {
     ensure(utils.bigNumberify(gasPrice).gt(0), NotEnoughGas);
-    const contractAddress = computeCounterfactualAddress(this.config.factoryAddress, publicKey, await this.walletDeployer.getInitCode());
+    const contractAddress = await this.walletDeployer.computeFutureAddress(publicKey);
     ensure(!!await this.requiredBalanceChecker.findTokenWithRequiredBalance(this.config.supportedTokens, contractAddress), NotEnoughBalance);
     const initWithENS = await this.setupInitializeData({publicKey, ensName, gasPrice, gasToken});
     ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);

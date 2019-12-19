@@ -1,5 +1,5 @@
 import {Contract, Wallet} from 'ethers';
-import {TransactionOverrides} from '@universal-login/commons';
+import {TransactionOverrides, computeCounterfactualAddress} from '@universal-login/commons';
 import WalletProxyFactory from '@universal-login/contracts/build/WalletProxyFactory.json';
 
 interface DeployFactoryArgs {
@@ -17,6 +17,10 @@ export class WalletDeployer {
 
   deploy(deployFactoryArgs: DeployFactoryArgs, overrideOptions: TransactionOverrides) {
     return this.factoryContract.createContract(deployFactoryArgs.publicKey, deployFactoryArgs.intializeData, deployFactoryArgs.signature, overrideOptions);
+  }
+
+  async computeFutureAddress(publicKey: string) {
+    return computeCounterfactualAddress(this.factoryContract.address, publicKey, await this.getInitCode());
   }
 
   getInitCode = () => this.factoryContract.initCode();
