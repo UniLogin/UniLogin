@@ -23,7 +23,7 @@
     "cross-spawn": "^6.0.5",
     "dotenv": "^8.1.0",
     "ens-builder": "^2.0.1",
-    "ethereum-waffle": "2.1.0",
+    "ethereum-waffle": "^2.1.2",
     "ethers": "^4.0.39",
     "ganache-cli": "^6.4.5",
     "ganache-core": "^2.2.1",

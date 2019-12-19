@@ -62,7 +62,7 @@
     "eslint": "^6.1.0",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "ethereum-waffle": "^2.1.0",
+    "ethereum-waffle": "^2.1.2",
     "jsdom": "^15.1.1",
     "jsdom-global": "^3.0.2",
     "mocha": "^6.1.4",
