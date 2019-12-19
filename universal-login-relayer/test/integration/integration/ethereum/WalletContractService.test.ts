@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
-import createWalletContract from '../../../testhelpers/createWalletContract';
+import createWalletContract from '../../../helpers/createWalletContract';
 
 describe('INT: WalletContractService', () => {
   let walletContractService: WalletContractService;
