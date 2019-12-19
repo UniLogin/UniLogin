@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {TokenDetailsWithBalance} from '../../../lib/core/models/TokenData';
-import {TokensValueConverter} from '../../../lib/core/services/TokensValueConverter';
-import {ETHER_NATIVE_TOKEN} from '../../../lib/core/constants/constants';
-import {TEST_CONTRACT_ADDRESS} from '../../../lib/core/constants/test';
+import {TokenDetailsWithBalance} from '../../../src/core/models/TokenData';
+import {TokensValueConverter} from '../../../src/core/services/TokensValueConverter';
+import {ETHER_NATIVE_TOKEN} from '../../../src/core/constants/constants';
+import {TEST_CONTRACT_ADDRESS} from '../../../src/core/constants/test';
 
 describe('UNIT: TokensValueConverter', () => {
   const tokensValueConverter = new TokensValueConverter(['USD', 'DAI', 'SAI', 'ETH']);

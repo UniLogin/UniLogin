@@ -10,7 +10,7 @@ import {
   getMessageWithSignatures,
   EMPTY_DATA,
   OperationType,
-} from '../../../lib';
+} from '../../../src';
 
 const expectedMessage = {
   from: '0x',

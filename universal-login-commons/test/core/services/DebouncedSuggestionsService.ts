@@ -1,9 +1,9 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {sleep} from '../../../lib';
-import {DebouncedSuggestionsService} from '../../../lib/core/services/DebouncedSuggestionsService';
-import {SuggestionsService} from '../../../lib/core/services/SuggestionsService';
+import {sleep} from '../../../src';
+import {DebouncedSuggestionsService} from '../../../src/core/services/DebouncedSuggestionsService';
+import {SuggestionsService} from '../../../src/core/services/SuggestionsService';
 
 chai.use(sinonChai);
 

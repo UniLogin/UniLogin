@@ -1,10 +1,10 @@
 import chai, {expect} from 'chai';
 import {providers, Wallet, utils, Contract, ethers} from 'ethers';
 import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
-import {BalanceChecker} from '../../../lib/integration/ethereum/BalanceChecker';
-import {ETHER_NATIVE_TOKEN} from '../../../lib/core/constants/constants';
+import {BalanceChecker} from '../../../src/integration/ethereum/BalanceChecker';
+import {ETHER_NATIVE_TOKEN} from '../../../src/core/constants/constants';
 import MockToken from '../../fixtures/MockToken.json';
-import {TEST_ACCOUNT_ADDRESS} from '../../../lib/core/constants/test';
+import {TEST_ACCOUNT_ADDRESS} from '../../../src/core/constants/test';
 import {WeiPerEther} from 'ethers/constants';
 
 chai.use(solidity);

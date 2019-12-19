@@ -2,7 +2,7 @@ import {utils, Contract, providers} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import ENS from '../../contracts/ENS.json';
 import PublicResolver from '../../contracts/PublicResolver.json';
-import {Nullable} from '../../core/types/common.js';
+import {Nullable} from '../../core/types/common';
 
 export const resolveName = async (
   provider: providers.Provider,

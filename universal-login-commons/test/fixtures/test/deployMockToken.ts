@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {deployMockToken} from '../deployMockToken';
 import {utils} from 'ethers';
 import {createMockProvider, createFixtureLoader} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS} from '../../../lib';
+import {TEST_ACCOUNT_ADDRESS} from '../../../src';
 
 describe('deployMockToken', () => {
   it('should deploy mock token', async () => {

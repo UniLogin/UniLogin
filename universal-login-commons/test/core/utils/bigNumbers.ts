@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {normalizeBigNumber} from '../../../lib/core/utils/bigNumbers';
+import {normalizeBigNumber} from '../../../src/core/utils/bigNumbers';
 import {BigNumber} from 'ethers/utils';
 import {solidity} from 'ethereum-waffle';
 

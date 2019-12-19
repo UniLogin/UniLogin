@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import {SuggestionsService} from '../../../lib/core/services/SuggestionsService';
+import {SuggestionsService} from '../../../src/core/services/SuggestionsService';
 import sinon from 'sinon';
-import {WalletSuggestionAction} from '../../../lib';
+import {WalletSuggestionAction} from '../../../src';
 
 const domains = ['my.eth', 'uni.eth', 'app.eth'];
 

@@ -10,7 +10,7 @@ import {
   EMPTY_DATA,
   calculateMessageSignature,
   OperationType,
-} from '../../../lib';
+} from '../../../src';
 
 describe('UNIT: Parsing Transaction', () => {
   const message = {

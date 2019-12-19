@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {GasDataComputation} from '../../../lib/core/utils/messages/computeGasData';
+import {GasDataComputation} from '../../../src/core/utils/messages/computeGasData';
 
 describe('UNIT: GasDataComputation', async () => {
   describe('before Istanbul', () => {
