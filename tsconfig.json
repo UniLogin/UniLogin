@@ -16,9 +16,9 @@
   "exclude": [
     "**/build",
     "**/dist",
-    "@universal-login/commons/lib**",
-    "@universal-login/relayer/lib**",
-    "@universal-login/sdk/lib**",
+    "@universal-login/commons/src**",
+    "@universal-login/relayer/src**",
+    "@universal-login/sdk/src**",
     "@universal-login/react/src**",
     "@universal-login/ops/src**"
   ]

@@ -4,10 +4,10 @@ import {utils, providers, Contract, Wallet} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, TEST_TOKEN_DETAILS, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
 import {deployMockToken} from '@universal-login/commons/testutils';
-import UniversalLoginSDK from '../../../lib/api/sdk';
-import {WalletService} from '../../../lib/core/services/WalletService';
-import {TransferService} from '../../../lib/core/services/TransferService';
-import {TokensDetailsStore} from '../../../lib/core/services/TokensDetailsStore';
+import UniversalLoginSDK from '../../../src/api/sdk';
+import {WalletService} from '../../../src/core/services/WalletService';
+import {TransferService} from '../../../src/core/services/TransferService';
+import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
 import {createAndSetWallet, createWallet} from '../../helpers/createWallet';
 import {setupSdk} from '../../helpers/setupSdk';
 

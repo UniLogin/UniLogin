@@ -4,8 +4,8 @@ import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils, Wallet} from 'ethers';
 import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {TransferService} from '../../../lib/core/services/TransferService';
-import {encodeERC20Transfer} from '../../../lib/core/utils/encodeTransferToMessage';
+import {TransferService} from '../../../src/core/services/TransferService';
+import {encodeERC20Transfer} from '../../../src/core/utils/encodeTransferToMessage';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);

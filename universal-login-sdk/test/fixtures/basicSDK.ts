@@ -4,7 +4,7 @@ import {TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import UniversalLoginSDK from '../../lib/api/sdk';
+import UniversalLoginSDK from '../../src/api/sdk';
 import {createWallet} from '../helpers/createWallet';
 
 export default async function basicSDK(givenProvider: providers.Provider, wallets: Wallet[]) {

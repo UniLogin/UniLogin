@@ -3,8 +3,8 @@ import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import UniversalLoginSDK from '../../../lib';
-import {getTargetAddress} from '../../../lib/core/utils/getTargetAddress';
+import UniversalLoginSDK from '../../../src';
+import {getTargetAddress} from '../../../src/core/utils/getTargetAddress';
 import {setupSdk, createWallet} from '../../helpers';
 
 describe('getTargetAddress', () => {

@@ -6,7 +6,7 @@ import {Contract, Wallet} from 'ethers';
 import basicSDK from '../fixtures/basicSDK';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {walletFromBrain, DEFAULT_GAS_PRICE} from '@universal-login/commons';
-import {DeployedWallet} from '../../lib';
+import {DeployedWallet} from '../../src';
 
 chai.use(solidity);
 chai.use(sinonChai);

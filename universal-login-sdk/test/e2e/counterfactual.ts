@@ -5,7 +5,7 @@ import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_
 import {emptyMessage} from '@universal-login/contracts/testutils';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
-import UniversalLoginSDK from '../../lib/api/sdk';
+import UniversalLoginSDK from '../../src/api/sdk';
 
 chai.use(solidity);
 

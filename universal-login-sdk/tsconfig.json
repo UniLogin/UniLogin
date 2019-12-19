@@ -10,7 +10,7 @@
     ]
   },
   "include": [
-    "lib",
+    "src",
     "test"
   ]
 }

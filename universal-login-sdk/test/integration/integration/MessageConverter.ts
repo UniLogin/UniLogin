@@ -4,7 +4,7 @@ import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
 import {setupWalletContract} from '@universal-login/contracts/testutils';
-import {MessageConverter} from '../../../lib/core/services/MessageConverter';
+import {MessageConverter} from '../../../src/core/services/MessageConverter';
 
 describe('MessageConverter', () => {
   let messageConverter: MessageConverter;

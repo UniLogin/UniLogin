@@ -1,8 +1,8 @@
 {
   "name": "@universal-login/web3",
   "version": "0.4.2",
-  "main": "dist/lib/index.js",
-  "types": "dist/lib/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "license": "MIT",
   "dependencies": {
     "@universal-login/commons": "0.4.2",
@@ -21,13 +21,13 @@
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "tsc --build tsconfig.json && cpx \"lib/ui/assets/**/*\" dist/lib/ui/assets && cpx \"lib/ui/styles/**/*\" dist/lib/ui/styles",
-    "lint": "eslint '{lib,test}/**/*.{ts,tsx}'",
+    "build": "tsc --build tsconfig.json && cpx \"src/ui/assets/**/*\" dist/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/src/ui/styles",
+    "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/test/config -t 10000 \"dist/test/**/*.js\"",
     "clean": "rimraf dist",
     "start": "webpack-dev-server --mode development",
-    "start:example": "ts-node lib/scripts/dev-start.ts"
+    "start:example": "ts-node src/scripts/dev-start.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",

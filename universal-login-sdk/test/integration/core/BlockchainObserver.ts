@@ -7,8 +7,8 @@ import basicSDK from '../../fixtures/basicSDK';
 import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {createWallet} from '../../helpers';
-import UniversalLoginSDK from '../../../lib';
-import BlockchainObserver from '../../../lib/core/observers/BlockchainObserver';
+import UniversalLoginSDK from '../../../src';
+import BlockchainObserver from '../../../src/core/observers/BlockchainObserver';
 
 chai.use(solidity);
 chai.use(sinonChai);

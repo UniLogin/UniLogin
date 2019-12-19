@@ -1,10 +1,10 @@
 import {AssertionError, expect} from 'chai';
 import sinon from 'sinon';
-import {WalletSerializer} from '../../../lib/core/services/WalletSerializer';
+import {WalletSerializer} from '../../../src/core/services/WalletSerializer';
 import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure, TEST_TRANSACTION_HASH} from '@universal-login/commons';
-import {DeployedWallet, DeployingWallet, FutureWallet} from '../../../lib';
+import {DeployedWallet, DeployingWallet, FutureWallet} from '../../../src';
 import {Wallet} from 'ethers';
-import {ConnectingWallet} from '../../../lib/api/wallet/ConnectingWallet';
+import {ConnectingWallet} from '../../../src/api/wallet/ConnectingWallet';
 
 describe('UNIT: WalletSerializer', () => {
   const mockSDK = {provider: Wallet.createRandom(),

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {retry} from '../../../lib/core/utils/retry';
+import {retry} from '../../../src/core/utils/retry';
 
 describe('UNIT: Retry function', async () => {
   let result: boolean;

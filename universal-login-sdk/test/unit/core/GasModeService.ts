@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import {TokensPrices, TEST_TOKEN_DETAILS} from '@universal-login/commons';
-import {GasModeService} from '../../../lib/core/services/GasModeService';
+import {GasModeService} from '../../../src/core/services/GasModeService';
 import {utils} from 'ethers';
 
 chai.use(sinonChai);

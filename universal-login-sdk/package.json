@@ -1,8 +1,8 @@
 {
   "name": "@universal-login/sdk",
   "version": "0.4.2",
-  "main": "dist/lib/index.js",
-  "types": "dist/lib/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "license": "MIT",
   "dependencies": {
     "@restless/sanitizers": "^0.2.2",
@@ -19,7 +19,7 @@
   "scripts": {
     "prebuild": "yarn clean",
     "build": "tsc",
-    "lint": "eslint '{lib,test}/**/*.{ts,js}'",
+    "lint": "eslint '{src,test}/**/*.{ts,js}'",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/test/**/*.js\"",
     "clean": "rimraf dist"

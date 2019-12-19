@@ -2,12 +2,12 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
 import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, ApplicationWallet, TEST_MESSAGE_HASH, ETHER_NATIVE_TOKEN, TEST_TRANSACTION_HASH} from '@universal-login/commons';
-import {WalletService} from '../../../lib/core/services/WalletService';
+import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, constants} from 'ethers';
-import {DeployedWallet} from '../../../lib/api/wallet/DeployedWallet';
-import {FutureWallet} from '../../../lib/api/wallet/FutureWallet';
-import {SerializedWalletState} from '../../../lib/core/models/WalletService';
-import {DeployingWallet} from '../../../lib';
+import {DeployedWallet} from '../../../src/api/wallet/DeployedWallet';
+import {FutureWallet} from '../../../src/api/wallet/FutureWallet';
+import {SerializedWalletState} from '../../../src/core/models/WalletService';
+import {DeployingWallet} from '../../../src';
 
 chai.use(chaiAsPromised);
 

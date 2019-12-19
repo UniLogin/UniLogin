@@ -8,7 +8,7 @@ import Proxy from '@universal-login/contracts/build/WalletProxy.json';
 import {signRelayerRequest, Message, GAS_BASE, Device, SdkExecutionOptions, PartialRequired, TEST_EXECUTION_OPTIONS, TEST_SDK_CONFIG} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
-import UniversalLoginSDK from '../../lib/api/sdk';
+import UniversalLoginSDK from '../../src/api/sdk';
 
 chai.use(solidity);
 chai.use(sinonChai);

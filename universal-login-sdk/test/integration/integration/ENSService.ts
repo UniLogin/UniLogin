@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {providers, utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {basicENS} from '@universal-login/commons/testutils';
-import {ENSService} from '../../../lib/integration/ethereum/ENSService';
+import {ENSService} from '../../../src/integration/ethereum/ENSService';
 
 describe('INT: ENSService', async () => {
   let ensAddress: string;

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {FeatureFlagsService} from '../../../lib/core/services/FeatureFlagsService';
-import {Feature} from '../../../lib/core/models/Feature';
+import {FeatureFlagsService} from '../../../src/core/services/FeatureFlagsService';
+import {Feature} from '../../../src/core/models/Feature';
 
 describe('FeatureFlagService', () => {
   let service: FeatureFlagsService;

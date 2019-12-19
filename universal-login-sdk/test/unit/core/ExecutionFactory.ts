@@ -4,8 +4,8 @@ import {utils} from 'ethers';
 import {TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
 import {messageToSignedMessage} from '@universal-login/contracts';
 import {emptyMessage} from '@universal-login/contracts/testutils';
-import {ExecutionFactory} from '../../../lib/core/services/ExecutionFactory';
-import {RelayerApi} from '../../../lib/integration/http/RelayerApi';
+import {ExecutionFactory} from '../../../src/core/services/ExecutionFactory';
+import {RelayerApi} from '../../../src/integration/http/RelayerApi';
 
 describe('UNIT: ExecutionFactory', async () => {
   let executionFactory: ExecutionFactory;

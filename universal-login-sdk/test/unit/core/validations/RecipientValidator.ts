@@ -2,9 +2,9 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {utils} from 'ethers';
 import {TEST_ACCOUNT_ADDRESS, TransferDetails} from '@universal-login/commons';
-import {RecipientValidator} from '../../../../lib/core/services/validations/RecipientValidator';
-import {TransferErrors} from '../../../../lib/core/services/validations/Validator';
-import UniversalLoginSDK from '../../../../lib';
+import {RecipientValidator} from '../../../../src/core/services/validations/RecipientValidator';
+import {TransferErrors} from '../../../../src/core/services/validations/Validator';
+import UniversalLoginSDK from '../../../../src';
 import {AddressZero} from 'ethers/constants';
 
 const TEST_TRANSFER_DETAILS: TransferDetails = {
