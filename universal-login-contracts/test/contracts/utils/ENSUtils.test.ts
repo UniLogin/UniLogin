@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import TestableENSUtils from '../../../contracts/TestableENSUtils.json';
+import TestableENSUtils from '../../../dist/contracts/TestableENSUtils.json';
 import {deployContract, loadFixture} from 'ethereum-waffle';
 import {utils, providers, Wallet, Contract} from 'ethers';
 import {lookupAddress} from '../../helpers/lookupAddress';

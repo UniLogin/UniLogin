@@ -4,7 +4,7 @@ import {basicENS} from '@universal-login/commons/testutils';
 import DomainRegistrar from '../../src/ENS/DomainRegistrar';
 import ENSNameRegistrar from '../../src/ENS/ENSNameRegistrar';
 import {utils, Contract, Wallet} from 'ethers';
-import PublicResolver from '@universal-login/contracts/contracts/PublicResolver.json';
+import PublicResolver from '@universal-login/contracts/dist/contracts/PublicResolver.json';
 import {loadFixture} from 'ethereum-waffle';
 
 chai.use(require('chai-string'));

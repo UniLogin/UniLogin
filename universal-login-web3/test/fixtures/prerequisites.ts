@@ -1,6 +1,6 @@
 import {providers, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import MockToken from '@universal-login/contracts/contracts/MockToken.json';
+import MockToken from '@universal-login/contracts/dist/contracts/MockToken.json';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import ENSBuilder from 'ens-builder';
 

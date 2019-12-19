@@ -14,7 +14,7 @@
     "prebuild": "yarn clean",
     "build": "yarn build:contracts && yarn build:ts",
     "build:cjs": "tsc --outDir dist/cjs",
-    "build:contracts": "waffle .waffle.js",
+    "build:contracts": "mkdir -p dist/contracts && waffle .waffle.js",
     "build:ts": "yarn build:cjs",
     "test": "yarn build:ts && yarn test:nobuild",
     "test:nobuild": "mocha -t 10000 \"dist/cjs/test/**/*.js\"",

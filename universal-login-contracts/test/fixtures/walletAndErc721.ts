@@ -1,7 +1,7 @@
 import {providers, Wallet} from 'ethers';
 import {setupWalletContract} from './walletContract';
 import {deployContract} from 'ethereum-waffle';
-import MockNFToken from '../../contracts/MockNFToken.json';
+import MockNFToken from '../../dist/contracts/MockNFToken.json';
 
 export async function walletAndErc721(provider: providers.Provider, [wallet]: Wallet[]) {
   const {proxyWallet} = await setupWalletContract(wallet);

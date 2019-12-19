@@ -4,7 +4,7 @@ import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG} from '@universal-login/commons';
 import {emptyMessage} from '@universal-login/contracts/testutils';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import ProxyContract from '@universal-login/contracts/contracts/WalletProxy.json';
+import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
 import UniversalLoginSDK from '../../src/api/sdk';
 
 chai.use(solidity);

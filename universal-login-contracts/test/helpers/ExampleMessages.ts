@@ -1,9 +1,9 @@
 import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION, DEFAULT_GAS_PRICE, GAS_FIXED, OperationType, EMPTY_DATA, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {utils, Wallet, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import MockContract from '../../contracts/MockContract.json';
+import MockContract from '../../dist/contracts/MockContract.json';
 import {encodeFunction, getExecutionArgs} from '../helpers/argumentsEncoding';
-import Loop from '../../contracts/Loop.json';
+import Loop from '../../dist/contracts/Loop.json';
 import {calculateBaseGas} from '../../src/estimateGas';
 import {calculatePaymentOptions} from '../helpers/calculations';
 import {AddressZero} from 'ethers/constants';

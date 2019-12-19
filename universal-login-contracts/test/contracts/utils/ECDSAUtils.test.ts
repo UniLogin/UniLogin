@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import ECDSAUtils from '../../../contracts/ECDSAUtils.json';
+import ECDSAUtils from '../../../dist/contracts/ECDSAUtils.json';
 import {Contract, utils} from 'ethers';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {calculateMessageHash, UnsignedMessage, TEST_MESSAGE_HASH, signHexString, concatenateSignatures} from '@universal-login/commons';

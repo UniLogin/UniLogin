@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, signRelayerRequest, DEPLOYMENT_REFUND, TEST_APPLICATION_INFO, getDeployData} from '@universal-login/commons';
-import ProxyContract from '@universal-login/contracts/contracts/WalletProxy.json';
+import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
 import {startRelayerWithRefund, createWalletCounterfactually, getInitData} from '../helpers/http';
 import Relayer from '../../src';
 import {waitForDeploymentStatus} from '../helpers/waitForDeploymentStatus';

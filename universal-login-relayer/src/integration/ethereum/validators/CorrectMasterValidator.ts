@@ -1,6 +1,6 @@
 import {utils, Contract} from 'ethers';
 import {Provider} from 'ethers/providers';
-import WalletProxy from '@universal-login/contracts/contracts/WalletProxy.json';
+import WalletProxy from '@universal-login/contracts/dist/contracts/WalletProxy.json';
 import {ContractWhiteList, SignedMessage, ensure, IMessageValidator} from '@universal-login/commons';
 import {InvalidMaster} from '../../../core/utils/errors';
 

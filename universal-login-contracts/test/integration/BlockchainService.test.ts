@@ -3,7 +3,7 @@ import {getWallets, loadFixture} from 'ethereum-waffle';
 import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS} from '@universal-login/commons';
 import {mockProviderWithBlockNumber} from '@universal-login/commons/testutils';
 import {deployWalletContract} from '../../src/beta2/deployMaster';
-import WalletContract from '../../contracts/Wallet.json';
+import WalletContract from '../../dist/contracts/Wallet.json';
 import {BlockchainService} from '../../src/integration/BlockchainService';
 import {providers, Contract, Wallet} from 'ethers';
 import walletAndProxy from '../fixtures/walletAndProxy';

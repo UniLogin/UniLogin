@@ -1,4 +1,4 @@
-import WalletContract from '@universal-login/contracts/contracts/Wallet.json';
+import WalletContract from '@universal-login/contracts/dist/contracts/Wallet.json';
 import {getContractHash} from '@universal-login/commons';
 import {deployWalletContract} from '@universal-login/contracts';
 import {Wallet} from 'ethers';

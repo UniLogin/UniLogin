@@ -1,4 +1,4 @@
-import KeyHolder from '../../contracts/TestableKeyHolder.json';
+import KeyHolder from '../../dist/contracts/TestableKeyHolder.json';
 import {Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {Provider} from 'ethers/providers';

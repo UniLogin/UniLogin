@@ -7,7 +7,7 @@ import {basicENS} from '@universal-login/commons/testutils';
 import {deployGnosisSafe, deployProxyFactory} from '../../../src/gnosis-safe@1.1.1/deployContracts';
 import {encodeDataForSetup} from '../../../src/gnosis-safe@1.1.1/encode';
 import {computeGnosisCounterfactualAddress} from '../../../src/gnosis-safe@1.1.1/utils';
-import ENSUtils from '../../../contracts/TestableENSUtils.json';
+import ENSUtils from '../../../dist/contracts/TestableENSUtils.json';
 
 describe('GnosisSafe', async () => {
   const domain = 'mylogin.eth';

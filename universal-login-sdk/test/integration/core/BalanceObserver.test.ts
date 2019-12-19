@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
 import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails, normalizeBigNumber} from '@universal-login/commons';
-import MockToken from '@universal-login/contracts/contracts/MockToken.json';
+import MockToken from '@universal-login/contracts/dist/contracts/MockToken.json';
 import {BalanceObserver} from '../../../src/core/observers/BalanceObserver';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
 

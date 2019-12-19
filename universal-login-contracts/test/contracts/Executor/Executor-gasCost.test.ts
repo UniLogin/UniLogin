@@ -6,7 +6,7 @@ import {calculateMessageSignature, KeyPair, SignedMessagePaymentOptions} from '@
 import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage, callMessage} from '../../helpers/ExampleMessages';
 import {getExecutionArgs} from '../../helpers/argumentsEncoding';
-import MockToken from '../../../contracts/MockToken.json';
+import MockToken from '../../../dist/contracts/MockToken.json';
 import {calculatePaymentOptions} from '../../helpers/calculations';
 
 chai.use(chaiAsPromised);

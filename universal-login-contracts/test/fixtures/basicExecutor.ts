@@ -1,6 +1,6 @@
-import Executor from '../../contracts/TestableExecutor.json';
-import MockToken from '../../contracts/MockToken.json';
-import MockContract from '../../contracts/MockContract.json';
+import Executor from '../../dist/contracts/TestableExecutor.json';
+import MockToken from '../../dist/contracts/MockToken.json';
+import MockContract from '../../dist/contracts/MockContract.json';
 import {utils, Wallet, providers} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {sortPrivateKeysByAddress, createKeyPair} from '@universal-login/commons';

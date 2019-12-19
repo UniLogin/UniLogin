@@ -1,5 +1,5 @@
 module.exports = {
-  targetPath: './contracts',
+  targetPath: './dist/contracts',
   npmPath: "../node_modules",
   compiler: process.env.WAFFLE_COMPILER,
   solcVersion: 'v0.5.10+commit.5a6ea5b1',

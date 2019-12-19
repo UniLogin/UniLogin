@@ -5,7 +5,7 @@ import {utils, Contract, providers, Wallet} from 'ethers';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair, Message, DEFAULT_GAS_LIMIT, OperationType} from '@universal-login/commons';
 import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage} from '../../helpers/ExampleMessages';
-import Loop from '../../../contracts/Loop.json';
+import Loop from '../../../dist/contracts/Loop.json';
 import {encodeFunction} from '../../helpers/argumentsEncoding';
 import {encodeDataForExecuteSigned} from '../../../src/beta2/encode';
 import {messageToSignedMessage} from '../../../src/message';
