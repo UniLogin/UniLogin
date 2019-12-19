@@ -11,7 +11,7 @@
     "clean": "rimraf dist",
     "build": "tsc -p tsconfig.json && cpx \"src/ui/assets/**/*\" dist/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/src/ui/styles",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/test/config -t 10000 --exit \"dist/test/**/*.js\"",
+    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/test/testconfig -t 10000 --exit \"dist/test/**/*.js\"",
     "start:dev": "ts-node scripts/dev-start.ts"
   },
   "dependencies": {
