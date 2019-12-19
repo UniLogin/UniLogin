@@ -10,7 +10,7 @@
     "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "clean": "rimraf dist",
     "build": "yarn build:cjs",
-    "build:cjs": "tsc --outDir dist/cjs/ -p tsconfig.json && cpx \"src/ui/assets/**/*\" dist/cjs/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/cjs/src/ui/styles",
+    "build:cjs": "tsc --outDir dist/cjs/ && cpx \"src/ui/assets/**/*\" dist/cjs/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/cjs/src/ui/styles",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/cjs/test/testconfig -t 10000 --exit \"dist/cjs/test/**/*.js\"",
     "start:dev": "ts-node scripts/dev-start.ts"
