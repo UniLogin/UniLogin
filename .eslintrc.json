@@ -329,7 +329,7 @@
       "patterns": [
         "@universal-login/*/*",
         "!@universal-login/*/testutils",
-        "!@universal-login/contracts/build"
+        "!@universal-login/contracts/contracts"
       ]
     }],
     "no-use-before-define": [
