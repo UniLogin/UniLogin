@@ -23,7 +23,7 @@
     "chai-as-promised": "^7.1.1",
     "ens-builder": "^2.0.1",
     "eslint": "^6.5.0",
-    "ethereum-waffle": "^2.1.0",
+    "ethereum-waffle": "^2.1.2",
     "lodash.range": "^3.2.0",
     "node-fetch": "^2.6.0",
     "rimraf": "^2.6.3",

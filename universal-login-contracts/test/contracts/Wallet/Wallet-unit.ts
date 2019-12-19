@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {utils, Contract, Wallet} from 'ethers';
 import WalletContract from '../../../build/TestableWallet.json';
-import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, TEST_OVERRIDES_FOR_REVERT} from '@universal-login/commons';
 
 describe('UNIT: WalletContract', () => {
   let walletContract: Contract;
@@ -23,15 +23,15 @@ describe('UNIT: WalletContract', () => {
     });
 
     it('fail to change the amount of required signatures if the amount is equal to the actual amount', async () => {
-      await expect(walletContract.setRequiredSignatures(1)).to.be.revertedWith('Invalid required signature');
+      await expect(walletContract.setRequiredSignatures(1, TEST_OVERRIDES_FOR_REVERT)).to.be.revertedWith('Invalid required signature');
     });
 
     it('fail to change the amount of required signatures if the new amount 0', async () => {
-      await expect(walletContract.setRequiredSignatures(0)).to.be.revertedWith('Invalid required signature');
+      await expect(walletContract.setRequiredSignatures(0, TEST_OVERRIDES_FOR_REVERT)).to.be.revertedWith('Invalid required signature');
     });
 
     it('fail to change the amount of required signatures if the new amount is higher than keyCount', async () => {
-      await expect(walletContract.setRequiredSignatures(await walletContract.keyCount() + 1)).to.be.revertedWith('Signatures exceed owned keys number');
+      await expect(walletContract.setRequiredSignatures(await walletContract.keyCount() + 1, TEST_OVERRIDES_FOR_REVERT)).to.be.revertedWith('Signatures exceed owned keys number');
     });
   });
 });

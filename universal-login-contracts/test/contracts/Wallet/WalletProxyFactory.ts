@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {Contract, providers, utils, Wallet} from 'ethers';
 import {deployContract, getWallets, loadFixture, solidity} from 'ethereum-waffle';
-import {createKeyPair, DEPLOYMENT_REFUND, ETHER_NATIVE_TOKEN, signString} from '@universal-login/commons';
+import {createKeyPair, DEPLOYMENT_REFUND, ETHER_NATIVE_TOKEN, TEST_OVERRIDES_FOR_REVERT, signString} from '@universal-login/commons';
 import MockToken from '../../../build/MockToken.json';
 import {encodeInitializeWithENSData} from '../../../src';
 import {createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, EnsDomainData} from '../../helpers/FutureDeployment';
@@ -57,7 +57,7 @@ describe('Counterfactual Factory', () => {
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
     const newKeyPair = createKeyPair();
     ({initializeData, signature} = createFutureDeploymentWithENS({...createFutureDeploymentArgs, keyPair: newKeyPair}));
-    await expect(factoryContract.createContract(newKeyPair.publicKey, initializeData, signature)).to.be.revertedWith('Unable to register ENS domain');
+    await expect(factoryContract.createContract(newKeyPair.publicKey, initializeData, signature, TEST_OVERRIDES_FOR_REVERT)).to.be.revertedWith('Unable to register ENS domain');
   });
 
   it('only owner can create contract', async () => {
@@ -79,7 +79,7 @@ describe('Counterfactual Factory', () => {
     const argsWithCorrectName = await setupInitializeWithENSArgs(createFutureDeploymentArgs);
     const argsWithInvalidName = switchENSNameInInitializeArgs(argsWithCorrectName, 'invalid-name');
     const initData = encodeInitializeWithENSData(argsWithInvalidName);
-    await expect(factoryContract.createContract(keyPair.publicKey, initData, signature)).to.be.revertedWith('Invalid signature');
+    await expect(factoryContract.createContract(keyPair.publicKey, initData, signature, TEST_OVERRIDES_FOR_REVERT)).to.be.revertedWith('Invalid signature');
   });
 
   it('isValidSignature', async () => {
