@@ -24,7 +24,7 @@
     "build": "tsc --build tsconfig.json && cpx \"src/ui/assets/**/*\" dist/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/src/ui/styles",
     "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/test/config -t 10000 \"dist/test/**/*.js\"",
+    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/test/testconfig -t 10000 \"dist/test/**/*.js\"",
     "clean": "rimraf dist",
     "start": "webpack-dev-server --mode development",
     "start:example": "ts-node src/scripts/dev-start.ts"
