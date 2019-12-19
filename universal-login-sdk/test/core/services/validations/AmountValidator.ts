@@ -49,6 +49,6 @@ describe('UNIT: AmountValidator', () => {
 
   it('balance too low with fee', () => {
     new AmountValidator('1').validate({...TEST_TRANSFER_DETAILS, transferToken: '0x', amount: '1'}, errors);
-    expect(errors).to.deep.eq({amount: ['Insufficient funds. Sending 1.0 eth + 0.0002 eth fee, got only 1.0 eth'], to: []});
+    expect(errors).to.deep.eq({amount: ['Insufficient funds. Sending 1.0 eth + 0.000095 eth fee, got only 1.0 eth'], to: []});
   });
 });
