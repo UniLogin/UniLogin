@@ -11,4 +11,9 @@ export class WalletContractService {
     const requiredSignatures = await walletContract.requiredSignatures();
     return requiredSignatures;
   }
+
+  async keyExist(walletAddress: string, key: string) {
+    const walletContract = new Contract(walletAddress, WalletContractInterface, this.provider);
+    return walletContract.keyExist(key);
+  }
 }
