@@ -4,7 +4,7 @@
 /node_modules
 /universal-login-commons/dist/*
 /universal-login-commons/node_modules/*
-/universal-login-contracts/build/
+/universal-login-contracts/contracts/
 /universal-login-contracts/dist/
 /universal-login-contracts/node_modules
 /universal-login-contracts/yarn-error.log

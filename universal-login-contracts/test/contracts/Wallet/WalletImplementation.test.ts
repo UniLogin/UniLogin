@@ -3,7 +3,7 @@ import {loadFixture, deployContract, getWallets} from 'ethereum-waffle';
 import {basicENS} from '@universal-login/commons/testutils';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {createKeyPair, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, computeContractAddress, TEST_OVERRIDES_FOR_REVERT} from '@universal-login/commons';
-import WalletContract from '../../../build/Wallet.json';
+import WalletContract from '../../../contracts/Wallet.json';
 
 describe('WalletImplementation', () => {
   let provider: providers.Provider;

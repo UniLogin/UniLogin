@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import {Contract, providers, utils, Wallet} from 'ethers';
 import {deployContract, getWallets, loadFixture, solidity} from 'ethereum-waffle';
 import {createKeyPair, DEPLOYMENT_REFUND, ETHER_NATIVE_TOKEN, TEST_OVERRIDES_FOR_REVERT, signString} from '@universal-login/commons';
-import MockToken from '../../../build/MockToken.json';
+import MockToken from '../../../contracts/MockToken.json';
 import {encodeInitializeWithENSData} from '../../../src';
 import {createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, EnsDomainData} from '../../helpers/FutureDeployment';
 import {ensAndMasterFixture} from '../../fixtures/walletContract';

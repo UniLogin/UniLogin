@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import StringUtils from '../../../build/StringUtils.json';
+import StringUtils from '../../../contracts/StringUtils.json';
 import {Contract} from 'ethers';
 import {BigNumberish, bigNumberify} from 'ethers/utils';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
