@@ -139,7 +139,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   it('Counterfactual deployment fail if invalid ENS name', async () => {
     const invalidEnsName = 'myname.non-existing.eth';
     contractAddress = computeCounterfactualAddress(factoryContract.address, keyPair.publicKey, initCode);
-    await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')})
+    await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
     const initData = await getInitData(keyPair, invalidEnsName, ensAddress, provider, TEST_GAS_PRICE);
     signature = await calculateInitializeSignature(initData, keyPair.privateKey);
     const result = await chai.request(relayerUrl)

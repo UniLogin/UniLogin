@@ -70,7 +70,7 @@ describe('INT: WalletService', async () => {
       await expect(creationPromise).to.be.rejectedWith('Not enough gas');
     });
 
-    it('setup initializ data', async () => {
+    it('setup initialize data', async () => {
       const {publicKey} = createKeyPair();
       const ensName = 'qwertyuiop.mylogin.eth';
       const initializeData = await walletService.setupInitializeData({publicKey, ensName, gasPrice: '1', gasToken: ETHER_NATIVE_TOKEN.address});
