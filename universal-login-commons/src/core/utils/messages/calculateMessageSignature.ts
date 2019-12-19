@@ -2,6 +2,8 @@ import {utils, Wallet} from 'ethers';
 import {UnsignedMessage} from '../../models/message';
 import {signHexString} from '../signatures';
 import {DeployArgs} from '../../models/deploy';
+import {ensure} from '../errors/heplers';
+import {isProperHexString} from '../hexStrings';
 
 export const calculateDeployHash = (msg: DeployArgs) => {
   return utils.solidityKeccak256(
@@ -27,14 +29,9 @@ export const calculateMessageSignatures = (privateKeys: string[], msg: UnsignedM
   return concatenateSignatures(signatures);
 };
 
-export const removePrefix = (value: string) => {
-  const signature = value;
-  if (value.length !== 132) {
-    throw new Error(`Invalid signature length: ${signature} should be 132`);
-  }
-  if (value.indexOf('0x') !== 0) {
-    throw new Error(`Invalid Signature: ${signature} needs prefix 0x`);
-  }
+export const removePrefix = (signature: string) => {
+  ensure(isProperHexString(signature), Error, 'Not a valid hex string');
+  ensure(signature.length === 132, Error, `Invalid signature length: ${signature} should be 132`);
   return signature.slice(2);
 };
 
