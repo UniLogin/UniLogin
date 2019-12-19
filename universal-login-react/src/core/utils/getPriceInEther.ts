@@ -1,12 +1,13 @@
 import {utils} from 'ethers';
 import {WeiPerEther} from 'ethers/constants';
-import {GET_PRICE_IN_ETHER_NORMALIZE_WEI_INTEGER} from '../constants/normalization';
 
 const {parseUnits} = utils;
 
+const DECIMALS_TO_NORMALIZE = 20;
+
 export const getPriceInEther = (priceInFiat: string, etherPriceInFiat: string): utils.BigNumber => {
-  const etherPriceNormalizedToInteger = parseUnits(etherPriceInFiat, GET_PRICE_IN_ETHER_NORMALIZE_WEI_INTEGER);
+  const etherPriceNormalizedToInteger = parseUnits(etherPriceInFiat, DECIMALS_TO_NORMALIZE);
   const etherPriceNormalizedToUnits = etherPriceNormalizedToInteger.div(WeiPerEther.toString());
-  const priceInFiatNormalized = parseUnits(priceInFiat, GET_PRICE_IN_ETHER_NORMALIZE_WEI_INTEGER);
+  const priceInFiatNormalized = parseUnits(priceInFiat, DECIMALS_TO_NORMALIZE);
   return (priceInFiatNormalized).div(etherPriceNormalizedToUnits);
 };
