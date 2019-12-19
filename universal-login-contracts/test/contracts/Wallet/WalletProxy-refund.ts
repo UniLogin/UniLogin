@@ -4,7 +4,7 @@ import {loadFixture, solidity} from 'ethereum-waffle';
 import {transferMessage, createInfiniteCallMessage} from '../../helpers/ExampleMessages';
 import {utils, Contract, providers, Wallet} from 'ethers';
 import {calculateMessageSignature, UnsignedMessage, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
-import {encodeDataForExecuteSigned} from '../../../lib';
+import {encodeDataForExecuteSigned} from '../../../src';
 import {walletContractWithFundsFixture} from '../../fixtures/walletContract';
 import {calculateFinalGasLimit} from '../../helpers/calculations';
 

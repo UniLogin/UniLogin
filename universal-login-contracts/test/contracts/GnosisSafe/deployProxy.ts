@@ -4,9 +4,9 @@ import {AddressZero} from 'ethers/constants';
 import {loadFixture, deployContract} from 'ethereum-waffle';
 import {createKeyPair, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {basicENS} from '@universal-login/commons/testutils';
-import {deployGnosisSafe, deployProxyFactory} from '../../../lib/gnosis-safe@1.1.1/deployContracts';
-import {encodeDataForSetup} from '../../../lib/gnosis-safe@1.1.1/encode';
-import {computeGnosisCounterfactualAddress} from '../../../lib/gnosis-safe@1.1.1/utils';
+import {deployGnosisSafe, deployProxyFactory} from '../../../src/gnosis-safe@1.1.1/deployContracts';
+import {encodeDataForSetup} from '../../../src/gnosis-safe@1.1.1/encode';
+import {computeGnosisCounterfactualAddress} from '../../../src/gnosis-safe@1.1.1/utils';
 import ENSUtils from '../../../build/TestableENSUtils.json';
 
 describe('GnosisSafe', async () => {

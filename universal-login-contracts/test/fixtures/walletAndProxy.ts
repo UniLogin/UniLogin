@@ -5,7 +5,7 @@ import WalletContract from '../../build/Wallet.json';
 import Proxy from '../../build/WalletProxy.json';
 import MockToken from '../../build/MockToken.json';
 import MockContract from '../../build/MockContract.json';
-import {deployWalletContract} from '../../lib';
+import {deployWalletContract} from '../../src';
 
 const {parseEther} = utils;
 

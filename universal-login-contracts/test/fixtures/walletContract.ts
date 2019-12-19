@@ -3,9 +3,9 @@ import {deployContract} from 'ethereum-waffle';
 import {createKeyPair, ETHER_NATIVE_TOKEN, withENS} from '@universal-login/commons';
 import {deployENS} from '@universal-login/commons/testutils';
 import {createFutureDeploymentWithENS} from '../helpers/FutureDeployment';
-import {deployFactory, deployWalletContract} from '../../lib';
+import {deployFactory, deployWalletContract} from '../../src';
 import MockToken from '../../build/MockToken.json';
-import {WalletContractInterface} from '../../lib/interfaces';
+import {WalletContractInterface} from '../../src/interfaces';
 
 export async function setupEnsAndMaster(deployer: Wallet) {
   const {ensAddress, resolverAddress, registrarAddress} = await deployENS(deployer);

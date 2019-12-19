@@ -8,10 +8,10 @@ import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST
 import {getExecutionArgs, setupUpdateMessage} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import UpgradedWallet from '../../../build/UpgradedWallet.json';
-import {encodeDataForExecuteSigned, messageToSignedMessage, messageToUnsignedMessage} from '../../../lib/index';
-import {calculateBaseGas} from '../../../lib/estimateGas';
+import {encodeDataForExecuteSigned, messageToSignedMessage, messageToUnsignedMessage} from '../../../src/index';
+import {calculateBaseGas} from '../../../src/estimateGas';
 import {calculateFinalGasLimit, calculatePaymentOptions, estimateBaseGasForNoSignature} from '../../helpers/calculations';
-import {UpgradedWalletInterface, WalletContractInterface} from '../../../lib/interfaces';
+import {UpgradedWalletInterface, WalletContractInterface} from '../../../src/interfaces';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

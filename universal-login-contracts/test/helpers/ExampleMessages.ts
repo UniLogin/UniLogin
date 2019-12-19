@@ -4,7 +4,7 @@ import {deployContract} from 'ethereum-waffle';
 import MockContract from '../../build/MockContract.json';
 import {encodeFunction, getExecutionArgs} from '../helpers/argumentsEncoding';
 import Loop from '../../build/Loop.json';
-import {calculateBaseGas} from '../../lib/estimateGas';
+import {calculateBaseGas} from '../../src/estimateGas';
 import {calculatePaymentOptions} from '../helpers/calculations';
 import {AddressZero} from 'ethers/constants';
 
