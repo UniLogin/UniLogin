@@ -9,7 +9,7 @@ import basicWalletContractWithMockToken from '../fixtures/basicWalletContractWit
 import MessageSQLRepository from '../../src/integration/sql/services/MessageSQLRepository';
 import {getContractWhiteList} from '../../src/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../src/core/services/execution/messages/MessageStatusService';
-import {SignaturesService} from '../../src/integration/ethereum/SignaturesService';
+import {WalletContractService} from '../../src/integration/ethereum/WalletContractService';
 import MessageExecutionValidator from '../../src/integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../src/integration/ethereum/MessageExecutor';
 import {DevicesStore} from '../../src/integration/sql/services/DevicesStore';
@@ -37,8 +37,8 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const executionQueue = new QueueSQLStore(knex);
   const walletMasterContractService = new WalletMasterContractService(provider);
   const devicesService = new DevicesService(devicesStore, walletMasterContractService);
-  const signaturesService = new SignaturesService(wallet);
-  const statusService = new MessageStatusService(messageRepository, signaturesService);
+  const walletContractService = new WalletContractService(wallet);
+  const statusService = new MessageStatusService(messageRepository, walletContractService);
   const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList());
   const blockchainService = new BlockchainService(provider);
   const gasComputation = new GasComputation(blockchainService);
