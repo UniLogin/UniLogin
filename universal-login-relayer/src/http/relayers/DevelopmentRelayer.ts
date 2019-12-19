@@ -1,7 +1,7 @@
 import {utils, Contract, providers} from 'ethers';
 import {waitToBeMined} from '@universal-login/commons';
 import {Config} from '../../config/relayer';
-import Token from './abi/Token.json.js';
+import Token from './abi/Token.json';
 import Relayer from './Relayer';
 
 export declare interface DevelopmentRelayerConfig extends Config {

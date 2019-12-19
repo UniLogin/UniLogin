@@ -1,7 +1,7 @@
 import {deployContract} from 'ethereum-waffle';
 import WalletContract from '@universal-login/contracts/build/Wallet.json';
 import {deployFactory} from '@universal-login/contracts';
-import Token from '../../src/http/relayers/abi/Token.json.js';
+import Token from '../../src/http/relayers/abi/Token.json';
 import ENSBuilder from 'ens-builder';
 import {getContractWhiteList} from '../../src/http/relayers/RelayerUnderTest';
 import {ETHER_NATIVE_TOKEN, deepMerge} from '@universal-login/commons';
