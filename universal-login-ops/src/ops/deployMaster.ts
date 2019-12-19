@@ -1,4 +1,4 @@
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import WalletContract from '@universal-login/contracts/contracts/Wallet.json';
 import {Wallet, utils} from 'ethers';
 import {deployContractAndWait, TransactionOverrides} from '@universal-login/commons';
 import {CommandOverrides} from '../cli/connectAndExecute';

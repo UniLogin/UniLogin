@@ -8,7 +8,7 @@ import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletCo
 import MessageExecutionValidator from '../../../../../src/integration/ethereum/validators/MessageExecutionValidator';
 import {getContractWhiteList} from '../../../../../src/http/relayers/RelayerUnderTest';
 import {transferMessage} from '../../../../fixtures/basicWalletContract';
-import MockToken from '@universal-login/contracts/build/MockToken.json';
+import MockToken from '@universal-login/contracts/contracts/MockToken.json';
 import {getTestSignedMessage} from '../../../../config/message';
 
 describe('INT: MessageExecutionValidator', async () => {

@@ -1,6 +1,6 @@
 import {Contract, Wallet} from 'ethers';
 import {TransactionOverrides} from '@universal-login/commons';
-import WalletProxyFactory from '@universal-login/contracts/build/WalletProxyFactory.json';
+import WalletProxyFactory from '@universal-login/contracts/contracts/WalletProxyFactory.json';
 
 interface DeployFactoryArgs {
   publicKey: string;

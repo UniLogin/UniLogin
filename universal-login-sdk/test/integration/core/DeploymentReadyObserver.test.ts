@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, sleep, waitUntil} from '@universal-login/commons';
-import MockToken from '@universal-login/contracts/build/MockToken.json';
+import MockToken from '@universal-login/contracts/contracts/MockToken.json';
 import {DeploymentReadyObserver} from '../../../src/core/observers/DeploymentReadyObserver';
 
 describe('INT: DeploymentReadyObserver', () => {

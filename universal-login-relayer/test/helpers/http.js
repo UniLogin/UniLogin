@@ -9,8 +9,8 @@ import {
   TEST_GAS_PRICE,
   waitForContractDeploy,
 } from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import ENS from '@universal-login/contracts/build/ENS.json';
+import WalletContract from '@universal-login/contracts/contracts/Wallet.json';
+import ENS from '@universal-login/contracts/contracts/ENS.json';
 import chai from 'chai';
 import {deployFactory, deployWalletContract, encodeInitializeWithENSData} from '@universal-login/contracts';
 import {getFutureAddress} from '@universal-login/contracts/testutils';

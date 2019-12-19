@@ -1,6 +1,6 @@
 import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import MockToken from '@universal-login/contracts/build/MockToken';
+import MockToken from '@universal-login/contracts/contracts/MockToken';
 import {executeAddKey} from '@universal-login/contracts/testutils';
 import createWalletContract from '../helpers/createWalletContract';
 import {buildEnsService} from '../helpers/buildEnsService';
