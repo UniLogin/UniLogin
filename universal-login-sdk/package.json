@@ -21,7 +21,7 @@
     "build": "tsc --outDir dist/cjs",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/cjstest/**/*.js\"",
+    "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/cjs/test/**/*.js\"",
     "clean": "rimraf dist"
   },
   "devDependencies": {
