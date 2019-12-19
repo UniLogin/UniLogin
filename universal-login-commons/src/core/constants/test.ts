@@ -25,7 +25,10 @@ export const TEST_GAS_PRICE = '1';
 
 export const TEST_GAS_LIMIT = 200000;
 
-export const TEST_TRANSACTION_OVERRIDES = {gasLimit: 1000000};
+/*
+Current ganache version will not revert with proper erros, unless gas is specifed.
+*/
+export const TEST_OVERRIDES_FOR_REVERT = {gasLimit: 1000000};
 
 export const TEST_EXECUTION_OPTIONS = {gasPrice: TEST_GAS_PRICE, gasLimit: TEST_GAS_LIMIT, gasToken: constants.AddressZero};
 

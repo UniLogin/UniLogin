@@ -5,7 +5,7 @@ import {utils, Contract, Wallet} from 'ethers';
 import KeyHolder from '../../../build/KeyHolder.json';
 import MockContract from '../../../build/MockContract.json';
 import testableKeyHolder from '../../fixtures/testableKeyHolder';
-import {createKeyPair, TEST_TRANSACTION_OVERRIDES} from '@universal-login/commons';
+import {createKeyPair, TEST_OVERRIDES_FOR_REVERT} from '@universal-login/commons';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -66,7 +66,7 @@ describe('CONTRACT: KeyHolder', async () => {
 
     it('Contract cannot be a key', async () => {
       const mockContract = await deployContract(wallet, MockContract);
-      await expect(keyHolder.addKey(mockContract.address, TEST_TRANSACTION_OVERRIDES)).to.be.revertedWith('Contract cannot be a key');
+      await expect(keyHolder.addKey(mockContract.address, TEST_OVERRIDES_FOR_REVERT)).to.be.revertedWith('Contract cannot be a key');
     });
   });
 
@@ -124,7 +124,7 @@ describe('CONTRACT: KeyHolder', async () => {
     });
 
     it('won`t remove a non-existing key', async () => {
-      await expect(keyHolder.removeKey(Wallet.createRandom().address, TEST_TRANSACTION_OVERRIDES)).to.be.eventually.rejectedWith('Cannot remove a non-existing key');
+      await expect(keyHolder.removeKey(Wallet.createRandom().address, TEST_OVERRIDES_FOR_REVERT)).to.be.eventually.rejectedWith('Cannot remove a non-existing key');
     });
   });
 });
