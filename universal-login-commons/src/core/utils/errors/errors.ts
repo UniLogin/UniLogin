@@ -31,3 +31,10 @@ export class NotEnoughTokens extends PaymentError {
     Object.setPrototypeOf(this, NotEnoughTokens.prototype);
   }
 }
+
+export class InvalidHexString extends Error {
+  constructor(hexString: string) {
+    super(`${hexString} is not a valid hex string`);
+    Object.setPrototypeOf(this, InvalidHexString.prototype);
+  }
+}

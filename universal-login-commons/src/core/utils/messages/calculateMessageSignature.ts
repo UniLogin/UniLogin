@@ -4,6 +4,7 @@ import {signHexString} from '../signatures';
 import {DeployArgs} from '../../models/deploy';
 import {ensure} from '../errors/heplers';
 import {isProperHexString} from '../hexStrings';
+import {InvalidHexString} from '../errors/errors';
 
 export const calculateDeployHash = (msg: DeployArgs) => {
   return utils.solidityKeccak256(
@@ -35,7 +36,7 @@ export const removeSignaturePrefix = (signature: string) => {
 };
 
 export const removeHexStringPrefix = (hexString: string) => {
-  ensure(isProperHexString(hexString), Error, 'Not a valid hex string');
+  ensure(isProperHexString(hexString), InvalidHexString, hexString);
   return hexString.slice(2);
 };
 

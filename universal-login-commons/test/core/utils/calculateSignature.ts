@@ -3,7 +3,7 @@ import {utils, Wallet} from 'ethers';
 import {calculateInitializeWithENSSignature} from '../../../src/core/utils/calculateSignature';
 import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType, UnsignedMessage, calculateMessageSignatures, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_LIMIT_EXECUTION, TEST_ACCOUNT_ADDRESS, createKeyPair, createFullHexString} from '../../../src';
 import {AddressZero} from 'ethers/constants';
-import {removeSignaturePrefix, removeHexStringPrefix} from '../../../lib/core/utils/messages/calculateMessageSignature';
+import {removeSignaturePrefix, removeHexStringPrefix} from '../../../src/core/utils/messages/calculateMessageSignature';
 
 describe('Calculate Signature', () => {
   const name = 'justyna';
@@ -92,7 +92,7 @@ describe('concatenateSignatures', () => {
   it('Should not concatenate two signatures arrays without 0x prefix', () => {
     signature1 = `${signature1.replace('0x', '')}aa`;
     signature2 = `${signature2.replace('0x', '')}aa`;
-    expect(concatenateSignatures.bind(null, [signature1, signature2])).to.throw('Not a valid hex string');
+    expect(concatenateSignatures.bind(null, [signature1, signature2])).to.throw(`${signature1} is not a valid hex string`);
   });
 
   it('Should not concatenate two signatures arrays with invalid length', () => {
@@ -115,12 +115,12 @@ describe('removeSignaturePrefix', () => {
 
   it('throws if signature prefix is invalid', () => {
     const invalidSignature = createFullHexString(65).replace('0x', '11');
-    expect(() => removeSignaturePrefix(invalidSignature)).to.throw('Not a valid hex string');
+    expect(() => removeSignaturePrefix(invalidSignature)).to.throw(`${invalidSignature} is not a valid hex string`);
   });
 
   it('throws if signature is not a valid hex', () => {
     const invalidSignature = `0x${'z'.repeat(130)}`;
-    expect(() => removeSignaturePrefix(invalidSignature)).to.throw('Not a valid hex string');
+    expect(() => removeSignaturePrefix(invalidSignature)).to.throw(`${invalidSignature} is not a valid hex string`);
   });
 
   describe('removeHexStringPrefix', () => {
@@ -131,7 +131,7 @@ describe('removeSignaturePrefix', () => {
 
     it('throws if string is not a valid hex', () => {
       const invalidHexString = `0x${'z'.repeat(130)}`;
-      expect(() => removeHexStringPrefix(invalidHexString)).to.throw('Not a valid hex string');
+      expect(() => removeHexStringPrefix(invalidHexString)).to.throw(`${invalidHexString} is not a valid hex string`);
     });
   });
 });
