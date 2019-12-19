@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {parseDomain, isValidEnsNameElement, isValidEnsName} from '../../../lib/core/utils/ens';
+import {parseDomain, isValidEnsNameElement, isValidEnsName} from '../../../src/core/utils/ens';
 
 describe('UNIT: ENS', () => {
   describe('parseDomain', () => {

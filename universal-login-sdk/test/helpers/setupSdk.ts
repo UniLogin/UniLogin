@@ -1,7 +1,7 @@
 import {Wallet} from 'ethers';
 import {TEST_SDK_CONFIG} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import UniversalLoginSDK from '../../lib/api/sdk';
+import UniversalLoginSDK from '../../src/api/sdk';
 
 export async function setupSdk(deployer: Wallet, overridePort = '33111') {
   const {relayer} = await RelayerUnderTest.createPreconfigured(deployer, overridePort);

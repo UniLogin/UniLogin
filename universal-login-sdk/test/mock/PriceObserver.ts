@@ -1,5 +1,5 @@
-import {PriceObserver} from '../../lib/core/observers/PriceObserver';
-import {TokensDetailsStore} from '../../lib/core/services/TokensDetailsStore';
+import {PriceObserver} from '../../src/core/observers/PriceObserver';
+import {TokensDetailsStore} from '../../src/core/services/TokensDetailsStore';
 
 export const PRICES_BEFORE = {
   ETH: {USD: 218.21, DAI: 194.38, SAI: 194.38, ETH: 0.01893},

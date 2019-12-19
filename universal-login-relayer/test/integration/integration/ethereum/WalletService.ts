@@ -6,8 +6,8 @@ import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, EMPTY_DEVICE_INFO} from '@universal-login/commons';
 import {WalletContractInterface} from '@universal-login/contracts';
 import setupWalletService, {createFutureWallet} from '../../../helpers/setupWalletService';
-import WalletService from '../../../../lib/integration/ethereum/WalletService';
-import ENSService from '../../../../lib/integration/ethereum/ensService';
+import WalletService from '../../../../src/integration/ethereum/WalletService';
+import ENSService from '../../../../src/integration/ethereum/ensService';
 
 chai.use(require('chai-string'));
 chai.use(sinonChai);

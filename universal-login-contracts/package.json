@@ -2,8 +2,8 @@
   "name": "@universal-login/contracts",
   "version": "0.4.2",
   "license": "MIT",
-  "main": "dist/lib/index.js",
-  "types": "dist/lib/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "dependencies": {
     "@universal-login/commons": "0.4.2",
     "ens-builder": "^2.0.0",
@@ -18,7 +18,7 @@
     "test": "yarn build:ts && yarn test:nobuild",
     "test:nobuild": "mocha -t 10000 \"dist/test/**/*.js\"",
     "lint": "yarn lint:js && yarn lint:sol",
-    "lint:js": "eslint '{lib,test}/**/*.{js,ts}'",
+    "lint:js": "eslint '{src,test}/**/*.{js,ts}'",
     "lint:sol": "solium -d contracts",
     "clean": "rimraf build dist"
   },

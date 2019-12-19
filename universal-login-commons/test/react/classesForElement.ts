@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {classesForElement} from '../../lib/react/classesForElement';
+import {classesForElement} from '../../src/react/classesForElement';
 
 const classesForInput = classesForElement('input', 'input');
 

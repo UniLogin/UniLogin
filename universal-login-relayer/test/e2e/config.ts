@@ -3,8 +3,8 @@ import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
 import {PublicRelayerConfig} from '@universal-login/commons';
 import {startRelayer} from '../helpers/http';
-import {getPublicConfig} from '../../lib/http/routes/config';
-import {RelayerUnderTest} from '../../lib';
+import {getPublicConfig} from '../../src/http/routes/config';
+import {RelayerUnderTest} from '../../src';
 
 chai.use(chaiHttp);
 

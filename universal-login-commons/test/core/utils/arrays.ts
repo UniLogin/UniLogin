@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {slices, shuffle, array8bitTo16bit, deepArrayStartWith} from '../../../lib/core/utils/arrays';
+import {slices, shuffle, array8bitTo16bit, deepArrayStartWith} from '../../../src/core/utils/arrays';
 import {utils} from 'ethers';
 
 describe('UNIT: Arrays', () => {

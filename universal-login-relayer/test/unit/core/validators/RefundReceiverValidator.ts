@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {AddressZero} from 'ethers/constants';
 import {TEST_ACCOUNT_ADDRESS, SignedMessage, OperationType} from '@universal-login/commons';
-import {RefundReceiverValidator} from '../../../../lib/core/services/validators/RefundReceiverValidator';
+import {RefundReceiverValidator} from '../../../../src/core/services/validators/RefundReceiverValidator';
 
 describe('RefundReceiverValidator', () => {
   const validator = new RefundReceiverValidator(TEST_ACCOUNT_ADDRESS);

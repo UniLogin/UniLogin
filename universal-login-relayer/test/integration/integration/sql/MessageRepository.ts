@@ -4,15 +4,15 @@ import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair, TEST_ACCOUNT_ADDRESS, UnsignedMessage, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
 import {messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures, emptyMessage} from '@universal-login/contracts/testutils';
-import IMessageRepository from '../../../../lib/core/models/messages/IMessagesRepository';
-import MessageItem from '../../../../lib/core/models/messages/MessageItem';
+import IMessageRepository from '../../../../src/core/models/messages/IMessagesRepository';
+import MessageItem from '../../../../src/core/models/messages/MessageItem';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
-import {getKeyFromHashAndSignature} from '../../../../lib/core/utils/encodeData';
+import {getKeyFromHashAndSignature} from '../../../../src/core/utils/encodeData';
 import {getKnexConfig} from '../../../helpers/knex';
-import MessageSQLRepository from '../../../../lib/integration/sql/services/MessageSQLRepository';
+import MessageSQLRepository from '../../../../src/integration/sql/services/MessageSQLRepository';
 import MessageMemoryRepository from '../../../helpers/MessageMemoryRepository';
-import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
-import {createMessageItem} from '../../../../lib/core/utils/messages/serialisation';
+import {clearDatabase} from '../../../../src/http/relayers/RelayerUnderTest';
+import {createMessageItem} from '../../../../src/core/utils/messages/serialisation';
 
 for (const config of [{
   Type: MessageSQLRepository,

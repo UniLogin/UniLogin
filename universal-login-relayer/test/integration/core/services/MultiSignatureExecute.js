@@ -7,9 +7,9 @@ import {waitExpect} from '@universal-login/commons/testutils';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
-import {getConfig} from '../../../../lib';
+import {getConfig} from '../../../../src';
 import {getKnexConfig} from '../../../helpers/knex';
-import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
+import {clearDatabase} from '../../../../src/http/relayers/RelayerUnderTest';
 import {getTestSignedMessage} from '../../../config/message';
 
 describe('INT: MultiSignatureExecute', async () => {

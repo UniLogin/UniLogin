@@ -2,12 +2,12 @@ import chai, {expect} from 'chai';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
 import Relayer from '@universal-login/relayer';
 import {setupSdk} from '../../helpers/setupSdk';
-import UniversalLoginSDK from '../../../lib/api/sdk';
-import {WalletService} from '../../../lib/core/services/WalletService';
+import UniversalLoginSDK from '../../../src/api/sdk';
+import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, utils} from 'ethers';
 import {ETHER_NATIVE_TOKEN, ensure, TEST_EXECUTION_OPTIONS} from '@universal-login/commons';
 import {createWallet} from '../../helpers';
-import {DeployedWallet} from '../../../lib';
+import {DeployedWallet} from '../../../src';
 
 chai.use(solidity);
 

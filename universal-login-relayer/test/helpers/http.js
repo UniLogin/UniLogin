@@ -1,5 +1,5 @@
 import {Contract, utils, Wallet} from 'ethers';
-import {RelayerUnderTest} from '../../lib/http/relayers/RelayerUnderTest';
+import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {
   calculateInitializeSignature,

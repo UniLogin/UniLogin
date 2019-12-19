@@ -4,7 +4,7 @@ import {utils, providers, Contract, Wallet} from 'ethers';
 import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, signRelayerRequest, DEPLOYMENT_REFUND, TEST_APPLICATION_INFO, getDeployData} from '@universal-login/commons';
 import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
 import {startRelayerWithRefund, createWalletCounterfactually, getInitData} from '../helpers/http';
-import Relayer from '../../lib';
+import Relayer from '../../src';
 import {waitForDeploymentStatus} from '../helpers/waitForDeploymentStatus';
 
 chai.use(chaiHttp);

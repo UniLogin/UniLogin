@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {isProperAddress, reverseHexString, isProperHexString} from '../../../lib/core/utils/hexStrings';
-import {TEST_ACCOUNT_ADDRESS} from '../../../lib';
+import {isProperAddress, reverseHexString, isProperHexString} from '../../../src/core/utils/hexStrings';
+import {TEST_ACCOUNT_ADDRESS} from '../../../src';
 
 describe('UNIT: hex strings', () => {
   describe('isProperAddress', () => {

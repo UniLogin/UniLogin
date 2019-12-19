@@ -3,7 +3,7 @@ import {utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '@universal-login/commons';
 import basicSDK from '../fixtures/basicSDK';
-import {SdkSigner} from '../../lib/api/SdkSigner';
+import {SdkSigner} from '../../src/api/SdkSigner';
 
 describe('E2E: SdkSigner', () => {
   let relayer: any;

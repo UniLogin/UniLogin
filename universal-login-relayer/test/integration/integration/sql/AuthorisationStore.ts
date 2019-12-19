@@ -4,7 +4,7 @@ import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, EMPTY_DEVICE_INFO} from '@universal-login/commons';
 import setupWalletService, {createFutureWallet} from '../../../helpers/setupWalletService';
-import AuthorisationStore from '../../../../lib/integration/sql/services/AuthorisationStore';
+import AuthorisationStore from '../../../../src/integration/sql/services/AuthorisationStore';
 import {getKnexConfig} from '../../../helpers/knex';
 import deviceInfo from '../../../config/defaults';
 

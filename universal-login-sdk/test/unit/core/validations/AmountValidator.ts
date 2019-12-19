@@ -1,8 +1,8 @@
 import {TransferDetails} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {expect} from 'chai';
-import {AmountValidator} from '../../../../lib/core/services/validations/AmountValidator';
-import {TransferErrors} from '../../../../lib';
+import {AmountValidator} from '../../../../src/core/services/validations/AmountValidator';
+import {TransferErrors} from '../../../../src';
 
 const TEST_TRANSFER_DETAILS: TransferDetails = {
   to: '0x',

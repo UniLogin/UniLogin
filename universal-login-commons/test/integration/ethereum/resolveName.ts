@@ -2,8 +2,8 @@ import {expect} from 'chai';
 import {loadFixture, getWallets} from 'ethereum-waffle';
 import {basicENS} from '../../fixtures/basicENS';
 import {utils, providers} from 'ethers';
-import {resolveName, createKeyPair} from '../../../lib';
-import {registerName, setResolver, setAddress} from '../../../lib/integration/ethereum/ens';
+import {resolveName, createKeyPair} from '../../../src';
+import {registerName, setResolver, setAddress} from '../../../src/integration/ethereum/ens';
 
 describe('INT: resolveName', () => {
   let provider: providers.JsonRpcProvider;

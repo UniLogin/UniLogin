@@ -6,7 +6,7 @@ import {
   getFunctionParametersData,
   isAddKeyCall,
   isAddKeysCall,
-} from '../../../../../lib/core/utils/encodeData';
+} from '../../../../../src/core/utils/encodeData';
 import {Wallet} from 'ethers';
 import {WalletContractInterface} from '@universal-login/contracts';
 

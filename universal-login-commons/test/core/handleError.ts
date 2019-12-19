@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {ensure, ensureNotEmpty, ensureNotNull} from '../../lib';
+import {ensure, ensureNotEmpty, ensureNotNull} from '../../src';
 
 describe('handleError', () => {
   describe('ensure', () => {

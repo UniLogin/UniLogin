@@ -3,10 +3,10 @@ import {utils} from 'ethers';
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
 import {getTestSignedMessage} from '../../../config/message';
 import {getKnexConfig} from '../../../helpers/knex';
-import QueueSQLStore from '../../../../lib/integration/sql/services/QueueSQLStore';
+import QueueSQLStore from '../../../../src/integration/sql/services/QueueSQLStore';
 import QueueMemoryStore from '../../../helpers/QueueMemoryStore';
-import {IExecutionQueue} from '../../../../lib/core/models/execution/IExecutionQueue';
-import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
+import {IExecutionQueue} from '../../../../src/core/models/execution/IExecutionQueue';
+import {clearDatabase} from '../../../../src/http/relayers/RelayerUnderTest';
 
 for (const config of [{
   Type: QueueSQLStore,

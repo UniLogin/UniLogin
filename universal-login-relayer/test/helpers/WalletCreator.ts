@@ -12,8 +12,8 @@ import {
   TEST_GAS_PRICE,
 } from '@universal-login/commons';
 import {encodeInitializeWithENSData, WalletProxyFactoryInterface} from '@universal-login/contracts';
-import ENSService from '../../lib/integration/ethereum/ensService';
-import {RelayerUnderTest} from '../../lib';
+import ENSService from '../../src/integration/ethereum/ensService';
+import {RelayerUnderTest} from '../../src';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
 
 export class WalletCreator {

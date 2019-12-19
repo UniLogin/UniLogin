@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {executionComparator} from '../../../lib';
+import {executionComparator} from '../../../src';
 
 describe('UNIT: Execution Comparator', () => {
   it('should correctly compare two addresses', () => {

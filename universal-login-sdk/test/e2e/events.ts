@@ -6,7 +6,7 @@ import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import basicSDK from '../fixtures/basicSDK';
-import UniversalLoginSDK from '../../lib/api/sdk';
+import UniversalLoginSDK from '../../src/api/sdk';
 
 chai.use(solidity);
 chai.use(sinonChai);

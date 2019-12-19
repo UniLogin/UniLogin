@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Wallet} from 'ethers';
-import {walletFromBrain} from '../../../lib';
+import {walletFromBrain} from '../../../src';
 
 describe('INT: walletFromBrain', () => {
   const privateKey = '0x61dcd0852d1aec0bf1362e02a0061c2ddbfba7c46366c2b83fd79a48ee300ace';

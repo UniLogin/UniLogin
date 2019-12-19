@@ -4,11 +4,11 @@ import sinonChai from 'sinon-chai';
 import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {TokensValueConverter, BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil} from '@universal-login/commons';
-import {AggregateBalanceObserver} from '../../../lib/core/observers/AggregateBalanceObserver';
-import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
+import {AggregateBalanceObserver} from '../../../src/core/observers/AggregateBalanceObserver';
+import {BalanceObserver} from '../../../src/core/observers/BalanceObserver';
 import {createMockedPriceObserver} from '../../mock/PriceObserver';
-import {SdkConfigDefault} from '../../../lib/config/SdkConfigDefault';
-import {TokensDetailsStore} from '../../../lib/core/services/TokensDetailsStore';
+import {SdkConfigDefault} from '../../../src/config/SdkConfigDefault';
+import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
 
 chai.use(sinonChai);
 

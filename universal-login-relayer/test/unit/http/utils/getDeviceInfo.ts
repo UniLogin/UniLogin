@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getDeviceInfo} from '../../../../lib/http/utils/getDeviceInfo';
+import {getDeviceInfo} from '../../../../src/http/utils/getDeviceInfo';
 import {TEST_APPLICATION_INFO} from '@universal-login/commons';
 
 describe('UNIT: getDeviceInfo', () => {

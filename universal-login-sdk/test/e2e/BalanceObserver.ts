@@ -4,7 +4,7 @@ import {Wallet, utils} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
 import {waitUntil} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import UniversalLoginSDK from '../../lib/api/sdk';
+import UniversalLoginSDK from '../../src/api/sdk';
 import basicSDK from '../fixtures/basicSDK';
 
 const loadFixture = createFixtureLoader();

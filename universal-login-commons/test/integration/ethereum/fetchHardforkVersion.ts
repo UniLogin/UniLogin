@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {providers} from 'ethers';
-import {fetchHardforkVersion, ISTANBUL_BLOCK_NUMBER} from '../../../lib/integration/ethereum/fetchHardforkVersion';
+import {fetchHardforkVersion, ISTANBUL_BLOCK_NUMBER} from '../../../src/integration/ethereum/fetchHardforkVersion';
 import {mockProviderWithBlockNumber} from '../../helpers/mockProvider';
 
 describe('fetchHardforkVersion', async () => {

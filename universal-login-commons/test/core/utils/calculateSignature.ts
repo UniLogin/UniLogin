@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils, Wallet} from 'ethers';
-import {calculateInitializeWithENSSignature} from '../../../lib/core/utils/calculateSignature';
-import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType, UnsignedMessage, calculateMessageSignatures, calculateMessageSignature} from '../../../lib';
+import {calculateInitializeWithENSSignature} from '../../../src/core/utils/calculateSignature';
+import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType, UnsignedMessage, calculateMessageSignatures, calculateMessageSignature} from '../../../src';
 import {AddressZero} from 'ethers/constants';
 
 describe('Calculate Signature', () => {

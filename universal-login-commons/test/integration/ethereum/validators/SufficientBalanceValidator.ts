@@ -1,12 +1,12 @@
 import {expect} from 'chai';
-import {SufficientBalanceValidator} from '../../../../lib/integration/ethereum/validators/SufficientBalanceValidator';
+import {SufficientBalanceValidator} from '../../../../src/integration/ethereum/validators/SufficientBalanceValidator';
 import {utils, providers} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {EMPTY_DATA} from '../../../../lib/core/constants/constants';
-import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE} from '../../../../lib/core/constants/test';
+import {EMPTY_DATA} from '../../../../src/core/constants/constants';
+import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE} from '../../../../src/core/constants/test';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import MockToken from '../../../fixtures/MockToken.json';
-import {SignedMessage, calculateMessageSignature, OperationType} from '../../../../lib';
+import {SignedMessage, calculateMessageSignature, OperationType} from '../../../../src';
 
 describe('INT: SufficientBalanceValidator', () => {
   const provider: providers.Provider = createMockProvider();

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {RelayerRequest} from '../../../lib/core/models/relayerRequest';
-import {signRelayerRequest, verifyRelayerRequest, hashRelayerRequest, recoverFromRelayerRequest} from '../../../lib/core/utils/relayerRequest';
+import {RelayerRequest} from '../../../src/core/models/relayerRequest';
+import {signRelayerRequest, verifyRelayerRequest, hashRelayerRequest, recoverFromRelayerRequest} from '../../../src/core/utils/relayerRequest';
 
 describe('UNIT: RelayerRequest', () => {
   const privateKey = '0x9e0f0ab35e7b8d8efc554fa0e9db29235e7c52ea5e2bb53ed50d24ff7a4a6f65';

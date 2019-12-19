@@ -1,7 +1,7 @@
 import {expect, use} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import fetch, {Response} from 'node-fetch';
-import {http, handleApiResponse} from '../../../lib/integration/http/http';
+import {http, handleApiResponse} from '../../../src/integration/http/http';
 
 use(chaiAsPromised);
 

@@ -5,7 +5,7 @@ import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import ENSService from './ensService';
 import {InvalidENSDomain, NotEnoughBalance, EnsNameTaken, InvalidSignature, NotEnoughGas} from '../../core/utils/errors';
 import {Config} from '../../config/relayer';
-import {WalletDeployer} from '../ethereum/WalletDeployer';
+import {WalletDeployer} from './WalletDeployer';
 import {DevicesService} from '../../core/services/DevicesService';
 
 class WalletService {

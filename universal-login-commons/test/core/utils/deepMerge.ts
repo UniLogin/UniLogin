@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {deepMerge, isProperObject} from '../../../lib/core/utils/deepMerge';
+import {deepMerge, isProperObject} from '../../../src/core/utils/deepMerge';
 
 describe('UNIT: deepMerge', () => {
   const obj1 = {

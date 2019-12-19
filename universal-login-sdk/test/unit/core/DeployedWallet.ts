@@ -1,4 +1,4 @@
-import {DeployedWallet} from '../../../lib';
+import {DeployedWallet} from '../../../src';
 import {utils, Wallet} from 'ethers';
 import {expect} from 'chai';
 

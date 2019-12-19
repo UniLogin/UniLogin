@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {filterKeyWithCodeByPrefix, filterNotificationByCodePrefix, generateCode, generateCodeWithFakes, isValidCode, isCodeSufficientButInvalid, addCodesToNotifications, isProperSecurityCode, isProperSecurityCodeWithFakes} from '../../../lib/core/utils/securityCodes';
-import {Notification} from '../../../lib';
+import {filterKeyWithCodeByPrefix, filterNotificationByCodePrefix, generateCode, generateCodeWithFakes, isValidCode, isCodeSufficientButInvalid, addCodesToNotifications, isProperSecurityCode, isProperSecurityCodeWithFakes} from '../../../src/core/utils/securityCodes';
+import {Notification} from '../../../src';
 
 describe('UNIT: security codes', () => {
   const mockedAddress = '0xFFFFFFe7d45c34110B34Ed269AD86248884E78C7';

@@ -5,15 +5,15 @@ import {loadFixture} from 'ethereum-waffle';
 import {calculateMessageHash, SignedMessage, TEST_MESSAGE_HASH, TEST_ACCOUNT_ADDRESS, UnsignedMessage, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
 import {messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import {executeSetRequiredSignatures, emptyMessage} from '@universal-login/contracts/testutils';
-import PendingMessages from '../../../../../lib/core/services/execution/messages/PendingMessages';
+import PendingMessages from '../../../../../src/core/services/execution/messages/PendingMessages';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
-import MessageSQLRepository from '../../../../../lib/integration/sql/services/MessageSQLRepository';
-import {getKeyFromHashAndSignature} from '../../../../../lib/core/utils/encodeData';
+import MessageSQLRepository from '../../../../../src/integration/sql/services/MessageSQLRepository';
+import {getKeyFromHashAndSignature} from '../../../../../src/core/utils/encodeData';
 import {getKnexConfig} from '../../../../helpers/knex';
-import {clearDatabase} from '../../../../../lib/http/relayers/RelayerUnderTest';
-import {MessageStatusService} from '../../../../../lib/core/services/execution/messages/MessageStatusService';
-import {SignaturesService} from '../../../../../lib/integration/ethereum/SignaturesService';
-import {createMessageItem} from '../../../../../lib/core/utils/messages/serialisation';
+import {clearDatabase} from '../../../../../src/http/relayers/RelayerUnderTest';
+import {MessageStatusService} from '../../../../../src/core/services/execution/messages/MessageStatusService';
+import {SignaturesService} from '../../../../../src/integration/ethereum/SignaturesService';
+import {createMessageItem} from '../../../../../src/core/utils/messages/serialisation';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages: PendingMessages;

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {safeMultiply} from '../../../lib/core/utils/safeMultiply';
+import {safeMultiply} from '../../../src/core/utils/safeMultiply';
 import {utils} from 'ethers';
 
 describe('safeMultiply', () => {

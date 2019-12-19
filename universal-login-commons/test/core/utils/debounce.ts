@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
-import {sleep} from '../../../lib/core/utils/wait';
-import {debounce} from '../../../lib/core/utils/debounce';
+import {sleep} from '../../../src/core/utils/wait';
+import {debounce} from '../../../src/core/utils/debounce';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 

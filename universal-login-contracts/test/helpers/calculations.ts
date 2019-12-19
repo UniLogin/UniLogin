@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {SignedMessagePaymentOptions, createFullHexString, GasDataComputation, CURRENT_NETWORK_VERSION, GAS_FIXED, UnsignedMessage} from '@universal-login/commons';
-import {encodeDataForExecuteSigned} from '../../lib';
+import {encodeDataForExecuteSigned} from '../../src';
 
 export const calculateFinalGasLimit = (safeTxGas: utils.BigNumberish, baseGas: utils.BigNumberish) =>
   utils.bigNumberify(safeTxGas).add(baseGas).add('30000');

@@ -1,8 +1,8 @@
-import {NotFound} from '../../lib/core/utils/errors';
-import IRepository from '../../lib/core/models/messages/IRepository';
+import {NotFound} from '../../src/core/utils/errors';
+import IRepository from '../../src/core/models/messages/IRepository';
 import {MineableState} from '@universal-login/commons';
-import {ensureProperTransactionHash} from '../../lib/core/utils/validations';
-import {Mineable} from '../../lib/core/models/Mineable';
+import {ensureProperTransactionHash} from '../../src/core/utils/validations';
+import {Mineable} from '../../src/core/models/Mineable';
 
 export default class MemoryRepository<T extends Mineable> implements IRepository<T> {
   items: Record<string, T>;

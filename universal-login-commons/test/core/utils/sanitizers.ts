@@ -1,10 +1,10 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {ETHER_NATIVE_TOKEN} from '../../../lib/core/constants/constants';
+import {ETHER_NATIVE_TOKEN} from '../../../src/core/constants/constants';
 import {cast} from '@restless/sanitizers';
-import {asGasParameters} from '../../../lib/core/utils/sanitizers/asGasParameters';
-import {asTransferDetails, asHexString} from '../../../lib';
-import {asBigNumber} from '../../../lib/core/utils/sanitizers/asBigNumber';
+import {asGasParameters} from '../../../src/core/utils/sanitizers/asGasParameters';
+import {asTransferDetails, asHexString} from '../../../src';
+import {asBigNumber} from '../../../src/core/utils/sanitizers/asBigNumber';
 
 describe('sanitizers', () => {
   describe('asBigNumber', () => {

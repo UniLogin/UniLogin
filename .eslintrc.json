@@ -503,7 +503,7 @@
   },
   "overrides": [
     {
-      "files": ["{lib,src,test}/**/*.{js,ts,tsx}"],
+      "files": ["{src,test}/**/*.{js,ts,tsx}"],
       "rules": {
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-non-null-assertion": "off",

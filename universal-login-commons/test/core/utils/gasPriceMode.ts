@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {getGasPriceFor, findGasMode, findGasOption} from '../../../lib/core/utils/gasPriceMode';
-import {TEST_GAS_MODES} from '../../../lib/core/constants/test';
+import {getGasPriceFor, findGasMode, findGasOption} from '../../../src/core/utils/gasPriceMode';
+import {TEST_GAS_MODES} from '../../../src/core/constants/test';
 
 describe('Helpers for GasMode ', () => {
   describe('getGasPriceFor', () => {

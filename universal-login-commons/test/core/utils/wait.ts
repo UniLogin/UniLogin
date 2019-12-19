@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {waitUntil, sleep} from '../../../lib/core/utils/wait';
+import {waitUntil, sleep} from '../../../src/core/utils/wait';
 import {waitExpect} from '../../helpers/waitExpect';
 
 chai.use(chaiAsPromised);

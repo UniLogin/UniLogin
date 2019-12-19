@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {getBalanceOf} from '../../../lib/core/utils/getBalanceOf';
-import {ETHER_NATIVE_TOKEN, TokenDetailsWithBalance} from '../../../lib';
+import {getBalanceOf} from '../../../src/core/utils/getBalanceOf';
+import {ETHER_NATIVE_TOKEN, TokenDetailsWithBalance} from '../../../src';
 import {utils} from 'ethers';
 
 describe('UNIT: getBalanceOf', () => {

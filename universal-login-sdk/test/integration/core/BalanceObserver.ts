@@ -5,8 +5,8 @@ import {utils, Wallet, providers, Contract} from 'ethers';
 import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
 import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails, normalizeBigNumber} from '@universal-login/commons';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
-import {BalanceObserver} from '../../../lib/core/observers/BalanceObserver';
-import {TokensDetailsStore} from '../../../lib/core/services/TokensDetailsStore';
+import {BalanceObserver} from '../../../src/core/observers/BalanceObserver';
+import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
 
 chai.use(sinonChai);
 

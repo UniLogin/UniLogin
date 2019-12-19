@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {expect} from 'chai';
-import {bigNumberMax} from '../../../lib/core/utils/bigNumberMax';
+import {bigNumberMax} from '../../../src/core/utils/bigNumberMax';
 
 describe('#bigNumberMax', () => {
   const value = utils.parseEther('10');

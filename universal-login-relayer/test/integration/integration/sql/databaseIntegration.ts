@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {RelayerUnderTest} from '../../../../lib';
+import {RelayerUnderTest} from '../../../../src';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 
 describe('INT: Database integration', () => {

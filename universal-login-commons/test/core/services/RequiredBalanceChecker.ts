@@ -1,12 +1,12 @@
 import {expect} from 'chai';
 import {utils, Contract} from 'ethers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
-import {BalanceChecker} from '../../../lib/integration/ethereum/BalanceChecker';
-import {RequiredBalanceChecker} from '../../../lib/core/services/RequiredBalanceChecker';
-import {ETHER_NATIVE_TOKEN} from '../../../lib/core/constants/constants';
-import {TEST_ACCOUNT_ADDRESS} from '../../../lib/core/constants/test';
+import {BalanceChecker} from '../../../src/integration/ethereum/BalanceChecker';
+import {RequiredBalanceChecker} from '../../../src/core/services/RequiredBalanceChecker';
+import {ETHER_NATIVE_TOKEN} from '../../../src/core/constants/constants';
+import {TEST_ACCOUNT_ADDRESS} from '../../../src/core/constants/test';
 import MockToken from '../../fixtures/MockToken.json';
-import {SupportedToken} from '../../../lib';
+import {SupportedToken} from '../../../src';
 
 describe('INT: RequiredBalanceChecker', () => {
   const provider = createMockProvider();

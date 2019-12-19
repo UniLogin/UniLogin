@@ -1,8 +1,8 @@
 import {setupTestEnvironment} from './setupTestEnvironment';
 import Web3 from 'web3';
 import {Provider} from 'web3/providers';
-import {ULWeb3Provider} from '../../lib';
-import {OnboardingProps} from '../../lib/ui/react/Onboarding';
+import {ULWeb3Provider} from '../../src';
+import {OnboardingProps} from '../../src/ui/react/Onboarding';
 import {MemoryStorageService} from '@universal-login/react';
 
 function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider, OnboardingProps] {

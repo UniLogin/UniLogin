@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {computeContractAddress} from '../../../lib';
+import {computeContractAddress} from '../../../src';
 import {getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
 import {MockToken} from '../..';
 

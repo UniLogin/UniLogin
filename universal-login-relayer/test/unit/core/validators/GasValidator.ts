@@ -2,9 +2,9 @@ import chai, {expect} from 'chai';
 import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {SignedMessage, GAS_FIXED, OperationType} from '@universal-login/commons';
-import {GasValidator} from '../../../../lib/core/services/validators/GasValidator';
+import {GasValidator} from '../../../../src/core/services/validators/GasValidator';
 import chaiAsPromised from 'chai-as-promised';
-import {GasComputation} from '../../../../lib/core/services/GasComputation';
+import {GasComputation} from '../../../../src/core/services/GasComputation';
 import {BlockchainService} from '@universal-login/contracts';
 
 chai.use(chaiAsPromised);

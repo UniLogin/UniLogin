@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {Web3Picker} from '../lib/ui/react/Web3Picker';
-import {Web3Strategy} from '../lib/Web3Strategy';
-import {Web3ProviderFactory} from '../lib/models/Web3ProviderFactory';
+import {Web3Picker} from '../src/ui/react/Web3Picker';
+import {Web3Strategy} from '../src/Web3Strategy';
+import {Web3ProviderFactory} from '../src/models/Web3ProviderFactory';
 import {Provider} from 'web3/providers';
 
 describe('UNIT: Web3Picker', () => {

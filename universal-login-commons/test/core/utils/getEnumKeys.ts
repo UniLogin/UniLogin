@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getEnumKeys} from '../../../lib';
+import {getEnumKeys} from '../../../src';
 
 describe('getEnumKeys', () => {
   it('empty enum', () => {
