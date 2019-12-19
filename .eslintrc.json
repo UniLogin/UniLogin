@@ -329,6 +329,8 @@
       "patterns": [
         "@universal-login/*/*",
         "!@universal-login/*/testutils",
+        "!@universal-login/contracts/dist",
+        "@universal-login/contracts/dist/*",
         "!@universal-login/contracts/dist/contracts"
       ]
     }],
