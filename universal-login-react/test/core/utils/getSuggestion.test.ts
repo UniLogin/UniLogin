@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getSuggestion} from '../../src/core/utils/getSuggestion';
+import {getSuggestion} from '../../../src/core/utils/getSuggestion';
 import {WALLET_SUGGESTION_ALL_ACTIONS, WalletSuggestionAction} from '@universal-login/commons';
 
 describe('getSuggestion', () => {
