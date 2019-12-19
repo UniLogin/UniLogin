@@ -64,7 +64,7 @@ describe('INT: WalletService', async () => {
     });
 
     it('throw error if gasPrice is 0', async () => {
-      const ensName = 'jarek.mylogin.eth';
+      const ensName = 'name.mylogin.eth';
       const {signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
       const creationPromise = walletService.deploy({publicKey: keyPair.publicKey, ensName, signature, gasPrice: '0', gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
       await expect(creationPromise).to.be.rejectedWith('Not enough gas');

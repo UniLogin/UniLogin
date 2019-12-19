@@ -1,6 +1,7 @@
 import {utils, Contract, providers} from 'ethers';
 import ENS from '@universal-login/contracts/build/ENS.json';
-import {parseDomain, resolveName, ENSDomainInfo} from '@universal-login/commons';
+import {parseDomain, resolveName, ENSDomainInfo, ensure} from '@universal-login/commons';
+import {InvalidENSDomain, EnsNameTaken} from '../../core/utils/errors';
 
 class ENSService {
   private domainsInfo: Record<string, ENSDomainInfo> = {};
@@ -24,14 +25,13 @@ class ENSService {
     return this.domainsInfo[domain] || null;
   }
 
-  argsFor(ensName: string) {
+  async argsFor(ensName: string) {
+    ensure(!await this.resolveName(ensName), EnsNameTaken, ensName);
     const [label, domain] = parseDomain(ensName);
     const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(`${label}.${domain}`);
     const registrarConfig = this.findRegistrar(domain);
-    if (registrarConfig === null) {
-      return null;
-    }
+    ensure(registrarConfig !== null, InvalidENSDomain, ensName);
     const {resolverAddress} = registrarConfig;
     const {registrarAddress} = registrarConfig;
     return [hashLabel, ensName, node, this.ensAddress, registrarAddress, resolverAddress];
