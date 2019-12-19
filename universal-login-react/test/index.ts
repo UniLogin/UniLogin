@@ -1,1 +1,1 @@
-export {setupGlobalFetch} from './config/setupGlobalFetch';
+export {setupGlobalFetch} from './testconfig/setupGlobalFetch';
