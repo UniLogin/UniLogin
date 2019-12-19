@@ -2,7 +2,7 @@ import chai from 'chai';
 import {utils, providers, Contract} from 'ethers';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
 import {waitUntil} from '@universal-login/commons';
-import {DevelopmentRelayer} from '../../../../lib/http/relayers/DevelopmentRelayer';
+import {DevelopmentRelayer} from '../../../../src/http/relayers/DevelopmentRelayer';
 import {WalletCreator} from '../../../helpers/WalletCreator';
 const {startRelayer} = require('../../../helpers/startRelayer');
 

@@ -5,7 +5,7 @@
     "outDir": "build"
   },
   "include": [
-    "lib",
+    "src",
     "test"
   ]
 }

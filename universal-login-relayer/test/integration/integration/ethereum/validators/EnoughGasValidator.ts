@@ -5,7 +5,7 @@ import {TEST_ACCOUNT_ADDRESS, Message, IMessageValidator} from '@universal-login
 import {unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import {emptyMessage} from '@universal-login/contracts/testutils';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
-import EstimateGasValidator from '../../../../../lib/integration/ethereum/validators/EstimateGasValidator';
+import EstimateGasValidator from '../../../../../src/integration/ethereum/validators/EstimateGasValidator';
 import {getTestSignedMessage} from '../../../../config/message';
 
 describe('INT: EstimateGasValidator', async () => {

@@ -3,7 +3,7 @@ import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {TEST_ACCOUNT_ADDRESS, OperationType} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '@universal-login/contracts';
-import {messageToTransaction, GAS_LIMIT_MARGIN} from '../../../lib/core/utils/messages/serialisation';
+import {messageToTransaction, GAS_LIMIT_MARGIN} from '../../../src/core/utils/messages/serialisation';
 
 describe('UNIT: MessageToTransaction', () => {
   const safeTxGas = utils.bigNumberify(23000);

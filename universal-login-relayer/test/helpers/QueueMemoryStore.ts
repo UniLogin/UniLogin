@@ -1,7 +1,7 @@
 import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
-import {IExecutionQueue} from '../../lib/core/models/execution/IExecutionQueue';
-import {QueueItem} from '../../lib/core/models/QueueItem';
-import Deployment from '../../lib/core/models/Deployment';
+import {IExecutionQueue} from '../../src/core/models/execution/IExecutionQueue';
+import {QueueItem} from '../../src/core/models/QueueItem';
+import Deployment from '../../src/core/models/Deployment';
 
 export default class QueueMemoryStore implements IExecutionQueue {
   queueItems: QueueItem[] = [];

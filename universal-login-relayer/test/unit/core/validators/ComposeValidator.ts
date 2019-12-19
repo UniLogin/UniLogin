@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {AddressZero} from 'ethers/constants';
 import {SignedMessage, IMessageValidator, OperationType} from '@universal-login/commons';
-import {ComposeValidator} from '../../../../lib/core/services/validators/ComposeValidator';
+import {ComposeValidator} from '../../../../src/core/services/validators/ComposeValidator';
 chai.use(chaiAsPromised);
 
 describe('UNIT: ComposeValidator', () => {

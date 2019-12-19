@@ -1,8 +1,8 @@
 import {expect} from 'chai';
-import {DevicesStore} from '../../../../lib/integration/sql/services/DevicesStore';
+import {DevicesStore} from '../../../../src/integration/sql/services/DevicesStore';
 import {TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO, TEST_APPLICATION_INFO} from '@universal-login/commons';
 import {getKnexConfig} from '../../../helpers/knex';
-import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
+import {clearDatabase} from '../../../../src/http/relayers/RelayerUnderTest';
 
 describe('INT: DevicesStore', () => {
   let devicesStore: DevicesStore;

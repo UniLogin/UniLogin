@@ -5,8 +5,8 @@ import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, Message, IMessageValidator} fro
 import {unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import {emptyMessage} from '@universal-login/contracts/testutils';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
-import MessageExecutionValidator from '../../../../../lib/integration/ethereum/validators/MessageExecutionValidator';
-import {getContractWhiteList} from '../../../../../lib/http/relayers/RelayerUnderTest';
+import MessageExecutionValidator from '../../../../../src/integration/ethereum/validators/MessageExecutionValidator';
+import {getContractWhiteList} from '../../../../../src/http/relayers/RelayerUnderTest';
 import {transferMessage} from '../../../../fixtures/basicWalletContract';
 import MockToken from '@universal-login/contracts/build/MockToken.json';
 import {getTestSignedMessage} from '../../../../config/message';

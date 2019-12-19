@@ -9,9 +9,9 @@ import MockToken from '@universal-login/contracts/build/MockToken';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../helpers/setupMessageService';
 import defaultDeviceInfo from '../../../config/defaults';
-import {getConfig} from '../../../../lib';
+import {getConfig} from '../../../../src';
 import {getKnexConfig} from '../../../helpers/knex';
-import {clearDatabase} from '../../../../lib/http/relayers/RelayerUnderTest';
+import {clearDatabase} from '../../../../src/http/relayers/RelayerUnderTest';
 import {getTestSignedMessage} from '../../../config/message';
 
 describe('INT: MessageHandler', async () => {

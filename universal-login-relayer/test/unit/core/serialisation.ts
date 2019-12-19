@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {SignedMessage} from '@universal-login/commons';
 import {encodeDataForExecuteSigned} from '@universal-login/contracts';
-import {decodeDataForExecuteSigned} from '../../../lib/core/utils/messages/serialisation';
+import {decodeDataForExecuteSigned} from '../../../src/core/utils/messages/serialisation';
 import {transferMessage} from '../../fixtures/basicWalletContract';
 import {getTestSignedMessage} from '../../config/message';
 

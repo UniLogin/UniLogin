@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Wallet} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {TEST_GAS_PRICE, createKeyPair, signRelayerRequest, TEST_PRIVATE_KEY, recoverFromRelayerRequest, ETHER_NATIVE_TOKEN, EMPTY_DEVICE_INFO} from '@universal-login/commons';
-import WalletMasterContractService from '../../../../lib/integration/ethereum/services/WalletMasterContractService';
+import WalletMasterContractService from '../../../../src/integration/ethereum/services/WalletMasterContractService';
 import setupWalletService, {createFutureWallet} from '../../../helpers/setupWalletService';
 
 describe('INT: WalletMasterContractService', () => {

@@ -3,8 +3,8 @@ import {Contract, Wallet} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, MessageWithFrom, IMessageValidator} from '@universal-login/commons';
 import basicWalletContractWithMockToken from '../../../../fixtures/basicWalletContractWithMockToken';
-import CorrectMasterValidator from '../../../../../lib/integration/ethereum/validators/CorrectMasterValidator';
-import {getContractWhiteList} from '../../../../../lib/http/relayers/RelayerUnderTest';
+import CorrectMasterValidator from '../../../../../src/integration/ethereum/validators/CorrectMasterValidator';
+import {getContractWhiteList} from '../../../../../src/http/relayers/RelayerUnderTest';
 import {getTestSignedMessage} from '../../../../config/message';
 
 describe('INT: CorrectMasterValidator', async () => {

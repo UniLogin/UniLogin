@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {utils, Contract} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType} from '@universal-login/commons';
-import {GasComputation} from '../../../../lib/core/services/GasComputation';
+import {GasComputation} from '../../../../src/core/services/GasComputation';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {BlockchainService} from '@universal-login/contracts';
 import {setupWalletContract} from '@universal-login/contracts/testutils';

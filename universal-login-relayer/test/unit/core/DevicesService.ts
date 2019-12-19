@@ -3,8 +3,8 @@ import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import {TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, signRelayerRequest, createKeyPair, recoverFromRelayerRequest} from '@universal-login/commons';
-import {DevicesService} from '../../../lib/core/services/DevicesService';
-import {UnauthorisedAddress} from '../../../lib/core/utils/errors';
+import {DevicesService} from '../../../src/core/services/DevicesService';
+import {UnauthorisedAddress} from '../../../src/core/utils/errors';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

@@ -3,18 +3,18 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
-import ExecutionWorker from '../../../lib/core/services/execution/ExecutionWorker';
+import ExecutionWorker from '../../../src/core/services/execution/ExecutionWorker';
 import QueueMemoryStore from '../../helpers/QueueMemoryStore';
 import {getTestSignedMessage} from '../../config/message';
 import MessageMemoryRepository from '../../helpers/MessageMemoryRepository';
-import {createMessageItem} from '../../../lib/core/utils/messages/serialisation';
-import IMessageRepository from '../../../lib/core/models/messages/IMessagesRepository';
-import MessageExecutor from '../../../lib/integration/ethereum/MessageExecutor';
-import DeploymentExecutor from '../../../lib/integration/ethereum/DeploymentExecutor';
-import IRepository from '../../../lib/core/models/messages/IRepository';
+import {createMessageItem} from '../../../src/core/utils/messages/serialisation';
+import IMessageRepository from '../../../src/core/models/messages/IMessagesRepository';
+import MessageExecutor from '../../../src/integration/ethereum/MessageExecutor';
+import DeploymentExecutor from '../../../src/integration/ethereum/DeploymentExecutor';
+import IRepository from '../../../src/core/models/messages/IRepository';
 import MemoryRepository from '../../helpers/MemoryRepository';
-import Deployment from '../../../lib/core/models/Deployment';
-import WalletService from '../../../lib/integration/ethereum/WalletService';
+import Deployment from '../../../src/core/models/Deployment';
+import WalletService from '../../../src/integration/ethereum/WalletService';
 
 use(sinonChai);
 
