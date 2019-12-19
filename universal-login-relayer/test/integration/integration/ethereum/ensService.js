@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import buildEnsService from '../../../helpers/buildEnsService';
+import {buildEnsService} from '../../../helpers/buildEnsService';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 
 chai.use(require('chai-string'));

@@ -4,7 +4,7 @@ import {Wallet, Contract, utils} from 'ethers';
 import {computeCounterfactualAddress, TEST_GAS_PRICE, KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {deployFactory, encodeInitializeWithENSData, deployWalletContract} from '@universal-login/contracts';
 import WalletService from '../../src/integration/ethereum/WalletService';
-import buildEnsService from './buildEnsService';
+import {buildEnsService} from './buildEnsService';
 import {WalletDeployer} from '../../src/integration/ethereum/WalletDeployer';
 import ENSService from '../../src/integration/ethereum/ensService';
 

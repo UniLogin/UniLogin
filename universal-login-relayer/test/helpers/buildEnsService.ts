@@ -1,10 +1,9 @@
-
 const ENSBuilder = require('ens-builder');
 import {Wallet} from 'ethers';
 import {withENS} from '@universal-login/commons';
 import ENSService from '../../src/integration/ethereum/ensService';
 
-const buildEnsService = async (wallet: Wallet, domain: string) => {
+export const buildEnsService = async (wallet: Wallet, domain: string) => {
   const ensBuilder = new ENSBuilder(wallet);
   const [label, tld] = domain.split('.');
   const ensAddress = await ensBuilder.bootstrapWith(label, tld);
@@ -14,5 +13,3 @@ const buildEnsService = async (wallet: Wallet, domain: string) => {
   await ensService.start();
   return [ensService, provider, ensBuilder];
 };
-
-export default buildEnsService;
