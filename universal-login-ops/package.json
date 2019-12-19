@@ -9,7 +9,7 @@
   "scripts": {
     "prebuild": "yarn clean",
     "build": "yarn build:cjs",
-    "build:cjs": "tsc --outDir dist/cjs --build tsconfig.build.json && cpx \"src/contracts/**/*\" dist/cjs/src/contracts",
+    "build:cjs": "tsc --outDir dist/cjs --p tsconfig.build.json && cpx \"src/contracts/**/*\" dist/cjs/src/contracts",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
     "test": "yarn build && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/cjs/test/**/*.{js,ts}\"",
