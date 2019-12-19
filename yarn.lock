@@ -5899,7 +5899,7 @@ ethereum-waffle@2.0.15:
     ganache-core "^2.5.7"
     solc "^0.5.10"
 
-ethereum-waffle@^2.1.0:
+ethereum-waffle@2.1.0, ethereum-waffle@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.1.0.tgz#c1ccef575b7e26e43f91cc077189d5840ea47aa6"
   integrity sha512-toDUD0Nhjfse3Ti7I6gW7gvxitIpDCHHUZFPxErzSry8pss428Xz0eTYPtIk2bOjumTCpjH7UqsLki3b8wNCuA==
