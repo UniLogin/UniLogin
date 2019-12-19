@@ -98,7 +98,7 @@ describe('concatenateSignatures', () => {
   it('Should not concatenate two signatures arrays with invalid length', () => {
     const sig1 = '0xffff';
     const sig2 = '0xffe2';
-    expect(concatenateSignatures.bind(null, [sig1, sig2])).to.throw(`Invalid signature length: ${sig1} should be 132`);
+    expect(concatenateSignatures.bind(null, [sig1, sig2])).to.throw(`${sig1} length should be 132`);
   });
 });
 
@@ -110,7 +110,7 @@ describe('removeSignaturePrefix', () => {
 
   it('throws if signature lenght is invalid', () => {
     const invalidSignature = '0x1111';
-    expect(() => removeSignaturePrefix(invalidSignature)).to.throw(`Invalid signature length: ${invalidSignature} should be 132`);
+    expect(() => removeSignaturePrefix(invalidSignature)).to.throw(`${invalidSignature} length should be 132`);
   });
 
   it('throws if signature prefix is invalid', () => {

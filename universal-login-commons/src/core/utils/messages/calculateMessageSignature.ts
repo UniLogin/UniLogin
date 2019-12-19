@@ -4,7 +4,7 @@ import {signHexString} from '../signatures';
 import {DeployArgs} from '../../models/deploy';
 import {ensure} from '../errors/heplers';
 import {isProperHexString} from '../hexStrings';
-import {InvalidHexString} from '../errors/errors';
+import {InvalidHexString, InvalidSignatureLength} from '../errors/errors';
 
 export const calculateDeployHash = (msg: DeployArgs) => {
   return utils.solidityKeccak256(
@@ -31,7 +31,7 @@ export const calculateMessageSignatures = (privateKeys: string[], msg: UnsignedM
 };
 
 export const removeSignaturePrefix = (signature: string) => {
-  ensure(signature.length === 132, Error, `Invalid signature length: ${signature} should be 132`);
+  ensure(signature.length === 132, InvalidSignatureLength, signature);
   return removeHexStringPrefix(signature);
 };
 

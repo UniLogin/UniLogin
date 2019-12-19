@@ -38,3 +38,10 @@ export class InvalidHexString extends Error {
     Object.setPrototypeOf(this, InvalidHexString.prototype);
   }
 }
+
+export class InvalidSignatureLength extends Error {
+  constructor(hexString: string) {
+    super(`${hexString} length should be 132`);
+    Object.setPrototypeOf(this, InvalidSignatureLength.prototype);
+  }
+}
