@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {providers, Wallet, Contract, utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, EMPTY_DEVICE_INFO} from '@universal-login/commons';
-import {WalletContractInterface} from '@universal-login/contracts';
+import {WalletContractInterface, encodeInitializeWithENSData} from '@universal-login/contracts';
 import setupWalletService, {createFutureWallet} from '../../../helpers/setupWalletService';
 import WalletService from '../../../../src/integration/ethereum/WalletService';
 import ENSService from '../../../../src/integration/ethereum/ensService';
@@ -68,6 +68,15 @@ describe('INT: WalletService', async () => {
       const {signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
       const creationPromise = walletService.deploy({publicKey: keyPair.publicKey, ensName, signature, gasPrice: '0', gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
       await expect(creationPromise).to.be.rejectedWith('Not enough gas');
+    });
+
+    it('setup initialize data', async () => {
+      const {publicKey} = createKeyPair();
+      const ensName = 'qwertyuiop.mylogin.eth';
+      const initializeData = await walletService.setupInitializeData({publicKey, ensName, gasPrice: '1', gasToken: ETHER_NATIVE_TOKEN.address});
+      const ensArgs = await ensService.argsFor(ensName);
+      const expectedInitializeData = encodeInitializeWithENSData([publicKey, ...ensArgs as string[], '1', ETHER_NATIVE_TOKEN.address]);
+      expect(initializeData).to.eq(expectedInitializeData);
     });
 
     afterEach(() => {
