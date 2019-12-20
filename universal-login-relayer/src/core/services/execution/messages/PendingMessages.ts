@@ -38,7 +38,7 @@ export default class PendingMessages {
   private async onReadyToExecute(messageHash: string, message: SignedMessage) {
     await this.ensureCorrectExecution(messageHash);
     await this.messageRepository.setState(messageHash, 'Queued');
-    return this.executionQueue.addMessage(message);
+    return this.executionQueue.addMessage(messageHash);
   }
 
   private async addSignatureToPendingMessage(messageHash: string, message: SignedMessage) {

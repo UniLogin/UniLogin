@@ -1,5 +1,4 @@
 import Knex from 'knex';
-import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
 import {IExecutionQueue} from '../../../core/models/execution/IExecutionQueue';
 import Deployment from '../../../core/models/Deployment';
 
@@ -10,8 +9,7 @@ export default class QueueSQLStore implements IExecutionQueue {
     this.tableName = 'queue_items';
   }
 
-  async addMessage(signedMessage: SignedMessage) {
-    const messageHash = calculateMessageHash(signedMessage);
+  async addMessage(messageHash: string) {
     await this.database
       .insert({
         hash: messageHash,

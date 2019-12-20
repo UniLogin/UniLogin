@@ -1,4 +1,3 @@
-import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
 import {IExecutionQueue} from '../../src/core/models/execution/IExecutionQueue';
 import {QueueItem} from '../../src/core/models/QueueItem';
 import Deployment from '../../src/core/models/Deployment';
@@ -6,8 +5,7 @@ import Deployment from '../../src/core/models/Deployment';
 export default class QueueMemoryStore implements IExecutionQueue {
   queueItems: QueueItem[] = [];
 
-  async addMessage(signedMessage: SignedMessage) {
-    const hash = calculateMessageHash(signedMessage);
+  async addMessage(hash: string) {
     this.queueItems.push({
       type: 'Message',
       hash,

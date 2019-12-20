@@ -64,7 +64,7 @@ describe('UNIT: Queue Service', async () => {
   it('signedMessage round trip', async () => {
     const executeSpy = sinon.spy(messageExecutor, 'execute');
     executionWorker.start();
-    await queueMemoryStore.addMessage(signedMessage);
+    await queueMemoryStore.addMessage(messageHash);
     await waitExpect(() => expect(executeSpy).to.be.calledOnce);
     expect(wait).to.be.calledAfter(executeSpy);
     expect(onTransactionMined).to.be.calledImmediatelyAfter(wait);
@@ -74,7 +74,7 @@ describe('UNIT: Queue Service', async () => {
 
   it('should execute pending signedMessage after start', async () => {
     const executeSpy = sinon.spy(messageExecutor, 'execute');
-    await queueMemoryStore.addMessage(signedMessage);
+    await queueMemoryStore.addMessage(messageHash);
     executionWorker.start();
     await waitExpect(() => expect(executeSpy).to.be.calledOnce);
     expect(wait).to.be.calledAfter(executeSpy);
@@ -88,7 +88,7 @@ describe('UNIT: Queue Service', async () => {
     messageRepository.markAsError = markAsErrorSpy;
     queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
     await messageRepository.add(messageHash, createMessageItem(signedMessage));
-    messageHash = await queueMemoryStore.addMessage(signedMessage);
+    await queueMemoryStore.addMessage(messageHash);
     await waitExpect(() => expect(messageRepository.markAsError).calledWith(messageHash, 'TypeError: Cannot read property \'hash\' of null'));
     expect(queueMemoryStore.remove).to.be.calledOnce;
     expect(queueMemoryStore.remove).to.be.calledAfter(markAsErrorSpy);
@@ -102,7 +102,7 @@ describe('UNIT: Queue Service', async () => {
     executionWorker.start();
     queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
     await messageRepository.add(messageHash, createMessageItem(signedMessage));
-    messageHash = await queueMemoryStore.addMessage(signedMessage);
+    await queueMemoryStore.addMessage(messageHash);
 
     await waitExpect(() => expect(queueMemoryStore.remove).to.be.calledOnce, 3000);
     expect(messageExecutor.canExecute).to.be.calledOnce;
