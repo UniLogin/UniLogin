@@ -133,7 +133,7 @@ class Relayer {
     this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList);
     this.deploymentHandler = new DeploymentHandler(this.deploymentRepository, this.executionQueue);
     this.minedTransactionHandler = new MinedTransactionHandler(this.hooks, this.authorisationStore, this.devicesService);
-    this.pendingMessages = new PendingMessages(this.wallet, this.messageRepository, this.executionQueue, this.statusService);
+    this.pendingMessages = new PendingMessages(this.messageRepository, this.executionQueue, this.statusService, this.walletContractService);
     this.messageHandler = new MessageHandler(this.pendingMessages, this.messageHandlerValidator);
     this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.minedTransactionHandler);
     this.deploymentExecutor = new DeploymentExecutor(this.deploymentRepository, this.walletService);

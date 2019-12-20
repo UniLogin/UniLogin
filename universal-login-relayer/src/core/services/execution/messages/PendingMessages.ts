@@ -1,4 +1,3 @@
-import {Contract, Wallet} from 'ethers';
 import {calculateMessageHash, ensure, MessageStatus, SignedMessage} from '@universal-login/commons';
 import {MessageStatusService} from './MessageStatusService';
 import {DuplicatedExecution, DuplicatedSignature, InvalidSignature, NotEnoughSignatures} from '../../../utils/errors';
@@ -6,14 +5,14 @@ import IMessageRepository from '../../../models/messages/IMessagesRepository';
 import {getKeyFromHashAndSignature} from '../../../utils/encodeData';
 import {createMessageItem} from '../../../utils/messages/serialisation';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
-import {WalletContractInterface} from '@universal-login/contracts';
+import {WalletContractService} from '../../../../integration/ethereum/WalletContractService';
 
 export default class PendingMessages {
   constructor(
-    private wallet: Wallet,
     private messageRepository: IMessageRepository,
     private executionQueue: IExecutionQueue,
     private statusService: MessageStatusService,
+    private walletContractService: WalletContractService,
   ) {}
 
   async isPresent(messageHash: string) {
@@ -46,17 +45,16 @@ export default class PendingMessages {
     ensure(!messageItem.transactionHash, DuplicatedExecution);
     const isContainSignature = await this.messageRepository.containSignature(messageHash, message.signature);
     ensure(!isContainSignature, DuplicatedSignature);
-    await this.ensureKeyExist(message, messageItem.walletAddress, this.wallet);
+    await this.ensureKeyExist(message, messageItem.walletAddress);
     await this.messageRepository.addSignature(messageHash, message.signature);
   }
 
-  private async ensureKeyExist(message: SignedMessage, walletAddress: string, wallet: Wallet) {
+  private async ensureKeyExist(message: SignedMessage, walletAddress: string) {
     const key = getKeyFromHashAndSignature(
       calculateMessageHash(message),
       message.signature,
     );
-    const walletContract = new Contract(walletAddress, WalletContractInterface, wallet);
-    ensure(await walletContract.keyExist(key), InvalidSignature, 'Invalid key');
+    ensure(await this.walletContractService.keyExist(walletAddress, key), InvalidSignature, 'Invalid key');
   }
 
   async getStatus(messageHash: string) {
