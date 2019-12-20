@@ -2,8 +2,8 @@
   "name": "@universal-login/relayer",
   "version": "0.4.2",
   "license": "MIT",
-  "main": "build/src/index.js",
-  "types": "build/src/index.d.ts",
+  "main": "dist/cjs/src/index.js",
+  "types": "dist/cjs/src/index.d.ts",
   "dependencies": {
     "@restless/ethereum": "^0.2.1",
     "@restless/restless": "^0.4.2",
@@ -26,15 +26,15 @@
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "tsc && rm build/src/integration/sql/migrations/*.d.ts",
-    "start": "node build/src/http/start.js",
+    "build": "tsc --outDir dist/cjs && rm dist/cjs/src/integration/sql/migrations/*.d.ts",
+    "start": "node dist/cjs/src/http/start.js",
     "test": "yarn build && yarn test:nobuild",
-    "test:unit": "yarn build && NODE_ENV=test mocha \"build/test/unit/**/*.{ts,js}\"",
-    "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 --exit \"build/test/**/*.js\"",
+    "test:unit": "yarn build && NODE_ENV=test mocha \"dist/cjs/test/unit/**/*.{ts,js}\"",
+    "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 --exit \"dist/cjs/test/**/*.js\"",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
     "relayer:start": "yarn start",
     "ganache:start": "ts-node scripts/ganache.js",
-    "clean": "rimraf build"
+    "clean": "rimraf dist"
   },
   "engines": {
     "node": "^11.15.0"

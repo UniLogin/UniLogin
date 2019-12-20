@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {TEST_ACCOUNT_ADDRESS, getDeployedBytecode} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
-import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
+import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
 import {DeploymentObserver} from '../../../src/core/observers/DeploymentObserver';
 import {getContractWhiteList} from '@universal-login/relayer';
 

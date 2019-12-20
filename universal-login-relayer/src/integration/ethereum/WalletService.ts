@@ -1,6 +1,6 @@
 import {EventEmitter} from 'fbemitter';
 import {utils} from 'ethers';
-import {ensure, RequiredBalanceChecker, computeCounterfactualAddress, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT, DeviceInfo} from '@universal-login/commons';
+import {ensure, RequiredBalanceChecker, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT, DeviceInfo, computeCounterfactualAddress} from '@universal-login/commons';
 import {encodeInitializeWithENSData} from '@universal-login/contracts';
 import ENSService from './ensService';
 import {NotEnoughBalance, InvalidSignature, NotEnoughGas} from '../../core/utils/errors';
@@ -18,13 +18,21 @@ class WalletService {
     private devicesService: DevicesService) {
   }
 
+  async setupInitializeData({publicKey, ensName, gasPrice, gasToken}: Omit<DeployArgs, 'signature'>) {
+    const ensArgs = await this.ensService.argsFor(ensName);
+    const args = [publicKey, ...ensArgs as string[], gasPrice, gasToken];
+    return encodeInitializeWithENSData(args);
+  }
+
+  private async computeFutureAddress(publicKey: string) {
+    return computeCounterfactualAddress(this.config.factoryAddress, publicKey, await this.walletDeployer.getInitCode());
+  }
+
   async deploy({publicKey, ensName, gasPrice, gasToken, signature}: DeployArgs, deviceInfo: DeviceInfo) {
     ensure(utils.bigNumberify(gasPrice).gt(0), NotEnoughGas);
-    const ensArgs = await this.ensService.argsFor(ensName);
-    const contractAddress = computeCounterfactualAddress(this.config.factoryAddress, publicKey, await this.walletDeployer.getInitCode());
+    const contractAddress = await this.computeFutureAddress(publicKey);
     ensure(!!await this.requiredBalanceChecker.findTokenWithRequiredBalance(this.config.supportedTokens, contractAddress), NotEnoughBalance);
-    const args = [publicKey, ...ensArgs as string[], gasPrice, gasToken];
-    const initWithENS = encodeInitializeWithENSData(args);
+    const initWithENS = await this.setupInitializeData({publicKey, ensName, gasPrice, gasToken});
     ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);
     const transaction = await this.walletDeployer.deploy({publicKey, signature, intializeData: initWithENS}, {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: utils.bigNumberify(gasPrice)});
     await this.devicesService.addOrUpdate(contractAddress, publicKey, deviceInfo);

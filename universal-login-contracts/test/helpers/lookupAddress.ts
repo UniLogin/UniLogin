@@ -1,4 +1,4 @@
-import PublicResolver from '../../build/PublicResolver.json';
+import PublicResolver from '../../dist/contracts/PublicResolver.json';
 import {Provider} from 'ethers/providers';
 import {namehash} from 'ethers/utils';
 import {Contract} from 'ethers';

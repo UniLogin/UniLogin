@@ -1,4 +1,4 @@
 {
-  "main": "../dist/test/helpers/index.js",
-  "types": "../dist/test/helpers/index.d.ts"
+  "main": "../dist/cjs/test/helpers/index.js",
+  "types": "../dist/cjs/test/helpers/index.d.ts"
 }
