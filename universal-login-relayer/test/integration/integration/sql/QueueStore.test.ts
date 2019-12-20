@@ -17,12 +17,12 @@ for (const config of [{
   describe(`INT: IQueueStore: ${config.Type.name}`, async () => {
     let executionQueue: IExecutionQueue;
     let signedMessage: SignedMessage;
-    let expectedMessageHash: string;
+    let messageHash: string;
     const knex = getKnexConfig();
 
     before(async () => {
       signedMessage = getTestSignedMessage();
-      expectedMessageHash = calculateMessageHash(signedMessage);
+      messageHash = calculateMessageHash(signedMessage);
     });
 
     beforeEach(async () => {
@@ -39,18 +39,19 @@ for (const config of [{
     });
 
     it('add message', async () => {
-      const messageHash = await executionQueue.addMessage(signedMessage);
+      const returnedMessageHash = await executionQueue.addMessage(messageHash);
       expect(messageHash).to.be.a('string');
-      expect(messageHash).to.be.eq(expectedMessageHash);
+      expect(messageHash).to.be.eq(returnedMessageHash);
     });
 
     it('message round trip', async () => {
-      const messageHash1 = await executionQueue.addMessage(signedMessage);
+      const messageHash1 = await executionQueue.addMessage(messageHash);
       const signedMessage2 = getTestSignedMessage({value: utils.parseEther('2')});
-      const messageHash2 = await executionQueue.addMessage(signedMessage2);
+      const messageHash2 = calculateMessageHash(signedMessage2);
+      await executionQueue.addMessage(messageHash2);
       const nextMessageHash = (await executionQueue.getNext())!.hash;
       expect(nextMessageHash).to.be.equal(messageHash1);
-      expect(nextMessageHash).to.be.eq(expectedMessageHash);
+      expect(nextMessageHash).to.be.eq(messageHash);
       await executionQueue.remove(messageHash1);
       const nextMessageHash2 = (await executionQueue.getNext())!.hash;
       expect(nextMessageHash2).to.be.equal(messageHash2);
