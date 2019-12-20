@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import WalletContract from '@universal-login/contracts/dist/contracts/Wallet.json';
 import {ensure} from '@universal-login/commons';
 import {InvalidHexData} from './errors';
 

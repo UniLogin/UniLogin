@@ -10,9 +10,9 @@ import {
   withENS,
 } from '@universal-login/commons';
 import {deployFactory} from '@universal-login/contracts';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
-import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
-import MockToken from '@universal-login/contracts/build/MockToken.json';
+import WalletContract from '@universal-login/contracts/dist/contracts/Wallet.json';
+import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
+import MockToken from '@universal-login/contracts/dist/contracts/MockToken.json';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
 import {getConfig} from '../../core/utils/config';

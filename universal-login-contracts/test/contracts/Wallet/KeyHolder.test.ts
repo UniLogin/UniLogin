@@ -2,8 +2,8 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture, deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {utils, Contract, Wallet} from 'ethers';
-import KeyHolder from '../../../build/KeyHolder.json';
-import MockContract from '../../../build/MockContract.json';
+import KeyHolder from '../../../dist/contracts/KeyHolder.json';
+import MockContract from '../../../dist/contracts/MockContract.json';
 import testableKeyHolder from '../../fixtures/testableKeyHolder';
 import {createKeyPair, TEST_OVERRIDES_FOR_REVERT} from '@universal-login/commons';
 

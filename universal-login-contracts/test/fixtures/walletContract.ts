@@ -4,7 +4,7 @@ import {createKeyPair, ETHER_NATIVE_TOKEN, withENS} from '@universal-login/commo
 import {deployENS} from '@universal-login/commons/testutils';
 import {createFutureDeploymentWithENS} from '../helpers/FutureDeployment';
 import {deployFactory, deployWalletContract} from '../../src';
-import MockToken from '../../build/MockToken.json';
+import MockToken from '../../dist/contracts/MockToken.json';
 import {WalletContractInterface} from '../../src/interfaces';
 
 export async function setupEnsAndMaster(deployer: Wallet) {

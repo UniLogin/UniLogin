@@ -2,15 +2,16 @@
   "name": "@universal-login/commons",
   "version": "0.4.2",
   "description": "Unviersal Login Common source code",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "dist/cjs/src/index.js",
+  "types": "dist/cjs/src/index.d.ts",
   "license": "MIT",
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "tsc",
+    "build": "yarn build:cjs",
+    "build:cjs": "tsc --outDir dist/cjs",
     "clean": "rimraf dist",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "mocha -t 10000 \"dist/test/**/*.js\"",
+    "test:nobuild": "mocha -t 10000 \"dist/cjs/test/**/*.js\"",
     "lint": "eslint '{src,test}/**/*.ts'"
   },
   "devDependencies": {

@@ -1,15 +1,15 @@
 import {utils} from 'ethers';
-import WalletContract from '../build/Wallet.json';
-import UpgradedWallet from '../build/UpgradedWallet.json';
-import MockWalletMaster from '../build/MockWalletMaster.json';
-import WalletProxyFactory from '../build/WalletProxyFactory.json';
-import IERC20 from '../build/IERC20.json';
-import WalletProxy from '../build/WalletProxy.json';
+import WalletContract from '../dist/contracts/Wallet.json';
+import UpgradedWallet from '../dist/contracts/UpgradedWallet.json';
+import MockWalletMaster from '../dist/contracts/MockWalletMaster.json';
+import WalletProxyFactory from '../dist/contracts/WalletProxyFactory.json';
+import IERC20 from '../dist/contracts/IERC20.json';
+import WalletProxy from '../dist/contracts/WalletProxy.json';
 
-import FIFSRegistrar from '../build/FIFSRegistrar.json';
-import PublicResolver from '../build/PublicResolver.json';
-import ReverseRegistrar from '../build/ReverseRegistrar.json';
-import ENS from '../build/ENS.json';
+import FIFSRegistrar from '../dist/contracts/FIFSRegistrar.json';
+import PublicResolver from '../dist/contracts/PublicResolver.json';
+import ReverseRegistrar from '../dist/contracts/ReverseRegistrar.json';
+import ENS from '../dist/contracts/ENS.json';
 
 export const WalletContractInterface = new utils.Interface(WalletContract.interface);
 export const UpgradedWalletInterface = new utils.Interface(UpgradedWallet.interface);

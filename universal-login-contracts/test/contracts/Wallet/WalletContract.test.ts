@@ -7,7 +7,7 @@ import walletAndProxy from '../../fixtures/walletAndProxy';
 import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair, SignedMessage, ONE_SIGNATURE_GAS_COST, sortPrivateKeysByAddress, concatenateSignatures, TEST_GAS_PRICE, Message, TEST_OVERRIDES_FOR_REVERT} from '@universal-login/commons';
 import {getExecutionArgs, setupUpdateMessage} from '../../helpers/argumentsEncoding';
 import {walletContractFixture} from '../../fixtures/walletContract';
-import UpgradedWallet from '../../../build/UpgradedWallet.json';
+import UpgradedWallet from '../../../dist/contracts/UpgradedWallet.json';
 import {encodeDataForExecuteSigned, messageToSignedMessage, messageToUnsignedMessage} from '../../../src/index';
 import {calculateBaseGas} from '../../../src/estimateGas';
 import {calculateFinalGasLimit, calculatePaymentOptions, estimateBaseGasForNoSignature} from '../../helpers/calculations';

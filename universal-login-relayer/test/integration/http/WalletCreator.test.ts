@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {providers, Contract, utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {getDeployedBytecode, DEPLOYMENT_REFUND} from '@universal-login/commons';
-import ProxyContract from '@universal-login/contracts/build/WalletProxy.json';
+import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
 import {WalletCreator} from '../../helpers/WalletCreator';
 import Relayer, {RelayerUnderTest} from '../../../src';
 import {WalletContractInterface} from '@universal-login/contracts';

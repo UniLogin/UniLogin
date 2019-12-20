@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import {computeContractAddress} from '../../../src';
-import {getWallets, createMockProvider, deployContract} from 'ethereum-waffle';
-import {MockToken} from '../..';
+import {createMockProvider, deployContract, getWallets} from 'ethereum-waffle';
+import {MockToken} from '../../..';
+import {computeContractAddress} from '../../../../src';
 
 describe('UNIT: computeContractAddress', () => {
   function testFor(walletAddress: string, nonce: number, expectedAddress: string) {

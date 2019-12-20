@@ -1,10 +1,10 @@
 import {utils, Contract, Wallet, providers} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import WalletContract from '../../build/Wallet.json';
-import Proxy from '../../build/WalletProxy.json';
-import MockToken from '../../build/MockToken.json';
-import MockContract from '../../build/MockContract.json';
+import WalletContract from '../../dist/contracts/Wallet.json';
+import Proxy from '../../dist/contracts/WalletProxy.json';
+import MockToken from '../../dist/contracts/MockToken.json';
+import MockContract from '../../dist/contracts/MockContract.json';
 import {deployWalletContract} from '../../src';
 
 const {parseEther} = utils;

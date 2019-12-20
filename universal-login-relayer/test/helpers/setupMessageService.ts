@@ -25,6 +25,7 @@ import setupWalletService from './setupWalletService';
 import {GasComputation} from '../../src/core/services/GasComputation';
 import {BlockchainService} from '@universal-login/contracts';
 import MessageHandlerValidator from '../../src/core/services/validators/MessageHandlerValidator';
+import PendingMessages from '../../src/core/services/execution/messages/PendingMessages';
 
 export default async function setupMessageService(knex: Knex, config: Config) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
@@ -43,7 +44,8 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const gasComputation = new GasComputation(blockchainService);
   const messageHandlerValidator = new MessageHandlerValidator(config.maxGasLimit, gasComputation, wallet.address);
   const minedTransactionHandler = new MinedTransactionHandler(hooks, authorisationStore, devicesService);
-  const messageHandler = new MessageHandler(wallet, messageRepository, statusService, messageHandlerValidator, executionQueue);
+  const pendingMessages = new PendingMessages(wallet, messageRepository, executionQueue, statusService);
+  const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
   const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, minedTransactionHandler);
   const {walletService} = await setupWalletService(wallet);
   const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
