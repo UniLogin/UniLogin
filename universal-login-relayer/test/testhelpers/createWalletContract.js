@@ -7,7 +7,7 @@ export default async function createWalletContract(wallet) {
   const walletContract = await deployWalletContract(wallet);
   const factory = new ContractFactory(
     beta2.WalletProxy.interface,
-    `0x${WalletProxy.evm.bytecode.object}`,
+    `0x${beta2.WalletProxy.evm.bytecode.object}`,
     wallet,
   );
   const initData = encodeInitializeData([wallet.address, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address]);

@@ -1,14 +1,14 @@
 import {Contract, providers, utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {parseDomain, ENSDomainInfo} from '@universal-login/commons';
-import ENS from '@universal-login/contracts/dist/contracts/ENS.json';
+import {beta2} from '@universal-login/contracts';
 
 export class ENSService {
   ens?: Contract;
   domainsInfo: Record<string, ENSDomainInfo> = {};
 
   constructor(private provider: providers.Provider, private ensAddress: string) {
-    this.ens = new Contract(this.ensAddress!, ENS.interface, this.provider);
+    this.ens = new Contract(this.ensAddress!, beta2.ENS.interface, this.provider);
   }
 
   async getDomainInfo(domain: string) {
