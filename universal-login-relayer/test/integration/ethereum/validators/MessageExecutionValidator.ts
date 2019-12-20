@@ -9,6 +9,7 @@ import MessageExecutionValidator from '../../../../src/integration/ethereum/vali
 import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTest';
 import {transferMessage} from '../../../fixtures/basicWalletContract';
 import {getTestSignedMessage} from '../../../testconfig/message';
+import {WalletContractService} from '../../../../../src/integration/ethereum/WalletContractService';
 
 describe('INT: MessageExecutionValidator', async () => {
   let message: Message;
@@ -21,7 +22,8 @@ describe('INT: MessageExecutionValidator', async () => {
   beforeEach(async () => {
     ({wallet, master, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {...emptyMessage, ...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, nonce: 1, gasLimit: '200000'};
-    messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList);
+    const walletContractService = new WalletContractService(wallet.provider);
+    messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList, walletContractService);
   });
 
   it('successfully pass the validation', async () => {
@@ -45,18 +47,22 @@ describe('INT: MessageExecutionValidator', async () => {
 
   it('throws when invalid proxy', async () => {
     const messageValidatorWithInvalidProxy = new MessageExecutionValidator(wallet, {
-      wallet: contractWhiteList.wallet,
-      proxy: [TEST_ACCOUNT_ADDRESS],
-    });
+        wallet: contractWhiteList.wallet,
+        proxy: [TEST_ACCOUNT_ADDRESS],
+      },
+      new WalletContractService(wallet.provider),
+    );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(messageValidatorWithInvalidProxy.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
   });
 
   it('throws when invalid master', async () => {
     const messageValidatorWithInvalidMaster = new MessageExecutionValidator(wallet, {
-      wallet: [TEST_ACCOUNT_ADDRESS],
-      proxy: contractWhiteList.proxy,
-    });
+        wallet: [TEST_ACCOUNT_ADDRESS],
+        proxy: contractWhiteList.proxy,
+      },
+      new WalletContractService(wallet.provider),
+    );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(messageValidatorWithInvalidMaster.validate(signedMessage)).to.be.eventually
       .rejectedWith(`Invalid master at address '${master.address}'. Deployed contract bytecode hash: '${contractWhiteList.wallet[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
