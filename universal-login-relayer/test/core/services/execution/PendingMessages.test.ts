@@ -10,7 +10,7 @@ import PendingMessages from '../../../../src/core/services/execution/messages/Pe
 import {getKeyFromHashAndSignature} from '../../../../src/core/utils/encodeData';
 import {createMessageItem} from '../../../../src/core/utils/messages/serialisation';
 import {clearDatabase} from '../../../../src/http/relayers/RelayerUnderTest';
-import {SignaturesService} from '../../../../src/integration/ethereum/SignaturesService';
+import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
 import MessageSQLRepository from '../../../../src/integration/sql/services/MessageSQLRepository';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {getKnexConfig} from '../../../testhelpers/knex';
@@ -18,7 +18,7 @@ import {getKnexConfig} from '../../../testhelpers/knex';
 describe('INT: PendingMessages', () => {
   let pendingMessages: PendingMessages;
   let messageRepository: MessageSQLRepository;
-  let signaturesService: SignaturesService;
+  let walletContractService: WalletContractService;
   let statusService: MessageStatusService;
   let unsignedMessage: UnsignedMessage;
   let signedMessage: SignedMessage;
@@ -33,9 +33,9 @@ describe('INT: PendingMessages', () => {
     ({wallet, walletContract, actionKey} = await loadFixture(basicWalletContractWithMockToken));
     messageRepository = new MessageSQLRepository(knex);
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
-    signaturesService = new SignaturesService(wallet);
-    statusService = new MessageStatusService(messageRepository, signaturesService);
-    pendingMessages = new PendingMessages(wallet, messageRepository, {addMessage: spy} as any, statusService);
+    walletContractService = new WalletContractService(wallet.provider);
+    statusService = new MessageStatusService(messageRepository, walletContractService);
+    pendingMessages = new PendingMessages(messageRepository, {addMessage: spy} as any, statusService, walletContractService);
     unsignedMessage = messageToUnsignedMessage({...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS}, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION);
     signedMessage = unsignedMessageToSignedMessage(unsignedMessage, wallet.privateKey);
     messageHash = calculateMessageHash(signedMessage);
