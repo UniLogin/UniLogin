@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {startRelayerWithRefund, createWalletCounterfactually} from '../helpers/http';
+import {startRelayerWithRefund, createWalletCounterfactually} from '../testhelpers/http';
 import {signRelayerRequest, createKeyPair, TEST_APPLICATION_INFO} from '@universal-login/commons';
 import {utils} from 'ethers';
 

@@ -2,8 +2,8 @@ import {utils, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import MockToken from '@universal-login/contracts/dist/contracts/MockToken';
 import {executeAddKey} from '@universal-login/contracts/testutils';
-import createWalletContract from '../helpers/createWalletContract';
-import {buildEnsService} from '../helpers/buildEnsService';
+import createWalletContract from '../testhelpers/createWalletContract';
+import {buildEnsService} from '../testhelpers/buildEnsService';
 
 export default async function basicWalletContractWithMockToken(_, wallets) {
   const [, otherWallet, wallet] = wallets;

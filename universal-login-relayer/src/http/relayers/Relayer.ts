@@ -22,7 +22,7 @@ import {IExecutionQueue} from '../../core/models/execution/IExecutionQueue';
 import IMessageRepository from '../../core/models/messages/IMessagesRepository';
 import {WalletDeployer} from '../../integration/ethereum/WalletDeployer';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
-import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
+import WalletMasterContractService from '../../integration/ethereum/WalletMasterContractService';
 import {MessageStatusService} from '../../core/services/execution/messages/MessageStatusService';
 import {SignaturesService} from '../../integration/ethereum/SignaturesService';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';

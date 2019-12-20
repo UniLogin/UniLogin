@@ -1,6 +1,6 @@
 import {RelayerRequest, recoverFromRelayerRequest} from '@universal-login/commons';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
-import WalletMasterContractService from '../../integration/ethereum/services/WalletMasterContractService';
+import WalletMasterContractService from '../../integration/ethereum/WalletMasterContractService';
 import {AddAuthorisationRequest} from '../models/AddAuthorisationRequest';
 
 class AuthorisationService {
