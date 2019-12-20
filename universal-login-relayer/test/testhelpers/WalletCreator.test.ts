@@ -1,6 +1,5 @@
 import {DEPLOYMENT_REFUND, getDeployedBytecode} from '@universal-login/commons';
-import {WalletContractInterface} from '@universal-login/contracts';
-import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
+import {beta2, WalletContractInterface} from '@universal-login/contracts';
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Contract, providers, utils} from 'ethers';
