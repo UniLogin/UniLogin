@@ -9,13 +9,11 @@ import {
   TEST_GAS_PRICE,
   waitForContractDeploy,
 } from '@universal-login/commons';
-import WalletContract from '@universal-login/contracts/dist/contracts/Wallet.json';
-import ENS from '@universal-login/contracts/dist/contracts/ENS.json';
+import {beta2} from '@universal-login/contracts';
 import chai from 'chai';
 import {deployFactory, deployWalletContract, encodeInitializeWithENSData} from '@universal-login/contracts';
 import {getFutureAddress} from '@universal-login/contracts/testutils';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
-import {WalletContractInterface} from '@universal-login/contracts';
 
 export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
@@ -35,7 +33,7 @@ export const createWalletContract = async (provider, relayerUrlOrServer, publicK
       ensName,
     });
   const {transaction} = result.body;
-  return waitForContractDeploy(provider, WalletContract, transaction.hash);
+  return waitForContractDeploy(provider, beta2.WalletContract, transaction.hash);
 };
 
 export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, keyPair, walletContractAddress, factoryContractAddress, ensAddress, ensName = 'marek.mylogin.eth') => {
@@ -54,6 +52,7 @@ export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, k
       applicationInfo: TEST_APPLICATION_INFO,
     });
   await waitForDeploymentStatus(relayerUrlOrServer, result.body.deploymentHash, 'Success');
+  const WalletContractInterface = new utils.Interface(beta2.WalletContract.interface);
   return new Contract(futureAddress, WalletContractInterface, wallet);
 };
 
@@ -71,7 +70,7 @@ export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPri
   const [label, domain] = parseDomain(ensName);
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
   const node = utils.namehash(`${label}.${domain}`);
-  const ens = new Contract(ensAddress, ENS.interface, provider);
+  const ens = new Contract(ensAddress, beta2.ENS.interface, provider);
   const resolverAddress = await ens.resolver(utils.namehash(domain));
   const registrarAddress = await ens.owner(utils.namehash(domain));
   return encodeInitializeWithENSData([keyPair.publicKey, hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress, gasPrice, gasToken]);

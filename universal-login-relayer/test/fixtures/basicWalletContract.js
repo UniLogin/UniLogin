@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {EMPTY_DATA, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '@universal-login/commons';
 import {encodeFunction} from '@universal-login/contracts/testutils';
-import WalletContract from '@universal-login/contracts/dist/contracts/Wallet.json';
+import {beta2} from '@universal-login/contracts';
 
 const gasPrice = utils.bigNumberify(DEFAULT_GAS_PRICE);
 const gasLimit = utils.bigNumberify(DEFAULT_GAS_LIMIT);
@@ -16,7 +16,7 @@ export const transferMessage = {
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
-const addKeyMessageDataField = encodeFunction(WalletContract, 'addKey', ['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
+const addKeyMessageDataField = encodeFunction(beta2.WalletContract, 'addKey', ['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
 export const addKeyMessage = {
   to: '0x0000000000000000000000000000000000000000',
   value: utils.parseEther('0.0'),
@@ -27,7 +27,7 @@ export const addKeyMessage = {
   gasToken: '0x0000000000000000000000000000000000000000',
 };
 
-const removeKeyMessageDataField = encodeFunction(WalletContract, 'removeKey', ['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
+const removeKeyMessageDataField = encodeFunction(beta2.WalletContract, 'removeKey', ['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
 export const removeKeyMessage = {
   to: '0x0000000000000000000000000000000000000000',
   value: utils.parseEther('0.0'),

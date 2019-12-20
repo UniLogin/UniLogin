@@ -37,7 +37,7 @@ describe('INT: WalletCreator', () => {
     const {contractAddress, publicKey} = await walletCreator.deployWallet();
     expect(await provider.getBalance(contractAddress)).to.eq(initialBalance.sub(DEPLOYMENT_REFUND));
     expect(contractAddress).to.be.properAddress;
-    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract)}`);
+    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(beta2.WalletProxy)}`);
     const walletContract = new Contract(contractAddress, WalletContractInterface, provider);
     expect(await walletContract.keyExist(publicKey)).to.be.true;
   });

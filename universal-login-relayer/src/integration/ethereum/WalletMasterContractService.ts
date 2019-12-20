@@ -1,6 +1,6 @@
 import {recoverFromRelayerRequest, RelayerRequest, hashRelayerRequest, ensure} from '@universal-login/commons';
 import {ethers, providers} from 'ethers';
-import WalletMasterWithRefund from '@universal-login/contracts/dist/contracts/Wallet.json';
+import {beta2} from '@universal-login/contracts';
 import {UnauthorisedAddress} from '../../core/utils/errors';
 
 const MAGICVALUE = '0x20c13b0b';
@@ -9,7 +9,7 @@ class WalletMasterContractService {
   constructor(private provider: providers.Provider) {}
 
   private async ensureValidSignature(walletContractAddress: string, signature: string, payloadDigest: string, recoveredAddress: string) {
-    const contract = new ethers.Contract(walletContractAddress, WalletMasterWithRefund.interface, this.provider);
+    const contract = new ethers.Contract(walletContractAddress, beta2.WalletContract.interface, this.provider);
     const isCorrectAddress = await contract.isValidSignature(payloadDigest, signature);
     ensure(isCorrectAddress === MAGICVALUE, UnauthorisedAddress, recoveredAddress);
   }
