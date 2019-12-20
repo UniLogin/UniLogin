@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
 import {PublicRelayerConfig} from '@universal-login/commons';
-import {startRelayer} from '../helpers/http';
+import {startRelayer} from '../testhelpers/http';
 import {getPublicConfig} from '../../src/http/routes/config';
 import {RelayerUnderTest} from '../../src';
 

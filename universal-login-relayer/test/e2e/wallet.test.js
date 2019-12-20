@@ -4,8 +4,8 @@ import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
-import {startRelayerWithRefund, createWalletCounterfactually} from '../helpers/http';
-import {getTestSignedMessage} from '../config/message';
+import {startRelayerWithRefund, createWalletCounterfactually} from '../testhelpers/http';
+import {getTestSignedMessage} from '../testconfig/message';
 
 chai.use(chaiHttp);
 
