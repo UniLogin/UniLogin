@@ -86,7 +86,7 @@ export const TopUpWithFiat = ({walletService, logoColor, topUpProviderSupportSer
             />
           </>}
           <div className="fiat-bottom">
-            {!!country && <FiatFooter paymentMethod={paymentMethod} />}
+            {!!country && <FiatFooter paymentMethod={paymentMethod} walletService={walletService} />}
           </div>
         </div>
       </div>
