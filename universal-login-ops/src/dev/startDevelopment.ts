@@ -96,7 +96,7 @@ function getProxyContractHash() {
 
 function getMigrationPath() {
   const packagePath = require.resolve('@universal-login/relayer/package.json');
-  return join(dirname(packagePath), 'build', 'lib', 'integration', 'sql', 'migrations');
+  return join(dirname(packagePath), 'dist/cjs', 'src', 'integration', 'sql', 'migrations');
 }
 
 declare interface StartDevelopmentOverrides {
