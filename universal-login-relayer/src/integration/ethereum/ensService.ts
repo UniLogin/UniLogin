@@ -1,5 +1,5 @@
 import {utils, Contract, providers} from 'ethers';
-import ENS from '@universal-login/contracts/build/ENS.json';
+import ENS from '@universal-login/contracts/dist/contracts/ENS.json';
 import {parseDomain, resolveName, ENSDomainInfo, ensure} from '@universal-login/commons';
 import {InvalidENSDomain, EnsNameTaken} from '../../core/utils/errors';
 

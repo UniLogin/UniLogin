@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import ERC1271Utils from '../../../build/ERC1271Utils.json';
+import ERC1271Utils from '../../../dist/contracts/ERC1271Utils.json';
 import {Contract} from 'ethers';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 

@@ -1,7 +1,7 @@
 import {Contract, providers, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import MockWalletMaster from '../../build/MockWalletMaster.json';
-import ProxyContract from '../../build/WalletProxy.json';
+import MockWalletMaster from '../../dist/contracts/MockWalletMaster.json';
+import ProxyContract from '../../dist/contracts/WalletProxy.json';
 
 export default async function basicWalletAndProxy(givenProvider: providers.Provider, [, , wallet]: Wallet[]) {
   const walletContract = await deployContract(wallet, MockWalletMaster);

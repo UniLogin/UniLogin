@@ -1,6 +1,6 @@
 import {Wallet, providers, utils} from 'ethers';
 import {deployContractAndWait} from '@universal-login/commons';
-import Factory from '@universal-login/contracts/build/WalletProxyFactory.json';
+import Factory from '@universal-login/contracts/dist/contracts/WalletProxyFactory.json';
 import {connect} from '../cli/connectAndExecute';
 
 export type ConnectAndDeployFactory = {

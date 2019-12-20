@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import MockToken from '@universal-login/contracts/build/MockToken';
+import MockToken from '@universal-login/contracts/dist/contracts/MockToken';
 import {calculateMessageHash, GAS_BASE, GAS_FIXED} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
 import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';

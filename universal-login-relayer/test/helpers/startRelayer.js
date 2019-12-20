@@ -1,5 +1,5 @@
 import {deployContract} from 'ethereum-waffle';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import WalletContract from '@universal-login/contracts/dist/contracts/Wallet.json';
 import {deployFactory} from '@universal-login/contracts';
 import Token from '../../src/http/relayers/abi/Token.json';
 import ENSBuilder from 'ens-builder';

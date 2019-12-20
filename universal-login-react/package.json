@@ -1,17 +1,18 @@
 {
   "name": "@universal-login/react",
   "version": "0.4.2",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "dist/cjs/src/index.js",
+  "types": "dist/cjs/src/index.d.ts",
   "license": "MIT",
   "scripts": {
     "prebuild": "yarn clean",
     "start": "webpack-dev-server --mode development --progress",
     "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "clean": "rimraf dist",
-    "build": "tsc -p tsconfig.json && cpx \"src/ui/assets/**/*\" dist/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/src/ui/styles",
+    "build": "yarn build:cjs",
+    "build:cjs": "tsc --outDir dist/cjs/ && cpx \"src/ui/assets/**/*\" dist/cjs/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/cjs/src/ui/styles",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/test/testconfig -t 10000 --exit \"dist/test/**/*.js\"",
+    "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/cjs/test/testconfig -t 10000 --exit \"dist/cjs/test/**/*.js\"",
     "start:dev": "ts-node scripts/dev-start.ts"
   },
   "dependencies": {

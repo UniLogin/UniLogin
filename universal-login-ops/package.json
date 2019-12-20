@@ -2,16 +2,17 @@
   "name": "@universal-login/ops",
   "version": "0.4.2",
   "description": "",
-  "main": "dist/src/index.js",
+  "main": "dist/cjs/src/index.js",
   "bin": {
     "universal-login": "./bin/universal-login"
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "tsc --build tsconfig.build.json && cpx \"src/contracts/**/*\" dist/src/contracts",
+    "build": "yarn build:cjs",
+    "build:cjs": "tsc --outDir dist/cjs --p tsconfig.build.json && cpx \"src/contracts/**/*\" dist/cjs/src/contracts",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
     "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/test/**/*.{js,ts}\"",
+    "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/cjs/test/**/*.{js,ts}\"",
     "cli": "ts-node ./scripts/cli",
     "clean": "rimraf dist"
   },

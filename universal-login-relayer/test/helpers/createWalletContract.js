@@ -1,7 +1,7 @@
 import {ContractFactory, Contract, utils} from 'ethers';
 import {defaultDeployOptions, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import WalletProxy from '@universal-login/contracts/build/WalletProxy.json';
-import WalletContract from '@universal-login/contracts/build/Wallet.json';
+import WalletProxy from '@universal-login/contracts/dist/contracts/WalletProxy.json';
+import WalletContract from '@universal-login/contracts/dist/contracts/Wallet.json';
 import {encodeInitializeData, deployWalletContract} from '@universal-login/contracts';
 
 export default async function createWalletContract(wallet) {

@@ -1,6 +1,6 @@
 import {recoverFromRelayerRequest, RelayerRequest, hashRelayerRequest, ensure} from '@universal-login/commons';
 import {ethers, providers} from 'ethers';
-import WalletMasterWithRefund from '@universal-login/contracts/build/Wallet.json';
+import WalletMasterWithRefund from '@universal-login/contracts/dist/contracts/Wallet.json';
 import {UnauthorisedAddress} from '../../../core/utils/errors';
 
 const MAGICVALUE = '0x20c13b0b';
