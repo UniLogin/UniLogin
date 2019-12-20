@@ -6,5 +6,5 @@ export {messageToUnsignedMessage, messageToSignedMessage, unsignedMessageToSigne
 export * from './interfaces';
 export {BlockchainService} from './integration/BlockchainService';
 
-import * as beta2 from './beta2';
+import * as beta2 from './beta2/contracts';
 export {beta2};
