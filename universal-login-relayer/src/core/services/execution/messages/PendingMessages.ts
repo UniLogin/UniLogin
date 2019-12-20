@@ -2,7 +2,6 @@ import {ensure, MessageStatus, SignedMessage} from '@universal-login/commons';
 import {MessageStatusService} from './MessageStatusService';
 import {DuplicatedExecution, DuplicatedSignature, InvalidSignature, NotEnoughSignatures} from '../../../utils/errors';
 import IMessageRepository from '../../../models/messages/IMessagesRepository';
-import {getKeyFromHashAndSignature} from '../../../utils/encodeData';
 import {createMessageItem} from '../../../utils/messages/serialisation';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
 import {WalletContractService} from '../../../../integration/ethereum/WalletContractService';
@@ -50,10 +49,7 @@ export default class PendingMessages {
   }
 
   private async ensureKeyExist(message: SignedMessage, walletAddress: string) {
-    const key = getKeyFromHashAndSignature(
-      this.walletContractService.calculateMessageHash(message),
-      message.signature,
-    );
+    const key = this.walletContractService.recoverSignerFromMessage(message);
     ensure(await this.walletContractService.keyExist(walletAddress, key), InvalidSignature, 'Invalid key');
   }
 

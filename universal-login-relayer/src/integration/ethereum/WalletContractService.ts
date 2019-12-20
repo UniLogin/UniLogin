@@ -1,6 +1,7 @@
 import {providers, Contract, utils} from 'ethers';
 import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
 import {WalletContractInterface} from '@universal-login/contracts';
+import {getKeyFromHashAndSignature} from '../../core/utils/encodeData';
 
 export class WalletContractService {
   constructor(private provider: providers.Provider) {
@@ -19,5 +20,12 @@ export class WalletContractService {
 
   calculateMessageHash(message: SignedMessage) {
     return calculateMessageHash(message);
+  }
+
+  recoverSignerFromMessage(message: SignedMessage) {
+    return getKeyFromHashAndSignature(
+      this.calculateMessageHash(message),
+      message.signature,
+    );
   }
 }
