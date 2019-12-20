@@ -1,6 +1,6 @@
 import {Wallet, providers, utils} from 'ethers';
 import {deployContractAndWait} from '@universal-login/commons';
-import Factory from '@universal-login/contracts/dist/contracts/WalletProxyFactory.json';
+import {beta2} from '@universal-login/contracts';
 import {connect} from '../cli/connectAndExecute';
 
 export type ConnectAndDeployFactory = {
@@ -23,7 +23,7 @@ export default async function deployFactory(wallet: Wallet, {nonce, gasPrice, wa
     gasPrice: gasPrice && utils.bigNumberify(gasPrice),
     nonce: nonce && utils.bigNumberify(nonce),
   };
-  const contractAddress = await deployContractAndWait(wallet, Factory, [walletContractAddress], transactionOverrides);
+  const contractAddress = await deployContractAndWait(wallet, beta2.WalletProxyFactory, [walletContractAddress], transactionOverrides);
   console.log(`Factory contract address: ${contractAddress}`);
   return contractAddress;
 }

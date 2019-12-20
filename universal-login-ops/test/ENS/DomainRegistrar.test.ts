@@ -1,11 +1,11 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
+import {utils, Contract, Wallet} from 'ethers';
+import {loadFixture} from 'ethereum-waffle';
 import {basicENS} from '@universal-login/commons/testutils';
 import DomainRegistrar from '../../src/ENS/DomainRegistrar';
 import ENSNameRegistrar from '../../src/ENS/ENSNameRegistrar';
-import {utils, Contract, Wallet} from 'ethers';
-import PublicResolver from '@universal-login/contracts/dist/contracts/PublicResolver.json';
-import {loadFixture} from 'ethereum-waffle';
+import PublicResolver from '../../src/contracts/PublicResolver.json';
 
 chai.use(require('chai-string'));
 chai.use(sinonChai);
