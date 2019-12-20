@@ -1,4 +1,5 @@
 import React from 'react';
+import {WalletService} from '@universal-login/sdk';
 import MastercardLogo from './../../assets/logos/mastercard.jpg';
 import MastercardLogo2x from './../../assets/logos/mastercard@2x.jpg';
 import VisaLogo from './../../assets/logos/visa.jpg';
@@ -10,12 +11,23 @@ import Yoti2x from './../../assets/logos/yoti@2x.jpg';
 import ApplePay from './../../assets/logos/applePay.jpg';
 import ApplePay2x from './../../assets/logos/applePay@2x.jpg';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
+import {getMinimalAmountForFiatProvider} from '../../../core/utils/getMinimalAmountForFiatProvider';
+import {useAsync} from '../../hooks/useAsync';
 
 interface FiatFooterProps {
+  walletService: WalletService;
   paymentMethod?: TopUpProvider;
 }
 
-export const FiatFooter = ({paymentMethod}: FiatFooterProps) => {
+export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
+  const [minimumAmount] = useAsync(async () => {
+    const requiredDeploymentBalance = walletService.getRequiredDeploymentBalance();
+    if (!paymentMethod) {
+      return requiredDeploymentBalance;
+    }
+    return getMinimalAmountForFiatProvider(paymentMethod, requiredDeploymentBalance);
+  }, [paymentMethod]);
+
   switch (paymentMethod) {
     case TopUpProvider.RAMP:
       return (
@@ -27,7 +39,7 @@ export const FiatFooter = ({paymentMethod}: FiatFooterProps) => {
             </div>
           </div>
           <div className="info-block info-row">
-            <p className="info-text info-text-hint">Minimum amount is 1£</p>
+            <p className="info-text info-text-hint">{`Minimum amount is ${minimumAmount}`}</p>
           </div>
         </>
       );
