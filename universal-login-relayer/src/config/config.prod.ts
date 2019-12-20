@@ -24,7 +24,6 @@ export const config: Config = Object.freeze({
   factoryAddress: getEnv('FACTORY_ADDRESS', ''),
   supportedTokens: [{
     address: ETHER_NATIVE_TOKEN.address,
-    minimalAmount: '0.05',
   }],
   localization: {
     language: 'en',

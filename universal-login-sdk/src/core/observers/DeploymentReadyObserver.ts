@@ -16,9 +16,8 @@ export class DeploymentReadyObserver extends ObserverRunner {
   }
 
   setSupportedToken(supportedToken: SupportedToken) {
-    const newSupportedTokens = this.supportedTokens.map(token =>
+    this.supportedTokens = this.supportedTokens.map(token =>
       (token.address === supportedToken.address) ? supportedToken : token);
-    this.supportedTokens = newSupportedTokens;
   }
 
   getSupportedToken() {
