@@ -1,24 +1,23 @@
 import {IExecutionQueue} from '../../src/core/models/execution/IExecutionQueue';
 import {QueueItem} from '../../src/core/models/QueueItem';
-import Deployment from '../../src/core/models/Deployment';
 
 export default class QueueMemoryStore implements IExecutionQueue {
   queueItems: QueueItem[] = [];
 
-  async addMessage(hash: string) {
+  async addMessage(messageHash: string) {
     this.queueItems.push({
       type: 'Message',
-      hash,
+      hash: messageHash,
     });
-    return hash;
+    return messageHash;
   }
 
-  async addDeployment(deployment: Deployment) {
+  async addDeployment(deploymentHash: string) {
     this.queueItems.push({
       type: 'Deployment',
-      hash: deployment.hash,
+      hash: deploymentHash,
     });
-    return deployment.hash;
+    return deploymentHash;
   }
 
   async getNext() {

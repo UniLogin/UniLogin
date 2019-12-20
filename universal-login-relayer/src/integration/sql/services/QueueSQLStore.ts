@@ -1,6 +1,5 @@
 import Knex from 'knex';
 import {IExecutionQueue} from '../../../core/models/execution/IExecutionQueue';
-import Deployment from '../../../core/models/Deployment';
 
 export default class QueueSQLStore implements IExecutionQueue {
   tableName: string;
@@ -20,15 +19,15 @@ export default class QueueSQLStore implements IExecutionQueue {
     return messageHash;
   }
 
-  async addDeployment(deployment: Deployment) {
+  async addDeployment(deploymentHash: string) {
     await this.database
       .insert({
-        hash: deployment.hash,
+        hash: deploymentHash,
         type: 'Deployment',
         created_at: this.database.fn.now(),
       })
       .into(this.tableName);
-    return deployment.hash;
+    return deploymentHash;
   }
 
   async getNext() {
