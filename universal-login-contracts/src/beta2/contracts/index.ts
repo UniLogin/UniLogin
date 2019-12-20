@@ -1,3 +1,7 @@
-export {default as WalletContract} from './Wallet.json';
-export {default as WalletProxy} from './WalletProxy.json';
-export {default as WalletProxyFactory} from './WalletProxyFactory.json';
+import WalletContract from './Wallet.json';
+import WalletProxyFactory from './WalletProxyFactory.json';
+
+import MockToken from './MockToken.json';
+import WalletProxy from './WalletProxy.json';
+
+export {WalletContract, WalletProxyFactory, MockToken, WalletProxy};
