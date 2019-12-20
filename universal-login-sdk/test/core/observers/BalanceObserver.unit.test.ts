@@ -4,12 +4,12 @@ import {Wallet, utils} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
 import {waitUntil} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import UniversalLoginSDK from '../../src/api/sdk';
-import basicSDK from '../fixtures/basicSDK';
+import UniversalLoginSDK from '../../../src/api/sdk';
+import basicSDK from '../../fixtures/basicSDK';
 
 const loadFixture = createFixtureLoader();
 
-describe('E2E: BalanceObserver', () => {
+describe('UNIT: BalanceObserver', () => {
   let sdk: UniversalLoginSDK;
   let relayer: RelayerUnderTest;
   let wallet: Wallet;

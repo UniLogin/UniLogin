@@ -3,10 +3,10 @@ import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import {createFixtureLoader, solidity} from 'ethereum-waffle';
 import {Contract, Wallet} from 'ethers';
-import basicSDK from '../fixtures/basicSDK';
+import basicSDK from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {walletFromBrain, DEFAULT_GAS_PRICE} from '@universal-login/commons';
-import {DeployedWallet} from '../../src';
+import {DeployedWallet} from '../../../src';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -16,7 +16,7 @@ const loadFixture = createFixtureLoader();
 
 const gasPrice = DEFAULT_GAS_PRICE;
 
-describe('E2E: DeployedWallet', async () => {
+describe('INT: DeployedWallet', async () => {
   let relayer: RelayerUnderTest;
   let otherWallet: Wallet;
   let mockToken: Contract;

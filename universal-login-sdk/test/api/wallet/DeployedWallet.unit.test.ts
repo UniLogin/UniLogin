@@ -2,7 +2,7 @@ import {DeployedWallet} from '../../../src';
 import {utils, Wallet} from 'ethers';
 import {expect} from 'chai';
 
-describe('DeployedWallet', () => {
+describe('UNIT: DeployedWallet', () => {
   describe('sign', () => {
     const message = 'meessage';
     let wallet: Wallet;

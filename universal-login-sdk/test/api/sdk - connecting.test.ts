@@ -8,7 +8,7 @@ import {isValidCode, isProperSecurityCode, TEST_SDK_CONFIG} from '@universal-log
 
 const loadFixture = createFixtureLoader();
 
-describe('E2E: SDK connecting', async () => {
+describe('INT: SDK connecting', async () => {
   let provider: providers.Provider;
   let relayer: RelayerUnderTest;
   let sdk: UniversalLoginSDK;

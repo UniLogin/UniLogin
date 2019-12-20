@@ -6,9 +6,9 @@ import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedTok
 import {BlockchainService} from '@universal-login/contracts';
 import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import {FutureWalletFactory} from '../../../src/api/FutureWalletFactory';
-import {RelayerApi} from '../../../src/integration/http/RelayerApi';
-import {ENSService} from '../../../src/integration/ethereum/ENSService';
+import {FutureWalletFactory} from '../../src/api/FutureWalletFactory';
+import {RelayerApi} from '../../src/integration/http/RelayerApi';
+import {ENSService} from '../../src/integration/ethereum/ENSService';
 
 chai.use(chaiHttp);
 

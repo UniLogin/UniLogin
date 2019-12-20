@@ -16,7 +16,7 @@ const loadFixture = createFixtureLoader();
 const gasPrice = DEFAULT_GAS_PRICE;
 const gasLimit = DEFAULT_GAS_LIMIT;
 
-describe('E2E: Events', async () => {
+describe('INT: Events', async () => {
   let relayer: RelayerUnderTest;
   let sdk: UniversalLoginSDK;
   let contractAddress: string;

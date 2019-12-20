@@ -17,7 +17,7 @@ chai.use(chaiAsPromised);
 const loadFixture = createFixtureLoader();
 const jsonRpcUrl = 'http://localhost:18545';
 
-describe('E2E: SDK', async () => {
+describe('INT: SDK', async () => {
   let provider: providers.Provider;
   let relayer: RelayerUnderTest;
   let sdk: UniversalLoginSDK;

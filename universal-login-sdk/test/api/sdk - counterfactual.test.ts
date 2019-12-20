@@ -9,7 +9,7 @@ import UniversalLoginSDK from '../../src/api/sdk';
 
 chai.use(solidity);
 
-describe('E2E: SDK counterfactual deployment', () => {
+describe('INT: SDK counterfactual deployment', () => {
   let provider: providers.Provider;
   let sdk: UniversalLoginSDK;
   let relayer: RelayerUnderTest;
