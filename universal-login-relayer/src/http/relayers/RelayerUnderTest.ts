@@ -9,15 +9,13 @@ import {
   getContractHash,
   withENS,
 } from '@universal-login/commons';
-import {deployFactory} from '@universal-login/contracts';
-import WalletContract from '@universal-login/contracts/dist/contracts/Wallet.json';
-import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
-import MockToken from '@universal-login/contracts/dist/contracts/MockToken.json';
+import {deployFactory, beta2} from '@universal-login/contracts';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
 import {getConfig} from '../../core/utils/config';
 
 const ENSBuilder = require('ens-builder');
+const {WalletContract, MockToken, WalletProxy} = beta2;
 
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
@@ -112,5 +110,5 @@ export async function clearDatabase(knex: Knex) {
 
 export const getContractWhiteList = () => ({
   wallet: [getContractHash(WalletContract as ContractJSON)],
-  proxy: [getContractHash(ProxyContract as ContractJSON)],
+  proxy: [getContractHash(WalletProxy as ContractJSON)],
 });

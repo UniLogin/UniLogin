@@ -8,7 +8,7 @@ import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContr
 import MessageExecutionValidator from '../../../../src/integration/ethereum/validators/MessageExecutionValidator';
 import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTest';
 import {transferMessage} from '../../../fixtures/basicWalletContract';
-import MockToken from '@universal-login/contracts/dist/contracts/MockToken.json';
+import {beta2} from '@universal-login/contracts';
 import {getTestSignedMessage} from '../../../testconfig/message';
 
 describe('INT: MessageExecutionValidator', async () => {
@@ -36,7 +36,7 @@ describe('INT: MessageExecutionValidator', async () => {
   });
 
   it('throws when not enough tokens', async () => {
-    const mockToken = await deployContract(wallet, MockToken);
+    const mockToken = await deployContract(wallet, beta2.MockToken);
     await mockToken.transfer(walletContract.address, 1);
 
     const signedMessage = getTestSignedMessage({...message, gasToken: mockToken.address}, wallet.privateKey);

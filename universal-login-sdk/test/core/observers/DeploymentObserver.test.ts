@@ -2,13 +2,13 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {TEST_ACCOUNT_ADDRESS, getDeployedBytecode} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
-import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
+import {beta2} from '@universal-login/contracts';
 import {DeploymentObserver} from '../../../src/core/observers/DeploymentObserver';
 import {getContractWhiteList} from '@universal-login/relayer';
 
 describe('UNIT: DeploymentObserver', async () => {
   const contractWhiteList = getContractWhiteList();
-  const expectedBytecode = `0x${getDeployedBytecode(ProxyContract)}`;
+  const expectedBytecode = `0x${getDeployedBytecode(beta2.WalletProxy as any)}`;
   const blockchainService = {getCode: sinon.stub().returns('0x').onCall(3).returns(expectedBytecode)};
   let deploymentObserver: DeploymentObserver;
 

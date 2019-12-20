@@ -3,8 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader, deployContract} from 'ethereum-waffle';
 import {utils, providers, Wallet, Contract} from 'ethers';
-import MockToken from '@universal-login/contracts/dist/contracts/MockToken.json';
-import Proxy from '@universal-login/contracts/dist/contracts/WalletProxy.json';
+import {beta2} from '@universal-login/contracts';
 import {signRelayerRequest, Message, GAS_BASE, Device, SdkExecutionOptions, PartialRequired, TEST_EXECUTION_OPTIONS, TEST_SDK_CONFIG} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
@@ -88,7 +87,7 @@ describe('INT: SDK', async () => {
     });
 
     it('when not enough tokens ', async () => {
-      const mockToken = await deployContract(wallet, MockToken);
+      const mockToken = await deployContract(wallet, beta2.MockToken);
       await mockToken.transfer(walletContract.address, 1);
       message = {...message, gasToken: mockToken.address};
       const {waitToBeSuccess} = await sdk.execute(message, privateKey);
@@ -187,7 +186,7 @@ describe('INT: SDK', async () => {
     it('should return correct bytecode', async () => {
       const address = await sdk.resolveName('alex.mylogin.eth');
       expect(address).to.not.be.null;
-      expect(Proxy.evm.deployedBytecode.object.slice(0)).to.eq((await provider.getCode(address!)).slice(2));
+      expect(beta2.WalletProxy.evm.deployedBytecode.object.slice(0)).to.eq((await provider.getCode(address!)).slice(2));
     });
 
     it('should return null if no resolver address', async () => {

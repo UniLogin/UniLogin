@@ -1,7 +1,6 @@
 import {GAS_BASE, GAS_FIXED} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
-import MockToken from '@universal-login/contracts/dist/contracts/MockToken';
-import WalletContract from '@universal-login/contracts/dist/contracts/Wallet.json';
+import {beta2} from '@universal-login/contracts';
 import {encodeFunction} from '@universal-login/contracts/testutils';
 import {expect} from 'chai';
 import {deployContract} from 'ethereum-waffle';
@@ -39,7 +38,7 @@ describe('INT: MessageHandler', async () => {
   });
 
   it('Error when not enough tokens', async () => {
-    const mockToken = await deployContract(wallet, MockToken);
+    const mockToken = await deployContract(wallet, beta2.MockToken);
     await mockToken.transfer(walletContract.address, 1);
 
     const signedMessage = getTestSignedMessage({...msg, gasToken: mockToken.address}, wallet.privateKey);
@@ -98,7 +97,7 @@ describe('INT: MessageHandler', async () => {
   describe('Add Keys', async () => {
     it('execute add key', async () => {
       const keys = [otherWallet.address];
-      const data = encodeFunction(WalletContract, 'addKeys', [keys]);
+      const data = encodeFunction(beta2.WalletContract, 'addKeys', [keys]);
       msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), data, refundReceiver: wallet.address};
       const signedMessage0 = getTestSignedMessage(msg, wallet.privateKey);
       await messageHandler.handleMessage(signedMessage0);

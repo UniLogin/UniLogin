@@ -4,7 +4,7 @@ import {utils, Wallet, providers, Contract} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO} from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
-import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
+import {beta2} from '@universal-login/contracts';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {FutureWalletFactory} from '../../src/api/FutureWalletFactory';
 import {RelayerApi} from '../../src/integration/http/RelayerApi';
@@ -60,7 +60,7 @@ describe('INT: FutureWalletFactory', async () => {
     const {waitToBeSuccess, deploymentHash} = await deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
     expect(deploymentHash).to.be.properHex(64);
     const deployedWallet = await waitToBeSuccess();
-    expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as ContractJSON)}`);
+    expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(beta2.WalletProxy as ContractJSON)}`);
 
     expect(deployedWallet.contractAddress).to.eq(contractAddress);
     expect(deployedWallet.name).to.eq(ensName);

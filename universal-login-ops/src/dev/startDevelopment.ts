@@ -3,9 +3,9 @@ import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet} from 'ethers';
 import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@universal-login/commons';
 import {RelayerClass, Config} from '@universal-login/relayer';
-import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
-import SaiToken from '@universal-login/contracts/dist/contracts/MockSai.json';
-import DaiToken from '@universal-login/contracts/dist/contracts/MockDai.json';
+import {beta2} from '@universal-login/contracts';
+import SaiToken from '../contracts/MockSai.json';
+import DaiToken from '../contracts/MockDai.json';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
 import {startGanache} from './startGanache';
@@ -89,8 +89,8 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
 }
 
 function getProxyContractHash() {
-  const proxyContractHash = getContractHash(ProxyContract as ContractJSON);
-  console.log(`ProxyContract hash: ${proxyContractHash}`);
+  const proxyContractHash = getContractHash(beta2.WalletProxy as ContractJSON);
+  console.log(`beta2.WalletProxy hash: ${proxyContractHash}`);
   return proxyContractHash;
 }
 
