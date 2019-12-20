@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
 import {WalletService} from '@universal-login/sdk';
-import WalletPresenter from '../../../../src/core/presenters/WalletPresenter';
+import WalletPresenter from '../../src/core/presenters/WalletPresenter';
 import {Wallet} from 'ethers';
 
 describe('WalletFormatter', async () => {

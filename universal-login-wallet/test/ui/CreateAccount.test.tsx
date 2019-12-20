@@ -6,10 +6,10 @@ import {providers, utils} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {setupSdk} from '@universal-login/sdk/testutils';
-import App from '../../../src/ui/react/App';
-import {Services} from '../../../src/ui/createServices';
-import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
-import {mountWithContext} from '../helpers/CustomMount';
+import App from '../../src/ui/react/App';
+import {Services} from '../../src/ui/createServices';
+import {createPreconfiguredServices} from '../testhelpers/ServicesUnderTests';
+import {mountWithContext} from '../testhelpers/CustomMount';
 import {AppPage} from '../pages/AppPage';
 
 describe('UI: Creation flow', () => {

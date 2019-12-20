@@ -1,5 +1,5 @@
 import {ReactWrapper} from 'enzyme';
-import {waitForUI} from '../helpers/utils';
+import {waitForUI} from '../testhelpers/utils';
 import {getSuggestionId} from '@universal-login/commons';
 
 export default class LoginPage {

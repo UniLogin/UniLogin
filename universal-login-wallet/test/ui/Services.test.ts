@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {createServices} from '../../../src/ui/createServices';
-import getConfig from '../../../src/config/getConfig';
+import {createServices} from '../../src/ui/createServices';
+import getConfig from '../../src/config/getConfig';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 describe('Services', () => {

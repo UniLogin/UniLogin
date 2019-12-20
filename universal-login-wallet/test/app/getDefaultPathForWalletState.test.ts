@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getDefaultPathForWalletState} from '../../../src/app/getDefaultPathForWalletState';
+import {getDefaultPathForWalletState} from '../../src/app/getDefaultPathForWalletState';
 import {WalletState} from '@universal-login/sdk';
 
 describe('UNIT: getDefaultPathForWalletState', () => {

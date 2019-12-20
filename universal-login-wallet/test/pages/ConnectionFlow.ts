@@ -1,5 +1,5 @@
 import {ReactWrapper} from 'enzyme';
-import {waitForUI} from '../helpers/utils';
+import {waitForUI} from '../testhelpers/utils';
 
 export default class ConnectionFlow {
   constructor(private wrapper: ReactWrapper) {
