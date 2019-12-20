@@ -1,5 +1,5 @@
 import {utils, Contract, providers} from 'ethers';
-import {beta2} from '@universal-login/contracts';
+import {ENSInterface} from '@universal-login/contracts';
 import {parseDomain, resolveName, ENSDomainInfo, ensure} from '@universal-login/commons';
 import {InvalidENSDomain, EnsNameTaken} from '../../core/utils/errors';
 
@@ -9,7 +9,7 @@ class ENSService {
   private ens: Contract;
 
   constructor(private ensAddress: string, private ensRegistrars: string[], private provider: providers.Provider) {
-    this.ens = new Contract(this.ensAddress, beta2.ENS.interface, this.provider);
+    this.ens = new Contract(this.ensAddress, ENSInterface, this.provider);
   }
 
   async start() {

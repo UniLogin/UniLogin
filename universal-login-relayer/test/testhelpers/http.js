@@ -1,5 +1,5 @@
+import chai from 'chai';
 import {Contract, utils, Wallet} from 'ethers';
-import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {
   calculateInitializeSignature,
@@ -9,10 +9,9 @@ import {
   TEST_GAS_PRICE,
   waitForContractDeploy,
 } from '@universal-login/commons';
-import {beta2} from '@universal-login/contracts';
-import chai from 'chai';
-import {deployFactory, deployWalletContract, encodeInitializeWithENSData} from '@universal-login/contracts';
+import {beta2, deployFactory, deployWalletContract, encodeInitializeWithENSData, ENSInterface} from '@universal-login/contracts';
 import {getFutureAddress} from '@universal-login/contracts/testutils';
+import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
 
 export const startRelayer = async (port = '33111') => {
@@ -70,7 +69,7 @@ export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPri
   const [label, domain] = parseDomain(ensName);
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
   const node = utils.namehash(`${label}.${domain}`);
-  const ens = new Contract(ensAddress, beta2.ENS.interface, provider);
+  const ens = new Contract(ensAddress, ENSInterface, provider);
   const resolverAddress = await ens.resolver(utils.namehash(domain));
   const registrarAddress = await ens.owner(utils.namehash(domain));
   return encodeInitializeWithENSData([keyPair.publicKey, hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress, gasPrice, gasToken]);
