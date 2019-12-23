@@ -1,4 +1,5 @@
 {
   "main": "../dist/cjs/test/helpers/index.js",
-  "types": "../dist/cjs/test/helpers/index.d.ts"
+  "types": "../dist/esm/test/helpers/index.d.ts",
+  "module": "../dist/esm/test/helpers/index.js"
 }
