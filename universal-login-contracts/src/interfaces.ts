@@ -6,10 +6,8 @@ import WalletProxyFactory from '../dist/contracts/WalletProxyFactory.json';
 import IERC20 from '../dist/contracts/IERC20.json';
 import WalletProxy from '../dist/contracts/WalletProxy.json';
 
-import FIFSRegistrar from '../dist/contracts/FIFSRegistrar.json';
-import PublicResolver from '../dist/contracts/PublicResolver.json';
+import {FIFSRegistrar, PublicResolver, ENS} from './ens';
 import ReverseRegistrar from '../dist/contracts/ReverseRegistrar.json';
-import ENS from '../dist/contracts/ENS.json';
 
 export const WalletContractInterface = new utils.Interface(WalletContract.interface);
 export const UpgradedWalletInterface = new utils.Interface(UpgradedWallet.interface);

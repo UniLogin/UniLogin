@@ -5,7 +5,7 @@ import {loadFixture} from 'ethereum-waffle';
 import {basicENS} from '@universal-login/commons/testutils';
 import DomainRegistrar from '../../src/ENS/DomainRegistrar';
 import ENSNameRegistrar from '../../src/ENS/ENSNameRegistrar';
-import PublicResolver from '../../src/contracts/PublicResolver.json';
+import {ens} from '@universal-login/contracts';
 
 chai.use(require('chai-string'));
 chai.use(sinonChai);
@@ -87,7 +87,7 @@ describe('ENS register', async () => {
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
       [domain] = ensRegistrars;
       node = utils.namehash(`${label}.${domain}`);
-      publicResolverContract = new Contract(publicResolver, PublicResolver.interface, wallet);
+      publicResolverContract = new Contract(publicResolver, ens.PublicResolver.interface, wallet);
       await nameRegistrar.prepareNameRegistration(domain);
     });
 
