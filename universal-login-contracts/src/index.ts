@@ -8,3 +8,6 @@ export {BlockchainService} from './integration/BlockchainService';
 
 import * as beta2 from './beta2/contracts';
 export {beta2};
+
+import * as ens from './ens';
+export {ens};

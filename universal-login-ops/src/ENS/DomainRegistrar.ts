@@ -1,6 +1,5 @@
 import {utils, Contract} from 'ethers';
-import FIFSRegistrar from '../contracts/FIFSRegistrar.json';
-import PublicResolver from '../contracts/PublicResolver.json';
+import {ens} from '@universal-login/contracts';
 import {waitToBeMined, sendAndWaitForTransaction, getDeployTransaction, ensure} from '@universal-login/commons';
 import {saveVariables} from '../utils/save';
 import ENSRegistrarBase from './ENSRegistrarBase';
@@ -10,7 +9,7 @@ class DomainRegistrar extends ENSRegistrarBase {
 
   async registerInRegistrar(label: string, labelHash: string, node: string, tld: string) {
     const tldRegistrarAddress = await this.ens.owner(utils.namehash(tld));
-    const FIFSRegistrarInterface = new utils.Interface(FIFSRegistrar.interface);
+    const FIFSRegistrarInterface = new utils.Interface(ens.FIFSRegistrar.interface);
     this.testRegistrar = new Contract(tldRegistrarAddress, FIFSRegistrarInterface, this.deployer);
     this.log(`Registrar address for ${tld}: ${tldRegistrarAddress}`);
     const transaction = await this.testRegistrar!.register(labelHash, this.deployer.address, {gasLimit: 100000, ...this.overridesOptions});
@@ -30,7 +29,7 @@ class DomainRegistrar extends ENSRegistrarBase {
   }
 
   async deployNewPublicResolver() {
-    const resolverDeployTransaction = getDeployTransaction(PublicResolver, [this.ens.address]);
+    const resolverDeployTransaction = getDeployTransaction(ens.PublicResolver, [this.ens.address]);
     const newPublicResolver = await sendAndWaitForTransaction(this.deployer, {...resolverDeployTransaction, ...this.overridesOptions});
     this.log(`New public resolver deployed: ${newPublicResolver}`);
     return newPublicResolver;
@@ -43,7 +42,7 @@ class DomainRegistrar extends ENSRegistrarBase {
   }
 
   async deployNewRegistrar(node: string) {
-    const registrarDeployTransaction = getDeployTransaction(FIFSRegistrar, [this.ens.address, node]);
+    const registrarDeployTransaction = getDeployTransaction(ens.FIFSRegistrar, [this.ens.address, node]);
     this.registrarAddress = await sendAndWaitForTransaction(this.deployer, {...registrarDeployTransaction, ...this.overridesOptions});
     this.log(`New registrar deployed: ${this.registrarAddress}`);
     this.variables.REGISTRAR_ADDRESS = this.registrarAddress;
