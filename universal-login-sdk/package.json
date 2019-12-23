@@ -2,7 +2,8 @@
   "name": "@universal-login/sdk",
   "version": "0.4.3",
   "main": "dist/cjs/src/index.js",
-  "types": "dist/cjs/src/index.d.ts",
+  "types": "dist/esm/src/index.d.ts",
+  "module": "dist/esm/src/index.js",
   "license": "MIT",
   "dependencies": {
     "@restless/sanitizers": "^0.2.2",
@@ -18,9 +19,11 @@
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "tsc --outDir dist/cjs",
+    "build": "yarn build:cjs && yarn build:esm",
+    "build:cjs": "tsc --outDir dist/cjs --declaration false",
+    "build:esm": "tsc --outDir dist/esm --module ES6",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
-    "test": "yarn build && yarn test:nobuild",
+    "test": "yarn build:cjs && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/cjs/test/**/*.js\"",
     "clean": "rimraf dist"
   },

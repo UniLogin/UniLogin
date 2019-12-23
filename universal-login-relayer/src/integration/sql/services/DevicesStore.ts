@@ -1,5 +1,5 @@
 import {Device, DeviceInfo} from '@universal-login/commons';
-import Knex = require('knex');
+import Knex from 'knex';
 
 export class DevicesStore {
   private devices: Device[] = [];

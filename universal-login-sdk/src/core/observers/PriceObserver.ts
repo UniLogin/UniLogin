@@ -2,8 +2,8 @@ import {ObservedCurrency, TokensPrices} from '@universal-login/commons';
 import ObserverRunner from './ObserverRunner';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
 import {getPrices} from '../../integration/http/cryptocompare';
-import deepEqual = require('deep-equal');
-import cloneDeep = require('lodash.clonedeep');
+const deepEqual = require('deep-equal');
+const cloneDeep = require('lodash.clonedeep');
 
 export type OnTokenPricesChange = (data: TokensPrices) => void;
 

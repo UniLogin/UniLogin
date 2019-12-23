@@ -1,4 +1,4 @@
-import deepEqual = require('deep-equal');
+import deepEqual from 'deep-equal';
 
 export function * slices(array: number[], sliceSize: number) {
   for (let i = 0; i < array.length; i++) {
