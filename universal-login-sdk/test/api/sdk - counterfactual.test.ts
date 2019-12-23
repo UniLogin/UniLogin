@@ -3,8 +3,8 @@ import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG} from '@universal-login/commons';
 import {emptyMessage} from '@universal-login/contracts/testutils';
+import {beta2} from '@universal-login/contracts';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
 import UniversalLoginSDK from '../../src/api/sdk';
 
 chai.use(solidity);
@@ -52,7 +52,7 @@ describe('INT: SDK counterfactual deployment', () => {
     const {waitToBeSuccess} = await deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
     const deployedWallet = await waitToBeSuccess();
     expect(deployedWallet.contractAddress).to.be.eq(contractAddress);
-    expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
+    expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(beta2.WalletProxy)}`);
     const message = {...emptyMessage, from: contractAddress, to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1'), gasLimit: DEFAULT_GAS_LIMIT};
     await expect(sdk.execute(message, privateKey)).to.be.fulfilled;
     await expect(deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address)).to.be.rejected;

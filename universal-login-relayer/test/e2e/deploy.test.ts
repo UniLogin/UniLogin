@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, signRelayerRequest, DEPLOYMENT_REFUND, TEST_APPLICATION_INFO, getDeployData} from '@universal-login/commons';
-import ProxyContract from '@universal-login/contracts/dist/contracts/WalletProxy.json';
+import {beta2} from '@universal-login/contracts';
 import {startRelayerWithRefund, createWalletCounterfactually, getInitData} from '../testhelpers/http';
 import Relayer from '../../src';
 import {waitForDeploymentStatus} from '../testhelpers/waitForDeploymentStatus';
@@ -27,7 +27,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   beforeEach(async () => {
     ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress} = await startRelayerWithRefund(relayerPort));
     keyPair = createKeyPair();
-    initCode = getDeployData(ProxyContract as any, [walletContract.address]);
+    initCode = getDeployData(beta2.WalletProxy as any, [walletContract.address]);
     contractAddress = computeCounterfactualAddress(factoryContract.address, keyPair.publicKey, initCode);
     const initData = await getInitData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE);
     signature = await calculateInitializeSignature(initData, keyPair.privateKey);
@@ -49,7 +49,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
     expect(status.transactionHash).to.be.properHex(64);
-    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
+    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(beta2.WalletProxy as any)}`);
     expect(await deployer.getBalance()).to.be.above(initialRelayerBalance);
 
     const {body} = await chai.request(relayerUrl)
@@ -115,7 +115,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
     expect(status.transactionHash).to.be.properHex(64);
-    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(ProxyContract as any)}`);
+    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(beta2.WalletProxy as any)}`);
     expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(DEPLOYMENT_REFUND));
   });
 

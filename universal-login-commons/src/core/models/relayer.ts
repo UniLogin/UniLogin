@@ -3,7 +3,7 @@ import {IPGeolocationApiConfig} from './IPGeolocationApiConfig';
 
 export interface SupportedToken {
   address: string;
-  minimalAmount: string;
+  minimalAmount?: string;
 }
 
 export interface ChainSpec {
