@@ -1,6 +1,6 @@
 import {Contract, providers, utils} from 'ethers';
 import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotNull, fetchHardforkVersion} from '@universal-login/commons';
-import {WalletProxyInterface, WalletProxyFactoryInterface} from '../interfaces';
+import {WalletProxyInterface, WalletProxyFactoryInterface} from '../../test/helpers/interfaces';
 
 export class BlockchainService {
   constructor(private provider: providers.Provider) {

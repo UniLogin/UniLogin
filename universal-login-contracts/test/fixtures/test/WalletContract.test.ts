@@ -3,7 +3,7 @@ import {Contract, providers, Wallet} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {walletContractFixture} from '../../fixtures/walletContract';
 import {KeyPair} from '@universal-login/commons';
-import {WalletContractInterface} from '../../../src/interfaces';
+import {WalletContractInterface} from '../../helpers/interfaces';
 
 describe('WalletContract fixture test', () => {
   let proxyWallet: Contract;

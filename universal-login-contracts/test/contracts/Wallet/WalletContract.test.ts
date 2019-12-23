@@ -11,7 +11,7 @@ import UpgradedWallet from '../../../dist/contracts/UpgradedWallet.json';
 import {encodeDataForExecuteSigned, messageToSignedMessage, messageToUnsignedMessage} from '../../../src/index';
 import {calculateBaseGas} from '../../../src/estimateGas';
 import {calculateFinalGasLimit, calculatePaymentOptions, estimateBaseGasForNoSignature} from '../../helpers/calculations';
-import {UpgradedWalletInterface, WalletContractInterface} from '../../../src/interfaces';
+import {UpgradedWalletInterface, WalletContractInterface} from '../../helpers/interfaces';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

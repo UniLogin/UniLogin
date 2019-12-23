@@ -1,7 +1,7 @@
 import {Interface} from 'ethers/utils';
 import {utils, Contract} from 'ethers';
 import {UnsignedMessage} from '@universal-login/commons';
-import {WalletProxyInterface} from '../../src/interfaces';
+import {WalletProxyInterface} from './interfaces';
 
 export const switchENSNameInInitializeArgs = (initializeArgs: string[], label: string, domain = 'mylogin.eth') => {
   const ensName = `${label}.${domain}`;
