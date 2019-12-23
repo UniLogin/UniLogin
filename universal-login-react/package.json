@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/react",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "main": "dist/cjs/src/index.js",
   "types": "dist/cjs/src/index.d.ts",
   "license": "MIT",
@@ -18,8 +18,8 @@
   "dependencies": {
     "@ramp-network/ramp-instant-sdk": "1.5.1",
     "@restless/sanitizers": "^0.2.2",
-    "@universal-login/commons": "0.4.2",
-    "@universal-login/sdk": "0.4.2",
+    "@universal-login/commons": "0.4.3",
+    "@universal-login/sdk": "0.4.3",
     "dotenv": "^8.1.0",
     "ethers": "^4.0.39",
     "lodash.range": "^3.2.0",
@@ -50,7 +50,7 @@
     "@types/react-router-dom": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
-    "@universal-login/relayer": "0.4.2",
+    "@universal-login/relayer": "0.4.3",
     "canvas": "^2.5.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
