@@ -28,8 +28,8 @@
   "scripts": {
     "prebuild": "yarn clean",
     "build": "yarn build:cjs && yarn build:esm",
-    "build:cjs": "tsc --outDir dist/cjs && rm dist/cjs/src/integration/sql/migrations/*.d.ts",
-    "build:esm": "tsc --outDir dist/esm && rm dist/esm/src/integration/sql/migrations/*.d.ts",
+    "build:cjs": "tsc --outDir dist/cjs --declaration false && rm dist/cjs/src/integration/sql/migrations/*.d.ts",
+    "build:esm": "tsc --outDir dist/esm --module ES6 && rm dist/esm/src/integration/sql/migrations/*.d.ts",
     "start": "node dist/cjs/src/http/start.js",
     "test": "yarn build:cjs && yarn test:nobuild",
     "test:unit": "yarn build:cjs && NODE_ENV=test mocha \"dist/cjs/test/unit/**/*.{ts,js}\"",
