@@ -5,7 +5,7 @@ import {deployENS} from '@universal-login/commons/testutils';
 import {createFutureDeploymentWithENS} from '../helpers/FutureDeployment';
 import {deployFactory, deployWalletContract} from '../../src';
 import MockToken from '../../dist/contracts/MockToken.json';
-import {WalletContractInterface} from '../../src/interfaces';
+import {WalletContractInterface} from '../helpers/interfaces';
 
 export async function setupEnsAndMaster(deployer: Wallet) {
   const {ensAddress, resolverAddress, registrarAddress} = await deployENS(deployer);
