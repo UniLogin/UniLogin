@@ -3,7 +3,7 @@ import {getWallets} from 'ethereum-waffle';
 import Relayer from '@universal-login/relayer';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {createAndSetWallet} from '@universal-login/sdk/testutils';
-import App from '../../../src/ui/react/App';
+import App from '../../src/ui/react/App';
 import {AppPage} from '../pages/AppPage';
 import {mountWithContext} from './CustomMount';
 import {createPreconfiguredServices} from './ServicesUnderTests';

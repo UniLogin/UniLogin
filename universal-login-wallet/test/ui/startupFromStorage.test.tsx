@@ -6,10 +6,10 @@ import chai, {expect} from 'chai';
 import {createWallet, setupSdk} from '@universal-login/sdk/testutils';
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import Relayer from '@universal-login/relayer';
-import {createPreconfiguredServices} from '../helpers/ServicesUnderTests';
-import {mountWithContext} from '../helpers/CustomMount';
-import {Services} from '../../../src/ui/createServices';
-import App from '../../../src/ui/react/App';
+import {createPreconfiguredServices} from '../testhelpers/ServicesUnderTests';
+import {mountWithContext} from '../testhelpers/CustomMount';
+import {Services} from '../../src/ui/createServices';
+import App from '../../src/ui/react/App';
 import {AppPage} from '../pages/AppPage';
 
 chai.use(require('chai-string'));

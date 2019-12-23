@@ -1,4 +1,4 @@
-import {createServices} from '../../../src/ui/createServices';
+import {createServices} from '../../src/ui/createServices';
 import {providers} from 'ethers';
 import {testJsonRpcUrl, TEST_SDK_CONFIG} from '@universal-login/commons';
 import {MemoryStorageService} from '@universal-login/react';

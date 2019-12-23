@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {needRedirect} from '../../../src/app/needRedirect';
+import {needRedirect} from '../../src/app/needRedirect';
 
 describe('UNIT: needRedirect', () => {
   it('Default path for the state', () => {

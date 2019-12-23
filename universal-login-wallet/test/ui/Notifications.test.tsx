@@ -3,9 +3,9 @@ import {ReactWrapper} from 'enzyme';
 import {providers, Contract} from 'ethers';
 import {createFixtureLoader, createMockProvider, getWallets} from 'ethereum-waffle';
 import {deployMockToken} from '@universal-login/commons/testutils';
-import {Services} from '../../../src/ui/createServices';
+import {Services} from '../../src/ui/createServices';
 import {AppPage} from '../pages/AppPage';
-import {setupUI} from '../helpers/setupUI';
+import {setupUI} from '../testhelpers/setupUI';
 import {waitExpect} from '@universal-login/commons/testutils';
 import {RelayerUnderTest} from '@universal-login/relayer';
 

@@ -6,8 +6,8 @@ import {waitExpect} from '@universal-login/commons/testutils';
 import {deployMockToken} from '@universal-login/commons/testutils';
 import {WalletService} from '@universal-login/sdk';
 import {setupSdk, createAndSetWallet} from '@universal-login/sdk/testutils';
-import {Services} from '../../../src/ui/createServices';
-import {setupUI} from '../helpers/setupUI';
+import {Services} from '../../src/ui/createServices';
+import {setupUI} from '../testhelpers/setupUI';
 import {AppPage} from '../pages/AppPage';
 
 describe('UI: Transfer', () => {
