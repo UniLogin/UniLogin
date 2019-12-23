@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, sleep, waitUntil} from '@universal-login/commons';
-import MockToken from '@universal-login/contracts/dist/contracts/MockToken.json';
+import {beta2} from '@universal-login/contracts';
 import {DeploymentReadyObserver} from '../../../src/core/observers/DeploymentReadyObserver';
 
 describe('INT: DeploymentReadyObserver', () => {
@@ -24,7 +24,7 @@ describe('INT: DeploymentReadyObserver', () => {
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
-    mockToken = await deployContract(wallet, MockToken);
+    mockToken = await deployContract(wallet, beta2.MockToken);
     supportedTokens = [{address: ETHER_NATIVE_TOKEN.address, minimalAmount},
       {address: mockToken.address, minimalAmount}];
     callback = sinon.spy();

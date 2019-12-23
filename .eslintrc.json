@@ -328,10 +328,7 @@
     "no-restricted-imports": ["error", {
       "patterns": [
         "@universal-login/*/*",
-        "!@universal-login/*/testutils",
-        "!@universal-login/contracts/dist",
-        "@universal-login/contracts/dist/*",
-        "!@universal-login/contracts/dist/contracts"
+        "!@universal-login/*/testutils"
       ]
     }],
     "no-use-before-define": [

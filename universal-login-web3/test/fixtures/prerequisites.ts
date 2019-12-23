@@ -1,6 +1,6 @@
 import {providers, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import MockToken from '@universal-login/contracts/dist/contracts/MockToken.json';
+import {beta2} from '@universal-login/contracts';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import ENSBuilder from 'ens-builder';
 
@@ -14,7 +14,7 @@ export async function prerequisites(givenProvider: providers.Provider, [deployer
   const ensBuilder = new ENSBuilder(deployer);
   const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
 
-  const mockToken = await deployContract(deployer, MockToken);
+  const mockToken = await deployContract(deployer, beta2.MockToken);
 
   return {deployer, walletContract, factoryContract, ensAddress, ensDomains: [DOMAIN], mockToken, wallets};
 }
