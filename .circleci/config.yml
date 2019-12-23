@@ -56,7 +56,7 @@ jobs:
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: yarn build
+      - run: yarn build:csj
       - run: cd universal-login-sdk && yarn test:nobuild
       - run: cd universal-login-relayer && yarn test:nobuild
   test_react_wallet_web3:
@@ -69,7 +69,7 @@ jobs:
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: yarn build
+      - run: yarn build:csj
       - run: cd universal-login-react && yarn test
       - run: cd universal-login-wallet && yarn test
       - run: cd universal-login-web3 && yarn test

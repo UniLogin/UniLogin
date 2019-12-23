@@ -19,6 +19,7 @@
     "wsrun": "^2.2.1"
   },
   "scripts": {
+    "build:cjs": "yarn wsrun build:cjs --stages --fast-exit",
     "build": "yarn wsrun build --stages --fast-exit",
     "test": "yarn wsrun test --serial --fast-exit",
     "lint": "yarn wsrun lint --stages",
