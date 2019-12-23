@@ -3,8 +3,8 @@
   "version": "0.4.2",
   "description": "",
   "main": "dist/cjs/src/index.js",
-  "types": "dist/esm/src/index.js",
-  "module": "dist/esm/src/index.d.ts",
+  "types": "dist/esm/src/index.d.ts",
+  "module": "dist/esm/src/index.js",
   "bin": {
     "universal-login": "./bin/universal-login"
   },
