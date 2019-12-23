@@ -3,16 +3,21 @@
   "version": "0.4.2",
   "description": "",
   "main": "dist/cjs/src/index.js",
+  "types": "dist/esm/src/index.js",
+  "module": "dist/esm/src/index.d.ts",
   "bin": {
     "universal-login": "./bin/universal-login"
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "yarn build:cjs",
-    "build:cjs": "tsc --outDir dist/cjs --p tsconfig.build.json && cpx \"src/contracts/**/*\" dist/cjs/src/contracts",
+    "build": "yarn build:cjs && yarn build:esm",
+    "copy:contracts:cjs": "cpx \"src/contracts/**/*\" dist/cjs/src/contracts",
+    "copy:contracts:esm": "cpx \"src/contracts/**/*\" dist/esm/src/contracts",
+    "build:cjs": "tsc --outDir dist/cjs --p tsconfig.build.json --declaration false && yarn copy:contracts:cjs",
+    "build:esm": "tsc --outDir dist/esm --p tsconfig.build.json --module ES6 && yarn copy:contracts:esm",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
-    "test": "yarn build && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha -t 10000 \"dist/cjs/test/**/*.{js,ts}\"",
+    "test": "yarn build:cjs && yarn test:nobuild",
+    "test:nobuild": "cross-env NODE_ENV=test mocha",
     "cli": "ts-node ./scripts/cli",
     "clean": "rimraf dist"
   },
