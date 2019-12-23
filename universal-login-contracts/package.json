@@ -1,17 +1,17 @@
 {
   "name": "@universal-login/contracts",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "license": "MIT",
   "main": "dist/cjs/src/index.js",
   "types": "dist/esm/src/index.d.ts",
   "module": "dist/esm/src/index.js",
   "dependencies": {
-    "@universal-login/commons": "0.4.3",
+    "@universal-login/commons": "0.4.4",
     "ens-builder": "^2.0.0",
     "ethers": "^4.0.39"
   },
   "scripts": {
-    "prepublishOnly": "rimraf contracts dist && yarn build",
+    "prepublishOnly": "rimraf dist && yarn build",
     "prebuild": "yarn clean",
     "build": "yarn build:contracts && yarn build:ts",
     "build:ts": "yarn build:cjs && yarn build:esm",
