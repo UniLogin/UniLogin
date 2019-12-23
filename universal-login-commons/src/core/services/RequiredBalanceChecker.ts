@@ -8,7 +8,7 @@ export class RequiredBalanceChecker {
   async findTokenWithRequiredBalance(supportedTokens: SupportedToken[], contractAddress: string) {
     for (const supportedToken of supportedTokens) {
       const balance = await this.balanceChecker.getBalance(contractAddress, supportedToken.address);
-      if (balance.gte(utils.parseEther(supportedToken.minimalAmount))) {
+      if (supportedToken.minimalAmount && balance.gte(utils.parseEther(supportedToken.minimalAmount))) {
         return supportedToken.address;
       }
     }

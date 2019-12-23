@@ -19,7 +19,6 @@ export const config: Config = Object.freeze({
   factoryAddress: 'GENERATED',
   supportedTokens: [{
     address: 'GENERATED',
-    minimalAmount: 'GENERATED',
   }],
   localization: {
     language: 'en',

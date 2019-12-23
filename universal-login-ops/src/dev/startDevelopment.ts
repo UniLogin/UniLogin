@@ -34,15 +34,12 @@ const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, daiTokenAddress: string, saiTokenAddress: string) {
   const supportedTokens: SupportedToken[] = [{
     address: daiTokenAddress,
-    minimalAmount: '0.05',
   },
   {
     address: saiTokenAddress,
-    minimalAmount: '0.05',
   },
   {
     address: ETHER_NATIVE_TOKEN.address,
-    minimalAmount: '0.05',
   }];
   return {
     jsonRpcUrl,
