@@ -12,6 +12,7 @@ import {OnboardingProps} from './ui/react/Onboarding';
 import {StorageService, WalletStorageService} from '@universal-login/react';
 import {combine, Property} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
+import {DEFAULT_GAS_LIMIT} from './constants/defaults';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
@@ -134,10 +135,10 @@ export class ULWeb3Provider implements Provider {
     }
   }
 
-  async sendTransaction(tx: Partial<Message>): Promise<string> {
+  async sendTransaction(transaction: Partial<Message>): Promise<string> {
     await this.ensureWalletIsDeployed();
-
-    const execution = await this.walletService.getDeployedWallet().execute(tx);
+    const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
+    const execution = await this.walletService.getDeployedWallet().execute(transactionWithDefaults);
 
     const succeeded = await execution.waitForTransactionHash();
     if (!succeeded.transactionHash) {

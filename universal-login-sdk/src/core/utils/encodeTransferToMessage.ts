@@ -4,11 +4,13 @@ import {TransferDetails, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 interface TransferDetailsWithFrom extends TransferDetails {
   from: string;
+  gasLimit: utils.BigNumber;
 }
 
-export const encodeTransferToMessage = ({from, to, amount, gasParameters, transferToken}: TransferDetailsWithFrom) => {
+export const encodeTransferToMessage = ({from, to, amount, gasParameters, transferToken, gasLimit}: TransferDetailsWithFrom) => {
   const base = {
     from,
+    gasLimit,
     gasPrice: gasParameters.gasPrice,
     gasToken: gasParameters.gasToken,
   };

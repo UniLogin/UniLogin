@@ -44,6 +44,7 @@ describe('UNIT: TransferService', () => {
         to: TEST_ACCOUNT_ADDRESS,
         value: utils.parseEther('123'),
         data: '0x',
+        gasLimit: utils.bigNumberify('95000'),
         gasToken: gasParameters.gasToken,
         gasPrice: gasParameters.gasPrice,
       },
@@ -77,6 +78,7 @@ describe('UNIT: TransferService', () => {
         to: 'TOKEN_ADDRESS',
         value: 0,
         data: encodeERC20Transfer(recipient, '123'),
+        gasLimit: utils.bigNumberify('95000'),
         gasToken: gasParameters.gasToken,
         gasPrice: gasParameters.gasPrice,
       },
@@ -142,7 +144,7 @@ describe('UNIT: TransferService', () => {
 
   it('get Ethereum max amount', () => {
     const {transferService, balance} = setup();
-    expect(transferService.getMaxAmount(gasParameters, balance)).to.eq('299.9999999999998');
+    expect(transferService.getMaxAmount(gasParameters, balance)).to.eq('299.999999999999905');
   });
 
   it('get 0 if Ethereum max amount is below 0', () => {

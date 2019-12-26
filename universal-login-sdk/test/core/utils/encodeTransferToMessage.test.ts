@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_TOKEN_ADDRESS} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, TEST_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_TOKEN_ADDRESS} from '@universal-login/commons';
 import {encodeTransferToMessage} from '../../../src/core/utils/encodeTransferToMessage';
 import {IERC20Interface} from '@universal-login/contracts';
 
@@ -8,11 +8,13 @@ describe('UNIT: encodeTransferToMessage', () => {
   const from = TEST_CONTRACT_ADDRESS;
   const to = TEST_ACCOUNT_ADDRESS;
   const gasPrice = utils.bigNumberify(TEST_GAS_PRICE);
+  const gasLimit = utils.bigNumberify(TEST_GAS_LIMIT);
   const amount = '1';
   const basicMessage = {
     from,
     to,
     value: utils.parseEther(amount),
+    gasLimit,
   };
 
   it('ether transfer and ether refund', () => {
@@ -22,6 +24,7 @@ describe('UNIT: encodeTransferToMessage', () => {
       to,
       amount,
       transferToken: ETHER_NATIVE_TOKEN.address,
+      gasLimit,
       gasParameters,
     };
     const expectedMessage = {
@@ -39,6 +42,7 @@ describe('UNIT: encodeTransferToMessage', () => {
       from,
       to,
       amount,
+      gasLimit,
       transferToken: ETHER_NATIVE_TOKEN.address,
       gasParameters,
     };
@@ -57,6 +61,7 @@ describe('UNIT: encodeTransferToMessage', () => {
       from,
       to,
       amount,
+      gasLimit,
       transferToken: TEST_TOKEN_ADDRESS,
       gasParameters,
     };
@@ -77,6 +82,7 @@ describe('UNIT: encodeTransferToMessage', () => {
       from,
       to,
       amount,
+      gasLimit,
       transferToken: TEST_TOKEN_ADDRESS,
       gasParameters,
     };
