@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Contract} from 'ethers';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
-import {MockToken} from '@universal-login/commons/testutils';
+import {mockContracts} from '@universal-login/contracts/testutils';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
 
 describe('INT: TokensDetailsStore', () => {
@@ -13,7 +13,7 @@ describe('INT: TokensDetailsStore', () => {
   before(async () => {
     const provider = createMockProvider();
     const [wallet] = await getWallets(provider);
-    mockToken = await deployContract(wallet, MockToken, []);
+    mockToken = await deployContract(wallet, mockContracts.MockToken, []);
     tokenDetailsService = new TokenDetailsService(provider);
     tokensDetailsStore = new TokensDetailsStore(tokenDetailsService, [mockToken.address, ETHER_NATIVE_TOKEN.address]);
   });

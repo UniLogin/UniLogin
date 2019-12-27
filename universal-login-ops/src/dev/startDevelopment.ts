@@ -4,8 +4,7 @@ import {providers, Wallet} from 'ethers';
 import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@universal-login/commons';
 import {RelayerClass, Config} from '@universal-login/relayer';
 import {beta2} from '@universal-login/contracts';
-import SaiToken from '../contracts/MockSai.json';
-import DaiToken from '../contracts/MockDai.json';
+import {mockContracts} from '@universal-login/contracts/testutils';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
 import {startGanache} from './startGanache';
@@ -109,8 +108,8 @@ async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrid
   const {address, walletContractHash} = await deployWalletContractOnDev(deployWallet);
   const proxyContractHash = getProxyContractHash();
   const factoryAddress = await deployFactory(deployWallet, {walletContractAddress: address, nodeUrl: 'dev', privateKey: 'dev'});
-  const saiTokenAddress = await deployToken(deployWallet, SaiToken);
-  const daiTokenAddress = await deployToken(deployWallet, DaiToken);
+  const saiTokenAddress = await deployToken(deployWallet, mockContracts.MockSai);
+  const daiTokenAddress = await deployToken(deployWallet, mockContracts.MockDai);
   await ensureDatabaseExist(databaseConfig);
   const contractWhiteList = {
     wallet: [walletContractHash],
