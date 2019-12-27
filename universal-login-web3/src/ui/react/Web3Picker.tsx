@@ -9,6 +9,7 @@ import {Web3ProviderFactory} from '../../models/Web3ProviderFactory';
 import {Web3Strategy} from '../../Web3Strategy';
 import {JsonRPCRequest} from '../../models/rpc';
 import {InvalidProvider} from '../utils/errors';
+import {createReactRoot} from '../utils/initUi';
 
 export class Web3Picker implements Provider {
   private isVisible = new State(false);
@@ -40,7 +41,7 @@ export class Web3Picker implements Provider {
   private lazyCreateReactRoot() {
     if (!this.created) {
       this.created = true;
-      const root = this.createReactRoot('universal-login-web3-picker');
+      const root = createReactRoot('universal-login-web3-picker');
       render(
         <Web3PickerComponent
           isVisibleProp={this.isVisible}
@@ -77,13 +78,5 @@ export class Web3Picker implements Provider {
     const {waitForPick} = this.show();
     await waitForPick();
     return this.web3Strategy.currentProvider.send(jsonRpcReq, callback);
-  }
-
-  private createReactRoot(rootId: string, parentSelector = 'body') {
-    const parentElement = document.querySelector(parentSelector);
-    const reactRoot = document.createElement('div');
-    reactRoot.setAttribute('id', rootId);
-    parentElement!.appendChild(reactRoot);
-    return reactRoot;
   }
 }
