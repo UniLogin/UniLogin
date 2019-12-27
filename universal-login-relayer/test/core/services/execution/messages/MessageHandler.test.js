@@ -1,7 +1,7 @@
 import {GAS_BASE, GAS_FIXED} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
 import {beta2} from '@universal-login/contracts';
-import {encodeFunction} from '@universal-login/contracts/testutils';
+import {encodeFunction, mockContracts} from '@universal-login/contracts/testutils';
 import {expect} from 'chai';
 import {deployContract} from 'ethereum-waffle';
 import {utils} from 'ethers';
@@ -38,7 +38,7 @@ describe('INT: MessageHandler', async () => {
   });
 
   it('Error when not enough tokens', async () => {
-    const mockToken = await deployContract(wallet, beta2.MockToken);
+    const mockToken = await deployContract(wallet, mockContracts.MockToken);
     await mockToken.transfer(walletContract.address, 1);
 
     const signedMessage = getTestSignedMessage({...msg, gasToken: mockToken.address}, wallet.privateKey);

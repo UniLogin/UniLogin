@@ -10,12 +10,13 @@ import {
   withENS,
 } from '@universal-login/commons';
 import {deployFactory, beta2} from '@universal-login/contracts';
+import {mockContracts} from '@universal-login/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
 import {getConfig} from '../../core/utils/config';
 
 const ENSBuilder = require('ens-builder');
-const {WalletContract, MockToken, WalletProxy} = beta2;
+const {WalletContract, WalletProxy} = beta2;
 
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
@@ -45,7 +46,7 @@ export class RelayerUnderTest extends Relayer {
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
     const contractWhiteList = getContractWhiteList();
-    const mockToken = await deployContract(wallet, MockToken);
+    const mockToken = await deployContract(wallet, mockContracts.MockToken);
     const supportedTokens = [
       {
         address: mockToken.address,
