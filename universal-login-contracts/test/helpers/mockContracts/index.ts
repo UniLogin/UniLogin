@@ -1,3 +1,6 @@
+import MockDai from './MockDai.json';
+import MockSai from './MockSai.json';
 import MockToken from './MockToken.json';
+import Token from './Token.json';
 
-export {MockToken};
+export {MockDai, MockSai, MockToken, Token};

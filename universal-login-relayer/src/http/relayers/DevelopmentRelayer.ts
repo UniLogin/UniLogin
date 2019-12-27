@@ -1,7 +1,7 @@
 import {utils, Contract, providers} from 'ethers';
 import {waitToBeMined} from '@universal-login/commons';
+import {mockContracts} from '@universal-login/contracts/testutils';
 import {Config} from '../../config/relayer';
-import Token from './abi/Token.json';
 import Relayer from './Relayer';
 
 export declare interface DevelopmentRelayerConfig extends Config {
@@ -24,7 +24,7 @@ class DevelopmentRelayer extends Relayer {
   constructor(config: DevelopmentRelayerConfig, provider?: providers.Provider) {
     super(config, provider);
     this.tokenContractAddress = config.tokenContractAddress;
-    this.tokenContract = new Contract(this.tokenContractAddress, Token.interface, this.wallet);
+    this.tokenContract = new Contract(this.tokenContractAddress, mockContracts.Token.interface, this.wallet);
     this.addHooks();
   }
 
