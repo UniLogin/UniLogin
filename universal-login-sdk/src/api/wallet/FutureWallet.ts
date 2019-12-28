@@ -11,7 +11,7 @@ import {ENSService} from '../../integration/ethereum/ENSService';
 export class FutureWallet implements SerializableFutureWallet {
   contractAddress: string;
   privateKey: string;
-  private publicKey: string;
+  readonly publicKey: string;
   deploymentReadyObserver: DeploymentReadyObserver;
 
   constructor(

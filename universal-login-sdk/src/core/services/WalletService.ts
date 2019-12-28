@@ -149,18 +149,18 @@ export class WalletService {
     };
     return new Promise((resolve, reject) => {
       const setWallet = this.setWallet.bind(this);
-      const subscription = this.sdk.subscribe('KeyAdded', filter, () => {
+      const unsubscribe = this.sdk.subscribe('KeyAdded', filter, () => {
         setWallet(connectingWallet);
-        subscription.remove();
+        unsubscribe();
         resolve();
       });
-      connectingWallet.setSubscription(subscription);
+      connectingWallet.unsubscribe = unsubscribe;
     });
   }
 
   async cancelWaitForConnection() {
     if (this.state.kind === 'Deployed') return;
-    this.getConnectingWallet().subscription && this.getConnectingWallet().subscription!.remove();
+    this.getConnectingWallet().unsubscribe && this.getConnectingWallet().unsubscribe!();
     this.disconnect();
   }
 
@@ -176,16 +176,13 @@ export class WalletService {
       key: utils.computeAddress(privateKey),
     };
 
-    const subscription = this.sdk.subscribe('KeyAdded', filter, () => {
+    const unsubscribe = this.sdk.subscribe('KeyAdded', filter, () => {
       this.setWallet(connectingWallet);
-      subscription.remove();
+      unsubscribe;
       callback();
     });
 
-    return {
-      unsubscribe: () => subscription.remove(),
-      securityCode,
-    };
+    return {unsubscribe, securityCode};
   }
 
   async removeWallet(executionOptions: ExecutionOptions) {

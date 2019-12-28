@@ -24,7 +24,7 @@ import {
 } from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
-import BlockchainObserver from '../core/observers/BlockchainObserver';
+import WalletEventsObserverFactory from '../core/observers/WalletEventsObserverFactory';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {InvalidContract, InvalidEvent, InvalidGasLimit, MissingConfiguration, InvalidENSRecord} from '../core/utils/errors';
 import {FutureWalletFactory} from './FutureWalletFactory';
@@ -44,12 +44,13 @@ import {deprecateSDKMethod} from './deprecate';
 import {DeployedWallet} from './wallet/DeployedWallet';
 import {MessageConverter} from '../core/services/MessageConverter';
 import {ENSService} from '../integration/ethereum/ENSService';
+import {WalletEventCallback, WalletEventType, WalletEventFilter} from '../core/models/events';
 
 class UniversalLoginSDK {
   provider: providers.Provider;
   relayerApi: RelayerApi;
   authorisationsObserver: AuthorisationsObserver;
-  blockchainObserver: BlockchainObserver;
+  walletEventsObserverFactory: WalletEventsObserverFactory;
   executionFactory: ExecutionFactory;
   balanceChecker: BalanceChecker;
   balanceObserver?: BalanceObserver;
@@ -81,7 +82,7 @@ class UniversalLoginSDK {
     this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.sdkConfig.authorizationsObserverTick);
     this.executionFactory = new ExecutionFactory(this.relayerApi, this.sdkConfig.mineableFactoryTick, this.sdkConfig.mineableFactoryTimeout);
     this.blockchainService = new BlockchainService(this.provider);
-    this.blockchainObserver = new BlockchainObserver(this.blockchainService);
+    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.blockchainService);
     this.balanceChecker = new BalanceChecker(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, sdkConfig?.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokensAddresses);
@@ -248,9 +249,9 @@ class UniversalLoginSDK {
     return this.relayerApi.cancelConnection(authorisationRequest);
   }
 
-  subscribe(eventType: string, filter: any, callback: Function) {
+  subscribe(eventType: WalletEventType, filter: WalletEventFilter, callback: WalletEventCallback) {
     ensure(['KeyAdded', 'KeyRemoved'].includes(eventType), InvalidEvent, eventType);
-    return this.blockchainObserver.subscribe(eventType, filter, callback);
+    return this.walletEventsObserverFactory.subscribe(eventType, filter, callback);
   }
 
   async subscribeToBalances(contractAddress: string, callback: OnBalanceChange) {
@@ -292,16 +293,16 @@ class UniversalLoginSDK {
   }
 
   private async startBlockchainServices() {
-    await this.blockchainObserver.start();
+    await this.walletEventsObserverFactory.start();
     await this.tokensDetailsStore.fetchTokensDetails();
   }
 
   stop() {
-    this.blockchainObserver.stop();
+    this.walletEventsObserverFactory.stop();
   }
 
   async finalizeAndStop() {
-    await this.blockchainObserver.finalizeAndStop();
+    await this.walletEventsObserverFactory.finalizeAndStop();
   }
 }
 
