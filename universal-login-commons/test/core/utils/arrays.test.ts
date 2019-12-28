@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {slices, shuffle, array8bitTo16bit, deepArrayStartWith} from '../../../src/core/utils/arrays';
+import {slices, shuffle, array8bitTo16bit, deepArrayStartWith, arrayRemove} from '../../../src/core/utils/arrays';
 import {utils} from 'ethers';
 
 describe('UNIT: Arrays', () => {
@@ -77,6 +77,28 @@ describe('UNIT: Arrays', () => {
       const prefix = [utils.bigNumberify('42'), {leet: 1337}, 'deadbeef'];
       const array = [utils.bigNumberify('42'), {leet: 1337}, 'deadbeef', [1]];
       expect(deepArrayStartWith(array, prefix)).to.be.true;
+    });
+  });
+
+  describe('arrayRemove', () => {
+    it('Empty arrary', () => {
+      expect(arrayRemove([], 2)).to.deep.eq([]);
+    });
+
+    it('One element positive', () => {
+      expect(arrayRemove([1], 1)).to.deep.eq([]);
+    });
+
+    it('One element negative', () => {
+      expect(arrayRemove([1], 2)).to.deep.eq([1]);
+    });
+
+    it('Many elements', () => {
+      expect(arrayRemove([1, 2, 3], 2)).to.deep.eq([1, 3]);
+    });
+
+    it('Many elements with duplicates', () => {
+      expect(arrayRemove([1, 2, 1, 2, 1, 2, 3], 2)).to.deep.eq([1, 1, 1, 3]);
     });
   });
 });

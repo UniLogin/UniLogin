@@ -1,4 +1,4 @@
-import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, sign, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage, Device} from '@universal-login/commons';
+import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, sign, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage, Device, Procedure} from '@universal-login/commons';
 import {WalletContractInterface} from '@universal-login/contracts';
 import {Contract, utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
@@ -134,12 +134,12 @@ export class DeployedWallet extends AbstractWallet {
     return this.sdk.subscribeToBalances(this.contractAddress, callback);
   }
 
-  subscribeDisconnected(onDisconnected: Function) {
-    const subscription = this.sdk.subscribe(
+  subscribeDisconnected(onDisconnected: Procedure) {
+    const unsubscribe = this.sdk.subscribe(
       'KeyRemoved',
       {contractAddress: this.contractAddress, key: this.publicKey},
-      onDisconnected,
+      () => onDisconnected(),
     );
-    return () => subscription.remove();
+    return () => unsubscribe();
   }
 }

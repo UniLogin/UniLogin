@@ -6,7 +6,6 @@ import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
-import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {OnTokenPricesChange, PriceObserver} from '../core/observers/PriceObserver';
 import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';
 import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
@@ -21,12 +20,13 @@ import {deprecateSDKMethod} from './deprecate';
 import {FutureWalletFactory} from './FutureWalletFactory';
 import {DeployedWallet} from './wallet/DeployedWallet';
 import {FutureWallet} from './wallet/FutureWallet';
+import {WalletEventType, WalletEventFilter, WalletEventCallback} from '../core/models/events';
+import WalletEventsObserverFactory from '../core/observers/WalletEventsObserverFactory';
 
 class UniversalLoginSDK {
   readonly provider: providers.Provider;
   readonly relayerApi: RelayerApi;
   readonly authorisationsObserver: AuthorisationsObserver;
-  readonly blockchainObserver: BlockchainObserver;
   readonly executionFactory: ExecutionFactory;
   readonly balanceChecker: BalanceChecker;
   readonly tokensValueConverter: TokensValueConverter;
@@ -40,6 +40,7 @@ class UniversalLoginSDK {
   readonly factoryAddress?: string;
   readonly featureFlagsService: FeatureFlagsService;
   readonly messageConverter: MessageConverter;
+  readonly walletEventsObserverFactory: WalletEventsObserverFactory;
   balanceObserver?: BalanceObserver;
   aggregateBalanceObserver?: AggregateBalanceObserver;
   futureWalletFactory?: FutureWalletFactory;
@@ -58,7 +59,7 @@ class UniversalLoginSDK {
     this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.sdkConfig.authorizationsObserverTick);
     this.executionFactory = new ExecutionFactory(this.relayerApi, this.sdkConfig.mineableFactoryTick, this.sdkConfig.mineableFactoryTimeout);
     this.blockchainService = new BlockchainService(this.provider);
-    this.blockchainObserver = new BlockchainObserver(this.blockchainService);
+    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.blockchainService);
     this.balanceChecker = new BalanceChecker(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, sdkConfig?.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokensAddresses);
@@ -209,9 +210,9 @@ class UniversalLoginSDK {
     return this.relayerApi.cancelConnection(authorisationRequest);
   }
 
-  subscribe(eventType: string, filter: any, callback: Function) {
+  subscribe(eventType: WalletEventType, filter: WalletEventFilter, callback: WalletEventCallback) {
     ensure(['KeyAdded', 'KeyRemoved'].includes(eventType), InvalidEvent, eventType);
-    return this.blockchainObserver.subscribe(eventType, filter, callback);
+    return this.walletEventsObserverFactory.subscribe(eventType, filter, callback);
   }
 
   async subscribeToBalances(contractAddress: string, callback: OnBalanceChange) {
@@ -253,16 +254,16 @@ class UniversalLoginSDK {
   }
 
   private async startBlockchainServices() {
-    await this.blockchainObserver.start();
+    await this.walletEventsObserverFactory.start();
     await this.tokensDetailsStore.fetchTokensDetails();
   }
 
   stop() {
-    this.blockchainObserver.stop();
+    this.walletEventsObserverFactory.stop();
   }
 
   async finalizeAndStop() {
-    await this.blockchainObserver.finalizeAndStop();
+    await this.walletEventsObserverFactory.finalizeAndStop();
   }
 }
 
