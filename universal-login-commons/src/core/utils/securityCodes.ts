@@ -4,7 +4,7 @@ import clonedeep from 'lodash.clonedeep';
 import {isProperAddress, reverseHexString} from './hexStrings';
 import {shuffle, array8bitTo16bit, deepArrayStartWith} from './arrays';
 import {Notification} from '../models/notifications';
-import {ensure} from './errors/heplers';
+import {ensure} from './errors/ensure';
 
 export const ALPHABET_SIZE = 1024;
 export const SECURITY_CODE_LENGTH = 6;

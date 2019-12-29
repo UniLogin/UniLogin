@@ -1,4 +1,4 @@
-import {ensure} from './errors/heplers';
+import {ensure} from './errors/ensure';
 
 export const isProperHexString = (hexString: string) => {
   return !!hexString.match(/^0x([0-9A-Fa-f]{2})*$/);

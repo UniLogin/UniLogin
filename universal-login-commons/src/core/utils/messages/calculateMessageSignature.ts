@@ -2,7 +2,7 @@ import {utils, Wallet} from 'ethers';
 import {UnsignedMessage} from '../../models/message';
 import {signHexString} from '../signatures';
 import {DeployArgs} from '../../models/deploy';
-import {ensure} from '../errors/heplers';
+import {ensure} from '../errors/ensure';
 import {isProperHexString} from '../hexStrings';
 import {InvalidHexString, InvalidSignatureLength} from '../errors/errors';
 
