@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotNull, safeMultiply, MINIMAL_DEPLOYMENT_GAS_LIMIT} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotFalsy, safeMultiply, MINIMAL_DEPLOYMENT_GAS_LIMIT} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
@@ -76,7 +76,7 @@ export class WalletService {
     }
     const deployingWallet = this.getDeployingWallet();
     const {transactionHash} = await deployingWallet.waitForTransactionHash();
-    ensureNotNull(transactionHash, TransactionHashNotFound);
+    ensureNotFalsy(transactionHash, TransactionHashNotFound);
     this.setState({kind: 'Deploying', wallet: deployingWallet, transactionHash});
     return deployingWallet;
   }

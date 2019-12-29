@@ -1,4 +1,4 @@
-import {TokenDetails, TokenDetailsService, ensureNotNull} from '@universal-login/commons';
+import {TokenDetails, TokenDetailsService, ensureNotFalsy} from '@universal-login/commons';
 import {TokenNotFound} from '../utils/errors';
 
 export class TokensDetailsStore {
@@ -19,7 +19,7 @@ export class TokensDetailsStore {
 
   getTokenByAddress(address: string): TokenDetails {
     const token = this.tokensDetails.find((token) => token.address === address);
-    ensureNotNull(token, TokenNotFound, address);
+    ensureNotFalsy(token, TokenNotFound, address);
     return token!;
   }
 }

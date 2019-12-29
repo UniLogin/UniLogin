@@ -1,5 +1,5 @@
 import UniversalLoginSDK from '../..';
-import {isProperAddress, ensureNotNull} from '@universal-login/commons';
+import {isProperAddress, ensureNotFalsy} from '@universal-login/commons';
 import {InvalidAddressOrEnsName} from './errors';
 
 export const getTargetAddress = async (sdk: UniversalLoginSDK, addressOrEnsName: string) => {
@@ -7,7 +7,7 @@ export const getTargetAddress = async (sdk: UniversalLoginSDK, addressOrEnsName:
     return addressOrEnsName;
   } else {
     const address = await sdk.resolveName(addressOrEnsName);
-    ensureNotNull(address, InvalidAddressOrEnsName, addressOrEnsName);
+    ensureNotFalsy(address, InvalidAddressOrEnsName, addressOrEnsName);
     return address;
   }
 };

@@ -4,7 +4,7 @@ import {IExecutor} from '../../core/models/execution/IExecutor';
 import Deployment from '../../core/models/Deployment';
 import IRepository from '../../core/models/messages/IRepository';
 import {TransactionHashNotFound} from '../../core/utils/errors';
-import {ensureNotNull} from '@universal-login/commons';
+import {ensureNotFalsy} from '@universal-login/commons';
 import WalletService from './WalletService';
 
 export class DeploymentExecutor implements IExecutor<Deployment> {
@@ -22,7 +22,7 @@ export class DeploymentExecutor implements IExecutor<Deployment> {
       const deployment = await this.deploymentRepository.get(deploymentHash);
       const transactionResponse = await this.execute(deployment);
       const {hash, wait} = transactionResponse;
-      ensureNotNull(hash, TransactionHashNotFound);
+      ensureNotFalsy(hash, TransactionHashNotFound);
       await this.deploymentRepository.markAsPending(deploymentHash, hash!);
       await wait();
       await this.deploymentRepository.setState(deploymentHash, 'Success');

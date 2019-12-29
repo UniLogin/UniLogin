@@ -25,7 +25,7 @@ export {getEmojiColor, getEmojiNumber, CATEGORIES, getBaseEmojiCode, getEmojiSet
 export {generateBackupCode} from './core/utils/generateBackupCode';
 export {getEmojiCodePoint} from './core/utils/emojiCodePoint';
 export {safeMultiply} from './core/utils/safeMultiply';
-export {ensure, ensureNotNull, ensureNotEmpty, onCritical} from './core/utils/errors/heplers';
+export {ensure, ensureNotFalsy, ensureNotEmpty, onCritical} from './core/utils/errors/heplers';
 export {InvalidContract, NotEnoughTokens, ValidationError, PaymentError} from './core/utils/errors/errors';
 export {computeCounterfactualAddress, computeContractAddress} from './core/utils/contracts/computeContractAddress';
 export {BalanceChecker} from './integration/ethereum/BalanceChecker';

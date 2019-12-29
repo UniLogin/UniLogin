@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ensureNotNull, WalletSuggestionAction} from '@universal-login/commons';
+import {ensureNotFalsy, WalletSuggestionAction} from '@universal-login/commons';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
 import {SingleSuggestion} from './SingleSuggestion';
@@ -16,8 +16,8 @@ interface SuggestionComponentProps {
 }
 
 export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, suggestion}: SuggestionComponentProps) => {
-  actions.includes(WalletSuggestionAction.connect) && ensureNotNull(onConnectClick, MissingParameter, 'onConnectClick');
-  actions.includes(WalletSuggestionAction.create) && ensureNotNull(onCreateClick, MissingParameter, 'onCreateClick');
+  actions.includes(WalletSuggestionAction.connect) && ensureNotFalsy(onConnectClick, MissingParameter, 'onConnectClick');
+  actions.includes(WalletSuggestionAction.create) && ensureNotFalsy(onCreateClick, MissingParameter, 'onCreateClick');
 
   const [selectedSuggestion, setSelectedSuggestion] = useState('');
   const handleConnectClick = (ensName: string) => {

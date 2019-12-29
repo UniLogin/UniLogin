@@ -16,7 +16,7 @@ export function ensure<T extends any[]>(condition: boolean, ErrorToThrow: ErrorC
 
 export type NonFalsy<T> = T extends null | undefined | 0 | '' ? never : T;
 
-export function ensureNotNull<T, E extends any[]>(value: T, error: ErrorConstructor<E>, ...errorArgs: E):
+export function ensureNotFalsy<T, E extends any[]>(value: T, error: ErrorConstructor<E>, ...errorArgs: E):
   asserts value is NonFalsy<T> {
   return ensure(!!value, error, ...errorArgs);
 }

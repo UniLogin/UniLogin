@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {ensure, ensureNotEmpty, ensureNotNull} from '../../src';
+import {ensure, ensureNotEmpty, ensureNotFalsy} from '../../src';
 
 describe('handleError', () => {
   describe('ensure', () => {
@@ -12,17 +12,17 @@ describe('handleError', () => {
     });
   });
 
-  describe('ensureNotNull', () => {
+  describe('ensureNotFalsy', () => {
     it('null', () => {
-      expect(() => ensureNotNull(null, Error, 'null')).to.throw(Error, 'null');
+      expect(() => ensureNotFalsy(null, Error, 'null')).to.throw(Error, 'null');
     });
 
     it('null', () => {
-      expect(() => ensureNotNull(undefined, Error, 'undefined')).to.throw(Error, 'undefined');
+      expect(() => ensureNotFalsy(undefined, Error, 'undefined')).to.throw(Error, 'undefined');
     });
 
     it('not null', () => {
-      expect(() => ensureNotNull('test', Error, 'MyOwnArg')).to.not.throw(Error);
+      expect(() => ensureNotFalsy('test', Error, 'MyOwnArg')).to.not.throw(Error);
     });
   });
 
