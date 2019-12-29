@@ -1,4 +1,4 @@
-import {ensure} from '../errors/heplers';
+import {ensure} from '../errors/ensure';
 import {isProperHexString} from '../hexStrings';
 import {ISTANBUL_NON_ZERO_BYTE_GAS_COST, NON_ZERO_BYTE_GAS_COST, ZERO_BYTE_GAS_COST} from '../../constants/gas';
 
