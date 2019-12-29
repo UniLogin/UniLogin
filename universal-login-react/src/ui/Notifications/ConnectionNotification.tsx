@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Notification, GasParameters, ensureNotNull, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {Notification, GasParameters, ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {EmojiForm} from './EmojiForm';
 import {DeployedWallet} from '@universal-login/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
@@ -32,12 +32,12 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
 
   const onConnectClick = async (gasParameters: GasParameters | undefined) => {
     try {
-      ensureNotNull(gasParameters, TypeError);
-      ensureNotNull(publicKey, Error, 'Invalid key');
+      ensureNotFalsy(gasParameters, TypeError);
+      ensureNotFalsy(publicKey, Error, 'Invalid key');
       history.replace(join(devicesBasePath, 'waitingForConnection'), {transactionHash: undefined});
       const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.addKey(publicKey!, gasParameters!);
       const {transactionHash} = await waitForTransactionHash();
-      ensureNotNull(transactionHash, TypeError);
+      ensureNotFalsy(transactionHash, TypeError);
       history.replace(join(devicesBasePath, 'waitingForConnection'), {transactionHash});
       await waitToBeSuccess();
       history.replace(join(devicesBasePath, 'connectionSuccess'));

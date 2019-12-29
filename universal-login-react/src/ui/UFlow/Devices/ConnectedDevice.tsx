@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Device, ensureNotNull, DEFAULT_GAS_PRICE} from '@universal-login/commons';
+import {Device, ensureNotFalsy, DEFAULT_GAS_PRICE} from '@universal-login/commons';
 import {DeployedWallet} from '@universal-login/sdk';
 import {useHistory} from 'react-router';
 import {join} from 'path';
@@ -54,7 +54,7 @@ export const ConnectedDevice = ({devicesAmount, deviceInfo, publicKey, deployedW
     history.replace(join(devicesBasePath, '/waitingForRemovingDevice'));
     const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.removeKey(publicKey, {gasPrice: DEFAULT_GAS_PRICE});
     const {transactionHash} = await waitForTransactionHash();
-    ensureNotNull(transactionHash, TypeError);
+    ensureNotFalsy(transactionHash, TypeError);
     history.replace(join(devicesBasePath, '/waitingForRemovingDevice'), {transactionHash});
     await waitToBeSuccess();
     history.replace(devicesBasePath);

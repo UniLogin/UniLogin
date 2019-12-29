@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull, getMessageWithSignatures} from '@universal-login/commons';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotFalsy, getMessageWithSignatures} from '@universal-login/commons';
 import {getKeyFromHashAndSignature} from '../../../core/utils/encodeData';
 import IMessageRepository from '../../../core/models/messages/IMessagesRepository';
 import {InvalidMessage, MessageNotFound} from '../../../core/utils/errors';
@@ -13,7 +13,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
 
   // Override
   async add(messageHash: string, messageItem: MessageItem) {
-    ensureNotNull(messageItem.message, MessageNotFound, messageHash);
+    ensureNotFalsy(messageItem.message, MessageNotFound, messageHash);
     await super.add(messageHash, {
       transactionHash: messageItem.transactionHash,
       walletAddress: messageItem.walletAddress,
@@ -92,7 +92,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
 
   async getMessage(messageHash: string) {
     const message = (await this.get(messageHash)).message;
-    ensureNotNull(message, MessageNotFound, messageHash);
+    ensureNotFalsy(message, MessageNotFound, messageHash);
     const collectedSignatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
     return getMessageWithSignatures(message, collectedSignatureKeyPairs);
   }

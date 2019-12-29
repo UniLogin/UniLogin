@@ -3,7 +3,7 @@ import {
   filterNotificationByCodePrefix,
   isValidCode,
   Notification,
-  ensureNotNull,
+  ensureNotFalsy,
 } from '@universal-login/commons';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {EmojiInput} from './EmojiInput';
@@ -30,7 +30,7 @@ export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, se
   useEffect(() => {
     if (isInputValid) {
       hideHeader && hideHeader();
-      ensureNotNull(soleAddress, Error, 'No matching keys');
+      ensureNotFalsy(soleAddress, Error, 'No matching keys');
       setPublicKey(soleAddress);
     }
   }, [isInputValid]);

@@ -7,7 +7,7 @@ import {
   DeepPartial,
   ensure,
   ensureNotEmpty,
-  ensureNotNull,
+  ensureNotFalsy,
   generateCode,
   Message,
   SdkExecutionOptions,
@@ -140,7 +140,7 @@ class UniversalLoginSDK {
   }
 
   getRelayerConfig(): PublicRelayerConfig {
-    ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
+    ensureNotFalsy(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
     return this.relayerConfig;
   }
 
@@ -154,7 +154,7 @@ class UniversalLoginSDK {
     if (this.balanceObserver) {
       return;
     }
-    ensureNotNull(contractAddress, InvalidContract);
+    ensureNotFalsy(contractAddress, InvalidContract);
     ensureNotEmpty(this.sdkConfig, MissingConfiguration);
 
     await this.tokensDetailsStore.fetchTokensDetails();
@@ -170,7 +170,7 @@ class UniversalLoginSDK {
   }
 
   private fetchFutureWalletFactory() {
-    ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
+    ensureNotFalsy(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
     const futureWalletConfig = {
       supportedTokens: this.relayerConfig!.supportedTokens,
       factoryAddress: this.relayerConfig!.factoryAddress,
@@ -186,7 +186,7 @@ class UniversalLoginSDK {
   }
 
   async execute(message: PartialRequired<Message, 'from'>, privateKey: string): Promise<Execution> {
-    ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
+    ensureNotFalsy(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
     const nonce = message.nonce || parseInt(await this.getNonce(message.from!), 10);
     const partialMessage = {gasToken: ETHER_NATIVE_TOKEN.address, ...message, nonce, refundReceiver: this.relayerConfig.relayerAddress, operationType: OperationType.call};
     ensure(partialMessage.gasLimit! <= this.relayerConfig!.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${this.relayerConfig!.maxGasLimit}`);
@@ -212,8 +212,8 @@ class UniversalLoginSDK {
 
   async getWalletContractAddress(ensName: string): Promise<string> {
     const walletContractAddress = await this.resolveName(ensName);
-    ensureNotNull(walletContractAddress, InvalidENSRecord, ensName);
-    ensureNotNull(await this.blockchainService.getCode(walletContractAddress), InvalidENSRecord, ensName);
+    ensureNotFalsy(walletContractAddress, InvalidENSRecord, ensName);
+    ensureNotFalsy(await this.blockchainService.getCode(walletContractAddress), InvalidENSRecord, ensName);
     return walletContractAddress;
   }
 

@@ -1,4 +1,4 @@
-import {MessageStatus, SignedMessage, stringifySignedMessageFields, ensureNotNull} from '@universal-login/commons';
+import {MessageStatus, SignedMessage, stringifySignedMessageFields, ensureNotFalsy} from '@universal-login/commons';
 import {RelayerApi} from '../../integration/http/RelayerApi';
 import {MissingMessageHash} from '../utils/errors';
 import {MineableFactory} from './MineableFactory';
@@ -24,7 +24,7 @@ export class ExecutionFactory extends MineableFactory {
 
   async createExecution(signedMessage: SignedMessage): Promise<Execution> {
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
-    ensureNotNull(result.status.messageHash, MissingMessageHash);
+    ensureNotFalsy(result.status.messageHash, MissingMessageHash);
     const {messageHash, totalCollected, required} = result.status;
     const waitToBeSuccess = totalCollected >= required ? this.createWaitToBeSuccess(messageHash) : async () => result.status;
     const waitForTransactionHash = totalCollected >= required ? this.createWaitForTransactionHash(messageHash) : async () => result.status;

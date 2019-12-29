@@ -1,4 +1,4 @@
-import {ensureNotNull, GasParameters, Nullable, TransferDetails, SEND_TRANSACTION_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {ensureNotFalsy, GasParameters, Nullable, TransferDetails, SEND_TRANSACTION_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {bigNumberMax} from '../utils/bigNumberMax';
@@ -18,7 +18,7 @@ export class TransferService {
   constructor(public deployedWallet: DeployedWallet) {}
 
   async transfer(transferDetails: TransferDetails) {
-    ensureNotNull(this.deployedWallet, WalletNotFound);
+    ensureNotFalsy(this.deployedWallet, WalletNotFound);
     const targetAddress = await getTargetAddress(this.deployedWallet.sdk, transferDetails.to);
     const message = encodeTransferToMessage({
       ...transferDetails,
@@ -31,7 +31,7 @@ export class TransferService {
 
   async validateInputs(transferDetails: TransferDetails, balance: Nullable<string>) {
     this.errors = {amount: [], to: []};
-    ensureNotNull(balance, Error, 'Balance is null');
+    ensureNotFalsy(balance, Error, 'Balance is null');
     await new ChainValidator([
       new AmountValidator(balance),
       new RecipientValidator(this.deployedWallet.sdk),
@@ -44,7 +44,7 @@ export class TransferService {
   }
 
   getMaxAmount(gasParameters: GasParameters, balance: Nullable<string>) {
-    ensureNotNull(balance, Error, 'Balance is null');
+    ensureNotFalsy(balance, Error, 'Balance is null');
     const {gasPrice, gasToken} = gasParameters;
     if (gasToken !== ETHER_NATIVE_TOKEN.address) {
       return balance;

@@ -1,5 +1,5 @@
 import {Contract, providers, utils} from 'ethers';
-import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotNull, fetchHardforkVersion} from '@universal-login/commons';
+import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion} from '@universal-login/commons';
 import {WalletProxyInterface, WalletProxyFactoryInterface} from '../../test/helpers/interfaces';
 
 export class BlockchainService {
@@ -34,7 +34,7 @@ export class BlockchainService {
     const walletMasterAddress = await proxyInstance.implementation();
     const walletMasterBytecode = await this.getCode(walletMasterAddress);
     const walletMasterVersion = WALLET_MASTER_VERSIONS[utils.keccak256(walletMasterBytecode)];
-    ensureNotNull(walletMasterVersion, Error, 'Unsupported wallet master version');
+    ensureNotFalsy(walletMasterVersion, Error, 'Unsupported wallet master version');
     return walletMasterVersion;
   }
 
