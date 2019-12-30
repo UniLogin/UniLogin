@@ -1,7 +1,6 @@
 import {Provider} from 'web3/providers';
 import {Config, getConfigForNetwork, Network} from './config';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {MetamaskService} from './services/MetamaskService';
 import {UIController} from './services/UIController';
 import {providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
@@ -10,7 +9,7 @@ import {waitForTrue} from './ui/utils/utils';
 import {initUi} from './ui/utils/initUi';
 import {OnboardingProps} from './ui/react/Onboarding';
 import {StorageService, WalletStorageService} from '@universal-login/react';
-import {combine, Property} from 'reactive-properties';
+import {Property} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
 import {DEFAULT_GAS_LIMIT} from './constants/defaults';
 
@@ -40,7 +39,6 @@ export class ULWeb3Provider implements Provider {
   private readonly provider: Provider;
   private readonly sdk: UniversalLoginSDK;
   private readonly walletService: WalletService;
-  private readonly metamaskService: MetamaskService;
   private readonly uiController: UIController;
 
   readonly isLoggedIn: Property<boolean>;
@@ -61,13 +59,10 @@ export class ULWeb3Provider implements Provider {
     );
     const walletStorageService = new WalletStorageService(storageService);
     this.walletService = new WalletService(this.sdk, walletFromBrain, walletStorageService);
-    this.metamaskService = new MetamaskService();
-    this.uiController = new UIController(this.walletService, this.metamaskService);
 
-    this.isLoggedIn = combine(
-      [this.walletService.isAuthorized, this.metamaskService.metamaskProvider],
-      (walletCreated, metamask) => walletCreated || !!metamask,
-    );
+    this.uiController = new UIController(this.walletService);
+
+    this.isLoggedIn = this.walletService.isAuthorized;
 
     this.sdk.start();
 
@@ -76,16 +71,10 @@ export class ULWeb3Provider implements Provider {
       domains: ensDomains,
       walletService: this.walletService,
       uiController: this.uiController,
-      metamaskService: this.metamaskService,
     });
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    const metamaskProvider = this.metamaskService.metamaskProvider.get();
-    if (metamaskProvider) {
-      return metamaskProvider.sendAsync(payload, callback);
-    }
-
     if (this.walletService.state.kind === 'None') {
       await this.create();
     }
