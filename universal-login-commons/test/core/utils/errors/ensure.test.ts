@@ -47,11 +47,9 @@ describe('ensure', () => {
     });
 
     it('undefined', () => {
-      const value: Nullable<number> = 0;
       expect(() => ensureNotNull(undefined, Error, 'undefined')).to.not.throw(Error);
     });
   });
-
 
   describe('ensureNotEmpty', () => {
     it('empty object', () => {
