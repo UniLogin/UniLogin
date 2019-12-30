@@ -2,3 +2,6 @@ export {setupMasterWithRefundAndFactory, setupWalletContract} from './fixtures/w
 export {executeAddKey, executeSetRequiredSignatures, emptyMessage} from './helpers/ExampleMessages';
 export {encodeFunction} from './helpers/argumentsEncoding';
 export {createFutureDeployment, createFutureDeploymentWithENS, CreateFutureDeploymentWithENS, getFutureAddress} from './helpers/FutureDeployment';
+
+import * as mockContracts from './helpers/mockContracts';
+export {mockContracts};

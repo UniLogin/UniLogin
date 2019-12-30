@@ -4,6 +4,7 @@ import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader, deployContract} from 'ethereum-waffle';
 import {utils, providers, Wallet, Contract} from 'ethers';
 import {beta2} from '@universal-login/contracts';
+import {mockContracts} from '@universal-login/contracts/testutils';
 import {signRelayerRequest, Message, GAS_BASE, Device, SdkExecutionOptions, PartialRequired, TEST_EXECUTION_OPTIONS, TEST_SDK_CONFIG} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
@@ -87,7 +88,7 @@ describe('INT: SDK', async () => {
     });
 
     it('when not enough tokens ', async () => {
-      const mockToken = await deployContract(wallet, beta2.MockToken);
+      const mockToken = await deployContract(wallet, mockContracts.MockToken);
       await mockToken.transfer(walletContract.address, 1);
       message = {...message, gasToken: mockToken.address};
       const {waitToBeSuccess} = await sdk.execute(message, privateKey);

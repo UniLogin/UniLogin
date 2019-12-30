@@ -1,10 +1,9 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {beta2} from '@universal-login/contracts';
 import {calculateMessageHash, GAS_BASE, GAS_FIXED} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
-import {executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
+import {executeSetRequiredSignatures, mockContracts} from '@universal-login/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../../testhelpers/setupMessageService';
 import {getConfig} from '../../../../../src';
@@ -37,7 +36,7 @@ describe('INT: MultiSignatureExecute', async () => {
   });
 
   it('Error when not enough tokens', async () => {
-    const mockToken = await deployContract(wallet, beta2.MockToken);
+    const mockToken = await deployContract(wallet, mockContracts.MockToken);
     await mockToken.transfer(walletContract.address, 1);
 
     const message = {...msg, gasToken: mockToken.address, refundReceiver: wallet.address};

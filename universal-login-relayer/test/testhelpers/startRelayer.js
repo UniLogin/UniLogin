@@ -2,7 +2,7 @@ import {deployContract} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
 import {ETHER_NATIVE_TOKEN, deepMerge} from '@universal-login/commons';
 import {deployFactory, beta2} from '@universal-login/contracts';
-import Token from '../../src/http/relayers/abi/Token.json';
+import {mockContracts} from '@universal-login/contracts/testutils';
 import {getContractWhiteList} from '../../src/http/relayers/RelayerUnderTest';
 import {getConfig} from '../../src/index';
 
@@ -16,7 +16,7 @@ async function depolyEns(wallet) {
 
 async function startRelayer(wallet, RelayerConstructor) {
   const walletContract = await deployContract(wallet, beta2.WalletContract, [], {gasLimit: 5000000});
-  const tokenContract = await deployContract(wallet, Token, []);
+  const tokenContract = await deployContract(wallet, mockContracts.Token, []);
   const factoryContract = await deployFactory(wallet, walletContract.address);
   const ensAddress = await depolyEns(wallet);
   const overrideConfig = Object.freeze({
