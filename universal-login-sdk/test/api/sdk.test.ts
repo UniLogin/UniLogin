@@ -5,7 +5,7 @@ import {solidity, createFixtureLoader, deployContract} from 'ethereum-waffle';
 import {utils, providers, Wallet, Contract} from 'ethers';
 import {beta2} from '@universal-login/contracts';
 import {mockContracts} from '@universal-login/contracts/testutils';
-import {signRelayerRequest, Message, GAS_BASE, Device, SdkExecutionOptions, PartialRequired, TEST_EXECUTION_OPTIONS, TEST_SDK_CONFIG} from '@universal-login/commons';
+import {signRelayerRequest, Message, GAS_BASE, SdkExecutionOptions, PartialRequired, TEST_EXECUTION_OPTIONS, TEST_SDK_CONFIG} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../src/api/sdk';
@@ -169,28 +169,6 @@ describe('INT: SDK', async () => {
         const {privateKey: newDevicePrivateKey} = await sdk.connect(contractAddress);
         expect(newDevicePrivateKey).to.be.properPrivateKey;
       });
-    });
-  });
-
-  describe('Devices', async () => {
-    it('should return added devices', async () => {
-      const initiallyPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device: Device) => device.publicKey);
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, executionOptions);
-      await waitToBeSuccess();
-      const devicesPublicKeys = (await sdk.getConnectedDevices(contractAddress, privateKey)).map((device: Device) => device.publicKey);
-      expect(devicesPublicKeys).length(initiallyPublicKeys.length + 1);
-      expect(devicesPublicKeys).to.be.deep.eq([...initiallyPublicKeys, otherWallet.address]);
-    });
-  });
-
-  describe('change required signatures', async () => {
-    it('should change required signatures', async () => {
-      let {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, executionOptions);
-      await waitToBeSuccess();
-      ({waitToBeSuccess} = await sdk.setRequiredSignatures(contractAddress, 2, privateKey, executionOptions));
-      const {transactionHash} = await waitToBeSuccess();
-      expect(await walletContract.requiredSignatures()).to.eq(2);
-      expect(transactionHash).to.be.properHex(64);
     });
   });
 
