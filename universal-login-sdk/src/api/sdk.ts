@@ -1,72 +1,49 @@
-import {providers} from 'ethers';
-import {
-  addCodesToNotifications,
-  BalanceChecker,
-  createKeyPair,
-  deepMerge,
-  DeepPartial,
-  ensure,
-  ensureNotEmpty,
-  ensureNotNull,
-  generateCode,
-  Message,
-  SdkExecutionOptions,
-  Notification,
-  PublicRelayerConfig,
-  resolveName,
-  SignedMessage,
-  signRelayerRequest,
-  TokenDetailsService,
-  TokensValueConverter,
-  ETHER_NATIVE_TOKEN,
-  PartialRequired,
-  OperationType,
-} from '@universal-login/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotNull, generateCode, Message, Notification, PartialRequired, PublicRelayerConfig, resolveName, SdkExecutionOptions, signRelayerRequest, TokenDetailsService, TokensValueConverter} from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
-import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
-import BlockchainObserver from '../core/observers/BlockchainObserver';
-import {RelayerApi} from '../integration/http/RelayerApi';
-import {InvalidContract, InvalidEvent, InvalidGasLimit, MissingConfiguration, InvalidENSRecord} from '../core/utils/errors';
-import {FutureWalletFactory} from './FutureWalletFactory';
-import {FutureWallet} from './wallet/FutureWallet';
-import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';
-import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
-import {SdkConfigDefault} from '../config/SdkConfigDefault';
+import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
+import {SdkConfigDefault} from '../config/SdkConfigDefault';
 import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/observers/AggregateBalanceObserver';
+import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
+import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
+import BlockchainObserver from '../core/observers/BlockchainObserver';
 import {OnTokenPricesChange, PriceObserver} from '../core/observers/PriceObserver';
-import {TokensDetailsStore} from '../core/services/TokensDetailsStore';
-import {ensureSufficientGas} from '../core/utils/validation';
-import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
-import {GasModeService} from '../core/services/GasModeService';
+import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';
 import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
-import {deprecateSDKMethod} from './deprecate';
-import {DeployedWallet} from './wallet/DeployedWallet';
+import {GasModeService} from '../core/services/GasModeService';
 import {MessageConverter} from '../core/services/MessageConverter';
+import {TokensDetailsStore} from '../core/services/TokensDetailsStore';
+import {InvalidContract, InvalidENSRecord, InvalidEvent, MissingConfiguration} from '../core/utils/errors';
 import {ENSService} from '../integration/ethereum/ENSService';
+import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
+import {RelayerApi} from '../integration/http/RelayerApi';
+import {deprecateSDKMethod} from './deprecate';
+import {FutureWalletFactory} from './FutureWalletFactory';
+import {DeployedWallet} from './wallet/DeployedWallet';
+import {FutureWallet} from './wallet/FutureWallet';
 
 class UniversalLoginSDK {
-  provider: providers.Provider;
-  relayerApi: RelayerApi;
-  authorisationsObserver: AuthorisationsObserver;
-  blockchainObserver: BlockchainObserver;
-  executionFactory: ExecutionFactory;
-  balanceChecker: BalanceChecker;
+  readonly provider: providers.Provider;
+  readonly relayerApi: RelayerApi;
+  readonly authorisationsObserver: AuthorisationsObserver;
+  readonly blockchainObserver: BlockchainObserver;
+  readonly executionFactory: ExecutionFactory;
+  readonly balanceChecker: BalanceChecker;
+  readonly tokensValueConverter: TokensValueConverter;
+  readonly priceObserver: PriceObserver;
+  readonly tokenDetailsService: TokenDetailsService;
+  readonly tokensDetailsStore: TokensDetailsStore;
+  readonly blockchainService: BlockchainService;
+  readonly gasPriceOracle: GasPriceOracle;
+  readonly gasModeService: GasModeService;
+  readonly sdkConfig: SdkConfig;
+  readonly factoryAddress?: string;
+  readonly featureFlagsService: FeatureFlagsService;
+  readonly messageConverter: MessageConverter;
   balanceObserver?: BalanceObserver;
-  tokensValueConverter: TokensValueConverter;
   aggregateBalanceObserver?: AggregateBalanceObserver;
-  priceObserver: PriceObserver;
-  tokenDetailsService: TokenDetailsService;
-  tokensDetailsStore: TokensDetailsStore;
-  blockchainService: BlockchainService;
-  gasPriceOracle: GasPriceOracle;
-  gasModeService: GasModeService;
   futureWalletFactory?: FutureWalletFactory;
-  sdkConfig: SdkConfig;
   relayerConfig?: PublicRelayerConfig;
-  factoryAddress?: string;
-  featureFlagsService: FeatureFlagsService;
-  messageConverter: MessageConverter;
 
   constructor(
     relayerUrl: string,
@@ -186,13 +163,7 @@ class UniversalLoginSDK {
   }
 
   async execute(message: PartialRequired<Message, 'from'>, privateKey: string): Promise<Execution> {
-    ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
-    const nonce = message.nonce || parseInt(await this.getNonce(message.from!), 10);
-    const partialMessage = {gasToken: ETHER_NATIVE_TOKEN.address, ...message, nonce, refundReceiver: this.relayerConfig.relayerAddress, operationType: OperationType.call};
-    ensure(partialMessage.gasLimit! <= this.relayerConfig!.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${this.relayerConfig!.maxGasLimit}`);
-    const signedMessage: SignedMessage = await this.messageConverter.messageToSignedMessage(partialMessage, privateKey);
-    ensureSufficientGas(signedMessage);
-    return this.executionFactory.createExecution(signedMessage);
+    return new DeployedWallet(message.from, '', privateKey, this).execute(message);
   }
 
   protected selfExecute(to: string, method: string, args: any[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
@@ -205,8 +176,7 @@ class UniversalLoginSDK {
     return this.createDeployedWallet(walletContractAddress).keyExist(key);
   }
 
-  async getNonce(walletContractAddress: string) {
-    deprecateSDKMethod('getNonce');
+  private async getNonce(walletContractAddress: string) {
     return this.createDeployedWallet(walletContractAddress).getNonce();
   }
 

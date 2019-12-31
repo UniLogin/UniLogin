@@ -40,7 +40,7 @@ describe('INT: TransferService', () => {
     tokenDetailsService = new TokenDetailsService(provider);
     tokenService = new TokensDetailsStore(tokenDetailsService, [mockTokenContract.address]);
     await tokenService.fetchTokensDetails();
-    sdk.tokensDetailsStore = tokenService;
+    (sdk as any).tokensDetailsStore = tokenService;
     transferService = new TransferService(walletService.getDeployedWallet());
     balance = '5';
   });

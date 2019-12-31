@@ -1,21 +1,14 @@
-import {
-  ApplicationWallet,
-  Message,
-  generateBackupCode,
-  walletFromBrain,
-  sign,
-  ExecutionOptions,
-  DEFAULT_GAS_LIMIT,
-  SdkExecutionOptions,
-} from '@universal-login/commons';
-import UniversalLoginSDK from '../sdk';
-import {Execution} from '../../core/services/ExecutionFactory';
+import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, sign, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage} from '@universal-login/commons';
+import {WalletContractInterface} from '@universal-login/contracts';
 import {Contract, utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../../core/observers/BalanceObserver';
-import {WalletContractInterface} from '@universal-login/contracts';
 import {AbstractWallet} from './AbstractWallet';
 import {BackupCodesWithExecution} from './BackupCodesWithExecution';
+import {InvalidGasLimit} from '../../core/utils/errors';
+import {ensureSufficientGas} from '../../core/utils/validation';
+import UniversalLoginSDK from '../sdk';
+import {Execution} from '../../core/services/ExecutionFactory';
 
 export class DeployedWallet extends AbstractWallet {
   private contractInstance: Contract;
@@ -63,11 +56,21 @@ export class DeployedWallet extends AbstractWallet {
     return this.selfExecute('setRequiredSignatures', [requiredSignatures], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
   }
 
-  execute(message: Partial<Message>): Promise<Execution> {
-    return this.sdk.execute({
+  async execute(message: Partial<Message>): Promise<Execution> {
+    const relayerConfig = this.sdk.getRelayerConfig();
+    const nonce = message.nonce || parseInt(await this.getNonce(), 10);
+    const partialMessage = {
+      gasToken: ETHER_NATIVE_TOKEN.address,
       ...message,
+      nonce,
+      refundReceiver: relayerConfig.relayerAddress,
+      operationType: OperationType.call,
       from: this.contractAddress,
-    }, this.privateKey);
+    };
+    ensure(partialMessage.gasLimit! <= relayerConfig.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${relayerConfig.maxGasLimit}`);
+    const signedMessage: SignedMessage = await this.sdk.messageConverter.messageToSignedMessage(partialMessage, this.privateKey);
+    ensureSufficientGas(signedMessage);
+    return this.sdk.executionFactory.createExecution(signedMessage);
   }
 
   keyExist(key: string): Promise<boolean> {

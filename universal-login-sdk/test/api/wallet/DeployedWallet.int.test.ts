@@ -5,8 +5,9 @@ import {createFixtureLoader, solidity} from 'ethereum-waffle';
 import {Contract, Wallet} from 'ethers';
 import basicSDK from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import {walletFromBrain, DEFAULT_GAS_PRICE} from '@universal-login/commons';
+import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS} from '@universal-login/commons';
 import {DeployedWallet} from '../../../src';
+import {transferMessage} from '../../fixtures/basicSDK';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -28,14 +29,6 @@ describe('INT: DeployedWallet', async () => {
     const {contractAddress, sdk, privateKey, ...rest} = await loadFixture(basicSDK) as any;
     ({relayer, otherWallet, mockToken, walletContract, ensName} = rest);
     deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
-  });
-
-  afterEach(async () => {
-    await relayer.clearDatabase();
-  });
-
-  after(async () => {
-    await relayer.stop();
   });
 
   describe('getRequiredSignatures', function () {
@@ -63,5 +56,23 @@ describe('INT: DeployedWallet', async () => {
       const connectedDevices = await deployedWallet.getConnectedDevices();
       expect(connectedDevices.map(({publicKey}: any) => publicKey)).to.include(address);
     }).timeout(15000);
+  });
+
+  it('getNonce', async () => {
+    expect(await deployedWallet.getNonce()).to.eq(0);
+    let {waitToBeSuccess} = await deployedWallet.execute(transferMessage);
+    await waitToBeSuccess();
+    expect(await deployedWallet.getNonce()).to.eq(1);
+    ({waitToBeSuccess} = await deployedWallet.addKey(createKeyPair().publicKey, TEST_EXECUTION_OPTIONS));
+    await waitToBeSuccess();
+    expect(await deployedWallet.getNonce()).to.eq(2);
+  });
+
+  afterEach(async () => {
+    await relayer.clearDatabase();
+  });
+
+  after(async () => {
+    await relayer.stop();
   });
 });
