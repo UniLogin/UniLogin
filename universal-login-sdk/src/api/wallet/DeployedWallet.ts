@@ -1,4 +1,4 @@
-import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, sign, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage} from '@universal-login/commons';
+import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, sign, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage, Device} from '@universal-login/commons';
 import {WalletContractInterface} from '@universal-login/contracts';
 import {Contract, utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
@@ -83,6 +83,11 @@ export class DeployedWallet extends AbstractWallet {
 
   async getConnectedDevices() {
     return this.sdk.getConnectedDevices(this.contractAddress, this.privateKey);
+  }
+
+  async getKeys() {
+    return (await this.getConnectedDevices())
+      .map((device: Device) => device.publicKey);
   }
 
   getRequiredSignatures(): Promise<BigNumber> {

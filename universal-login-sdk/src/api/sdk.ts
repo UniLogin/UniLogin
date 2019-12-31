@@ -163,7 +163,7 @@ class UniversalLoginSDK {
   }
 
   async execute(message: PartialRequired<Message, 'from'>, privateKey: string): Promise<Execution> {
-    return new DeployedWallet(message.from, '', privateKey, this).execute(message);
+    return this.createDeployedWallet(message.from, privateKey).execute(message);
   }
 
   protected selfExecute(to: string, method: string, args: any[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
@@ -174,10 +174,6 @@ class UniversalLoginSDK {
   keyExist(walletContractAddress: string, key: string): Promise<boolean> {
     deprecateSDKMethod('keyExist');
     return this.createDeployedWallet(walletContractAddress).keyExist(key);
-  }
-
-  private async getNonce(walletContractAddress: string) {
-    return this.createDeployedWallet(walletContractAddress).getNonce();
   }
 
   async getWalletContractAddress(ensName: string): Promise<string> {
