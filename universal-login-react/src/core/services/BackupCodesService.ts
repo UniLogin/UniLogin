@@ -1,5 +1,5 @@
 import {DeployedWallet} from '@universal-login/sdk';
-import {ensureNotNull, GasParameters} from '@universal-login/commons';
+import {ensureNotFalsy, GasParameters} from '@universal-login/commons';
 import {State} from 'reactive-properties';
 
 export type BackupCodesGenerationState = {
@@ -25,7 +25,7 @@ export class BackupCodesService {
   async generate(gasParameters: GasParameters | undefined) {
     try {
       this.state.set({kind: 'InProgress'});
-      ensureNotNull(gasParameters, Error, 'Missing gas parameters');
+      ensureNotFalsy(gasParameters, Error, 'Missing gas parameters');
       const {waitToBeSuccess, waitForTransactionHash} = await this.deployedWallet.generateBackupCodes(gasParameters);
       const {transactionHash} = await waitForTransactionHash();
       this.state.set({kind: 'InProgress', transactionHash});

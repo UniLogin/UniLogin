@@ -1,4 +1,4 @@
-import {MineableState, MineableStatus, ensureNotNull, ensure} from '@universal-login/commons';
+import {MineableState, MineableStatus, ensureNotFalsy, ensure} from '@universal-login/commons';
 import {TransactionHashNotFound} from '../utils/errors';
 import {retry} from '../utils/retry';
 
@@ -15,7 +15,7 @@ export class MineableFactory {
 
   protected hasTransactionHash(status: MineableStatus) {
     if (['Pending', 'Success'].includes(status.state)) {
-      ensureNotNull(status.transactionHash, TransactionHashNotFound);
+      ensureNotFalsy(status.transactionHash, TransactionHashNotFound);
     }
     return ['Pending', 'Success', 'Error'].includes(status.state);
   }

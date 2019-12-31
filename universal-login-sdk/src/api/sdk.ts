@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotNull, generateCode, Message, Notification, PartialRequired, PublicRelayerConfig, resolveName, SdkExecutionOptions, signRelayerRequest, TokenDetailsService, TokensValueConverter} from '@universal-login/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Message, Notification, PartialRequired, PublicRelayerConfig, resolveName, SdkExecutionOptions, signRelayerRequest, TokenDetailsService, TokensValueConverter} from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -117,7 +117,7 @@ class UniversalLoginSDK {
   }
 
   getRelayerConfig(): PublicRelayerConfig {
-    ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
+    ensureNotFalsy(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
     return this.relayerConfig;
   }
 
@@ -131,7 +131,7 @@ class UniversalLoginSDK {
     if (this.balanceObserver) {
       return;
     }
-    ensureNotNull(contractAddress, InvalidContract);
+    ensureNotFalsy(contractAddress, InvalidContract);
     ensureNotEmpty(this.sdkConfig, MissingConfiguration);
 
     await this.tokensDetailsStore.fetchTokensDetails();
@@ -147,7 +147,7 @@ class UniversalLoginSDK {
   }
 
   private fetchFutureWalletFactory() {
-    ensureNotNull(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
+    ensureNotFalsy(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
     const futureWalletConfig = {
       supportedTokens: this.relayerConfig!.supportedTokens,
       factoryAddress: this.relayerConfig!.factoryAddress,
@@ -178,8 +178,8 @@ class UniversalLoginSDK {
 
   async getWalletContractAddress(ensName: string): Promise<string> {
     const walletContractAddress = await this.resolveName(ensName);
-    ensureNotNull(walletContractAddress, InvalidENSRecord, ensName);
-    ensureNotNull(await this.blockchainService.getCode(walletContractAddress), InvalidENSRecord, ensName);
+    ensureNotFalsy(walletContractAddress, InvalidENSRecord, ensName);
+    ensureNotFalsy(await this.blockchainService.getCode(walletContractAddress), InvalidENSRecord, ensName);
     return walletContractAddress;
   }
 

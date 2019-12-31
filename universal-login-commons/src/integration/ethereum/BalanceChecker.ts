@@ -1,7 +1,7 @@
 import {providers, Contract, utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {ETHER_NATIVE_TOKEN} from '../../core/constants/constants';
-import {ensure} from '../../core/utils/errors/heplers';
+import {ensure} from '../../core/utils/errors/ensure';
 import {isContract} from '../../core/utils/contracts/contractHelpers';
 import {InvalidContract} from '../../core/utils/errors/errors';
 

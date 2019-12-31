@@ -3,7 +3,7 @@ import {Provider, JsonRPCResponse, Callback} from 'web3/providers';
 import {render} from 'react-dom';
 import {Web3PickerComponent} from './Web3PickerComponent';
 import {State} from 'reactive-properties';
-import {ensure, ensureNotNull} from '@universal-login/commons';
+import {ensure, ensureNotFalsy} from '@universal-login/commons';
 import {waitForFalse} from '../utils/utils';
 import {Web3ProviderFactory} from '../../models/Web3ProviderFactory';
 import {Web3Strategy} from '../../Web3Strategy';
@@ -32,7 +32,7 @@ export class Web3Picker implements Provider {
 
   private getFactory(providerName: string): Web3ProviderFactory {
     const factory = this.findFactory(providerName);
-    ensureNotNull(factory, InvalidProvider, providerName);
+    ensureNotFalsy(factory, InvalidProvider, providerName);
     return factory;
   }
 

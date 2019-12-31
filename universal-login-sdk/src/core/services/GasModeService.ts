@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {GasMode, TokensPrices, ObservedCurrency, ensureNotNull, safeMultiply} from '@universal-login/commons';
+import {GasMode, TokensPrices, ObservedCurrency, ensureNotFalsy, safeMultiply} from '@universal-login/commons';
 import {TokensDetailsStore} from './TokensDetailsStore';
 import {GasPriceOracle} from '../../integration/ethereum/gasPriceOracle';
 import {PriceObserver} from '../observers/PriceObserver';
@@ -13,7 +13,7 @@ export class GasModeService {
 
   private getTokenPriceInversed(tokenPrices: TokensPrices, symbol: string) {
     const multiplier = tokenPrices.ETH[symbol as any as ObservedCurrency];
-    ensureNotNull(multiplier, Error, 'Invalid fee token');
+    ensureNotFalsy(multiplier, Error, 'Invalid fee token');
     return multiplier;
   }
 

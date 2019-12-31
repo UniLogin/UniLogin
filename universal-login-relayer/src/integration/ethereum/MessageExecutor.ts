@@ -1,5 +1,5 @@
 import {Wallet, providers} from 'ethers';
-import {SignedMessage, ensureNotNull, IMessageValidator} from '@universal-login/commons';
+import {SignedMessage, ensureNotFalsy, IMessageValidator} from '@universal-login/commons';
 import {messageToTransaction} from '../../core/utils/messages/serialisation';
 import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';
@@ -26,7 +26,7 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
       const signedMessage = await this.messageRepository.getMessage(messageHash);
       const transactionResponse = await this.execute(signedMessage);
       const {hash, wait} = transactionResponse;
-      ensureNotNull(hash, TransactionHashNotFound);
+      ensureNotFalsy(hash, TransactionHashNotFound);
       await this.messageRepository.markAsPending(messageHash, hash!);
       await wait();
       await this.minedTransactionHandler.handle(transactionResponse);

@@ -1,4 +1,4 @@
-import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotNull} from '@universal-login/commons';
+import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotFalsy} from '@universal-login/commons';
 import {getKeyFromHashAndSignature} from '../../src/core/utils/encodeData';
 import {InvalidMessage, MessageNotFound} from '../../src/core/utils/errors';
 import MessageItem from '../../src/core/models/messages/MessageItem';
@@ -8,7 +8,7 @@ import MemoryRepository from './MemoryRepository';
 export default class MessageMemoryRepository extends MemoryRepository<MessageItem> implements IMessageRepository {
   // Override
   async add(messageHash: string, messageItem: MessageItem) {
-    ensureNotNull(messageItem.message, MessageNotFound, messageHash);
+    ensureNotFalsy(messageItem.message, MessageNotFound, messageHash);
     messageItem.message = bignumberifySignedMessageFields(stringifySignedMessageFields(messageItem.message));
     await super.add(messageHash, messageItem);
   }
@@ -49,7 +49,7 @@ export default class MessageMemoryRepository extends MemoryRepository<MessageIte
 
   async getMessage(messageHash: string) {
     const message = (await this.get(messageHash)).message;
-    ensureNotNull(message, MessageNotFound, messageHash);
+    ensureNotFalsy(message, MessageNotFound, messageHash);
     return message as SignedMessage;
   }
 

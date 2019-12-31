@@ -4,7 +4,7 @@ import './../../styles/gasPriceDefault.sass';
 import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../../hooks/useAsync';
-import {GasMode, GasOption, TokenDetailsWithBalance, EMPTY_GAS_OPTION, ensureNotNull, OnGasParametersChanged, ETHER_NATIVE_TOKEN, findGasMode, findGasOption} from '@universal-login/commons';
+import {GasMode, GasOption, TokenDetailsWithBalance, EMPTY_GAS_OPTION, ensureNotFalsy, OnGasParametersChanged, ETHER_NATIVE_TOKEN, findGasMode, findGasOption} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {useAsyncEffect} from '../../hooks/useAsyncEffect';
 import {GasPriceSpeedChoose} from './GasPriceSpeed';
@@ -27,10 +27,10 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
 
   useAsyncEffect(async () => {
     if (isDeployed) {
-      ensureNotNull(deployedWallet, Error, 'Missing parameter: deployedWallet');
+      ensureNotFalsy(deployedWallet, Error, 'Missing parameter: deployedWallet');
       return deployedWallet.subscribeToBalances(setTokenDetailsWithBalance);
     } else {
-      ensureNotNull(sdk, Error, 'Missing parameter: sdk');
+      ensureNotFalsy(sdk, Error, 'Missing parameter: sdk');
     }
   }, [isDeployed, deployedWallet]);
 
