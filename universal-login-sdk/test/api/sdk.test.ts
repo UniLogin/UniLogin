@@ -25,14 +25,13 @@ describe('INT: SDK', async () => {
   let privateKey: string;
   let wallet: Wallet;
   let otherWallet: Wallet;
-  let otherWallet2: Wallet;
   let mockToken: Contract;
   let message: PartialRequired<Message, 'from'>;
   let walletContract: Contract;
   let executionOptions: SdkExecutionOptions;
 
   beforeEach(async () => {
-    ({wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
+    ({wallet, provider, mockToken, otherWallet, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
     message = {...transferMessage, from: contractAddress, gasToken: mockToken.address, data: '0x'};
     executionOptions = {...TEST_EXECUTION_OPTIONS, gasToken: mockToken.address};
   });
@@ -106,41 +105,6 @@ describe('INT: SDK', async () => {
     });
   });
 
-  describe('Add key', async () => {
-    it('should return transaction hash', async () => {
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, executionOptions);
-      const {transactionHash, state} = await waitToBeSuccess();
-      expect(transactionHash).to.be.properHex(64);
-      expect(state).to.be.eq('Success');
-      expect(await walletContract.lastNonce()).to.be.eq(1);
-    });
-
-    it('should add a management key to the walletContract', async () => {
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, executionOptions);
-      await waitToBeSuccess();
-      expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
-    });
-
-    it('should add a device to connected devices', async () => {
-      const initiallyDevicesLength = (await sdk.getConnectedDevices(contractAddress, privateKey)).length;
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, executionOptions);
-      await waitToBeSuccess();
-      expect(await sdk.getConnectedDevices(contractAddress, privateKey)).length(initiallyDevicesLength + 1);
-    });
-  });
-
-  describe('keyExist', async () => {
-    it('return an invalid key if key is not added', async () => {
-      expect(await sdk.keyExist(contractAddress, otherWallet.address)).to.be.false;
-    });
-
-    it('return a management key', async () => {
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, executionOptions);
-      await waitToBeSuccess();
-      expect(await sdk.keyExist(contractAddress, otherWallet.address)).to.be.true;
-    });
-  });
-
   describe('Get relayer config', async () => {
     it('getRelayerConfig return config which should have properties', async () => {
       const relayerConfig = sdk.getRelayerConfig();
@@ -151,15 +115,6 @@ describe('INT: SDK', async () => {
       expect(relayerConfig).to.haveOwnProperty('localization');
       expect(relayerConfig).to.haveOwnProperty('onRampProviders');
       expect(relayerConfig).to.haveOwnProperty('maxGasLimit');
-    });
-  });
-
-  describe('Add keys', async () => {
-    it('should return transaction hash and proper state', async () => {
-      const {waitToBeSuccess} = await sdk.addKeys(contractAddress, [otherWallet.address, otherWallet2.address], privateKey, executionOptions);
-      const {state, transactionHash} = await waitToBeSuccess();
-      expect(transactionHash).to.be.properHex(64);
-      expect(state).to.be.eq('Success');
     });
   });
 
