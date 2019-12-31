@@ -77,16 +77,6 @@ describe('INT: SDK', async () => {
       expect(state).to.be.eq('Success');
     });
 
-    it('Should increment nonce', async () => {
-      expect(await sdk.getNonce(contractAddress)).to.eq(0);
-      let {waitToBeSuccess} = await sdk.execute(message, privateKey);
-      await waitToBeSuccess();
-      expect(await sdk.getNonce(contractAddress)).to.eq(1);
-      ({waitToBeSuccess} = await sdk.execute(message, privateKey));
-      await waitToBeSuccess();
-      expect(await sdk.getNonce(contractAddress)).to.eq(2);
-    });
-
     it('when not enough tokens ', async () => {
       const mockToken = await deployContract(wallet, mockContracts.MockToken);
       await mockToken.transfer(walletContract.address, 1);
@@ -148,16 +138,6 @@ describe('INT: SDK', async () => {
       const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, executionOptions);
       await waitToBeSuccess();
       expect(await sdk.keyExist(contractAddress, otherWallet.address)).to.be.true;
-    });
-  });
-
-  describe('Get nonce', async () => {
-    it('getNonce should return correct nonce', async () => {
-      const executionNonce = await sdk.getNonce(contractAddress);
-      expect(executionNonce).to.eq(0);
-      const {waitToBeSuccess} = await sdk.addKey(contractAddress, otherWallet.address, privateKey, executionOptions);
-      await waitToBeSuccess();
-      expect(await sdk.getNonce(contractAddress)).to.eq(executionNonce.add(1));
     });
   });
 
