@@ -5,9 +5,9 @@ import {createFixtureLoader, solidity} from 'ethereum-waffle';
 import {Contract} from 'ethers';
 import basicSDK from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@universal-login/relayer';
-import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Device} from '@universal-login/commons';
+import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS} from '@universal-login/commons';
 import {DeployedWallet} from '../../../src';
-import {transferMessage} from '../../fixtures/basicSDK';
+import {waitForSuccess} from '../../helpers/waitForSuccess';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -24,6 +24,7 @@ describe('INT: DeployedWallet', async () => {
   let walletContract: Contract;
   let ensName: string;
   const publicKey = createKeyPair().publicKey;
+  const publicKey2 = createKeyPair().publicKey;
 
   beforeEach(async () => {
     const {contractAddress, sdk, privateKey, ...rest} = await loadFixture(basicSDK) as any;
@@ -31,83 +32,61 @@ describe('INT: DeployedWallet', async () => {
     deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
   });
 
-  describe('required signatures', function () {
-    it('getRequiredSignatures', async function () {
-      await expect(deployedWallet.getRequiredSignatures()).to.eventually.eq(1);
-    });
-
-    it('setRequiredSignatures', async function () {
-      let {waitToBeSuccess} = await deployedWallet.addKey(publicKey, {gasPrice, gasToken: mockToken.address});
-      await waitToBeSuccess();
-      ({waitToBeSuccess} = await deployedWallet.setRequiredSignatures(2, {gasPrice, gasToken: mockToken.address}));
-      await waitToBeSuccess();
-      await expect(deployedWallet.getRequiredSignatures()).to.eventually.eq(2);
-    });
-  });
-
-  describe('generateBackupCodes', () => {
-    it('returns the code and update contract keys', async () => {
-      const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes({gasPrice, gasToken: mockToken.address});
-      const {transactionHash} = await waitForTransactionHash();
-      expect(transactionHash).to.be.properHex;
-      const codes = await waitToBeSuccess();
-      const {address} = await walletFromBrain(ensName, codes[0]);
-      expect(await walletContract.keyExist(address)).to.be.true;
-      const connectedDevices = await deployedWallet.getConnectedDevices();
-      expect(connectedDevices.map(({publicKey}: any) => publicKey)).to.include(address);
-    }).timeout(15000);
-  });
-
-  it('getNonce', async () => {
-    expect(await deployedWallet.getNonce()).to.eq(0);
-    let {waitToBeSuccess} = await deployedWallet.execute(transferMessage);
-    await waitToBeSuccess();
-    expect(await deployedWallet.getNonce()).to.eq(1);
-    ({waitToBeSuccess} = await deployedWallet.addKey(createKeyPair().publicKey, TEST_EXECUTION_OPTIONS));
-    await waitToBeSuccess();
-    expect(await deployedWallet.getNonce()).to.eq(2);
-  });
-
-  describe('keys', async () => {
-    let initiallyDevicesLength: number;
-
-    it('before add', async () => {
-      expect(await deployedWallet.keyExist(publicKey)).to.be.false;
-      initiallyDevicesLength = (await deployedWallet.getConnectedDevices()).length;
-    });
-
-    it('should return transaction hash', async () => {
-      const {waitToBeSuccess} = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
-      const {transactionHash, state} = await waitToBeSuccess();
-      expect(transactionHash).to.be.properHex(64);
-      expect(await deployedWallet.keyExist(publicKey)).to.be.true;
-      expect(await walletContract.lastNonce()).to.be.eq(1);
-      expect((await deployedWallet.getConnectedDevices()).length).to.eq(initiallyDevicesLength + 1);
-      expect(state).to.be.eq('Success');
+  it('construction', async () => {
+    expect(await deployedWallet.keyExist(publicKey)).to.be.false;
+    expect(await deployedWallet.keyExist(publicKey2)).to.be.false;
+    expect(await deployedWallet.keyExist(deployedWallet.publicKey)).to.be.true;
+    expect(await deployedWallet.getNonce()).to.be.eq(0);
+    expect(await deployedWallet.getKeys()).to.deep.eq([deployedWallet.publicKey]);
+    expect(await deployedWallet.getRequiredSignatures()).to.eq(1);
+    expect((await deployedWallet.getConnectedDevices())[0]).to.include({
+      contractAddress: deployedWallet.contractAddress,
+      publicKey: deployedWallet.publicKey,
     });
   });
 
-  describe('addKeys', async () => {
-    it('should return transaction hash and proper state', async () => {
-      const publicKey2 = createKeyPair().publicKey;
-      const {waitToBeSuccess} = await deployedWallet.addKeys([publicKey, publicKey2], TEST_EXECUTION_OPTIONS);
-      const {state, transactionHash} = await waitToBeSuccess();
-      expect(await deployedWallet.keyExist(publicKey)).to.be.true;
-      expect(await deployedWallet.keyExist(publicKey2)).to.be.true;
-      expect(transactionHash).to.be.properHex(64);
-      expect(state).to.be.eq('Success');
-    });
+  it('setRequiredSignatures', async function () {
+    await waitForSuccess(deployedWallet.addKey(publicKey, {gasPrice, gasToken: mockToken.address}));
+    await waitForSuccess(deployedWallet.setRequiredSignatures(2, {gasPrice, gasToken: mockToken.address}));
+    await expect(deployedWallet.getRequiredSignatures()).to.eventually.eq(2);
   });
 
-  describe('Devices', async () => {
-    it('should return added devices', async () => {
-      const initiallyPublicKeys = (await deployedWallet.getConnectedDevices()).map((device: Device) => device.publicKey);
-      const {waitToBeSuccess} = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
-      await waitToBeSuccess();
-      const devicesPublicKeys = (await deployedWallet.getConnectedDevices()).map((device: Device) => device.publicKey);
-      expect(devicesPublicKeys).length(initiallyPublicKeys.length + 1);
-      expect(devicesPublicKeys).to.be.deep.eq([...initiallyPublicKeys, publicKey]);
-    });
+  it('generateBackupCodes', async () => {
+    const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes({gasPrice, gasToken: mockToken.address});
+    const {transactionHash} = await waitForTransactionHash();
+    expect(transactionHash).to.be.properHex;
+    const codes = await waitToBeSuccess();
+    const {address} = await walletFromBrain(ensName, codes[0]);
+    expect(await walletContract.keyExist(address)).to.be.true;
+    const connectedDevices = await deployedWallet.getConnectedDevices();
+    expect(connectedDevices.map(({publicKey}: any) => publicKey)).to.include(address);
+  }).timeout(15000);
+
+  it('addKey and removeKey', async () => {
+    let {transactionHash, state} = await waitForSuccess(deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS));
+    expect(await deployedWallet.keyExist(publicKey)).to.be.true;
+    expect(await deployedWallet.getKeys()).to.include(publicKey);
+    expect(await deployedWallet.getNonce()).to.be.eq(1);
+    expect(transactionHash).to.be.properHex(64);
+    expect(state).to.be.eq('Success');
+
+    ({transactionHash, state} = await waitForSuccess(deployedWallet.removeKey(publicKey, TEST_EXECUTION_OPTIONS)));
+    expect(await deployedWallet.keyExist(publicKey)).to.be.false;
+    expect(await deployedWallet.getKeys()).not.to.include(publicKey);
+    expect(await deployedWallet.getNonce()).to.be.eq(2);
+    expect(transactionHash).to.be.properHex(64);
+    expect(state).to.be.eq('Success');
+  });
+
+  it('addKeys', async () => {
+    const {transactionHash, state} = await waitForSuccess(deployedWallet.addKeys([publicKey, publicKey2], TEST_EXECUTION_OPTIONS));
+    expect(await deployedWallet.keyExist(publicKey)).to.be.true;
+    expect(await deployedWallet.keyExist(publicKey2)).to.be.true;
+    expect(await deployedWallet.getKeys()).to.include(publicKey);
+    expect(await deployedWallet.getKeys()).to.include(publicKey2);
+    expect(await deployedWallet.getNonce()).to.be.eq(1);
+    expect(transactionHash).to.be.properHex(64);
+    expect(state).to.be.eq('Success');
   });
 
   afterEach(async () => {
