@@ -5,7 +5,7 @@ import {solidity, createFixtureLoader, deployContract} from 'ethereum-waffle';
 import {utils, providers, Wallet, Contract} from 'ethers';
 import {beta2} from '@universal-login/contracts';
 import {mockContracts} from '@universal-login/contracts/testutils';
-import {signRelayerRequest, Message, GAS_BASE, SdkExecutionOptions, PartialRequired, TEST_EXECUTION_OPTIONS, TEST_SDK_CONFIG} from '@universal-login/commons';
+import {signRelayerRequest, Message, GAS_BASE, PartialRequired, TEST_EXECUTION_OPTIONS, TEST_SDK_CONFIG} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../src/api/sdk';
