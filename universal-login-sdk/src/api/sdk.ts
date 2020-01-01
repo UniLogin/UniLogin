@@ -107,11 +107,6 @@ class UniversalLoginSDK {
     return this.createDeployedWallet(to, privateKey).removeKey(key, executionOptions);
   }
 
-  setRequiredSignatures(to: string, requiredSignatures: number, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
-    deprecateSDKMethod('setRequiredSignatures');
-    return this.createDeployedWallet(to, privateKey).setRequiredSignatures(requiredSignatures, executionOptions);
-  }
-
   async getMessageStatus(messageHash: string) {
     return this.relayerApi.getStatus(messageHash);
   }
