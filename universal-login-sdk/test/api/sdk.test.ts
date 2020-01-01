@@ -5,10 +5,11 @@ import {solidity, createFixtureLoader, deployContract} from 'ethereum-waffle';
 import {utils, providers, Wallet, Contract} from 'ethers';
 import {beta2} from '@universal-login/contracts';
 import {mockContracts} from '@universal-login/contracts/testutils';
-import {signRelayerRequest, Message, GAS_BASE, SdkExecutionOptions, PartialRequired, TEST_EXECUTION_OPTIONS, TEST_SDK_CONFIG} from '@universal-login/commons';
+import {signRelayerRequest, Message, GAS_BASE, PartialRequired, TEST_EXECUTION_OPTIONS, TEST_SDK_CONFIG} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import basicSDK, {transferMessage} from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../src/api/sdk';
+import {DeployedWallet} from '../../src';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -28,12 +29,12 @@ describe('INT: SDK', async () => {
   let mockToken: Contract;
   let message: PartialRequired<Message, 'from'>;
   let walletContract: Contract;
-  let executionOptions: SdkExecutionOptions;
+  let deployedWallet: DeployedWallet;
 
   beforeEach(async () => {
     ({wallet, provider, mockToken, otherWallet, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
     message = {...transferMessage, from: contractAddress, gasToken: mockToken.address, data: '0x'};
-    executionOptions = {...TEST_EXECUTION_OPTIONS, gasToken: mockToken.address};
+    deployedWallet = new DeployedWallet(contractAddress, otherWallet.address, privateKey, sdk);
   });
 
   afterEach(async () => {
@@ -172,15 +173,13 @@ describe('INT: SDK', async () => {
     });
   });
 
-  describe('get message status', async () => {
-    it('should return message status', async () => {
-      await sdk.addKey(contractAddress, otherWallet.address, privateKey, executionOptions);
-      await sdk.setRequiredSignatures(contractAddress, 2, privateKey, executionOptions);
-      const msg = {...message, to: otherWallet.address, nonce: await walletContract.lastNonce()};
-      const {messageStatus} = await sdk.execute(msg, privateKey);
-      const status = await sdk.getMessageStatus(messageStatus.messageHash);
-      expect(status.collectedSignatures.length).to.eq(1);
-    });
+  it('getMessageStatus', async () => {
+    await deployedWallet.addKey(otherWallet.address, TEST_EXECUTION_OPTIONS);
+    await deployedWallet.setRequiredSignatures(2, TEST_EXECUTION_OPTIONS);
+    const msg = {...message, to: otherWallet.address, nonce: await walletContract.lastNonce()};
+    const {messageStatus} = await sdk.execute(msg, privateKey);
+    const status = await sdk.getMessageStatus(messageStatus.messageHash);
+    expect(status.collectedSignatures.length).to.eq(1);
   });
 
   after(async () => {
