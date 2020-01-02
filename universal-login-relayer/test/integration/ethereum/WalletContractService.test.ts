@@ -1,11 +1,11 @@
 import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
+import {Beta2Service} from '../../../src/integration/ethereum/Beta2Service';
 import createWalletContract from '../../testhelpers/createWalletContract';
 
-describe('INT: WalletContractService', () => {
-  let walletContractService: WalletContractService;
+describe('INT: Beta2Service', () => {
+  let beta2Service: Beta2Service;
   let proxyContract: Contract;
   let wallet: Wallet;
 
@@ -13,19 +13,19 @@ describe('INT: WalletContractService', () => {
     const provider = createMockProvider();
     [wallet] = getWallets(provider);
     ({proxy: proxyContract} = await createWalletContract(wallet));
-    walletContractService = new WalletContractService(provider);
+    beta2Service = new Beta2Service(provider);
   });
 
   it('returns required signatures number', async () => {
     const requiredSignatures = await proxyContract.requiredSignatures();
-    expect(await walletContractService.getRequiredSignatures(proxyContract.address)).to.eq(requiredSignatures);
+    expect(await beta2Service.getRequiredSignatures(proxyContract.address)).to.eq(requiredSignatures);
   });
 
   it('returns true if key exist', async () => {
-    expect(await walletContractService.keyExist(proxyContract.address, wallet.address)).to.be.true;
+    expect(await beta2Service.keyExist(proxyContract.address, wallet.address)).to.be.true;
   });
 
   it('returns false if key does not exist', async () => {
-    expect(await walletContractService.keyExist(proxyContract.address, Wallet.createRandom().address)).to.be.false;
+    expect(await beta2Service.keyExist(proxyContract.address, Wallet.createRandom().address)).to.be.false;
   });
 });

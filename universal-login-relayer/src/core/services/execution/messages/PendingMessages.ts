@@ -19,7 +19,7 @@ export default class PendingMessages {
   }
 
   async add(message: SignedMessage): Promise<MessageStatus> {
-    const messageHash = this.walletContractService.calculateMessageHash(message);
+    const messageHash = await this.walletContractService.calculateMessageHash(message);
     if (!await this.isPresent(messageHash)) {
       const messageItem = createMessageItem(message);
       await this.messageRepository.add(messageHash, messageItem);

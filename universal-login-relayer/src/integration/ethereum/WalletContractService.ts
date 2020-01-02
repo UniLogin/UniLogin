@@ -1,37 +1,45 @@
-import {providers, Contract, utils} from 'ethers';
-import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
-import {WalletContractInterface} from '@universal-login/contracts';
-import {getKeyFromHashAndSignature} from '../../core/utils/encodeData';
-import {beta2} from '@universal-login/contracts';
+import {Beta2Service} from './Beta2Service';
+import {BlockchainService} from '@universal-login/contracts';
+import {SignedMessage} from '@universal-login/commons';
+import IWalletContractService from '../../core/models/IWalletContractService';
 
-export class WalletContractService {
-  constructor(private provider: providers.Provider) {
+export class WalletContractService implements IWalletContractService {
+  constructor(private blockchainSerivce: BlockchainService, private beta2Service: Beta2Service) {
+
   }
 
-  async getRequiredSignatures(walletAddress: string): Promise<utils.BigNumber> {
-    const walletContract = new Contract(walletAddress, WalletContractInterface, this.provider);
-    const requiredSignatures = await walletContract.requiredSignatures();
-    return requiredSignatures;
+  private async getWalletService(walletAddress: string): Promise<IWalletContractService> {
+    const walletVersion = await this.blockchainSerivce.fetchWalletVersion(walletAddress);
+    switch (walletVersion) {
+      case 'beta2':
+        return this.beta2Service;
+      default:
+        throw TypeError(`Invalid walletVersion: ${walletVersion}`);
+    }
   }
 
   async keyExist(walletAddress: string, key: string) {
-    const walletContract = new Contract(walletAddress, WalletContractInterface, this.provider);
-    return walletContract.keyExist(key);
+    const service = await this.getWalletService(walletAddress);
+    return service.keyExist(walletAddress, key);
+  };
+
+  async calculateMessageHash(message: SignedMessage) {
+    const service = await this.getWalletService(message.from);
+    return service.calculateMessageHash(message);
   }
 
-  calculateMessageHash(message: SignedMessage) {
-    return calculateMessageHash(message);
+  async recoverSignerFromMessage(message: SignedMessage) {
+    const service = await this.getWalletService(message.from);
+    return service.recoverSignerFromMessage(message);
   }
 
-  recoverSignerFromMessage(message: SignedMessage) {
-    return getKeyFromHashAndSignature(
-      this.calculateMessageHash(message),
-      message.signature,
-    );
+  async getRequiredSignatures(walletAddress: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.getRequiredSignatures(walletAddress);
   }
 
-  fetchMasterAddress(walletAddress: string): Promise<string> {
-    const walletProxy = new Contract(walletAddress, beta2.WalletProxy.interface, this.provider);
-    return walletProxy.implementation();
+  async fetchMasterAddress(walletAddress: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.fetchMasterAddress(walletAddress);
   }
-}
+};

@@ -9,7 +9,7 @@ import {getTestSignedMessage} from '../../../testconfig/message';
 import MessageMemoryRepository from '../../../mock/MessageMemoryRepository';
 
 describe('UNIT: MessageStatusService', async () => {
-  const walletContractService: any = {
+  const contractService: any = {
     getRequiredSignatures: sinon.stub().returns(utils.bigNumberify(1)),
   };
   let messageRepository: MessageMemoryRepository;
@@ -20,7 +20,7 @@ describe('UNIT: MessageStatusService', async () => {
 
   beforeEach(async () => {
     messageRepository = new MessageMemoryRepository();
-    messageStatusService = new MessageStatusService(messageRepository, walletContractService);
+    messageStatusService = new MessageStatusService(messageRepository, contractService);
     message = getTestSignedMessage();
     messageItem = createMessageItem(message);
     messageHash = calculateMessageHash(message);

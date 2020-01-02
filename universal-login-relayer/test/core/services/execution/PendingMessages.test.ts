@@ -1,5 +1,5 @@
 import {calculateMessageHash, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION, SignedMessage, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH, UnsignedMessage} from '@universal-login/commons';
-import {messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
+import {messageToUnsignedMessage, unsignedMessageToSignedMessage, BlockchainService} from '@universal-login/contracts';
 import {emptyMessage, executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
@@ -10,15 +10,16 @@ import PendingMessages from '../../../../src/core/services/execution/messages/Pe
 import {getKeyFromHashAndSignature} from '../../../../src/core/utils/encodeData';
 import {createMessageItem} from '../../../../src/core/utils/messages/serialisation';
 import {clearDatabase} from '../../../../src/http/relayers/RelayerUnderTest';
-import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
+import {Beta2Service} from '../../../../src/integration/ethereum/Beta2Service';
 import MessageSQLRepository from '../../../../src/integration/sql/services/MessageSQLRepository';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {getKnexConfig} from '../../../testhelpers/knex';
+import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages: PendingMessages;
   let messageRepository: MessageSQLRepository;
-  let walletContractService: WalletContractService;
+  let beta2Service: Beta2Service;
   let statusService: MessageStatusService;
   let unsignedMessage: UnsignedMessage;
   let signedMessage: SignedMessage;
@@ -33,7 +34,8 @@ describe('INT: PendingMessages', () => {
     ({wallet, walletContract, actionKey} = await loadFixture(basicWalletContractWithMockToken));
     messageRepository = new MessageSQLRepository(knex);
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
-    walletContractService = new WalletContractService(wallet.provider);
+    beta2Service = new Beta2Service(wallet.provider);
+    const walletContractService = new WalletContractService(new BlockchainService(wallet.provider), beta2Service);
     statusService = new MessageStatusService(messageRepository, walletContractService);
     pendingMessages = new PendingMessages(messageRepository, {addMessage: spy} as any, statusService, walletContractService);
     unsignedMessage = messageToUnsignedMessage({...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS}, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION);

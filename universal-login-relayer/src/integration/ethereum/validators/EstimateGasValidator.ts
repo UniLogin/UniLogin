@@ -16,7 +16,7 @@ export default class EstimateGasValidator implements IMessageValidator {
     } catch (e) {
       throw new NotEnoughGas();
     }
-    const calculatedMessageHash = this.walletContractService.calculateMessageHash(signedMessage);
+    const calculatedMessageHash = await this.walletContractService.calculateMessageHash(signedMessage);
     ensure(messageHash === calculatedMessageHash, NotEnoughGas);
   }
 }
