@@ -5,16 +5,15 @@ import CorrectProxyValidator from './CorrectProxyValidator';
 import CorrectMasterValidator from './CorrectMasterValidator';
 import EstimateGasValidator from './EstimateGasValidator';
 import {WalletContractService} from '../WalletContractService';
-import {MessageConverter} from '../MessageConverter';
 import {ContractService} from '../ContractService';
 
 export class MessageExecutionValidator extends ComposeValidator {
-  constructor(wallet: Wallet, contractWhiteList: ContractWhiteList, walletContractService: WalletContractService, messageConverter: MessageConverter, contractService: ContractService) {
+  constructor(wallet: Wallet, contractWhiteList: ContractWhiteList, walletContractService: WalletContractService, contractService: ContractService) {
     super([
       new CorrectProxyValidator(wallet.provider, contractWhiteList),
       new CorrectMasterValidator(wallet.provider, contractWhiteList, walletContractService),
       new SufficientBalanceValidator(wallet.provider),
-      new EstimateGasValidator(wallet, contractService, messageConverter),
+      new EstimateGasValidator(wallet, contractService),
     ]);
   }
 }

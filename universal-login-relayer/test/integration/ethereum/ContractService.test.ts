@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {TEST_ACCOUNT_ADDRESS, calculateMessageHash} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType} from '@universal-login/commons';
 import {ContractService} from '../../../src/integration/ethereum/ContractService';
-import {BlockchainService} from '@universal-login/contracts';
+import {BlockchainService, messageToSignedMessage} from '@universal-login/contracts';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
-import {Contract, Wallet} from 'ethers';
+import {Contract, Wallet, utils} from 'ethers';
 import createWalletContract from '../../testhelpers/createWalletContract';
 import {getTestSignedMessage} from '../../testconfig/message';
 
@@ -38,10 +38,24 @@ describe('ContractService', () => {
     });
 
     it('recovers signer from message', async () => {
-      const signedMessage = {
-
+      const message = {
+        to: TEST_ACCOUNT_ADDRESS,
+        value: utils.bigNumberify(1),
+        from: proxyContract.address,
+        data: '0x0',
+        gasPrice: TEST_GAS_PRICE,
+        gasToken: ETHER_NATIVE_TOKEN.address,
+        gasLimit: DEFAULT_GAS_LIMIT,
+        nonce: 0,
+        operationType: OperationType.call,
+        refundReceiver: TEST_ACCOUNT_ADDRESS,
       };
+      const signedMessage = messageToSignedMessage(message, wallet.privateKey, 'istanbul', 'beta2');
+      expect(await contractService.recoverSignerFromMessage(signedMessage)).to.eq(wallet.address);
+    });
 
+    it('returns proper required signatures count', async () => {
+      expect(await contractService.getRequiredSignatures(proxyContract.address)).to.eq(1);
     });
   });
 });

@@ -4,7 +4,6 @@ import {DuplicatedExecution, DuplicatedSignature, InvalidSignature, NotEnoughSig
 import IMessageRepository from '../../../models/messages/IMessagesRepository';
 import {createMessageItem} from '../../../utils/messages/serialisation';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
-import {WalletContractService} from '../../../../integration/ethereum/WalletContractService';
 import {ContractService} from '../../../../integration/ethereum/ContractService';
 
 export default class PendingMessages {
@@ -12,7 +11,6 @@ export default class PendingMessages {
     private messageRepository: IMessageRepository,
     private executionQueue: IExecutionQueue,
     private statusService: MessageStatusService,
-    private walletContractService: WalletContractService,
     private contractService: ContractService,
   ) {}
 
@@ -46,7 +44,7 @@ export default class PendingMessages {
     ensure(!messageItem.transactionHash, DuplicatedExecution);
     const isContainSignature = await this.messageRepository.containSignature(messageHash, message.signature);
     ensure(!isContainSignature, DuplicatedSignature);
-    const key = await this.walletContractService.recoverSignerFromMessage(message);
+    const key = await this.contractService.recoverSignerFromMessage(message);
     ensure(await this.contractService.keyExist(messageItem.walletAddress, key), InvalidSignature, 'Invalid key');
     await this.messageRepository.addSignature(messageHash, message.signature, key);
   }

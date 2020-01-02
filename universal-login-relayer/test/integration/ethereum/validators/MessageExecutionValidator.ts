@@ -10,7 +10,6 @@ import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTe
 import {transferMessage} from '../../../fixtures/basicWalletContract';
 import {getTestSignedMessage} from '../../../testconfig/message';
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
-import {MessageConverter} from '../../../../src/integration/ethereum/MessageConverter';
 import {ContractService} from '../../../../src/integration/ethereum/ContractService';
 
 describe('INT: MessageExecutionValidator', async () => {
@@ -26,7 +25,7 @@ describe('INT: MessageExecutionValidator', async () => {
     message = {...emptyMessage, ...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, nonce: 1, gasLimit: '200000'};
     const walletContractService = new WalletContractService(wallet.provider);
     const contractService = new ContractService(new BlockchainService(wallet.provider), walletContractService);
-    messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList, walletContractService, new MessageConverter(), contractService);
+    messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList, walletContractService, contractService);
   });
 
   it('successfully pass the validation', async () => {
@@ -54,7 +53,6 @@ describe('INT: MessageExecutionValidator', async () => {
       proxy: [TEST_ACCOUNT_ADDRESS],
     },
     new WalletContractService(wallet.provider),
-    new MessageConverter(),
     new ContractService(new BlockchainService(wallet.provider), new WalletContractService(wallet.provider)),
     );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
@@ -67,7 +65,6 @@ describe('INT: MessageExecutionValidator', async () => {
       proxy: contractWhiteList.proxy,
     },
     new WalletContractService(wallet.provider),
-    new MessageConverter(),
     new ContractService(new BlockchainService(wallet.provider), new WalletContractService(wallet.provider)),
     );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);

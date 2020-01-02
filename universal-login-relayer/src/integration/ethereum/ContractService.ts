@@ -26,4 +26,14 @@ export class ContractService {
     const service = await this.getWalletService(message.from);
     return service.calculateMessageHash(message);
   }
+
+  async recoverSignerFromMessage(message: SignedMessage) {
+    const service = await this.getWalletService(message.from);
+    return service.recoverSignerFromMessage(message);
+  }
+
+  async getRequiredSignatures(walletAddress: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.getRequiredSignatures(walletAddress);
+  }
 };
