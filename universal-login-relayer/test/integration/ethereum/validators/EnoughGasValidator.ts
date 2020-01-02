@@ -7,7 +7,7 @@ import {Contract, utils, Wallet} from 'ethers';
 import EstimateGasValidator from '../../../../src/integration/ethereum/validators/EstimateGasValidator';
 import {getTestSignedMessage} from '../../../testconfig/message';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
-import {WalletContractService} from '../../../../../src/integration/ethereum/WalletContractService';
+import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
 
 describe('INT: EstimateGasValidator', async () => {
   let message: Message;

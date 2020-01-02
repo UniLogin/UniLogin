@@ -9,7 +9,7 @@ import MessageExecutionValidator from '../../../../src/integration/ethereum/vali
 import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTest';
 import {transferMessage} from '../../../fixtures/basicWalletContract';
 import {getTestSignedMessage} from '../../../testconfig/message';
-import {WalletContractService} from '../../../../../src/integration/ethereum/WalletContractService';
+import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
 
 describe('INT: MessageExecutionValidator', async () => {
   let message: Message;
