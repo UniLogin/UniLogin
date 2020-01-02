@@ -44,13 +44,9 @@ export default class PendingMessages {
     ensure(!messageItem.transactionHash, DuplicatedExecution);
     const isContainSignature = await this.messageRepository.containSignature(messageHash, message.signature);
     ensure(!isContainSignature, DuplicatedSignature);
-    await this.ensureKeyExist(message, messageItem.walletAddress);
-    await this.messageRepository.addSignature(messageHash, message.signature);
-  }
-
-  private async ensureKeyExist(message: SignedMessage, walletAddress: string) {
-    const key = this.walletContractService.recoverSignerFromMessage(message);
-    ensure(await this.walletContractService.keyExist(walletAddress, key), InvalidSignature, 'Invalid key');
+    const key = await this.walletContractService.recoverSignerFromMessage(message);
+    ensure(await this.walletContractService.keyExist(messageItem.walletAddress, key), InvalidSignature, 'Invalid key');
+    await this.messageRepository.addSignature(messageHash, message.signature, key);
   }
 
   async getStatus(messageHash: string) {

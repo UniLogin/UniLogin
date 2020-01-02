@@ -14,5 +14,5 @@ export default async function basicWalletContractWithMockToken(_, wallets) {
   await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('1.0')});
   await mockToken.transfer(walletContract.address, utils.parseEther('1.0'));
   await executeAddKey(walletContract, actionWallet.address, wallet.privateKey);
-  return {wallet, actionKey, provider, mockToken, master, walletContract, otherWallet};
+  return {wallet, actionKey, provider, mockToken, master, walletContract, otherWallet, actionWallet};
 }
