@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import {Wallet, Contract, utils} from 'ethers';
 import {computeCounterfactualAddress, TEST_GAS_PRICE, KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {deployFactory, encodeInitializeWithENSData, deployWalletContract} from '@universal-login/contracts';
-import WalletService from '../../src/integration/ethereum/WalletService';
+import {WalletDeploymentService} from '../../src/integration/ethereum/WalletDeploymentService';
 import {buildEnsService} from './buildEnsService';
 import {WalletDeployer} from '../../src/integration/ethereum/WalletDeployer';
 import ENSService from '../../src/integration/ethereum/ensService';
@@ -21,7 +21,7 @@ export default async function setupWalletService(wallet: Wallet) {
   const fakeDevicesService = {
     addOrUpdate: sinon.spy(),
   };
-  const walletService = new WalletService(config as any, ensService, hooks, walletDeployer, fakeBalanceChecker as any, fakeDevicesService as any);
+  const walletService = new WalletDeploymentService(config as any, ensService, hooks, walletDeployer, fakeBalanceChecker as any, fakeDevicesService as any);
   const callback = sinon.spy();
   hooks.addListener('created', callback);
   return {provider, wallet, walletService, callback, factoryContract, ensService, fakeDevicesService};

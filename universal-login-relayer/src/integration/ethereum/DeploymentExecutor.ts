@@ -5,12 +5,12 @@ import Deployment from '../../core/models/Deployment';
 import IRepository from '../../core/models/messages/IRepository';
 import {TransactionHashNotFound} from '../../core/utils/errors';
 import {ensureNotFalsy} from '@universal-login/commons';
-import WalletService from './WalletService';
+import {WalletDeploymentService} from './WalletDeploymentService';
 
 export class DeploymentExecutor implements IExecutor<Deployment> {
   constructor(
     private deploymentRepository: IRepository<Deployment>,
-    private walletService: WalletService,
+    private walletService: WalletDeploymentService,
   ) {}
 
   canExecute(item: QueueItem): boolean {

@@ -3,7 +3,7 @@ import WalletRouter from '../routes/wallet';
 import ConfigRouter, {getPublicConfig} from '../routes/config';
 import RequestAuthorisationRouter from '../routes/authorisation';
 import DevicesRouter from '../routes/devices';
-import WalletService from '../../integration/ethereum/WalletService';
+import {WalletDeploymentService} from '../../integration/ethereum/WalletDeploymentService';
 import ENSService from '../../integration/ethereum/ensService';
 import bodyParser from 'body-parser';
 import {Wallet, providers} from 'ethers';
@@ -63,7 +63,7 @@ class Relayer {
   private walletMasterContractService: WalletMasterContractService = {} as WalletMasterContractService;
   private balanceChecker: BalanceChecker = {} as BalanceChecker;
   private requiredBalanceChecker: RequiredBalanceChecker = {} as RequiredBalanceChecker;
-  private walletService: WalletService = {} as WalletService;
+  private walletService: WalletDeploymentService = {} as WalletDeploymentService;
   private executionQueue: IExecutionQueue = {} as IExecutionQueue;
   private messageHandler: MessageHandler = {} as MessageHandler;
   private deploymentHandler: DeploymentHandler = {} as DeploymentHandler;
@@ -124,7 +124,7 @@ class Relayer {
     this.walletMasterContractService = new WalletMasterContractService(this.provider);
     this.authorisationService = new AuthorisationService(this.authorisationStore, this.walletMasterContractService);
     this.devicesService = new DevicesService(this.devicesStore, this.walletMasterContractService);
-    this.walletService = new WalletService(this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker, this.devicesService);
+    this.walletService = new WalletDeploymentService(this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker, this.devicesService);
     this.messageRepository = new MessageSQLRepository(this.database);
     this.deploymentRepository = new SQLRepository(this.database, 'deployments');
     this.executionQueue = new QueueSQLStore(this.database);
