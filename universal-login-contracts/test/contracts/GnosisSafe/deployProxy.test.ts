@@ -5,6 +5,7 @@ import {loadFixture, deployContract} from 'ethereum-waffle';
 import {createKeyPair, ETHER_NATIVE_TOKEN, removeHexStringPrefix} from '@universal-login/commons';
 import {basicENS} from '@universal-login/commons/testutils';
 import {deployGnosisSafe, deployProxyFactory} from '../../../src/gnosis-safe@1.1.1/deployContracts';
+import {IProxyInterface} from '../../../src/gnosis-safe@1.1.1/interfaces';
 import {encodeDataForSetup} from '../../../src/gnosis-safe@1.1.1/encode';
 import {computeGnosisCounterfactualAddress} from '../../../src/gnosis-safe@1.1.1/utils';
 import ENSUtils from '../../../dist/contracts/TestableENSUtils.json';
@@ -49,6 +50,8 @@ describe('GnosisSafe', async () => {
     const transaction = await proxyFactory.createProxyWithNonce(gnosisSafe.address, setupData, 0);
     const receipt = await provider.getTransactionReceipt(transaction.hash);
     const addressFromEvent = receipt.logs && receipt.logs[0].data;
+    const contract = new Contract(computedAddress, IProxyInterface, provider);
+    expect(await contract.masterCopy()).to.eq(gnosisSafe.address);
     expect(addressFromEvent).to.include(removeHexStringPrefix(computedAddress).toLowerCase());
     expect(await provider.lookupAddress(computedAddress)).to.eq(name);
     expect(await provider.resolveName('alex.mylogin.eth')).to.eq(computedAddress);
