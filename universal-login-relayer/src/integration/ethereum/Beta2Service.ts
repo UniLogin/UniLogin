@@ -2,9 +2,10 @@ import {providers, Contract, utils} from 'ethers';
 import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
 import {WalletContractInterface} from '@universal-login/contracts';
 import {getKeyFromHashAndSignature} from '../../core/utils/encodeData';
+import IWalletContractService from '../../core/models/IWalletContractService';
 import {beta2} from '@universal-login/contracts';
 
-export class Beta2Service {
+export class Beta2Service implements IWalletContractService {
   constructor(private provider: providers.Provider) {
   }
 

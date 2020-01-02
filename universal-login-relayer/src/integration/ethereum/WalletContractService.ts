@@ -1,13 +1,14 @@
 import {Beta2Service} from './Beta2Service';
 import {BlockchainService} from '@universal-login/contracts';
 import {SignedMessage} from '@universal-login/commons';
+import IWalletContractService from '../../core/models/IWalletContractService';
 
-export class WalletContractService {
+export class WalletContractService implements IWalletContractService {
   constructor(private blockchainSerivce: BlockchainService, private beta2Service: Beta2Service) {
 
   }
 
-  private async getWalletService(walletAddress: string): Promise<Beta2Service> {
+  private async getWalletService(walletAddress: string): Promise<IWalletContractService> {
     const walletVersion = await this.blockchainSerivce.fetchWalletVersion(walletAddress);
     switch (walletVersion) {
       case 'beta2':
