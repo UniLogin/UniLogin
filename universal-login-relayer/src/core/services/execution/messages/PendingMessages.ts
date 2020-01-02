@@ -5,6 +5,7 @@ import IMessageRepository from '../../../models/messages/IMessagesRepository';
 import {createMessageItem} from '../../../utils/messages/serialisation';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
 import {WalletContractService} from '../../../../integration/ethereum/WalletContractService';
+import {ContractService} from '../../../../integration/ethereum/ContractService';
 
 export default class PendingMessages {
   constructor(
@@ -12,6 +13,7 @@ export default class PendingMessages {
     private executionQueue: IExecutionQueue,
     private statusService: MessageStatusService,
     private walletContractService: WalletContractService,
+    private contractService: ContractService,
   ) {}
 
   async isPresent(messageHash: string) {
@@ -19,7 +21,7 @@ export default class PendingMessages {
   }
 
   async add(message: SignedMessage): Promise<MessageStatus> {
-    const messageHash = this.walletContractService.calculateMessageHash(message);
+    const messageHash = await this.contractService.calculateMessageHash(message);
     if (!await this.isPresent(messageHash)) {
       const messageItem = createMessageItem(message);
       await this.messageRepository.add(messageHash, messageItem);
@@ -45,7 +47,7 @@ export default class PendingMessages {
     const isContainSignature = await this.messageRepository.containSignature(messageHash, message.signature);
     ensure(!isContainSignature, DuplicatedSignature);
     const key = await this.walletContractService.recoverSignerFromMessage(message);
-    ensure(await this.walletContractService.keyExist(messageItem.walletAddress, key), InvalidSignature, 'Invalid key');
+    ensure(await this.contractService.keyExist(messageItem.walletAddress, key), InvalidSignature, 'Invalid key');
     await this.messageRepository.addSignature(messageHash, message.signature, key);
   }
 

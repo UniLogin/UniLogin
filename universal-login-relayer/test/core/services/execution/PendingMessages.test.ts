@@ -1,5 +1,5 @@
 import {calculateMessageHash, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION, SignedMessage, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH, UnsignedMessage} from '@universal-login/commons';
-import {messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
+import {messageToUnsignedMessage, unsignedMessageToSignedMessage, BlockchainService} from '@universal-login/contracts';
 import {emptyMessage, executeSetRequiredSignatures} from '@universal-login/contracts/testutils';
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
@@ -14,6 +14,7 @@ import {WalletContractService} from '../../../../src/integration/ethereum/Wallet
 import MessageSQLRepository from '../../../../src/integration/sql/services/MessageSQLRepository';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {getKnexConfig} from '../../../testhelpers/knex';
+import {ContractService} from '../../../../src/integration/ethereum/ContractService';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages: PendingMessages;
@@ -35,7 +36,7 @@ describe('INT: PendingMessages', () => {
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
     walletContractService = new WalletContractService(wallet.provider);
     statusService = new MessageStatusService(messageRepository, walletContractService);
-    pendingMessages = new PendingMessages(messageRepository, {addMessage: spy} as any, statusService, walletContractService);
+    pendingMessages = new PendingMessages(messageRepository, {addMessage: spy} as any, statusService, walletContractService, new ContractService(new BlockchainService(wallet.provider), walletContractService));
     unsignedMessage = messageToUnsignedMessage({...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS}, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION);
     signedMessage = unsignedMessageToSignedMessage(unsignedMessage, wallet.privateKey);
     messageHash = calculateMessageHash(signedMessage);

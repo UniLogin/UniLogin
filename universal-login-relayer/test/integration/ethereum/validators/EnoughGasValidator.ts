@@ -1,5 +1,5 @@
 import {IMessageValidator, Message, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {unsignedMessageToSignedMessage} from '@universal-login/contracts';
+import {unsignedMessageToSignedMessage, BlockchainService} from '@universal-login/contracts';
 import {emptyMessage} from '@universal-login/contracts/testutils';
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
@@ -8,6 +8,8 @@ import EstimateGasValidator from '../../../../src/integration/ethereum/validator
 import {getTestSignedMessage} from '../../../testconfig/message';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
+import {MessageConverter} from '../../../../src/integration/ethereum/MessageConverter';
+import {ContractService} from '../../../../src/integration/ethereum/ContractService';
 
 describe('INT: EstimateGasValidator', async () => {
   let message: Message;
@@ -15,13 +17,13 @@ describe('INT: EstimateGasValidator', async () => {
   let walletContract: Contract;
   let wallet: Wallet;
   let validator: IMessageValidator;
-  let walletContractService: WalletContractService;
 
   beforeEach(async () => {
     ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {...emptyMessage, from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS, gasLimit: '200000', nonce: 1};
-    walletContractService = new WalletContractService(wallet.provider);
-    validator = new EstimateGasValidator(wallet, walletContractService);
+    const walletContractService = new WalletContractService(wallet.provider);
+    const contractService = new ContractService(new BlockchainService(wallet.provider), walletContractService);
+    validator = new EstimateGasValidator(wallet, contractService, new MessageConverter());
   });
 
   it('successfully pass the validation', async () => {
