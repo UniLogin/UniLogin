@@ -7,8 +7,8 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import UniversalLoginSDK, {DeployedWallet} from '../../../src';
 import WalletEventsObserverFactory from '../../../src/core/observers/WalletEventsObserverFactory';
-import {createDeployedWallet} from '../../helpers/createDeployedWallet';
-import {createSdkWithRelayer} from '../../helpers/createSdkWithRelayer';
+import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
+import {setupSdk} from '../../helpers/setupSdk';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -25,9 +25,9 @@ describe('INT: WalletEventsObserverFactory', async () => {
   let factory: WalletEventsObserverFactory;
 
   before(async () => {
-    ({relayer, sdk} = await createSdkWithRelayer(deployer));
+    ({relayer, sdk} = await setupSdk(deployer));
     factory = new WalletEventsObserverFactory(new BlockchainService(sdk.provider));
-    deployedWallet = await createDeployedWallet('alex.mylogin.eth', sdk, deployer);
+    deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);
     filter = {
       contractAddress: deployedWallet.contractAddress,
       key: publicKey,

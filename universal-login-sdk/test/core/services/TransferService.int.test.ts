@@ -8,7 +8,7 @@ import UniversalLoginSDK from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {TransferService} from '../../../src/core/services/TransferService';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
-import {createAndSetWallet, createWallet} from '../../helpers/createWallet';
+import {createAndSetWallet, createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
 
 chai.use(solidity);
@@ -70,7 +70,7 @@ describe('INT: TransferService', () => {
 
   it('transfer ether to ens name', async () => {
     const targetENSName = 'ether.mylogin.eth';
-    const {contractAddress} = await createWallet(targetENSName, sdk, wallet);
+    const {contractAddress} = await createdDeployedWallet(targetENSName, sdk, wallet);
     const amount = '0.5';
     const initialTargetBalance = await provider.getBalance(contractAddress);
     const {waitToBeSuccess} = await transferService.transfer({to: targetENSName, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters, amount});
@@ -80,7 +80,7 @@ describe('INT: TransferService', () => {
 
   it('transfer token to ens name', async () => {
     const targetENSName = 'token.mylogin.eth';
-    const {contractAddress} = await createWallet(targetENSName, sdk, wallet);
+    const {contractAddress} = await createdDeployedWallet(targetENSName, sdk, wallet);
     const amount = '0.5';
     const {waitToBeSuccess} = await transferService.transfer({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount});
     await waitToBeSuccess();
@@ -100,7 +100,7 @@ describe('INT: TransferService', () => {
 
   it('return an error if invalid amount', async () => {
     const targetENSName = 'ether-test.mylogin.eth';
-    await createWallet(targetENSName, sdk, wallet);
+    await createdDeployedWallet(targetENSName, sdk, wallet);
     const amount = '7';
     expect(await transferService.validateInputs({
       to: targetENSName,

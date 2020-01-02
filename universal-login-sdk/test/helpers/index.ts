@@ -1,2 +1,2 @@
 export {setupSdk} from './setupSdk';
-export {createWallet, createAndSetWallet} from './createWallet';
+export {createdDeployedWallet as createWallet, createAndSetWallet} from './createDeployedWallet';
