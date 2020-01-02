@@ -8,7 +8,7 @@ import {Config} from '../../config/relayer';
 import {WalletDeployer} from './WalletDeployer';
 import {DevicesService} from '../../core/services/DevicesService';
 
-class WalletService {
+export class WalletDeploymentService {
   private readonly supportedTokens: SupportedToken[] = this.config.supportedTokens;
 
   constructor(
@@ -48,5 +48,3 @@ class WalletService {
       ({...supportedToken, minimalAmount: safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasPrice)}));
   }
 }
-
-export default WalletService;
