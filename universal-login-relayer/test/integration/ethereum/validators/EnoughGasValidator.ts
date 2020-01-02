@@ -7,6 +7,7 @@ import {Contract, utils, Wallet} from 'ethers';
 import EstimateGasValidator from '../../../../src/integration/ethereum/validators/EstimateGasValidator';
 import {getTestSignedMessage} from '../../../testconfig/message';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
+import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
 
 describe('INT: EstimateGasValidator', async () => {
   let message: Message;
@@ -14,11 +15,13 @@ describe('INT: EstimateGasValidator', async () => {
   let walletContract: Contract;
   let wallet: Wallet;
   let validator: IMessageValidator;
+  let walletContractService: WalletContractService;
 
   beforeEach(async () => {
     ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {...emptyMessage, from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS, gasLimit: '200000', nonce: 1};
-    validator = new EstimateGasValidator(wallet);
+    walletContractService = new WalletContractService(wallet.provider);
+    validator = new EstimateGasValidator(wallet, walletContractService);
   });
 
   it('successfully pass the validation', async () => {
