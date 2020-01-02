@@ -6,14 +6,14 @@ import {Contract, providers, utils, Wallet} from 'ethers';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import ENSService from '../../../src/integration/ethereum/ensService';
-import WalletService from '../../../src/integration/ethereum/WalletService';
+import {WalletDeploymentService} from '../../../src/integration/ethereum/WalletDeploymentService';
 import setupWalletService, {createFutureWallet} from '../../testhelpers/setupWalletService';
 
 chai.use(require('chai-string'));
 chai.use(sinonChai);
 
 describe('INT: WalletService', async () => {
-  let walletService: WalletService;
+  let walletService: WalletDeploymentService;
   let provider: providers.Provider;
   let wallet: Wallet;
   let callback: sinon.SinonSpy;

@@ -10,7 +10,7 @@ import ExecutionWorker from '../../../../src/core/services/execution/ExecutionWo
 import {createMessageItem} from '../../../../src/core/utils/messages/serialisation';
 import DeploymentExecutor from '../../../../src/integration/ethereum/DeploymentExecutor';
 import MessageExecutor from '../../../../src/integration/ethereum/MessageExecutor';
-import WalletService from '../../../../src/integration/ethereum/WalletService';
+import {WalletDeploymentService} from '../../../../src/integration/ethereum/WalletDeploymentService';
 import {getTestSignedMessage} from '../../../testconfig/message';
 import MemoryRepository from '../../../mock/MemoryRepository';
 import MessageMemoryRepository from '../../../mock/MessageMemoryRepository';
@@ -32,9 +32,9 @@ describe('UNIT: Queue Service', async () => {
       wait,
     }),
   };
-  const walletService: WalletService = {
+  const walletService: WalletDeploymentService = {
 
-  } as WalletService;
+  } as WalletDeploymentService;
   const messageValidator: any = {
     validate: sinon.fake.returns(true),
   };
