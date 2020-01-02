@@ -6,6 +6,7 @@ import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTe
 import CorrectMasterValidator from '../../../../src/integration/ethereum/validators/CorrectMasterValidator';
 import {getTestSignedMessage} from '../../../testconfig/message';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
+import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
 
 describe('INT: CorrectMasterValidator', async () => {
   let message: MessageWithFrom;
@@ -15,11 +16,13 @@ describe('INT: CorrectMasterValidator', async () => {
   let wallet: Wallet;
   let validator: IMessageValidator;
   const contractWhiteList: ContractWhiteList = getContractWhiteList();
+  let walletContractService: WalletContractService;
 
   before(async () => {
     ({mockToken, master, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
-    validator = new CorrectMasterValidator(wallet.provider, contractWhiteList);
+    walletContractService = new WalletContractService(wallet.provider);
+    validator = new CorrectMasterValidator(wallet.provider, contractWhiteList, walletContractService);
   });
 
   it('successfully pass the validation', async () => {
@@ -31,7 +34,9 @@ describe('INT: CorrectMasterValidator', async () => {
     const validatorWithInvalidProxy = new CorrectMasterValidator(wallet.provider, {
       wallet: contractWhiteList.wallet,
       proxy: [TEST_ACCOUNT_ADDRESS],
-    });
+    },
+    walletContractService,
+    );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(validatorWithInvalidProxy.validate(signedMessage)).to.not.be.rejected;
   });
@@ -40,7 +45,9 @@ describe('INT: CorrectMasterValidator', async () => {
     const validatorWithInvalidMaster = new CorrectMasterValidator(wallet.provider, {
       wallet: [TEST_ACCOUNT_ADDRESS],
       proxy: contractWhiteList.proxy,
-    });
+    },
+    walletContractService,
+    );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(validatorWithInvalidMaster.validate(signedMessage)).to.be.eventually
       .rejectedWith(`Invalid master at address '${master.address}'. Deployed contract bytecode hash: '${contractWhiteList.wallet[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
