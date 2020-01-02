@@ -8,6 +8,7 @@ import MessageExecutor from '../../../src/integration/ethereum/MessageExecutor';
 import {getTestSignedMessage} from '../../testconfig/message';
 import basicWalletContractWithMockToken from '../../fixtures/basicWalletContractWithMockToken';
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
+import {MessageConverter} from '../../../src/integration/ethereum/MessageConverter';
 
 describe('INT: MessageExecutor', async () => {
   let messageExecutor: MessageExecutor;
@@ -21,7 +22,7 @@ describe('INT: MessageExecutor', async () => {
 
   before(async () => {
     ({wallet, walletContract, provider} = await loadFixture(basicWalletContractWithMockToken));
-    messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any);
+    messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any, new MessageConverter());
     const message = {...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2), nonce: await walletContract.lastNonce()};
     signedMessage = getTestSignedMessage(message, wallet.privateKey);
   });

@@ -15,6 +15,7 @@ import {getTestSignedMessage} from '../../../testconfig/message';
 import MemoryRepository from '../../../mock/MemoryRepository';
 import MessageMemoryRepository from '../../../mock/MessageMemoryRepository';
 import QueueMemoryStore from '../../../mock/QueueMemoryStore';
+import {MessageConverter} from '../../../../src/integration/ethereum/MessageConverter';
 
 use(sinonChai);
 
@@ -49,7 +50,7 @@ describe('UNIT: Queue Service', async () => {
     queueMemoryStore = new QueueMemoryStore();
     messageRepository = new MessageMemoryRepository();
     deploymentRepository = new MemoryRepository<Deployment>();
-    messageExecutor = new MessageExecutor(wallet, messageValidator, messageRepository, minedTransactionHandler);
+    messageExecutor = new MessageExecutor(wallet, messageValidator, messageRepository, minedTransactionHandler, new MessageConverter());
     deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], queueMemoryStore);
     signedMessage = getTestSignedMessage();

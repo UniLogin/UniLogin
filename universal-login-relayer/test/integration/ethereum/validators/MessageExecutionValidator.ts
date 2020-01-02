@@ -10,6 +10,7 @@ import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTe
 import {transferMessage} from '../../../fixtures/basicWalletContract';
 import {getTestSignedMessage} from '../../../testconfig/message';
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
+import {MessageConverter} from '../../../../src/integration/ethereum/MessageConverter';
 
 describe('INT: MessageExecutionValidator', async () => {
   let message: Message;
@@ -23,7 +24,7 @@ describe('INT: MessageExecutionValidator', async () => {
     ({wallet, master, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {...emptyMessage, ...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, nonce: 1, gasLimit: '200000'};
     const walletContractService = new WalletContractService(wallet.provider);
-    messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList, walletContractService);
+    messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList, walletContractService, new MessageConverter());
   });
 
   it('successfully pass the validation', async () => {
@@ -51,6 +52,7 @@ describe('INT: MessageExecutionValidator', async () => {
       proxy: [TEST_ACCOUNT_ADDRESS],
     },
     new WalletContractService(wallet.provider),
+    new MessageConverter(),
     );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(messageValidatorWithInvalidProxy.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
@@ -62,6 +64,7 @@ describe('INT: MessageExecutionValidator', async () => {
       proxy: contractWhiteList.proxy,
     },
     new WalletContractService(wallet.provider),
+    new MessageConverter(),
     );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(messageValidatorWithInvalidMaster.validate(signedMessage)).to.be.eventually

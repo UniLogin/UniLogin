@@ -1,11 +1,11 @@
 import {Wallet, providers} from 'ethers';
 import {SignedMessage, ensureNotFalsy, IMessageValidator} from '@universal-login/commons';
-import {messageToTransaction} from '../../core/utils/messages/serialisation';
 import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';
 import IMessageRepository from '../../core/models/messages/IMessagesRepository';
 import {TransactionHashNotFound} from '../../core/utils/errors';
 import {IMinedTransactionHandler} from '../../core/models/IMinedTransactionHandler';
+import {MessageConverter} from './MessageConverter';
 
 export type OnTransactionMined = (transaction: providers.TransactionResponse) => Promise<void>;
 
@@ -15,6 +15,7 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     private messageValidator: IMessageValidator,
     private messageRepository: IMessageRepository,
     private minedTransactionHandler: IMinedTransactionHandler,
+    private messageConverter: MessageConverter,
   ) {}
 
   canExecute(item: QueueItem): boolean {
@@ -39,7 +40,7 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
 
   async execute(signedMessage: SignedMessage): Promise<providers.TransactionResponse> {
     await this.messageValidator.validate(signedMessage);
-    const transactionReq: providers.TransactionRequest = messageToTransaction(signedMessage);
+    const transactionReq: providers.TransactionRequest = this.messageConverter.messageToTransaction(signedMessage);
     return this.wallet.sendTransaction(transactionReq);
   }
 }

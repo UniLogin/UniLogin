@@ -1,6 +1,6 @@
-import {utils, providers} from 'ethers';
+import {utils} from 'ethers';
 import {DecodedMessage, SignedMessage} from '@universal-login/commons';
-import {encodeDataForExecuteSigned, WalletContractInterface} from '@universal-login/contracts';
+import {WalletContractInterface} from '@universal-login/contracts';
 import {InvalidHexData} from '../errors';
 import MessageItem from '../../models/messages/MessageItem';
 
@@ -24,15 +24,6 @@ const removeLeadingBytes = (n: number, data: string) => {
     return `0x${data.slice(n * 2 + 2)}`;
   }
 };
-
-export const messageToTransaction = (message: SignedMessage): providers.TransactionRequest =>
-  Object({
-    gasPrice: message.gasPrice,
-    gasLimit: utils.bigNumberify(message.safeTxGas).add(message.baseGas).add(GAS_LIMIT_MARGIN),
-    to: message.from,
-    value: 0,
-    data: encodeDataForExecuteSigned(message),
-  });
 
 const dataToMessage = (data: any): DecodedMessage => ({
   to: data[0],
