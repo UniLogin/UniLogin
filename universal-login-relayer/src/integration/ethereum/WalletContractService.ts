@@ -2,6 +2,7 @@ import {providers, Contract, utils} from 'ethers';
 import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
 import {WalletContractInterface} from '@universal-login/contracts';
 import {getKeyFromHashAndSignature} from '../../core/utils/encodeData';
+import {beta2} from '@universal-login/contracts';
 
 export class WalletContractService {
   constructor(private provider: providers.Provider) {
@@ -27,5 +28,10 @@ export class WalletContractService {
       this.calculateMessageHash(message),
       message.signature,
     );
+  }
+
+  fetchMasterAddress(walletAddress: string): Promise<string> {
+    const walletProxy = new Contract(walletAddress, beta2.WalletProxy.interface, this.provider);
+    return walletProxy.implementation();
   }
 }

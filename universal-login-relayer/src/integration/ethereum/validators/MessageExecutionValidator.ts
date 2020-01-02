@@ -10,7 +10,7 @@ export class MessageExecutionValidator extends ComposeValidator {
   constructor(wallet: Wallet, contractWhiteList: ContractWhiteList, walletContractService: WalletContractService) {
     super([
       new CorrectProxyValidator(wallet.provider, contractWhiteList),
-      new CorrectMasterValidator(wallet.provider, contractWhiteList),
+      new CorrectMasterValidator(wallet.provider, contractWhiteList, walletContractService),
       new SufficientBalanceValidator(wallet.provider),
       new EstimateGasValidator(wallet, walletContractService),
     ]);
