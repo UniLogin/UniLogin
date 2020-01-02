@@ -1,6 +1,5 @@
 import Knex from 'knex';
 import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotFalsy, getMessageWithSignatures} from '@universal-login/commons';
-import {getKeyFromHashAndSignature} from '../../../core/utils/encodeData';
 import IMessageRepository from '../../../core/models/messages/IMessagesRepository';
 import {InvalidMessage, MessageNotFound} from '../../../core/utils/errors';
 import MessageItem from '../../../core/models/messages/MessageItem';
@@ -65,8 +64,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
     return messageItem;
   }
 
-  async addSignature(messageHash: string, signature: string) {
-    const key = getKeyFromHashAndSignature(messageHash, signature);
+  async addSignature(messageHash: string, signature: string, key: string) {
     await this.knex
       .insert({
         messageHash,
