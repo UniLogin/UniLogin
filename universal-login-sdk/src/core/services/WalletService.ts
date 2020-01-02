@@ -160,7 +160,7 @@ export class WalletService {
 
   async cancelWaitForConnection() {
     if (this.state.kind === 'Deployed') return;
-    this.getConnectingWallet().unsubscribe && this.getConnectingWallet().unsubscribe!();
+    this.getConnectingWallet().unsubscribe!();
     this.disconnect();
   }
 
