@@ -26,7 +26,7 @@ import {GasComputation} from '../../src/core/services/GasComputation';
 import {BlockchainService} from '@universal-login/contracts';
 import MessageHandlerValidator from '../../src/core/services/validators/MessageHandlerValidator';
 import PendingMessages from '../../src/core/services/execution/messages/PendingMessages';
-import {ContractService} from '../../src/integration/ethereum/ContractService';
+import {WalletContractService} from '../../src/integration/ethereum/WalletContractService';
 
 export default async function setupMessageService(knex: Knex, config: Config) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
@@ -43,10 +43,10 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const gasComputation = new GasComputation(blockchainService);
   const messageHandlerValidator = new MessageHandlerValidator(config.maxGasLimit, gasComputation, wallet.address);
   const minedTransactionHandler = new MinedTransactionHandler(hooks, authorisationStore, devicesService);
-  const contractService = new ContractService(blockchainService, beta2Service);
-  const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList(), contractService);
-  const statusService = new MessageStatusService(messageRepository, contractService);
-  const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, contractService);
+  const walletContractService = new WalletContractService(blockchainService, beta2Service);
+  const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList(), walletContractService);
+  const statusService = new MessageStatusService(messageRepository, walletContractService);
+  const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, walletContractService);
   const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
   const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, minedTransactionHandler);
   const {walletService} = await setupWalletService(wallet);

@@ -1,9 +1,9 @@
 import {MessageStatus} from '@universal-login/commons';
 import IMessageRepository from '../../../models/messages/IMessagesRepository';
-import {ContractService} from '../../../../integration/ethereum/ContractService';
+import {WalletContractService} from '../../../../integration/ethereum/WalletContractService';
 
 export class MessageStatusService {
-  constructor(private messageRepository: IMessageRepository, private walletContractService: ContractService) {
+  constructor(private messageRepository: IMessageRepository, private walletContractService: WalletContractService) {
   }
 
   async getStatus(messageHash: string) {

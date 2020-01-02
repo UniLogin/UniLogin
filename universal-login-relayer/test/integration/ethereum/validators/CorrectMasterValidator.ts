@@ -7,7 +7,7 @@ import CorrectMasterValidator from '../../../../src/integration/ethereum/validat
 import {getTestSignedMessage} from '../../../testconfig/message';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {Beta2Service} from '../../../../src/integration/ethereum/Beta2Service';
-import {ContractService} from '../../../../src/integration/ethereum/ContractService';
+import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
 import {BlockchainService} from '@universal-login/contracts';
 
 describe('INT: CorrectMasterValidator', async () => {
@@ -19,14 +19,14 @@ describe('INT: CorrectMasterValidator', async () => {
   let validator: IMessageValidator;
   const contractWhiteList: ContractWhiteList = getContractWhiteList();
   let beta2Service: Beta2Service;
-  let contractService: ContractService;
+  let walletContractService: WalletContractService;
 
   before(async () => {
     ({mockToken, master, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
     beta2Service = new Beta2Service(wallet.provider);
-    contractService = new ContractService(new BlockchainService(wallet.provider), beta2Service);
-    validator = new CorrectMasterValidator(wallet.provider, contractWhiteList, contractService);
+    walletContractService = new WalletContractService(new BlockchainService(wallet.provider), beta2Service);
+    validator = new CorrectMasterValidator(wallet.provider, contractWhiteList, walletContractService);
   });
 
   it('successfully pass the validation', async () => {
@@ -39,7 +39,7 @@ describe('INT: CorrectMasterValidator', async () => {
       wallet: contractWhiteList.wallet,
       proxy: [TEST_ACCOUNT_ADDRESS],
     },
-    contractService,
+    walletContractService,
     );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(validatorWithInvalidProxy.validate(signedMessage)).to.not.be.rejected;
@@ -50,7 +50,7 @@ describe('INT: CorrectMasterValidator', async () => {
       wallet: [TEST_ACCOUNT_ADDRESS],
       proxy: contractWhiteList.proxy,
     },
-    contractService,
+    walletContractService,
     );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(validatorWithInvalidMaster.validate(signedMessage)).to.be.eventually

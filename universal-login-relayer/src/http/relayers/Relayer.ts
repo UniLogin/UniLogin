@@ -42,7 +42,7 @@ import {GasComputation} from '../../core/services/GasComputation';
 import {BlockchainService} from '@universal-login/contracts';
 import {MessageHandlerValidator} from '../../core/services/validators/MessageHandlerValidator';
 import PendingMessages from '../../core/services/execution/messages/PendingMessages';
-import {ContractService} from '../../integration/ethereum/ContractService';
+import {WalletContractService} from '../../integration/ethereum/WalletContractService';
 
 const defaultPort = '3311';
 
@@ -80,7 +80,7 @@ class Relayer {
   private deploymentExecutor: DeploymentExecutor = {} as DeploymentExecutor;
   private minedTransactionHandler: MinedTransactionHandler = {} as MinedTransactionHandler;
   private blockchainService: BlockchainService = {} as BlockchainService;
-  private contractService: ContractService = {} as ContractService;
+  private walletContractService: WalletContractService = {} as WalletContractService;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   private walletDeployer: WalletDeployer = {} as WalletDeployer;
@@ -135,11 +135,11 @@ class Relayer {
     this.deploymentHandler = new DeploymentHandler(this.deploymentRepository, this.executionQueue);
     this.minedTransactionHandler = new MinedTransactionHandler(this.hooks, this.authorisationStore, this.devicesService);
     this.blockchainService = new BlockchainService(this.provider);
-    this.contractService = new ContractService(this.blockchainService, this.beta2Service);
-    this.statusService = new MessageStatusService(this.messageRepository, this.contractService);
-    this.pendingMessages = new PendingMessages(this.messageRepository, this.executionQueue, this.statusService, this.contractService);
+    this.walletContractService = new WalletContractService(this.blockchainService, this.beta2Service);
+    this.statusService = new MessageStatusService(this.messageRepository, this.walletContractService);
+    this.pendingMessages = new PendingMessages(this.messageRepository, this.executionQueue, this.statusService, this.walletContractService);
     this.messageHandler = new MessageHandler(this.pendingMessages, this.messageHandlerValidator);
-    this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList, this.contractService);
+    this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList, this.walletContractService);
     this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.minedTransactionHandler);
     this.deploymentExecutor = new DeploymentExecutor(this.deploymentRepository, this.walletService);
     this.executionWorker = new ExecutionWorker([this.messageExecutor, this.deploymentExecutor], this.executionQueue);

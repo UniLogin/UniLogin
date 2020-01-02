@@ -2,7 +2,7 @@ import {Beta2Service} from './Beta2Service';
 import {BlockchainService} from '@universal-login/contracts';
 import {SignedMessage} from '@universal-login/commons';
 
-export class ContractService {
+export class WalletContractService {
   constructor(private blockchainSerivce: BlockchainService, private beta2Service: Beta2Service) {
 
   }

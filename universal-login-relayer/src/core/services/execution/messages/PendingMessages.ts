@@ -4,14 +4,14 @@ import {DuplicatedExecution, DuplicatedSignature, InvalidSignature, NotEnoughSig
 import IMessageRepository from '../../../models/messages/IMessagesRepository';
 import {createMessageItem} from '../../../utils/messages/serialisation';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
-import {ContractService} from '../../../../integration/ethereum/ContractService';
+import {WalletContractService} from '../../../../integration/ethereum/WalletContractService';
 
 export default class PendingMessages {
   constructor(
     private messageRepository: IMessageRepository,
     private executionQueue: IExecutionQueue,
     private statusService: MessageStatusService,
-    private contractService: ContractService,
+    private walletContractService: WalletContractService,
   ) {}
 
   async isPresent(messageHash: string) {
@@ -19,7 +19,7 @@ export default class PendingMessages {
   }
 
   async add(message: SignedMessage): Promise<MessageStatus> {
-    const messageHash = await this.contractService.calculateMessageHash(message);
+    const messageHash = await this.walletContractService.calculateMessageHash(message);
     if (!await this.isPresent(messageHash)) {
       const messageItem = createMessageItem(message);
       await this.messageRepository.add(messageHash, messageItem);
@@ -44,8 +44,8 @@ export default class PendingMessages {
     ensure(!messageItem.transactionHash, DuplicatedExecution);
     const isContainSignature = await this.messageRepository.containSignature(messageHash, message.signature);
     ensure(!isContainSignature, DuplicatedSignature);
-    const key = await this.contractService.recoverSignerFromMessage(message);
-    ensure(await this.contractService.keyExist(messageItem.walletAddress, key), InvalidSignature, 'Invalid key');
+    const key = await this.walletContractService.recoverSignerFromMessage(message);
+    ensure(await this.walletContractService.keyExist(messageItem.walletAddress, key), InvalidSignature, 'Invalid key');
     await this.messageRepository.addSignature(messageHash, message.signature, key);
   }
 

@@ -2,10 +2,10 @@ import {Wallet, providers, utils} from 'ethers';
 import {SignedMessage, ensure, IMessageValidator} from '@universal-login/commons';
 import {messageToTransaction} from '../../../core/utils/messages/serialisation';
 import {NotEnoughGas} from '../../../core/utils/errors';
-import {ContractService} from '../ContractService';
+import {WalletContractService} from '../WalletContractService';
 
 export default class EstimateGasValidator implements IMessageValidator {
-  constructor(private wallet: Wallet, private walletContractService: ContractService) {}
+  constructor(private wallet: Wallet, private walletContractService: WalletContractService) {}
 
   async validate(signedMessage: SignedMessage) {
     ensure(utils.bigNumberify(signedMessage.gasPrice).gt(0), NotEnoughGas);
