@@ -25,7 +25,7 @@ describe('INT: MessageExecutionValidator', async () => {
     message = {...emptyMessage, ...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, nonce: 1, gasLimit: '200000'};
     const walletContractService = new WalletContractService(wallet.provider);
     const contractService = new ContractService(new BlockchainService(wallet.provider), walletContractService);
-    messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList, walletContractService, contractService);
+    messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList, contractService);
   });
 
   it('successfully pass the validation', async () => {
@@ -52,7 +52,6 @@ describe('INT: MessageExecutionValidator', async () => {
       wallet: contractWhiteList.wallet,
       proxy: [TEST_ACCOUNT_ADDRESS],
     },
-    new WalletContractService(wallet.provider),
     new ContractService(new BlockchainService(wallet.provider), new WalletContractService(wallet.provider)),
     );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
@@ -64,7 +63,6 @@ describe('INT: MessageExecutionValidator', async () => {
       wallet: [TEST_ACCOUNT_ADDRESS],
       proxy: contractWhiteList.proxy,
     },
-    new WalletContractService(wallet.provider),
     new ContractService(new BlockchainService(wallet.provider), new WalletContractService(wallet.provider)),
     );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);

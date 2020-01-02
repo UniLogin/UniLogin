@@ -11,6 +11,7 @@ import {getTestSignedMessage} from '../../testconfig/message';
 describe('ContractService', () => {
   let contractService: ContractService;
   let proxyContract: Contract;
+  let master: Contract;
   let wallet: Wallet;
 
   before(async () => {
@@ -19,7 +20,7 @@ describe('ContractService', () => {
     const walletContractService = new WalletContractService(provider);
     contractService = new ContractService(blockchainService, walletContractService);
     [wallet] = getWallets(provider);
-    ({proxy: proxyContract} = await createWalletContract(wallet));
+    ({proxy: proxyContract, master} = await createWalletContract(wallet));
   });
 
   describe('beta2', () => {
@@ -34,7 +35,7 @@ describe('ContractService', () => {
     it('calculates message hash', async () => {
       const message = {...getTestSignedMessage(), from: proxyContract.address};
       const testSignedMsgHash = '0x05a728fe92e4d942a172d5268f7fb765c29ed4c0771962bd32cc11e31a45e2ba';
-      expect(await contractService.calculateMessageHash(message)).to.eq(testSignedMsgHash)
+      expect(await contractService.calculateMessageHash(message)).to.eq(testSignedMsgHash);
     });
 
     it('recovers signer from message', async () => {
@@ -56,6 +57,10 @@ describe('ContractService', () => {
 
     it('returns proper required signatures count', async () => {
       expect(await contractService.getRequiredSignatures(proxyContract.address)).to.eq(1);
+    });
+
+    it('fetchMasterAddress returns proper address', async () => {
+      expect(await contractService.fetchMasterAddress(proxyContract.address)).to.eq(master.address);
     });
   });
 });

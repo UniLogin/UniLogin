@@ -1,6 +1,5 @@
 import {MessageStatus} from '@universal-login/commons';
 import IMessageRepository from '../../../models/messages/IMessagesRepository';
-import {WalletContractService} from '../../../../integration/ethereum/WalletContractService';
 import {ContractService} from '../../../../integration/ethereum/ContractService';
 
 export class MessageStatusService {

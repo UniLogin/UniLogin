@@ -36,4 +36,9 @@ export class ContractService {
     const service = await this.getWalletService(walletAddress);
     return service.getRequiredSignatures(walletAddress);
   }
+
+  async fetchMasterAddress(walletAddress: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.fetchMasterAddress(walletAddress);
+  }
 };
