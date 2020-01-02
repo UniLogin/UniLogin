@@ -3,7 +3,7 @@ import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LI
 import {ContractService} from '../../../src/integration/ethereum/ContractService';
 import {BlockchainService, messageToSignedMessage} from '@universal-login/contracts';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
+import {Beta2Service} from '../../../src/integration/ethereum/Beta2Service';
 import {Contract, Wallet, utils} from 'ethers';
 import createWalletContract from '../../testhelpers/createWalletContract';
 import {getTestSignedMessage} from '../../testconfig/message';
@@ -17,8 +17,8 @@ describe('ContractService', () => {
   before(async () => {
     const provider = createMockProvider();
     const blockchainService = new BlockchainService(provider);
-    const walletContractService = new WalletContractService(provider);
-    contractService = new ContractService(blockchainService, walletContractService);
+    const beta2Service = new Beta2Service(provider);
+    contractService = new ContractService(blockchainService, beta2Service);
     [wallet] = getWallets(provider);
     ({proxy: proxyContract, master} = await createWalletContract(wallet));
   });

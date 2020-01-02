@@ -4,7 +4,7 @@ import {WalletContractInterface} from '@universal-login/contracts';
 import {getKeyFromHashAndSignature} from '../../core/utils/encodeData';
 import {beta2} from '@universal-login/contracts';
 
-export class WalletContractService {
+export class Beta2Service {
   constructor(private provider: providers.Provider) {
   }
 

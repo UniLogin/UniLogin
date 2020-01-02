@@ -9,7 +9,7 @@ import basicWalletContractWithMockToken from '../fixtures/basicWalletContractWit
 import MessageSQLRepository from '../../src/integration/sql/services/MessageSQLRepository';
 import {getContractWhiteList} from '../../src/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../src/core/services/execution/messages/MessageStatusService';
-import {WalletContractService} from '../../src/integration/ethereum/WalletContractService';
+import {Beta2Service} from '../../src/integration/ethereum/Beta2Service';
 import MessageExecutionValidator from '../../src/integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../src/integration/ethereum/MessageExecutor';
 import {DevicesStore} from '../../src/integration/sql/services/DevicesStore';
@@ -38,12 +38,12 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const executionQueue = new QueueSQLStore(knex);
   const walletMasterContractService = new WalletMasterContractService(provider);
   const devicesService = new DevicesService(devicesStore, walletMasterContractService);
-  const walletContractService = new WalletContractService(wallet);
+  const beta2Service = new Beta2Service(wallet);
   const blockchainService = new BlockchainService(provider);
   const gasComputation = new GasComputation(blockchainService);
   const messageHandlerValidator = new MessageHandlerValidator(config.maxGasLimit, gasComputation, wallet.address);
   const minedTransactionHandler = new MinedTransactionHandler(hooks, authorisationStore, devicesService);
-  const contractService = new ContractService(blockchainService, walletContractService);
+  const contractService = new ContractService(blockchainService, beta2Service);
   const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList(), contractService);
   const statusService = new MessageStatusService(messageRepository, contractService);
   const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, contractService);

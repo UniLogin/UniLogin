@@ -1,17 +1,17 @@
-import {WalletContractService} from './WalletContractService';
+import {Beta2Service} from './Beta2Service';
 import {BlockchainService} from '@universal-login/contracts';
 import {SignedMessage} from '@universal-login/commons';
 
 export class ContractService {
-  constructor(private blockchainSerivce: BlockchainService, private walletContractService: WalletContractService) {
+  constructor(private blockchainSerivce: BlockchainService, private beta2Service: Beta2Service) {
 
   }
 
-  private async getWalletService(walletAddress: string): Promise<WalletContractService> {
+  private async getWalletService(walletAddress: string): Promise<Beta2Service> {
     const walletVersion = await this.blockchainSerivce.fetchWalletVersion(walletAddress);
     switch (walletVersion) {
       case 'beta2':
-        return this.walletContractService;
+        return this.beta2Service;
       default:
         throw TypeError(`Invalid walletVersion: ${walletVersion}`);
     }

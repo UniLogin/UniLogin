@@ -6,7 +6,7 @@ import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTe
 import CorrectMasterValidator from '../../../../src/integration/ethereum/validators/CorrectMasterValidator';
 import {getTestSignedMessage} from '../../../testconfig/message';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
-import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
+import {Beta2Service} from '../../../../src/integration/ethereum/Beta2Service';
 import {ContractService} from '../../../../src/integration/ethereum/ContractService';
 import {BlockchainService} from '@universal-login/contracts';
 
@@ -18,14 +18,14 @@ describe('INT: CorrectMasterValidator', async () => {
   let wallet: Wallet;
   let validator: IMessageValidator;
   const contractWhiteList: ContractWhiteList = getContractWhiteList();
-  let walletContractService: WalletContractService;
+  let beta2Service: Beta2Service;
   let contractService: ContractService;
 
   before(async () => {
     ({mockToken, master, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
-    walletContractService = new WalletContractService(wallet.provider);
-    contractService = new ContractService(new BlockchainService(wallet.provider), walletContractService);
+    beta2Service = new Beta2Service(wallet.provider);
+    contractService = new ContractService(new BlockchainService(wallet.provider), beta2Service);
     validator = new CorrectMasterValidator(wallet.provider, contractWhiteList, contractService);
   });
 
