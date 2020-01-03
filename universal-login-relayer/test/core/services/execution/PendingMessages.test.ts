@@ -15,6 +15,7 @@ import MessageSQLRepository from '../../../../src/integration/sql/services/Messa
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {getKnexConfig} from '../../../testhelpers/knex';
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
+import {GnosisSafeService} from '../../../../src/integration/ethereum/GnosisSafeService';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages: PendingMessages;
@@ -35,7 +36,8 @@ describe('INT: PendingMessages', () => {
     messageRepository = new MessageSQLRepository(knex);
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
     beta2Service = new Beta2Service(wallet.provider);
-    const walletContractService = new WalletContractService(new BlockchainService(wallet.provider), beta2Service);
+    const gnosisSafeService = new GnosisSafeService(wallet.provider);
+    const walletContractService = new WalletContractService(new BlockchainService(wallet.provider), beta2Service, gnosisSafeService);
     statusService = new MessageStatusService(messageRepository, walletContractService);
     pendingMessages = new PendingMessages(messageRepository, {addMessage: spy} as any, statusService, walletContractService);
     unsignedMessage = messageToUnsignedMessage({...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS}, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION);

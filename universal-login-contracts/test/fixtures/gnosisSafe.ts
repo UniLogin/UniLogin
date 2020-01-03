@@ -31,6 +31,7 @@ export async function setupGnosisSafeContract(wallet: Wallet) {
     proxyFactory,
     master: gnosisSafe,
     provider: wallet.provider,
+    keyPair,
   };
 }
 
