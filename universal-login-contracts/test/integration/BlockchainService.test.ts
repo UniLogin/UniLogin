@@ -63,58 +63,64 @@ describe('INT: BlockchainService', async () => {
     expect(await blockchainService.getLogs({address: TEST_ACCOUNT_ADDRESS})).to.be.deep.eq([]);
   });
 
-  it('returns proper wallet version', async () => {
-    const walletMasterBytecodeHash = getContractHash(WalletContract as any);
-    expect(await blockchainService.fetchWalletVersion(walletContractProxy.address)).to.eq((WALLET_MASTER_VERSIONS as any)[walletMasterBytecodeHash]);
+  describe('fetchProxyVersion', () => {
+    it('wallet proxy', async () => {
+      const walletProxyBytecodeHash = getContractHash(WalletProxy as any);
+      expect(await blockchainService.fetchProxyVersion(walletContractProxy.address)).to.eq((PROXY_VERSIONS as any)[walletProxyBytecodeHash]);
+    });
+
+    it('throws error if proxy is not supported', async () => {
+      const contract = await deployContract(deployer, MockContract);
+      await expect(blockchainService.fetchProxyVersion(contract.address)).to.be.eventually.rejectedWith('Unsupported proxy version');
+    });
+
+    it('gnosis safe proxy', async () => {
+      const {provider, proxy} = await loadFixture(setupGnosisSafeContractFixture);
+      blockchainService = new BlockchainService(provider);
+      expect(await blockchainService.fetchProxyVersion(proxy.address)).to.eq('GnosisSafe');
+    });
   });
 
-  it('throws error if wallet is not supported', async () => {
-    const {provider, walletProxy} = await loadFixture(basicWalletAndProxy);
-    blockchainService = new BlockchainService(provider);
-    await expect(blockchainService.fetchWalletVersion(walletProxy.address)).to.be.eventually.rejectedWith('Unsupported wallet master version');
+  describe('fetchWalletVersion', () => {
+    it('beta2', async () => {
+      const walletMasterBytecodeHash = getContractHash(WalletContract as any);
+      expect(await blockchainService.fetchWalletVersion(walletContractProxy.address)).to.eq((WALLET_MASTER_VERSIONS as any)[walletMasterBytecodeHash]);
+    });
+
+    it('throws error if wallet is not supported', async () => {
+      const {provider, walletProxy} = await loadFixture(basicWalletAndProxy);
+      blockchainService = new BlockchainService(provider);
+      await expect(blockchainService.fetchWalletVersion(walletProxy.address)).to.be.eventually.rejectedWith('Unsupported wallet master version');
+    });
+
+    it('gnosis safe', async () => {
+      const {provider, proxy} = await loadFixture(setupGnosisSafeContractFixture);
+      blockchainService = new BlockchainService(provider);
+      expect(await blockchainService.fetchWalletVersion(proxy.address)).to.eq('beta3');
+    });
   });
 
-  it('fetchHardforkVersion for default provider', async () => {
-    expect(await blockchainService.fetchHardforkVersion()).to.eq('constantinople');
-  });
+  describe('fetchHardforkVersion', () => {
+    it('default provider', async () => {
+      expect(await blockchainService.fetchHardforkVersion()).to.eq('constantinople');
+    });
 
-  it('fetchHardforkVersion for mocked mainnet provider before istanbul', async () => {
-    const mockProvider = mockProviderWithBlockNumber('homestead', 1);
-    blockchainService = new BlockchainService(mockProvider as providers.Provider);
-    expect(await blockchainService.fetchHardforkVersion()).to.eq('constantinople');
-  });
+    it('mocked mainnet provider before istanbul', async () => {
+      const mockProvider = mockProviderWithBlockNumber('homestead', 1);
+      blockchainService = new BlockchainService(mockProvider as providers.Provider);
+      expect(await blockchainService.fetchHardforkVersion()).to.eq('constantinople');
+    });
 
-  it('fetchHardforkVersion for mocked mainnet provider after istanbul', async () => {
-    const mockProvider = mockProviderWithBlockNumber('homestead', 10000000000);
-    blockchainService = new BlockchainService(mockProvider as providers.Provider);
-    expect(await blockchainService.fetchHardforkVersion()).to.eq('istanbul');
-  });
+    it('mocked mainnet provider after istanbul', async () => {
+      const mockProvider = mockProviderWithBlockNumber('homestead', 10000000000);
+      blockchainService = new BlockchainService(mockProvider as providers.Provider);
+      expect(await blockchainService.fetchHardforkVersion()).to.eq('istanbul');
+    });
 
-  it('fetchHardforkVersion for mocked kovan provider', async () => {
-    const mockProvider = mockProviderWithBlockNumber('kovan', 1);
-    blockchainService = new BlockchainService(mockProvider as providers.Provider);
-    expect(await blockchainService.fetchHardforkVersion()).to.eq('istanbul');
-  });
-
-  it('fetchProxyVersion for wallet proxy', async () => {
-    const walletProxyBytecodeHash = getContractHash(WalletProxy as any);
-    expect(await blockchainService.fetchProxyVersion(walletContractProxy.address)).to.eq((PROXY_VERSIONS as any)[walletProxyBytecodeHash]);
-  });
-
-  it('throws error if proxy is not supported', async () => {
-    const contract = await deployContract(deployer, MockContract);
-    await expect(blockchainService.fetchProxyVersion(contract.address)).to.be.eventually.rejectedWith('Unsupported proxy version');
-  });
-
-  it('fetchProxyVersion for gnosis safe proxy', async () => {
-    const {provider, proxy} = await loadFixture(setupGnosisSafeContractFixture);
-    blockchainService = new BlockchainService(provider);
-    expect(await blockchainService.fetchProxyVersion(proxy.address)).to.eq('GnosisSafe');
-  });
-
-  it('fetchWalletVersion for gnosis safe', async () => {
-    const {provider, proxy} = await loadFixture(setupGnosisSafeContractFixture);
-    blockchainService = new BlockchainService(provider);
-    expect(await blockchainService.fetchWalletVersion(proxy.address)).to.eq('beta3');
+    it('mocked kovan provider', async () => {
+      const mockProvider = mockProviderWithBlockNumber('kovan', 1);
+      blockchainService = new BlockchainService(mockProvider as providers.Provider);
+      expect(await blockchainService.fetchHardforkVersion()).to.eq('istanbul');
+    });
   });
 });
