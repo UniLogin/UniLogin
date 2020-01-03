@@ -1,6 +1,7 @@
 import {Contract, providers, utils} from 'ethers';
-import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion} from '@universal-login/commons';
+import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion, PROXY_VERSIONS} from '@universal-login/commons';
 import {WalletProxyInterface, WalletProxyFactoryInterface} from '../../test/helpers/interfaces';
+import {IProxyInterface} from '../gnosis-safe@1.1.1/interfaces';
 
 export class BlockchainService {
   constructor(private provider: providers.Provider) {
@@ -29,9 +30,29 @@ export class BlockchainService {
     return [privateKey, futureContractAddress, publicKey];
   };
 
+  async fetchMasterAddress(contractAddress: string) {
+    const proxyVersion = await this.fetchProxyVersion(contractAddress);
+    switch (proxyVersion) {
+      case 'WalletProxy':
+        const walletProxyInstance = new Contract(contractAddress, WalletProxyInterface as any, this.provider);
+        return walletProxyInstance.implementation();
+      case 'GnosisSafe':
+        const gnosisSafeProxy = new Contract(contractAddress, IProxyInterface as any, this.provider);
+        return gnosisSafeProxy.masterCopy();
+      default:
+        throw TypeError('Unsupported proxy version');
+    }
+  }
+
+  async fetchProxyVersion(contractAddress: string) {
+    const proxyBytecode = await this.getCode(contractAddress);
+    const proxyVersion = PROXY_VERSIONS[utils.keccak256(proxyBytecode)];
+    ensureNotFalsy(proxyVersion, Error, 'Unsupported proxy version');
+    return proxyVersion;
+  }
+
   async fetchWalletVersion(contractAddress: string) {
-    const proxyInstance = new Contract(contractAddress, WalletProxyInterface as any, this.provider);
-    const walletMasterAddress = await proxyInstance.implementation();
+    const walletMasterAddress = await this.fetchMasterAddress(contractAddress);
     const walletMasterBytecode = await this.getCode(walletMasterAddress);
     const walletMasterVersion = WALLET_MASTER_VERSIONS[utils.keccak256(walletMasterBytecode)];
     ensureNotFalsy(walletMasterVersion, Error, 'Unsupported wallet master version');

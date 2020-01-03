@@ -6,6 +6,7 @@ export {CONSTANT_EXECUTION_COSTS, DEFAULT_GAS_LIMIT, DEFAULT_GAS_LIMIT_EXECUTION
 export {testJsonRpcUrl, TEST_ACCOUNT_ADDRESS, TEST_APPLICATION_INFO, TEST_CONTRACT_ADDRESS, TEST_DEVICE_INFO, TEST_EXECUTION_OPTIONS, TEST_GAS_LIMIT, TEST_GAS_MODES, TEST_GAS_PRICE, TEST_MESSAGE_HASH, TEST_OVERRIDES_FOR_REVERT, TEST_PRIVATE_KEY, TEST_SDK_CONFIG, TEST_SIGNATURE_KEY_PAIRS, TEST_TOKEN_ADDRESS, TEST_TOKEN_DETAILS, TEST_TRANSACTION_HASH} from './core/constants/test';
 export {DEFAULT_LOCATION, KEY_CODE_ESCAPE, UNIVERSAL_LOGIN_LOGO_URL} from './core/constants/ui';
 export {WalletVersion, WALLET_MASTER_VERSIONS} from './core/constants/walletMasterVersions';
+export {PROXY_VERSIONS, ProxyVersion} from './core/constants/proxyVersions';
 export {ApplicationWallet} from './core/models/ApplicationWallet';
 export * from './core/models/ContractJSON';
 export {CurrencyToValue, ObservedCurrency, TokensPrices} from './core/models/CurrencyData';
