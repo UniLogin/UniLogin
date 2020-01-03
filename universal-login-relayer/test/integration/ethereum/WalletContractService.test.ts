@@ -8,7 +8,7 @@ import {Contract, Wallet, utils} from 'ethers';
 import createWalletContract from '../../testhelpers/createWalletContract';
 import {getTestSignedMessage} from '../../testconfig/message';
 
-describe('WalletContractService', () => {
+describe('INT: WalletContractService', () => {
   let walletContractService: WalletContractService;
   let proxyContract: Contract;
   let master: Contract;
