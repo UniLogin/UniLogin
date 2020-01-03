@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, sign} from '@universal-login/commons';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
-import {BlockchainService, messageToSignedMessage} from '@universal-login/contracts';
+import {BlockchainService, messageToSignedMessage, calculateMessageHash} from '@universal-login/contracts';
 import {setupGnosisSafeContract} from '@universal-login/contracts/testutils';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Beta2Service} from '../../../src/integration/ethereum/Beta2Service';
@@ -80,6 +80,26 @@ describe('INT: WalletContractService', () => {
 
     it('returns true if key exists', async () => {
       expect(await walletContractService.keyExist(proxyContract.address, keyPair.publicKey)).to.be.true;
+    });
+
+    it('calculates message hash', async () => {
+      const message = {...getTestSignedMessage(), from: proxyContract.address};
+      const testSignedMsgHash = calculateMessageHash(message);
+      expect(await walletContractService.calculateMessageHash(message)).to.eq(testSignedMsgHash);
+    });
+
+    it('returns proper required signatures count', async () => {
+      expect(await walletContractService.getRequiredSignatures(proxyContract.address)).to.eq(1);
+    });
+
+    it('recovers signer from message', async () => {
+      const message = {...getTestSignedMessage(), from: proxyContract.address};
+      const signedMessage = {...message, signature: sign(calculateMessageHash(message) as any, keyPair.privateKey)};
+      expect(await walletContractService.recoverSignerFromMessage(signedMessage)).to.eq(keyPair.publicKey);
+    });
+
+    it('fetchMasterAddress returns proper address', async () => {
+      expect(await walletContractService.fetchMasterAddress(proxyContract.address)).to.eq(master.address);
     });
   });
 });

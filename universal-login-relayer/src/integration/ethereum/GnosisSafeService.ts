@@ -1,9 +1,7 @@
 import {providers, Contract, utils} from 'ethers';
-import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
-import {GnosisSafeInterface} from '@universal-login/contracts';
-import {getKeyFromHashAndSignature} from '../../core/utils/encodeData';
+import {SignedMessage} from '@universal-login/commons';
+import {GnosisSafeInterface, calculateMessageHash, IProxyInterface} from '@universal-login/contracts';
 import IWalletContractService from '../../core/models/IWalletContractService';
-import {beta2} from '@universal-login/contracts';
 
 export class GnosisSafeService implements IWalletContractService {
   constructor(private provider: providers.Provider) {
@@ -11,7 +9,7 @@ export class GnosisSafeService implements IWalletContractService {
 
   async getRequiredSignatures(walletAddress: string): Promise<utils.BigNumber> {
     const walletContract = new Contract(walletAddress, GnosisSafeInterface, this.provider);
-    const requiredSignatures = await walletContract.requiredSignatures();
+    const requiredSignatures = await walletContract.getThreshold();
     return requiredSignatures;
   }
 
@@ -25,14 +23,14 @@ export class GnosisSafeService implements IWalletContractService {
   }
 
   recoverSignerFromMessage(message: SignedMessage) {
-    return getKeyFromHashAndSignature(
+    return utils.verifyMessage(
       this.calculateMessageHash(message),
       message.signature,
     );
   }
 
   fetchMasterAddress(walletAddress: string): Promise<string> {
-    const walletProxy = new Contract(walletAddress, beta2.WalletProxy.interface as any, this.provider);
-    return walletProxy.implementation();
+    const walletProxy = new Contract(walletAddress, IProxyInterface, this.provider);
+    return walletProxy.masterCopy();
   }
 }
