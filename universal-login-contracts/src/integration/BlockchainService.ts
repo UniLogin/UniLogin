@@ -1,6 +1,7 @@
 import {Contract, providers, utils} from 'ethers';
 import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion, PROXY_VERSIONS} from '@universal-login/commons';
 import {WalletProxyInterface, WalletProxyFactoryInterface} from '../../test/helpers/interfaces';
+import {IProxyInterface} from '../gnosis-safe@1.1.1/interfaces';
 
 export class BlockchainService {
   constructor(private provider: providers.Provider) {
@@ -33,8 +34,11 @@ export class BlockchainService {
     const proxyVersion = await this.fetchProxyVersion(contractAddress);
     switch (proxyVersion) {
       case 'WalletProxy':
-        const proxyInstance = new Contract(contractAddress, WalletProxyInterface as any, this.provider);
-        return proxyInstance.implementation();
+        const walletProxyInstance = new Contract(contractAddress, WalletProxyInterface as any, this.provider);
+        return walletProxyInstance.implementation();
+      case 'GnosisSafe':
+        const gnosisSafeProxy = new Contract(contractAddress, IProxyInterface as any, this.provider);
+        return gnosisSafeProxy.masterCopy();
       default:
         throw TypeError('Unsupported proxy version');
     }

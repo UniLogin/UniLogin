@@ -10,6 +10,7 @@ import {BlockchainService} from '../../src/integration/BlockchainService';
 import {providers, Contract, Wallet} from 'ethers';
 import walletAndProxy from '../fixtures/walletAndProxy';
 import basicWalletAndProxy from '../fixtures/basicWalletAndProxy';
+import {setupGnosisSafeContractFixture} from '../fixtures/gnosisSafe';
 
 describe('INT: BlockchainService', async () => {
   const expectedBytecode = `0x${getDeployedBytecode(WalletContract as any)}`;
@@ -103,5 +104,17 @@ describe('INT: BlockchainService', async () => {
   it('throws error if proxy is not supported', async () => {
     const contract = await deployContract(deployer, MockContract);
     await expect(blockchainService.fetchProxyVersion(contract.address)).to.be.eventually.rejectedWith('Unsupported proxy version');
+  });
+
+  it('fetchProxyVersion for gnosis safe proxy', async () => {
+    const {provider, proxy} = await loadFixture(setupGnosisSafeContractFixture);
+    blockchainService = new BlockchainService(provider);
+    expect(await blockchainService.fetchProxyVersion(proxy.address)).to.eq('GnosisSafe');
+  });
+
+  it('fetchWalletVersion for gnosis safe', async () => {
+    const {provider, proxy} = await loadFixture(setupGnosisSafeContractFixture);
+    blockchainService = new BlockchainService(provider);
+    expect(await blockchainService.fetchWalletVersion(proxy.address)).to.eq('beta3');
   });
 });
