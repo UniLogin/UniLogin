@@ -27,7 +27,7 @@ describe('CONTRACT: KeyHolder', async () => {
     it('only contract can make operations on itself', async () => {
       const [wallet] = getWallets(createMockProvider());
       keyHolder = await deployContract(wallet, KeyHolder, [wallet.address]);
-      expect(keyHolder.addKey(createKeyPair().publicKey)).to.be.revertedWith('Sender not permissioned');
+      await expect(keyHolder.addKey(createKeyPair().publicKey)).to.be.reverted;
     });
   });
 

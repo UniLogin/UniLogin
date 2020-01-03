@@ -5,12 +5,11 @@ import {setupGnosisSafeContractFixture} from '../../fixtures/gnosisSafe';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {calculateMessageHash} from '../../../src/gnosis-safe@1.1.1/utils';
 
-
 describe('execTransaction', () => {
   let proxy: Contract;
 
   before(async () => {
-    ({proxy} = await loadFixture(setupGnosisSafeContractFixture))
+    ({proxy} = await loadFixture(setupGnosisSafeContractFixture));
   });
 
   it('calculate transaction hash works', async () => {
@@ -26,7 +25,7 @@ describe('execTransaction', () => {
       gasPrice: 1,
       from: proxy.address,
       gasToken: ETHER_NATIVE_TOKEN.address,
-    }
+    };
     expect(await proxy.getTransactionHash(
       msg.to,
       msg.value,
