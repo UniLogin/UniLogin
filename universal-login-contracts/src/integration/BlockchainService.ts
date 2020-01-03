@@ -29,9 +29,13 @@ export class BlockchainService {
     return [privateKey, futureContractAddress, publicKey];
   };
 
-  async fetchWalletVersion(contractAddress: string) {
+  async fetchMasterAddress(contractAddress: string) {
     const proxyInstance = new Contract(contractAddress, WalletProxyInterface as any, this.provider);
-    const walletMasterAddress = await proxyInstance.implementation();
+    return proxyInstance.implementation();
+  }
+
+  async fetchWalletVersion(contractAddress: string) {
+    const walletMasterAddress = await this.fetchMasterAddress(contractAddress);
     const walletMasterBytecode = await this.getCode(walletMasterAddress);
     const walletMasterVersion = WALLET_MASTER_VERSIONS[utils.keccak256(walletMasterBytecode)];
     ensureNotFalsy(walletMasterVersion, Error, 'Unsupported wallet master version');
