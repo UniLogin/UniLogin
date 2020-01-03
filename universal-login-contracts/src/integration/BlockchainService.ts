@@ -30,8 +30,14 @@ export class BlockchainService {
   };
 
   async fetchMasterAddress(contractAddress: string) {
-    const proxyInstance = new Contract(contractAddress, WalletProxyInterface as any, this.provider);
-    return proxyInstance.implementation();
+    const proxyVersion = await this.fetchProxyVersion(contractAddress);
+    switch (proxyVersion) {
+      case 'WalletProxy':
+        const proxyInstance = new Contract(contractAddress, WalletProxyInterface as any, this.provider);
+        return proxyInstance.implementation();
+      default:
+        throw TypeError('Unsupported proxy version');
+    }
   }
 
   async fetchProxyVersion(contractAddress: string) {
