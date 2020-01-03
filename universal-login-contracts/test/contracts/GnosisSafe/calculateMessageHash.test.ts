@@ -5,7 +5,7 @@ import {setupGnosisSafeContractFixture} from '../../fixtures/gnosisSafe';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {calculateMessageHash} from '../../../src/gnosis-safe@1.1.1/utils';
 
-describe('execTransaction', () => {
+describe('calculateMessageHash', () => {
   let proxy: Contract;
 
   before(async () => {
