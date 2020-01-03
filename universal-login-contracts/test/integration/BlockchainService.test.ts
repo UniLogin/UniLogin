@@ -1,9 +1,11 @@
 import {expect} from 'chai';
-import {getWallets, loadFixture} from 'ethereum-waffle';
-import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS} from '@universal-login/commons';
+import {getWallets, loadFixture, deployContract} from 'ethereum-waffle';
+import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS} from '@universal-login/commons';
 import {mockProviderWithBlockNumber} from '@universal-login/commons/testutils';
 import {deployWalletContract} from '../../src/beta2/deployMaster';
 import WalletContract from '../../dist/contracts/Wallet.json';
+import MockContract from '../../dist/contracts/MockContract.json';
+import WalletProxy from '../../dist/contracts/WalletProxy.json';
 import {BlockchainService} from '../../src/integration/BlockchainService';
 import {providers, Contract, Wallet} from 'ethers';
 import walletAndProxy from '../fixtures/walletAndProxy';
@@ -16,7 +18,7 @@ describe('INT: BlockchainService', async () => {
   let deployer: Wallet;
   let walletContractProxy: Contract;
 
-  before(async () => {
+  beforeEach(async () => {
     ({provider, walletContractProxy} = await loadFixture(walletAndProxy));
     [deployer] = getWallets(provider);
     blockchainService = new BlockchainService(provider);
@@ -44,7 +46,7 @@ describe('INT: BlockchainService', async () => {
   it('getLogs should return array of logs if match the logs', async () => {
     const expectedPartOfLog = {
       transactionIndex: 0,
-      address: '0xaC8444e7d45c34110B34Ed269AD86248884E78C7',
+      address: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
       data: '0x',
       topics:
         ['0x654abba5d3170185ed25c9b41f7d2094db3643986b05e9e9cab37028b800ad7e',
@@ -68,7 +70,7 @@ describe('INT: BlockchainService', async () => {
   it('throws error if wallet is not supported', async () => {
     const {provider, walletProxy} = await loadFixture(basicWalletAndProxy);
     blockchainService = new BlockchainService(provider);
-    expect(blockchainService.fetchWalletVersion(walletProxy.address)).to.be.eventually.rejectedWith('Unsupported wallet master version');
+    await expect(blockchainService.fetchWalletVersion(walletProxy.address)).to.be.eventually.rejectedWith('Unsupported wallet master version');
   });
 
   it('fetchHardforkVersion for default provider', async () => {
@@ -91,5 +93,15 @@ describe('INT: BlockchainService', async () => {
     const mockProvider = mockProviderWithBlockNumber('kovan', 1);
     blockchainService = new BlockchainService(mockProvider as providers.Provider);
     expect(await blockchainService.fetchHardforkVersion()).to.eq('istanbul');
+  });
+
+  it('fetchProxyVersion for wallet proxy', async () => {
+    const walletProxyBytecodeHash = getContractHash(WalletProxy as any);
+    expect(await blockchainService.fetchProxyVersion(walletContractProxy.address)).to.eq((PROXY_VERSIONS as any)[walletProxyBytecodeHash]);
+  });
+
+  it('throws error if proxy is not supported', async () => {
+    const contract = await deployContract(deployer, MockContract);
+    await expect(blockchainService.fetchProxyVersion(contract.address)).to.be.eventually.rejectedWith('Unsupported proxy version');
   });
 });

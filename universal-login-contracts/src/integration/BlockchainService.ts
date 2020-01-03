@@ -1,5 +1,5 @@
 import {Contract, providers, utils} from 'ethers';
-import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion} from '@universal-login/commons';
+import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion, PROXY_VERSIONS} from '@universal-login/commons';
 import {WalletProxyInterface, WalletProxyFactoryInterface} from '../../test/helpers/interfaces';
 
 export class BlockchainService {
@@ -32,6 +32,13 @@ export class BlockchainService {
   async fetchMasterAddress(contractAddress: string) {
     const proxyInstance = new Contract(contractAddress, WalletProxyInterface as any, this.provider);
     return proxyInstance.implementation();
+  }
+
+  async fetchProxyVersion(contractAddress: string) {
+    const proxyBytecode = await this.getCode(contractAddress);
+    const proxyVersion = PROXY_VERSIONS[utils.keccak256(proxyBytecode)];
+    ensureNotFalsy(proxyVersion, Error, 'Unsupported proxy version');
+    return proxyVersion;
   }
 
   async fetchWalletVersion(contractAddress: string) {
