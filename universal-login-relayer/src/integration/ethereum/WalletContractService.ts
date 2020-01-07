@@ -13,7 +13,6 @@ export class WalletContractService implements IWalletContractService {
     const walletVersion = await this.blockchainSerivce.fetchWalletVersion(walletAddress);
     switch (walletVersion) {
       case 'beta1':
-        return this.beta2Service;
       case 'beta2':
         return this.beta2Service;
       case 'beta3':
