@@ -4,14 +4,14 @@ import {OnboardingModal, useProperty} from '@universal-login/react';
 import {UIController} from '../../services/UIController';
 import {Confirmation} from './Confirmation';
 
-export interface OnboardingProps {
+export interface ULWeb3RootProps {
   sdk: UniversalLoginSDK;
   walletService: WalletService;
   uiController: UIController;
   domains: string[];
 }
 
-export const Onboarding = ({sdk, walletService, uiController, domains}: OnboardingProps) => {
+export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3RootProps) => {
   const showOnboarding = useProperty(uiController.showOnboarding);
   const showConfirmation = useProperty(uiController.showConfirmation);
 
@@ -25,9 +25,7 @@ export const Onboarding = ({sdk, walletService, uiController, domains}: Onboardi
         />
       )}
       {showConfirmation && <Confirmation
-        onConfirmationResponse={() => {
-          uiController.showConfirmation.set(false);
-        }}
+        onConfirmationResponse={response => uiController.setResponse(response)}
       />}
     </>
   );

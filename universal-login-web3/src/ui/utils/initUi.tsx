@@ -1,10 +1,10 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {Onboarding, OnboardingProps} from '../react/Onboarding';
+import {ULWeb3Root, ULWeb3RootProps} from '../react/ULWeb3Root';
 
-export function initUi(props: OnboardingProps) {
+export function initUi(props: ULWeb3RootProps) {
   const reactRootElement = createReactRoot();
-  render(<Onboarding {...props}/>, reactRootElement);
+  render(<ULWeb3Root {...props}/>, reactRootElement);
 }
 
 export function createReactRoot(rootId = 'universal-login-modal-root') {
