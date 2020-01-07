@@ -5,20 +5,21 @@ import {calculateMessageHash} from './gnosis-safe@1.1.1/utils';
 
 export const messageToSignedMessage = (message: Partial<Message>, privateKey: string, networkVersion: NetworkVersion, walletVersion: WalletVersion): SignedMessage => {
   const unsignedMessage = messageToUnsignedMessage(message, networkVersion, walletVersion);
-  let signature;
+  const signature = calculateSignature(unsignedMessage, privateKey, walletVersion);
+  return {...unsignedMessage, signature};
+};
+
+export const calculateSignature = (unsignedMessage: UnsignedMessage, privateKey: string, walletVersion: WalletVersion) => {
   switch (walletVersion) {
     case 'beta1':
     case 'beta2':
-      signature = calculateMessageSignature(privateKey, unsignedMessage);
-      break;
+      return calculateMessageSignature(privateKey, unsignedMessage);
     case 'beta3':
       const msgHash = calculateMessageHash(unsignedMessage);
-      signature = sign(msgHash, privateKey);
-      break;
+      return sign(msgHash, privateKey);
     default:
       throw TypeError(`Invalid wallet version: ${walletVersion}`);
   };
-  return {...unsignedMessage, signature};
 };
 
 export const messageToUnsignedMessage = (message: Partial<Message>, networkVersion: NetworkVersion, walletVersion: WalletVersion): UnsignedMessage => {
