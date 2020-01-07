@@ -11,6 +11,8 @@ export class WalletContractService implements IWalletContractService {
   private async getWalletService(walletAddress: string): Promise<IWalletContractService> {
     const walletVersion = await this.blockchainSerivce.fetchWalletVersion(walletAddress);
     switch (walletVersion) {
+      case 'beta1':
+        return this.beta2Service;
       case 'beta2':
         return this.beta2Service;
       default:
