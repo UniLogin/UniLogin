@@ -27,6 +27,7 @@ import {BlockchainService} from '@universal-login/contracts';
 import MessageHandlerValidator from '../../src/core/services/validators/MessageHandlerValidator';
 import PendingMessages from '../../src/core/services/execution/messages/PendingMessages';
 import {WalletContractService} from '../../src/integration/ethereum/WalletContractService';
+import {GnosisSafeService} from '../../src/integration/ethereum/GnosisSafeService';
 
 export default async function setupMessageService(knex: Knex, config: Config) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
@@ -43,7 +44,8 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const gasComputation = new GasComputation(blockchainService);
   const messageHandlerValidator = new MessageHandlerValidator(config.maxGasLimit, gasComputation, wallet.address);
   const minedTransactionHandler = new MinedTransactionHandler(hooks, authorisationStore, devicesService);
-  const walletContractService = new WalletContractService(blockchainService, beta2Service);
+  const gnosisSafeService = new GnosisSafeService(provider);
+  const walletContractService = new WalletContractService(blockchainService, beta2Service, gnosisSafeService);
   const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList(), walletContractService);
   const statusService = new MessageStatusService(messageRepository, walletContractService);
   const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, walletContractService);

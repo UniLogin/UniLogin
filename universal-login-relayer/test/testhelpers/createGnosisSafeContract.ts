@@ -1,13 +1,9 @@
 import {ETHER_NATIVE_TOKEN, createKeyPair} from '@universal-login/commons';
+import {deployGnosisSafe, deployProxyFactory, encodeDataForSetup, computeGnosisCounterfactualAddress, GnosisSafeInterface} from '@universal-login/contracts';
 import {Contract, utils, Wallet} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {GnosisSafeInterface} from '../../src/gnosis-safe@1.1.1/interfaces';
-import {encodeDataForSetup} from '../../src/gnosis-safe@1.1.1/encode';
-import {deployGnosisSafe, deployProxyFactory} from '../../src/gnosis-safe@1.1.1/deployContracts';
-import {computeGnosisCounterfactualAddress} from '../../src/gnosis-safe@1.1.1/utils';
-import {Provider} from 'ethers/providers';
 
-export async function setupGnosisSafeContract(wallet: Wallet) {
+export default async function createGnosisSafeContract(wallet: Wallet) {
   const gnosisSafe = await deployGnosisSafe(wallet);
   const proxyFactory = await deployProxyFactory(wallet);
   const keyPair = createKeyPair();
@@ -30,11 +26,5 @@ export async function setupGnosisSafeContract(wallet: Wallet) {
     proxy: proxyContract,
     proxyFactory,
     master: gnosisSafe,
-    provider: wallet.provider,
-    keyPair,
   };
-}
-
-export async function setupGnosisSafeContractFixture(provider: Provider, [wallet]: Wallet[]) {
-  return setupGnosisSafeContract(wallet);
 }

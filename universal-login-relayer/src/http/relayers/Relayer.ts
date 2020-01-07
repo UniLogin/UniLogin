@@ -43,6 +43,7 @@ import {BlockchainService} from '@universal-login/contracts';
 import {MessageHandlerValidator} from '../../core/services/validators/MessageHandlerValidator';
 import PendingMessages from '../../core/services/execution/messages/PendingMessages';
 import {WalletContractService} from '../../integration/ethereum/WalletContractService';
+import {GnosisSafeService} from '../../integration/ethereum/GnosisSafeService';
 
 const defaultPort = '3311';
 
@@ -81,6 +82,7 @@ class Relayer {
   private minedTransactionHandler: MinedTransactionHandler = {} as MinedTransactionHandler;
   private blockchainService: BlockchainService = {} as BlockchainService;
   private walletContractService: WalletContractService = {} as WalletContractService;
+  private gnosisSafeService: GnosisSafeService = {} as GnosisSafeService;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   private walletDeployer: WalletDeployer = {} as WalletDeployer;
@@ -135,7 +137,8 @@ class Relayer {
     this.deploymentHandler = new DeploymentHandler(this.deploymentRepository, this.executionQueue);
     this.minedTransactionHandler = new MinedTransactionHandler(this.hooks, this.authorisationStore, this.devicesService);
     this.blockchainService = new BlockchainService(this.provider);
-    this.walletContractService = new WalletContractService(this.blockchainService, this.beta2Service);
+    this.gnosisSafeService = new GnosisSafeService(this.provider);
+    this.walletContractService = new WalletContractService(this.blockchainService, this.beta2Service, this.gnosisSafeService);
     this.statusService = new MessageStatusService(this.messageRepository, this.walletContractService);
     this.pendingMessages = new PendingMessages(this.messageRepository, this.executionQueue, this.statusService, this.walletContractService);
     this.messageHandler = new MessageHandler(this.pendingMessages, this.messageHandlerValidator);
