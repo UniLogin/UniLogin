@@ -104,6 +104,7 @@ export class ULWeb3Provider implements Provider {
     switch (method) {
       case 'eth_sendTransaction':
         const tx = params[0];
+        this.uiController.requireConfirm();
         return this.sendTransaction(tx);
       case 'eth_accounts':
         return this.getAccounts();

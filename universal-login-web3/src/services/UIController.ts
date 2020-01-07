@@ -4,6 +4,7 @@ import {WalletService} from '@universal-login/sdk';
 export class UIController {
   private walletNeeded = new State(false);
   showOnboarding: Property<boolean>;
+  showConfirmation = new State(false);
 
   constructor(
     walletService: WalletService,
@@ -12,6 +13,10 @@ export class UIController {
       [this.walletNeeded, walletService.stateProperty],
       (needed, state) => needed && state.kind !== 'Deployed',
     );
+  }
+
+  requireConfirm() {
+    this.showConfirmation.set(true);
   }
 
   requireWallet() {
