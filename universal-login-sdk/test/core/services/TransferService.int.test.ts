@@ -153,7 +153,7 @@ describe('INT: TransferService', () => {
     const {waitToBeSuccess} = await transferService.transfer({to: address, amount, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters});
     await waitToBeSuccess();
     const balance = await provider.getBalance(address);
-    expect(transferService.getMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.499999999999905');
+    expect(transferService.getMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.49999999999989');
   });
 
   it('get 0 if Ethereum max amount is below 0', async () => {

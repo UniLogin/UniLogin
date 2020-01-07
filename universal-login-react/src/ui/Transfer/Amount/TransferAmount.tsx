@@ -5,15 +5,13 @@ export interface TransferAmountProps {
   tokenSymbol: string;
   errors: string [];
   onChange: (value: string) => void;
-  onMaxClick: () => void;
 }
 
-export const TransferAmount = ({value, tokenSymbol, errors, onChange, onMaxClick}: TransferAmountProps) => {
+export const TransferAmount = ({value, tokenSymbol, errors, onChange}: TransferAmountProps) => {
   return (
     <>
       <div className="transfer-amount-row">
         <label className="transfer-amount-label" htmlFor="amount-eth">Amount</label>
-        <button className="transfer-amount-max" onClick={onMaxClick}>Max</button>
       </div>
       <div className="transfer-amount-input-wrapper">
         <div className="transfer-amount-input-content">
