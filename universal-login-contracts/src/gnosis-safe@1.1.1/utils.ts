@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {getDeployData, SignedMessage} from '@universal-login/commons';
+import {getDeployData, SignedMessage, sign, UnsignedMessage} from '@universal-login/commons';
 import ProxyContract from './contracts/Proxy.json';
 
 export const computeGnosisCounterfactualAddress = (proxyFactoryAddress: string, saltNonce: number, initializeData: string, gnosisSafeAddress: string) => {
@@ -23,4 +23,9 @@ export const calculateMessageHash = (message: Omit<SignedMessage, 'signature'>) 
   ));
   const domainSeparator = utils.keccak256(abiCoder.encode(['bytes32', 'address'], [DOMAIN_SEPARATOR_TYPEHASH, message.from]));
   return utils.solidityKeccak256(['bytes1', 'bytes1', 'bytes32', 'bytes32'], ['0x19', '0x01', domainSeparator, safeTxHash]);
+};
+
+export const calculateMessageSignature = (unsignedMessage: UnsignedMessage, privateKey: string) => {
+  const msgHash = calculateMessageHash(unsignedMessage);
+  return sign(msgHash, privateKey);
 };

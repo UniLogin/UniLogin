@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
-import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature, NetworkVersion, WalletVersion, sign} from '@universal-login/commons';
+import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature, NetworkVersion, WalletVersion} from '@universal-login/commons';
 import {calculateSafeTxGas, calculateBaseGas} from './estimateGas';
-import {calculateMessageHash} from './gnosis-safe@1.1.1/utils';
+import {calculateMessageSignature as calculateGnosisSignature} from './gnosis-safe@1.1.1/utils';
 
 export const messageToSignedMessage = (message: Partial<Message>, privateKey: string, networkVersion: NetworkVersion, walletVersion: WalletVersion): SignedMessage => {
   const unsignedMessage = messageToUnsignedMessage(message, networkVersion, walletVersion);
@@ -15,8 +15,7 @@ export const calculateSignature = (unsignedMessage: UnsignedMessage, privateKey:
     case 'beta2':
       return calculateMessageSignature(privateKey, unsignedMessage);
     case 'beta3':
-      const msgHash = calculateMessageHash(unsignedMessage);
-      return sign(msgHash, privateKey);
+      return calculateGnosisSignature(unsignedMessage, privateKey);
     default:
       throw TypeError(`Invalid wallet version: ${walletVersion}`);
   };

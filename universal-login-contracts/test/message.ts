@@ -138,7 +138,7 @@ describe('Message', () => {
   });
 
   it('messageToSignedMessage for istanbul and beta3', async () => {
-    const networkVersion = 'constantinople';
+    const networkVersion = 'istanbul';
     const walletVersion = 'beta3';
     const actualMessage = messageToSignedMessage(message, TEST_PRIVATE_KEY, networkVersion, walletVersion);
     const expectedMessage = {
@@ -151,9 +151,9 @@ describe('Message', () => {
       nonce: 0,
       operationType: OperationType.call,
       refundReceiver: AddressZero,
-      baseGas: bigNumberify(90076),
-      safeTxGas: bigNumberify(9924),
-      signature: '0xaac2f27986c3037fb89546559a50e061290288c55a7e13402e9eca41fc27dacf4c724624fa36fd37d6a8850240cb15ec753664f0d455a38e1d2c8f080ffa0b411c',
+      baseGas: bigNumberify(84252),
+      safeTxGas: bigNumberify(15748),
+      signature: '0xedfde693e39eb34409a09061a154f5613af2ae9acc8a9f98cd4cf41f2d73db761c4f4acca714e4e44736563776e0598c80f128c43ee9d2ff5e705a52786691931c',
     };
     expect(actualMessage).to.deep.eq(expectedMessage);
   });
