@@ -15,7 +15,7 @@ export const executionComparator = (execution1: any, execution2: any) => {
 export const sortSignatureKeyPairsByKey = (signatureKeyPairs: any) =>
   signatureKeyPairs.sort(executionComparator);
 
-export const sign = (payload: Uint8Array, privateKey: string): string => {
+export const sign = (payload: Uint8Array | string, privateKey: string): string => {
   const signingKey = new utils.SigningKey(privateKey);
   const signature = signingKey.signDigest(utils.hashMessage(payload));
   return utils.joinSignature(signature);
