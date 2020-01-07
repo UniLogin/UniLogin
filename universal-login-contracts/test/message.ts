@@ -136,4 +136,25 @@ describe('Message', () => {
     const signedMessage = unsignedMessageToSignedMessage({...transferMessage, from: '0x'}, TEST_PRIVATE_KEY);
     expect(signedMessage).to.deep.eq(expectedMessage);
   });
+
+  it('messageToSignedMessage for istanbul and beta3', async () => {
+    const networkVersion = 'constantinople';
+    const walletVersion = 'beta3';
+    const actualMessage = messageToSignedMessage(message, TEST_PRIVATE_KEY, networkVersion, walletVersion);
+    const expectedMessage = {
+      from: TEST_CONTRACT_ADDRESS,
+      to: TEST_CONTRACT_ADDRESS,
+      value: utils.parseEther('1'),
+      gasPrice: DEFAULT_GAS_PRICE,
+      gasToken: ETHER_NATIVE_TOKEN.address,
+      data: '0xbeef',
+      nonce: 0,
+      operationType: OperationType.call,
+      refundReceiver: AddressZero,
+      baseGas: bigNumberify(90076),
+      safeTxGas: bigNumberify(9924),
+      signature: '0xaac2f27986c3037fb89546559a50e061290288c55a7e13402e9eca41fc27dacf4c724624fa36fd37d6a8850240cb15ec753664f0d455a38e1d2c8f080ffa0b411c',
+    };
+    expect(actualMessage).to.deep.eq(expectedMessage);
+  });
 });
