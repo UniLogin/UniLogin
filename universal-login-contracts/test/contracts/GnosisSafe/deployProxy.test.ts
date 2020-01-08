@@ -8,7 +8,7 @@ import {deployGnosisSafe, deployProxyFactory} from '../../../src/gnosis-safe@1.1
 import {IProxyInterface} from '../../../src/gnosis-safe@1.1.1/interfaces';
 import {encodeDataForSetup} from '../../../src/gnosis-safe@1.1.1/encode';
 import {computeGnosisCounterfactualAddress} from '../../../src/gnosis-safe@1.1.1/utils';
-import ENSUtils from '../../../dist/contracts/TestableENSUtils.json';
+import ENSRegistrar from '../../../dist/contracts/ENSRegistrar.json';
 
 describe('GnosisSafe', async () => {
   const domain = 'mylogin.eth';
@@ -32,9 +32,9 @@ describe('GnosisSafe', async () => {
   });
 
   it('deploys proxy and registers ENS name', async () => {
-    const ensRegistrar = await deployContract(wallet, ENSUtils as any);
+    const ensRegistrar = await deployContract(wallet, ENSRegistrar as any);
     const args = [hashLabel, name, node, ensAddress, registrarAddress, publicResolver];
-    const data = new utils.Interface(ENSUtils.interface as any).functions.registerENSUnderTests.encode(args);
+    const data = new utils.Interface(ENSRegistrar.interface as any).functions.register.encode(args);
     const deployment = {
       owners: [keyPair.publicKey],
       requiredConfirmations: 1,
