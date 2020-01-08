@@ -1,35 +1,34 @@
-import {Property, State, combine} from 'reactive-properties';
+import {State} from 'reactive-properties';
 import {WalletService} from '@universal-login/sdk';
 
 export class UIController {
-  private walletNeeded = new State(false);
-  showOnboarding: Property<boolean>;
-  showConfirmation = new State(false);
+  activeModal = new State<'ONBOARDING' | 'CONFIRMATION' | 'IDLE'>('IDLE');
 
   private resolveConfirm?: (value: boolean) => void;
 
   constructor(
-    walletService: WalletService,
-  ) {
-    this.showOnboarding = combine(
-      [this.walletNeeded, walletService.stateProperty],
-      (needed, state) => needed && state.kind !== 'Deployed',
-    );
+    private walletService: WalletService,
+  ) {}
+
+  finishOnboarding() {
+    this.activeModal.set('IDLE');
   }
 
   requireConfirmation() {
-    this.showConfirmation.set(true);
+    this.activeModal.set('CONFIRMATION');
     return new Promise<boolean>((resolve) => {
       this.resolveConfirm = resolve;
     });
   }
 
   setResponse(response: boolean) {
-    this.showConfirmation.set(false);
+    this.activeModal.set('IDLE');
     this.resolveConfirm?.(response);
   }
 
   requireWallet() {
-    this.walletNeeded.set(true);
+    if (this.walletService.state.kind !== 'Deployed') {
+      this.activeModal.set('ONBOARDING');
+    };
   }
 }
