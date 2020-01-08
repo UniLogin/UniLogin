@@ -54,9 +54,7 @@ class Relayer {
   protected readonly wallet: Wallet;
   readonly database: Knex;
   private ensService: ENSService = {} as ENSService;
-  private messageHandlerValidator: MessageHandlerValidator = {} as MessageHandlerValidator;
   private executionWorker: ExecutionWorker = {} as ExecutionWorker;
-  private blockchainService: BlockchainService = {} as BlockchainService;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   publicConfig: PublicRelayerConfig;
@@ -68,9 +66,6 @@ class Relayer {
     this.wallet = new Wallet(config.privateKey, this.provider);
     this.database = Knex(config.database);
     this.publicConfig = getPublicConfig(this.config);
-    this.blockchainService = new BlockchainService(this.provider);
-    const gasComputation = new GasComputation(this.blockchainService);
-    this.messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address);
   }
 
   async start() {
@@ -94,9 +89,9 @@ class Relayer {
     }
 
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
-
-    const authorisationStore = new AuthorisationStore(this.database);
-    const devicesStore = new DevicesStore(this.database);
+    const blockchainService = new BlockchainService(this.provider);
+    const gasComputation = new GasComputation(blockchainService);
+    const messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address);
     const walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
     const balanceChecker = new BalanceChecker(this.provider);
     const requiredBalanceChecker = new RequiredBalanceChecker(balanceChecker);
@@ -104,14 +99,16 @@ class Relayer {
     const deploymentRepository = new SQLRepository(this.database, 'deployments');
     const executionQueue = new QueueSQLStore(this.database);
     const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue);
-    const walletContractService = new WalletContractService(this.blockchainService, new Beta2Service(this.provider), new GnosisSafeService(this.provider));
+    const walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider), new GnosisSafeService(this.provider));
     const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
+    const authorisationStore = new AuthorisationStore(this.database);
     const authorisationService = new AuthorisationService(authorisationStore, relayerRequestSignatureValidator);
+    const devicesStore = new DevicesStore(this.database);
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const walletService = new WalletDeploymentService(this.config, this.ensService, this.hooks, walletDeployer, requiredBalanceChecker, devicesService);
     const statusService = new MessageStatusService(messageRepository, walletContractService);
     const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, walletContractService);
-    const messageHandler = new MessageHandler(pendingMessages, this.messageHandlerValidator);
+    const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
     const messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList, walletContractService);
     const minedTransactionHandler = new MinedTransactionHandler(this.hooks, authorisationStore, devicesService);
     const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler);
