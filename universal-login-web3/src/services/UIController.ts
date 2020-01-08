@@ -6,6 +6,8 @@ export class UIController {
   showOnboarding: Property<boolean>;
   showConfirmation = new State(false);
 
+  private resolveConfirm?: (value: boolean) => void;
+
   constructor(
     walletService: WalletService,
   ) {
@@ -15,8 +17,16 @@ export class UIController {
     );
   }
 
-  requireConfirm() {
+  requireConfirmation() {
     this.showConfirmation.set(true);
+    return new Promise<boolean>((resolve) => {
+      this.resolveConfirm = resolve;
+    });
+  }
+
+  setResponse(response: boolean) {
+    this.showConfirmation.set(false);
+    this.resolveConfirm?.(response);
   }
 
   requireWallet() {
