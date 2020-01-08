@@ -55,7 +55,6 @@ export const Transfer = ({transferService, onTransferTriggered, transferClassNam
             tokenSymbol={selectedToken.symbol}
             errors={errors.amount}
             onChange={updateField('amount')}
-            onMaxClick={() => updateField('amount')(transferService.getMaxAmount(transferDetails.gasParameters, balance))}
           />
           <TransferRecipient
             onChange={updateField('to')}

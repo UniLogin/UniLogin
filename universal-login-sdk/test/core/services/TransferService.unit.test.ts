@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils, Wallet} from 'ethers';
-import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, SEND_TRANSACTION_GAS_LIMIT} from '@universal-login/commons';
 import {TransferService} from '../../../src/core/services/TransferService';
 import {encodeERC20Transfer} from '../../../src/core/utils/encodeTransferToMessage';
 
@@ -44,7 +44,7 @@ describe('UNIT: TransferService', () => {
         to: TEST_ACCOUNT_ADDRESS,
         value: utils.parseEther('123'),
         data: '0x',
-        gasLimit: utils.bigNumberify('95000'),
+        gasLimit: SEND_TRANSACTION_GAS_LIMIT,
         gasToken: gasParameters.gasToken,
         gasPrice: gasParameters.gasPrice,
       },
@@ -78,7 +78,7 @@ describe('UNIT: TransferService', () => {
         to: 'TOKEN_ADDRESS',
         value: 0,
         data: encodeERC20Transfer(recipient, '123'),
-        gasLimit: utils.bigNumberify('95000'),
+        gasLimit: SEND_TRANSACTION_GAS_LIMIT,
         gasToken: gasParameters.gasToken,
         gasPrice: gasParameters.gasPrice,
       },
@@ -144,7 +144,7 @@ describe('UNIT: TransferService', () => {
 
   it('get Ethereum max amount', () => {
     const {transferService, balance} = setup();
-    expect(transferService.getMaxAmount(gasParameters, balance)).to.eq('299.999999999999905');
+    expect(transferService.getMaxAmount(gasParameters, balance)).to.eq('299.99999999999989');
   });
 
   it('get 0 if Ethereum max amount is below 0', () => {

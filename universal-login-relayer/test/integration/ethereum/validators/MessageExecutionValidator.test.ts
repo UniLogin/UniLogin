@@ -11,6 +11,7 @@ import {transferMessage} from '../../../fixtures/basicWalletContract';
 import {getTestSignedMessage} from '../../../testconfig/message';
 import {Beta2Service} from '../../../../src/integration/ethereum/Beta2Service';
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
+import {GnosisSafeService} from '../../../../src/integration/ethereum/GnosisSafeService';
 
 describe('INT: MessageExecutionValidator', async () => {
   let message: Message;
@@ -24,7 +25,8 @@ describe('INT: MessageExecutionValidator', async () => {
     ({wallet, master, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {...emptyMessage, ...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, nonce: 1, gasLimit: '200000'};
     const beta2Service = new Beta2Service(wallet.provider);
-    const walletContractService = new WalletContractService(new BlockchainService(wallet.provider), beta2Service);
+    const gnosisSafeService = new GnosisSafeService(wallet.provider);
+    const walletContractService = new WalletContractService(new BlockchainService(wallet.provider), beta2Service, gnosisSafeService);
     messageExecutionValidator = new MessageExecutionValidator(wallet, contractWhiteList, walletContractService);
   });
 
@@ -52,7 +54,7 @@ describe('INT: MessageExecutionValidator', async () => {
       wallet: contractWhiteList.wallet,
       proxy: [TEST_ACCOUNT_ADDRESS],
     },
-    new WalletContractService(new BlockchainService(wallet.provider), new Beta2Service(wallet.provider)),
+    new WalletContractService(new BlockchainService(wallet.provider), new Beta2Service(wallet.provider), new GnosisSafeService(wallet.provider)),
     );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(messageValidatorWithInvalidProxy.validate(signedMessage)).to.be.eventually.rejectedWith(`Invalid proxy at address '${signedMessage.from}'. Deployed contract bytecode hash: '${contractWhiteList.proxy[0]}'. Supported bytecode hashes: [${TEST_ACCOUNT_ADDRESS}]`);
@@ -63,7 +65,7 @@ describe('INT: MessageExecutionValidator', async () => {
       wallet: [TEST_ACCOUNT_ADDRESS],
       proxy: contractWhiteList.proxy,
     },
-    new WalletContractService(new BlockchainService(wallet.provider), new Beta2Service(wallet.provider)),
+    new WalletContractService(new BlockchainService(wallet.provider), new Beta2Service(wallet.provider), new GnosisSafeService(wallet.provider)),
     );
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(messageValidatorWithInvalidMaster.validate(signedMessage)).to.be.eventually

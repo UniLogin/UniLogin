@@ -9,6 +9,7 @@ import {getTestSignedMessage} from '../../../testconfig/message';
 import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
 import {Beta2Service} from '../../../../src/integration/ethereum/Beta2Service';
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
+import {GnosisSafeService} from '../../../../src/integration/ethereum/GnosisSafeService';
 
 describe('INT: EstimateGasValidator', async () => {
   let message: Message;
@@ -21,7 +22,8 @@ describe('INT: EstimateGasValidator', async () => {
     ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {...emptyMessage, from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS, gasLimit: '200000', nonce: 1};
     const beta2Service = new Beta2Service(wallet.provider);
-    const walletContractService = new WalletContractService(new BlockchainService(wallet.provider), beta2Service);
+    const gnosisSafeService = new GnosisSafeService(wallet.provider);
+    const walletContractService = new WalletContractService(new BlockchainService(wallet.provider), beta2Service, gnosisSafeService);
     validator = new EstimateGasValidator(wallet, walletContractService);
   });
 

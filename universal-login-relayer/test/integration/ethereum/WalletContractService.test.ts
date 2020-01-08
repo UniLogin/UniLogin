@@ -1,12 +1,14 @@
 import {expect} from 'chai';
-import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, sign} from '@universal-login/commons';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
-import {BlockchainService, messageToSignedMessage} from '@universal-login/contracts';
+import {BlockchainService, messageToSignedMessage, calculateMessageHash} from '@universal-login/contracts';
+import {setupGnosisSafeContract} from '@universal-login/contracts/testutils';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Beta2Service} from '../../../src/integration/ethereum/Beta2Service';
 import {Contract, Wallet, utils} from 'ethers';
 import createWalletContract from '../../testhelpers/createWalletContract';
 import {getTestSignedMessage} from '../../testconfig/message';
+import {GnosisSafeService} from '../../../src/integration/ethereum/GnosisSafeService';
 
 describe('INT: WalletContractService', () => {
   let walletContractService: WalletContractService;
@@ -18,7 +20,8 @@ describe('INT: WalletContractService', () => {
     const provider = createMockProvider();
     const blockchainService = new BlockchainService(provider);
     const beta2Service = new Beta2Service(provider);
-    walletContractService = new WalletContractService(blockchainService, beta2Service);
+    const gnosisSafeService = new GnosisSafeService(provider);
+    walletContractService = new WalletContractService(blockchainService, beta2Service, gnosisSafeService);
     [wallet] = getWallets(provider);
     ({proxy: proxyContract, master} = await createWalletContract(wallet));
   });
@@ -57,6 +60,42 @@ describe('INT: WalletContractService', () => {
 
     it('returns proper required signatures count', async () => {
       expect(await walletContractService.getRequiredSignatures(proxyContract.address)).to.eq(1);
+    });
+
+    it('fetchMasterAddress returns proper address', async () => {
+      expect(await walletContractService.fetchMasterAddress(proxyContract.address)).to.eq(master.address);
+    });
+  });
+
+  describe('beta3', () => {
+    let keyPair: KeyPair;
+
+    before(async () => {
+      ({proxy: proxyContract, master, keyPair} = await setupGnosisSafeContract(wallet));
+    });
+
+    it('returns false if key doesn`t exists', async () => {
+      expect(await walletContractService.keyExist(proxyContract.address, TEST_ACCOUNT_ADDRESS)).to.be.false;
+    });
+
+    it('returns true if key exists', async () => {
+      expect(await walletContractService.keyExist(proxyContract.address, keyPair.publicKey)).to.be.true;
+    });
+
+    it('calculates message hash', async () => {
+      const message = {...getTestSignedMessage(), from: proxyContract.address};
+      const testSignedMsgHash = calculateMessageHash(message);
+      expect(await walletContractService.calculateMessageHash(message)).to.eq(testSignedMsgHash);
+    });
+
+    it('returns proper required signatures count', async () => {
+      expect(await walletContractService.getRequiredSignatures(proxyContract.address)).to.eq(1);
+    });
+
+    it('recovers signer from message', async () => {
+      const message = {...getTestSignedMessage(), from: proxyContract.address};
+      const signedMessage = {...message, signature: sign(calculateMessageHash(message) as any, keyPair.privateKey)};
+      expect(await walletContractService.recoverSignerFromMessage(signedMessage)).to.eq(keyPair.publicKey);
     });
 
     it('fetchMasterAddress returns proper address', async () => {

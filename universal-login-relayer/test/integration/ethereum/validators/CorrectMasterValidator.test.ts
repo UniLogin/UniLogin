@@ -9,6 +9,7 @@ import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContr
 import {Beta2Service} from '../../../../src/integration/ethereum/Beta2Service';
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
 import {BlockchainService} from '@universal-login/contracts';
+import {GnosisSafeService} from '../../../../src/integration/ethereum/GnosisSafeService';
 
 describe('INT: CorrectMasterValidator', async () => {
   let message: MessageWithFrom;
@@ -25,7 +26,8 @@ describe('INT: CorrectMasterValidator', async () => {
     ({mockToken, master, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
     beta2Service = new Beta2Service(wallet.provider);
-    walletContractService = new WalletContractService(new BlockchainService(wallet.provider), beta2Service);
+    const gnosisSafeService = new GnosisSafeService(wallet.provider);
+    walletContractService = new WalletContractService(new BlockchainService(wallet.provider), beta2Service, gnosisSafeService);
     validator = new CorrectMasterValidator(wallet.provider, contractWhiteList, walletContractService);
   });
 
