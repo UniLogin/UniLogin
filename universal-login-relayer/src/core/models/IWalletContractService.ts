@@ -7,4 +7,5 @@ export default interface IWalletContractService {
   recoverSignerFromMessage: (message: SignedMessage) => Promise<string> | string;
   getRequiredSignatures: (walletAddress: string) => Promise<utils.BigNumber>;
   fetchMasterAddress: (walletAddress: string) => Promise<string>;
+  isValidSignature: (message: string, walletAddress: string, signature: string) => Promise<string>;
 }
