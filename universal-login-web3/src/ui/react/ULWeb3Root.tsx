@@ -12,21 +12,20 @@ export interface ULWeb3RootProps {
 }
 
 export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3RootProps) => {
-  const showOnboarding = useProperty(uiController.showOnboarding);
-  const showConfirmation = useProperty(uiController.showConfirmation);
+  const modal = useProperty(uiController.activeModal);
 
-  return (
-    <>
-      {showOnboarding && (
-        <OnboardingModal
-          sdk={sdk}
-          walletService={walletService}
-          domains={domains}
-        />
-      )}
-      {showConfirmation && <Confirmation
-        onConfirmationResponse={response => uiController.setResponse(response)}
-      />}
-    </>
-  );
+  switch (modal) {
+    case 'IDLE':
+      return <div />;
+    case 'ONBOARDING':
+      return <OnboardingModal
+        sdk={sdk}
+        walletService={walletService}
+        domains={domains}
+      />;
+    case 'CONFIRMATION':
+      return <Confirmation onConfirmationResponse={response => uiController.setResponse(response)} />;
+    default:
+      throw Error(`Invalid user interface state: ${modal}`);
+  }
 };

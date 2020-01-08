@@ -151,6 +151,7 @@ export class ULWeb3Provider implements Provider {
     this.uiController.requireWallet();
 
     await waitForTrue(this.isLoggedIn);
+    this.uiController.finishOnboarding();
   }
 
   private async ensureWalletIsDeployed() {
