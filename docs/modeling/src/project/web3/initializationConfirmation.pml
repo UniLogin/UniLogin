@@ -13,5 +13,5 @@ rnote over Web3Windows
   show confirmation dialog
   which execute onConfirmationResponse
 endrnote
-ULWeb3Provider -> ULWeb3Provider: onConfirmationResponse()
+ULWeb3Provider -> ULWeb3Provider: resolve requireConfirmation()
 @enduml
