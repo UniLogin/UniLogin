@@ -6,7 +6,7 @@ import {utils, Wallet} from 'ethers';
 import {waitExpect} from '@universal-login/commons/testutils';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {createWallet} from '@universal-login/sdk/testutils';
-import {OnboardingProps} from '../src/ui/react/Onboarding';
+import {ULWeb3RootProps} from '../src/ui/react/ULWeb3Root';
 import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWeb3';
 import {ULWeb3Provider} from '../src';
 
@@ -15,12 +15,13 @@ chai.use(chaiAsPromised);
 describe('ULWeb3Provider', () => {
   let relayer: RelayerUnderTest;
   let deployer: Wallet;
-  let services: OnboardingProps;
+  let services: ULWeb3RootProps;
   let web3: Web3;
   let ulProvider: ULWeb3Provider;
 
   beforeEach(async () => {
     ({relayer, deployer, services, web3, ulProvider} = await setupTestEnvironmentWithWeb3());
+    (ulProvider as any).uiController.requireConfirmation = sinon.stub().resolves(true);
   });
 
   afterEach(async () => {
