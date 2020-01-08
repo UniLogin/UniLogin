@@ -2,12 +2,12 @@ import {Provider} from 'web3/providers';
 import {Config, getConfigForNetwork, Network} from './config';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {UIController} from './services/UIController';
-import {providers, utils} from 'ethers';
+import {providers, utils, constants} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {ensure, Message, walletFromBrain, ApplicationInfo} from '@universal-login/commons';
 import {waitForTrue} from './ui/utils/utils';
 import {initUi} from './ui/utils/initUi';
-import {OnboardingProps} from './ui/react/Onboarding';
+import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
 import {StorageService, WalletStorageService} from '@universal-login/react';
 import {Property} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
@@ -18,7 +18,7 @@ export interface ULWeb3ProviderOptions {
   relayerUrl: string;
   ensDomains: string[];
   applicationInfo?: ApplicationInfo;
-  uiInitializer?: (services: OnboardingProps) => void;
+  uiInitializer?: (services: ULWeb3RootProps) => void;
   storageService?: StorageService;
 }
 
@@ -104,7 +104,8 @@ export class ULWeb3Provider implements Provider {
     switch (method) {
       case 'eth_sendTransaction':
         const tx = params[0];
-        return this.sendTransaction(tx);
+        const isConfirmed = await this.uiController.requireConfirmation();
+        return isConfirmed ? this.sendTransaction(tx) : constants.HashZero;
       case 'eth_accounts':
         return this.getAccounts();
       case 'eth_sign':

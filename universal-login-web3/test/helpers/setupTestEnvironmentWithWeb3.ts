@@ -2,16 +2,16 @@ import {setupTestEnvironment} from './setupTestEnvironment';
 import Web3 from 'web3';
 import {Provider} from 'web3/providers';
 import {ULWeb3Provider} from '../../src';
-import {OnboardingProps} from '../../src/ui/react/Onboarding';
+import {ULWeb3RootProps} from '../../src/ui/react/ULWeb3Root';
 import {MemoryStorageService} from '@universal-login/react';
 
-function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider, OnboardingProps] {
-  let services: OnboardingProps;
+function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider, ULWeb3RootProps] {
+  let services: ULWeb3RootProps;
   const ulProvider = new ULWeb3Provider({
     provider,
     relayerUrl,
     ensDomains: ['mylogin.eth'],
-    uiInitializer: (props: OnboardingProps) => {
+    uiInitializer: (props: ULWeb3RootProps) => {
       services = props;
     },
     storageService: new MemoryStorageService(),
