@@ -8,8 +8,8 @@ export {BlockchainService} from './integration/BlockchainService';
 
 export {deployGnosisSafe, deployProxyFactory} from './gnosis-safe@1.1.1/deployContracts';
 export {encodeDataForSetup} from './gnosis-safe@1.1.1/encode';
-export {computeGnosisCounterfactualAddress, calculateMessageHash} from './gnosis-safe@1.1.1/utils';
-export {GnosisSafeInterface, ProxyFactoryInterface, ProxyInterface, IProxyInterface} from './gnosis-safe@1.1.1/interfaces';
+export {computeGnosisCounterfactualAddress, calculateMessageHash, signStringMessage, calculateGnosisStringHash} from './gnosis-safe@1.1.1/utils';
+export {GnosisSafeInterface, ProxyFactoryInterface, ProxyInterface, IProxyInterface, ISignatureValidatorInterface} from './gnosis-safe@1.1.1/interfaces';
 
 import * as beta2 from './beta2/contracts';
 export {beta2};
