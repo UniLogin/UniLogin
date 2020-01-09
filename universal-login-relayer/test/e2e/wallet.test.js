@@ -2,11 +2,11 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType} from '@universal-login/commons';
+import {createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
 import {startRelayerWithRefund, createWalletCounterfactually} from '../testhelpers/http';
 import {getTestSignedMessage} from '../testconfig/message';
-
+import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
 chai.use(chaiHttp);
 
 describe('E2E: Relayer - WalletContract routes', async () => {
@@ -21,11 +21,11 @@ describe('E2E: Relayer - WalletContract routes', async () => {
   let keyPair;
   const relayerPort = '33511';
   const relayerUrl = `http://localhost:${relayerPort}`;
+  let ensRegistrar;
 
   before(async () => {
-    keyPair = createKeyPair();
-    ({relayer, deployer, otherWallet, mockToken, ensAddress, walletContract, factoryContract} = await startRelayerWithRefund(relayerPort));
-    contract = await createWalletCounterfactually(deployer, relayerUrl, keyPair, walletContract.address, factoryContract.address, ensAddress);
+    ({relayer, deployer, otherWallet, mockToken, ensAddress, walletContract, factoryContract, ensRegistrar} = await startRelayerWithRefund(relayerPort));
+    ({proxyContract: contract, keyPair} = await deployGnosisSafeProxyWithENS(deployer, factoryContract.address, walletContract.address, 'name.mylogin.eth', ensAddress, ensRegistrar.address, TEST_GAS_PRICE));
     await mockToken.transfer(contract.address, utils.parseEther('1.0'));
   });
 

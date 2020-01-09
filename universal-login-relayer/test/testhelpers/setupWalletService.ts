@@ -1,7 +1,7 @@
 import {EventEmitter} from 'fbemitter';
 import sinon from 'sinon';
 import {Wallet, Contract, utils} from 'ethers';
-import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN, DEPLOY_GAS_LIMIT} from '@universal-login/commons';
+import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {encodeDataForSetup, computeGnosisCounterfactualAddress, deployGnosisSafe, deployProxyFactory} from '@universal-login/contracts';
 import ENSRegistrar from '@universal-login/contracts/dist/contracts/ENSRegistrar.json';
 import {WalletDeploymentService} from '../../src/integration/ethereum/WalletDeploymentService';
@@ -10,6 +10,7 @@ import {WalletDeployer} from '../../src/integration/ethereum/WalletDeployer';
 import ENSService from '../../src/integration/ethereum/ensService';
 import {AddressZero} from 'ethers/constants';
 import {deployContract} from 'ethereum-waffle';
+import {DEPLOYMENT_REFUND} from '@universal-login/commons';
 
 export default async function setupWalletService(wallet: Wallet) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
@@ -40,7 +41,7 @@ export const getSetupData = async (keyPair: KeyPair, ensName: string, ensService
     deploymentCallData: new utils.Interface(ENSRegistrar.interface as any).functions.register.encode(args),
     fallbackHandler: AddressZero,
     paymentToken: gasToken,
-    payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),
+    payment: utils.bigNumberify(gasPrice).mul(DEPLOYMENT_REFUND).toString(),
     refundReceiver: relayerAddress,
   };
   return encodeDataForSetup(deployment);

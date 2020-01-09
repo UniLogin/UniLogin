@@ -1,6 +1,6 @@
 import chai from 'chai';
 import {Contract, utils, Wallet} from 'ethers';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import {
   calculateInitializeSignature,
   ETHER_NATIVE_TOKEN,
@@ -16,6 +16,7 @@ import ENSRegistrar from '@universal-login/contracts/dist/contracts/ENSRegistrar
 import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
 import {AddressZero} from 'ethers/constants';
+import {DEPLOYMENT_REFUND} from '@universal-login/commons';
 
 export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
@@ -63,9 +64,10 @@ export const startRelayerWithRefund = async (port = '33111') => {
   const [deployer, wallet, otherWallet] = getWallets(provider);
   const walletContract = await deployGnosisSafe(deployer);
   const factoryContract = await deployProxyFactory(deployer);
-  const {relayer, mockToken, ensAddress} = await RelayerUnderTest.createPreconfiguredRelayer({port, wallet: deployer, walletContract, factoryContract});
+  const ensRegistrar = await deployContract(wallet, ENSRegistrar);
+  const {relayer, mockToken, ensAddress} = await RelayerUnderTest.createPreconfiguredRelayer({port, wallet: deployer, walletContract, factoryContract, ensRegistrar});
   await relayer.start();
-  return {provider, relayer, mockToken, factoryContract, walletContract, deployer, ensAddress, wallet, otherWallet};
+  return {provider, relayer, mockToken, factoryContract, walletContract, deployer, ensAddress, wallet, otherWallet, ensRegistrar};
 };
 
 export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPrice, gasToken = ETHER_NATIVE_TOKEN.address) => {
@@ -92,7 +94,7 @@ export const getSetupData = async (keyPair, ensName, ensAddress, provider, gasPr
     deploymentCallData: new utils.Interface(ENSRegistrar.interface).functions.register.encode([hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress]),
     fallbackHandler: AddressZero,
     paymentToken: gasToken,
-    payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),
+    payment: utils.bigNumberify(gasPrice).mul(DEPLOYMENT_REFUND).toString(),
     refundReceiver: relayerAddress,
   };
   return encodeDataForSetup(deployment);

@@ -7,7 +7,8 @@ import {startRelayerWithRefund, createWalletCounterfactually, getInitData, getSe
 import Relayer from '../../src';
 import {waitForDeploymentStatus} from '../testhelpers/waitForDeploymentStatus';
 import GnosisProxy from '@universal-login/contracts/src/gnosis-safe@1.1.1/contracts/Proxy.json';
-
+// import {createFutureWallet} from '../testhelpers/setupWalletService';
+import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
 chai.use(chaiHttp);
 
 describe('E2E: Relayer - counterfactual deployment', () => {
@@ -25,9 +26,10 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   const relayerUrl = `http://localhost:${relayerPort}`;
   const ensName = 'myname.mylogin.eth';
   let signature: string;
+  let ensRegistrar: Contract;
 
   beforeEach(async () => {
-    ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress} = await startRelayerWithRefund(relayerPort));
+    ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress, ensRegistrar} = await startRelayerWithRefund(relayerPort));
     keyPair = createKeyPair();
     initCode = getDeployData(beta2.WalletProxy as any, [walletContract.address]);
     const setupData = await getSetupData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE, deployer.address, relayer.publicConfig.ensRegistrar);
@@ -77,7 +79,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   });
 
   it('Counterfactual deployment fail if ENS name is taken', async () => {
-    await createWalletCounterfactually(deployer, relayerUrl, keyPair, walletContract.address, factoryContract.address, ensAddress, ensName);
+    await deployGnosisSafeProxyWithENS(deployer, factoryContract.address, walletContract.address, ensName, ensAddress, ensRegistrar.address, TEST_GAS_PRICE);
     const newKeyPair = createKeyPair();
     contractAddress = computeCounterfactualAddress(factoryContract.address, newKeyPair.publicKey, initCode);
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
@@ -100,8 +102,9 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   });
 
   it('Counterfactual deployment with token payment', async () => {
-    const initData = await getInitData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE, mockToken.address);
-    signature = await calculateInitializeSignature(initData, keyPair.privateKey);
+    const setupData = await getSetupData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE, deployer.address, relayer.publicConfig.ensRegistrar, mockToken.address);
+    contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, 0, setupData, walletContract.address);
+    signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
     const initialRelayerBalance = await mockToken.balanceOf(deployer.address);
@@ -118,7 +121,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
     expect(status.transactionHash).to.be.properHex(64);
-    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(beta2.WalletProxy as any)}`);
+    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(GnosisProxy as any)}`);
     expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(DEPLOYMENT_REFUND));
   });
 

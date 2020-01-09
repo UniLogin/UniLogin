@@ -27,28 +27,29 @@ type CreateRelayerArgs = {
   wallet: Wallet;
   walletContract: Contract;
   factoryContract: Contract;
+  ensRegistrar: Contract;
 };
 
 export class RelayerUnderTest extends Relayer {
   static async deployBaseContracts(wallet: Wallet) {
     const walletContract = await deployGnosisSafe(wallet);
     const factoryContract = await deployProxyFactory(wallet);
-    return {walletContract, factoryContract};
+    const ensRegistrar = await deployContract(wallet, ENSRegistrar);
+    return {walletContract, factoryContract, ensRegistrar};
   }
 
   static async createPreconfigured(wallet: Wallet, port = '33111') {
-    const {walletContract, factoryContract} = await RelayerUnderTest.deployBaseContracts(wallet);
-    return this.createPreconfiguredRelayer({port, wallet, walletContract, factoryContract});
+    const {walletContract, factoryContract, ensRegistrar} = await RelayerUnderTest.deployBaseContracts(wallet);
+    return this.createPreconfiguredRelayer({port, wallet, walletContract, factoryContract, ensRegistrar});
   }
 
-  static async createPreconfiguredRelayer({port, wallet, walletContract, factoryContract}: CreateRelayerArgs) {
+  static async createPreconfiguredRelayer({port, wallet, walletContract, factoryContract, ensRegistrar}: CreateRelayerArgs) {
     const ensBuilder = new ENSBuilder(wallet);
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
     const contractWhiteList = getContractWhiteList();
     const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
     const mockToken = await deployContract(wallet, mockContracts.MockToken);
-    const ensRegistrar = await deployContract(wallet, ENSRegistrar);
     const supportedTokens = [
       {
         address: mockToken.address,
