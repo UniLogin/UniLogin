@@ -9,4 +9,4 @@ export const setupWalletContractService = (provider: providers.Provider) => {
   const beta2Service = new Beta2Service(provider);
   const gnosisSafeService = new GnosisSafeService(provider);
   return new WalletContractService(blockchainService, beta2Service, gnosisSafeService);
-}
+};

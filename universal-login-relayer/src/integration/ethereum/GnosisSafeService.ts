@@ -1,7 +1,8 @@
 import {Contract, utils, providers} from 'ethers';
 import {SignedMessage, RelayerRequest} from '@universal-login/commons';
-import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface, calculateGnosisStringHash} from '@universal-login/contracts';
+import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface, calculateGnosisStringHash, encodeDataForExecTransaction} from '@universal-login/contracts';
 import IWalletContractService from '../../core/models/IWalletContractService';
+import {GAS_LIMIT_MARGIN} from '../../core/utils/messages/serialisation';
 
 export class GnosisSafeService implements IWalletContractService {
   constructor(private provider: providers.Provider) {
@@ -48,5 +49,15 @@ export class GnosisSafeService implements IWalletContractService {
       calculateGnosisStringHash(relayerRequest.contractAddress, relayerRequest.contractAddress),
       relayerRequest.signature!,
     );
+  }
+
+  messageToTransaction(message: SignedMessage) {
+    return Object({
+      gasPrice: message.gasPrice,
+      gasLimit: utils.bigNumberify(message.safeTxGas).add(message.baseGas).add(GAS_LIMIT_MARGIN),
+      to: message.from,
+      value: 0,
+      data: encodeDataForExecTransaction(message),
+    });
   }
 }
