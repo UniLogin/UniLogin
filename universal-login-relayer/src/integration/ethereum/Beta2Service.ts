@@ -1,5 +1,5 @@
 import {providers, Contract, utils} from 'ethers';
-import {calculateMessageHash, SignedMessage} from '@universal-login/commons';
+import {calculateMessageHash, SignedMessage, RelayerRequest, hashRelayerRequest, recoverFromRelayerRequest} from '@universal-login/commons';
 import {WalletContractInterface} from '@universal-login/contracts';
 import {getKeyFromHashAndSignature} from '../../core/utils/encodeData';
 import IWalletContractService from '../../core/models/IWalletContractService';
@@ -39,5 +39,13 @@ export class Beta2Service implements IWalletContractService {
   async isValidSignature(message: string, walletAddress: string, signature: string) {
     const contract = new Contract(walletAddress, beta2.WalletContract.interface as any, this.provider);
     return contract.isValidSignature(message, signature);
+  }
+
+  getRelayerRequestMessage(relayerRequest: RelayerRequest) {
+    return hashRelayerRequest(relayerRequest);
+  }
+
+  async recoverFromRelayerRequest(relayerRequest: RelayerRequest) {
+    return recoverFromRelayerRequest(relayerRequest);
   }
 }

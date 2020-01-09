@@ -1,6 +1,6 @@
 import {Contract, utils, providers} from 'ethers';
-import {SignedMessage} from '@universal-login/commons';
-import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface} from '@universal-login/contracts';
+import {SignedMessage, RelayerRequest} from '@universal-login/commons';
+import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface, calculateGnosisStringHash} from '@universal-login/contracts';
 import IWalletContractService from '../../core/models/IWalletContractService';
 
 export class GnosisSafeService implements IWalletContractService {
@@ -37,5 +37,16 @@ export class GnosisSafeService implements IWalletContractService {
   async isValidSignature(message: string, walletAddress: string, signature: string) {
     const walletProxy = new Contract(walletAddress, ISignatureValidatorInterface, this.provider);
     return walletProxy.isValidSignature(message, signature);
+  }
+
+  getRelayerRequestMessage(relayerRequest: RelayerRequest) {
+    return utils.hexlify(utils.toUtf8Bytes(relayerRequest.contractAddress));
+  }
+
+  recoverFromRelayerRequest(relayerRequest: RelayerRequest) {
+    return utils.recoverAddress(
+      calculateGnosisStringHash(relayerRequest.contractAddress, relayerRequest.contractAddress),
+      relayerRequest.signature!,
+    );
   }
 }

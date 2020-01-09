@@ -1,6 +1,6 @@
 import {Beta2Service} from './Beta2Service';
 import {BlockchainService} from '@universal-login/contracts';
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage, RelayerRequest} from '@universal-login/commons';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GnosisSafeService} from './GnosisSafeService';
 
@@ -50,5 +50,15 @@ export class WalletContractService implements IWalletContractService {
   async isValidSignature(message: string, walletAddress: string, signature: string) {
     const service = await this.getWalletService(walletAddress);
     return service.isValidSignature(message, walletAddress, signature);
+  }
+
+  async getRelayerRequestMessage(relayerRequest: RelayerRequest) {
+    const service = await this.getWalletService(relayerRequest.contractAddress);
+    return service.getRelayerRequestMessage(relayerRequest);
+  }
+
+  async recoverFromRelayerRequest(relayerRequest: RelayerRequest) {
+    const service = await this.getWalletService(relayerRequest.contractAddress!);
+    return service.recoverFromRelayerRequest(relayerRequest);
   }
 };
