@@ -1,5 +1,5 @@
 import {providers, Contract, utils} from 'ethers';
-import {calculateMessageHash, SignedMessage, RelayerRequest, hashRelayerRequest} from '@universal-login/commons';
+import {calculateMessageHash, SignedMessage, RelayerRequest, hashRelayerRequest, recoverFromRelayerRequest} from '@universal-login/commons';
 import {WalletContractInterface} from '@universal-login/contracts';
 import {getKeyFromHashAndSignature} from '../../core/utils/encodeData';
 import IWalletContractService from '../../core/models/IWalletContractService';
@@ -43,5 +43,9 @@ export class Beta2Service implements IWalletContractService {
 
   getRelayerRequestMessage(relayerRequest: RelayerRequest) {
     return hashRelayerRequest(relayerRequest);
+  }
+
+  async recoverFromRelayerRequest(relayerRequest: RelayerRequest) {
+    return recoverFromRelayerRequest(relayerRequest);
   }
 }

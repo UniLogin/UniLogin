@@ -9,4 +9,5 @@ export default interface IWalletContractService {
   fetchMasterAddress: (walletAddress: string) => Promise<string>;
   isValidSignature: (message: string, walletAddress: string, signature: string) => Promise<string>;
   getRelayerRequestMessage: (relayerRequest: RelayerRequest, walletAddress?: string) => Promise<string> | string;
+  recoverFromRelayerRequest: (relayerRequest: RelayerRequest, walletAddress?: string) => Promise<string> | string;
 }
