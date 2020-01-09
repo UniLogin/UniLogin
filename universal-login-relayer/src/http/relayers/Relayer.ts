@@ -18,8 +18,6 @@ import QueueSQLStore from '../../integration/sql/services/QueueSQLStore';
 import errorHandler from '../middlewares/errorHandler';
 import MessageSQLRepository from '../../integration/sql/services/MessageSQLRepository';
 import AuthorisationService from '../../core/services/AuthorisationService';
-import {IExecutionQueue} from '../../core/models/execution/IExecutionQueue';
-import IMessageRepository from '../../core/models/messages/IMessagesRepository';
 import {WalletDeployer} from '../../integration/ethereum/WalletDeployer';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import RelayerRequestSignatureValidator from '../../integration/ethereum/validators/RelayerRequestSignatureValidator';
@@ -27,12 +25,10 @@ import {MessageStatusService} from '../../core/services/execution/messages/Messa
 import {Beta2Service} from '../../integration/ethereum/Beta2Service';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
-import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig, IMessageValidator} from '@universal-login/commons';
+import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig} from '@universal-login/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
-import IRepository from '../../core/models/messages/IRepository';
-import Deployment from '../../core/models/Deployment';
 import SQLRepository from '../../integration/sql/services/SQLRepository';
 import ExecutionWorker from '../../core/services/execution/ExecutionWorker';
 import DeploymentExecutor from '../../integration/ethereum/DeploymentExecutor';
@@ -48,7 +44,7 @@ import {GnosisSafeService} from '../../integration/ethereum/GnosisSafeService';
 const defaultPort = '3311';
 
 export type RelayerClass = {
-  new (config: any, provider: providers.Provider): Relayer;
+  new(config: any, provider: providers.Provider): Relayer;
 };
 
 class Relayer {
@@ -58,34 +54,9 @@ class Relayer {
   protected readonly wallet: Wallet;
   readonly database: Knex;
   private ensService: ENSService = {} as ENSService;
-  private authorisationStore: AuthorisationStore = {} as AuthorisationStore;
-  private authorisationService: AuthorisationService = {} as AuthorisationService;
-  private devicesStore: DevicesStore = {} as DevicesStore;
-  private devicesService: DevicesService = {} as DevicesService;
-  private relayerRequestSignatureValidator: RelayerRequestSignatureValidator = {} as RelayerRequestSignatureValidator;
-  private balanceChecker: BalanceChecker = {} as BalanceChecker;
-  private requiredBalanceChecker: RequiredBalanceChecker = {} as RequiredBalanceChecker;
-  private walletService: WalletDeploymentService = {} as WalletDeploymentService;
-  private executionQueue: IExecutionQueue = {} as IExecutionQueue;
-  private messageHandler: MessageHandler = {} as MessageHandler;
-  private deploymentHandler: DeploymentHandler = {} as DeploymentHandler;
-  private messageHandlerValidator: MessageHandlerValidator = {} as MessageHandlerValidator;
-  private pendingMessages: PendingMessages = {} as PendingMessages;
-  private messageRepository: IMessageRepository = {} as IMessageRepository;
-  private deploymentRepository: IRepository<Deployment> = {} as IRepository<Deployment>;
-  private beta2Service: Beta2Service = {} as Beta2Service;
-  private statusService: MessageStatusService = {} as MessageStatusService;
-  private messageExecutionValidator: IMessageValidator = {} as IMessageValidator;
   private executionWorker: ExecutionWorker = {} as ExecutionWorker;
-  private messageExecutor: MessageExecutor = {} as MessageExecutor;
-  private deploymentExecutor: DeploymentExecutor = {} as DeploymentExecutor;
-  private minedTransactionHandler: MinedTransactionHandler = {} as MinedTransactionHandler;
-  private blockchainService: BlockchainService = {} as BlockchainService;
-  private walletContractService: WalletContractService = {} as WalletContractService;
-  private gnosisSafeService: GnosisSafeService = {} as GnosisSafeService;
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
-  private walletDeployer: WalletDeployer = {} as WalletDeployer;
   publicConfig: PublicRelayerConfig;
 
   constructor(protected config: Config, provider?: providers.Provider) {
@@ -95,9 +66,6 @@ class Relayer {
     this.wallet = new Wallet(config.privateKey, this.provider);
     this.database = Knex(config.database);
     this.publicConfig = getPublicConfig(this.config);
-    const blockchainService = new BlockchainService(this.provider);
-    const gasComputation = new GasComputation(blockchainService);
-    this.messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address);
   }
 
   async start() {
@@ -121,36 +89,37 @@ class Relayer {
     }
 
     this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
-    this.authorisationStore = new AuthorisationStore(this.database);
-    this.devicesStore = new DevicesStore(this.database);
-    this.walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
-    this.balanceChecker = new BalanceChecker(this.provider);
-    this.requiredBalanceChecker = new RequiredBalanceChecker(this.balanceChecker);
-    this.messageRepository = new MessageSQLRepository(this.database);
-    this.deploymentRepository = new SQLRepository(this.database, 'deployments');
-    this.executionQueue = new QueueSQLStore(this.database);
-    this.beta2Service = new Beta2Service(this.wallet.provider);
-    this.deploymentHandler = new DeploymentHandler(this.deploymentRepository, this.executionQueue);
-    this.blockchainService = new BlockchainService(this.provider);
-    this.gnosisSafeService = new GnosisSafeService(this.provider);
-    this.walletContractService = new WalletContractService(this.blockchainService, this.beta2Service, this.gnosisSafeService);
-    this.relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(this.walletContractService);
-    this.authorisationService = new AuthorisationService(this.authorisationStore, this.relayerRequestSignatureValidator);
-    this.devicesService = new DevicesService(this.devicesStore, this.relayerRequestSignatureValidator);
-    this.walletService = new WalletDeploymentService(this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker, this.devicesService);
-    this.minedTransactionHandler = new MinedTransactionHandler(this.hooks, this.authorisationStore, this.devicesService);
-    this.statusService = new MessageStatusService(this.messageRepository, this.walletContractService);
-    this.pendingMessages = new PendingMessages(this.messageRepository, this.executionQueue, this.statusService, this.walletContractService);
-    this.messageHandler = new MessageHandler(this.pendingMessages, this.messageHandlerValidator);
-    this.messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList, this.walletContractService);
-    this.messageExecutor = new MessageExecutor(this.wallet, this.messageExecutionValidator, this.messageRepository, this.minedTransactionHandler);
-    this.deploymentExecutor = new DeploymentExecutor(this.deploymentRepository, this.walletService);
-    this.executionWorker = new ExecutionWorker([this.messageExecutor, this.deploymentExecutor], this.executionQueue);
+    const blockchainService = new BlockchainService(this.provider);
+    const gasComputation = new GasComputation(blockchainService);
+    const messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address);
+    const walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
+    const balanceChecker = new BalanceChecker(this.provider);
+    const requiredBalanceChecker = new RequiredBalanceChecker(balanceChecker);
+    const messageRepository = new MessageSQLRepository(this.database);
+    const deploymentRepository = new SQLRepository(this.database, 'deployments');
+    const executionQueue = new QueueSQLStore(this.database);
+    const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue);
+    const walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider), new GnosisSafeService(this.provider));
+    const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
+    const authorisationStore = new AuthorisationStore(this.database);
+    const authorisationService = new AuthorisationService(authorisationStore, relayerRequestSignatureValidator);
+    const devicesStore = new DevicesStore(this.database);
+    const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
+    const walletService = new WalletDeploymentService(this.config, this.ensService, this.hooks, walletDeployer, requiredBalanceChecker, devicesService);
+    const statusService = new MessageStatusService(messageRepository, walletContractService);
+    const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, walletContractService);
+    const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
+    const messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList, walletContractService);
+    const minedTransactionHandler = new MinedTransactionHandler(this.hooks, authorisationStore, devicesService);
+    const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler);
+    const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
+    this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
+
     this.app.use(bodyParser.json());
-    this.app.use('/wallet', WalletRouter(this.deploymentHandler, this.messageHandler));
+    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
-    this.app.use('/authorisation', RequestAuthorisationRouter(this.authorisationService));
-    this.app.use('/devices', DevicesRouter(this.devicesService));
+    this.app.use('/authorisation', RequestAuthorisationRouter(authorisationService));
+    this.app.use('/devices', DevicesRouter(devicesService));
     this.app.use(errorHandler);
     this.server = this.app.listen(this.port);
   }
