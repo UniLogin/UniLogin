@@ -45,6 +45,6 @@ describe('INT: WalletMasterContractService', () => {
     const {proxy, keyPair} = await createGnosisSafeContract(wallet);
     const msgHash = calculateGnosisStringHash(proxy.address, proxy.address);
     const signature = signStringMessage(msgHash, keyPair.privateKey);
-    await expect(walletMasterContractService.ensureValidRelayerRequestSignatureForGnosis({signature, contractAddress: proxy.address})).to.be.fulfilled;
+    await expect(walletMasterContractService.ensureValidRelayerRequestSignature({signature, contractAddress: proxy.address})).to.be.fulfilled;
   });
 });
