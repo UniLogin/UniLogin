@@ -14,7 +14,7 @@ import MessageExecutionValidator from '../../src/integration/ethereum/validators
 import MessageExecutor from '../../src/integration/ethereum/MessageExecutor';
 import {DevicesStore} from '../../src/integration/sql/services/DevicesStore';
 import {DevicesService} from '../../src/core/services/DevicesService';
-import WalletMasterContractService from '../../src/integration/ethereum/WalletMasterContractService';
+import RelayerRequestSignatureValidator from '../../src/integration/ethereum/RelayerRequestSignatureValidator';
 import {Config} from '../../src';
 import ExecutionWorker from '../../src/core/services/execution/ExecutionWorker';
 import DeploymentExecutor from '../../src/integration/ethereum/DeploymentExecutor';
@@ -43,8 +43,8 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const messageHandlerValidator = new MessageHandlerValidator(config.maxGasLimit, gasComputation, wallet.address);
   const gnosisSafeService = new GnosisSafeService(provider);
   const walletContractService = new WalletContractService(blockchainService, beta2Service, gnosisSafeService);
-  const walletMasterContractService = new WalletMasterContractService(walletContractService);
-  const devicesService = new DevicesService(devicesStore, walletMasterContractService);
+  const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
+  const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
   const minedTransactionHandler = new MinedTransactionHandler(hooks, authorisationStore, devicesService);
   const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList(), walletContractService);
   const statusService = new MessageStatusService(messageRepository, walletContractService);

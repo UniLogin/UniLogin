@@ -3,7 +3,7 @@ import {ERC1271} from '@universal-login/contracts';
 import {UnauthorisedAddress} from '../../core/utils/errors';
 import IWalletContractService from '../../core/models/IWalletContractService';
 
-class WalletMasterContractService {
+class RelayerRequestSignatureValidator {
   constructor(private walletContractService: IWalletContractService) {}
 
   async ensureValidRelayerRequestSignature(relayerRequest: RelayerRequest) {
@@ -15,4 +15,4 @@ class WalletMasterContractService {
   }
 }
 
-export default WalletMasterContractService;
+export default RelayerRequestSignatureValidator;

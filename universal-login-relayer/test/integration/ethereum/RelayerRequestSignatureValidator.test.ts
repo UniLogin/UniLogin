@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Wallet} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {TEST_GAS_PRICE, createKeyPair, signRelayerRequest, TEST_PRIVATE_KEY, recoverFromRelayerRequest, ETHER_NATIVE_TOKEN, EMPTY_DEVICE_INFO} from '@universal-login/commons';
-import WalletMasterContractService from '../../../src/integration/ethereum/WalletMasterContractService';
+import RelayerRequestSignatureValidator from '../../../src/integration/ethereum/RelayerRequestSignatureValidator';
 import setupWalletService, {createFutureWallet} from '../../testhelpers/setupWalletService';
 import createGnosisSafeContract from '../../testhelpers/createGnosisSafeContract';
 import {Beta2Service} from '../../../src/integration/ethereum/Beta2Service';
@@ -10,8 +10,8 @@ import {BlockchainService, signStringMessage, calculateGnosisStringHash} from '@
 import {GnosisSafeService} from '../../../src/integration/ethereum/GnosisSafeService';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
 
-describe('INT: WalletMasterContractService', () => {
-  let walletMasterContractService: WalletMasterContractService;
+describe('INT: RelayerRequestSignatureValidator', () => {
+  let relayerRequestSignatureValidator: RelayerRequestSignatureValidator;
   let wallet: Wallet;
   let provider;
   let contractAddress: string;
@@ -26,25 +26,25 @@ describe('INT: WalletMasterContractService', () => {
     const gnosisSafeService = new GnosisSafeService(provider);
     const walletContractService = new WalletContractService(blockchainService, beta2Service, gnosisSafeService);
     const {walletService, factoryContract, ensService} = await setupWalletService(wallet);
-    walletMasterContractService = new WalletMasterContractService(walletContractService);
+    relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
     const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
     await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
     contractAddress = futureContractAddress;
   });
 
   it('do not throw exception', async () => {
-    await expect(walletMasterContractService.ensureValidRelayerRequestSignature(signRelayerRequest({contractAddress}, keyPair.privateKey))).to.be.fulfilled;
+    await expect(relayerRequestSignatureValidator.ensureValidRelayerRequestSignature(signRelayerRequest({contractAddress}, keyPair.privateKey))).to.be.fulfilled;
   });
 
   it('throw exception', async () => {
     const relayerRequest = signRelayerRequest({contractAddress}, TEST_PRIVATE_KEY);
-    await expect(walletMasterContractService.ensureValidRelayerRequestSignature(relayerRequest)).to.be.rejectedWith(`Unauthorised address: ${recoverFromRelayerRequest(relayerRequest)}`);
+    await expect(relayerRequestSignatureValidator.ensureValidRelayerRequestSignature(relayerRequest)).to.be.rejectedWith(`Unauthorised address: ${recoverFromRelayerRequest(relayerRequest)}`);
   });
 
   it('validation works for GnosisSafe', async () => {
     const {proxy, keyPair} = await createGnosisSafeContract(wallet);
     const msgHash = calculateGnosisStringHash(proxy.address, proxy.address);
     const signature = signStringMessage(msgHash, keyPair.privateKey);
-    await expect(walletMasterContractService.ensureValidRelayerRequestSignature({signature, contractAddress: proxy.address})).to.be.fulfilled;
+    await expect(relayerRequestSignatureValidator.ensureValidRelayerRequestSignature({signature, contractAddress: proxy.address})).to.be.fulfilled;
   });
 });

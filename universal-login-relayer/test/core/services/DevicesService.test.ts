@@ -13,7 +13,7 @@ describe('UNIT: DevicesService', () => {
   const keyPair = createKeyPair();
   const relayerRequest = signRelayerRequest({contractAddress: TEST_CONTRACT_ADDRESS}, keyPair.privateKey);
   const invalidRequest = signRelayerRequest({contractAddress: TEST_CONTRACT_ADDRESS}, TEST_PRIVATE_KEY);
-  const walletMasterContractService: any = {
+  const relayerRequestSignatureValidator: any = {
     ensureValidRelayerRequestSignature: sinon.stub(),
   };
   const devicesStore: any = {
@@ -24,12 +24,12 @@ describe('UNIT: DevicesService', () => {
   let devicesService: DevicesService;
 
   before(() => {
-    walletMasterContractService.ensureValidRelayerRequestSignature.resolves();
-    walletMasterContractService.ensureValidRelayerRequestSignature.withArgs(invalidRequest).rejects(new UnauthorisedAddress(recoverFromRelayerRequest(invalidRequest)));
+    relayerRequestSignatureValidator.ensureValidRelayerRequestSignature.resolves();
+    relayerRequestSignatureValidator.ensureValidRelayerRequestSignature.withArgs(invalidRequest).rejects(new UnauthorisedAddress(recoverFromRelayerRequest(invalidRequest)));
   });
 
   beforeEach(async () => {
-    devicesService = new DevicesService(devicesStore, walletMasterContractService);
+    devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
   });
 
   it('add device', async () => {
