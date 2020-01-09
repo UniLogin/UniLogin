@@ -31,7 +31,7 @@ export const calculateMessageSignature = (unsignedMessage: UnsignedMessage, priv
   return sign(msgHash, privateKey);
 };
 
-export const signStringMessage = (payload: any, privateKey: string) => {
+export const signStringMessage = (payload: string, privateKey: string) => {
   const signingKey = new utils.SigningKey(privateKey);
   const signature = signingKey.signDigest(payload);
   return utils.joinSignature(signature);

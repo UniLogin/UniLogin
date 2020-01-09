@@ -26,7 +26,7 @@ describe('INT: WalletMasterContractService', () => {
     const gnosisSafeService = new GnosisSafeService(provider);
     const walletContractService = new WalletContractService(blockchainService, beta2Service, gnosisSafeService);
     const {walletService, factoryContract, ensService} = await setupWalletService(wallet);
-    walletMasterContractService = new WalletMasterContractService(provider, walletContractService);
+    walletMasterContractService = new WalletMasterContractService(walletContractService);
     const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
     await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
     contractAddress = futureContractAddress;
