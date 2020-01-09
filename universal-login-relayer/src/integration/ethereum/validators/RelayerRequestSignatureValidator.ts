@@ -1,7 +1,7 @@
 import {RelayerRequest, ensure} from '@universal-login/commons';
 import {ERC1271} from '@universal-login/contracts';
-import {UnauthorisedAddress} from '../../core/utils/errors';
-import IWalletContractService from '../../core/models/IWalletContractService';
+import {UnauthorisedAddress} from '../../../core/utils/errors';
+import IWalletContractService from '../../../core/models/IWalletContractService';
 
 class RelayerRequestSignatureValidator {
   constructor(private walletContractService: IWalletContractService) {}

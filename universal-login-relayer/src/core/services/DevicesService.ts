@@ -1,6 +1,6 @@
 import {Device, DeviceInfo, RelayerRequest} from '@universal-login/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
-import RelayerRequestSignatureValidator from '../../integration/ethereum/RelayerRequestSignatureValidator';
+import RelayerRequestSignatureValidator from '../../integration/ethereum/validators/RelayerRequestSignatureValidator';
 
 export class DevicesService {
   constructor(private devicesStore: DevicesStore, private relayerRequestSignatureValidator: RelayerRequestSignatureValidator) {

@@ -52,8 +52,8 @@ export class WalletContractService implements IWalletContractService {
     return service.isValidSignature(message, walletAddress, signature);
   }
 
-  async getRelayerRequestMessage(relayerRequest: RelayerRequest, walletAddress?: string) {
-    const service = await this.getWalletService(walletAddress!);
+  async getRelayerRequestMessage(relayerRequest: RelayerRequest) {
+    const service = await this.getWalletService(relayerRequest.contractAddress);
     return service.getRelayerRequestMessage(relayerRequest);
   }
 

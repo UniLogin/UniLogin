@@ -1,6 +1,6 @@
 import {RelayerRequest, recoverFromRelayerRequest} from '@universal-login/commons';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
-import RelayerRequestSignatureValidator from '../../integration/ethereum/RelayerRequestSignatureValidator';
+import RelayerRequestSignatureValidator from '../../integration/ethereum/validators/RelayerRequestSignatureValidator';
 import {AddAuthorisationRequest} from '../models/AddAuthorisationRequest';
 
 class AuthorisationService {

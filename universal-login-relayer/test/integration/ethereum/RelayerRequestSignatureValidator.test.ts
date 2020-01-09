@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Wallet} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {TEST_GAS_PRICE, createKeyPair, signRelayerRequest, TEST_PRIVATE_KEY, recoverFromRelayerRequest, ETHER_NATIVE_TOKEN, EMPTY_DEVICE_INFO} from '@universal-login/commons';
-import RelayerRequestSignatureValidator from '../../../src/integration/ethereum/RelayerRequestSignatureValidator';
+import RelayerRequestSignatureValidator from '../../../src/integration/ethereum/validators/RelayerRequestSignatureValidator';
 import setupWalletService, {createFutureWallet} from '../../testhelpers/setupWalletService';
 import createGnosisSafeContract from '../../testhelpers/createGnosisSafeContract';
 import {Beta2Service} from '../../../src/integration/ethereum/Beta2Service';
