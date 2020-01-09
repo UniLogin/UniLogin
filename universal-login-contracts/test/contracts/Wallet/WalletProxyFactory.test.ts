@@ -9,6 +9,7 @@ import {ensAndMasterFixture} from '../../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../../helpers/argumentsEncoding';
 import {WalletContractInterface, WalletProxyFactoryInterface} from '../../helpers/interfaces';
 import {setupInitializeWithENSArgs} from '../../helpers/ProxyUtils';
+import {MAGICVALUE} from '../../../src/ERC1271/constants.js';
 
 chai.use(solidity);
 
@@ -83,7 +84,6 @@ describe('Counterfactual Factory', () => {
   });
 
   it('isValidSignature', async () => {
-    const MAGICVALUE = '0x20c13b0b';
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
     const proxyContract = new Contract(futureAddress, WalletContractInterface, wallet);

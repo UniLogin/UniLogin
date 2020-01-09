@@ -1,17 +1,15 @@
 import {recoverFromRelayerRequest, RelayerRequest, hashRelayerRequest, ensure} from '@universal-login/commons';
-import {ethers, providers} from 'ethers';
-import {beta2} from '@universal-login/contracts';
+import {ERC1271} from '@universal-login/contracts';
+import {utils} from 'ethers';
 import {UnauthorisedAddress} from '../../core/utils/errors';
-
-const MAGICVALUE = '0x20c13b0b';
+import IWalletContractService from '../../core/models/IWalletContractService';
 
 class WalletMasterContractService {
-  constructor(private provider: providers.Provider) {}
+  constructor(private walletContractService: IWalletContractService) {}
 
   private async ensureValidSignature(walletContractAddress: string, signature: string, payloadDigest: string, recoveredAddress: string) {
-    const contract = new ethers.Contract(walletContractAddress, beta2.WalletContract.interface, this.provider);
-    const isCorrectAddress = await contract.isValidSignature(payloadDigest, signature);
-    ensure(isCorrectAddress === MAGICVALUE, UnauthorisedAddress, recoveredAddress);
+    const isCorrectAddress = await this.walletContractService.isValidSignature(payloadDigest, walletContractAddress, signature);
+    ensure(isCorrectAddress === ERC1271.MAGICVALUE, UnauthorisedAddress, recoveredAddress);
   }
 
   async ensureValidRelayerRequestSignature(relayerRequest: RelayerRequest) {
@@ -20,6 +18,12 @@ class WalletMasterContractService {
     const payloadDigest = hashRelayerRequest(relayerRequest);
 
     await this.ensureValidSignature(contractAddress, signature!, payloadDigest, recoveredAddress);
+  }
+
+  async ensureValidRelayerRequestSignatureForGnosis(relayerRequest: RelayerRequest) {
+    const recoveredAddress = recoverFromRelayerRequest(relayerRequest);
+    const {contractAddress, signature} = relayerRequest;
+    await this.ensureValidSignature(contractAddress, signature!, utils.hexlify(utils.toUtf8Bytes(relayerRequest.contractAddress)), recoveredAddress);
   }
 }
 

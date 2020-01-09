@@ -12,6 +12,7 @@ import {encodeDataForExecuteSigned, messageToSignedMessage, messageToUnsignedMes
 import {calculateBaseGas} from '../../../src/estimateGas';
 import {calculateFinalGasLimit, calculatePaymentOptions, estimateBaseGasForNoSignature} from '../../helpers/calculations';
 import {UpgradedWalletInterface, WalletContractInterface} from '../../helpers/interfaces';
+import {MAGICVALUE, INVALIDSIGNATURE} from '../../../src/ERC1271/constants';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
@@ -325,9 +326,6 @@ describe('WalletContract', async () => {
   });
 
   describe('isValidSignature', () => {
-    const MAGICVALUE = '0x20c13b0b';
-    const INVALIDSIGNATURE = '0xffffffff';
-
     it('returns magic value if signer has the permission', async () => {
       const {proxyWallet, keyPair} = await loadFixture(walletContractFixture);
       const message = 'Hi, I am Justyna';

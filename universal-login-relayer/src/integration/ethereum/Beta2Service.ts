@@ -35,4 +35,9 @@ export class Beta2Service implements IWalletContractService {
     const walletProxy = new Contract(walletAddress, beta2.WalletProxy.interface, this.provider);
     return walletProxy.implementation();
   }
+
+  async isValidSignature(message: string, walletAddress: string, signature: string) {
+    const contract = new Contract(walletAddress, beta2.WalletContract.interface as any, this.provider);
+    return contract.isValidSignature(message, signature);
+  }
 }
