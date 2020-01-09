@@ -5,10 +5,8 @@ import {TEST_GAS_PRICE, createKeyPair, signRelayerRequest, TEST_PRIVATE_KEY, rec
 import RelayerRequestSignatureValidator from '../../../src/integration/ethereum/validators/RelayerRequestSignatureValidator';
 import setupWalletService, {createFutureWallet} from '../../testhelpers/setupWalletService';
 import createGnosisSafeContract from '../../testhelpers/createGnosisSafeContract';
-import {Beta2Service} from '../../../src/integration/ethereum/Beta2Service';
-import {BlockchainService, signStringMessage, calculateGnosisStringHash} from '@universal-login/contracts';
-import {GnosisSafeService} from '../../../src/integration/ethereum/GnosisSafeService';
-import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
+import {signStringMessage, calculateGnosisStringHash} from '@universal-login/contracts';
+import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 
 describe('INT: RelayerRequestSignatureValidator', () => {
   let relayerRequestSignatureValidator: RelayerRequestSignatureValidator;
@@ -21,10 +19,7 @@ describe('INT: RelayerRequestSignatureValidator', () => {
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
-    const beta2Service = new Beta2Service(provider);
-    const blockchainService = new BlockchainService(provider);
-    const gnosisSafeService = new GnosisSafeService(provider);
-    const walletContractService = new WalletContractService(blockchainService, beta2Service, gnosisSafeService);
+    const walletContractService = setupWalletContractService(provider);
     const {walletService, factoryContract, ensService} = await setupWalletService(wallet);
     relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
     const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
