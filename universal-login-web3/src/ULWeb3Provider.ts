@@ -108,9 +108,9 @@ export class ULWeb3Provider implements Provider {
       case 'eth_accounts':
         return this.getAccounts();
       case 'eth_sign':
-        return this.sign(params[0], params[1]);
+        return await this.uiController.requireConfirmation() ? this.sign(params[0], params[1]) : constants.HashZero;
       case 'personal_sign':
-        return this.sign(params[1], params[0]);
+        return await this.uiController.requireConfirmation() ? this.sign(params[1], params[0]) : constants.HashZero;
       default:
         throw new Error(`Method not supported: ${method}`);
     }
