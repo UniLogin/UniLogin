@@ -1,5 +1,4 @@
 import React from 'react';
-import {useLocation} from 'react-router';
 import {PublicRelayerConfig} from '@universal-login/commons';
 import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
@@ -11,29 +10,23 @@ export interface WaitingForTransactionProps extends WaitingForProps {
   info?: string;
 }
 
-const Body = ({action, relayerConfig, transactionHash: givenTransactionHash, className, info}: WaitingForTransactionProps) => {
-  const location = useLocation();
-  const transactionHash = givenTransactionHash || (location.state && location.state.transactionHash);
-
-  return (
+const Body = ({action, relayerConfig, transactionHash, className, info}: WaitingForTransactionProps) =>
+  <div>
+    <WaitingFor
+      action={action}
+      className={className}
+    />
     <div>
-      <WaitingFor
-        action={action}
-        className={className}
-      />
-      <div>
-        <div className="modal-pending-section">
-          <h3 className="transaction-hash-title">Transaction hash</h3>
-          <ExplorerLink
-            chainName={relayerConfig.chainSpec.name}
-            transactionHash={transactionHash}
-          />
-        </div>
-        {info && <p className="info-text">{info}</p>}
+      <div className="modal-pending-section">
+        <h3 className="transaction-hash-title">Transaction hash</h3>
+        <ExplorerLink
+          chainName={relayerConfig.chainSpec.name}
+          transactionHash={transactionHash}
+        />
       </div>
+      {info && <p className="info-text">{info}</p>}
     </div>
-  );
-};
+  </div>;
 
 export const WaitingForTransaction = (props: WaitingForTransactionProps) => (
   <div className="universal-login-waiting-for-transaction">
