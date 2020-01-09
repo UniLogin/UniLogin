@@ -2,16 +2,17 @@ import {RelayerRequest} from '@universal-login/commons';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import RelayerRequestSignatureValidator from '../../integration/ethereum/validators/RelayerRequestSignatureValidator';
 import {AddAuthorisationRequest} from '../models/AddAuthorisationRequest';
+import IWalletContractService from '../models/IWalletContractService';
 
 class AuthorisationService {
-  constructor(private authorisationStore: AuthorisationStore, private relayerRequestSignatureValidator: RelayerRequestSignatureValidator) {}
+  constructor(private authorisationStore: AuthorisationStore, private relayerRequestSignatureValidator: RelayerRequestSignatureValidator, private walletContractService: IWalletContractService) {}
 
   addRequest(requestAuthorisation: AddAuthorisationRequest) {
     return this.authorisationStore.addRequest(requestAuthorisation);
   }
 
   async cancelAuthorisationRequest(authorisationRequest: RelayerRequest) {
-    const recoveredAddress = await this.relayerRequestSignatureValidator.recoverSigner(authorisationRequest);
+    const recoveredAddress = await this.walletContractService.recoverFromRelayerRequest(authorisationRequest);
     return this.authorisationStore.removeRequest(authorisationRequest.contractAddress, recoveredAddress);
   }
 
