@@ -41,7 +41,7 @@ describe('INT: WalletMasterContractService', () => {
     await expect(walletMasterContractService.ensureValidRelayerRequestSignature(relayerRequest)).to.be.rejectedWith(`Unauthorised address: ${recoverFromRelayerRequest(relayerRequest)}`);
   });
 
-  it('works for GnosisSafe', async () => {
+  it('validation works for GnosisSafe', async () => {
     const {proxy, keyPair} = await createGnosisSafeContract(wallet);
     const msgHash = calculateGnosisStringHash(proxy.address, proxy.address);
     const signature = signStringMessage(msgHash, keyPair.privateKey);
