@@ -37,15 +37,15 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const deploymentRepository = new SQLRepository<Deployment>(knex, 'deployments');
   const devicesStore = new DevicesStore(knex);
   const executionQueue = new QueueSQLStore(knex);
-  const walletMasterContractService = new WalletMasterContractService(provider);
-  const devicesService = new DevicesService(devicesStore, walletMasterContractService);
   const beta2Service = new Beta2Service(wallet);
   const blockchainService = new BlockchainService(provider);
   const gasComputation = new GasComputation(blockchainService);
   const messageHandlerValidator = new MessageHandlerValidator(config.maxGasLimit, gasComputation, wallet.address);
-  const minedTransactionHandler = new MinedTransactionHandler(hooks, authorisationStore, devicesService);
   const gnosisSafeService = new GnosisSafeService(provider);
   const walletContractService = new WalletContractService(blockchainService, beta2Service, gnosisSafeService);
+  const walletMasterContractService = new WalletMasterContractService(provider, walletContractService);
+  const devicesService = new DevicesService(devicesStore, walletMasterContractService);
+  const minedTransactionHandler = new MinedTransactionHandler(hooks, authorisationStore, devicesService);
   const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList(), walletContractService);
   const statusService = new MessageStatusService(messageRepository, walletContractService);
   const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, walletContractService);
@@ -54,5 +54,5 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const {walletService} = await setupWalletService(wallet);
   const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
   const executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
-  return {wallet, actionKey, provider, mockToken, authorisationStore, devicesStore, messageHandler, walletContract, otherWallet, executionWorker};
+  return {wallet, actionKey, provider, mockToken, authorisationStore, devicesStore, messageHandler, walletContract, otherWallet, executionWorker, walletContractService};
 }

@@ -1,6 +1,6 @@
-import {providers, Contract, utils} from 'ethers';
+import {Contract, utils, providers} from 'ethers';
 import {SignedMessage} from '@universal-login/commons';
-import {GnosisSafeInterface, calculateMessageHash, IProxyInterface} from '@universal-login/contracts';
+import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface} from '@universal-login/contracts';
 import IWalletContractService from '../../core/models/IWalletContractService';
 
 export class GnosisSafeService implements IWalletContractService {
@@ -32,5 +32,10 @@ export class GnosisSafeService implements IWalletContractService {
   fetchMasterAddress(walletAddress: string): Promise<string> {
     const walletProxy = new Contract(walletAddress, IProxyInterface, this.provider);
     return walletProxy.masterCopy();
+  }
+
+  async isValidSignature(message: string, walletAddress: string, signature: string) {
+    const walletProxy = new Contract(walletAddress, ISignatureValidatorInterface, this.provider);
+    return walletProxy.isValidSignature(message, signature);
   }
 }

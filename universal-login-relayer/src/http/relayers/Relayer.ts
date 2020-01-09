@@ -102,7 +102,7 @@ class Relayer {
 
   async start() {
     await this.database.migrate.latest();
-    this.runServer();
+    await this.runServer();
     await this.ensService.start();
     this.executionWorker.start();
   }
@@ -126,10 +126,6 @@ class Relayer {
     this.walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
     this.balanceChecker = new BalanceChecker(this.provider);
     this.requiredBalanceChecker = new RequiredBalanceChecker(this.balanceChecker);
-    this.walletMasterContractService = new WalletMasterContractService(this.provider);
-    this.authorisationService = new AuthorisationService(this.authorisationStore, this.walletMasterContractService);
-    this.devicesService = new DevicesService(this.devicesStore, this.walletMasterContractService);
-    this.walletService = new WalletDeploymentService(this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker, this.devicesService);
     this.messageRepository = new MessageSQLRepository(this.database);
     this.deploymentRepository = new SQLRepository(this.database, 'deployments');
     this.executionQueue = new QueueSQLStore(this.database);
@@ -139,6 +135,10 @@ class Relayer {
     this.blockchainService = new BlockchainService(this.provider);
     this.gnosisSafeService = new GnosisSafeService(this.provider);
     this.walletContractService = new WalletContractService(this.blockchainService, this.beta2Service, this.gnosisSafeService);
+    this.walletMasterContractService = new WalletMasterContractService(this.provider, this.walletContractService);
+    this.authorisationService = new AuthorisationService(this.authorisationStore, this.walletMasterContractService);
+    this.devicesService = new DevicesService(this.devicesStore, this.walletMasterContractService);
+    this.walletService = new WalletDeploymentService(this.config, this.ensService, this.hooks, this.walletDeployer, this.requiredBalanceChecker, this.devicesService);
     this.statusService = new MessageStatusService(this.messageRepository, this.walletContractService);
     this.pendingMessages = new PendingMessages(this.messageRepository, this.executionQueue, this.statusService, this.walletContractService);
     this.messageHandler = new MessageHandler(this.pendingMessages, this.messageHandlerValidator);

@@ -6,11 +6,12 @@ import {AddressZero} from 'ethers/constants';
 export default async function createGnosisSafeContract(wallet: Wallet) {
   const gnosisSafe = await deployGnosisSafe(wallet);
   const proxyFactory = await deployProxyFactory(wallet);
-  const proxyContract = await deployGnosisSafeProxy(wallet, proxyFactory.address, gnosisSafe.address);
+  const {proxyContract, keyPair} = await deployGnosisSafeProxy(wallet, proxyFactory.address, gnosisSafe.address);
   return {
     proxy: proxyContract,
     proxyFactory,
     master: gnosisSafe,
+    keyPair,
   };
 }
 
@@ -30,5 +31,5 @@ export const deployGnosisSafeProxy = async (wallet: Wallet, proxyFactoryAddress:
   const computedAddress = computeGnosisCounterfactualAddress(proxyFactoryAddress, 0, setupData, gnosisSafeAddress);
   await new Contract(proxyFactoryAddress, ProxyFactoryInterface, wallet).createProxyWithNonce(gnosisSafeAddress, setupData, 0);
   await wallet.sendTransaction({to: computedAddress, value: utils.parseEther('1.0')});
-  return new Contract(computedAddress, GnosisSafeInterface, wallet.provider);
+  return {proxyContract: new Contract(computedAddress, GnosisSafeInterface, wallet.provider), keyPair};
 };
