@@ -1,15 +1,18 @@
 import {expect} from 'chai';
-import {Contract} from 'ethers';
+import {Contract, utils, providers} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {setupGnosisSafeContractFixture} from '../../fixtures/gnosisSafe';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {calculateMessageHash} from '../../../src/gnosis-safe@1.1.1/utils';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
+import {calculateMessageHash, calculateGnosisStringHash, signStringMessage} from '../../../src/gnosis-safe@1.1.1/utils';
+import {ISignatureValidatorInterface} from '../../../src';
 
 describe('calculateMessageHash', () => {
   let proxy: Contract;
+  let keyPair: KeyPair;
+  let provider: providers.Provider;
 
   before(async () => {
-    ({proxy} = await loadFixture(setupGnosisSafeContractFixture));
+    ({proxy, keyPair, provider} = await loadFixture(setupGnosisSafeContractFixture));
   });
 
   it('calculate transaction hash works', async () => {
@@ -37,5 +40,18 @@ describe('calculateMessageHash', () => {
       msg.gasToken,
       msg.refundReceiver,
       msg.nonce)).to.eq(calculateMessageHash(msg));
+  });
+
+  it('calculate string message hash', async () => {
+    const msg = 'Hi!';
+    expect(await proxy.getMessageHash(utils.hexlify(utils.toUtf8Bytes(msg)))).to.eq(calculateGnosisStringHash(msg, proxy.address));
+  });
+
+  it('calculate signature', async () => {
+    const msg = 'Hi!';
+    const msgHash = calculateGnosisStringHash(msg, proxy.address);
+    const signature = signStringMessage(msgHash, keyPair.privateKey);
+    const signatureValidator = new Contract(proxy.address, ISignatureValidatorInterface, provider);
+    expect(await signatureValidator.isValidSignature(utils.hexlify(utils.toUtf8Bytes(msg)), signature)).to.eq('0x20c13b0b');
   });
 });
