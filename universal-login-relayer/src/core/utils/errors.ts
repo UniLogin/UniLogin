@@ -14,6 +14,7 @@ type ErrorType =
   'InvalidMaster' |
   'InvalidProxy' |
   'InvalidSignature' |
+  'SignatureNotFound' |
   'DuplicatedSignature' |
   'DuplicatedExecution' |
   'NotEnoughSignatures' |
@@ -143,6 +144,13 @@ export class StatusNotFound extends NotFound {
   constructor() {
     super('Status not found', 'StatusNotFound');
     Object.setPrototypeOf(this, StatusNotFound.prototype);
+  }
+}
+
+export class SignatureNotFound extends NotFound {
+  constructor() {
+    super('Signature not found', 'SignatureNotFound');
+    Object.setPrototypeOf(this, SignatureNotFound.prototype);
   }
 }
 
