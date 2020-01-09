@@ -125,14 +125,19 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sendTransaction(transaction: Partial<Message>): Promise<string> {
+    this.uiController.showWaitForTransaction();
     await this.ensureWalletIsDeployed();
     const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
     const execution = await this.walletService.getDeployedWallet().execute(transactionWithDefaults);
 
     const succeeded = await execution.waitForTransactionHash();
     if (!succeeded.transactionHash) {
+      this.uiController.hideModal();
       throw new Error('Expected tx hash to not be null');
     }
+    this.uiController.showWaitForTransaction(succeeded.transactionHash);
+    await execution.waitToBeSuccess();
+    this.uiController.hideModal();
     return succeeded.transactionHash;
   }
 
