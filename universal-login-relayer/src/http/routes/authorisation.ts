@@ -32,7 +32,7 @@ const denyRequest = (authorisationService: AuthorisationService) =>
     return responseOf(result, 204);
   };
 
-const cancelRequest = (authorisationService: AuthorisationService) =>
+  const cancelRequest = (authorisationService: AuthorisationService) =>
   async (data: {body: {authorisationRequest: RelayerRequest}}) => {
     const result = await authorisationService.cancelAuthorisationRequest(data.body.authorisationRequest);
     const httpCode = result === 0 ? 404 : 204;

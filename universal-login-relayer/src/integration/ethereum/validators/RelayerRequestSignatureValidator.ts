@@ -9,7 +9,7 @@ class RelayerRequestSignatureValidator {
   async ensureValidRelayerRequestSignature(relayerRequest: RelayerRequest) {
     ensureNotFalsy(relayerRequest.signature, SignatureNotFound);
     const {contractAddress, signature} = relayerRequest;
-    const signer = await this.walletContractService.recoverFromRelayerRequest(relayerRequest);
+    const signer = await this.recoverSigner(relayerRequest);
     const payloadDigest = await this.walletContractService.getRelayerRequestMessage(relayerRequest);
     let isCorrectAddress;
     try {
@@ -23,6 +23,8 @@ class RelayerRequestSignatureValidator {
     }
     ensure(isCorrectAddress === ERC1271.MAGICVALUE, UnauthorisedAddress, signer);
   }
+
+  recoverSigner = (relayerRequest: RelayerRequest) => this.walletContractService.recoverFromRelayerRequest(relayerRequest);
 
   isInvalidOwnerError = (error: Error) => error.message === 'VM Exception while processing transaction: revert Invalid owner provided';
 }
