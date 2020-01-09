@@ -2,8 +2,8 @@ import {State} from 'reactive-properties';
 import {WalletService} from '@universal-login/sdk';
 
 export class UIController {
-  activeModal = new State<'ONBOARDING' | 'CONFIRMATION' | 'IDLE'>('IDLE');
-
+  activeModal = new State<'ONBOARDING' | 'CONFIRMATION' | 'WAIT_FOR_TRANSACTION' | 'IDLE'>('IDLE');
+  transactionHash: State<string | undefined> = new State(undefined);
   private resolveConfirm?: (value: boolean) => void;
 
   constructor(
@@ -11,7 +11,7 @@ export class UIController {
   ) {}
 
   finishOnboarding() {
-    this.activeModal.set('IDLE');
+    this.hideModal();
   }
 
   requireConfirmation() {
@@ -21,8 +21,17 @@ export class UIController {
     });
   }
 
-  setResponse(response: boolean) {
+  showWaitForTransaction(transactionHash?: string) {
+    this.transactionHash.set(transactionHash);
+    this.activeModal.set('WAIT_FOR_TRANSACTION');
+  }
+
+  hideModal() {
     this.activeModal.set('IDLE');
+  }
+
+  setResponse(response: boolean) {
+    this.hideModal();
     this.resolveConfirm?.(response);
   }
 
