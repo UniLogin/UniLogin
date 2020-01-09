@@ -50,7 +50,7 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const statusService = new MessageStatusService(messageRepository, walletContractService);
   const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, walletContractService);
   const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
-  const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, minedTransactionHandler);
+  const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, walletContractService);
   const {walletService} = await setupWalletService(wallet);
   const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
   const executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);

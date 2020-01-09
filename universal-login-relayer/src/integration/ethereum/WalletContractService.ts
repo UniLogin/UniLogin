@@ -61,4 +61,9 @@ export class WalletContractService implements IWalletContractService {
     const service = await this.getWalletService(relayerRequest.contractAddress!);
     return service.recoverFromRelayerRequest(relayerRequest);
   }
+
+  async messageToTransaction(message: SignedMessage) {
+    const service = await this.getWalletService(message.from);
+    return service.messageToTransaction(message);
+  }
 };

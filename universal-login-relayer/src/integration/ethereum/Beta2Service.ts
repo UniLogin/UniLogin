@@ -4,6 +4,7 @@ import {WalletContractInterface} from '@universal-login/contracts';
 import {getKeyFromHashAndSignature} from '../../core/utils/encodeData';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {beta2} from '@universal-login/contracts';
+import {messageToTransaction} from '../../core/utils/messages/serialisation';
 
 export class Beta2Service implements IWalletContractService {
   constructor(private provider: providers.Provider) {
@@ -47,5 +48,9 @@ export class Beta2Service implements IWalletContractService {
 
   async recoverFromRelayerRequest(relayerRequest: RelayerRequest) {
     return recoverFromRelayerRequest(relayerRequest);
+  }
+
+  messageToTransaction(message: SignedMessage) {
+    return messageToTransaction(message);
   }
 }

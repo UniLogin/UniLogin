@@ -7,7 +7,7 @@ import Deployment from '../../../../src/core/models/Deployment';
 import IMessageRepository from '../../../../src/core/models/messages/IMessagesRepository';
 import IRepository from '../../../../src/core/models/messages/IRepository';
 import ExecutionWorker from '../../../../src/core/services/execution/ExecutionWorker';
-import {createMessageItem} from '../../../../src/core/utils/messages/serialisation';
+import {createMessageItem, messageToTransaction} from '../../../../src/core/utils/messages/serialisation';
 import DeploymentExecutor from '../../../../src/integration/ethereum/DeploymentExecutor';
 import MessageExecutor from '../../../../src/integration/ethereum/MessageExecutor';
 import {WalletDeploymentService} from '../../../../src/integration/ethereum/WalletDeploymentService';
@@ -49,7 +49,7 @@ describe('UNIT: Queue Service', async () => {
     queueMemoryStore = new QueueMemoryStore();
     messageRepository = new MessageMemoryRepository();
     deploymentRepository = new MemoryRepository<Deployment>();
-    messageExecutor = new MessageExecutor(wallet, messageValidator, messageRepository, minedTransactionHandler);
+    messageExecutor = new MessageExecutor(wallet, messageValidator, messageRepository, minedTransactionHandler, {messageToTransaction: messageToTransaction} as any);
     deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], queueMemoryStore);
     signedMessage = getTestSignedMessage();
@@ -66,7 +66,7 @@ describe('UNIT: Queue Service', async () => {
     executionWorker.start();
     await queueMemoryStore.addMessage(messageHash);
     await waitExpect(() => expect(executeSpy).to.be.calledOnce);
-    expect(wait).to.be.calledAfter(executeSpy);
+    await waitExpect(() => expect(wait).to.be.calledOnce);
     expect(onTransactionMined).to.be.calledImmediatelyAfter(wait);
     expect(wait).to.be.calledOnce;
     expect(onTransactionMined).to.be.calledOnce;
