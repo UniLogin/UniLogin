@@ -1,16 +1,15 @@
 import {recoverFromRelayerRequest, RelayerRequest, hashRelayerRequest, ensure} from '@universal-login/commons';
+import {ERC1271} from '@universal-login/contracts';
 import {utils} from 'ethers';
 import {UnauthorisedAddress} from '../../core/utils/errors';
 import IWalletContractService from '../../core/models/IWalletContractService';
-
-const MAGICVALUE = '0x20c13b0b';
 
 class WalletMasterContractService {
   constructor(private walletContractService: IWalletContractService) {}
 
   private async ensureValidSignature(walletContractAddress: string, signature: string, payloadDigest: string, recoveredAddress: string) {
     const isCorrectAddress = await this.walletContractService.isValidSignature(payloadDigest, walletContractAddress, signature);
-    ensure(isCorrectAddress === MAGICVALUE, UnauthorisedAddress, recoveredAddress);
+    ensure(isCorrectAddress === ERC1271.MAGICVALUE, UnauthorisedAddress, recoveredAddress);
   }
 
   async ensureValidRelayerRequestSignature(relayerRequest: RelayerRequest) {

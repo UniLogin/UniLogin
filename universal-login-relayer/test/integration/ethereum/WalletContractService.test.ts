@@ -2,6 +2,7 @@ import {expect} from 'chai';
 import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, sign, signString} from '@universal-login/commons';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
 import {BlockchainService, messageToSignedMessage, calculateMessageHash, calculateGnosisStringHash, signStringMessage} from '@universal-login/contracts';
+import {ERC1271} from '@universal-login/contracts';
 import {setupGnosisSafeContract} from '@universal-login/contracts/testutils';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Beta2Service} from '../../../src/integration/ethereum/Beta2Service';
@@ -9,9 +10,6 @@ import {Contract, Wallet, utils} from 'ethers';
 import createWalletContract from '../../testhelpers/createWalletContract';
 import {getTestSignedMessage} from '../../testconfig/message';
 import {GnosisSafeService} from '../../../src/integration/ethereum/GnosisSafeService';
-
-const MAGICVALUE = '0x20c13b0b';
-const INVALIDSIGNATURE = '0xffffffff';
 
 describe('INT: WalletContractService', () => {
   let walletContractService: WalletContractService;
@@ -72,13 +70,13 @@ describe('INT: WalletContractService', () => {
     it('returns magic value if proper signature', async () => {
       const message = 'Hi, how are you?';
       const signature = signString(message, wallet.privateKey);
-      expect(await walletContractService.isValidSignature(utils.hexlify(utils.toUtf8Bytes(message)), proxyContract.address, signature)).to.eq(MAGICVALUE);
+      expect(await walletContractService.isValidSignature(utils.hexlify(utils.toUtf8Bytes(message)), proxyContract.address, signature)).to.eq(ERC1271.MAGICVALUE);
     });
 
     it('returns invalid signature bytes for invalid signature', async () => {
       const message = 'Hi, how are you?';
       const signature = signString(message, Wallet.createRandom().privateKey);
-      expect(await walletContractService.isValidSignature(utils.hexlify(utils.toUtf8Bytes(message)), proxyContract.address, signature)).to.eq(INVALIDSIGNATURE);
+      expect(await walletContractService.isValidSignature(utils.hexlify(utils.toUtf8Bytes(message)), proxyContract.address, signature)).to.eq(ERC1271.INVALIDSIGNATURE);
     });
   });
 
@@ -121,7 +119,7 @@ describe('INT: WalletContractService', () => {
       const message = 'Hi, how are you?';
       const msgHash = calculateGnosisStringHash(message, proxyContract.address);
       const signature = signStringMessage(msgHash, keyPair.privateKey);
-      expect(await walletContractService.isValidSignature(utils.hexlify(utils.toUtf8Bytes(message)), proxyContract.address, signature)).to.eq(MAGICVALUE);
+      expect(await walletContractService.isValidSignature(utils.hexlify(utils.toUtf8Bytes(message)), proxyContract.address, signature)).to.eq(ERC1271.MAGICVALUE);
     });
 
     it('returns invalid signature bytes for invalid signature', async () => {

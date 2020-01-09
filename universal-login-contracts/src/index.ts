@@ -16,3 +16,7 @@ export {beta2};
 
 import * as ens from './ens';
 export {ens};
+
+import {MAGICVALUE, INVALIDSIGNATURE} from './ERC1271/constants';
+const ERC1271 = {MAGICVALUE, INVALIDSIGNATURE};
+export {ERC1271};
