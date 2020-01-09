@@ -31,8 +31,8 @@ type CreateRelayerArgs = {
 
 export class RelayerUnderTest extends Relayer {
   static async deployBaseContracts(wallet: Wallet) {
-    const walletContract = await deployContract(wallet, WalletContract);
-    const factoryContract = await deployFactory(wallet, walletContract.address);
+    const walletContract = await deployGnosisSafe(wallet);
+    const factoryContract = await deployProxyFactory(wallet);
     return {walletContract, factoryContract};
   }
 
@@ -48,6 +48,7 @@ export class RelayerUnderTest extends Relayer {
     const contractWhiteList = getContractWhiteList();
     const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
     const mockToken = await deployContract(wallet, mockContracts.MockToken);
+    const ensRegistrar = await deployContract(wallet, ENSRegistrar);
     const supportedTokens = [
       {
         address: mockToken.address,
