@@ -8,10 +8,10 @@ class RelayerRequestSignatureValidator {
 
   async ensureValidRelayerRequestSignature(relayerRequest: RelayerRequest) {
     const {contractAddress, signature} = relayerRequest;
-    const recoveredAddress = await this.walletContractService.recoverFromRelayerRequest(relayerRequest, contractAddress);
-    const payloadDigest = await this.walletContractService.getRelayerRequestMessage(relayerRequest, contractAddress);
+    const signer = await this.walletContractService.recoverFromRelayerRequest(relayerRequest);
+    const payloadDigest = await this.walletContractService.getRelayerRequestMessage(relayerRequest);
     const isCorrectAddress = await this.walletContractService.isValidSignature(payloadDigest, contractAddress, signature!);
-    ensure(isCorrectAddress === ERC1271.MAGICVALUE, UnauthorisedAddress, recoveredAddress);
+    ensure(isCorrectAddress === ERC1271.MAGICVALUE, UnauthorisedAddress, signer);
   }
 }
 
