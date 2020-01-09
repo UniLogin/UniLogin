@@ -20,9 +20,9 @@ describe('INT: RelayerRequestSignatureValidator', () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
     const walletContractService = setupWalletContractService(provider);
-    const {walletService, factoryContract, ensService} = await setupWalletService(wallet);
+    const {walletService, factoryContract, ensService, ensRegistrar, walletContractAddress} = await setupWalletService(wallet);
     relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
-    const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService);
+    const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar, walletContractAddress);
     await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
     contractAddress = futureContractAddress;
   });

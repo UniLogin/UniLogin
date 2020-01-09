@@ -2,12 +2,12 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, signRelayerRequest, DEPLOYMENT_REFUND, TEST_APPLICATION_INFO, getDeployData} from '@universal-login/commons';
-import {beta2, computeGnosisCounterfactualAddress} from '@universal-login/contracts';
+import {beta2, computeGnosisCounterfactualAddress, signStringMessage, calculateGnosisStringHash} from '@universal-login/contracts';
 import {startRelayerWithRefund, createWalletCounterfactually, getInitData, getSetupData} from '../testhelpers/http';
 import Relayer from '../../src';
 import {waitForDeploymentStatus} from '../testhelpers/waitForDeploymentStatus';
-import {AddressZero} from 'ethers/constants';
 import GnosisProxy from '@universal-login/contracts/src/gnosis-safe@1.1.1/contracts/Proxy.json';
+
 chai.use(chaiHttp);
 
 describe('E2E: Relayer - counterfactual deployment', () => {
@@ -30,21 +30,12 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress} = await startRelayerWithRefund(relayerPort));
     keyPair = createKeyPair();
     initCode = getDeployData(beta2.WalletProxy as any, [walletContract.address]);
-    // const deployment = {owners: [publicKey],
-    //   requiredConfirmations: 1,
-    //   deploymentCallAddress: relayer.config.ensRegistrar,
-    //   deploymentCallData: new utils.Interface(ENSRegistrar.interface as any).functions.register.encode(ensArgs),
-    //   fallbackHandler: AddressZero,
-    //   paymentToken: ETHER_NATIVE_TOKEN.address,
-    //   payment: DEPLOY_GAS_LIMIT,
-    //   refundReceiver: deployer.address,
-    // };
     const setupData = await getSetupData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE, deployer.address, relayer.publicConfig.ensRegistrar);
     contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, 0, setupData, walletContract.address);
     signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
   });
 
-  it.only('Counterfactual deployment with ether payment and refund', async () => {
+  it('Counterfactual deployment with ether payment and refund', async () => {
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
     const initialRelayerBalance = await deployer.getBalance();
     const result = await chai.request(relayerUrl)
@@ -62,27 +53,27 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(status.transactionHash).to.be.properHex(64);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(GnosisProxy as any)}`);
     expect(await deployer.getBalance()).to.be.above(initialRelayerBalance);
-
+    const msgHash = calculateGnosisStringHash(contractAddress, contractAddress);
+    const relayerRequestSignature = signStringMessage(msgHash, keyPair.privateKey);
     const {body} = await chai.request(relayerUrl)
-      .get(`/devices/${contractAddress}?signature=${signRelayerRequest({contractAddress}, keyPair.privateKey).signature}`)
+      .get(`/devices/${contractAddress}?signature=${relayerRequestSignature}`)
       .send({
         key: keyPair.publicKey,
       });
-    console.log(body);
-    // expect(body).length(1);
-    // expect(body).to.be.deep.eq([{
-    //   contractAddress,
-    //   publicKey: keyPair.publicKey,
-    //   deviceInfo: {
-    //     ...TEST_APPLICATION_INFO,
-    //     browser: 'node-superagent',
-    //     city: 'unknown',
-    //     ipAddress: '::ffff:127.0.0.1',
-    //     platform: 'unknown',
-    //     os: 'unknown',
-    //     time: body[0].deviceInfo.time,
-    //   },
-    // }]);
+    expect(body).length(1);
+    expect(body).to.be.deep.eq([{
+      contractAddress,
+      publicKey: keyPair.publicKey,
+      deviceInfo: {
+        ...TEST_APPLICATION_INFO,
+        browser: 'node-superagent',
+        city: 'unknown',
+        ipAddress: '::ffff:127.0.0.1',
+        platform: 'unknown',
+        os: 'unknown',
+        time: body[0].deviceInfo.time,
+      },
+    }]);
   });
 
   it('Counterfactual deployment fail if ENS name is taken', async () => {
