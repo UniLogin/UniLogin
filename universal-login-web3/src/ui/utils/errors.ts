@@ -1,4 +1,4 @@
-type ErrorType = 'InvalidProvider' | 'Web3ProviderNotFound';
+type ErrorType = 'InvalidProvider' | 'Web3ProviderNotFound' | 'PropertyNotFound';
 
 export class UlWeb3Error extends Error {
   errorType: ErrorType;
@@ -27,5 +27,12 @@ export class Web3ProviderNotFound extends ValidationFailed {
   constructor() {
     super('Browser Web3 provider not found', 'Web3ProviderNotFound');
     Object.setPrototypeOf(this, Web3ProviderNotFound.prototype);
+  }
+}
+
+export class PropertyNotFound extends ValidationFailed {
+  constructor(property: string, className: string) {
+    super(`${className}: property '${property}' not found`, 'PropertyNotFound');
+    Object.setPrototypeOf(this, PropertyNotFound.prototype);
   }
 }

@@ -103,14 +103,14 @@ export class ULWeb3Provider implements Provider {
     switch (method) {
       case 'eth_sendTransaction':
         const tx = params[0];
-        const isConfirmed = await this.uiController.requireConfirmation();
+        const isConfirmed = await this.uiController.requireConfirmation('Do you want send transaction?');
         return isConfirmed ? this.sendTransaction(tx) : constants.HashZero;
       case 'eth_accounts':
         return this.getAccounts();
       case 'eth_sign':
-        return await this.uiController.requireConfirmation() ? this.sign(params[0], params[1]) : constants.HashZero;
+        return await this.uiController.requireConfirmation('Do you want sign challenge?') ? this.sign(params[0], params[1]) : constants.HashZero;
       case 'personal_sign':
-        return await this.uiController.requireConfirmation() ? this.sign(params[1], params[0]) : constants.HashZero;
+        return await this.uiController.requireConfirmation('Do you want sign challenge?') ? this.sign(params[1], params[0]) : constants.HashZero;
       default:
         throw new Error(`Method not supported: ${method}`);
     }

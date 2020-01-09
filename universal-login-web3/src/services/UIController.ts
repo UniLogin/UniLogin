@@ -4,6 +4,7 @@ import {WalletService} from '@universal-login/sdk';
 export class UIController {
   activeModal = new State<'ONBOARDING' | 'CONFIRMATION' | 'WAIT_FOR_TRANSACTION' | 'IDLE'>('IDLE');
   transactionHash: State<string | undefined> = new State(undefined);
+  confirmationTitle?: string;
   private resolveConfirm?: (value: boolean) => void;
 
   constructor(
@@ -14,7 +15,8 @@ export class UIController {
     this.hideModal();
   }
 
-  requireConfirmation() {
+  requireConfirmation(title: string) {
+    this.confirmationTitle = title;
     this.activeModal.set('CONFIRMATION');
     return new Promise<boolean>((resolve) => {
       this.resolveConfirm = resolve;
