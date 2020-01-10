@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {getDeployData, SignedMessage, sign, UnsignedMessage} from '@universal-login/commons';
+import {getDeployData, SignedMessage, UnsignedMessage} from '@universal-login/commons';
 import ProxyContract from './contracts/Proxy.json';
 
 const DOMAIN_SEPARATOR_TYPEHASH = '0x035aff83d86937d35b32e04f0ddc6ff469290eef2f1b692d8a815c89404d4749';
@@ -28,7 +28,7 @@ export const calculateMessageHash = (message: Omit<SignedMessage, 'signature'>) 
 
 export const calculateMessageSignature = (unsignedMessage: UnsignedMessage, privateKey: string) => {
   const msgHash = calculateMessageHash(unsignedMessage);
-  return sign(msgHash, privateKey);
+  return signStringMessage(msgHash, privateKey);
 };
 
 export const signStringMessage = (payload: string, privateKey: string) => {
