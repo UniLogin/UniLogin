@@ -7,7 +7,7 @@ export const getMinimalAmountForFiatProvider = async (paymentMethod: TopUpProvid
   switch (paymentMethod) {
     case 'RAMP': {
       const providerMinimalAmountInFiat = '1';
-      const etherPriceInGBP = await getEtherPriceInCurrency('GBP');
+      const etherPriceInGBP = (await getEtherPriceInCurrency('GBP')).toString();
       const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat, etherPriceInGBP);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
       return utils.formatEther(bigNumberMax(
