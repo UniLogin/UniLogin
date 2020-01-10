@@ -1,4 +1,4 @@
-import {DevelopmentRelayer, RelayerClass} from '@universal-login/relayer';
+import Relayer, {RelayerClass} from '@universal-login/relayer';
 import {providers, utils} from 'ethers';
 
 export const withENS = (provider: providers.JsonRpcProvider, ensAddress: string) => {
@@ -9,7 +9,7 @@ export const withENS = (provider: providers.JsonRpcProvider, ensAddress: string)
 export async function startDevelopmentRelayer(
   configuration: any,
   provider: providers.JsonRpcProvider,
-  RelayerConstructor: RelayerClass = DevelopmentRelayer,
+  RelayerConstructor: RelayerClass = Relayer,
 ) {
   const providerWithENS = withENS(provider, configuration.chainSpec.ensAddress);
   const relayer = new RelayerConstructor(configuration, providerWithENS);
