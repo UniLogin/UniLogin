@@ -15,7 +15,7 @@ export interface ULWeb3RootProps {
 export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3RootProps) => {
   const modal = useProperty(uiController.activeModal);
 
-  switch (modal) {
+  switch (modal.kind) {
     case 'IDLE':
       return <div />;
     case 'ONBOARDING':
@@ -25,10 +25,10 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
         domains={domains}
       />;
     case 'CONFIRMATION':
-      return <Confirmation onConfirmationResponse={response => uiController.setResponse(response)} />;
+      return <Confirmation {...modal.props} />;
     case 'WAIT_FOR_TRANSACTION':
       return <WaitForTransactionModal
-        uiController={uiController}
+        transactionHash={modal.props.transactionHash}
         relayerConfig={sdk.getRelayerConfig()}
       />;
     default:

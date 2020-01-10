@@ -103,8 +103,7 @@ export class ULWeb3Provider implements Provider {
     switch (method) {
       case 'eth_sendTransaction':
         const tx = params[0];
-        const isConfirmed = await this.uiController.requireConfirmation();
-        return isConfirmed ? this.sendTransaction(tx) : constants.HashZero;
+        return this.sendTransaction(tx);
       case 'eth_accounts':
         return this.getAccounts();
       case 'eth_sign':
@@ -125,6 +124,9 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sendTransaction(transaction: Partial<Message>): Promise<string> {
+    if (!await this.uiController.confirmRequest('Do you want send transaction?')) {
+      return constants.HashZero;
+    };
     this.uiController.showWaitForTransaction();
     await this.ensureWalletIsDeployed();
     const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
@@ -142,6 +144,9 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sign(address: string, message: string) {
+    if (!await this.uiController.confirmRequest('Do you want sign challenge?')) {
+      return constants.HashZero;
+    }
     await this.ensureWalletIsDeployed();
 
     const wallet = this.walletService.getDeployedWallet();
