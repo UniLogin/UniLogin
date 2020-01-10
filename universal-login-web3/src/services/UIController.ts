@@ -4,7 +4,6 @@ import {ULWeb3ProviderState} from '../models/ULWeb3ProviderState';
 
 export class UIController {
   activeModal = new State<ULWeb3ProviderState>({kind: 'IDLE'});
-  transactionHash: State<string | undefined> = new State(undefined);
 
   constructor(
     private walletService: WalletService,
@@ -30,8 +29,7 @@ export class UIController {
   }
 
   showWaitForTransaction(transactionHash?: string) {
-    this.transactionHash.set(transactionHash);
-    this.activeModal.set({kind: 'WAIT_FOR_TRANSACTION'});
+    this.activeModal.set({kind: 'WAIT_FOR_TRANSACTION', props: {transactionHash}});
   }
 
   hideModal() {

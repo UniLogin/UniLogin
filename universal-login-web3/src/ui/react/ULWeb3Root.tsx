@@ -28,7 +28,7 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
       return <Confirmation {...modal.props} />;
     case 'WAIT_FOR_TRANSACTION':
       return <WaitForTransactionModal
-        uiController={uiController}
+        transactionHash={modal.props.transactionHash}
         relayerConfig={sdk.getRelayerConfig()}
       />;
     default:

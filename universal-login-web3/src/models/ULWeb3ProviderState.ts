@@ -10,4 +10,7 @@ export type ULWeb3ProviderState = {
   };
 } | {
   kind: 'WAIT_FOR_TRANSACTION';
+  props: {
+    transactionHash?: string;
+  };
 };
