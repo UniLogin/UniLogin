@@ -13,7 +13,7 @@ export class UIController {
     this.hideModal();
   }
 
-  requireConfirmation(title: string) {
+  confirmRequest(title: string) {
     return new Promise<boolean>((resolve) => {
       this.activeModal.set({
         kind: 'CONFIRMATION',

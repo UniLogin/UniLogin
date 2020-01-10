@@ -124,7 +124,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sendTransaction(transaction: Partial<Message>): Promise<string> {
-    if (!await this.uiController.requireConfirmation('Do you want send transaction?')) {
+    if (!await this.uiController.confirmRequest('Do you want send transaction?')) {
       return constants.HashZero;
     };
     this.uiController.showWaitForTransaction();
@@ -144,7 +144,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sign(address: string, message: string) {
-    if (!await this.uiController.requireConfirmation('Do you want sign challenge?')) {
+    if (!await this.uiController.confirmRequest('Do you want sign challenge?')) {
       return constants.HashZero;
     }
     await this.ensureWalletIsDeployed();
