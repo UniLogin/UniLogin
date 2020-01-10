@@ -5,8 +5,6 @@ import {ULWeb3ProviderState} from '../models/ULWeb3ProviderState';
 export class UIController {
   activeModal = new State<ULWeb3ProviderState>({kind: 'IDLE'});
   transactionHash: State<string | undefined> = new State(undefined);
-  confirmationTitle?: string;
-  private resolveConfirm?: (value: boolean) => void;
 
   constructor(
     private walletService: WalletService,
@@ -17,10 +15,17 @@ export class UIController {
   }
 
   requireConfirmation(title: string) {
-    this.confirmationTitle = title;
-    this.activeModal.set({kind: 'CONFIRMATION'});
     return new Promise<boolean>((resolve) => {
-      this.resolveConfirm = resolve;
+      this.activeModal.set({
+        kind: 'CONFIRMATION',
+        props: {
+          title,
+          onConfirmationResponse: (response: boolean) => {
+            this.hideModal();
+            resolve(response);
+          },
+        },
+      });
     });
   }
 
@@ -31,11 +36,6 @@ export class UIController {
 
   hideModal() {
     this.activeModal.set({kind: 'IDLE'});
-  }
-
-  setResponse(response: boolean) {
-    this.hideModal();
-    this.resolveConfirm?.(response);
   }
 
   requireWallet() {
