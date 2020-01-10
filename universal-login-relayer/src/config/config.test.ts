@@ -11,6 +11,7 @@ export const config: Config = Object.freeze({
     chainId: 0,
   },
   ensRegistrars: ['GENERATED'],
+  ensRegistrar: 'GENERATED',
   walletContractAddress: 'GENERATED',
   contractWhiteList: {
     proxy: ['GENERATED'],
