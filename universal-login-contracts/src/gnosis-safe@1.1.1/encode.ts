@@ -7,10 +7,10 @@ export const encodeDataForExecTransaction = (message: SignedMessage) =>
     message.value,
     message.data,
     message.operationType,
-    message.gasPrice,
-    message.gasToken,
     message.safeTxGas,
     message.baseGas,
+    message.gasPrice,
+    message.gasToken,
     message.refundReceiver,
     message.signature,
   ]);

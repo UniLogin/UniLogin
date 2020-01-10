@@ -2,13 +2,15 @@ import {expect} from 'chai';
 import {providers, Wallet, Contract, utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {loadFixture, deployContract} from 'ethereum-waffle';
-import {createKeyPair, ETHER_NATIVE_TOKEN, removeHexStringPrefix} from '@universal-login/commons';
+import {createKeyPair, ETHER_NATIVE_TOKEN, removeHexStringPrefix, TEST_ACCOUNT_ADDRESS, OperationType} from '@universal-login/commons';
 import {basicENS} from '@universal-login/commons/testutils';
 import {deployGnosisSafe, deployProxyFactory} from '../../../src/gnosis-safe@1.1.1/deployContracts';
 import {IProxyInterface} from '../../../src/gnosis-safe@1.1.1/interfaces';
-import {encodeDataForSetup} from '../../../src/gnosis-safe@1.1.1/encode';
+import {encodeDataForSetup, encodeDataForExecTransaction} from '../../../src/gnosis-safe@1.1.1/encode';
 import {computeGnosisCounterfactualAddress} from '../../../src/gnosis-safe@1.1.1/utils';
 import ENSRegistrar from '../../../dist/contracts/ENSRegistrar.json';
+import {TransactionResponse} from 'ethers/providers';
+import {messageToSignedMessage} from '../../../src';
 
 describe('GnosisSafe', async () => {
   const domain = 'mylogin.eth';
@@ -23,16 +25,16 @@ describe('GnosisSafe', async () => {
   let ensAddress: string;
   let registrarAddress: string;
   let publicResolver: string;
+  let ensRegistrar: Contract;
+  let computedAddress: string;
+  let deploymentTransaction: TransactionResponse;
   const keyPair = createKeyPair();
 
-  before(async () => {
+  beforeEach(async () => {
     ({wallet, publicResolver, registrarAddress, ensAddress, provider} = await loadFixture(basicENS));
     gnosisSafe = await deployGnosisSafe(wallet);
     proxyFactory = await deployProxyFactory(wallet);
-  });
-
-  it('deploys proxy and registers ENS name', async () => {
-    const ensRegistrar = await deployContract(wallet, ENSRegistrar as any);
+    ensRegistrar = await deployContract(wallet, ENSRegistrar as any);
     const args = [hashLabel, name, node, ensAddress, registrarAddress, publicResolver];
     const data = new utils.Interface(ENSRegistrar.interface as any).functions.register.encode(args);
     const deployment = {
@@ -46,14 +48,36 @@ describe('GnosisSafe', async () => {
       refundReceiver: wallet.address,
     };
     const setupData = encodeDataForSetup(deployment);
-    const computedAddress = computeGnosisCounterfactualAddress(proxyFactory.address, 0, setupData, gnosisSafe.address);
-    const transaction = await proxyFactory.createProxyWithNonce(gnosisSafe.address, setupData, 0);
-    const receipt = await provider.getTransactionReceipt(transaction.hash);
+    computedAddress = computeGnosisCounterfactualAddress(proxyFactory.address, 0, setupData, gnosisSafe.address);
+    await wallet.sendTransaction({to: computedAddress, value: utils.parseEther('10')});
+    deploymentTransaction = await proxyFactory.createProxyWithNonce(gnosisSafe.address, setupData, 0);
+  });
+
+  it('deploys proxy and registers ENS name', async () => {
+    const receipt = await provider.getTransactionReceipt(deploymentTransaction.hash!);
     const addressFromEvent = receipt.logs && receipt.logs[0].data;
-    const contract = new Contract(computedAddress, IProxyInterface, provider);
-    expect(await contract.masterCopy()).to.eq(gnosisSafe.address);
+    const contractAsProxy = new Contract(computedAddress, IProxyInterface, provider);
+    expect(await contractAsProxy.masterCopy()).to.eq(gnosisSafe.address);
     expect(addressFromEvent).to.include(removeHexStringPrefix(computedAddress).toLowerCase());
     expect(await provider.lookupAddress(computedAddress)).to.eq(name);
     expect(await provider.resolveName('alex.mylogin.eth')).to.eq(computedAddress);
+  });
+
+  it('sends ether', async () => {
+    const message = {
+      from: computedAddress,
+      to: TEST_ACCOUNT_ADDRESS,
+      value: utils.parseEther('1'),
+      nonce: '0',
+      gasLimit: utils.bigNumberify(120000),
+      gasPrice: '1',
+      gasToken: ETHER_NATIVE_TOKEN.address,
+      operationType: OperationType.call,
+      refundReceiver: wallet.address,
+    };
+    const signedMessage = messageToSignedMessage(message, keyPair.privateKey, 'istanbul', 'beta3');
+    const dataToSend = encodeDataForExecTransaction(signedMessage);
+    await wallet.sendTransaction({to: computedAddress, data: dataToSend});
+    expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(message.value);
   });
 });

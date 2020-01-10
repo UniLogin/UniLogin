@@ -153,7 +153,7 @@ describe('Message', () => {
       refundReceiver: AddressZero,
       baseGas: bigNumberify(84252),
       safeTxGas: bigNumberify(15748),
-      signature: '0xedfde693e39eb34409a09061a154f5613af2ae9acc8a9f98cd4cf41f2d73db761c4f4acca714e4e44736563776e0598c80f128c43ee9d2ff5e705a52786691931c',
+      signature: '0xff3abf25dab6c616f467dddaec2be994040446ea7d72a346c54a6667853a43481aaa3c41ffd0d0aef7dcbb130b0a87c3918651a95f26546a35d538481e62bcc91b',
     };
     expect(actualMessage).to.deep.eq(expectedMessage);
   });
