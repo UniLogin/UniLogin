@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, TEST_TOKEN_DETAILS, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
 import {deployMockToken} from '@universal-login/commons/testutils';
 import UniversalLoginSDK from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
@@ -48,7 +48,7 @@ describe('INT: TransferService', () => {
   it('Should transfer tokens', async () => {
     const to = TEST_ACCOUNT_ADDRESS;
     const amount = '1.0';
-    const transferToken = TEST_TOKEN_DETAILS[0].address;
+    const transferToken = mockTokenContract.address;
     const {waitToBeSuccess} = await transferService.transfer({to, amount, transferToken, gasParameters});
     await waitToBeSuccess();
     expect(await mockTokenContract.balanceOf(to)).to.deep.eq(utils.parseEther(amount));

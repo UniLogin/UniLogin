@@ -16,8 +16,9 @@ describe('E2E: Relayer - Config routes', async () => {
   });
 
   it('should return public config', async () => {
-    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey} = relayer.getConfig();
+    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey, ensRegistrar} = relayer.getConfig();
     const expectedConfig: PublicRelayerConfig = {
+      ensRegistrar,
       supportedTokens,
       chainSpec,
       factoryAddress,
@@ -34,8 +35,9 @@ describe('E2E: Relayer - Config routes', async () => {
   });
 
   it('getPublicConfig should return PublicConfig', () => {
-    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey} = relayer.getConfig();
+    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey, ensRegistrar} = relayer.getConfig();
     const expectedConfig: PublicRelayerConfig = {
+      ensRegistrar,
       supportedTokens,
       chainSpec,
       factoryAddress,

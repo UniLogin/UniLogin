@@ -5,8 +5,9 @@ import asyncMiddleware from '../middlewares/async_middleware';
 import {Config} from '../../config/relayer';
 
 export function getPublicConfig(config: Config): PublicRelayerConfig {
-  const {chainSpec, supportedTokens, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey} = config;
+  const {chainSpec, supportedTokens, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey, ensRegistrar} = config;
   return {
+    ensRegistrar,
     chainSpec,
     supportedTokens,
     factoryAddress,
