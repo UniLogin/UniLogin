@@ -16,7 +16,7 @@ describe('INT: RelayerRequestSignatureValidator', () => {
   const keyPair = createKeyPair();
   const ensName = 'jarek.mylogin.eth';
 
-  beforeEach(async () => {
+  before(async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
     const walletContractService = setupWalletContractService(provider);
@@ -41,5 +41,9 @@ describe('INT: RelayerRequestSignatureValidator', () => {
     const msgHash = calculateGnosisStringHash(proxy.address, proxy.address);
     const signature = signStringMessage(msgHash, keyPair.privateKey);
     await expect(relayerRequestSignatureValidator.ensureValidRelayerRequestSignature({signature, contractAddress: proxy.address})).to.be.fulfilled;
+  });
+
+  it('throws if no signature', async () => {
+    await expect(relayerRequestSignatureValidator.ensureValidRelayerRequestSignature({contractAddress})).to.be.rejectedWith('Signature not found');
   });
 });
