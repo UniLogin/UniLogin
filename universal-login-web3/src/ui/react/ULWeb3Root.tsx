@@ -17,7 +17,7 @@ export interface ULWeb3RootProps {
 export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3RootProps) => {
   const modal = useProperty(uiController.activeModal);
 
-  switch (modal) {
+  switch (modal.kind) {
     case 'IDLE':
       return <div />;
     case 'ONBOARDING':
