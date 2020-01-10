@@ -12,6 +12,7 @@ import {deployENS} from './deployEns';
 import deployWalletContractOnDev from './deployWalletContractOnDev';
 import deployToken from './deployToken';
 import deployFactory from '../ops/deployFactory';
+import deployENSRegistrar from '../ops/deployENSRegistrar';
 
 const ganachePort = 18545;
 
@@ -30,7 +31,7 @@ const databaseConfig = {
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
-function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, daiTokenAddress: string, saiTokenAddress: string) {
+function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, daiTokenAddress: string, saiTokenAddress: string, ensRegistrar: string) {
   const supportedTokens: SupportedToken[] = [{
     address: daiTokenAddress,
   },
@@ -50,6 +51,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
       chainId: 0,
     },
     ensRegistrars,
+    ensRegistrar,
     walletContractAddress,
     contractWhiteList,
     factoryAddress,
@@ -110,12 +112,13 @@ async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrid
   const factoryAddress = await deployFactory(deployWallet, {walletContractAddress: address, nodeUrl: 'dev', privateKey: 'dev'});
   const saiTokenAddress = await deployToken(deployWallet, mockContracts.MockSai);
   const daiTokenAddress = await deployToken(deployWallet, mockContracts.MockDai);
+  const ensRegistrar = await deployENSRegistrar(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const contractWhiteList = {
     wallet: [walletContractHash],
     proxy: [proxyContractHash],
   };
-  const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, daiTokenAddress, saiTokenAddress);
+  const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, daiTokenAddress, saiTokenAddress, ensRegistrar.address);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
   return {jsonRpcUrl, deployWallet, walletContractAddress: address, saiTokenAddress, daiTokenAddress, ensAddress, ensDomains};
 }

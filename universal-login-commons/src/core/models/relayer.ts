@@ -24,6 +24,7 @@ export interface OnRampConfig {
 }
 
 export interface PublicRelayerConfig {
+  ensRegistrar: string;
   supportedTokens: SupportedToken[];
   factoryAddress: string;
   chainSpec: ChainSpec;

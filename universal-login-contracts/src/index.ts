@@ -17,6 +17,9 @@ export {beta2};
 import * as ens from './ens';
 export {ens};
 
+import * as gnosisSafe from './gnosis-safe@1.1.1/contracts';
+export {gnosisSafe};
+
 import {MAGICVALUE, INVALIDSIGNATURE} from './ERC1271/constants';
 const ERC1271 = {MAGICVALUE, INVALIDSIGNATURE};
 export {ERC1271};
