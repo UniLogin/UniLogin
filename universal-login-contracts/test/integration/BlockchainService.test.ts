@@ -11,6 +11,7 @@ import {providers, Contract, Wallet} from 'ethers';
 import walletAndProxy from '../fixtures/walletAndProxy';
 import basicWalletAndProxy from '../fixtures/basicWalletAndProxy';
 import {setupGnosisSafeContractFixture} from '../fixtures/gnosisSafe';
+import {computeGnosisCounterfactualAddress} from '../../src';
 
 describe('INT: BlockchainService', async () => {
   const expectedBytecode = `0x${getDeployedBytecode(WalletContract as any)}`;
@@ -61,6 +62,14 @@ describe('INT: BlockchainService', async () => {
 
   it('should return empty array if does not match the logs', async () => {
     expect(await blockchainService.getLogs({address: TEST_ACCOUNT_ADDRESS})).to.be.deep.eq([]);
+  });
+
+  it('creates future Gnosis', async () => {
+    const {provider, proxyFactory, master} = await loadFixture(setupGnosisSafeContractFixture);
+    blockchainService = new BlockchainService(provider);
+    const initializeData = '0x12345abcd';
+    const contractAddress = computeGnosisCounterfactualAddress(proxyFactory.address, 0, initializeData, master.address);
+    expect((await blockchainService.createFutureGnosis(proxyFactory.address, master.address, initializeData))[1]).to.eq(contractAddress);
   });
 
   describe('fetchProxyVersion', () => {

@@ -2,6 +2,7 @@ import {Contract, providers, utils} from 'ethers';
 import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion, PROXY_VERSIONS} from '@universal-login/commons';
 import {WalletProxyInterface, WalletProxyFactoryInterface} from '../../test/helpers/interfaces';
 import {IProxyInterface} from '../gnosis-safe@1.1.1/interfaces';
+import {computeGnosisCounterfactualAddress} from '../gnosis-safe@1.1.1/utils';
 
 export class BlockchainService {
   constructor(private provider: providers.Provider) {
@@ -27,6 +28,12 @@ export class BlockchainService {
   createFutureWallet = async (factoryAddress: string) => {
     const {privateKey, publicKey} = createKeyPair();
     const futureContractAddress = computeCounterfactualAddress(factoryAddress, publicKey, await this.getInitCode(factoryAddress));
+    return [privateKey, futureContractAddress, publicKey];
+  };
+
+  createFutureGnosis = async (factoryAddress: string, masterAddress: string, initializeData: string) => {
+    const {privateKey, publicKey} = createKeyPair();
+    const futureContractAddress = computeGnosisCounterfactualAddress(factoryAddress, 0, initializeData, masterAddress);
     return [privateKey, futureContractAddress, publicKey];
   };
 
