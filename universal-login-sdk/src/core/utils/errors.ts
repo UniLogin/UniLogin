@@ -21,7 +21,8 @@ type ErrorType =
   'InvalidENSRecord' |
   'NoSet' |
   'UnexpectedError' |
-  'InvalidGasLimit';
+  'InvalidGasLimit' |
+  'InvalidObserverState';
 
 export class SDKError extends Error {
   errorType: ErrorType;
@@ -209,5 +210,12 @@ export class WalletOverridden extends Overridden {
   constructor() {
     super('Wallet cannot be overridden', 'WalletOverridden');
     Object.setPrototypeOf(this, WalletOverridden.prototype);
+  }
+}
+
+export class InvalidObserverState extends Overridden {
+  constructor() {
+    super('Observer not yet started', 'InvalidObserverState');
+    Object.setPrototypeOf(this, InvalidObserverState.prototype);
   }
 }

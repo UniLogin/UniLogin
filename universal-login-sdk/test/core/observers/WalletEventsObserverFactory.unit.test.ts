@@ -20,24 +20,31 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
   let blockchainService: BlockchainService;
 
   beforeEach(async () => {
-    blockchainService = {} as any;
+    blockchainService = {
+      getBlockNumber: sinon.fake.returns(0),
+    } as any;
     factory = new WalletEventsObserverFactory(blockchainService);
     onKeyAdd = sinon.spy();
     onKeyRemove = sinon.spy();
+    await factory.start();
+  });
+
+  afterEach(async () => {
+    await factory.stop();
   });
 
   describe('fetchEventsOfType', () => {
     it('KeyAdded', async () => {
       blockchainService.getLogs = sinon.fake.returns([keyAddedEvent]);
       factory.subscribe('KeyAdded', filter, onKeyAdd);
-      await factory.fetchEventsOfType(['KeyAdded']);
+      await factory.fetchEventsOfTypes(['KeyAdded']);
       expect(onKeyAdd).to.have.been.calledOnce;
     });
 
-    it('KeyRemoved', async () => {
+    it('xKeyRemoved', async () => {
       blockchainService.getLogs = sinon.fake.returns([keyRemovedEvent]);
       factory.subscribe('KeyRemoved', filter, onKeyRemove);
-      await factory.fetchEventsOfType(['KeyRemoved']);
+      await factory.fetchEventsOfTypes(['KeyRemoved']);
       expect(onKeyRemove).to.have.been.calledOnce;
     });
   });
@@ -53,7 +60,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
     it('subscribe twice', async () => {
       factory.subscribe('KeyAdded', filter, onKeyAdd);
       factory.subscribe('KeyAdded', filter, onKeyAdd2);
-      await factory.fetchEventsOfType(['KeyAdded']);
+      await factory.fetchEventsOfTypes(['KeyAdded']);
       expect(onKeyAdd).to.have.been.calledOnce;
       expect(onKeyAdd2).to.have.been.calledOnce;
     });
@@ -62,7 +69,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
       factory.subscribe('KeyAdded', filter, onKeyAdd);
       const unsubscribe = factory.subscribe('KeyAdded', filter, onKeyAdd2);
       unsubscribe();
-      await factory.fetchEventsOfType(['KeyAdded']);
+      await factory.fetchEventsOfTypes(['KeyAdded']);
       expect(onKeyAdd).to.have.been.calledOnce;
       expect(onKeyAdd2).to.not.have.been.called;
     });
@@ -72,7 +79,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
       const unsubscribe2 = factory.subscribe('KeyAdded', filter, onKeyAdd2);
       unsubscribe();
       unsubscribe2();
-      await factory.fetchEventsOfType(['KeyAdded']);
+      await factory.fetchEventsOfTypes(['KeyAdded']);
       expect(onKeyAdd).to.not.have.been.called;
       expect(onKeyAdd2).to.not.have.been.called;
     });

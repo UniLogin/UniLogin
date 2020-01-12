@@ -32,6 +32,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
       contractAddress: deployedWallet.contractAddress,
       key: publicKey,
     };
+    await factory.start();
   });
 
   it('subscribe to KeyAdded', async () => {
@@ -55,5 +56,6 @@ describe('INT: WalletEventsObserverFactory', async () => {
   after(async () => {
     await relayer.clearDatabase();
     await relayer.stop();
+    await factory.finalizeAndStop();
   });
 });

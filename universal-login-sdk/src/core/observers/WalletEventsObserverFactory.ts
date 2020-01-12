@@ -2,11 +2,13 @@ import {BlockchainService} from '@universal-login/contracts';
 import {WalletEventCallback, WalletEventFilter, WalletEventType} from '../models/events';
 import {WalletEventsObserver} from './WalletEventsObserver';
 import ObserverRunner from './ObserverRunner';
+import {Nullable, ensureNotNull} from '@universal-login/commons';
+import {InvalidObserverState} from '../utils/errors';
 
 class WalletEventsObserverFactory extends ObserverRunner {
   protected observers: Record<string, WalletEventsObserver> = {};
 
-  private lastBlock?: number;
+  private lastBlock: Nullable<number> = null;
 
   constructor(private blockchainService: BlockchainService) {
     super();
@@ -22,11 +24,13 @@ class WalletEventsObserverFactory extends ObserverRunner {
   }
 
   async fetchEvents() {
-    await this.fetchEventsOfType(['KeyAdded', 'KeyRemoved']);
+    ensureNotNull(this.lastBlock, InvalidObserverState);
+    await this.fetchEventsOfTypes(['KeyAdded', 'KeyRemoved']);
     this.lastBlock = await this.blockchainService.getBlockNumber();
   }
 
-  async fetchEventsOfType(types: WalletEventType[]) {
+  async fetchEventsOfTypes(types: WalletEventType[]) {
+    ensureNotNull(this.lastBlock, InvalidObserverState);
     for (const observer of Object.keys(this.observers)) {
       await this.observers[observer].fetchEvents(observer, this.lastBlock!, types);
     }
