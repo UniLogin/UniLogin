@@ -28,11 +28,13 @@ export class WalletEventsObserver {
     }
   }
 
-  async fetchEvents(key: string, lastBlock: number, type: WalletEventType) {
-    const topics = [eventInterface[type].topic];
-    const eventsFilter = {fromBlock: lastBlock, address: this.contractAddress, topics};
-    const events: Log[] = await this.blockchainService.getLogs(eventsFilter);
-    this.processEvents(events, key, type);
+  async fetchEvents(key: string, lastBlock: number, types: WalletEventType[]) {
+    for (const type of types) {
+      const topics = [eventInterface[type].topic];
+      const eventsFilter = {fromBlock: lastBlock, address: this.contractAddress, topics};
+      const events: Log[] = await this.blockchainService.getLogs(eventsFilter);
+      this.processEvents(events, key, type);
+    }
   }
 
   processEvents(events: Log[], filterKey: string, type: WalletEventType) {

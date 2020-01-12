@@ -30,14 +30,14 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
     it('KeyAdded', async () => {
       blockchainService.getLogs = sinon.fake.returns([keyAddedEvent]);
       factory.subscribe('KeyAdded', filter, onKeyAdd);
-      await factory.fetchEventsOfType('KeyAdded');
+      await factory.fetchEventsOfType(['KeyAdded']);
       expect(onKeyAdd).to.have.been.calledOnce;
     });
 
     it('KeyRemoved', async () => {
       blockchainService.getLogs = sinon.fake.returns([keyRemovedEvent]);
       factory.subscribe('KeyRemoved', filter, onKeyRemove);
-      await factory.fetchEventsOfType('KeyRemoved');
+      await factory.fetchEventsOfType(['KeyRemoved']);
       expect(onKeyRemove).to.have.been.calledOnce;
     });
   });
@@ -53,7 +53,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
     it('subscribe twice', async () => {
       factory.subscribe('KeyAdded', filter, onKeyAdd);
       factory.subscribe('KeyAdded', filter, onKeyAdd2);
-      await factory.fetchEventsOfType('KeyAdded');
+      await factory.fetchEventsOfType(['KeyAdded']);
       expect(onKeyAdd).to.have.been.calledOnce;
       expect(onKeyAdd2).to.have.been.calledOnce;
     });
@@ -62,7 +62,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
       factory.subscribe('KeyAdded', filter, onKeyAdd);
       const unsubscribe = factory.subscribe('KeyAdded', filter, onKeyAdd2);
       unsubscribe();
-      await factory.fetchEventsOfType('KeyAdded');
+      await factory.fetchEventsOfType(['KeyAdded']);
       expect(onKeyAdd).to.have.been.calledOnce;
       expect(onKeyAdd2).to.not.have.been.called;
     });
@@ -72,7 +72,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
       const unsubscribe2 = factory.subscribe('KeyAdded', filter, onKeyAdd2);
       unsubscribe();
       unsubscribe2();
-      await factory.fetchEventsOfType('KeyAdded');
+      await factory.fetchEventsOfType(['KeyAdded']);
       expect(onKeyAdd).to.not.have.been.called;
       expect(onKeyAdd2).to.not.have.been.called;
     });

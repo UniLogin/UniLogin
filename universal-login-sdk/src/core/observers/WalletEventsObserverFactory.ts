@@ -22,14 +22,13 @@ class WalletEventsObserverFactory extends ObserverRunner {
   }
 
   async fetchEvents() {
-    await this.fetchEventsOfType('KeyAdded');
-    await this.fetchEventsOfType('KeyRemoved');
+    await this.fetchEventsOfType(['KeyAdded', 'KeyRemoved']);
     this.lastBlock = await this.blockchainService.getBlockNumber();
   }
 
-  async fetchEventsOfType(type: WalletEventType) {
+  async fetchEventsOfType(types: WalletEventType[]) {
     for (const observer of Object.keys(this.observers)) {
-      this.observers[observer].fetchEvents(observer, this.lastBlock!, type);
+      await this.observers[observer].fetchEvents(observer, this.lastBlock!, types);
     }
   }
 
