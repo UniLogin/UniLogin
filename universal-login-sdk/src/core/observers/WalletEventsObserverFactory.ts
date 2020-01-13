@@ -37,9 +37,8 @@ class WalletEventsObserverFactory extends ObserverRunner {
   }
 
   subscribe(eventType: WalletEventType, filter: WalletEventFilter, callback: WalletEventCallback) {
-    const observer = this.observers[filter.key] || new WalletEventsObserver(filter.contractAddress, this.blockchainService);
-    this.observers[filter.key] = observer;
-    return observer.subscribe(eventType, callback);
+    this.observers[filter.key] = this.observers[filter.key] || new WalletEventsObserver(filter.contractAddress, this.blockchainService);
+    return this.observers[filter.key].subscribe(eventType, callback);
   }
 }
 
