@@ -41,7 +41,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
       expect(onKeyAdd).to.have.been.calledOnce;
     });
 
-    it('xKeyRemoved', async () => {
+    it('KeyRemoved', async () => {
       blockchainService.getLogs = sinon.fake.returns([keyRemovedEvent]);
       factory.subscribe('KeyRemoved', filter, onKeyRemove);
       await factory.fetchEventsOfTypes(['KeyRemoved']);
