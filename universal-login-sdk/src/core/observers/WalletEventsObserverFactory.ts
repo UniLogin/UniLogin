@@ -1,6 +1,7 @@
 import {BlockchainService} from '@universal-login/contracts';
 import {WalletEventCallback, WalletEventFilter, WalletEventType} from '../models/events';
 import {WalletEventsObserver} from './WalletEventsObserver';
+import {BlockProperty} from '../properties/BlockProperty';
 import ObserverRunner from './ObserverRunner';
 import {Nullable, ensureNotNull} from '@universal-login/commons';
 import {InvalidObserverState} from '../utils/errors';
@@ -10,7 +11,7 @@ class WalletEventsObserverFactory extends ObserverRunner {
 
   private lastBlock: Nullable<number> = null;
 
-  constructor(private blockchainService: BlockchainService) {
+  constructor(private blockchainService: BlockchainService, private currentBlock: BlockProperty) {
     super();
   }
 

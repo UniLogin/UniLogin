@@ -9,6 +9,7 @@ import UniversalLoginSDK, {DeployedWallet} from '../../../src';
 import WalletEventsObserverFactory from '../../../src/core/observers/WalletEventsObserverFactory';
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
+import {BlockProperty} from '../../../src/core/properties/BlockProperty';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -26,7 +27,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
 
   before(async () => {
     ({relayer, sdk} = await setupSdk(deployer));
-    factory = new WalletEventsObserverFactory(new BlockchainService(sdk.provider));
+    factory = new WalletEventsObserverFactory(new BlockchainService(sdk.provider), new BlockProperty(provider));
     deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);
     filter = {
       contractAddress: deployedWallet.contractAddress,
