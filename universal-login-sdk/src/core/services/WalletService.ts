@@ -57,8 +57,8 @@ export class WalletService {
   }
 
   async createFutureWallet(name: string): Promise<FutureWallet> {
-    const {gasOptions} = (await this.sdk.getGasModes())[1];
-    const futureWallet = await this.sdk.createFutureWallet(name, gasOptions[0].gasPrice.toString(), gasOptions[0].token.address.toString());
+    const gasParameters = (await this.sdk.getGasModes())[1];
+    const futureWallet = await this.sdk.createFutureWallet(name, gasParameters.gasOptions[0].gasPrice.toString(), gasParameters.gasOptions[0].token.address);
     this.setFutureWallet(futureWallet, name);
     return futureWallet;
   }
