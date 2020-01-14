@@ -1,7 +1,7 @@
 import {AssertionError, expect} from 'chai';
 import sinon from 'sinon';
 import {WalletSerializer} from '../../../src/core/services/WalletSerializer';
-import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure, TEST_TRANSACTION_HASH} from '@universal-login/commons';
+import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure, TEST_TRANSACTION_HASH, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {DeployedWallet, DeployingWallet, FutureWallet} from '../../../src';
 import {Wallet} from 'ethers';
 import {ConnectingWallet} from '../../../src/api/wallet/ConnectingWallet';
@@ -20,6 +20,9 @@ describe('UNIT: WalletSerializer', () => {
   const TEST_FUTURE_WALLET: FutureWallet = {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
+    ensName: 'name.mylogin.eth',
+    gasPrice: TEST_GAS_PRICE,
+    gasToken: ETHER_NATIVE_TOKEN.address,
     deploy: (() => {}) as any,
     waitForBalance: (() => {}) as any,
     setSupportedToken: (() => {}) as any,
@@ -70,6 +73,9 @@ describe('UNIT: WalletSerializer', () => {
         wallet: {
           contractAddress: TEST_CONTRACT_ADDRESS,
           privateKey: TEST_PRIVATE_KEY,
+          ensName: 'name.mylogin.eth',
+          gasPrice: TEST_GAS_PRICE,
+          gasToken: ETHER_NATIVE_TOKEN.address,
         },
       });
     });
@@ -126,6 +132,9 @@ describe('UNIT: WalletSerializer', () => {
         wallet: {
           contractAddress: TEST_CONTRACT_ADDRESS,
           privateKey: TEST_PRIVATE_KEY,
+          ensName: 'name.mylogin.eth',
+          gasPrice: TEST_GAS_PRICE,
+          gasToken: ETHER_NATIVE_TOKEN.address,
         },
       })).to.deep.eq({
         kind: 'Future',

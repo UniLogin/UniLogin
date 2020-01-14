@@ -4,10 +4,10 @@ import UniversalLoginSDK, {DeployedWallet} from '../../src';
 import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@universal-login/commons';
 
 export const createdDeployedWallet = async (name: string, sdk: UniversalLoginSDK, wallet: Wallet): Promise<DeployedWallet> => {
-  const {contractAddress, waitForBalance, deploy} = await sdk.createFutureWallet();
+  const {contractAddress, waitForBalance, deploy} = await sdk.createFutureWallet(name, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
   await waitForBalance();
-  const {waitToBeSuccess} = await deploy(name, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
+  const {waitToBeSuccess} = await deploy();
   return waitToBeSuccess();
 };
 

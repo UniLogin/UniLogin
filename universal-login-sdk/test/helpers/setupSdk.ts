@@ -1,5 +1,5 @@
 import {Wallet} from 'ethers';
-import {TEST_SDK_CONFIG} from '@universal-login/commons';
+import {TEST_SDK_CONFIG, TEST_GAS_MODES} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import UniversalLoginSDK from '../../src/api/sdk';
 
@@ -9,5 +9,6 @@ export async function setupSdk(deployer: Wallet, overridePort = '33111') {
   const {provider} = relayer;
   const sdk = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
   await sdk.fetchRelayerConfig();
+  sdk.getGasModes = () => new Promise(resolve => resolve(TEST_GAS_MODES));
   return {sdk, relayer, provider};
 }

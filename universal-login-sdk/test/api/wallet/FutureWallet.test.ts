@@ -1,4 +1,4 @@
-import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE} from '@universal-login/commons';
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {providers, utils, Wallet} from 'ethers';
@@ -10,6 +10,9 @@ describe('UNIT: FutureWallet', () => {
   const serializableFutureWallet: SerializableFutureWallet = {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
+    ensName: 'name.mylogin.eth',
+    gasPrice: TEST_GAS_PRICE,
+    gasToken: ETHER_NATIVE_TOKEN.address,
   };
   const minimalAmount = utils.parseEther('0.5').toString();
   const supportedTokens = [

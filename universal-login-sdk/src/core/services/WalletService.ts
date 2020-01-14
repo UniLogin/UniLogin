@@ -57,15 +57,16 @@ export class WalletService {
   }
 
   async createFutureWallet(name: string): Promise<FutureWallet> {
-    const futureWallet = await this.sdk.createFutureWallet();
+    const {gasOptions} = (await this.sdk.getGasModes())[1];
+    const futureWallet = await this.sdk.createFutureWallet(name, gasOptions[0].gasPrice.toString(), gasOptions[0].token.address.toString());
     this.setFutureWallet(futureWallet, name);
     return futureWallet;
   }
 
   async initDeploy() {
     ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
-    const {name, wallet: {deploy}} = this.state;
-    const deployingWallet = await deploy(name, this.gasParameters.gasPrice.toString(), this.gasParameters.gasToken);
+    const {wallet: {deploy}} = this.state;
+    const deployingWallet = await deploy();
     this.setState({kind: 'Deploying', wallet: deployingWallet});
     return this.getDeployingWallet();
   }
