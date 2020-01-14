@@ -24,18 +24,22 @@ export class WalletEventsObserver {
 
   async fetchEvents(lastBlock: number, types: WalletEventType[]) {
     for (const type of types) {
-      for (const observableRecord of this.observableRecords[type]) {
-        const topics = [eventInterface[type].topic];
-        const eventsFilter = {fromBlock: lastBlock, address: this.contractAddress, topics};
-        const events: Log[] = await this.blockchainService.getLogs(eventsFilter);
-        this.processEvents(events, observableRecord, type);
-      }
+      const topics = [eventInterface[type].topic];
+      const eventsFilter = {fromBlock: lastBlock, address: this.contractAddress, topics};
+      const events: Log[] = await this.blockchainService.getLogs(eventsFilter);
+      this.processEvents(events, type);
     }
   }
 
-  processEvents(events: Log[], observableRecord: WalletEventObservableRecord, type: WalletEventType) {
+  processEvents(events: Log[], type: WalletEventType) {
     for (const event of events) {
-      const args = parseArgs(type, event);
+      this.processEvent(type, event);
+    }
+  }
+
+  private processEvent(type: WalletEventType, event: Log) {
+    const args = parseArgs(type, event);
+    for (const observableRecord of this.observableRecords[type]) {
       if (observableRecord.key === 'undefined' || observableRecord.key === args.key) {
         observableRecord.callback(args);
       }
