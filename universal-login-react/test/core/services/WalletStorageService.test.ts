@@ -1,5 +1,5 @@
 import {MemoryStorageService, StorageService, WalletStorageService} from '../../../src';
-import {ApplicationWallet, SerializableFutureWallet} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, ApplicationWallet, SerializableFutureWallet, TEST_GAS_PRICE} from '@universal-login/commons';
 import sinon from 'sinon';
 import {expect} from 'chai';
 import {Wallet} from 'ethers';
@@ -8,6 +8,9 @@ describe('WalletStorageService', () => {
   const futureWallet: SerializableFutureWallet = {
     contractAddress: Wallet.createRandom().address,
     privateKey: Wallet.createRandom().privateKey,
+    gasPrice: TEST_GAS_PRICE,
+    ensName: 'name.mylogin.eth',
+    gasToken: ETHER_NATIVE_TOKEN.address,
   };
   const applicationWallet: ApplicationWallet = {
     name: 'name',

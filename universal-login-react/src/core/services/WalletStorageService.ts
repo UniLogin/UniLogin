@@ -41,6 +41,9 @@ export class WalletStorageService implements WalletStorage {
 const asSerializableFutureWallet = asObject<SerializableFutureWallet>({
   contractAddress: asString,
   privateKey: asString,
+  gasPrice: asString,
+  ensName: asString,
+  gasToken: asString,
 });
 
 const asApplicationWallet = asObject<ApplicationWallet>({
