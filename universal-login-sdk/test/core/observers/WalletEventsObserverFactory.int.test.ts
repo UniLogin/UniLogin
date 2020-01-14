@@ -40,7 +40,6 @@ describe('INT: WalletEventsObserverFactory', async () => {
     await factory.subscribe('KeyAdded', filter, callback);
     const execution = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
     await execution.waitToBeSuccess();
-    await factory.fetchEvents();
     await waitUntil(() => !!callback.firstCall);
     expect(callback).to.have.been.calledWith({key: publicKey});
   });
@@ -49,9 +48,12 @@ describe('INT: WalletEventsObserverFactory', async () => {
     await factory.subscribe('KeyRemoved', filter, callback);
     const execution = await deployedWallet.removeKey(publicKey, TEST_EXECUTION_OPTIONS);
     await execution.waitToBeSuccess();
-    await factory.fetchEvents();
     await waitUntil(() => !!callback.firstCall);
     expect(callback).to.have.been.calledWith({key: publicKey});
+  });
+
+  afterEach(() => {
+    sinon.resetHistory();
   });
 
   after(async () => {
