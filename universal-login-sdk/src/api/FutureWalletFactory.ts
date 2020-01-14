@@ -24,7 +24,7 @@ export class FutureWalletFactory {
   }
 
   createFrom(wallet: SerializableFutureWallet): FutureWallet {
-    return new FutureWallet(wallet, this.config.supportedTokens, this.sdk, this.ensService);
+    return new FutureWallet(wallet, this.sdk, this.ensService);
   }
 
   async createNew(ensName: string, gasPrice: string, gasToken: string): Promise<FutureWallet> {

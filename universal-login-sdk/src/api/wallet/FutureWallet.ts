@@ -1,5 +1,5 @@
 import {BalanceDetails} from '../FutureWalletFactory';
-import {SerializableFutureWallet, ensure, isValidEnsName, calculateInitializeSignature, SupportedToken} from '@universal-login/commons';
+import {SerializableFutureWallet, ensure, isValidEnsName, calculateInitializeSignature, SupportedToken, DEPLOYMENT_REFUND} from '@universal-login/commons';
 import {DeployingWallet} from './DeployingWallet';
 import {DeploymentReadyObserver} from '../../core/observers/DeploymentReadyObserver';
 import {InvalidAddressOrEnsName} from '../../core/utils/errors';
@@ -19,7 +19,6 @@ export class FutureWallet implements SerializableFutureWallet {
 
   constructor(
     serializableFutureWallet: SerializableFutureWallet,
-    private supportedTokens: SupportedToken[],
     private sdk: UniversalLoginSDK,
     private ensService: ENSService,
   ) {
@@ -29,7 +28,7 @@ export class FutureWallet implements SerializableFutureWallet {
     this.gasPrice = serializableFutureWallet.gasPrice;
     this.ensName = serializableFutureWallet.ensName;
     this.gasToken = serializableFutureWallet.gasToken;
-    this.deploymentReadyObserver = new DeploymentReadyObserver(this.supportedTokens, this.sdk.provider);
+    this.deploymentReadyObserver = new DeploymentReadyObserver([{address: this.gasToken, minimalAmount: this.getMinimalAmount()}], this.sdk.provider);
   }
 
   waitForBalance = async () => new Promise<BalanceDetails>(
@@ -52,6 +51,8 @@ export class FutureWallet implements SerializableFutureWallet {
   setSupportedToken = (supportedToken: SupportedToken) => {
     this.deploymentReadyObserver.setSupportedToken(supportedToken);
   };
+
+  getMinimalAmount = () => utils.formatEther(utils.bigNumberify(this.gasPrice).mul(DEPLOYMENT_REFUND).toString());
 
   private async setupInitData(publicKey: string, ensName: string, gasPrice: string, gasToken: string) {
     const args = await this.ensService.argsFor(ensName) as string[];

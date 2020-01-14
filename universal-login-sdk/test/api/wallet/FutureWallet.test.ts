@@ -1,4 +1,4 @@
-import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE, DEPLOYMENT_REFUND} from '@universal-login/commons';
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {providers, utils, Wallet} from 'ethers';
@@ -15,12 +15,6 @@ describe('UNIT: FutureWallet', () => {
     gasToken: ETHER_NATIVE_TOKEN.address,
   };
   const minimalAmount = utils.parseEther('0.5').toString();
-  const supportedTokens = [
-    {
-      address: ETHER_NATIVE_TOKEN.address,
-      minimalAmount,
-    },
-  ];
   let provider: providers.Provider;
   let wallet: Wallet;
   let futureWallet: FutureWallet;
@@ -32,7 +26,7 @@ describe('UNIT: FutureWallet', () => {
     mockSDK = {
       provider: provider,
     } as any;
-    futureWallet = new FutureWallet(serializableFutureWallet, supportedTokens, mockSDK, {} as ENSService);
+    futureWallet = new FutureWallet(serializableFutureWallet, mockSDK, {} as ENSService);
   });
 
   it('waits for Balance', async () => {
@@ -46,5 +40,10 @@ describe('UNIT: FutureWallet', () => {
     expect(await provider.getBalance(to)).to.be.above(minimalAmount);
     expect(result.contractAddress).be.eq(to);
     expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
+  });
+
+  it('returns minimal amount to deploy', async () => {
+    const expectedMinimalAmount = utils.formatEther(utils.bigNumberify(TEST_GAS_PRICE).mul(DEPLOYMENT_REFUND));
+    expect(futureWallet.getMinimalAmount()).to.eq(expectedMinimalAmount);
   });
 });
