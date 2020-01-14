@@ -7,6 +7,7 @@ import {RelayerUnderTest} from '@universal-login/relayer';
 import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import basicSDK from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../src/api/sdk';
+import {waitExpect} from '@universal-login/commons/testutils';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -40,6 +41,7 @@ describe('INT: Events', async () => {
     await sdk.connect(contractAddress);
     const paymentOptions = {gasPrice, gasLimit, gasToken: mockToken.address};
     await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
+    await waitExpect(() => expect(keyCallback).to.have.been.calledOnce, 3000);
     await sdk.finalizeAndStop();
     unsubscribe();
     expect(keyCallback).to.have.been.calledWith({key: wallet.address});

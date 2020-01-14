@@ -8,7 +8,7 @@ import UniversalLoginSDK from '../../../src/api/sdk';
 import AuthorisationsObserver from '../../../src/core/observers/AuthorisationsObserver';
 import {waitUntil, signRelayerRequest, RelayerRequest} from '@universal-login/commons';
 import {utils, Wallet} from 'ethers';
-import {createWallet} from '../../helpers/createWallet';
+import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -61,7 +61,7 @@ describe('INT: AuthorisationsObserver', async () => {
   });
 
   it('two authorisation requests', async () => {
-    const newWalletContract = await createWallet('newlogin.mylogin.eth', sdk, wallet);
+    const newWalletContract = await createdDeployedWallet('newlogin.mylogin.eth', sdk, wallet);
     const callback1 = sinon.spy();
     const callback2 = sinon.spy();
 

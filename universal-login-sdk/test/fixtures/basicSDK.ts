@@ -5,7 +5,7 @@ import {beta2} from '@universal-login/contracts';
 import {mockContracts} from '@universal-login/contracts/testutils';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import UniversalLoginSDK from '../../src/api/sdk';
-import {createWallet} from '../helpers/createWallet';
+import {createdDeployedWallet} from '../helpers/createDeployedWallet';
 
 export default async function basicSDK(givenProvider: providers.Provider, wallets: Wallet[]) {
   const [wallet, otherWallet, otherWallet2, deployer] = wallets;
@@ -14,7 +14,7 @@ export default async function basicSDK(givenProvider: providers.Provider, wallet
   const sdk = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
   await sdk.fetchRelayerConfig();
   const ensName = 'alex.mylogin.eth';
-  const {contractAddress, privateKey} = await createWallet(ensName, sdk, wallet);
+  const {contractAddress, privateKey} = await createdDeployedWallet(ensName, sdk, wallet);
   const mockToken = await deployContract(wallet, mockContracts.MockToken);
   await mockToken.transfer(contractAddress, utils.parseEther('1.0'));
   const walletContract = new Contract(contractAddress, beta2.WalletContract.abi, wallet);

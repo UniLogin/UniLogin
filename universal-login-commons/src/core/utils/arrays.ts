@@ -31,3 +31,7 @@ export const deepArrayStartWith = (array: any[], prefix: any[]) => {
   const arrayPrefix = array.slice(0, prefix.length);
   return deepEqual(arrayPrefix, prefix);
 };
+
+export const arrayRemove = <T>(anArray: T[], value: T) => {
+  return anArray.filter((element) => element !== value);
+};
