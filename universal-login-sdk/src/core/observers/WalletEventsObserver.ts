@@ -1,5 +1,5 @@
 import {arrayRemove} from '@universal-login/commons';
-import {WalletEventArgs, WalletEventCallback, WalletEventType} from '../models/events';
+import {WalletEventType, WalletEventObservableRecord} from '../models/events';
 import {parseArgs} from '../utils/events';
 import {Log} from 'ethers/providers';
 import {WalletContractInterface, BlockchainService} from '@universal-login/contracts';
@@ -7,7 +7,7 @@ import {WalletContractInterface, BlockchainService} from '@universal-login/contr
 const eventInterface = WalletContractInterface.events;
 
 export class WalletEventsObserver {
-  private readonly callbacks: Record<WalletEventType, WalletEventCallback[]> = {
+  private readonly observableRecords: Record<WalletEventType, WalletEventObservableRecord[]> = {
     KeyAdded: [],
     KeyRemoved: [],
   };
@@ -15,33 +15,29 @@ export class WalletEventsObserver {
   constructor(public readonly contractAddress: string, public readonly blockchainService: BlockchainService) {
   }
 
-  subscribe(type: WalletEventType, callback: WalletEventCallback) {
-    this.callbacks[type].push(callback);
+  subscribe(type: WalletEventType, observableRecord: WalletEventObservableRecord) {
+    this.observableRecords[type].push(observableRecord);
     return () => {
-      this.callbacks[type] = arrayRemove(this.callbacks[type], callback);
+      this.observableRecords[type] = arrayRemove(this.observableRecords[type], observableRecord);
     };
   }
 
-  emit(type: WalletEventType, args: WalletEventArgs) {
-    for (const callback of this.callbacks[type]) {
-      callback(args);
-    }
-  }
-
-  async fetchEvents(key: string, lastBlock: number, types: WalletEventType[]) {
+  async fetchEvents(lastBlock: number, types: WalletEventType[]) {
     for (const type of types) {
-      const topics = [eventInterface[type].topic];
-      const eventsFilter = {fromBlock: lastBlock, address: this.contractAddress, topics};
-      const events: Log[] = await this.blockchainService.getLogs(eventsFilter);
-      this.processEvents(events, key, type);
+      for (const observableRecord of this.observableRecords[type]) {
+        const topics = [eventInterface[type].topic];
+        const eventsFilter = {fromBlock: lastBlock, address: this.contractAddress, topics};
+        const events: Log[] = await this.blockchainService.getLogs(eventsFilter);
+        this.processEvents(events, observableRecord, type);
+      }
     }
   }
 
-  processEvents(events: Log[], filterKey: string, type: WalletEventType) {
+  processEvents(events: Log[], observableRecord: WalletEventObservableRecord, type: WalletEventType) {
     for (const event of events) {
-      const {key} = parseArgs(type, event);
-      if (filterKey === 'undefined' || filterKey === key) {
-        this.emit(type, parseArgs(type, event));
+      const args = parseArgs(type, event);
+      if (observableRecord.key === 'undefined' || observableRecord.key === args.key) {
+        observableRecord.callback(args);
       }
     }
   }

@@ -17,7 +17,7 @@ class WalletEventsObserverFactory extends ObserverRunner {
 
   async start() {
     this.lastBlock = await this.blockchainService.getBlockNumber();
-    await super.start();
+    super.start();
   }
 
   async execute() {
@@ -32,14 +32,14 @@ class WalletEventsObserverFactory extends ObserverRunner {
 
   async fetchEventsOfTypes(types: WalletEventType[]) {
     ensureNotNull(this.lastBlock, InvalidObserverState);
-    for (const publicKey of Object.keys(this.observers)) {
-      await this.observers[publicKey].fetchEvents(publicKey, this.lastBlock!, types);
+    for (const contractAddress of Object.keys(this.observers)) {
+      await this.observers[contractAddress].fetchEvents(this.lastBlock!, types);
     }
   }
 
   subscribe(eventType: WalletEventType, filter: WalletEventFilter, callback: WalletEventCallback) {
-    this.observers[filter.key] = this.observers[filter.key] || new WalletEventsObserver(filter.contractAddress, this.blockchainService);
-    return this.observers[filter.key].subscribe(eventType, callback);
+    this.observers[filter.contractAddress] = this.observers[filter.contractAddress] || new WalletEventsObserver(filter.contractAddress, this.blockchainService);
+    return this.observers[filter.contractAddress].subscribe(eventType, {key: filter.key, callback});
   }
 }
 

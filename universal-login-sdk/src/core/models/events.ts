@@ -10,3 +10,8 @@ export type WalletEventFilter = {
 };
 
 export type WalletEventCallback = (args: WalletEventArgs) => void;
+
+export type WalletEventObservableRecord = {
+  key: string;
+  callback: WalletEventCallback;
+};
