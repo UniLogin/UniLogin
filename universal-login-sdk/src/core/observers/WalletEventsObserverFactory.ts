@@ -32,8 +32,8 @@ class WalletEventsObserverFactory extends ObserverRunner {
 
   async fetchEventsOfTypes(types: WalletEventType[]) {
     ensureNotNull(this.lastBlock, InvalidObserverState);
-    for (const observer of Object.keys(this.observers)) {
-      await this.observers[observer].fetchEvents(observer, this.lastBlock!, types);
+    for (const publicKey of Object.keys(this.observers)) {
+      await this.observers[publicKey].fetchEvents(publicKey, this.lastBlock!, types);
     }
   }
 
