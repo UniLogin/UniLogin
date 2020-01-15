@@ -2,11 +2,12 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE} from '@universal-login/commons';
+import {createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE, sleep} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
 import {startRelayerWithRefund, createWalletCounterfactually} from '../testhelpers/http';
-import {getTestSignedMessage} from '../testconfig/message';
+import {getTestSignedMessage, getGnosisTestSignedMessage} from '../testconfig/message';
 import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
+import {calculateMessageHash} from '@universal-login/contracts';
 chai.use(chaiHttp);
 
 describe('E2E: Relayer - WalletContract routes', async () => {
@@ -26,7 +27,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
   before(async () => {
     ({relayer, deployer, otherWallet, mockToken, ensAddress, walletContract, factoryContract, ensRegistrar} = await startRelayerWithRefund(relayerPort));
     ({proxyContract: contract, keyPair} = await deployGnosisSafeProxyWithENS(deployer, factoryContract.address, walletContract.address, 'name.mylogin.eth', ensAddress, ensRegistrar.address, TEST_GAS_PRICE));
-    await mockToken.transfer(contract.address, utils.parseEther('1.0'));
+    await mockToken.transfer(contract.address, utils.parseEther('10.0'));
   });
 
   it('Execute signed transfer', async () => {
@@ -34,23 +35,22 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       from: contract.address,
       to: otherWallet.address,
       value: 1000000000,
-      data: [],
+      data: '0x0',
       nonce: '0',
       operationType: OperationType.call,
       refundReceiver: deployer.address,
       gasToken: mockToken.address,
-      gasPrice: 110000000,
+      gasPrice: 100,
       gasLimit: DEFAULT_GAS_LIMIT,
     };
     const balanceBefore = await otherWallet.getBalance();
-    const signedMessage = getTestSignedMessage(msg, keyPair.privateKey);
+    const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
     const stringifiedMessage = stringifySignedMessageFields(signedMessage);
     const {status, body} = await chai.request(relayer.server)
       .post('/wallet/execution')
       .send(stringifiedMessage);
     expect(status).to.eq(201);
-
-    await waitExpect(async () => expect(await otherWallet.getBalance()).to.eq(balanceBefore.add(msg.value)));
+    await waitExpect(async () => expect(await otherWallet.getBalance()).to.eq(balanceBefore.add(msg.value)), 3000);
     const checkStatusId = async () => {
       const statusById = await chai.request(relayer.server)
         .get(`/wallet/execution/status/${body.transaction}`);
@@ -69,10 +69,10 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       operationType: OperationType.call,
       refundReceiver: AddressZero,
       gasToken: mockToken.address,
-      gasPrice: 110000000,
+      gasPrice: 100000,
       gasLimit: DEFAULT_GAS_LIMIT,
     };
-    const signedMessage = getTestSignedMessage(msg, keyPair.privateKey);
+    const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
     const stringifiedMessage = stringifySignedMessageFields(signedMessage);
     const {status, body} = await chai.request(relayer.server)
       .post('/wallet/execution')

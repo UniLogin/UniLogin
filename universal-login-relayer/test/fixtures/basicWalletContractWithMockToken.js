@@ -4,7 +4,7 @@ import {executeAddKey, mockContracts} from '@universal-login/contracts/testutils
 import createWalletContract from '../testhelpers/createWalletContract';
 import {buildEnsService} from '../testhelpers/buildEnsService';
 
-export default async function basicWalletContractWithMockToken(_, wallets) {
+export async function basicWalletContractWithMockToken(_, wallets) {
   const [, otherWallet, wallet] = wallets;
   const [, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const {master, proxy: walletContract} = await createWalletContract(wallet);

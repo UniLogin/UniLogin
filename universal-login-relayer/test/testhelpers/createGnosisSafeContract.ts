@@ -58,7 +58,7 @@ export const deployGnosisSafeProxyWithENS = async (wallet: Wallet, proxyFactoryA
   };
   const setupData = encodeDataForSetup(deployment);
   const computedAddress = computeGnosisCounterfactualAddress(proxyFactoryAddress, 0, setupData, gnosisSafeAddress);
-  await wallet.sendTransaction({to: computedAddress, value: utils.parseEther('1.0')});
+  await wallet.sendTransaction({to: computedAddress, value: utils.parseEther('10.0')});
   await new Contract(proxyFactoryAddress, ProxyFactoryInterface, wallet).createProxyWithNonce(gnosisSafeAddress, setupData, 0);
   return {proxyContract: new Contract(computedAddress, GnosisSafeInterface, wallet.provider), keyPair};
 };

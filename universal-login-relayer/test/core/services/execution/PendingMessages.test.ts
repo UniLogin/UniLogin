@@ -11,7 +11,7 @@ import {getKeyFromHashAndSignature} from '../../../../src/core/utils/encodeData'
 import {createMessageItem} from '../../../../src/core/utils/messages/serialisation';
 import {clearDatabase} from '../../../../src/http/relayers/RelayerUnderTest';
 import MessageSQLRepository from '../../../../src/integration/sql/services/MessageSQLRepository';
-import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
+import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletContractWithMockToken';
 import {getKnexConfig} from '../../../testhelpers/knex';
 import {setupWalletContractService} from '../../../testhelpers/setupWalletContractService';
 

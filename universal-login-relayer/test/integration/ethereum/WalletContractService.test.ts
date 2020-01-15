@@ -103,7 +103,7 @@ describe('INT: WalletContractService', () => {
 
     it('recovers signer from message', async () => {
       const message = {...getTestSignedMessage(), from: proxyContract.address};
-      const signedMessage = {...message, signature: sign(calculateMessageHash(message) as any, keyPair.privateKey)};
+      const signedMessage = {...message, signature: calculateMessageSignature(message, keyPair.privateKey)};
       expect(await walletContractService.recoverSignerFromMessage(signedMessage)).to.eq(keyPair.publicKey);
     });
 

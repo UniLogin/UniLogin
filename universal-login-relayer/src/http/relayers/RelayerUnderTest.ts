@@ -114,6 +114,6 @@ export async function clearDatabase(knex: Knex) {
 }
 
 export const getContractWhiteList = () => ({
-  wallet: [getContractHash(WalletContract as ContractJSON)],
-  proxy: [getContractHash(WalletProxy as ContractJSON)],
+  wallet: [getContractHash(WalletContract as ContractJSON), '0x51a5d2b16b9b4db363c860ad48a896243a9d08a4e0aedecf2eb3b725b41f25d6'],
+  proxy: [getContractHash(WalletProxy as ContractJSON), '0x4813c27e2c8529dc3660fb191e46372147d8c3b2abde66530cd622f069138487'],
 });

@@ -102,7 +102,7 @@ class Relayer {
     const walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider), new GnosisSafeService(this.provider));
     const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
     const authorisationStore = new AuthorisationStore(this.database);
-    const authorisationService = new AuthorisationService(authorisationStore, relayerRequestSignatureValidator);
+    const authorisationService = new AuthorisationService(authorisationStore, relayerRequestSignatureValidator, walletContractService);
     const devicesStore = new DevicesStore(this.database);
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const walletService = new WalletDeploymentService(this.config, this.ensService, this.hooks, walletDeployer, requiredBalanceChecker, devicesService);

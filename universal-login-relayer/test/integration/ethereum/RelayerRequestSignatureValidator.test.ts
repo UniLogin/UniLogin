@@ -6,6 +6,7 @@ import RelayerRequestSignatureValidator from '../../../src/integration/ethereum/
 import createGnosisSafeContract from '../../testhelpers/createGnosisSafeContract';
 import {signStringMessage, calculateGnosisStringHash} from '@universal-login/contracts';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
+import createWalletContract from '../../testhelpers/createWalletContract';
 
 describe('INT: RelayerRequestSignatureValidator', () => {
   let relayerRequestSignatureValidator: RelayerRequestSignatureValidator;
@@ -16,7 +17,6 @@ describe('INT: RelayerRequestSignatureValidator', () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
     const walletContractService = setupWalletContractService(provider);
-    const {walletService, factoryContract, ensService, ensRegistrar, walletContractAddress} = await setupWalletService(wallet);
     relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
   });
 
