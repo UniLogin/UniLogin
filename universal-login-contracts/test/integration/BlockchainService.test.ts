@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {getWallets, loadFixture, deployContract} from 'ethereum-waffle';
-import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS} from '@universal-login/commons';
+import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS, TEST_CONTRACT_ADDRESS} from '@universal-login/commons';
 import {mockProviderWithBlockNumber} from '@universal-login/commons/testutils';
 import {deployWalletContract} from '../../src/beta2/deployMaster';
 import WalletContract from '../../dist/contracts/Wallet.json';
@@ -11,6 +11,8 @@ import {providers, Contract, Wallet} from 'ethers';
 import walletAndProxy from '../fixtures/walletAndProxy';
 import basicWalletAndProxy from '../fixtures/basicWalletAndProxy';
 import {setupGnosisSafeContractFixture} from '../fixtures/gnosisSafe';
+import {computeGnosisCounterfactualAddress} from '../../src';
+import {DEPLOY_CONTRACT_NONCE} from '../../src/gnosis-safe@1.1.1/utils';
 
 describe('INT: BlockchainService', async () => {
   const expectedBytecode = `0x${getDeployedBytecode(WalletContract as any)}`;
@@ -61,6 +63,12 @@ describe('INT: BlockchainService', async () => {
 
   it('should return empty array if does not match the logs', async () => {
     expect(await blockchainService.getLogs({address: TEST_ACCOUNT_ADDRESS})).to.be.deep.eq([]);
+  });
+
+  it('creates future gnosis', async () => {
+    const initializeData = '0x1234';
+    const expectedContractAddress = computeGnosisCounterfactualAddress(TEST_CONTRACT_ADDRESS, DEPLOY_CONTRACT_NONCE, initializeData, TEST_CONTRACT_ADDRESS);
+    expect(blockchainService.createFutureGnosis(TEST_CONTRACT_ADDRESS, TEST_CONTRACT_ADDRESS, initializeData)[1]).to.eq(expectedContractAddress);
   });
 
   describe('fetchProxyVersion', () => {
