@@ -18,6 +18,7 @@ describe('INT: FutureWalletFactory', async () => {
   let futureWalletFactory: FutureWalletFactory;
   let relayer: RelayerUnderTest;
   let factoryContract: Contract;
+  let ensRegistrar: Contract;
   let supportedTokens: SupportedToken[];
   let contractWhiteList: ContractWhiteList;
   let ensAddress: string;
@@ -27,7 +28,7 @@ describe('INT: FutureWalletFactory', async () => {
   before(async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
-    ({relayer, factoryContract, supportedTokens, contractWhiteList, provider, ensAddress} = await RelayerUnderTest.createPreconfigured(wallet, relayerPort));
+    ({relayer, factoryContract, supportedTokens, contractWhiteList, provider, ensAddress, ensRegistrar} = await RelayerUnderTest.createPreconfigured(wallet, relayerPort));
     await relayer.start();
     const futureWalletConfig = {
       factoryAddress: factoryContract.address,
@@ -43,7 +44,7 @@ describe('INT: FutureWalletFactory', async () => {
     const relayerApi = new RelayerApi(relayerUrl);
     futureWalletFactory = new FutureWalletFactory(
       futureWalletConfig,
-      new ENSService(provider, futureWalletConfig.chainSpec.ensAddress),
+      new ENSService(provider, futureWalletConfig.chainSpec.ensAddress, ensRegistrar.address),
       blockchainService,
       {sdkConfig: {applicationInfo: TEST_APPLICATION_INFO}, provider, relayerApi} as any,
     );

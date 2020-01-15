@@ -1,13 +1,13 @@
 import {Contract, providers, utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {parseDomain, ENSDomainInfo} from '@universal-login/commons';
-import {ENSInterface} from '@universal-login/contracts';
+import {ENSInterface, gnosisSafe} from '@universal-login/contracts';
 
 export class ENSService {
   ens?: Contract;
   domainsInfo: Record<string, ENSDomainInfo> = {};
 
-  constructor(private provider: providers.Provider, private ensAddress: string) {
+  constructor(private provider: providers.Provider, private ensAddress: string, public readonly ensRegistrarAddress: string) {
     this.ens = new Contract(this.ensAddress!, ENSInterface, this.provider);
   }
 
@@ -30,5 +30,10 @@ export class ENSService {
     const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(ensName);
     return [hashLabel, ensName, node, this.ens!.address, domainInfo.registrarAddress, domainInfo.resolverAddress];
+  }
+
+  async getRegistrarData(ensName: string) {
+    const args = await this.argsFor(ensName);
+    return new utils.Interface(gnosisSafe.ENSRegistrar.interface as any).functions.register.encode(args as string[]);
   }
 }

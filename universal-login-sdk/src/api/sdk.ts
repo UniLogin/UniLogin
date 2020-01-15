@@ -153,7 +153,7 @@ class UniversalLoginSDK {
     };
     this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(
       futureWalletConfig,
-      new ENSService(this.provider, futureWalletConfig.chainSpec.ensAddress),
+      new ENSService(this.provider, futureWalletConfig.chainSpec.ensAddress, this.relayerConfig!.ensRegistrar),
       this.blockchainService,
       this,
     );

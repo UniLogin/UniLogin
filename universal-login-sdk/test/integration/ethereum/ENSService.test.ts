@@ -1,22 +1,26 @@
 import {expect} from 'chai';
 import {providers, utils} from 'ethers';
-import {loadFixture} from 'ethereum-waffle';
+import {loadFixture, getWallets} from 'ethereum-waffle';
 import {basicENS} from '@universal-login/commons/testutils';
 import {ENSService} from '../../../src/integration/ethereum/ENSService';
+import {deployContract} from '@universal-login/commons';
+import {gnosisSafe} from '@universal-login/contracts';
 
 describe('INT: ENSService', async () => {
   let ensAddress: string;
   let ensService: ENSService;
   let provider: providers.Provider;
   let registrarAddress: string;
-  let domain: string;
-  let ensRegistrars: string[];
   let publicResolver: string;
+  const label = 'justyna';
+  const domain = 'mylogin.eth';
+  const ensName = `${label}.${domain}`;
 
   before(async () => {
-    ({ensAddress, provider, registrarAddress, ensRegistrars, publicResolver} = await loadFixture(basicENS));
-    [domain] = ensRegistrars;
-    ensService = new ENSService(provider, ensAddress);
+    ({ensAddress, provider, registrarAddress, publicResolver} = await loadFixture(basicENS));
+    const [wallet] = getWallets(provider);
+    const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
+    ensService = new ENSService(provider, ensAddress, ensRegistrar.address);
   });
 
   it('should return null if domain doesn`t exist', async () => {
@@ -28,11 +32,15 @@ describe('INT: ENSService', async () => {
   });
 
   it('argsFor should return proper arguments array', async () => {
-    const label = 'justyna';
-    const ensName = `${label}.${domain}`;
     const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(ensName);
     const expectedArgs = [hashLabel, ensName, node, ensAddress, registrarAddress, publicResolver];
     expect(await ensService.argsFor(ensName)).to.deep.eq(expectedArgs);
+  });
+
+  it('encodes data for ENS Registrar', async () => {
+    const args = await ensService.argsFor('justyna.mylogin.eth');
+    const exepectedResult = new utils.Interface(gnosisSafe.ENSRegistrar.interface as any).functions.register.encode(args as string[]);
+    expect(await ensService.getRegistrarData(ensName)).to.eq(exepectedResult);
   });
 });
