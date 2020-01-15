@@ -97,7 +97,7 @@ describe('ULWeb3Provider', () => {
 
       const signature = await web3.eth.sign(message, deployedWallet.contractAddress);
 
-      const expectedSignature = deployedWallet.signMessage(utils.toUtf8Bytes(message));
+      const expectedSignature = await deployedWallet.signMessage(utils.toUtf8Bytes(message));
       expect(signature).to.eq(expectedSignature);
     });
 
@@ -108,7 +108,7 @@ describe('ULWeb3Provider', () => {
       // wrong library typedefs here
       const signature = await (web3.eth.personal.sign as any)(message, deployedWallet.contractAddress, '');
 
-      const expectedSignature = deployedWallet.signMessage(utils.toUtf8Bytes(message));
+      const expectedSignature = await deployedWallet.signMessage(utils.toUtf8Bytes(message));
       expect(signature).to.eq(expectedSignature);
     });
   });
