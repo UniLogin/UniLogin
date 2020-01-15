@@ -16,7 +16,7 @@ import ENSRegistrar from '@universal-login/contracts/dist/contracts/ENSRegistrar
 import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
 import {AddressZero} from 'ethers/constants';
-import {DEPLOYMENT_REFUND} from '@universal-login/commons';
+import {DEPLOY_GAS_LIMIT} from '@universal-login/commons';
 
 export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
@@ -94,7 +94,7 @@ export const getSetupData = async (keyPair, ensName, ensAddress, provider, gasPr
     deploymentCallData: new utils.Interface(ENSRegistrar.interface).functions.register.encode([hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress]),
     fallbackHandler: AddressZero,
     paymentToken: gasToken,
-    payment: utils.bigNumberify(gasPrice).mul(DEPLOYMENT_REFUND).toString(),
+    payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),
     refundReceiver: relayerAddress,
   };
   return encodeDataForSetup(deployment);

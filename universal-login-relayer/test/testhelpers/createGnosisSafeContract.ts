@@ -3,7 +3,7 @@ import {deployGnosisSafe, deployProxyFactory, encodeDataForSetup, computeGnosisC
 import {Contract, utils, Wallet} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import ENSRegistrar from '@universal-login/contracts/dist/contracts/ENSRegistrar.json';
-import {DEPLOYMENT_REFUND, parseDomain} from '@universal-login/commons';
+import {DEPLOY_GAS_LIMIT, parseDomain} from '@universal-login/commons';
 
 export default async function createGnosisSafeContract(wallet: Wallet) {
   const gnosisSafe = await deployGnosisSafe(wallet);
@@ -53,7 +53,7 @@ export const deployGnosisSafeProxyWithENS = async (wallet: Wallet, proxyFactoryA
     deploymentCallData: new utils.Interface(ENSRegistrar.interface as any).functions.register.encode(args),
     fallbackHandler: AddressZero,
     paymentToken: gasToken,
-    payment: utils.bigNumberify(gasPrice).mul(DEPLOYMENT_REFUND).toString(),
+    payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),
     refundReceiver: wallet.address,
   };
   const setupData = encodeDataForSetup(deployment);

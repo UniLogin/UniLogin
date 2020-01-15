@@ -30,14 +30,14 @@ export class WalletDeploymentService {
       deploymentCallData: new utils.Interface(ENSRegistrar.interface as any).functions.register.encode(ensArgs),
       fallbackHandler: AddressZero,
       paymentToken: gasToken,
-      payment: utils.bigNumberify(gasPrice).mul(DEPLOYMENT_REFUND).toString(),
+      payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),
       refundReceiver: this.walletDeployer.wallet.address,
     };
     return encodeDataForSetup(deployment as any);
   }
 
   private async computeFutureAddress(setupData: string) {
-    return computeGnosisCounterfactualAddress(this.config.factoryAddress, 0, setupData, this.config.walletContractAddress);
+    return computeGnosisCounterfactualAddress(this.config.factoryAddress, 1, setupData, this.config.walletContractAddress);
   }
 
   async deploy({publicKey, ensName, gasPrice, gasToken, signature}: DeployArgs, deviceInfo: DeviceInfo) {
@@ -47,7 +47,7 @@ export class WalletDeploymentService {
     const contractAddress = await this.computeFutureAddress(initWithENS);
     const supportedTokens = this.getTokensWithMinimalAmount(gasPrice);
     ensure(!!await this.requiredBalanceChecker.findTokenWithRequiredBalance(supportedTokens, contractAddress), NotEnoughBalance);
-    const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '0', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: utils.bigNumberify(gasPrice)});
+    const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '1', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: utils.bigNumberify(gasPrice)});
     await this.devicesService.addOrUpdate(contractAddress, publicKey, deviceInfo);
     this.hooks.emit('created', {transaction, contractAddress});
     return transaction;

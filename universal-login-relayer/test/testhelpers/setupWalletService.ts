@@ -10,7 +10,7 @@ import {WalletDeployer} from '../../src/integration/ethereum/WalletDeployer';
 import ENSService from '../../src/integration/ethereum/ensService';
 import {AddressZero} from 'ethers/constants';
 import {deployContract} from 'ethereum-waffle';
-import {DEPLOYMENT_REFUND} from '@universal-login/commons';
+import {DEPLOY_GAS_LIMIT} from '@universal-login/commons';
 
 export default async function setupWalletService(wallet: Wallet) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
@@ -41,7 +41,7 @@ export const getSetupData = async (keyPair: KeyPair, ensName: string, ensService
     deploymentCallData: new utils.Interface(ENSRegistrar.interface as any).functions.register.encode(args),
     fallbackHandler: AddressZero,
     paymentToken: gasToken,
-    payment: utils.bigNumberify(gasPrice).mul(DEPLOYMENT_REFUND).toString(),
+    payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),
     refundReceiver: relayerAddress,
   };
   return encodeDataForSetup(deployment);

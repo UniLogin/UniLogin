@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
-import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, signRelayerRequest, DEPLOYMENT_REFUND, TEST_APPLICATION_INFO, getDeployData} from '@universal-login/commons';
+import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, signRelayerRequest, DEPLOY_GAS_LIMIT, TEST_APPLICATION_INFO, getDeployData} from '@universal-login/commons';
 import {beta2, computeGnosisCounterfactualAddress, signStringMessage, calculateGnosisStringHash} from '@universal-login/contracts';
 import {startRelayerWithRefund, createWalletCounterfactually, getInitData, getSetupData} from '../testhelpers/http';
 import Relayer from '../../src';
@@ -122,7 +122,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
     expect(status.transactionHash).to.be.properHex(64);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(GnosisProxy as any)}`);
-    expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(DEPLOYMENT_REFUND));
+    expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(DEPLOY_GAS_LIMIT));
   });
 
   it('Counterfactual deployment fail if not enough balance', async () => {
