@@ -9,7 +9,7 @@ import {
   getContractHash,
   withENS,
 } from '@universal-login/commons';
-import {deployFactory, beta2, gnosisSafe} from '@universal-login/contracts';
+import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory} from '@universal-login/contracts';
 import {mockContracts} from '@universal-login/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
@@ -34,7 +34,7 @@ export class RelayerUnderTest extends Relayer {
   static async deployBaseContracts(wallet: Wallet) {
     const walletContract = await deployGnosisSafe(wallet);
     const factoryContract = await deployProxyFactory(wallet);
-    const ensRegistrar = await deployContract(wallet, ENSRegistrar);
+    const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
     return {walletContract, factoryContract, ensRegistrar};
   }
 
@@ -48,7 +48,6 @@ export class RelayerUnderTest extends Relayer {
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
     const contractWhiteList = getContractWhiteList();
-    const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
     const mockToken = await deployContract(wallet, mockContracts.MockToken);
     const supportedTokens = [
       {

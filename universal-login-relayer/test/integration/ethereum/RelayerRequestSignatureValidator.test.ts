@@ -39,7 +39,8 @@ describe('INT: RelayerRequestSignatureValidator', () => {
   });
 
   it('throws if no signature', async () => {
-    await expect(relayerRequestSignatureValidator.ensureValidRelayerRequestSignature({contractAddress})).to.be.rejectedWith('Signature not found');
+    const {proxy} = await createGnosisSafeContract(wallet);
+    await expect(relayerRequestSignatureValidator.ensureValidRelayerRequestSignature({contractAddress: proxy.address})).to.be.rejectedWith('Signature not found');
   });
 
   it('validation works for GnosisSafe', async () => {
