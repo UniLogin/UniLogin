@@ -1,6 +1,6 @@
 import {GasMode, GasOption} from '../models/gas';
 
-export const FAST_GAS_MODE = 1;
+export const FAST_GAS_MODE_INDEX = 1;
 
 export const getGasPriceFor = (gasModes: GasMode[], gasModeName: string, gasTokenAddress: string) => {
   const mode = findGasMode(gasModes, gasModeName);
