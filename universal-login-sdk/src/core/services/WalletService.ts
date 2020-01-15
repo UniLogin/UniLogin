@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
@@ -55,8 +55,9 @@ export class WalletService {
   }
 
   async createFutureWallet(name: string): Promise<FutureWallet> {
-    const gasParameters = (await this.sdk.getGasModes())[1];
-    const futureWallet = await this.sdk.createFutureWallet(name, gasParameters.gasOptions[0].gasPrice.toString(), gasParameters.gasOptions[0].token.address);
+    const gasModes = await this.sdk.getGasModes();
+    const gasOption = findGasOption(gasModes[FAST_GAS_MODE].gasOptions, ETHER_NATIVE_TOKEN.address);
+    const futureWallet = await this.sdk.createFutureWallet(name, gasOption.gasPrice.toString(), gasOption.token.address);
     this.requiredDeploymentBalance = futureWallet.getMinimalAmount();
     this.setFutureWallet(futureWallet, name);
     return futureWallet;
