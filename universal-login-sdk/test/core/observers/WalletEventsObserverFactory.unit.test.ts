@@ -26,7 +26,11 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
     blockchainService = {
       getBlockNumber: sinon.fake.resolves(0),
     } as any;
-    blockProperty = {} as any;
+    blockProperty = {
+      value: 0,
+      get: function () {return this.value;},
+      set: function (value: number) {this.value = value;},
+    } as any;
     factory = new WalletEventsObserverFactory(blockchainService, blockProperty);
     onKeyAdd = sinon.spy();
     onKeyRemove = sinon.spy();
