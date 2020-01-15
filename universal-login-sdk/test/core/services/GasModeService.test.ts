@@ -49,7 +49,7 @@ describe('UNIT: GasModeService', () => {
         name: 'cheap',
         usdAmount: '0.0000367702',
         gasOptions: [{
-          gasPrice: gasPrices.cheap,
+          gasPrice: utils.bigNumberify('29894200000000'),
           token: TEST_TOKEN_DETAILS[0],
         },
         {
@@ -57,7 +57,7 @@ describe('UNIT: GasModeService', () => {
           token: TEST_TOKEN_DETAILS[1],
         },
         {
-          gasPrice: utils.bigNumberify('29894200000000'),
+          gasPrice: gasPrices.cheap,
           token: TEST_TOKEN_DETAILS[2],
         }],
       },
@@ -65,7 +65,7 @@ describe('UNIT: GasModeService', () => {
         name: 'fast',
         usdAmount: '0.00004412424',
         gasOptions: [{
-          gasPrice: gasPrices.fast,
+          gasPrice: utils.bigNumberify('35873040000000'),
           token: TEST_TOKEN_DETAILS[0],
         },
         {
@@ -73,7 +73,7 @@ describe('UNIT: GasModeService', () => {
           token: TEST_TOKEN_DETAILS[1],
         },
         {
-          gasPrice: utils.bigNumberify('35873040000000'),
+          gasPrice: gasPrices.fast,
           token: TEST_TOKEN_DETAILS[2],
         }],
       },

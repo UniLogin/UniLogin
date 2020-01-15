@@ -57,7 +57,6 @@ export const TEST_TOKEN_ADDRESS = '0x490932174cc4B7a0f546924a070D151D156095f0';
 export const TEST_SAI_TOKEN_ADDRESS = '0x05b954633faf5ceeecdf945c13ad825faabbf66f';
 
 export const TEST_TOKEN_DETAILS = [
-  ETHER_NATIVE_TOKEN,
   {
     address: TEST_TOKEN_ADDRESS,
     symbol: 'DAI',
@@ -68,6 +67,7 @@ export const TEST_TOKEN_DETAILS = [
     symbol: 'SAI',
     name: 'MockSAIToken',
   },
+  ETHER_NATIVE_TOKEN,
 ];
 
 export const TEST_GAS_MODES = [{
