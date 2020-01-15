@@ -72,7 +72,7 @@ export class RelayerUnderTest extends Relayer {
       supportedTokens,
     };
     const relayer = RelayerUnderTest.createTestRelayer(overrideConfig, providerWithENS);
-    return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletContract, mockToken, provider: providerWithENS};
+    return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletContract, mockToken, provider: providerWithENS, ensRegistrar};
   }
 
   static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.Provider) {
