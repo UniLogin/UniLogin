@@ -4,19 +4,19 @@ import {parseDomain, ENSDomainInfo} from '@universal-login/commons';
 import {ENSInterface, gnosisSafe} from '@universal-login/contracts';
 
 export class ENSService {
-  ens?: Contract;
+  private ens: Contract;
   domainsInfo: Record<string, ENSDomainInfo> = {};
 
-  constructor(private provider: providers.Provider, private ensAddress: string, public readonly ensRegistrarAddress: string) {
-    this.ens = new Contract(this.ensAddress!, ENSInterface, this.provider);
+  constructor(provider: providers.Provider, ensAddress: string, public readonly ensRegistrarAddress: string) {
+    this.ens = new Contract(ensAddress, ENSInterface, provider);
   }
 
   async getDomainInfo(domain: string) {
     if (this.domainsInfo[domain]) {
       return this.domainsInfo[domain];
     }
-    const resolverAddress = await this.ens!.resolver(utils.namehash(`${domain}`));
-    const registrarAddress = await this.ens!.owner(utils.namehash(`${domain}`));
+    const resolverAddress = await this.ens.resolver(utils.namehash(domain));
+    const registrarAddress = await this.ens.owner(utils.namehash(domain));
     this.domainsInfo[domain] = {resolverAddress, registrarAddress};
     return this.domainsInfo[domain];
   }
@@ -29,7 +29,7 @@ export class ENSService {
     }
     const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
     const node = utils.namehash(ensName);
-    return [hashLabel, ensName, node, this.ens!.address, domainInfo.registrarAddress, domainInfo.resolverAddress];
+    return [hashLabel, ensName, node, this.ens.address, domainInfo.registrarAddress, domainInfo.resolverAddress];
   }
 
   async getRegistrarData(ensName: string) {

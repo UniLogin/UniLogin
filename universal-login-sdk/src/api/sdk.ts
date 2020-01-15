@@ -144,16 +144,11 @@ class UniversalLoginSDK {
   }
 
   private fetchFutureWalletFactory() {
-    ensureNotFalsy(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
-    const futureWalletConfig = {
-      supportedTokens: this.relayerConfig!.supportedTokens,
-      factoryAddress: this.relayerConfig!.factoryAddress,
-      contractWhiteList: this.relayerConfig!.contractWhiteList,
-      chainSpec: this.relayerConfig!.chainSpec,
-    };
+    const {supportedTokens, factoryAddress, contractWhiteList, chainSpec, ensRegistrar} = this.getRelayerConfig();
+    const futureWalletConfig = {supportedTokens, factoryAddress, contractWhiteList, chainSpec};
     this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(
       futureWalletConfig,
-      new ENSService(this.provider, futureWalletConfig.chainSpec.ensAddress, this.relayerConfig!.ensRegistrar),
+      new ENSService(this.provider, futureWalletConfig.chainSpec.ensAddress, ensRegistrar),
       this.blockchainService,
       this,
     );
