@@ -12,7 +12,7 @@ export type BalanceDetails = {
   contractAddress: string;
 };
 
-type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'chainSpec'>;
+type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'chainSpec' | 'walletContractAddress'>;
 
 export class FutureWalletFactory {
   constructor(
