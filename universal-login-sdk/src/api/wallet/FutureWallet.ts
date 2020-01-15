@@ -21,6 +21,7 @@ export class FutureWallet implements SerializableFutureWallet {
     serializableFutureWallet: SerializableFutureWallet,
     private sdk: UniversalLoginSDK,
     private ensService: ENSService,
+    private relayerAddress: string,
   ) {
     this.contractAddress = serializableFutureWallet.contractAddress;
     this.privateKey = serializableFutureWallet.privateKey;
