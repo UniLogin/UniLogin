@@ -144,8 +144,8 @@ class UniversalLoginSDK {
   }
 
   private fetchFutureWalletFactory() {
-    const {supportedTokens, factoryAddress, contractWhiteList, chainSpec, ensRegistrar, walletContractAddress} = this.getRelayerConfig();
-    const futureWalletConfig = {supportedTokens, factoryAddress, contractWhiteList, chainSpec, walletContractAddress};
+    const {supportedTokens, factoryAddress, contractWhiteList, chainSpec, ensRegistrar, walletContractAddress, relayerAddress} = this.getRelayerConfig();
+    const futureWalletConfig = {supportedTokens, factoryAddress, contractWhiteList, chainSpec, walletContractAddress, relayerAddress};
     this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(
       futureWalletConfig,
       new ENSService(this.provider, futureWalletConfig.chainSpec.ensAddress, ensRegistrar),

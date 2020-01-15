@@ -35,6 +35,7 @@ describe('INT: FutureWalletFactory', async () => {
       factoryAddress: factoryContract.address,
       walletContractAddress: walletContract.address,
       supportedTokens,
+      relayerAddress: wallet.address,
       contractWhiteList,
       chainSpec: {
         ensAddress,

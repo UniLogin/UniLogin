@@ -12,7 +12,7 @@ export type BalanceDetails = {
   contractAddress: string;
 };
 
-type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'chainSpec' | 'walletContractAddress'>;
+type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'chainSpec' | 'walletContractAddress' | 'relayerAddress'>;
 
 export class FutureWalletFactory {
   constructor(
@@ -24,7 +24,7 @@ export class FutureWalletFactory {
   }
 
   createFrom(wallet: SerializableFutureWallet): FutureWallet {
-    return new FutureWallet(wallet, this.sdk, this.ensService);
+    return new FutureWallet(wallet, this.sdk, this.ensService, this.config.relayerAddress);
   }
 
   async createNew(ensName: string, gasPrice: string, gasToken: string): Promise<FutureWallet> {
