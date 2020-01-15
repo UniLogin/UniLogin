@@ -46,7 +46,7 @@ export {isValidEnsName, parseDomain} from './core/utils/ens';
 export {ensure, ensureNotEmpty, ensureNotFalsy, ensureNotNull} from './core/utils/errors/ensure';
 export {InvalidContract, NotEnoughTokens, PaymentError, ValidationError} from './core/utils/errors/errors';
 export {onCritical} from './core/utils/errors/onCritical';
-export {findGasMode, findGasOption, getGasPriceFor} from './core/utils/gasPriceMode';
+export {findGasMode, findGasOption, getGasPriceFor, FAST_GAS_MODE_INDEX} from './core/utils/gasPriceMode';
 export {generateBackupCode} from './core/utils/generateBackupCode';
 export {getBalanceOf} from './core/utils/getBalanceOf';
 export {getEnumKeys} from './core/utils/getEnumsKeys';

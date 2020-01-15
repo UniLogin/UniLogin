@@ -1,9 +1,9 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
-import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, ApplicationWallet, TEST_MESSAGE_HASH, ETHER_NATIVE_TOKEN, TEST_TRANSACTION_HASH} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, ApplicationWallet, TEST_MESSAGE_HASH, ETHER_NATIVE_TOKEN, TEST_TRANSACTION_HASH, TEST_GAS_PRICE} from '@universal-login/commons';
 import {WalletService} from '../../../src/core/services/WalletService';
-import {Wallet, constants} from 'ethers';
+import {Wallet} from 'ethers';
 import {DeployedWallet} from '../../../src/api/wallet/DeployedWallet';
 import {FutureWallet} from '../../../src/api/wallet/FutureWallet';
 import {SerializedWalletState} from '../../../src/core/models/WalletService';
@@ -65,6 +65,9 @@ describe('UNIT: WalletService', () => {
     futureWallet = {
       contractAddress: TEST_ACCOUNT_ADDRESS,
       privateKey: TEST_PRIVATE_KEY,
+      gasPrice: TEST_GAS_PRICE,
+      ensName: 'justyna.mylogin.eth',
+      gasToken: ETHER_NATIVE_TOKEN.address,
       deploy: async () => deployingWallet,
       waitForBalance: (async () => { }) as any,
       setSupportedToken: (() => {}) as any,
@@ -118,7 +121,13 @@ describe('UNIT: WalletService', () => {
     expect(storage.save).to.be.calledWith({
       kind: 'Future',
       name: 'justyna.mylogin.eth',
-      wallet: {contractAddress: futureWallet.contractAddress, privateKey: futureWallet.privateKey},
+      wallet: {
+        contractAddress: futureWallet.contractAddress,
+        privateKey: futureWallet.privateKey,
+        ensName: 'justyna.mylogin.eth',
+        gasToken: ETHER_NATIVE_TOKEN.address,
+        gasPrice: TEST_GAS_PRICE,
+      },
     });
 
     walletService.setDeployed();
@@ -159,10 +168,6 @@ describe('UNIT: WalletService', () => {
 
     walletService.setFutureWallet(futureWallet, 'justyna.mylogin.eth');
     expect(walletService.state).to.deep.eq({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet});
-    walletService.setGasParameters({
-      gasPrice: constants.One,
-      gasToken: ETHER_NATIVE_TOKEN.address,
-    });
     expect(await walletService.deployFutureWallet()).to.deep.include(applicationWallet);
   });
 });

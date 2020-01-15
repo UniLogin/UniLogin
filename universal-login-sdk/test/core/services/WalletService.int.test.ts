@@ -5,7 +5,7 @@ import {setupSdk} from '../../helpers/setupSdk';
 import UniversalLoginSDK from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, utils} from 'ethers';
-import {ETHER_NATIVE_TOKEN, ensure, TEST_EXECUTION_OPTIONS} from '@universal-login/commons';
+import {ensure, TEST_EXECUTION_OPTIONS} from '@universal-login/commons';
 import {createWallet} from '../../helpers';
 import {DeployedWallet} from '../../../src';
 
@@ -40,7 +40,6 @@ describe('INT: WalletService', async () => {
   describe('deploy, wait for transaction hash and success', () => {
     it('transaction upfront', async () => {
       const futureWallet = await walletService.createFutureWallet('name.mylogin.eth');
-      walletService.setGasParameters({gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: utils.bigNumberify('1')});
       await wallet.sendTransaction({to: futureWallet.contractAddress, value: utils.parseEther('4')});
       await walletService.initDeploy();
       ensure(walletService.state.kind === 'Deploying', chai.AssertionError, `Expected state.kind to be 'Deploying', but was ${walletService.state.kind}`);

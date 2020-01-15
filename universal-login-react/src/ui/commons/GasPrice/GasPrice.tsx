@@ -4,7 +4,7 @@ import './../../styles/gasPriceDefault.sass';
 import UniversalLoginSDK, {DeployedWallet} from '@universal-login/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../../hooks/useAsync';
-import {GasMode, GasOption, TokenDetailsWithBalance, EMPTY_GAS_OPTION, ensureNotFalsy, OnGasParametersChanged, ETHER_NATIVE_TOKEN, findGasMode, findGasOption} from '@universal-login/commons';
+import {GasMode, GasOption, TokenDetailsWithBalance, EMPTY_GAS_OPTION, ensureNotFalsy, OnGasParametersChanged, ETHER_NATIVE_TOKEN, findGasMode, findGasOption, FAST_GAS_MODE_INDEX} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {useAsyncEffect} from '../../hooks/useAsyncEffect';
 import {GasPriceSpeedChoose} from './GasPriceSpeed';
@@ -62,10 +62,9 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
   };
 
   useEffect(() => {
-    const fastGasModeIndex = 1;
     if (gasModes) {
-      const {name, usdAmount} = gasModes[fastGasModeIndex];
-      const gasOption = findGasOption(gasModes[fastGasModeIndex].gasOptions, ETHER_NATIVE_TOKEN.address);
+      const {name, usdAmount} = gasModes[FAST_GAS_MODE_INDEX];
+      const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
       setUsdAmount(usdAmount);
       setModeName(name);
       onGasOptionChanged(gasOption);

@@ -24,11 +24,11 @@ export class FutureWalletFactory {
   }
 
   createFrom(wallet: SerializableFutureWallet): FutureWallet {
-    return new FutureWallet(wallet, this.config.supportedTokens, this.sdk, this.ensService);
+    return new FutureWallet(wallet, this.sdk, this.ensService);
   }
 
-  async createNew(): Promise<FutureWallet> {
+  async createNew(ensName: string, gasPrice: string, gasToken: string): Promise<FutureWallet> {
     const [privateKey, contractAddress] = await this.blockchainService.createFutureWallet(this.config.factoryAddress);
-    return this.createFrom({privateKey, contractAddress});
+    return this.createFrom({privateKey, contractAddress, ensName, gasPrice, gasToken});
   }
 }

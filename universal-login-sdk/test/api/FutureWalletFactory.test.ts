@@ -51,13 +51,13 @@ describe('INT: FutureWalletFactory', async () => {
 
   it('deploy contract', async () => {
     const ensName = 'name.mylogin.eth';
-    const {waitForBalance, contractAddress, deploy} = (await futureWalletFactory.createNew());
+    const {waitForBalance, contractAddress, deploy} = (await futureWalletFactory.createNew(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address));
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     const result = await waitForBalance();
     expect(result.contractAddress).be.eq(contractAddress);
     expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
-    const {waitToBeSuccess, deploymentHash} = await deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
+    const {waitToBeSuccess, deploymentHash} = await deploy();
     expect(deploymentHash).to.be.properHex(64);
     const deployedWallet = await waitToBeSuccess();
     expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(beta2.WalletProxy as ContractJSON)}`);
@@ -68,12 +68,12 @@ describe('INT: FutureWalletFactory', async () => {
 
   it('should reject uppercase ens name, before sending the transaction to the blockchain', async () => {
     const ensName = 'MYNAME.mylogin.eth';
-    const {waitForBalance, contractAddress, deploy} = (await futureWalletFactory.createNew());
+    const {waitForBalance, contractAddress, deploy} = (await futureWalletFactory.createNew(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address));
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     await waitForBalance();
 
     const balanceBefore = await wallet.getBalance();
-    await expect(deploy(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address))
+    await expect(deploy())
       .to.be.eventually.rejectedWith('MYNAME.mylogin.eth is not valid');
     const balanceAfter = await wallet.getBalance();
     expect(balanceBefore).to.be.equal(balanceAfter);

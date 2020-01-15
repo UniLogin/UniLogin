@@ -19,6 +19,9 @@ export class WalletSerializer {
           wallet: {
             contractAddress: state.wallet.contractAddress,
             privateKey: state.wallet.privateKey,
+            ensName: state.wallet.ensName,
+            gasPrice: state.wallet.gasPrice,
+            gasToken: state.wallet.gasToken,
           },
         };
       case 'Deploying':

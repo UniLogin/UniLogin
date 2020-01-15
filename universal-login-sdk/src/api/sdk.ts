@@ -90,8 +90,8 @@ class UniversalLoginSDK {
     return this.futureWalletFactory!;
   }
 
-  createFutureWallet(): Promise<FutureWallet> {
-    return this.getFutureWalletFactory().createNew();
+  createFutureWallet(ensName: string, gasPrice: string, gasToken: string): Promise<FutureWallet> {
+    return this.getFutureWalletFactory().createNew(ensName, gasPrice, gasToken);
   }
 
   addKey(to: string, publicKey: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
