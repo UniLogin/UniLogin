@@ -5,16 +5,20 @@ import {expect} from 'chai';
 import {Wallet} from 'ethers';
 
 describe('WalletStorageService', () => {
-  const futureWallet: SerializableFutureWallet = {
+  const baseWallet = {
     contractAddress: Wallet.createRandom().address,
     privateKey: Wallet.createRandom().privateKey,
+  };
+
+  const futureWallet: SerializableFutureWallet = {
+    ...baseWallet,
     gasPrice: TEST_GAS_PRICE,
     ensName: 'name.mylogin.eth',
     gasToken: ETHER_NATIVE_TOKEN.address,
   };
   const applicationWallet: ApplicationWallet = {
     name: 'name',
-    ...futureWallet,
+    ...baseWallet,
   };
   const STORAGE_KEY = 'wallet';
 

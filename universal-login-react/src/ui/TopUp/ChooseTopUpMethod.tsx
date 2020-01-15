@@ -44,7 +44,6 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, topUpClassName, lo
         logoColor={logoColor}
       />}
       {topUpMethod && <FooterSection className={topUpClassName}>
-
         <PayButton
           onClick={() => onPayClick(paymentMethod!, amount)}
           state={getPayButtonState(paymentMethod, topUpProviderSupportService, amount, topUpMethod)}

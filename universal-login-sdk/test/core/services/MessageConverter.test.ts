@@ -14,9 +14,7 @@ describe('MessageConverter', () => {
   before(async () => {
     const provider = createMockProvider();
     const blockchainService = new BlockchainService(provider);
-
     messageConverter = new MessageConverter(blockchainService);
-
     const [wallet] = getWallets(provider);
     ({proxyWallet, keyPair} = await setupWalletContract(wallet));
   });

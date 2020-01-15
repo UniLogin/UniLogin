@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, GasParameters, INITIAL_GAS_PARAMETERS, ensureNotFalsy, safeMultiply, MINIMAL_DEPLOYMENT_GAS_LIMIT} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
@@ -15,8 +15,6 @@ type WalletFromBackupCodes = (username: string, password: string) => Promise<Wal
 
 export class WalletService {
   private readonly walletSerializer: WalletSerializer;
-
-  private gasParameters: GasParameters = INITIAL_GAS_PARAMETERS;
 
   stateProperty = new State<WalletState>({kind: 'None'});
 
@@ -59,6 +57,7 @@ export class WalletService {
   async createFutureWallet(name: string): Promise<FutureWallet> {
     const gasParameters = (await this.sdk.getGasModes())[1];
     const futureWallet = await this.sdk.createFutureWallet(name, gasParameters.gasOptions[0].gasPrice.toString(), gasParameters.gasOptions[0].token.address);
+    this.requiredDeploymentBalance = futureWallet.getMinimalAmount();
     this.setFutureWallet(futureWallet, name);
     return futureWallet;
   }
@@ -211,13 +210,6 @@ export class WalletService {
     ensure(this.state.kind === 'None', WalletOverridden);
     const state = this.storage.load();
     this.stateProperty.set(this.walletSerializer.deserialize(state));
-  }
-
-  setGasParameters(gasParameters: GasParameters) {
-    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
-    this.gasParameters = gasParameters;
-    this.requiredDeploymentBalance = safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasParameters.gasPrice);
-    this.state.wallet.setSupportedToken({address: gasParameters.gasToken, minimalAmount: this.requiredDeploymentBalance});
   }
 
   getRequiredDeploymentBalance() {
