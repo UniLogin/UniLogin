@@ -31,7 +31,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
     ({relayer, sdk} = await setupSdk(deployer));
     factory = new WalletEventsObserverFactory(
       new BlockchainService(sdk.provider),
-      new BlockProperty(provider),
+      new BlockProperty(sdk.provider),
     );
     deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);
     filter = {
@@ -91,6 +91,6 @@ describe('INT: WalletEventsObserverFactory', async () => {
   after(async () => {
     await relayer.clearDatabase();
     await relayer.stop();
-    await factory.finalizeAndStop();
+    factory.stop();
   });
 });
