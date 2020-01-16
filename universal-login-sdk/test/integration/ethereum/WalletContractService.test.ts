@@ -1,6 +1,6 @@
-import {KeyPair} from '@universal-login/commons';
-import {BlockchainService, calculateGnosisStringHash, signStringMessage} from '@universal-login/contracts';
-import {setupWalletContract, setupGnosisSafeContract} from '@universal-login/contracts/testutils';
+import {KeyPair, createKeyPair, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, TEST_GAS_LIMIT, CURRENT_NETWORK_VERSION, OperationType} from '@universal-login/commons';
+import {BlockchainService, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, messageToSignedMessage, SENTINEL_OWNERS} from '@universal-login/contracts';
+import {setupWalletContract, setupGnosisSafeContract, executeAddKeyGnosis} from '@universal-login/contracts/testutils';
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Contract, utils, Wallet} from 'ethers';
@@ -42,9 +42,12 @@ describe('INT: WalletContractService', () => {
   });
 
   describe('beta3', () => {
+    let gnosisSafeService: GnosisSafeService;
+
     before(async () => {
       const blockchainService = new BlockchainService(provider);
-      walletService = new WalletContractService(blockchainService, new Beta2Service(provider), new GnosisSafeService(provider));
+      gnosisSafeService = new GnosisSafeService(provider);
+      walletService = new WalletContractService(blockchainService, new Beta2Service(provider), gnosisSafeService);
       ({proxy: proxyWallet, keyPair} = await setupGnosisSafeContract(wallet));
     });
 
@@ -70,6 +73,24 @@ describe('INT: WalletContractService', () => {
     it('throws error if message is not string', async () => {
       const message = 'Hi, how are you?';
       await expect(walletService.signMessage(proxyWallet.address, keyPair.privateKey, utils.toUtf8Bytes(message))).to.be.rejectedWith('Invalid message type. Expected type: string.');
+    });
+
+    it('encodes function that adds key', async () => {
+      const {publicKey} = createKeyPair();
+      const expectedEncodedFunction = GnosisSafeInterface.functions.addOwnerWithThreshold.encode([publicKey, 2]);
+      expect(await walletService.encodeFunction(proxyWallet.address, 'addKey', [publicKey])).to.eq(expectedEncodedFunction);
+    });
+
+    it('encodes removeKey', async () => {
+      const {publicKey} = createKeyPair();
+      await executeAddKeyGnosis(wallet, proxyWallet.address, publicKey, keyPair.privateKey);
+      const expectedEncodedFunction = GnosisSafeInterface.functions.removeOwner.encode([SENTINEL_OWNERS, publicKey, 1]);
+      expect(await walletService.encodeFunction(proxyWallet.address, 'removeKey', [publicKey])).to.eq(expectedEncodedFunction);
+    });
+
+    it('encodes setRequiredSignatures', async () => {
+      const expectedEncodedFunction = GnosisSafeInterface.functions.changeThreshold.encode([2]);
+      expect(await walletService.encodeFunction(proxyWallet.address, 'setRequiredSignatures', [2])).to.eq(expectedEncodedFunction);
     });
   });
 });

@@ -8,7 +8,7 @@ export interface IWalletContractServiceStrategy {
   keyExist: (walletAddress: string, key: string) => Promise<boolean>;
   requiredSignatures: (walletAddress: string) => Promise<utils.BigNumber>;
   signMessage: (privateKey: string, message: Uint8Array | string, walletAddress: string) => string;
-  encodeFunction: (method: string, args?: any[]) => string;
+  encodeFunction: (method: string, args?: any[], walletAddress?: string) => Promise<string>;
 }
 
 export class WalletContractService {
@@ -52,6 +52,6 @@ export class WalletContractService {
 
   async encodeFunction(walletAddress: string, method: string, args?: any[]) {
     const service = await this.getWalletService(walletAddress);
-    return service.encodeFunction(method, args);
+    return service.encodeFunction(method, args, walletAddress);
   }
 }
