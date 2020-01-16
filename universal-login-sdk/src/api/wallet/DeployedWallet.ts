@@ -1,6 +1,5 @@
-import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, sign, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage, Device, Procedure} from '@universal-login/commons';
-import {WalletContractInterface} from '@universal-login/contracts';
-import {Contract, utils} from 'ethers';
+import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage, Device, Procedure} from '@universal-login/commons';
+import {utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../../core/observers/BalanceObserver';
 import {AbstractWallet} from './AbstractWallet';
@@ -11,8 +10,6 @@ import UniversalLoginSDK from '../sdk';
 import {Execution} from '../../core/services/ExecutionFactory';
 
 export class DeployedWallet extends AbstractWallet {
-  private contractInstance: Contract;
-
   constructor(
     contractAddress: string,
     name: string,
@@ -20,7 +17,6 @@ export class DeployedWallet extends AbstractWallet {
     public readonly sdk: UniversalLoginSDK,
   ) {
     super(contractAddress, name, privateKey);
-    this.contractInstance = new Contract(this.contractAddress, WalletContractInterface, this.sdk.provider);
   }
 
   get asApplicationWallet(): ApplicationWallet {
@@ -58,7 +54,7 @@ export class DeployedWallet extends AbstractWallet {
 
   async execute(message: Partial<Message>): Promise<Execution> {
     const relayerConfig = this.sdk.getRelayerConfig();
-    const nonce = message.nonce || parseInt(await this.getNonce(), 10);
+    const nonce = message.nonce || await this.getNonce();
     const partialMessage = {
       gasToken: ETHER_NATIVE_TOKEN.address,
       ...message,
@@ -74,11 +70,11 @@ export class DeployedWallet extends AbstractWallet {
   }
 
   keyExist(key: string): Promise<boolean> {
-    return this.contractInstance.keyExist(key);
+    return this.sdk.walletContractService.keyExist(this.contractAddress, key);
   }
 
   async getNonce() {
-    return this.contractInstance.lastNonce();
+    return this.sdk.walletContractService.lastNonce(this.contractAddress);
   }
 
   async getConnectedDevices() {
@@ -91,15 +87,15 @@ export class DeployedWallet extends AbstractWallet {
   }
 
   getRequiredSignatures(): Promise<BigNumber> {
-    return this.contractInstance.requiredSignatures();
+    return this.sdk.walletContractService.requiredSignatures(this.contractAddress);
   }
 
   async getGasModes() {
     return this.sdk.getGasModes();
   }
 
-  selfExecute(method: string, args: any[], executionOptions: SdkExecutionOptions): Promise<Execution> {
-    const data = WalletContractInterface.functions[method].encode(args);
+  async selfExecute(method: string, args: any[], executionOptions: SdkExecutionOptions): Promise<Execution> {
+    const data = await this.sdk.walletContractService.encodeFunction(this.contractAddress, method, args);
     const message: Partial<Message> = {
       ...executionOptions,
       to: this.contractAddress,
@@ -123,7 +119,7 @@ export class DeployedWallet extends AbstractWallet {
   }
 
   signMessage(bytes: Uint8Array) {
-    return sign(bytes, this.privateKey);
+    return this.sdk.walletContractService.signMessage(this.contractAddress, this.privateKey, bytes);
   }
 
   subscribeAuthorisations(callback: Function) {

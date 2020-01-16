@@ -23,6 +23,8 @@ import {FutureWallet} from './wallet/FutureWallet';
 import {WalletEventType, WalletEventFilter, WalletEventCallback} from '../core/models/events';
 import WalletEventsObserverFactory from '../core/observers/WalletEventsObserverFactory';
 import {BlockProperty} from '../core/properties/BlockProperty';
+import {WalletContractService} from '../integration/ethereum/WalletContractService';
+import {Beta2Service} from '../integration/ethereum/Beta2Service';
 
 class UniversalLoginSDK {
   readonly provider: providers.Provider;
@@ -42,6 +44,7 @@ class UniversalLoginSDK {
   readonly featureFlagsService: FeatureFlagsService;
   readonly messageConverter: MessageConverter;
   readonly walletEventsObserverFactory: WalletEventsObserverFactory;
+  readonly walletContractService: WalletContractService;
   balanceObserver?: BalanceObserver;
   aggregateBalanceObserver?: AggregateBalanceObserver;
   futureWalletFactory?: FutureWalletFactory;
@@ -70,6 +73,8 @@ class UniversalLoginSDK {
     this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
     this.featureFlagsService = new FeatureFlagsService();
     this.messageConverter = new MessageConverter(this.blockchainService);
+    const beta2Service = new Beta2Service(this.provider);
+    this.walletContractService = new WalletContractService(this.blockchainService, beta2Service);
   }
 
   private createDeployedWallet(walletContractAddress: string, privateKey = '') {
