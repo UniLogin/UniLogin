@@ -56,6 +56,7 @@ describe('INT: DeployedWallet', async () => {
     const {transactionHash} = await waitForTransactionHash();
     expect(transactionHash).to.be.properHex;
     const codes = await waitToBeSuccess();
+    expect(codes.length).to.eq(1);
     const {address} = await walletFromBrain(ensName, codes[0]);
     expect(await walletContract.keyExist(address)).to.be.true;
     const connectedDevices = await deployedWallet.getConnectedDevices();
