@@ -30,7 +30,7 @@ export class Beta2Service implements IWalletContractServiceStrategy {
     return sign(message, privateKey);
   }
 
-  async encodeFunction(method: string, args?: any[]) {
+  encodeFunction(method: string, args?: any[]) {
     return WalletContractInterface.functions[method].encode(args || []);
   }
 };

@@ -8,7 +8,7 @@ export interface IWalletContractServiceStrategy {
   keyExist: (walletAddress: string, key: string) => Promise<boolean>;
   requiredSignatures: (walletAddress: string) => Promise<utils.BigNumber>;
   signMessage: (privateKey: string, message: Uint8Array | string, walletAddress: string) => string;
-  encodeFunction: (method: string, args?: any[], walletAddress?: string) => Promise<string>;
+  encodeFunction: (method: string, args?: any[], walletAddress?: string) => Promise<string> | string;
 }
 
 export class WalletContractService {
