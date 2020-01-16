@@ -1,5 +1,5 @@
-import {KeyPair, createKeyPair, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, TEST_GAS_LIMIT, CURRENT_NETWORK_VERSION, OperationType} from '@universal-login/commons';
-import {BlockchainService, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, messageToSignedMessage, SENTINEL_OWNERS} from '@universal-login/contracts';
+import {KeyPair, createKeyPair} from '@universal-login/commons';
+import {BlockchainService, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, SENTINEL_OWNERS} from '@universal-login/contracts';
 import {setupWalletContract, setupGnosisSafeContract, executeAddKeyGnosis} from '@universal-login/contracts/testutils';
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
