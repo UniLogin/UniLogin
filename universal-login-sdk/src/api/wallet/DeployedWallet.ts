@@ -106,7 +106,7 @@ export class DeployedWallet extends AbstractWallet {
   }
 
   async generateBackupCodes(executionOptions: ExecutionOptions): Promise<BackupCodesWithExecution> {
-    const codes: string[] = [generateBackupCode(), generateBackupCode()];
+    const codes: string[] = [generateBackupCode()];
     const addresses: string[] = [];
 
     for (const code of codes) {

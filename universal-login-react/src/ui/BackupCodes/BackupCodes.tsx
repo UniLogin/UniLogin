@@ -40,9 +40,9 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
       );
     case 'InProgress':
       return (<>
-        <Prompt message="Are you sure you want to leave? The backup codes are being generated." />
+        <Prompt message="Are you sure you want to leave? The backup code is being generated." />
         <WaitingForTransaction
-          action='Generating backup codes'
+          action='Generating backup code'
           relayerConfig={relayerConfig}
           className={className}
           transactionHash={state.transactionHash}
@@ -51,7 +51,7 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
     case 'Generated':
       return (
         <>
-          <Prompt message="Are you sure you want to leave? The backup codes will not be displayed again." />
+          <Prompt message="Are you sure you want to leave? The backup code will not be displayed again." />
           <BackupCodesView
             codes={state.codes}
             printCodes={window.print}
