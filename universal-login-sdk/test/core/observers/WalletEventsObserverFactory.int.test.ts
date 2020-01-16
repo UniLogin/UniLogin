@@ -45,8 +45,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
     it('subscribe to KeyAdded', async () => {
       const callback = sinon.spy();
       await factory.subscribe('KeyAdded', filter, callback);
-      const execution = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
-      await execution.waitToBeSuccess();
+      await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
       await waitExpect(() => expect(callback).to.have.been.calledOnce);
       expect(callback).to.have.been.calledWith({key: publicKey});
     });

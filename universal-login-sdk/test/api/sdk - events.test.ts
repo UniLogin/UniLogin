@@ -41,7 +41,7 @@ describe('INT: Events', async () => {
     await sdk.connect(contractAddress);
     const paymentOptions = {gasPrice, gasLimit, gasToken: mockToken.address};
     await sdk.addKey(contractAddress, wallet.address, privateKey, paymentOptions);
-    await waitExpect(() => expect(keyCallback).to.have.been.calledOnce, 3000);
+    await waitExpect(() => expect(keyCallback).to.have.been.calledOnce);
     await sdk.finalizeAndStop();
     unsubscribe();
     expect(keyCallback).to.have.been.calledWith({key: wallet.address});
