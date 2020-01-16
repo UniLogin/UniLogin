@@ -144,7 +144,7 @@ describe('UNIT: TransferService', () => {
 
   it('get Ethereum max amount', () => {
     const {transferService, balance} = setup();
-    expect(transferService.getMaxAmount(gasParameters, balance)).to.eq('299.99999999999989');
+    expect(transferService.getMaxAmount(gasParameters, balance)).to.eq('299.9999999999998');
   });
 
   it('get 0 if Ethereum max amount is below 0', () => {
