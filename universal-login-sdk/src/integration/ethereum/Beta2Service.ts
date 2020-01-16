@@ -26,7 +26,7 @@ export class Beta2Service implements IWalletContractServiceStrategy {
     return this.getContractInstance(walletAddress).requiredSignatures();
   }
 
-  signMessage(privateKey: string, message: Uint8Array) {
+  signMessage(privateKey: string, message: Uint8Array | string) {
     return sign(message, privateKey);
   }
 

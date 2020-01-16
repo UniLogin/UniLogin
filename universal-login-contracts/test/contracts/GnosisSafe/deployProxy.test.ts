@@ -5,12 +5,13 @@ import {loadFixture, deployContract} from 'ethereum-waffle';
 import {createKeyPair, ETHER_NATIVE_TOKEN, removeHexStringPrefix, TEST_ACCOUNT_ADDRESS, OperationType} from '@universal-login/commons';
 import {basicENS} from '@universal-login/commons/testutils';
 import {deployGnosisSafe, deployProxyFactory} from '../../../src/gnosis-safe@1.1.1/deployContracts';
-import {IProxyInterface} from '../../../src/gnosis-safe@1.1.1/interfaces';
+import {IProxyInterface, GnosisSafeInterface} from '../../../src/gnosis-safe@1.1.1/interfaces';
 import {encodeDataForSetup, encodeDataForExecTransaction} from '../../../src/gnosis-safe@1.1.1/encode';
 import {computeGnosisCounterfactualAddress} from '../../../src/gnosis-safe@1.1.1/utils';
 import ENSRegistrar from '../../../dist/contracts/ENSRegistrar.json';
 import {TransactionResponse} from 'ethers/providers';
 import {messageToSignedMessage} from '../../../src';
+import {executeAddKey} from '../../fixtures/gnosisSafe';
 
 describe('GnosisSafe', async () => {
   const domain = 'mylogin.eth';
@@ -79,5 +80,13 @@ describe('GnosisSafe', async () => {
     const dataToSend = encodeDataForExecTransaction(signedMessage);
     await wallet.sendTransaction({to: computedAddress, data: dataToSend});
     expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(message.value);
+  });
+
+  it('adding key works', async () => {
+    const contract = new Contract(computedAddress, GnosisSafeInterface, provider);
+    const keyPair2 = createKeyPair();
+    expect(await contract.isOwner(keyPair2.publicKey)).to.be.false;
+    await executeAddKey(wallet, contract.address, keyPair2.publicKey, keyPair.privateKey);
+    expect(await contract.isOwner(keyPair2.publicKey)).to.be.true;
   });
 });
