@@ -25,6 +25,7 @@ import WalletEventsObserverFactory from '../core/observers/WalletEventsObserverF
 import {BlockProperty} from '../core/properties/BlockProperty';
 import {WalletContractService} from '../integration/ethereum/WalletContractService';
 import {Beta2Service} from '../integration/ethereum/Beta2Service';
+import {GnosisSafeService} from '../integration/ethereum/GnosisSafeService';
 
 class UniversalLoginSDK {
   readonly provider: providers.Provider;
@@ -74,7 +75,8 @@ class UniversalLoginSDK {
     this.featureFlagsService = new FeatureFlagsService();
     this.messageConverter = new MessageConverter(this.blockchainService);
     const beta2Service = new Beta2Service(this.provider);
-    this.walletContractService = new WalletContractService(this.blockchainService, beta2Service);
+    const gnosisSafeService = new GnosisSafeService(this.provider);
+    this.walletContractService = new WalletContractService(this.blockchainService, beta2Service, gnosisSafeService);
   }
 
   private createDeployedWallet(walletContractAddress: string, privateKey = '') {
