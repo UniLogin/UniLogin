@@ -114,7 +114,7 @@ export class DeployedWallet extends AbstractWallet {
       addresses.push(address);
     }
 
-    const execution = await this.addKeys(addresses, {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+    const execution = await this.addKey(addresses[0], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
     return new BackupCodesWithExecution(execution, codes);
   }
 
