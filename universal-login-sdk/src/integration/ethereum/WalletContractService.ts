@@ -2,21 +2,21 @@ import {BlockchainService} from '@universal-login/contracts';
 import {WalletVersion} from '@universal-login/commons';
 import {utils} from 'ethers';
 
-export interface IWalletContractService {
+export interface IWalletContractServiceStrategy {
   lastNonce: (walletAddress: string) => Promise<number>;
   keyExist: (walletAddress: string, key: string) => Promise<boolean>;
   requiredSignatures: (walletAddress: string) => Promise<utils.BigNumber>;
-  signMessage: (privateKey: string, message: Uint8Array) => Promise<string>;
-  encodeFunction: (method: string, args?: any[]) => Promise<string>;
+  signMessage: (privateKey: string, message: Uint8Array) => string;
+  encodeFunction: (method: string, args?: any[]) => string;
 }
 
 export class WalletContractService {
   private walletVersion?: WalletVersion;
 
-  constructor(private blockchainService: BlockchainService, private beta2Service: IWalletContractService) {
+  constructor(private blockchainService: BlockchainService, private beta2Service: IWalletContractServiceStrategy) {
   }
 
-  async getWalletService(walletAddress: string): Promise<IWalletContractService> {
+  async getWalletService(walletAddress: string): Promise<IWalletContractServiceStrategy> {
     this.walletVersion = this.walletVersion || await this.blockchainService.fetchWalletVersion(walletAddress);
     switch (this.walletVersion) {
       case 'beta1':

@@ -1,9 +1,9 @@
 import {providers, Contract} from 'ethers';
 import {WalletContractInterface} from '@universal-login/contracts';
-import {IWalletContractService} from './WalletContractService';
+import {IWalletContractServiceStrategy} from './WalletContractService';
 import {sign} from '@universal-login/commons';
 
-export class Beta2Service implements IWalletContractService {
+export class Beta2Service implements IWalletContractServiceStrategy {
   private contract?: Contract;
 
   constructor(private provider: providers.Provider) {
@@ -18,19 +18,19 @@ export class Beta2Service implements IWalletContractService {
     return parseInt(await this.getContractInstance(walletAddress).lastNonce(), 10);
   }
 
-  async keyExist(walletAddress: string, key: string) {
+  keyExist(walletAddress: string, key: string) {
     return this.getContractInstance(walletAddress).keyExist(key);
   }
 
-  async requiredSignatures(walletAddress: string) {
+  requiredSignatures(walletAddress: string) {
     return this.getContractInstance(walletAddress).requiredSignatures();
   }
 
-  async signMessage(privateKey: string, message: Uint8Array) {
+  signMessage(privateKey: string, message: Uint8Array) {
     return sign(message, privateKey);
   }
 
-  async encodeFunction(method: string, args?: any[]) {
+  encodeFunction(method: string, args?: any[]) {
     return WalletContractInterface.functions[method].encode(args || []);
   }
 };
