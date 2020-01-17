@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
@@ -148,9 +148,10 @@ export class WalletService {
       contractAddress: connectingWallet.contractAddress,
       key: connectingWallet.publicKey,
     };
+    const addKeyEvent = await this.sdk.walletContractService.getEventNameFor(connectingWallet.contractAddress, 'KeyAdded');
     return new Promise((resolve, reject) => {
       const setWallet = this.setWallet.bind(this);
-      const unsubscribe = this.sdk.subscribe('KeyAdded', filter, () => {
+      const unsubscribe = this.sdk.subscribe(addKeyEvent, filter, () => {
         setWallet(connectingWallet);
         unsubscribe();
         resolve();
@@ -159,8 +160,9 @@ export class WalletService {
     });
   }
 
-  async cancelWaitForConnection() {
+  async cancelWaitForConnection(tick = 500, timeout = 1500) {
     if (this.state.kind === 'Deployed') return;
+    await waitUntil(() => !!this.getConnectingWallet().unsubscribe, tick, timeout);
     this.getConnectingWallet().unsubscribe!();
     this.disconnect();
   }
@@ -176,8 +178,8 @@ export class WalletService {
       contractAddress,
       key: utils.computeAddress(privateKey),
     };
-
-    const unsubscribe = this.sdk.subscribe('KeyAdded', filter, () => {
+    const addKeyEvent = await this.sdk.walletContractService.getEventNameFor(connectingWallet.contractAddress, 'KeyAdded');
+    const unsubscribe = this.sdk.subscribe(addKeyEvent, filter, () => {
       this.setWallet(connectingWallet);
       unsubscribe;
       callback();

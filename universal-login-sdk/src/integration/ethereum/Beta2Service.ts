@@ -2,6 +2,7 @@ import {providers, Contract} from 'ethers';
 import {WalletContractInterface} from '@universal-login/contracts';
 import {IWalletContractServiceStrategy} from './WalletContractService';
 import {sign} from '@universal-login/commons';
+import {WalletEventType} from '../../core/models/events';
 
 export class Beta2Service implements IWalletContractServiceStrategy {
   private contract?: Contract;
@@ -32,5 +33,15 @@ export class Beta2Service implements IWalletContractServiceStrategy {
 
   encodeFunction(method: string, args?: any[]) {
     return WalletContractInterface.functions[method].encode(args || []);
+  }
+
+  getEventNameFor(event: string) {
+    switch (event) {
+      case 'KeyAdded':
+      case 'KeyRemoved':
+        return event as WalletEventType;
+      default:
+        throw TypeError(`Invalid event: ${event}`);
+    }
   }
 };

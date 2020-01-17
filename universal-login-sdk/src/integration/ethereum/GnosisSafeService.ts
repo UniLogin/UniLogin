@@ -57,4 +57,15 @@ export class GnosisSafeService implements IWalletContractServiceStrategy {
         throw TypeError(`Invalid method: ${method}`);
     };
   }
+
+  getEventNameFor(event: string) {
+    switch (event) {
+      case 'KeyAdded':
+        return 'AddedOwner';
+      case 'KeyRemoved':
+        return 'RemovedOwner';
+      default:
+        throw TypeError(`Invalid event: ${event}`);
+    }
+  }
 };

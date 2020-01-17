@@ -2,6 +2,7 @@ import {BlockchainService} from '@universal-login/contracts';
 import {WalletVersion} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {GnosisSafeService} from './GnosisSafeService';
+import {WalletEventType} from '../../core/models/events';
 
 export interface IWalletContractServiceStrategy {
   lastNonce: (walletAddress: string) => Promise<number>;
@@ -9,6 +10,7 @@ export interface IWalletContractServiceStrategy {
   requiredSignatures: (walletAddress: string) => Promise<utils.BigNumber>;
   signMessage: (privateKey: string, message: Uint8Array | string, walletAddress: string) => string;
   encodeFunction: (method: string, args?: any[], walletAddress?: string) => Promise<string> | string;
+  getEventNameFor: (event: string) => WalletEventType;
 }
 
 export class WalletContractService {
@@ -53,5 +55,10 @@ export class WalletContractService {
   async encodeFunction(walletAddress: string, method: string, args?: any[]) {
     const service = await this.getWalletService(walletAddress);
     return service.encodeFunction(method, args, walletAddress);
+  }
+
+  async getEventNameFor(walletAddress: string, event: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.getEventNameFor(event);
   }
 }
