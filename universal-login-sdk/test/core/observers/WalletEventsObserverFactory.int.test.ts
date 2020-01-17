@@ -1,4 +1,4 @@
-import {createKeyPair, TEST_EXECUTION_OPTIONS, waitUntil, KeyPair} from '@universal-login/commons';
+import {createKeyPair, TEST_EXECUTION_OPTIONS, KeyPair} from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import chai, {expect} from 'chai';
@@ -12,6 +12,7 @@ import {setupSdk} from '../../helpers/setupSdk';
 import {BlockProperty} from '../../../src/core/properties/BlockProperty';
 import {setupGnosisSafeContract, executeAddKeyGnosis, executeRemoveKey} from '@universal-login/contracts/testutils';
 import {Contract} from 'ethers';
+import {waitExpect} from '@universal-login/commons/testutils';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -29,7 +30,10 @@ describe('INT: WalletEventsObserverFactory', async () => {
 
   before(async () => {
     ({relayer, sdk} = await setupSdk(deployer));
-    factory = new WalletEventsObserverFactory(new BlockchainService(sdk.provider), new BlockProperty(provider));
+    factory = new WalletEventsObserverFactory(
+      new BlockchainService(sdk.provider),
+      new BlockProperty(provider),
+    );
     deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);
     filter = {
       contractAddress: deployedWallet.contractAddress,
@@ -42,7 +46,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
       await factory.subscribe('KeyAdded', filter, callback);
       const execution = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
-      await waitUntil(() => !!callback.firstCall);
+      await waitExpect(() => expect(callback).to.have.been.calledOnce);
       expect(callback).to.have.been.calledWith({key: publicKey});
     });
 
@@ -50,7 +54,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
       await factory.subscribe('KeyRemoved', filter, callback);
       const execution = await deployedWallet.removeKey(publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
-      await waitUntil(() => !!callback.firstCall);
+      await waitExpect(() => expect(callback).to.have.been.calledOnce);
       expect(callback).to.have.been.calledWith({key: publicKey});
     });
   });
@@ -68,7 +72,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
       filter = {...filter, contractAddress: proxy.address};
       await factory.subscribe('AddedOwner', filter, callbackGnosis);
       await executeAddKeyGnosis(deployer, proxy.address, publicKey, keyPair.privateKey);
-      await waitUntil(() => !!callbackGnosis.firstCall);
+      await waitExpect(() => expect(callbackGnosis).to.have.been.calledOnce);
       expect(callbackGnosis).to.have.been.calledWith({key: publicKey});
     });
 
@@ -77,7 +81,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
       filter = {...filter, contractAddress: proxy.address};
       await factory.subscribe('RemovedOwner', filter, callbackRemoveGnosis);
       await executeRemoveKey(deployer, proxy.address, publicKey, keyPair.privateKey);
-      await waitUntil(() => !!callbackRemoveGnosis.firstCall);
+      await waitExpect(() => expect(callbackRemoveGnosis).to.have.been.calledOnce);
       expect(callbackRemoveGnosis).to.have.been.calledWith({key: publicKey});
     });
   });
