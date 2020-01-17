@@ -26,6 +26,7 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     try {
       const signedMessage = await this.messageRepository.getMessage(messageHash);
       const transactionResponse = await this.execute(signedMessage);
+      console.log('transactionResponse', transactionResponse)
       const {hash, wait} = transactionResponse;
       ensureNotFalsy(hash, TransactionHashNotFound);
       await this.messageRepository.markAsPending(messageHash, hash!);
@@ -40,7 +41,9 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
 
   async execute(signedMessage: SignedMessage): Promise<providers.TransactionResponse> {
     await this.messageValidator.validate(signedMessage);
+    console.log('validsation');
     const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage);
+    console.log('send')
     return this.wallet.sendTransaction(transactionReq);
   }
 }

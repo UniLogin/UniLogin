@@ -1,5 +1,5 @@
 import {ETHER_NATIVE_TOKEN, createKeyPair} from '@universal-login/commons';
-import {deployGnosisSafe, deployProxyFactory, encodeDataForSetup, computeGnosisCounterfactualAddress, GnosisSafeInterface, ProxyFactoryInterface, ENSInterface} from '@universal-login/contracts';
+import {DEPLOY_CONTRACT_NONCE, deployGnosisSafe, deployProxyFactory, encodeDataForSetup, computeGnosisCounterfactualAddress, GnosisSafeInterface, ProxyFactoryInterface, ENSInterface} from '@universal-login/contracts';
 import {Contract, utils, Wallet} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import ENSRegistrar from '@universal-login/contracts/dist/contracts/ENSRegistrar.json';
@@ -30,8 +30,8 @@ export const deployGnosisSafeProxy = async (wallet: Wallet, proxyFactoryAddress:
     refundReceiver: wallet.address,
   };
   const setupData = encodeDataForSetup(deployment);
-  const computedAddress = computeGnosisCounterfactualAddress(proxyFactoryAddress, 0, setupData, gnosisSafeAddress);
-  await new Contract(proxyFactoryAddress, ProxyFactoryInterface, wallet).createProxyWithNonce(gnosisSafeAddress, setupData, 0);
+  const computedAddress = computeGnosisCounterfactualAddress(proxyFactoryAddress, DEPLOY_CONTRACT_NONCE, setupData, gnosisSafeAddress);
+  await new Contract(proxyFactoryAddress, ProxyFactoryInterface, wallet).createProxyWithNonce(gnosisSafeAddress, setupData, DEPLOY_CONTRACT_NONCE);
   await wallet.sendTransaction({to: computedAddress, value: utils.parseEther('1.0')});
   return {proxyContract: new Contract(computedAddress, GnosisSafeInterface, wallet.provider), keyPair};
 };
@@ -57,8 +57,8 @@ export const deployGnosisSafeProxyWithENS = async (wallet: Wallet, proxyFactoryA
     refundReceiver: wallet.address,
   };
   const setupData = encodeDataForSetup(deployment);
-  const computedAddress = computeGnosisCounterfactualAddress(proxyFactoryAddress, 0, setupData, gnosisSafeAddress);
+  const computedAddress = computeGnosisCounterfactualAddress(proxyFactoryAddress, DEPLOY_CONTRACT_NONCE, setupData, gnosisSafeAddress);
   await wallet.sendTransaction({to: computedAddress, value: utils.parseEther('10.0')});
-  await new Contract(proxyFactoryAddress, ProxyFactoryInterface, wallet).createProxyWithNonce(gnosisSafeAddress, setupData, 0);
+  await new Contract(proxyFactoryAddress, ProxyFactoryInterface, wallet).createProxyWithNonce(gnosisSafeAddress, setupData, DEPLOY_CONTRACT_NONCE);
   return {proxyContract: new Contract(computedAddress, GnosisSafeInterface, wallet.provider), keyPair};
 };

@@ -1,7 +1,7 @@
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_SDK_CONFIG} from '@universal-login/commons';
-import {beta2} from '@universal-login/contracts';
+import {gnosisSafe} from '@universal-login/contracts';
 import {mockContracts} from '@universal-login/contracts/testutils';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import UniversalLoginSDK from '../../src/api/sdk';
@@ -18,7 +18,7 @@ export default async function basicSDK(givenProvider: providers.Provider, wallet
   const {contractAddress, privateKey} = await createdDeployedWallet(ensName, sdk, wallet);
   const mockToken = await deployContract(wallet, mockContracts.MockToken);
   await mockToken.transfer(contractAddress, utils.parseEther('1.0'));
-  const walletContract = new Contract(contractAddress, beta2.WalletContract.abi, wallet);
+  const walletContract = new Contract(contractAddress, gnosisSafe.GnosisSafe.abi, wallet);
   return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer, ensName};
 }
 

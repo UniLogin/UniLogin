@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, signRelayerRequest, DEPLOY_GAS_LIMIT, TEST_APPLICATION_INFO, getDeployData} from '@universal-login/commons';
-import {beta2, computeGnosisCounterfactualAddress, signStringMessage, calculateGnosisStringHash} from '@universal-login/contracts';
+import {beta2, computeGnosisCounterfactualAddress, signStringMessage, calculateGnosisStringHash, DEPLOY_CONTRACT_NONCE} from '@universal-login/contracts';
 import {startRelayerWithRefund, createWalletCounterfactually, getInitData, getSetupData} from '../testhelpers/http';
 import Relayer from '../../src';
 import {waitForDeploymentStatus} from '../testhelpers/waitForDeploymentStatus';
@@ -33,7 +33,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     keyPair = createKeyPair();
     initCode = getDeployData(beta2.WalletProxy as any, [walletContract.address]);
     const setupData = await getSetupData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE, deployer.address, relayer.publicConfig.ensRegistrar);
-    contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, 0, setupData, walletContract.address);
+    contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, walletContract.address);
     signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
   });
 

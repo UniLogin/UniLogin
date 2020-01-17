@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, sign, signString, createKeyPair, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
-import {messageToSignedMessage, calculateMessageHash, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface} from '@universal-login/contracts';
+import {messageToSignedMessage, calculateMessageHash, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, calculateMessageSignature} from '@universal-login/contracts';
 import {ERC1271} from '@universal-login/contracts';
 import {setupGnosisSafeContract, executeAddKeyGnosis, executeRemoveKey} from '@universal-login/contracts/testutils';
 import {createMockProvider, getWallets} from 'ethereum-waffle';

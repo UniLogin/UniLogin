@@ -63,6 +63,7 @@ export class DeployedWallet extends AbstractWallet {
       operationType: OperationType.call,
       from: this.contractAddress,
     };
+    console.log(partialMessage)
     ensure(partialMessage.gasLimit! <= relayerConfig.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${relayerConfig.maxGasLimit}`);
     const signedMessage: SignedMessage = await this.sdk.messageConverter.messageToSignedMessage(partialMessage, this.privateKey);
     ensureSufficientGas(signedMessage);
