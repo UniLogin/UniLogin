@@ -8,6 +8,7 @@ import {Wallet, utils} from 'ethers';
 import {ensure, TEST_EXECUTION_OPTIONS} from '@universal-login/commons';
 import {createWallet} from '../../helpers';
 import {DeployedWallet} from '../../../src';
+import {mineBlock} from '../../helpers/mineBlock';
 
 chai.use(solidity);
 
@@ -94,6 +95,7 @@ describe('INT: WalletService', async () => {
       await walletService.initializeConnection(ensName);
       const execution = await existingDeployedWallet.addKey(walletService.getConnectingWallet().publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
+      mineBlock(wallet);
       await walletService.waitForConnection();
       expect(walletService.state).to.deep.include({kind: 'Deployed'});
       await walletService.waitForConnection();
@@ -107,6 +109,7 @@ describe('INT: WalletService', async () => {
       await walletService.initializeConnection(ensName);
       const execution = await existingDeployedWallet.addKey(walletService.getConnectingWallet().publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
+      mineBlock(wallet);
       await walletService.waitForConnection();
       await walletService.cancelWaitForConnection();
       expect(walletService.state).to.deep.include({kind: 'Deployed'});
