@@ -44,13 +44,13 @@ export class GnosisSafeService implements IWalletContractServiceStrategy {
         ensureNotFalsy(walletAddress, WalletNotFound);
         ensureNotFalsy(args, TypeError, 'Public key not provided.');
         return GnosisSafeInterface.functions.addOwnerWithThreshold
-          .encode([...args, (await this.requiredSignatures(walletAddress)).add(1)]);
+          .encode([...args, await this.requiredSignatures(walletAddress)]);
       case 'removeKey':
         ensureNotFalsy(walletAddress, WalletNotFound);
         ensureNotFalsy(args, TypeError, 'Public key not provided.');
         const owners = await this.getOwners(walletAddress);
         return GnosisSafeInterface.functions.removeOwner
-          .encode([getPreviousOwner(owners, args[0]), args[0], (await this.requiredSignatures(walletAddress)).sub(1)]);
+          .encode([getPreviousOwner(owners, args[0]), args[0], await this.requiredSignatures(walletAddress)]);
       case 'setRequiredSignatures':
         return GnosisSafeInterface.functions.changeThreshold.encode(args);
       default:
