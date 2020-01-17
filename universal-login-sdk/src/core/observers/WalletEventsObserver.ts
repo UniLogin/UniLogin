@@ -2,9 +2,9 @@ import {arrayRemove} from '@universal-login/commons';
 import {WalletEventType, WalletEventObservableRecord} from '../models/events';
 import {parseArgs} from '../utils/events';
 import {Log} from 'ethers/providers';
-import {WalletContractInterface, BlockchainService} from '@universal-login/contracts';
+import {WalletContractInterface, BlockchainService, GnosisSafeInterface} from '@universal-login/contracts';
 
-const eventInterface = WalletContractInterface.events;
+const eventInterface = {...WalletContractInterface.events, ...GnosisSafeInterface.events};
 
 export class WalletEventsObserver {
   private readonly observableRecords: Record<WalletEventType, WalletEventObservableRecord[]> = {

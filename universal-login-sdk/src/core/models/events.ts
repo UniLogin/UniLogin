@@ -1,4 +1,4 @@
-export type WalletEventType = 'KeyAdded' | 'KeyRemoved';
+export type WalletEventType = 'KeyAdded' | 'KeyRemoved' | 'AddedOwner' | 'RemovedOwner';
 
 export type WalletEventArgs = {
   key: string;

@@ -28,3 +28,18 @@ export const keyRemovedEvent = {
     '0x9532c523e37e26d38beeecf5552c48249b89b5a7dcb529b9586e5182ff86dc3a',
   logIndex: 0,
 };
+
+export const addedOwnerEvent = {
+  blockNumber: 31,
+  blockHash:
+   '0x0b41098e339329e11a69ea89c11ad176318f9953270b58125dca2c05fd21cc22',
+  transactionIndex: 0,
+  address: '0x4ba8B36a08895c0E9FF24624d9F07700e6933602',
+  data:
+   '0x000000000000000000000000666219ab92d1a01e2bfd7eb4831a962fb00be946',
+  topics:
+   ['0x9465fa0c962cc76958e6373a993326400c1c94f8be2fe3a952adfa7f60b2ea26'],
+  transactionHash:
+   '0x1c06c664184939b21579cf31308f591df4ccd15666256e7782d77a294c96b7cf',
+  logIndex: 0,
+};
