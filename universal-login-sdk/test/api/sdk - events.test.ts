@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {Contract, Wallet, providers, utils} from 'ethers';
-import {solidity, createFixtureLoader, getWallets} from 'ethereum-waffle';
+import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import basicSDK from '../fixtures/basicSDK';

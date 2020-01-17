@@ -14,7 +14,7 @@ class WalletEventsObserverFactory {
   }
 
   async start() {
-    this.currentBlock.set(await this.blockchainService.getBlockNumber() - 1);
+    this.currentBlock.set(await this.blockchainService.getBlockNumber());
     this.unsubscribe = this.currentBlock.subscribe(() => this.fetchEvents());
   }
 
