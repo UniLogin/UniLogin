@@ -203,13 +203,13 @@ class UniversalLoginSDK {
 
   async denyRequests(contractAddress: string, privateKey: string) {
     const authorisationRequest = {contractAddress};
-    signRelayerRequest(authorisationRequest, privateKey);
+    await this.walletContractService.signRelayerRequest(privateKey, authorisationRequest);
     await this.relayerApi.denyConnection(authorisationRequest);
   }
 
   async cancelRequest(contractAddress: string, privateKey: string) {
     const authorisationRequest = {contractAddress};
-    signRelayerRequest(authorisationRequest, privateKey);
+    await this.walletContractService.signRelayerRequest(privateKey, authorisationRequest);
     return this.relayerApi.cancelConnection(authorisationRequest);
   }
 
@@ -232,16 +232,16 @@ class UniversalLoginSDK {
     return this.priceObserver.subscribe(callback);
   }
 
-  subscribeAuthorisations(contractAddress: string, privateKey: string, callback: Function) {
+  async subscribeAuthorisations(contractAddress: string, privateKey: string, callback: Function) {
     return this.authorisationsObserver.subscribe(
-      signRelayerRequest({contractAddress}, privateKey),
+      await this.walletContractService.signRelayerRequest(privateKey, {contractAddress}),
       (notifications: Notification[]) => callback(addCodesToNotifications(notifications)),
     );
   }
 
   async getConnectedDevices(contractAddress: string, privateKey: string) {
     return this.relayerApi.getConnectedDevices(
-      signRelayerRequest({contractAddress}, privateKey),
+      await this.walletContractService.signRelayerRequest(privateKey, {contractAddress}),
     );
   }
 
