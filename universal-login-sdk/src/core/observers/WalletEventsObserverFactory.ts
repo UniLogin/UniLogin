@@ -24,7 +24,7 @@ class WalletEventsObserverFactory extends ObserverRunner {
 
   async fetchEvents() {
     ensureNotNull(this.currentBlock.get(), InvalidObserverState);
-    await this.fetchEventsOfTypes(['KeyAdded', 'KeyRemoved']);
+    await this.fetchEventsOfTypes(['KeyAdded', 'KeyRemoved', 'AddedOwner', 'RemovedOwner']);
     this.currentBlock.set(await this.blockchainService.getBlockNumber());
   }
 

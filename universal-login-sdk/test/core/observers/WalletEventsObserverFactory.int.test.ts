@@ -1,4 +1,4 @@
-import {createKeyPair, TEST_EXECUTION_OPTIONS, waitUntil} from '@universal-login/commons';
+import {createKeyPair, TEST_EXECUTION_OPTIONS, waitUntil, KeyPair} from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import chai, {expect} from 'chai';
@@ -10,6 +10,8 @@ import WalletEventsObserverFactory from '../../../src/core/observers/WalletEvent
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
 import {BlockProperty} from '../../../src/core/properties/BlockProperty';
+import {setupGnosisSafeContract, executeAddKeyGnosis, executeRemoveKey} from '@universal-login/contracts/testutils';
+import {Contract} from 'ethers';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -17,7 +19,7 @@ chai.use(sinonChai);
 describe('INT: WalletEventsObserverFactory', async () => {
   const provider = createMockProvider();
   const [deployer] = getWallets(provider);
-  const {publicKey} = createKeyPair();
+  const {publicKey, privateKey} = createKeyPair();
   const callback = sinon.spy();
   let relayer: RelayerUnderTest;
   let sdk: UniversalLoginSDK;
@@ -35,21 +37,49 @@ describe('INT: WalletEventsObserverFactory', async () => {
     };
     await factory.start();
   });
+  describe('beta2', () => {
+    it('subscribe to KeyAdded', async () => {
+      await factory.subscribe('KeyAdded', filter, callback);
+      const execution = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
+      await execution.waitToBeSuccess();
+      await waitUntil(() => !!callback.firstCall);
+      expect(callback).to.have.been.calledWith({key: publicKey});
+    });
 
-  it('subscribe to KeyAdded', async () => {
-    await factory.subscribe('KeyAdded', filter, callback);
-    const execution = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
-    await execution.waitToBeSuccess();
-    await waitUntil(() => !!callback.firstCall);
-    expect(callback).to.have.been.calledWith({key: publicKey});
+    it('subscribe to KeyRemoved', async () => {
+      await factory.subscribe('KeyRemoved', filter, callback);
+      const execution = await deployedWallet.removeKey(publicKey, TEST_EXECUTION_OPTIONS);
+      await execution.waitToBeSuccess();
+      await waitUntil(() => !!callback.firstCall);
+      expect(callback).to.have.been.calledWith({key: publicKey});
+    });
   });
 
-  it('subscribe to KeyRemoved', async () => {
-    await factory.subscribe('KeyRemoved', filter, callback);
-    const execution = await deployedWallet.removeKey(publicKey, TEST_EXECUTION_OPTIONS);
-    await execution.waitToBeSuccess();
-    await waitUntil(() => !!callback.firstCall);
-    expect(callback).to.have.been.calledWith({key: publicKey});
+  describe('beta3', () => {
+    let proxy: Contract;
+    let keyPair: KeyPair;
+
+    before(async () => {
+      ({proxy, keyPair} = await setupGnosisSafeContract(deployer));
+    });
+
+    it('subscribe to KeyAdded', async () => {
+      const callbackGnosis = sinon.spy();
+      filter = {...filter, contractAddress: proxy.address};
+      await factory.subscribe('AddedOwner', filter, callbackGnosis);
+      await executeAddKeyGnosis(deployer, proxy.address, publicKey, keyPair.privateKey);
+      await waitUntil(() => !!callbackGnosis.firstCall);
+      expect(callbackGnosis).to.have.been.calledWith({key: publicKey});
+    });
+
+    it('subscribe to RemovedOwner', async () => {
+      const callbackRemoveGnosis = sinon.spy();
+      filter = {...filter, contractAddress: proxy.address};
+      await factory.subscribe('RemovedOwner', filter, callbackRemoveGnosis);
+      await executeRemoveKey(deployer, proxy.address, publicKey, [keyPair.privateKey, privateKey]);
+      await waitUntil(() => !!callbackRemoveGnosis.firstCall);
+      expect(callbackRemoveGnosis).to.have.been.calledWith({key: publicKey});
+    });
   });
 
   afterEach(() => {
