@@ -39,6 +39,14 @@ describe('INT: WalletContractService', () => {
       const signer = new Wallet(keyPair.privateKey);
       expect(await walletService.signMessage(proxyWallet.address, keyPair.privateKey, bytes)).to.eq(await signer.signMessage(msg));
     });
+
+    it('returns KeyAdded for KeyAdded event', async () => {
+      expect(await walletService.getEventNameFor(proxyWallet.address, 'KeyAdded')).to.eq('KeyAdded');
+    });
+
+    it('returns KeyRemoved for KeyRemoved event', async () => {
+      expect(await walletService.getEventNameFor(proxyWallet.address, 'KeyRemoved')).to.eq('KeyRemoved');
+    });
   });
 
   describe('beta3', () => {
@@ -91,6 +99,14 @@ describe('INT: WalletContractService', () => {
     it('encodes setRequiredSignatures', async () => {
       const expectedEncodedFunction = GnosisSafeInterface.functions.changeThreshold.encode([2]);
       expect(await walletService.encodeFunction(proxyWallet.address, 'setRequiredSignatures', [2])).to.eq(expectedEncodedFunction);
+    });
+
+    it('returns AddedOwner for KeyAdded event', async () => {
+      expect(await walletService.getEventNameFor(proxyWallet.address, 'KeyAdded')).to.eq('AddedOwner');
+    });
+
+    it('returns RemovedOwner for KeyRemoved event', async () => {
+      expect(await walletService.getEventNameFor(proxyWallet.address, 'KeyRemoved')).to.eq('RemovedOwner');
     });
   });
 });

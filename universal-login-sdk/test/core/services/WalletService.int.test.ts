@@ -83,7 +83,7 @@ describe('INT: WalletService', async () => {
       await walletService.initializeConnection(ensName);
       walletService.waitForConnection();
       const publicKey = walletService.getConnectingWallet().publicKey;
-      walletService.cancelWaitForConnection();
+      walletService.cancelWaitForConnection(2, 4);
       const execution = await existingDeployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
       expect(walletService.state).to.deep.eq({kind: 'None'});
