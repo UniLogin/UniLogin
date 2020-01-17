@@ -20,7 +20,7 @@ const mockedNotifications = asMock<Notification[]>([
 ]);
 
 export const mockNotifications = (sdk: UniversalLoginSDK) => {
-  sdk.subscribeAuthorisations = (walletContractAddress: string, privateKey: string, callback: Function) => {
+  sdk.subscribeAuthorisations = async (walletContractAddress: string, privateKey: string, callback: Function) => {
     callback(mockedNotifications);
     return () => {};
   };

@@ -6,6 +6,7 @@ import {useProperty} from '../..';
 import {DashboardModal} from './DashboardModal';
 import './../styles/udashboard.sass';
 import {getWindowConfirmation} from '../../core/utils/getWindowConfirmation';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface DashboardProps {
   deployedWallet?: DeployedWallet;
@@ -23,7 +24,7 @@ export const Dashboard = (props: DashboardProps) => {
   const deployedWallet = state.kind === 'Deployed' ? state.wallet : undefined;
 
   const [newNotifications, setNewNotifications] = useState<Notification[]>([]);
-  useEffect(() => deployedWallet?.subscribeAuthorisations(setNewNotifications), [deployedWallet]);
+  useAsyncEffect(() => deployedWallet?.subscribeAuthorisations(setNewNotifications) as Promise<() => void>, [deployedWallet]);
 
   useEffect(() => deployedWallet?.subscribeDisconnected(() => walletService.disconnect()), [deployedWallet]);
 

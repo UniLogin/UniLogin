@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Notification, GasParameters, ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {EmojiForm} from './EmojiForm';
 import {DeployedWallet} from '@universal-login/sdk';
@@ -9,6 +9,8 @@ import {useHistory} from 'react-router';
 import {join} from 'path';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
+import Spinner from '../commons/Spinner';
 
 interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;
@@ -28,7 +30,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     ? history.goBack()
     : setNotifications(notifications);
 
-  useEffect(() => deployedWallet.subscribeAuthorisations(updateNotifications), []);
+  useAsyncEffect(() => deployedWallet.subscribeAuthorisations(updateNotifications), []);
 
   const onConnectClick = async (gasParameters: GasParameters | undefined) => {
     try {
@@ -47,7 +49,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     }
   };
 
-  return (
+  return notifications.length !== 0 ? (
     <div id="notifications" className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="approve-device">
@@ -83,5 +85,6 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
         </div>
       </div>
     </div>
-  );
+  )
+    : <Spinner className="spinner-center" />;
 };

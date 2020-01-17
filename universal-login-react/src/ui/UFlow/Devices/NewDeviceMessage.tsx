@@ -4,6 +4,7 @@ import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLe
 import './../../styles/newDeviceMessage.sass';
 import './../../styles/newDeviceMessageDefault.sass';
 import {Spinner} from '../../commons/Spinner';
+import {useAsyncEffect} from '../../hooks/useAsyncEffect';
 
 interface NewDeviceMessageProps {
   deployedWallet: DeployedWallet;
@@ -13,7 +14,7 @@ interface NewDeviceMessageProps {
 
 export const NewDeviceMessage = ({deployedWallet, onManageClick, className}: NewDeviceMessageProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
-  useEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
+  useAsyncEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
 
   const [isLoading, setIsLoading] = useState(false);
 
