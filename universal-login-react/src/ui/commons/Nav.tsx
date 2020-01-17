@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {NavLink} from 'react-router-dom';
 import {DeployedWallet} from '@universal-login/sdk';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface NavProps {
   deployedWallet: DeployedWallet;
@@ -9,7 +10,7 @@ export interface NavProps {
 export const Nav = ({deployedWallet}: NavProps) => {
   const [newNotifications, setNewNotifications] = useState(false);
   const updateNotifictions = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
-  useEffect(() => deployedWallet.subscribeAuthorisations(updateNotifictions), [deployedWallet]);
+  useAsyncEffect(() => deployedWallet.subscribeAuthorisations(updateNotifictions), [deployedWallet]);
 
   return (
     <>

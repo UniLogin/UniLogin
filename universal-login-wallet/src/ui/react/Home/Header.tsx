@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import logo from '../../assets/logo.svg';
 import {useServices} from '../../hooks';
 import {Link, NavLink} from 'react-router-dom';
+import {useAsyncEffect} from '@universal-login/react';
 
 export function Header() {
   const {sdk, walletService} = useServices();
@@ -10,7 +11,7 @@ export function Header() {
 
   const updateNotifications = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
 
-  useEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, updateNotifications), []);
+  useAsyncEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, updateNotifications), []);
 
   const {walletPresenter} = useServices();
 
