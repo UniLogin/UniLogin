@@ -18,6 +18,6 @@ describe('UNIT: parseArgs', () => {
 describe('UNIT: parseArgsGnosis', () => {
   it('AddedOwner', () => {
     const result = parseArgsGnosis('AddedOwner', addedOwnerEvent);
-    expect(result.key).to.eq('0x666219AB92d1A01E2Bfd7EB4831A962Fb00Be946');
+    expect(result.key).to.eq(TEST_KEY);
   });
 });

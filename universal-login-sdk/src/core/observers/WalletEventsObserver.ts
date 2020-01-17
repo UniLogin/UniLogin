@@ -1,15 +1,15 @@
 import {arrayRemove} from '@universal-login/commons';
 import {WalletEventType, WalletEventObservableRecord} from '../models/events';
-import {parseArgs} from '../utils/events';
+import {parseArgs, eventInterface, parseArgsGnosis} from '../utils/events';
 import {Log} from 'ethers/providers';
-import {WalletContractInterface, BlockchainService, GnosisSafeInterface} from '@universal-login/contracts';
-
-const eventInterface = {...WalletContractInterface.events, ...GnosisSafeInterface.events};
+import {BlockchainService} from '@universal-login/contracts';
 
 export class WalletEventsObserver {
   private readonly observableRecords: Record<WalletEventType, WalletEventObservableRecord[]> = {
     KeyAdded: [],
     KeyRemoved: [],
+    AddedOwner: [],
+    RemovedOwner: [],
   };
 
   constructor(public readonly contractAddress: string, public readonly blockchainService: BlockchainService) {
@@ -38,7 +38,19 @@ export class WalletEventsObserver {
   }
 
   private processEvent(type: WalletEventType, event: Log) {
-    const args = parseArgs(type, event);
+    let args: {key: string};
+    switch (type) {
+      case 'KeyAdded':
+      case 'KeyRemoved':
+        args = parseArgs(type, event);
+        break;
+      case 'AddedOwner':
+      case 'RemovedOwner':
+        args = parseArgsGnosis(type, event);
+        break;
+      default:
+        throw TypeError(`Invalid event type: ${type}`);
+    };
     for (const observableRecord of this.observableRecords[type]) {
       if (observableRecord.key === 'undefined' || observableRecord.key === args.key) {
         observableRecord.callback(args);
