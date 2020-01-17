@@ -48,3 +48,12 @@ export const calculateGnosisStringHash = (message: string, contractAddress: stri
   const domainSeparator = utils.keccak256(abiCoder.encode(['bytes32', 'address'], [DOMAIN_SEPARATOR_TYPEHASH, contractAddress]));
   return utils.solidityKeccak256(['bytes1', 'bytes1', 'bytes32', 'bytes32'], ['0x19', '0x01', domainSeparator, msgHash]);
 };
+
+export const getPreviousOwner = (owners: string[], currentOwner: string) => {
+  const currentOwnerIndex = owners.findIndex(owner => currentOwner === owner);
+  if (currentOwnerIndex === 0) {
+    return SENTINEL_OWNERS;
+  } else {
+    return owners[currentOwnerIndex - 1];
+  }
+};
