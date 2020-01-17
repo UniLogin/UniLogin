@@ -21,7 +21,6 @@ describe('INT: WalletEventsObserverFactory', async () => {
   const provider = createMockProvider();
   const [deployer] = getWallets(provider);
   const {publicKey} = createKeyPair();
-  const callback = sinon.spy();
   let relayer: RelayerUnderTest;
   let sdk: UniversalLoginSDK;
   let deployedWallet: DeployedWallet;
@@ -41,8 +40,10 @@ describe('INT: WalletEventsObserverFactory', async () => {
     };
     await factory.start();
   });
+
   describe('beta2', () => {
     it('subscribe to KeyAdded', async () => {
+      const callback = sinon.spy();
       await factory.subscribe('KeyAdded', filter, callback);
       const execution = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
@@ -51,11 +52,12 @@ describe('INT: WalletEventsObserverFactory', async () => {
     });
 
     it('subscribe to KeyRemoved', async () => {
-      await factory.subscribe('KeyRemoved', filter, callback);
+      const callbackRemove = sinon.spy();
+      await factory.subscribe('KeyRemoved', filter, callbackRemove);
       const execution = await deployedWallet.removeKey(publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
-      await waitExpect(() => expect(callback).to.have.been.calledOnce);
-      expect(callback).to.have.been.calledWith({key: publicKey});
+      await waitExpect(() => expect(callbackRemove).to.have.been.calledOnce);
+      expect(callbackRemove).to.have.been.calledWith({key: publicKey});
     });
   });
 
@@ -84,10 +86,6 @@ describe('INT: WalletEventsObserverFactory', async () => {
       await waitExpect(() => expect(callbackRemoveGnosis).to.have.been.calledOnce);
       expect(callbackRemoveGnosis).to.have.been.calledWith({key: publicKey});
     });
-  });
-
-  afterEach(() => {
-    sinon.resetHistory();
   });
 
   after(async () => {
