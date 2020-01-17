@@ -1,10 +1,10 @@
-import {ETHER_NATIVE_TOKEN, createKeyPair, TEST_GAS_PRICE, OperationType, CURRENT_NETWORK_VERSION, concatenateSignatures, sortPrivateKeysByAddress} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, createKeyPair, TEST_GAS_PRICE, OperationType, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
 import {Contract, utils, Wallet} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {GnosisSafeInterface} from '../../src/gnosis-safe@1.1.1/interfaces';
 import {encodeDataForSetup, encodeDataForExecTransaction} from '../../src/gnosis-safe@1.1.1/encode';
 import {deployGnosisSafe, deployProxyFactory} from '../../src/gnosis-safe@1.1.1/deployContracts';
-import {computeGnosisCounterfactualAddress, getPreviousOwner, calculateMessageSignature} from '../../src/gnosis-safe@1.1.1/utils';
+import {computeGnosisCounterfactualAddress, getPreviousOwner} from '../../src/gnosis-safe@1.1.1/utils';
 import {Provider} from 'ethers/providers';
 import {messageToSignedMessage} from '../../src';
 
@@ -38,7 +38,7 @@ export async function setupGnosisSafeContract(wallet: Wallet) {
 
 export async function executeAddKey(wallet: Wallet, proxyAddress: string, keyToAdd: string, privateKey: string) {
   const proxyContract = new Contract(proxyAddress, GnosisSafeInterface, wallet.provider);
-  const requiredSign = (await proxyContract.getThreshold()).add(1);
+  const requiredSign = await proxyContract.getThreshold();
   const msg = {
     to: proxyAddress,
     from: proxyAddress,
@@ -54,9 +54,9 @@ export async function executeAddKey(wallet: Wallet, proxyAddress: string, keyToA
   await wallet.sendTransaction({to: proxyAddress, data: encodeDataForExecTransaction(signedMsg), gasLimit: utils.bigNumberify(msg.gasLimit)});
 }
 
-export async function executeRemoveKey(wallet: Wallet, proxyAddress: string, keyToRemove: string, privateKeys: string[]) {
+export async function executeRemoveKey(wallet: Wallet, proxyAddress: string, keyToRemove: string, privateKey: string) {
   const proxyContract = new Contract(proxyAddress, GnosisSafeInterface, wallet.provider);
-  const requiredSign = (await proxyContract.getThreshold()).sub(1);
+  const requiredSign = await proxyContract.getThreshold();
   const owners: string[] = await proxyContract.getOwners();
   const previousOwner = getPreviousOwner(owners, keyToRemove);
   const msg = {
@@ -70,12 +70,8 @@ export async function executeRemoveKey(wallet: Wallet, proxyAddress: string, key
     operationType: OperationType.call,
     refundReceiver: wallet.address,
   };
-  const sortedPrivateKeys = sortPrivateKeysByAddress(privateKeys);
-  const {signature, ...unsignedMessage} = messageToSignedMessage(msg, sortedPrivateKeys[0], CURRENT_NETWORK_VERSION, 'beta3');
-  const signature2 = calculateMessageSignature(unsignedMessage, sortedPrivateKeys[1]);
-  const signatures = concatenateSignatures([signature, signature2]);
-  const finalMsg = {...unsignedMessage, signature: signatures};
-  await wallet.sendTransaction({to: proxyAddress, data: encodeDataForExecTransaction(finalMsg), gasLimit: utils.bigNumberify(msg.gasLimit)});
+  const signedMessage = messageToSignedMessage(msg, privateKey, CURRENT_NETWORK_VERSION, 'beta3');
+  await wallet.sendTransaction({to: proxyAddress, data: encodeDataForExecTransaction(signedMessage), gasLimit: utils.bigNumberify(msg.gasLimit)});
 }
 
 export async function setupGnosisSafeContractFixture(provider: Provider, [wallet]: Wallet[]) {

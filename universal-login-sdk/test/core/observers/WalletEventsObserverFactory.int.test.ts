@@ -19,7 +19,7 @@ chai.use(sinonChai);
 describe('INT: WalletEventsObserverFactory', async () => {
   const provider = createMockProvider();
   const [deployer] = getWallets(provider);
-  const {publicKey, privateKey} = createKeyPair();
+  const {publicKey} = createKeyPair();
   const callback = sinon.spy();
   let relayer: RelayerUnderTest;
   let sdk: UniversalLoginSDK;
@@ -76,7 +76,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
       const callbackRemoveGnosis = sinon.spy();
       filter = {...filter, contractAddress: proxy.address};
       await factory.subscribe('RemovedOwner', filter, callbackRemoveGnosis);
-      await executeRemoveKey(deployer, proxy.address, publicKey, [keyPair.privateKey, privateKey]);
+      await executeRemoveKey(deployer, proxy.address, publicKey, keyPair.privateKey);
       await waitUntil(() => !!callbackRemoveGnosis.firstCall);
       expect(callbackRemoveGnosis).to.have.been.calledWith({key: publicKey});
     });
