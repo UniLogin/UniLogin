@@ -1,7 +1,7 @@
 import {providers, Contract} from 'ethers';
 import {GnosisSafeInterface, signStringMessage, calculateGnosisStringHash, getPreviousOwner} from '@universal-login/contracts';
 import {IWalletContractServiceStrategy} from './WalletContractService';
-import {ensureNotFalsy} from '@universal-login/commons';
+import {ensureNotFalsy, RelayerRequest} from '@universal-login/commons';
 import {WalletNotFound} from '../../core/utils/errors';
 
 export class GnosisSafeService implements IWalletContractServiceStrategy {
@@ -67,5 +67,11 @@ export class GnosisSafeService implements IWalletContractServiceStrategy {
       default:
         throw TypeError(`Invalid event: ${event}`);
     }
+  }
+
+  signRelayerRequest(privateKey: string, relayerRequest: RelayerRequest) {
+    const signature = this.signMessage(privateKey, relayerRequest.contractAddress, relayerRequest.contractAddress);
+    relayerRequest.signature = signature;
+    return relayerRequest;
   }
 };

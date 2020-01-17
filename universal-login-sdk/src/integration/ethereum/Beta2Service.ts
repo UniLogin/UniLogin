@@ -1,7 +1,7 @@
 import {providers, Contract} from 'ethers';
 import {WalletContractInterface} from '@universal-login/contracts';
 import {IWalletContractServiceStrategy} from './WalletContractService';
-import {sign} from '@universal-login/commons';
+import {sign, signRelayerRequest as signRequest, RelayerRequest} from '@universal-login/commons';
 import {WalletEventType} from '../../core/models/events';
 
 export class Beta2Service implements IWalletContractServiceStrategy {
@@ -43,5 +43,9 @@ export class Beta2Service implements IWalletContractServiceStrategy {
       default:
         throw TypeError(`Invalid event: ${event}`);
     }
+  }
+
+  signRelayerRequest(privateKey: string, relayerRequest: RelayerRequest) {
+    return signRequest(relayerRequest, privateKey);
   }
 };

@@ -1,5 +1,5 @@
 import {BlockchainService} from '@universal-login/contracts';
-import {WalletVersion} from '@universal-login/commons';
+import {WalletVersion, RelayerRequest} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {GnosisSafeService} from './GnosisSafeService';
 import {WalletEventType} from '../../core/models/events';
@@ -11,6 +11,7 @@ export interface IWalletContractServiceStrategy {
   signMessage: (privateKey: string, message: Uint8Array | string, walletAddress: string) => string;
   encodeFunction: (method: string, args?: any[], walletAddress?: string) => Promise<string> | string;
   getEventNameFor: (event: string) => WalletEventType;
+  signRelayerRequest: (privateKey: string, relayerRequest: RelayerRequest) => RelayerRequest;
 }
 
 export class WalletContractService {
@@ -60,5 +61,10 @@ export class WalletContractService {
   async getEventNameFor(walletAddress: string, event: string) {
     const service = await this.getWalletService(walletAddress);
     return service.getEventNameFor(event);
+  }
+
+  async signRelayerRequest(privateKey: string, relayerRequest: RelayerRequest) {
+    const service = await this.getWalletService(relayerRequest.contractAddress);
+    return service.signRelayerRequest(privateKey, relayerRequest);
   }
 }

@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Message, Notification, PartialRequired, PublicRelayerConfig, resolveName, SdkExecutionOptions, signRelayerRequest, TokenDetailsService, TokensValueConverter} from '@universal-login/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Message, Notification, PartialRequired, PublicRelayerConfig, resolveName, SdkExecutionOptions, TokenDetailsService, TokensValueConverter} from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';

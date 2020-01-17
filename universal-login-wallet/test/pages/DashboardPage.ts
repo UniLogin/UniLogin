@@ -42,11 +42,13 @@ export default class DashboardPage {
   }
 
   async clickDevicesButton() {
+    await waitForUI(this.wrapper, () => this.wrapper.exists('#devicesButton'));
     this.wrapper.find('#devicesButton').first().simulate('click', {button: 0});
     await waitForUI(this.wrapper, () => this.wrapper.exists('div.devices'));
   }
 
   async clickManageDevicesButton() {
+    await waitForUI(this.wrapper, () => this.wrapper.exists('button.devices-message-button'));
     this.wrapper.find('button.devices-message-button').simulate('click', {button: 0});
     await waitForUI(this.wrapper, () => this.wrapper.exists('#emojis'));
   }
