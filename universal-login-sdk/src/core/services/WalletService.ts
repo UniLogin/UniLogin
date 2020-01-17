@@ -148,10 +148,9 @@ export class WalletService {
       contractAddress: connectingWallet.contractAddress,
       key: connectingWallet.publicKey,
     };
-    // eslint-disable-next-line no-async-promise-executor
-    return new Promise(async (resolve, reject) => {
+    const addKeyEvent = await this.sdk.walletContractService.getEventNameFor(connectingWallet.contractAddress, 'KeyAdded');
+    return new Promise((resolve, reject) => {
       const setWallet = this.setWallet.bind(this);
-      const addKeyEvent = await this.sdk.walletContractService.getEventNameFor(connectingWallet.contractAddress, 'KeyAdded');
       const unsubscribe = this.sdk.subscribe(addKeyEvent, filter, () => {
         setWallet(connectingWallet);
         unsubscribe();
@@ -163,7 +162,7 @@ export class WalletService {
 
   async cancelWaitForConnection(tick = 500, timeout = 1500) {
     if (this.state.kind === 'Deployed') return;
-    await waitUntil(() => !this.getConnectingWallet().unsubscribe, tick, timeout);
+    await waitUntil(() => !!this.getConnectingWallet().unsubscribe, tick, timeout);
     this.getConnectingWallet().unsubscribe!();
     this.disconnect();
   }
