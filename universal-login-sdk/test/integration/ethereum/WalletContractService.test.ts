@@ -77,7 +77,7 @@ describe('INT: WalletContractService', () => {
 
     it('encodes function that adds key', async () => {
       const {publicKey} = createKeyPair();
-      const expectedEncodedFunction = GnosisSafeInterface.functions.addOwnerWithThreshold.encode([publicKey, 2]);
+      const expectedEncodedFunction = GnosisSafeInterface.functions.addOwnerWithThreshold.encode([publicKey, 1]);
       expect(await walletService.encodeFunction(proxyWallet.address, 'addKey', [publicKey])).to.eq(expectedEncodedFunction);
     });
 

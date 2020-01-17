@@ -29,7 +29,7 @@ describe('INT: executeHelpers', async () => {
     const keyPair2 = createKeyPair();
     await executeAddKey(wallet, proxyAsGnosisSafe.address, keyPair2.publicKey, keyPair.privateKey);
     expect(await proxyAsGnosisSafe.isOwner(keyPair2.publicKey)).to.be.true;
-    await executeRemoveKey(wallet, proxyAsGnosisSafe.address, keyPair2.publicKey, [keyPair.privateKey, keyPair2.privateKey]);
+    await executeRemoveKey(wallet, proxyAsGnosisSafe.address, keyPair2.publicKey, keyPair.privateKey);
     expect(await proxyAsGnosisSafe.isOwner(keyPair2.publicKey)).to.be.false;
   });
 });
