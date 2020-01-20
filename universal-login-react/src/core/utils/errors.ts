@@ -1,4 +1,4 @@
-type ErrorType = 'InvalidNumber' | 'InvalidTransferDetails' | 'IpGeolocationError' | 'MissingParameter';
+type ErrorType = 'InvalidNumber' | 'InvalidTransferDetails' | 'IpGeolocationError' | 'MissingParameter' | 'UnexpectedWalletState';
 
 export class ReactError extends Error {
   errorType: ErrorType;
@@ -35,6 +35,13 @@ export class MissingParameter extends ValidationFailed {
   constructor(parameterName: string) {
     super(`Missing parameter: ${parameterName}`, 'MissingParameter');
     Object.setPrototypeOf(this, MissingParameter.prototype);
+  }
+}
+
+export class UnexpectedWalletState extends ValidationFailed {
+  constructor(walletState: string) {
+    super(`Unexpected wallet state: ${walletState}`, 'UnexpectedWalletState');
+    Object.setPrototypeOf(this, UnexpectedWalletState.prototype);
   }
 }
 
