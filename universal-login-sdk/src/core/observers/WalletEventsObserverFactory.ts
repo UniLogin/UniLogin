@@ -2,30 +2,25 @@ import {BlockchainService} from '@universal-login/contracts';
 import {WalletEventCallback, WalletEventFilter, WalletEventType} from '../models/events';
 import {WalletEventsObserver} from './WalletEventsObserver';
 import {BlockProperty} from '../properties/BlockProperty';
-import ObserverRunner from './ObserverRunner';
-import {ensureNotNull} from '@universal-login/commons';
+import {ensureNotNull, Nullable} from '@universal-login/commons';
 import {InvalidObserverState} from '../utils/errors';
+import {Callback} from 'reactive-properties/dist/Property';
 
-class WalletEventsObserverFactory extends ObserverRunner {
+class WalletEventsObserverFactory {
   protected observers: Record<string, WalletEventsObserver> = {};
+  private unsubscribe: Nullable<Callback> = null;
 
   constructor(private blockchainService: BlockchainService, private currentBlock: BlockProperty) {
-    super();
   }
 
   async start() {
     this.currentBlock.set(await this.blockchainService.getBlockNumber());
-    super.start();
-  }
-
-  async execute() {
-    await this.fetchEvents();
+    this.unsubscribe = this.currentBlock.subscribe(() => this.fetchEvents());
   }
 
   async fetchEvents() {
     ensureNotNull(this.currentBlock.get(), InvalidObserverState);
     await this.fetchEventsOfTypes(['KeyAdded', 'KeyRemoved', 'AddedOwner', 'RemovedOwner']);
-    this.currentBlock.set(await this.blockchainService.getBlockNumber());
   }
 
   async fetchEventsOfTypes(types: WalletEventType[]) {
@@ -39,6 +34,15 @@ class WalletEventsObserverFactory extends ObserverRunner {
     this.observers[filter.contractAddress] = this.observers[filter.contractAddress] || new WalletEventsObserver(filter.contractAddress, this.blockchainService);
     const observableRecord = {key: filter.key, callback};
     return this.observers[filter.contractAddress].subscribe(eventType, observableRecord);
+  }
+
+  stop() {
+    ensureNotNull(this.unsubscribe, InvalidObserverState);
+    this.unsubscribe();
+  }
+
+  async finalizeAndStop() {
+    this.stop();
   }
 }
 

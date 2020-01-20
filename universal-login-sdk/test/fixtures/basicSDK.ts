@@ -11,6 +11,7 @@ export default async function basicSDK(givenProvider: providers.Provider, wallet
   const [wallet, otherWallet, otherWallet2, deployer] = wallets;
   const {relayer, provider} = await RelayerUnderTest.createPreconfigured(deployer);
   await relayer.start();
+  (provider as any).pollingInterval = 10;
   const sdk = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
   await sdk.fetchRelayerConfig();
   const ensName = 'alex.mylogin.eth';

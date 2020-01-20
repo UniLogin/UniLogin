@@ -2,14 +2,9 @@ import {waitUntil} from '@universal-login/commons';
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Wallet} from 'ethers';
-import {AddressZero} from 'ethers/constants';
-import {bigNumberify} from 'ethers/utils';
 import sinon from 'sinon';
 import {BlockProperty} from '../../../src/core/properties/BlockProperty';
-
-const mineBlock = async (wallet: Wallet) => {
-  return wallet.sendTransaction({to: AddressZero, value: bigNumberify('1')});
-};
+import {mineBlock} from '../../helpers/mineBlock';
 
 describe('INT: BlockProperty', () => {
   let provider;

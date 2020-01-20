@@ -31,7 +31,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
     ({relayer, sdk} = await setupSdk(deployer));
     factory = new WalletEventsObserverFactory(
       new BlockchainService(sdk.provider),
-      new BlockProperty(provider),
+      new BlockProperty(sdk.provider),
     );
     deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);
     filter = {
@@ -45,8 +45,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
     it('subscribe to KeyAdded', async () => {
       const callback = sinon.spy();
       await factory.subscribe('KeyAdded', filter, callback);
-      const execution = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
-      await execution.waitToBeSuccess();
+      await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
       await waitExpect(() => expect(callback).to.have.been.calledOnce);
       expect(callback).to.have.been.calledWith({key: publicKey});
     });
@@ -91,6 +90,6 @@ describe('INT: WalletEventsObserverFactory', async () => {
   after(async () => {
     await relayer.clearDatabase();
     await relayer.stop();
-    await factory.finalizeAndStop();
+    factory.stop();
   });
 });
