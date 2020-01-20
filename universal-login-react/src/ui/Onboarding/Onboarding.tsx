@@ -8,6 +8,7 @@ import {OnboardingSteps} from './OnboardingSteps';
 import {Route, MemoryRouter} from 'react-router-dom';
 import {Switch} from 'react-router';
 import {UnexpectedWalletState} from '../../core/utils/errors';
+import {LocationDescriptorObject} from 'history';
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -27,7 +28,7 @@ export const Onboarding = (props: OnboardingProps) => {
     <div className="universal-login">
       <div className={getStyleForTopLevelComponent(props.className)}>
 
-        <MemoryRouter initialEntries={[getInitialOnboardingUrl(props.walletService.state)]}>
+        <MemoryRouter initialEntries={[getInitialOnboardingLocation(props.walletService.state)]}>
           <Switch>
             <Route
               exact
@@ -62,10 +63,10 @@ export const Onboarding = (props: OnboardingProps) => {
             <Route
               path="/connectFlow"
               render={({history, location}) =>
-                <ModalWrapper hideModal={() => history.goBack()}>
+                <ModalWrapper hideModal={() => history.push('/selector')}>
                   <ConnectionFlow
                     basePath="/connectFlow"
-                    onCancel={() => history.goBack()}
+                    onCancel={() => history.push('/selector')}
                     name={location.state.ensName}
                     sdk={props.sdk}
                     walletService={props.walletService}
@@ -79,12 +80,16 @@ export const Onboarding = (props: OnboardingProps) => {
     </div>
   );
 };
-function getInitialOnboardingUrl(state: WalletState): string {
+
+function getInitialOnboardingLocation(state: WalletState): string | LocationDescriptorObject {
   switch (state.kind) {
     case 'None':
       return '/selector';
     case 'Connecting':
-      return '/connectFlow';
+      return {
+        pathname: '/connectFlow/emoji',
+        state: {name: state.wallet.name},
+      };
     case 'Future':
     case 'Deploying':
       return '/create';
