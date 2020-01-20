@@ -1,7 +1,7 @@
 import {providers, Contract, utils} from 'ethers';
 import {calculateMessageHash, SignedMessage, RelayerRequest, hashRelayerRequest, recoverFromRelayerRequest} from '@universal-login/commons';
 import {WalletContractInterface} from '@universal-login/contracts';
-import {getKeyFromHashAndSignature, isDataForFunctionCall} from '../../core/utils/encodeData';
+import {getKeyFromHashAndSignature, isAddKeyCall, isAddKeysCall} from '../../core/utils/encodeData';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {beta2} from '@universal-login/contracts';
 import {messageToTransaction} from '../../core/utils/messages/serialisation';
@@ -55,6 +55,10 @@ export class Beta2Service implements IWalletContractService {
   }
 
   isAddKeyCall(data: string) {
-    return isDataForFunctionCall(data, beta2.WalletContract, 'addKey');
+    return isAddKeyCall(data);
+  }
+
+  isAddKeysCall(data: string) {
+    return isAddKeysCall(data);
   }
 }

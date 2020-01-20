@@ -30,7 +30,7 @@ export class MinedTransactionHandler {
         await this.handleAddKey(sentTransaction, message);
       } else if (isRemoveKeyCall(message.data as string)) {
         await this.handleRemoveKey(message);
-      } else if (isAddKeysCall(message.data as string)) {
+      } else if (this.walletContractService.isAddKeysCall(to, message.data as string)) {
         await this.handleAddKeys(sentTransaction, message);
       }
     }

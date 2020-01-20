@@ -13,4 +13,5 @@ export default interface IWalletContractService {
   recoverFromRelayerRequest: (relayerRequest: RelayerRequest) => Promise<string> | string;
   messageToTransaction: (message: SignedMessage) => Promise<TransactionRequest> | TransactionRequest;
   isAddKeyCall: (data: string) => boolean;
+  isAddKeysCall: (data: string) => boolean;
 }
