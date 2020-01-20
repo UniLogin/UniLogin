@@ -71,12 +71,13 @@ export class ULWeb3Provider implements Provider {
     });
   }
 
-  init(): Promise<void> {
-    return this.sdk.start();
+  async init() {
+    await this.sdk.start();
+    this.walletService.loadFromStorage();
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    if (this.walletService.state.kind === 'None') {
+    if (this.walletService.state.kind !== 'Deployed') {
       await this.create();
     }
 
@@ -119,10 +120,8 @@ export class ULWeb3Provider implements Provider {
 
   getAccounts() {
     if (this.walletService.walletDeployed.get()) {
-      console.log('getAccounts:', this.walletService.getDeployedWallet().contractAddress)
       return [this.walletService.getDeployedWallet().contractAddress];
     } else {
-      console.log('getAccounts: []')
       return [];
     }
   }
@@ -160,7 +159,6 @@ export class ULWeb3Provider implements Provider {
   }
 
   async create() {
-    this.walletService.loadFromStorage();
     this.uiController.requireWallet();
 
     await waitForTrue(this.isLoggedIn);
