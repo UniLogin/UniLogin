@@ -92,9 +92,10 @@ describe('INT: WalletService', async () => {
     it('waitForConnection doesn`t crash for Deployed wallet', async () => {
       expect(walletService.state).to.deep.eq({kind: 'None'});
       await walletService.initializeConnection(ensName);
+      const waitForConnectionPromise = walletService.waitForConnection();
       const execution = await existingDeployedWallet.addKey(walletService.getConnectingWallet().publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
-      await walletService.waitForConnection();
+      await waitForConnectionPromise;
       expect(walletService.state).to.deep.include({kind: 'Deployed'});
       await walletService.waitForConnection();
       expect(walletService.state).to.deep.include({kind: 'Deployed'});
@@ -105,8 +106,10 @@ describe('INT: WalletService', async () => {
     it('cancelWaitForConnection doesn`t disconnect Deployed wallet', async () => {
       expect(walletService.state).to.deep.eq({kind: 'None'});
       await walletService.initializeConnection(ensName);
+      const waitForConnectionPromise = walletService.waitForConnection();
       const execution = await existingDeployedWallet.addKey(walletService.getConnectingWallet().publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
+      await waitForConnectionPromise;
       await walletService.waitForConnection();
       await walletService.cancelWaitForConnection();
       expect(walletService.state).to.deep.include({kind: 'Deployed'});
