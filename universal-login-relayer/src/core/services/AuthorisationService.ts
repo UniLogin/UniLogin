@@ -2,10 +2,10 @@ import {RelayerRequest} from '@universal-login/commons';
 import AuthorisationStore from '../../integration/sql/services/AuthorisationStore';
 import RelayerRequestSignatureValidator from '../../integration/ethereum/validators/RelayerRequestSignatureValidator';
 import {AddAuthorisationRequest} from '../models/AddAuthorisationRequest';
-import IWalletContractService from '../models/IWalletContractService';
+import {WalletContractService} from '../../integration/ethereum/WalletContractService';
 
 class AuthorisationService {
-  constructor(private authorisationStore: AuthorisationStore, private relayerRequestSignatureValidator: RelayerRequestSignatureValidator, private walletContractService: IWalletContractService) {}
+  constructor(private authorisationStore: AuthorisationStore, private relayerRequestSignatureValidator: RelayerRequestSignatureValidator, private walletContractService: WalletContractService) {}
 
   addRequest(requestAuthorisation: AddAuthorisationRequest) {
     return this.authorisationStore.addRequest(requestAuthorisation);
