@@ -45,7 +45,7 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const walletContractService = new WalletContractService(blockchainService, beta2Service, gnosisSafeService);
   const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
   const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
-  const minedTransactionHandler = new MinedTransactionHandler(hooks, authorisationStore, devicesService);
+  const minedTransactionHandler = new MinedTransactionHandler(hooks, authorisationStore, devicesService, walletContractService);
   const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList(), walletContractService);
   const statusService = new MessageStatusService(messageRepository, walletContractService);
   const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, walletContractService);

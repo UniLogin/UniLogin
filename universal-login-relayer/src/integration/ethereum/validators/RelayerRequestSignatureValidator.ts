@@ -1,10 +1,10 @@
 import {RelayerRequest, ensure, ensureNotFalsy} from '@universal-login/commons';
 import {ERC1271} from '@universal-login/contracts';
 import {UnauthorisedAddress, SignatureNotFound} from '../../../core/utils/errors';
-import IWalletContractService from '../../../core/models/IWalletContractService';
+import {WalletContractService} from '../WalletContractService';
 
 class RelayerRequestSignatureValidator {
-  constructor(private walletContractService: IWalletContractService) {}
+  constructor(private walletContractService: WalletContractService) {}
 
   async ensureValidRelayerRequestSignature(relayerRequest: RelayerRequest) {
     ensureNotFalsy(relayerRequest.signature, SignatureNotFound);

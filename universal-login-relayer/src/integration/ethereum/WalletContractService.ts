@@ -4,7 +4,7 @@ import {SignedMessage, RelayerRequest} from '@universal-login/commons';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GnosisSafeService} from './GnosisSafeService';
 
-export class WalletContractService implements IWalletContractService {
+export class WalletContractService {
   constructor(private blockchainSerivce: BlockchainService, private beta2Service: Beta2Service, private gnosisSafeService: GnosisSafeService) {
 
   }
@@ -65,5 +65,35 @@ export class WalletContractService implements IWalletContractService {
   async messageToTransaction(message: SignedMessage) {
     const service = await this.getWalletService(message.from);
     return service.messageToTransaction(message);
+  }
+
+  async isAddKeyCall(walletAddress: string, data: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.isAddKeyCall(data);
+  }
+
+  async isAddKeysCall(walletAddress: string, data: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.isAddKeysCall(data);
+  }
+
+  async isRemoveKeyCall(walletAddress: string, data: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.isRemoveKeyCall(data);
+  }
+
+  async decodeKeyFromData(walletAddress: string, data: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.decodeKeyFromData(data);
+  }
+
+  async decodeKeysFromData(walletAddress: string, data: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.decodeKeysFromData(data);
+  }
+
+  async decodeExecute(walletAddress: string, data: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.decodeExecute(data);
   }
 };

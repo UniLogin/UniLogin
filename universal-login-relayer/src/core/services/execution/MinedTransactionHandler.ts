@@ -1,16 +1,16 @@
 import {EventEmitter} from 'fbemitter';
 import {providers} from 'ethers';
-import {decodeDataForExecuteSigned} from '../../utils/messages/serialisation';
-import {isAddKeyCall, decodeParametersFromData, isRemoveKeyCall, isAddKeysCall} from '../../utils/encodeData';
-import {DevicesService} from '../DevicesService';
 import {EMPTY_DEVICE_INFO, DecodedMessage} from '@universal-login/commons';
+import {DevicesService} from '../DevicesService';
 import AuthorisationStore from '../../../integration/sql/services/AuthorisationStore';
+import {WalletContractService} from '../../../integration/ethereum/WalletContractService';
 
 export class MinedTransactionHandler {
   constructor(
     private hooks: EventEmitter,
     private authorisationStore: AuthorisationStore,
     private devicesService: DevicesService,
+    private walletContractService: WalletContractService,
   ) {}
 
   private async updateDevicesAndAuthorisations(contractAddress: string, key: string) {
@@ -22,31 +22,31 @@ export class MinedTransactionHandler {
 
   async handle(sentTransaction: providers.TransactionResponse) {
     const {data, to} = sentTransaction;
-    const message = decodeDataForExecuteSigned(data);
+    const message = await this.walletContractService.decodeExecute(to as string, data);
     if (message.to === to) {
-      if (isAddKeyCall(message.data as string)) {
+      if (await this.walletContractService.isAddKeyCall(to as string, message.data as string)) {
         await this.handleAddKey(sentTransaction, message);
-      } else if (isRemoveKeyCall(message.data as string)) {
+      } else if (await this.walletContractService.isRemoveKeyCall(to as string, message.data as string)) {
         await this.handleRemoveKey(message);
-      } else if (isAddKeysCall(message.data as string)) {
+      } else if (await this.walletContractService.isAddKeysCall(to as string, message.data as string)) {
         await this.handleAddKeys(sentTransaction, message);
       }
     }
   }
 
   private async handleAddKey(sentTransaction: providers.TransactionResponse, message: DecodedMessage) {
-    const [key] = decodeParametersFromData(message.data as string, ['address']);
+    const [key] = await this.walletContractService.decodeKeyFromData(message.to, message.data as string);
     await this.updateDevicesAndAuthorisations(message.to, key);
     this.hooks.emit('added', {transaction: sentTransaction, contractAddress: message.to});
   }
 
   private async handleRemoveKey(message: DecodedMessage) {
-    const [key] = decodeParametersFromData(message.data as string, ['address']);
+    const [key] = await this.walletContractService.decodeKeyFromData(message.to, message.data as string);
     await this.devicesService.remove(message.to, key);
   }
 
   private async handleAddKeys(sentTransaction: providers.TransactionResponse, message: DecodedMessage) {
-    const [keys] = decodeParametersFromData(message.data as string, ['address[]']);
+    const [keys] = await this.walletContractService.decodeKeysFromData(message.to, message.data as string);
     for (const key of keys) {
       await this.updateDevicesAndAuthorisations(message.to, key);
     }

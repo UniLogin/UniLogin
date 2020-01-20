@@ -1,4 +1,4 @@
-import {SignedMessage, RelayerRequest} from '@universal-login/commons';
+import {SignedMessage, RelayerRequest, DecodedMessage} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {TransactionRequest} from 'ethers/providers';
 
@@ -12,4 +12,10 @@ export default interface IWalletContractService {
   getRelayerRequestMessage: (relayerRequest: RelayerRequest) => Promise<string> | string;
   recoverFromRelayerRequest: (relayerRequest: RelayerRequest) => Promise<string> | string;
   messageToTransaction: (message: SignedMessage) => Promise<TransactionRequest> | TransactionRequest;
+  isAddKeyCall: (data: string) => boolean;
+  isAddKeysCall: (data: string) => boolean;
+  isRemoveKeyCall: (data: string) => boolean;
+  decodeKeyFromData: (data: string) => string[];
+  decodeKeysFromData: (data: string) => string[];
+  decodeExecute: (data: string) => DecodedMessage;
 }
