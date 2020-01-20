@@ -1,5 +1,5 @@
 import React from 'react';
-import UniversalLoginSDK, {WalletService, WalletState} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import {ApplicationWallet, WalletSuggestionAction} from '@universal-login/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
@@ -7,8 +7,7 @@ import {ConnectionFlow, ModalWrapper} from '../..';
 import {OnboardingSteps} from './OnboardingSteps';
 import {Route, MemoryRouter} from 'react-router-dom';
 import {Switch} from 'react-router';
-import {UnexpectedWalletState} from '../../core/utils/errors';
-import {LocationDescriptorObject} from 'history';
+import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocation';
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -80,20 +79,3 @@ export const Onboarding = (props: OnboardingProps) => {
     </div>
   );
 };
-
-function getInitialOnboardingLocation(state: WalletState): string | LocationDescriptorObject {
-  switch (state.kind) {
-    case 'None':
-      return '/selector';
-    case 'Connecting':
-      return {
-        pathname: '/connectFlow/emoji',
-        state: {name: state.wallet.name},
-      };
-    case 'Future':
-    case 'Deploying':
-      return '/create';
-    case 'Deployed':
-      throw new UnexpectedWalletState('Deployed');
-  }
-}
