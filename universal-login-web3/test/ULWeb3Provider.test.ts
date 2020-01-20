@@ -130,7 +130,8 @@ describe('ULWeb3Provider', () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
-      await expect(ulProvider.initOnboarding()).to.be.rejectedWith('Wallet cannot be overridden');
+      await expect(ulProvider.initOnboarding()).to.be.rejectedWith('Unexpected wallet state: Deployed');
+      expect(services.uiController.activeModal.get()).to.be.deep.eq({kind: 'IDLE'});
     });
   });
 });
