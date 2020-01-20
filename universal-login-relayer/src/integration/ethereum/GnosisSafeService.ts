@@ -1,5 +1,5 @@
 import {Contract, utils, providers} from 'ethers';
-import {SignedMessage, RelayerRequest} from '@universal-login/commons';
+import {SignedMessage, RelayerRequest, DecodedMessage} from '@universal-login/commons';
 import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface, calculateGnosisStringHash, encodeDataForExecTransaction} from '@universal-login/contracts';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GAS_LIMIT_MARGIN} from '../../core/utils/messages/serialisation';
@@ -79,5 +79,9 @@ export class GnosisSafeService implements IWalletContractService {
 
   decodeKeysFromData(data: string) {
     return ['0x0000'];
+  }
+
+  decodeExecute(data: string) {
+    return {} as DecodedMessage;
   }
 }

@@ -91,4 +91,9 @@ export class WalletContractService {
     const service = await this.getWalletService(walletAddress);
     return service.decodeKeysFromData(data);
   }
+
+  async decodeExecute(walletAddress: string, data: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.decodeExecute(data);
+  }
 };

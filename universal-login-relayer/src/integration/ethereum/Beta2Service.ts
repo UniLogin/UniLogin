@@ -4,7 +4,7 @@ import {WalletContractInterface} from '@universal-login/contracts';
 import {getKeyFromHashAndSignature, isAddKeyCall, isAddKeysCall, isRemoveKeyCall, decodeParametersFromData} from '../../core/utils/encodeData';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {beta2} from '@universal-login/contracts';
-import {messageToTransaction} from '../../core/utils/messages/serialisation';
+import {messageToTransaction, decodeDataForExecuteSigned} from '../../core/utils/messages/serialisation';
 
 export class Beta2Service implements IWalletContractService {
   constructor(private provider: providers.Provider) {
@@ -72,5 +72,9 @@ export class Beta2Service implements IWalletContractService {
 
   decodeKeysFromData(data: string) {
     return decodeParametersFromData(data, ['address[]']);
+  }
+
+  decodeExecute(data: string) {
+    return decodeDataForExecuteSigned(data);
   }
 }

@@ -1,8 +1,7 @@
 import {EventEmitter} from 'fbemitter';
 import {providers} from 'ethers';
-import {decodeDataForExecuteSigned} from '../../utils/messages/serialisation';
-import {DevicesService} from '../DevicesService';
 import {EMPTY_DEVICE_INFO, DecodedMessage} from '@universal-login/commons';
+import {DevicesService} from '../DevicesService';
 import AuthorisationStore from '../../../integration/sql/services/AuthorisationStore';
 import {WalletContractService} from '../../../integration/ethereum/WalletContractService';
 
@@ -23,13 +22,13 @@ export class MinedTransactionHandler {
 
   async handle(sentTransaction: providers.TransactionResponse) {
     const {data, to} = sentTransaction;
-    const message = decodeDataForExecuteSigned(data);
+    const message = await this.walletContractService.decodeExecute(to as string, data);
     if (message.to === to) {
-      if (await this.walletContractService.isAddKeyCall(to, message.data as string)) {
+      if (await this.walletContractService.isAddKeyCall(to as string, message.data as string)) {
         await this.handleAddKey(sentTransaction, message);
-      } else if (await this.walletContractService.isRemoveKeyCall(to, message.data as string)) {
+      } else if (await this.walletContractService.isRemoveKeyCall(to as string, message.data as string)) {
         await this.handleRemoveKey(message);
-      } else if (await this.walletContractService.isAddKeysCall(to, message.data as string)) {
+      } else if (await this.walletContractService.isAddKeysCall(to as string, message.data as string)) {
         await this.handleAddKeys(sentTransaction, message);
       }
     }
