@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader, deployContract} from 'ethereum-waffle';
 import {utils, providers, Wallet, Contract} from 'ethers';
-import {beta2} from '@universal-login/contracts';
+import {beta2, gnosisSafe} from '@universal-login/contracts';
 import {mockContracts} from '@universal-login/contracts/testutils';
 import {signRelayerRequest, Message, GAS_BASE, PartialRequired, TEST_EXECUTION_OPTIONS, TEST_SDK_CONFIG, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {RelayerUnderTest} from '@universal-login/relayer';
@@ -62,11 +62,9 @@ describe('INT: SDK', async () => {
   });
 
   describe('Execute signed message', async () => {
-    it.only('Should execute signed message', async () => {
+    it('Should execute signed message', async () => {
       const expectedBalance = (await otherWallet.getBalance()).add(utils.parseEther('0.5'));
-      console.log(message);
       const {waitToBeSuccess} = await sdk.execute({...message, to: otherWallet.address}, privateKey);
-      console.log('????')
       const {transactionHash} = await waitToBeSuccess();
       expect(transactionHash).to.match(/^[0x|0-9|a-f|A-F]{66}/);
       expect(await otherWallet.getBalance()).to.eq(expectedBalance);
@@ -88,7 +86,7 @@ describe('INT: SDK', async () => {
     });
 
     it('when not enough gas', async () => {
-      const baseGas = 58720;
+      const baseGas = 88720;
       const notEnoughGasLimit = 100;
       message = {...message, gasLimit: baseGas + notEnoughGasLimit};
       await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith(`Insufficient Gas. gasLimit should be greater than ${GAS_BASE}`);
@@ -125,7 +123,7 @@ describe('INT: SDK', async () => {
     it('should return correct bytecode', async () => {
       const address = await sdk.resolveName('alex.mylogin.eth');
       expect(address).to.not.be.null;
-      expect(beta2.WalletProxy.evm.deployedBytecode.object.slice(0)).to.eq((await provider.getCode(address!)).slice(2));
+      expect(gnosisSafe.Proxy.evm.deployedBytecode.object.slice(0)).to.eq((await provider.getCode(address!)).slice(2));
     });
 
     it('should return null if no resolver address', async () => {
@@ -154,7 +152,7 @@ describe('INT: SDK', async () => {
 
     describe('Authorisation', async () => {
       it('no pending authorisations', async () => {
-        const authorisationRequest = signRelayerRequest({contractAddress}, privateKey);
+        const authorisationRequest = await sdk.walletContractService.signRelayerRequest(privateKey, {contractAddress});
         expect(await sdk.authorisationsObserver.fetchPendingAuthorisations(authorisationRequest)).to.deep.eq([]);
       });
 
@@ -162,7 +160,7 @@ describe('INT: SDK', async () => {
         const {privateKey: devicePrivateKey} = await sdk.connect(contractAddress);
         const wallet = new Wallet(devicePrivateKey);
 
-        const authorisationRequest = signRelayerRequest({contractAddress}, privateKey);
+        const authorisationRequest = await sdk.walletContractService.signRelayerRequest(privateKey, {contractAddress});
 
         const response = await sdk.authorisationsObserver.fetchPendingAuthorisations(authorisationRequest);
         expect(response[response.length - 1]).to.deep.include({key: wallet.address});
