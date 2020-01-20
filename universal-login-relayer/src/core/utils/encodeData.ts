@@ -25,3 +25,5 @@ export const decodeParametersFromData = (data: string, functionAbi: string[]) =>
 
 export const getKeyFromHashAndSignature = (messageHash: string, signature: string) =>
   utils.verifyMessage(utils.arrayify(messageHash), signature);
+
+export const getRemovedKey = (parameters: string[]) => parameters[1];

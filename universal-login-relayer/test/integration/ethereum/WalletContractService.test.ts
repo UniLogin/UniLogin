@@ -1,9 +1,9 @@
 import {expect} from 'chai';
-import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, sign, signString} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, sign, signString, createKeyPair, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
-import {messageToSignedMessage, calculateMessageHash, calculateGnosisStringHash, signStringMessage} from '@universal-login/contracts';
+import {messageToSignedMessage, calculateMessageHash, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface} from '@universal-login/contracts';
 import {ERC1271} from '@universal-login/contracts';
-import {setupGnosisSafeContract} from '@universal-login/contracts/testutils';
+import {setupGnosisSafeContract, executeAddKeyGnosis, executeRemoveKey} from '@universal-login/contracts/testutils';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Contract, Wallet, utils} from 'ethers';
 import createWalletContract from '../../testhelpers/createWalletContract';
@@ -123,6 +123,54 @@ describe('INT: WalletContractService', () => {
       const msgHash = calculateGnosisStringHash(message, proxyContract.address);
       const signature = signStringMessage(msgHash, Wallet.createRandom().privateKey);
       await expect(walletContractService.isValidSignature(utils.hexlify(utils.toUtf8Bytes(message)), proxyContract.address, signature)).to.be.rejectedWith('Invalid owner provided');
+    });
+
+    it('decodes execute', async () => {
+      const newKeyPair = createKeyPair();
+      const msg = {
+        to: proxyContract.address,
+        from: proxyContract.address,
+        data: GnosisSafeInterface.functions.addOwnerWithThreshold.encode([newKeyPair.publicKey, 1]),
+        nonce: await proxyContract.nonce(),
+        gasToken: ETHER_NATIVE_TOKEN.address,
+        gasPrice: utils.bigNumberify(TEST_GAS_PRICE),
+        gasLimit: '300000',
+        operationType: OperationType.call,
+        refundReceiver: wallet.address,
+      };
+      const {nonce, from, ...restMsg} = messageToSignedMessage(msg, keyPair.privateKey, CURRENT_NETWORK_VERSION, 'beta3');
+      const transaction = await executeAddKeyGnosis(wallet, proxyContract.address, newKeyPair.publicKey, keyPair.privateKey);
+      expect(await walletContractService.decodeExecute(proxyContract.address, transaction.data)).to.deep.eq({...restMsg, operationType: utils.bigNumberify(msg.operationType)});
+    });
+
+    it('returns true if add key call', async () => {
+      const newKeyPair = createKeyPair();
+      const transaction = await executeAddKeyGnosis(wallet, proxyContract.address, newKeyPair.publicKey, keyPair.privateKey);
+      const decodedMessage = await walletContractService.decodeExecute(proxyContract.address, transaction.data);
+      expect(await walletContractService.isAddKeyCall(proxyContract.address, decodedMessage.data as string)).to.true;
+    });
+
+    it('returns true if remove key call', async () => {
+      const newKeyPair = createKeyPair();
+      await executeAddKeyGnosis(wallet, proxyContract.address, newKeyPair.publicKey, keyPair.privateKey);
+      const transaction = await executeRemoveKey(wallet, proxyContract.address, newKeyPair.publicKey, keyPair.privateKey);
+      const decodedMessage = await walletContractService.decodeExecute(proxyContract.address, transaction.data);
+      expect(await walletContractService.isRemoveKeyCall(proxyContract.address, decodedMessage.data as string)).to.true;
+    });
+
+    it('decodes key from add key data', async () => {
+      const newKeyPair = createKeyPair();
+      const transaction = await executeAddKeyGnosis(wallet, proxyContract.address, newKeyPair.publicKey, keyPair.privateKey);
+      const decodedMessage = await walletContractService.decodeExecute(proxyContract.address, transaction.data);
+      expect((await walletContractService.decodeKeyFromData(proxyContract.address, decodedMessage.data as string))[0]).to.eq(newKeyPair.publicKey);
+    });
+
+    it('decodes key from remove key data', async () => {
+      const newKeyPair = createKeyPair();
+      await executeAddKeyGnosis(wallet, proxyContract.address, newKeyPair.publicKey, keyPair.privateKey);
+      const transaction = await executeRemoveKey(wallet, proxyContract.address, newKeyPair.publicKey, keyPair.privateKey);
+      const decodedMessage = await walletContractService.decodeExecute(proxyContract.address, transaction.data);
+      expect((await walletContractService.decodeKeyFromData(proxyContract.address, decodedMessage.data as string))[0]).to.eq(newKeyPair.publicKey);
     });
   });
 });

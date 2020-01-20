@@ -1,8 +1,10 @@
 import {Contract, utils, providers} from 'ethers';
-import {SignedMessage, RelayerRequest, DecodedMessage} from '@universal-login/commons';
-import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface, calculateGnosisStringHash, encodeDataForExecTransaction} from '@universal-login/contracts';
+import {SignedMessage, RelayerRequest} from '@universal-login/commons';
+import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface, calculateGnosisStringHash, encodeDataForExecTransaction, gnosisSafe} from '@universal-login/contracts';
 import IWalletContractService from '../../core/models/IWalletContractService';
-import {GAS_LIMIT_MARGIN} from '../../core/utils/messages/serialisation';
+import {GAS_LIMIT_MARGIN, decodeDataForExecTransaction} from '../../core/utils/messages/serialisation';
+import {isDataForFunctionCall, decodeParametersFromData, getRemovedKey} from '../../core/utils/encodeData';
+import {AddressZero} from 'ethers/constants';
 
 export class GnosisSafeService implements IWalletContractService {
   constructor(private provider: providers.Provider) {
@@ -62,7 +64,7 @@ export class GnosisSafeService implements IWalletContractService {
   }
 
   isAddKeyCall(data: string) {
-    return false;
+    return isDataForFunctionCall(data, gnosisSafe.GnosisSafe, 'addOwnerWithThreshold');
   }
 
   isAddKeysCall(data: string) {
@@ -70,18 +72,22 @@ export class GnosisSafeService implements IWalletContractService {
   }
 
   isRemoveKeyCall(data: string) {
-    return false;
+    return isDataForFunctionCall(data, gnosisSafe.GnosisSafe, 'removeOwner');
   }
 
   decodeKeyFromData(data: string) {
-    return ['0x0000'];
+    if (this.isRemoveKeyCall(data)) {
+      const parameters = decodeParametersFromData(data, ['address', 'address', 'uint256']);
+      return [getRemovedKey(parameters)];
+    }
+    return decodeParametersFromData(data, ['address', 'uint256']);
   }
 
   decodeKeysFromData(data: string) {
-    return ['0x0000'];
+    return [AddressZero];
   }
 
   decodeExecute(data: string) {
-    return {} as DecodedMessage;
+    return decodeDataForExecTransaction(data);
   }
 }
