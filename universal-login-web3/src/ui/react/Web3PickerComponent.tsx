@@ -9,7 +9,7 @@ interface Web3PickerComponentProps {
   isVisibleProp: Property<boolean>;
   hideModal: () => void;
   factories: Web3ProviderFactory[];
-  setProvider: (providerName: string) => void;
+  setProvider: (providerName: string) => Promise<void>;
 }
 
 export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setProvider}: Web3PickerComponentProps) => {
