@@ -24,18 +24,18 @@ describe('INT: AuthorisationsObserver', async () => {
   let wallet: Wallet;
   let authorisationRequest: RelayerRequest;
 
-  const createauthorisationRequest = (walletContractAddress: string, privateKey: string) => {
+  const createauthorisationRequest = async (walletContractAddress: string, privateKey: string, sdk: UniversalLoginSDK) => {
     const authorisationRequest: RelayerRequest = {
-      contractAddress,
+      contractAddress: walletContractAddress,
       signature: '',
     };
-    signRelayerRequest(authorisationRequest, privateKey);
+    await sdk.walletContractService.signRelayerRequest(privateKey, authorisationRequest);
     return authorisationRequest;
   };
 
   beforeEach(async () => {
     ({sdk, relayer, contractAddress, privateKey, wallet} = await loadFixture(basicSDK));
-    authorisationRequest = createauthorisationRequest(contractAddress, privateKey);
+    authorisationRequest = await createauthorisationRequest(contractAddress, privateKey, sdk);
     ({authorisationsObserver} = sdk);
   });
 
