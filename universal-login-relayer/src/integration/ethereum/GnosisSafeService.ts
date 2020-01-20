@@ -68,4 +68,8 @@ export class GnosisSafeService implements IWalletContractService {
   isAddKeysCall(data: string) {
     return false;
   }
+
+  isRemoveKeyCall(data: string) {
+    return false;
+  }
 }

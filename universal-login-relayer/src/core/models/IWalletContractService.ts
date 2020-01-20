@@ -14,4 +14,5 @@ export default interface IWalletContractService {
   messageToTransaction: (message: SignedMessage) => Promise<TransactionRequest> | TransactionRequest;
   isAddKeyCall: (data: string) => boolean;
   isAddKeysCall: (data: string) => boolean;
+  isRemoveKeyCall: (data: string) => boolean;
 }

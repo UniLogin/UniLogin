@@ -74,7 +74,11 @@ export class WalletContractService {
 
   async isAddKeysCall(walletAddress: string, data: string) {
     const service = await this.getWalletService(walletAddress);
-    console.log('is add keys')
     return service.isAddKeysCall(data);
+  }
+
+  async isRemoveKeyCall(walletAddress: string, data: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.isRemoveKeyCall(data);
   }
 };
