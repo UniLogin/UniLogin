@@ -81,7 +81,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   it('Counterfactual deployment fail if ENS name is taken', async () => {
     await deployGnosisSafeProxyWithENS(deployer, factoryContract.address, walletContract.address, ensName, ensAddress, ensRegistrar.address, TEST_GAS_PRICE);
     const newKeyPair = createKeyPair();
-    contractAddress = computeCounterfactualAddress(factoryContract.address, newKeyPair.publicKey, initCode);
+    // contractAddress = computeCounterfactualAddress(factoryContract.address, newKeyPair.publicKey, initCode);
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
     const initData = await getInitData(newKeyPair, ensName, ensAddress, provider, TEST_GAS_PRICE);
     signature = await calculateInitializeSignature(initData, newKeyPair.privateKey);
@@ -103,7 +103,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
 
   it('Counterfactual deployment with token payment', async () => {
     const setupData = await getSetupData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE, deployer.address, relayer.publicConfig.ensRegistrar, mockToken.address);
-    contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, 0, setupData, walletContract.address);
+    contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, walletContract.address);
     signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
