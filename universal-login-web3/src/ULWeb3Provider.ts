@@ -63,14 +63,16 @@ export class ULWeb3Provider implements Provider {
 
     this.isLoggedIn = this.walletService.isAuthorized;
 
-    this.sdk.start();
-
     uiInitializer({
       sdk: this.sdk,
       domains: ensDomains,
       walletService: this.walletService,
       uiController: this.uiController,
     });
+  }
+
+  init(): Promise<void> {
+    return this.sdk.start();
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
@@ -117,8 +119,10 @@ export class ULWeb3Provider implements Provider {
 
   getAccounts() {
     if (this.walletService.walletDeployed.get()) {
+      console.log('getAccounts:', this.walletService.getDeployedWallet().contractAddress)
       return [this.walletService.getDeployedWallet().contractAddress];
     } else {
+      console.log('getAccounts: []')
       return [];
     }
   }
