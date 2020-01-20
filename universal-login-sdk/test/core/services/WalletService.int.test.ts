@@ -93,6 +93,7 @@ describe('INT: WalletService', async () => {
     it('waitForConnection doesn`t crash for Deployed wallet', async () => {
       expect(walletService.state).to.deep.eq({kind: 'None'});
       await walletService.initializeConnection(ensName);
+      walletService.waitForConnection();
       const execution = await existingDeployedWallet.addKey(walletService.getConnectingWallet().publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
       mineBlock(wallet);
@@ -107,6 +108,7 @@ describe('INT: WalletService', async () => {
     it('cancelWaitForConnection doesn`t disconnect Deployed wallet', async () => {
       expect(walletService.state).to.deep.eq({kind: 'None'});
       await walletService.initializeConnection(ensName);
+      walletService.waitForConnection();
       const execution = await existingDeployedWallet.addKey(walletService.getConnectingWallet().publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
       mineBlock(wallet);
