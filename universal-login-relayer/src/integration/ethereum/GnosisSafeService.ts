@@ -72,4 +72,12 @@ export class GnosisSafeService implements IWalletContractService {
   isRemoveKeyCall(data: string) {
     return false;
   }
+
+  decodeKeyFromData(data: string) {
+    return ['0x0000'];
+  }
+
+  decodeKeysFromData(data: string) {
+    return ['0x0000'];
+  }
 }

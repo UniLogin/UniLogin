@@ -15,4 +15,6 @@ export default interface IWalletContractService {
   isAddKeyCall: (data: string) => boolean;
   isAddKeysCall: (data: string) => boolean;
   isRemoveKeyCall: (data: string) => boolean;
+  decodeKeyFromData: (data: string) => string[];
+  decodeKeysFromData: (data: string) => string[];
 }

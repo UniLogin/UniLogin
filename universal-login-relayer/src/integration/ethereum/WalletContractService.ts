@@ -81,4 +81,14 @@ export class WalletContractService {
     const service = await this.getWalletService(walletAddress);
     return service.isRemoveKeyCall(data);
   }
+
+  async decodeKeyFromData(walletAddress: string, data: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.decodeKeyFromData(data);
+  }
+
+  async decodeKeysFromData(walletAddress: string, data: string) {
+    const service = await this.getWalletService(walletAddress);
+    return service.decodeKeysFromData(data);
+  }
 };
