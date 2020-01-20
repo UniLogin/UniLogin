@@ -10,7 +10,7 @@ import WalletEventsObserverFactory from '../../../src/core/observers/WalletEvent
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
 import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
-import {setupGnosisSafeContract, executeAddKeyGnosis, executeRemoveKey} from '@universal-login/contracts/testutils';
+import {setupWalletContract} from '@universal-login/contracts/testutils';
 import {Contract} from 'ethers';
 import {waitExpect} from '@universal-login/commons/testutils';
 
@@ -26,23 +26,26 @@ describe('INT: WalletEventsObserverFactory', async () => {
   let deployedWallet: DeployedWallet;
   let filter: WalletEventFilter;
   let factory: WalletEventsObserverFactory;
-
-  before(async () => {
-    ({relayer, sdk} = await setupSdk(deployer));
-    const blockchainService = new BlockchainService(sdk.provider);
-    factory = new WalletEventsObserverFactory(
-      blockchainService,
-      new BlockNumberState(blockchainService),
-    );
-    deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);
-    filter = {
-      contractAddress: deployedWallet.contractAddress,
-      key: publicKey,
-    };
-    await factory.start();
-  });
+  let proxyWallet: Contract;
+  let keyPair: KeyPair;
 
   describe('beta2', () => {
+    before(async () => {
+      ({relayer, sdk} = await setupSdk(deployer));
+      const blockchainService = new BlockchainService(sdk.provider);
+      factory = new WalletEventsObserverFactory(
+        blockchainService,
+        new BlockProperty(blockchainService),
+      );
+      await factory.start();
+      ({proxyWallet, keyPair} = await setupWalletContract(deployer));
+      deployedWallet = (sdk as any).createDeployedWallet(proxyWallet.address, keyPair.privateKey);
+      filter = {
+        contractAddress: deployedWallet.contractAddress,
+        key: publicKey,
+      };
+    });
+
     it('subscribe to KeyAdded', async () => {
       const callback = sinon.spy();
       await factory.subscribe('KeyAdded', filter, callback);
@@ -59,38 +62,52 @@ describe('INT: WalletEventsObserverFactory', async () => {
       await waitExpect(() => expect(callbackRemove).to.have.been.calledOnce);
       expect(callbackRemove).to.have.been.calledWith({key: publicKey});
     });
+
+    after(async () => {
+      await relayer.clearDatabase();
+      await relayer.stop();
+      factory.stop();
+    });
   });
 
   describe('beta3', () => {
-    let proxy: Contract;
-    let keyPair: KeyPair;
-
     before(async () => {
-      ({proxy, keyPair} = await setupGnosisSafeContract(deployer));
+      ({relayer, sdk} = await setupSdk(deployer));
+      const blockchainService = new BlockchainService(sdk.provider);
+      factory = new WalletEventsObserverFactory(
+        blockchainService,
+        new BlockProperty(sdk.provider),
+      );
+      await factory.start();
+      deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);
+      filter = {
+        contractAddress: deployedWallet.contractAddress,
+        key: publicKey,
+      };
     });
 
     it('subscribe to KeyAdded', async () => {
       const callbackGnosis = sinon.spy();
-      filter = {...filter, contractAddress: proxy.address};
       await factory.subscribe('AddedOwner', filter, callbackGnosis);
-      await executeAddKeyGnosis(deployer, proxy.address, publicKey, keyPair.privateKey);
+      const {waitToBeSuccess} = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
+      await waitToBeSuccess();
       await waitExpect(() => expect(callbackGnosis).to.have.been.calledOnce);
       expect(callbackGnosis).to.have.been.calledWith({key: publicKey});
     });
 
     it('subscribe to RemovedOwner', async () => {
       const callbackRemoveGnosis = sinon.spy();
-      filter = {...filter, contractAddress: proxy.address};
       await factory.subscribe('RemovedOwner', filter, callbackRemoveGnosis);
-      await executeRemoveKey(deployer, proxy.address, publicKey, keyPair.privateKey);
+      const execution = await deployedWallet.removeKey(publicKey, TEST_EXECUTION_OPTIONS);
+      await execution.waitToBeSuccess();
       await waitExpect(() => expect(callbackRemoveGnosis).to.have.been.calledOnce);
       expect(callbackRemoveGnosis).to.have.been.calledWith({key: publicKey});
     });
-  });
 
-  after(async () => {
-    await relayer.clearDatabase();
-    await relayer.stop();
-    factory.stop();
+    after(async () => {
+      await relayer.clearDatabase();
+      await relayer.stop();
+      factory.stop();
+    });
   });
 });
