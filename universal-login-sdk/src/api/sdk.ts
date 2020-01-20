@@ -214,7 +214,7 @@ class UniversalLoginSDK {
   }
 
   subscribe(eventType: WalletEventType, filter: WalletEventFilter, callback: WalletEventCallback) {
-    ensure(['KeyAdded', 'KeyRemoved'].includes(eventType), InvalidEvent, eventType);
+    ensure(['KeyAdded', 'KeyRemoved', 'AddedOwner', 'RemovedOwner'].includes(eventType), InvalidEvent, eventType);
     return this.walletEventsObserverFactory.subscribe(eventType, filter, callback);
   }
 
