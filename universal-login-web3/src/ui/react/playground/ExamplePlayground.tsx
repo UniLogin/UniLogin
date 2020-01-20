@@ -31,7 +31,7 @@ export const ExamplePlayground = () => {
   }
 
   async function create() {
-    await universalLogin.create();
+    await universalLogin.initOnboarding();
     universalLogin.initWeb3Button(ulButton.current!);
   }
 

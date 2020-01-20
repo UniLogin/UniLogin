@@ -78,7 +78,7 @@ export class ULWeb3Provider implements Provider {
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
     if (this.walletService.state.kind !== 'Deployed') {
-      await this.create();
+      await this.initOnboarding();
     }
 
     switch (payload.method) {
@@ -158,7 +158,7 @@ export class ULWeb3Provider implements Provider {
     return wallet.signMessage(utils.arrayify(message));
   }
 
-  async create() {
+  async initOnboarding() {
     this.uiController.requireWallet();
 
     await waitForTrue(this.isLoggedIn);
