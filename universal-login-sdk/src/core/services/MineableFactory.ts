@@ -31,7 +31,6 @@ export class MineableFactory {
     return async () => {
       const predicate = (status: MineableStatus) => !this.isMined(status.state);
       const status = await this.waitForStatus(hash, predicate);
-      console.log(status)
       ensure(!status.error, Error, status.error!);
       return status;
     };

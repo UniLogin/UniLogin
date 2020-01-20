@@ -11,6 +11,7 @@ import ENSService from '../../src/integration/ethereum/ensService';
 import {AddressZero} from 'ethers/constants';
 import {deployContract} from 'ethereum-waffle';
 import {DEPLOY_GAS_LIMIT} from '@universal-login/commons';
+import {DEPLOY_CONTRACT_NONCE} from '@universal-login/contracts';
 
 export default async function setupWalletService(wallet: Wallet) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
@@ -49,7 +50,7 @@ export const getSetupData = async (keyPair: KeyPair, ensName: string, ensService
 
 export const createFutureWallet = async (keyPair: KeyPair, ensName: string, factoryContract: Contract, wallet: Wallet, ensService: ENSService, ensRegistrarAddress: string, gnosisSafeAddress: string, gasPrice = '1') => {
   const setupData = await getSetupData(keyPair, ensName, ensService, gasPrice, wallet.address, ensRegistrarAddress, ETHER_NATIVE_TOKEN.address);
-  const futureContractAddress = computeGnosisCounterfactualAddress(factoryContract.address, 0, setupData, gnosisSafeAddress);
+  const futureContractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, gnosisSafeAddress);
   await wallet.sendTransaction({to: futureContractAddress, value: utils.parseEther('1')});
   const signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
   return {signature, futureContractAddress};

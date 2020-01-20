@@ -11,7 +11,6 @@ import DeploymentHandler from '../../core/services/execution/deployment/Deployme
 const messageHandling = (messageHandler: MessageHandler) =>
   async (data: {body: SignedMessage}) => {
     const status = await messageHandler.handleMessage(data.body);
-    console.log(status);
     return responseOf({status}, 201);
   };
 
