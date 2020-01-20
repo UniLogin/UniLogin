@@ -60,4 +60,8 @@ export class GnosisSafeService implements IWalletContractService {
       data: encodeDataForExecTransaction(message),
     });
   }
+
+  isAddKeyCall(data: string) {
+    return false;
+  }
 }

@@ -1,16 +1,18 @@
 import {EventEmitter} from 'fbemitter';
 import {providers} from 'ethers';
 import {decodeDataForExecuteSigned} from '../../utils/messages/serialisation';
-import {isAddKeyCall, decodeParametersFromData, isRemoveKeyCall, isAddKeysCall} from '../../utils/encodeData';
+import {decodeParametersFromData, isRemoveKeyCall, isAddKeysCall} from '../../utils/encodeData';
 import {DevicesService} from '../DevicesService';
 import {EMPTY_DEVICE_INFO, DecodedMessage} from '@universal-login/commons';
 import AuthorisationStore from '../../../integration/sql/services/AuthorisationStore';
+import {WalletContractService} from '../../../integration/ethereum/WalletContractService';
 
 export class MinedTransactionHandler {
   constructor(
     private hooks: EventEmitter,
     private authorisationStore: AuthorisationStore,
     private devicesService: DevicesService,
+    private walletContractService: WalletContractService,
   ) {}
 
   private async updateDevicesAndAuthorisations(contractAddress: string, key: string) {
@@ -24,7 +26,7 @@ export class MinedTransactionHandler {
     const {data, to} = sentTransaction;
     const message = decodeDataForExecuteSigned(data);
     if (message.to === to) {
-      if (isAddKeyCall(message.data as string)) {
+      if (await this.walletContractService.isAddKeyCall(to, message.data as string)) {
         await this.handleAddKey(sentTransaction, message);
       } else if (isRemoveKeyCall(message.data as string)) {
         await this.handleRemoveKey(message);
