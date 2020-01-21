@@ -15,7 +15,7 @@ import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
 import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
 
-interface TopUpProps {
+export interface TopUpProps {
   walletService: WalletService;
   startModal?: TopUpComponentType;
   topUpClassName?: string;
