@@ -55,7 +55,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(status.transactionHash).to.be.properHex(64);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(GnosisProxy as any)}`);
     expect(await deployer.getBalance()).to.be.above(initialRelayerBalance);
-    const msgHash = calculateGnosisStringHash(contractAddress, contractAddress);
+    const msgHash = calculateGnosisStringHash(utils.arrayify(utils.toUtf8Bytes(contractAddress)), contractAddress);
     const relayerRequestSignature = signStringMessage(msgHash, keyPair.privateKey);
     const {body} = await chai.request(relayerUrl)
       .get(`/devices/${contractAddress}?signature=${relayerRequestSignature}`)

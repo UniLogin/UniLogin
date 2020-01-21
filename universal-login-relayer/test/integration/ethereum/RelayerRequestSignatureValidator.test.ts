@@ -33,7 +33,7 @@ describe('INT: RelayerRequestSignatureValidator', () => {
 
   it('validation works for GnosisSafe', async () => {
     const {proxy, keyPair} = await createGnosisSafeContract(wallet);
-    const msgHash = calculateGnosisStringHash(proxy.address, proxy.address);
+    const msgHash = calculateGnosisStringHash(utils.arrayify(utils.toUtf8Bytes(proxy.address)), proxy.address);
     const signature = signStringMessage(msgHash, keyPair.privateKey);
     await expect(relayerRequestSignatureValidator.ensureValidRelayerRequestSignature({signature, contractAddress: proxy.address})).to.be.fulfilled;
   });
@@ -45,7 +45,7 @@ describe('INT: RelayerRequestSignatureValidator', () => {
 
   it('validation works for GnosisSafe', async () => {
     const {proxy} = await createGnosisSafeContract(wallet);
-    const msgHash = calculateGnosisStringHash(proxy.address, proxy.address);
+    const msgHash = calculateGnosisStringHash(utils.arrayify(utils.toUtf8Bytes(proxy.address)), proxy.address);
     const signature = signStringMessage(msgHash, TEST_PRIVATE_KEY);
     const testAddress = utils.computeAddress(TEST_PRIVATE_KEY);
     await expect(relayerRequestSignatureValidator.ensureValidRelayerRequestSignature({signature, contractAddress: proxy.address})).to.be.rejectedWith(`Unauthorised address: ${testAddress}`);

@@ -9,7 +9,7 @@ import {utils} from 'ethers';
 chai.use(chaiHttp);
 
 const signRelayerRequest = (relayerRequest, privateKey) => {
-  const msgHash = calculateGnosisStringHash(relayerRequest.contractAddress, relayerRequest.contractAddress);
+  const msgHash = calculateGnosisStringHash(utils.arrayify(utils.toUtf8Bytes(relayerRequest.contractAddress)), relayerRequest.contractAddress);
   const relayerRequestSignature = signStringMessage(msgHash, privateKey);
   relayerRequest.signature = relayerRequestSignature;
 };
@@ -26,7 +26,7 @@ async function postAuthorisationRequest(relayer, contract, keyPair) {
 }
 
 async function getAuthorisation(relayer, contract, keyPair) {
-  const msgHash = calculateGnosisStringHash(contract.address, contract.address);
+  const msgHash = calculateGnosisStringHash(utils.arrayify(utils.toUtf8Bytes(contract.address)), contract.address);
   const relayerRequestSignature = signStringMessage(msgHash, keyPair.privateKey);
   const authorisationRequest = {
     contractAddress: contract.address,
@@ -85,7 +85,7 @@ describe('E2E: Relayer - Authorisation routes', async () => {
     const newKeyPair = createKeyPair();
     await postAuthorisationRequest(relayer, proxyContract, newKeyPair);
 
-    const msgHash = calculateGnosisStringHash(proxyContract.address, proxyContract.address);
+    const msgHash = calculateGnosisStringHash(utils.arrayify(utils.toUtf8Bytes(proxyContract.address)), proxyContract.address);
     const relayerRequestSignature = signStringMessage(msgHash, keyPair.privateKey);
     const authorisationRequest = {contractAddress: proxyContract.address, signature: relayerRequestSignature};
 

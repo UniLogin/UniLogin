@@ -9,12 +9,12 @@ const DOMAIN_TLD = 'eth';
 const DOMAIN = `${DOMAIN_LABEL}.${DOMAIN_TLD}`;
 
 export async function prerequisites(givenProvider: providers.Provider, [deployer, ...wallets]: Wallet[]) {
-  const {walletContract, factoryContract} = await RelayerUnderTest.deployBaseContracts(deployer);
+  const {walletContract, factoryContract, ensRegistrar} = await RelayerUnderTest.deployBaseContracts(deployer);
 
   const ensBuilder = new ENSBuilder(deployer);
   const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
 
   const mockToken = await deployContract(deployer, mockContracts.MockToken);
 
-  return {deployer, walletContract, factoryContract, ensAddress, ensDomains: [DOMAIN], mockToken, wallets};
+  return {deployer, walletContract, factoryContract, ensAddress, ensDomains: [DOMAIN], mockToken, wallets, ensRegistrar};
 }
