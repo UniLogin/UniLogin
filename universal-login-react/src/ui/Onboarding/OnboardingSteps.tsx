@@ -1,8 +1,10 @@
-import {ModalWrapper, TopUp, useProperty, WaitingForDeployment} from '../..';
-import React, {useEffect} from 'react';
+import {useProperty} from '../..';
+import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {ApplicationWallet, ensure} from '@universal-login/commons';
+import {ApplicationWallet} from '@universal-login/commons';
 import {useHistory} from 'react-router';
+import {OnboardingTopUp} from './OnboardingTopUp';
+import {OnboardingWaitForDeployment} from './OnboardingWaitForDeployment';
 
 interface OnboardingStepsProps {
   sdk: UniversalLoginSDK;
@@ -13,19 +15,12 @@ interface OnboardingStepsProps {
 
 export function OnboardingSteps({sdk, walletService, className, onCreate}: OnboardingStepsProps) {
   const walletState = useProperty(walletService.stateProperty);
-
-  useEffect(() => {
-    ensure(walletState.kind === 'Future', Error, 'Invalid state');
-    walletState.wallet.waitForBalance()
-      .then(() => walletService.deployFutureWallet())
-      .then((wallet) => onCreate?.(wallet));
-  }, []);
-
   const history = useHistory();
+
   switch (walletState.kind) {
     case 'Future':
       return (
-        <TopUp
+        <OnboardingTopUp
           modalClassName={className}
           walletService={walletService}
           hideModal={async () => {
@@ -37,12 +32,12 @@ export function OnboardingSteps({sdk, walletService, className, onCreate}: Onboa
       );
     case 'Deploying':
       return (
-        <ModalWrapper>
-          <WaitingForDeployment
-            relayerConfig={sdk.getRelayerConfig()}
-            transactionHash={walletState.transactionHash}
-          />
-        </ModalWrapper>
+        <OnboardingWaitForDeployment
+          walletService={walletService}
+          onSuccess={onCreate}
+          relayerConfig={sdk.getRelayerConfig()}
+          transactionHash={walletState.transactionHash}
+        />
       );
     default:
       return null;
