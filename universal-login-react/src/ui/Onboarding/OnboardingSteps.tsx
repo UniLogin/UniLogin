@@ -4,7 +4,7 @@ import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {ApplicationWallet} from '@universal-login/commons';
 import {useHistory} from 'react-router';
 import {OnboardingTopUp} from './OnboardingTopUp';
-import {OnboardingDeploymentWaiting} from './OnboardingWaitForDeploy';
+import {OnboardingWaitForDeployment} from './OnboardingWaitForDeploy';
 
 interface OnboardingStepsProps {
   sdk: UniversalLoginSDK;
@@ -32,7 +32,7 @@ export function OnboardingSteps({sdk, walletService, className, onCreate}: Onboa
       );
     case 'Deploying':
       return (
-        <OnboardingDeploymentWaiting
+        <OnboardingWaitForDeployment
           walletService={walletService}
           onSuccess={onCreate}
           relayerConfig={sdk.getRelayerConfig()}

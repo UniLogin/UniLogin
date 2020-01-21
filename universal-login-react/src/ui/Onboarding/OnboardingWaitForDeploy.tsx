@@ -5,12 +5,12 @@ import {WaitingForTransactionProps, WaitingForDeployment} from '../commons/Waiti
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
-interface OnboardingDeploymentWaitingProps extends WaitingForTransactionProps {
+interface OnboardingWaitForDeploymentProps extends WaitingForTransactionProps {
   walletService: WalletService;
   onSuccess?: (wallet: DeployedWallet) => void;
 }
 
-export function OnboardingDeploymentWaiting({walletService, onSuccess}: OnboardingDeploymentWaitingProps) {
+export function OnboardingWaitForDeployment({walletService, onSuccess}: OnboardingWaitForDeploymentProps) {
   useAsyncEffect(async () => {
     try {
       await walletService.waitForTransactionHash();
