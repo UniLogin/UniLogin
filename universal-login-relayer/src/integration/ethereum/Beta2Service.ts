@@ -1,10 +1,10 @@
 import {providers, Contract, utils} from 'ethers';
 import {calculateMessageHash, SignedMessage, RelayerRequest, hashRelayerRequest, recoverFromRelayerRequest} from '@universal-login/commons';
 import {WalletContractInterface} from '@universal-login/contracts';
-import {getKeyFromHashAndSignature} from '../../core/utils/encodeData';
+import {getKeyFromHashAndSignature, isAddKeyCall, isAddKeysCall, isRemoveKeyCall, decodeParametersFromData} from '../../core/utils/encodeData';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {beta2} from '@universal-login/contracts';
-import {messageToTransaction} from '../../core/utils/messages/serialisation';
+import {messageToTransaction, decodeDataForExecuteSigned} from '../../core/utils/messages/serialisation';
 
 export class Beta2Service implements IWalletContractService {
   constructor(private provider: providers.Provider) {
@@ -52,5 +52,29 @@ export class Beta2Service implements IWalletContractService {
 
   messageToTransaction(message: SignedMessage) {
     return messageToTransaction(message);
+  }
+
+  isAddKeyCall(data: string) {
+    return isAddKeyCall(data);
+  }
+
+  isAddKeysCall(data: string) {
+    return isAddKeysCall(data);
+  }
+
+  isRemoveKeyCall(data: string) {
+    return isRemoveKeyCall(data);
+  }
+
+  decodeKeyFromData(data: string) {
+    return decodeParametersFromData(data, ['address']);
+  }
+
+  decodeKeysFromData(data: string) {
+    return decodeParametersFromData(data, ['address[]']);
+  }
+
+  decodeExecute(data: string) {
+    return decodeDataForExecuteSigned(data);
   }
 }

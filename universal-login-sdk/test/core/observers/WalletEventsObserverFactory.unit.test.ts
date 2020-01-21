@@ -29,6 +29,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
     blockProperty = {
       get: sinon.fake.returns(0),
       set: sinon.fake(),
+      subscribe: sinon.fake.returns(() => {}),
     } as any;
     factory = new WalletEventsObserverFactory(blockchainService, blockProperty);
     onKeyAdd = sinon.spy();
@@ -67,6 +68,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
     it('subscribe twice', async () => {
       factory.subscribe('KeyAdded', filter, onKeyAdd);
       factory.subscribe('KeyAdded', filter, onKeyAdd2);
+      factory.fetchEvents();
       await waitExpect(() => expect(onKeyAdd).to.have.been.calledOnce);
       expect(onKeyAdd).to.have.been.calledOnceWith({key: TEST_KEY});
       expect(onKeyAdd2).to.have.been.calledOnceWith({key: TEST_KEY});
@@ -76,6 +78,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
       factory.subscribe('KeyAdded', filter, onKeyAdd);
       const unsubscribe = factory.subscribe('KeyAdded', filter, onKeyAdd2);
       unsubscribe();
+      factory.fetchEvents();
       await waitExpect(() => expect(onKeyAdd).to.have.been.calledOnce);
       expect(onKeyAdd).to.have.been.calledOnceWith({key: TEST_KEY});
       expect(onKeyAdd2).to.not.have.been.called;
