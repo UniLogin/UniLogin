@@ -1,10 +1,11 @@
-import {waitUntil} from '@universal-login/commons';
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Wallet} from 'ethers';
 import sinon from 'sinon';
+import {waitUntil} from '@universal-login/commons';
+import {mineBlock} from '@universal-login/contracts/testutils';
+import {BlockchainService} from '@universal-login/contracts';
 import {BlockProperty} from '../../../src/core/properties/BlockProperty';
-import {mineBlock} from '../../helpers/mineBlock';
 
 describe('INT: BlockProperty', () => {
   let provider;
