@@ -16,7 +16,7 @@ export {GasMode, GasOption, GasParameters, OnGasParametersChanged} from './core/
 export {IMessageValidator} from './core/models/IMessageValidator';
 export {IPGeolocationApiConfig} from './core/models/IPGeolocationApiConfig';
 export {KeyPair} from './core/models/keyPair';
-export {CollectedSignatureKeyPair, DecodedMessage, DecodedMessageWithFrom, DeploymentState, DeploymentStatus, ExecutionOptions, Message, MessageState, MessageStatus, MessageWithFrom, MessageWithoutFrom, MineableState, MineableStatus, OperationType, PaymentOptions, SdkExecutionOptions, SignedMessage, SignedMessagePaymentOptions, UnsignedMessage} from './core/models/message';
+export {CollectedSignatureKeyPair, DecodedMessage, DecodedMessageWithFrom, DeploymentState, DeploymentStatus, ExecutionOptions, Message, MessageState, MessageStatus, MessageWithFrom, MessageWithoutFrom, MineableState, MineableStatus, OperationType, PaymentOptions, SdkExecutionOptions, SignedMessage, SignedMessagePaymentOptions, UnsignedMessage, DecodedMessageGnosis} from './core/models/message';
 export {ApplicationInfo, Device, DeviceInfo, Notification} from './core/models/notifications';
 export {LocalizationConfig, RampConfig, SafelloConfig, WyreConfig} from './core/models/onRamp';
 export {ChainSpec, ContractWhiteList, OnRampConfig, PublicRelayerConfig, SupportedToken} from './core/models/relayer';

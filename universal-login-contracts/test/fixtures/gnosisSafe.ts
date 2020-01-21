@@ -51,7 +51,7 @@ export async function executeAddKey(wallet: Wallet, proxyAddress: string, keyToA
     refundReceiver: wallet.address,
   };
   const signedMsg = messageToSignedMessage(msg, privateKey, CURRENT_NETWORK_VERSION, 'beta3');
-  await wallet.sendTransaction({to: proxyAddress, data: encodeDataForExecTransaction(signedMsg), gasLimit: utils.bigNumberify(msg.gasLimit)});
+  return wallet.sendTransaction({to: proxyAddress, data: encodeDataForExecTransaction(signedMsg), gasLimit: utils.bigNumberify(msg.gasLimit)});
 }
 
 export async function executeRemoveKey(wallet: Wallet, proxyAddress: string, keyToRemove: string, privateKey: string) {
@@ -71,7 +71,7 @@ export async function executeRemoveKey(wallet: Wallet, proxyAddress: string, key
     refundReceiver: wallet.address,
   };
   const signedMessage = messageToSignedMessage(msg, privateKey, CURRENT_NETWORK_VERSION, 'beta3');
-  await wallet.sendTransaction({to: proxyAddress, data: encodeDataForExecTransaction(signedMessage), gasLimit: utils.bigNumberify(msg.gasLimit)});
+  return wallet.sendTransaction({to: proxyAddress, data: encodeDataForExecTransaction(signedMessage), gasLimit: utils.bigNumberify(msg.gasLimit)});
 }
 
 export async function setupGnosisSafeContractFixture(provider: Provider, [wallet]: Wallet[]) {

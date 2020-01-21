@@ -1,4 +1,4 @@
-import {SignedMessage, RelayerRequest, DecodedMessage} from '@universal-login/commons';
+import {SignedMessage, RelayerRequest, DecodedMessage, DecodedMessageGnosis} from '@universal-login/commons';
 import {utils} from 'ethers';
 import {TransactionRequest} from 'ethers/providers';
 
@@ -17,5 +17,5 @@ export default interface IWalletContractService {
   isRemoveKeyCall: (data: string) => boolean;
   decodeKeyFromData: (data: string) => string[];
   decodeKeysFromData: (data: string) => string[];
-  decodeExecute: (data: string) => DecodedMessage;
+  decodeExecute: (data: string) => DecodedMessage | DecodedMessageGnosis;
 }
