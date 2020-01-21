@@ -2,13 +2,15 @@ import styled from 'styled-components';
 
 const BaseButton = styled.button`
   display: block;
-  padding: 11.5px 24px;
-  border-radius: 4px;
+  padding: 1.15rem 2.4rem;
+  border-radius: .4rem;
+  padding: 1.15rem 0;
+  font-size: 1.4rem;
   font-weight: 700;
-  font-size: 14px;
   line-height: 17px;
   box-sizing: border-box;
   border: none;
+  cursor: pointer;
 `;
 
 export const ButtonPrimary = styled(BaseButton)`
