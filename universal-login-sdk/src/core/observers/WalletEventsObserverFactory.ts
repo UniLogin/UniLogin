@@ -1,7 +1,7 @@
 import {BlockchainService} from '@universal-login/contracts';
 import {WalletEventCallback, WalletEventFilter, WalletEventType} from '../models/events';
 import {WalletEventsObserver} from './WalletEventsObserver';
-import {BlockProperty} from '../properties/BlockProperty';
+import {BlockState} from '../states/BlockState';
 import {ensureNotNull, Nullable} from '@universal-login/commons';
 import {InvalidObserverState} from '../utils/errors';
 import {Callback} from 'reactive-properties/dist/Property';
@@ -10,7 +10,7 @@ class WalletEventsObserverFactory {
   protected observers: Record<string, WalletEventsObserver> = {};
   private unsubscribe: Nullable<Callback> = null;
 
-  constructor(private blockchainService: BlockchainService, private currentBlock: BlockProperty) {
+  constructor(private blockchainService: BlockchainService, private currentBlock: BlockState) {
   }
 
   async start() {

@@ -1,7 +1,7 @@
 import {BlockchainService} from '@universal-login/contracts';
-import {ReferenceCountedProperty} from './ReferenceCountedProperty';
+import {ReferenceCountedState} from './ReferenceCountedState';
 
-export class BlockProperty extends ReferenceCountedProperty<number> {
+export class BlockState extends ReferenceCountedState<number> {
   constructor(private readonly blockchainService: BlockchainService) {
     super(0);
   }

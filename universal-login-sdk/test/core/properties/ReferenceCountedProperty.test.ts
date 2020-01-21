@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {ReferenceCountedProperty} from '../../../src/core/properties/ReferenceCountedProperty';
+import {ReferenceCountedState} from '../../../src/core/states/ReferenceCountedState';
 
-class TestProperty extends ReferenceCountedProperty<number> {
+class TestProperty extends ReferenceCountedState<number> {
   constructor() {
     super(0);
   }
@@ -13,7 +13,7 @@ class TestProperty extends ReferenceCountedProperty<number> {
 }
 
 describe('UNIT: ReferenceCountedProperty', () => {
-  let property: ReferenceCountedProperty<number>;
+  let property: ReferenceCountedState<number>;
   let callback: ReturnType<typeof sinon.spy>;
 
   beforeEach(() => {
