@@ -9,7 +9,6 @@ export const CloseButton = styled.button`
   border: 1px solid rgba(67, 157, 176, 0.4);
   background: none;
   cursor: pointer;
-
   &::before {
     content: '';
     position: absolute;
