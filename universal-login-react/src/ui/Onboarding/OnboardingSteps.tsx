@@ -4,7 +4,7 @@ import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {ApplicationWallet} from '@universal-login/commons';
 import {useHistory} from 'react-router';
 import {OnboardingTopUp} from './OnboardingTopUp';
-import {OnboardingWaitForDeployment} from './OnboardingWaitForDeploy';
+import {OnboardingWaitForDeployment} from './OnboardingWaitForDeployment';
 
 interface OnboardingStepsProps {
   sdk: UniversalLoginSDK;
