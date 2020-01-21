@@ -1,8 +1,7 @@
 import {EventEmitter} from 'fbemitter';
 import {utils} from 'ethers';
-import {ensure, RequiredBalanceChecker, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT, DeviceInfo, DEPLOYMENT_REFUND, SupportedToken, safeMultiply, MINIMAL_DEPLOYMENT_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {computeGnosisCounterfactualAddress, encodeDataForSetup} from '@universal-login/contracts';
-import ENSRegistrar from '@universal-login/contracts/dist/contracts/ENSRegistrar.json';
+import {ensure, RequiredBalanceChecker, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT, DeviceInfo, SupportedToken, safeMultiply, MINIMAL_DEPLOYMENT_GAS_LIMIT} from '@universal-login/commons';
+import {computeGnosisCounterfactualAddress, encodeDataForSetup, gnosisSafe} from '@universal-login/contracts';
 import ENSService from './ensService';
 import {NotEnoughBalance, InvalidSignature, NotEnoughGas} from '../../core/utils/errors';
 import {Config} from '../../config/relayer';
@@ -27,7 +26,7 @@ export class WalletDeploymentService {
     const deployment = {owners: [publicKey],
       requiredConfirmations: 1,
       deploymentCallAddress: this.config.ensRegistrar,
-      deploymentCallData: new utils.Interface(ENSRegistrar.interface as any).functions.register.encode(ensArgs),
+      deploymentCallData: new utils.Interface(gnosisSafe.ENSRegistrar.interface as any).functions.register.encode(ensArgs),
       fallbackHandler: AddressZero,
       paymentToken: gasToken,
       payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),

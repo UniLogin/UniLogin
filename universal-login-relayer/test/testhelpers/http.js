@@ -10,13 +10,11 @@ import {
   waitForContractDeploy,
   DEPLOY_GAS_LIMIT,
 } from '@universal-login/commons';
-import {beta2, deployFactory, deployWalletContract, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, deployProxyFactory, deployGnosisSafe} from '@universal-login/contracts';
+import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, deployProxyFactory, deployGnosisSafe, gnosisSafe} from '@universal-login/contracts';
 import {getFutureAddress} from '@universal-login/contracts/testutils';
-import ENSRegistrar from '@universal-login/contracts/dist/contracts/ENSRegistrar.json';
 import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
 import {AddressZero} from 'ethers/constants';
-import {DEPLOY_GAS_LIMIT} from '@universal-login/commons';
 
 export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
@@ -91,7 +89,7 @@ export const getSetupData = async (keyPair, ensName, ensAddress, provider, gasPr
     owners: [keyPair.publicKey],
     requiredConfirmations: 1,
     deploymentCallAddress: ensRegistrarAddress,
-    deploymentCallData: new utils.Interface(ENSRegistrar.interface).functions.register.encode([hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress]),
+    deploymentCallData: new utils.Interface(gnosisSafe.ENSRegistrar.interface).functions.register.encode([hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress]),
     fallbackHandler: AddressZero,
     paymentToken: gasToken,
     payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),

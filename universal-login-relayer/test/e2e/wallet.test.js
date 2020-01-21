@@ -2,12 +2,11 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {createKeyPair, DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE, sleep} from '@universal-login/commons';
+import {DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE} from '@universal-login/commons';
 import {waitExpect} from '@universal-login/commons/testutils';
-import {startRelayerWithRefund, createWalletCounterfactually} from '../testhelpers/http';
-import {getTestSignedMessage, getGnosisTestSignedMessage} from '../testconfig/message';
+import {startRelayerWithRefund} from '../testhelpers/http';
+import {getGnosisTestSignedMessage} from '../testconfig/message';
 import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
-import {calculateMessageHash} from '@universal-login/contracts';
 chai.use(chaiHttp);
 
 describe('E2E: Relayer - WalletContract routes', async () => {
@@ -21,7 +20,6 @@ describe('E2E: Relayer - WalletContract routes', async () => {
   let factoryContract;
   let keyPair;
   const relayerPort = '33511';
-  const relayerUrl = `http://localhost:${relayerPort}`;
   let ensRegistrar;
 
   before(async () => {

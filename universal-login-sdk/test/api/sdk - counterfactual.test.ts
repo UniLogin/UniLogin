@@ -3,7 +3,7 @@ import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG} from '@universal-login/commons';
 import {emptyMessage} from '@universal-login/contracts/testutils';
-import {beta2, gnosisSafe} from '@universal-login/contracts';
+import {gnosisSafe} from '@universal-login/contracts';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import UniversalLoginSDK from '../../src/api/sdk';
 

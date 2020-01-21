@@ -6,7 +6,7 @@ import Relayer from '@universal-login/relayer';
 import basicSDK from '../../fixtures/basicSDK';
 import UniversalLoginSDK from '../../../src/api/sdk';
 import AuthorisationsObserver from '../../../src/core/observers/AuthorisationsObserver';
-import {waitUntil, signRelayerRequest, RelayerRequest} from '@universal-login/commons';
+import {waitUntil, RelayerRequest} from '@universal-login/commons';
 import {utils, Wallet} from 'ethers';
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 

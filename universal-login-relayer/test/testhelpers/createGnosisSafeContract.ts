@@ -1,8 +1,7 @@
 import {ETHER_NATIVE_TOKEN, createKeyPair} from '@universal-login/commons';
-import {DEPLOY_CONTRACT_NONCE, deployGnosisSafe, deployProxyFactory, encodeDataForSetup, computeGnosisCounterfactualAddress, GnosisSafeInterface, ProxyFactoryInterface, ENSInterface} from '@universal-login/contracts';
+import {DEPLOY_CONTRACT_NONCE, deployGnosisSafe, deployProxyFactory, encodeDataForSetup, computeGnosisCounterfactualAddress, GnosisSafeInterface, ProxyFactoryInterface, ENSInterface, gnosisSafe as gnosisSafeContracts} from '@universal-login/contracts';
 import {Contract, utils, Wallet} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import ENSRegistrar from '@universal-login/contracts/dist/contracts/ENSRegistrar.json';
 import {DEPLOY_GAS_LIMIT, parseDomain} from '@universal-login/commons';
 
 export default async function createGnosisSafeContract(wallet: Wallet) {
@@ -50,7 +49,7 @@ export const deployGnosisSafeProxyWithENS = async (wallet: Wallet, proxyFactoryA
     owners: [keyPair.publicKey],
     requiredConfirmations: 1,
     deploymentCallAddress: ensRegistrar,
-    deploymentCallData: new utils.Interface(ENSRegistrar.interface as any).functions.register.encode(args),
+    deploymentCallData: new utils.Interface(gnosisSafeContracts.ENSRegistrar.interface as any).functions.register.encode(args),
     fallbackHandler: AddressZero,
     paymentToken: gasToken,
     payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),

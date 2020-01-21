@@ -2,8 +2,7 @@ import {EventEmitter} from 'fbemitter';
 import sinon from 'sinon';
 import {Wallet, Contract, utils} from 'ethers';
 import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {encodeDataForSetup, computeGnosisCounterfactualAddress, deployGnosisSafe, deployProxyFactory} from '@universal-login/contracts';
-import ENSRegistrar from '@universal-login/contracts/dist/contracts/ENSRegistrar.json';
+import {encodeDataForSetup, computeGnosisCounterfactualAddress, deployGnosisSafe, deployProxyFactory, gnosisSafe} from '@universal-login/contracts';
 import {WalletDeploymentService} from '../../src/integration/ethereum/WalletDeploymentService';
 import {buildEnsService} from './buildEnsService';
 import {WalletDeployer} from '../../src/integration/ethereum/WalletDeployer';
@@ -18,7 +17,7 @@ export default async function setupWalletService(wallet: Wallet) {
   const walletContractAddress = (await deployGnosisSafe(wallet)).address;
   const factoryContract = await deployProxyFactory(wallet);
   const hooks = new EventEmitter();
-  const ensRegistrar = (await deployContract(wallet, ENSRegistrar)).address;
+  const ensRegistrar = (await deployContract(wallet, gnosisSafe.ENSRegistrar)).address;
   const config = {walletContractAddress, factoryAddress: factoryContract.address, supportedTokens: [], ensRegistrar};
   const walletDeployer = new WalletDeployer(factoryContract.address, wallet);
   const fakeBalanceChecker = {

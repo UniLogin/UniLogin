@@ -48,14 +48,12 @@ describe('E2E: Relayer - Authorisation routes', async () => {
   let keyPair;
   let walletContract;
   let factoryContract;
-  let ensAddress;
   let deployer;
 
   const relayerPort = '33511';
-  const relayerUrl = `http://localhost:${relayerPort}`;
 
   beforeEach(async () => {
-    ({relayer, deployer, walletContract, ensAddress, factoryContract} = await startRelayerWithRefund(relayerPort));
+    ({relayer, deployer, walletContract, factoryContract} = await startRelayerWithRefund(relayerPort));
     ({proxyContract, keyPair} = await deployGnosisSafeProxy(deployer, factoryContract.address, walletContract.address));
   });
 
