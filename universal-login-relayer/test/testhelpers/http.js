@@ -62,7 +62,7 @@ export const startRelayerWithRefund = async (port = '33111') => {
   const [deployer, wallet, otherWallet] = getWallets(provider);
   const walletContract = await deployGnosisSafe(deployer);
   const factoryContract = await deployProxyFactory(deployer);
-  const ensRegistrar = await deployContract(wallet, ENSRegistrar);
+  const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
   const {relayer, mockToken, ensAddress} = await RelayerUnderTest.createPreconfiguredRelayer({port, wallet: deployer, walletContract, factoryContract, ensRegistrar});
   await relayer.start();
   return {provider, relayer, mockToken, factoryContract, walletContract, deployer, ensAddress, wallet, otherWallet, ensRegistrar};

@@ -31,7 +31,7 @@ describe('INT: SDK', async () => {
   let deployedWallet: DeployedWallet;
 
   beforeEach(async () => {
-    ({wallet, provider, mockToken, otherWallet, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
+    ({wallet, provider, otherWallet, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
     message = {...transferMessage, from: contractAddress, gasToken: ETHER_NATIVE_TOKEN.address, data: '0x'};
     deployedWallet = new DeployedWallet(contractAddress, otherWallet.address, privateKey, sdk);
   });

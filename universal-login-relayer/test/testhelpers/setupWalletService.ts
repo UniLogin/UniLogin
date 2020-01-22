@@ -38,7 +38,7 @@ export const getSetupData = async (keyPair: KeyPair, ensName: string, ensService
     owners: [keyPair.publicKey],
     requiredConfirmations: 1,
     deploymentCallAddress: ensRegistrarAddress,
-    deploymentCallData: new utils.Interface(ENSRegistrar.interface as any).functions.register.encode(args),
+    deploymentCallData: new utils.Interface(gnosisSafe.ENSRegistrar.interface as any).functions.register.encode(args),
     fallbackHandler: AddressZero,
     paymentToken: gasToken,
     payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),
