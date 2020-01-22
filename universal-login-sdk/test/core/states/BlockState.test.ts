@@ -7,15 +7,15 @@ import {mineBlock} from '@universal-login/contracts/testutils';
 import {BlockchainService} from '@universal-login/contracts';
 import {BlockState} from '../../../src/core/states/BlockState';
 
-describe('INT: BlockProperty', () => {
+describe('INT: BlockState', () => {
   let provider;
   let wallet: Wallet;
-  let property: BlockState;
+  let state: BlockState;
   let callback: any;
 
   it('no subscriptions', () => {
-    property = new BlockState(new BlockchainService(createMockProvider()));
-    expect(property.get()).to.eq(0);
+    state = new BlockState(new BlockchainService(createMockProvider()));
+    expect(state.get()).to.eq(0);
   });
 
   describe('1 subscription', () => {
@@ -23,43 +23,43 @@ describe('INT: BlockProperty', () => {
       provider = createMockProvider();
       [wallet] = getWallets(provider);
       provider.pollingInterval = 1;
-      property = new BlockState(new BlockchainService(provider));
+      state = new BlockState(new BlockchainService(provider));
       callback = sinon.spy();
     });
 
     it('no blocks', async () => {
-      const unsubscribe = property.subscribe(callback);
+      const unsubscribe = state.subscribe(callback);
 
       await waitUntil(() => !!callback.firstCall);
       expect(callback).to.have.been.calledOnce;
-      expect(property.get()).to.eq(0);
+      expect(state.get()).to.eq(0);
 
       unsubscribe();
-      expect(property.get()).to.eq(0);
+      expect(state.get()).to.eq(0);
     });
 
     it('1 block', async () => {
-      const unsubscribe = property.subscribe(callback);
+      const unsubscribe = state.subscribe(callback);
       mineBlock(wallet);
       await waitUntil(() => !!callback.secondCall);
-      expect(property.get()).to.eq(1);
+      expect(state.get()).to.eq(1);
 
       unsubscribe();
-      expect(property.get()).to.eq(1);
+      expect(state.get()).to.eq(1);
     });
 
     it('2 blocks', async () => {
-      const unsubscribe = property.subscribe(callback);
+      const unsubscribe = state.subscribe(callback);
       mineBlock(wallet);
 
       await waitUntil(() => !!callback.secondCall);
-      expect(property.get()).to.eq(1);
+      expect(state.get()).to.eq(1);
       mineBlock(wallet);
       await waitUntil(() => !!callback.thirdCall);
-      expect(property.get()).to.eq(2);
+      expect(state.get()).to.eq(2);
 
       unsubscribe();
-      expect(property.get()).to.eq(2);
+      expect(state.get()).to.eq(2);
     });
   });
 
@@ -68,32 +68,32 @@ describe('INT: BlockProperty', () => {
       provider = createMockProvider();
       [wallet] = getWallets(provider);
       provider.pollingInterval = 1;
-      property = new BlockState(new BlockchainService(provider));
+      state = new BlockState(new BlockchainService(provider));
       callback = sinon.spy();
     });
 
     it('2 blocks', async () => {
       const callback2 = sinon.spy();
-      const unsubscribe1 = property.subscribe(callback);
-      const unsubscribe2 = property.subscribe(callback2);
+      const unsubscribe1 = state.subscribe(callback);
+      const unsubscribe2 = state.subscribe(callback2);
       await waitUntil(() => !!callback.firstCall);
       await waitUntil(() => !!callback2.firstCall);
-      expect(property.get()).to.eq(0);
+      expect(state.get()).to.eq(0);
 
       await mineBlock(wallet);
       await waitUntil(() => !!callback.secondCall);
       await waitUntil(() => !!callback2.secondCall);
-      expect(property.get()).to.eq(1);
+      expect(state.get()).to.eq(1);
 
       await mineBlock(wallet);
       await waitUntil(() => !!callback.thirdCall);
       await waitUntil(() => !!callback2.thirdCall);
-      expect(property.get()).to.eq(2);
+      expect(state.get()).to.eq(2);
 
       unsubscribe1();
       unsubscribe2();
 
-      expect(property.get()).to.eq(2);
+      expect(state.get()).to.eq(2);
     });
   });
 });
