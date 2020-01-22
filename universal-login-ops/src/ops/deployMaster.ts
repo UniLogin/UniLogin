@@ -1,6 +1,6 @@
 import {Wallet, utils} from 'ethers';
 import {deployContractAndWait, TransactionOverrides} from '@universal-login/commons';
-import {beta2} from '@universal-login/contracts';
+import {beta2, gnosisSafe} from '@universal-login/contracts';
 import {CommandOverrides} from '../cli/connectAndExecute';
 
 export default async function deployMasterContract(wallet: Wallet, overrides: CommandOverrides) {
@@ -12,4 +12,15 @@ export default async function deployMasterContract(wallet: Wallet, overrides: Co
   };
   const contractAddress = await deployContractAndWait(wallet, beta2.WalletContract as any, [], transactionOverrides);
   console.log(`Wallet master contract address: ${contractAddress}`);
+}
+
+export async function deployGnosisSafe(wallet: Wallet, overrides: CommandOverrides) {
+  console.log('Deploying Gnosis Safe contract...');
+  const transactionOverrides: TransactionOverrides = {
+    gasLimit: utils.bigNumberify(7000000),
+    gasPrice: overrides.gasPrice ? utils.bigNumberify(overrides.gasPrice) : undefined,
+    nonce: overrides.nonce ? utils.bigNumberify(overrides.nonce) : undefined,
+  };
+  const contractAddress = await deployContractAndWait(wallet, gnosisSafe.GnosisSafe as any, [], transactionOverrides);
+  console.log(`Gnosis Safe contract address: ${contractAddress}`);
 }
