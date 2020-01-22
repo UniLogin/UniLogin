@@ -37,6 +37,7 @@ export const disconnectAccount = async (
       const {transactionHash} = await execution.waitForTransactionHash();
       onDisconnectProgress(transactionHash);
       await execution.waitToBeSuccess();
+      walletService.disconnect();
     }
     onAccountDisconnected();
   }

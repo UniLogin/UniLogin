@@ -193,9 +193,7 @@ export class WalletService {
       this.disconnect();
       return;
     }
-    const execution = await this.state.wallet.removeCurrentKey(executionOptions);
-    execution.waitToBeSuccess().then(() => this.disconnect());
-    return execution;
+    return this.state.wallet.removeCurrentKey(executionOptions);
   }
 
   disconnect(): void {
