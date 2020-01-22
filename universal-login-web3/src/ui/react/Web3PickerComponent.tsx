@@ -3,8 +3,11 @@ import {ModalWrapper, useProperty} from '@universal-login/react';
 import {Property} from 'reactive-properties';
 import U from '../assets/U.svg';
 import {Web3ProviderFactory} from '../../models/Web3ProviderFactory';
+<<<<<<< HEAD
 import {CloseButton} from './common/Button/CloseButton';
 import {ButtonPrimary} from './common/Button/Button';
+=======
+>>>>>>> e49d1e8b772e141a3401a355ec523c266c86a3bf
 import styled from 'styled-components';
 
 interface Web3PickerComponentProps {
@@ -23,8 +26,18 @@ export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setPro
     selectedProvider = name;
   };
 
+<<<<<<< HEAD
   const ModalCloseButton = styled(CloseButton)`
     position: absolute;
+=======
+  const ButtonExit = styled.button`
+    background-color: transparent;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid rgba(67, 157, 176, 0.4);
+>>>>>>> e49d1e8b772e141a3401a355ec523c266c86a3bf
     top: 8px;
     right: 8px;
     display: flex;
@@ -32,6 +45,7 @@ export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setPro
     align-items: center;
     cursor: pointer;
 
+<<<<<<< HEAD
     &::before {
       background-color: #439DB0;
     }
@@ -42,6 +56,29 @@ export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setPro
 
     &:hover {
       /* TODO: exit button animation */
+=======
+    &:hover {
+      /* TODO: exit button animation */
+    }
+  `;
+
+  const ExitIcon = styled.div`
+    width: 1px;
+    height: 60%;
+    background-color: #439DB0;
+    transform: rotate(-45deg);
+    position: relative;
+
+    &:after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      background-color: inherit;
+      transform: rotate(90deg);
+      position: absolute;
+      top: 0;
+      left: 0;
+>>>>>>> e49d1e8b772e141a3401a355ec523c266c86a3bf
     }
   `;
 
@@ -127,16 +164,35 @@ export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setPro
     position: relative;
   `;
 
+<<<<<<< HEAD
   const LoginButton = styled(ButtonPrimary)`
     width: 100%;
     margin-top: 4rem;
+=======
+  const LoginButton = styled.button`
+    color: #fff;
+    width: 100%;
+    border: none;
+    background: linear-gradient(173.09deg, #00BFD9 0.28%, #527EEE 100%);
+    border-radius: .4rem;
+    padding: 1.15rem 0;
+    font-size: 1.4rem;
+    margin-top: 4rem;
+    cursor: pointer;
+>>>>>>> e49d1e8b772e141a3401a355ec523c266c86a3bf
   `;
 
   return isVisible
     ? <ModalWrapper>
       <ModalBox>
+<<<<<<< HEAD
         <ModalCloseButton onClick={() => hideModal()}>
         </ModalCloseButton>
+=======
+        <ButtonExit onClick={() => hideModal()}>
+          <ExitIcon></ExitIcon>
+        </ButtonExit>
+>>>>>>> e49d1e8b772e141a3401a355ec523c266c86a3bf
         <ModalTitle>Login with your wallet</ModalTitle>
         <ModalText>Please select your provider</ModalText>
         <ProviderList>
