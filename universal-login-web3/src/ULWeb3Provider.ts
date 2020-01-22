@@ -1,6 +1,6 @@
 import {Provider} from 'web3/providers';
 import {Config, getConfigForNetwork, Network} from './config';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService, setBetaNotice} from '@universal-login/sdk';
 import {UIController} from './services/UIController';
 import {providers, utils, constants} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
@@ -73,6 +73,7 @@ export class ULWeb3Provider implements Provider {
 
   async init() {
     await this.sdk.start();
+    setBetaNotice(this.sdk);
     this.walletService.loadFromStorage();
   }
 
@@ -127,7 +128,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sendTransaction(transaction: Partial<Message>): Promise<string> {
-    if (!await this.uiController.confirmRequest('Do you want send transaction?')) {
+    if (!await this.uiController.confirmRequest('Confirm transaction')) {
       return constants.HashZero;
     };
     this.uiController.showWaitForTransaction();

@@ -18,6 +18,7 @@ export const ExamplePlayground = () => {
   const ulButton = useRef<HTMLDivElement | null>(null);
 
   async function sendTx() {
+    await universalLogin.init();
     try {
       const res = await web3.eth.sendTransaction({
         from: (await web3.eth.getAccounts())[0],
