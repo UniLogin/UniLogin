@@ -1,13 +1,14 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {disconnectAccount} from '../../../src/core/services/DisconnectAccountService';
-import {DeployedWallet, WalletService} from '@universal-login/sdk';
 import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
-import {setupDeployedWallet} from '../../helpers/setupDeploymentWallet';
+import {DeployedWallet, WalletService} from '@universal-login/sdk';
 import RelayerUnderTest from '@universal-login/relayer';
+import {setupDeployedWallet} from '../../helpers/setupDeploymentWallet';
 import {DISCONNECT} from '../../../src/core/constants/verifyFields';
+import {disconnectAccount} from '../../../src/core/services/DisconnectAccountService';
+import {waitExpect} from '@universal-login/commons/testutils';
 
 chai.use(sinonChai);
 
@@ -24,6 +25,7 @@ describe('DisconnectAccountService', () => {
   before(async () => {
     ([wallet] = getWallets(createMockProvider()));
     ({deployedWallet, relayer} = await setupDeployedWallet(wallet, ensName));
+    (deployedWallet.sdk.provider as any).pollingInterval = 100;
   });
 
   beforeEach(async () => {
@@ -40,6 +42,7 @@ describe('DisconnectAccountService', () => {
     await promise;
     expect(setErrors).to.be.calledOnce;
     expect(onAccountDisconnected).to.be.calledOnce;
+    await waitExpect(() => expect(walletService.state).to.deep.eq({kind: 'None'}));
     expect(() => walletService.getDeployedWallet()).to.throw('Wallet state is None, but expected Deployed');
   });
 
