@@ -8,7 +8,7 @@ import {Provider} from 'web3/providers';
 describe('UNIT: Web3Picker', () => {
   const sendSpy = sinon.spy();
   const sendReadSpy = sinon.spy();
-  const createStub = sinon.stub().returns({send: () => sendSpy()});
+  const createStub = sinon.stub().resolves({send: () => sendSpy()});
   const universalLoginProviderFactory: Web3ProviderFactory = {
     name: 'UniversalLogin',
     icon: 'UniversalLogin logo',
@@ -35,17 +35,17 @@ describe('UNIT: Web3Picker', () => {
     web3Strategy.web3picker = web3Picker;
   });
 
-  it('Pick ul provider', () => {
-    web3Picker.setProvider(universalLoginProviderFactory.name);
+  it('Pick ul provider', async () => {
+    await web3Picker.setProvider(universalLoginProviderFactory.name);
     expect(createStub.calledOnce).to.be.true;
     web3Strategy.send(jsonRpcReq, () => {});
     expect(sendSpy.calledOnce).to.be.true;
     expect(sendReadSpy.called).to.be.false;
   });
 
-  it('Pick not existed provider', () => {
-    expect(() => web3Picker.setProvider('non-exist-name'))
-      .throws('Invalid provider: non-exist-name');
+  it('Pick not existed provider', async () => {
+    await expect(web3Picker.setProvider('non-exist-name'))
+      .rejectedWith('Invalid provider: non-exist-name');
   });
 
   it('Send read method should use readonlyProvider', () => {

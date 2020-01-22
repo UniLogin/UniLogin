@@ -1,4 +1,4 @@
-type ErrorType = 'InvalidProvider' | 'Web3ProviderNotFound';
+type ErrorType = 'InvalidProvider' | 'UnexpectedWalletState' | 'Web3ProviderNotFound';
 
 export class UlWeb3Error extends Error {
   errorType: ErrorType;
@@ -23,9 +23,17 @@ export class InvalidProvider extends ValidationFailed {
     Object.setPrototypeOf(this, InvalidProvider.prototype);
   }
 }
+
 export class Web3ProviderNotFound extends ValidationFailed {
   constructor() {
     super('Browser Web3 provider not found', 'Web3ProviderNotFound');
     Object.setPrototypeOf(this, Web3ProviderNotFound.prototype);
+  }
+}
+
+export class UnexpectedWalletState extends ValidationFailed {
+  constructor(walletState: string) {
+    super(`Unexpected wallet state: ${walletState}`, 'UnexpectedWalletState');
+    Object.setPrototypeOf(this, UnexpectedWalletState.prototype);
   }
 }

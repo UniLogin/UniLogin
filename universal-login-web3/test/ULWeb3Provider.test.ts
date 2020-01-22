@@ -73,10 +73,10 @@ describe('ULWeb3Provider', () => {
 
   describe('get accounts', () => {
     it('initialize onboarding when wallet does not exist', async () => {
-      const createSpy = sinon.spy(() => null);
-      sinon.replace(ulProvider, 'create', createSpy);
+      const initOnboardingSpy = sinon.spy(() => null);
+      sinon.replace(ulProvider, 'initOnboarding', initOnboardingSpy);
       expect(await web3.eth.getAccounts()).to.deep.eq([]);
-      expect(createSpy.calledOnce).to.be.true;
+      expect(initOnboardingSpy.calledOnce).to.be.true;
       sinon.restore();
     });
 
@@ -115,7 +115,7 @@ describe('ULWeb3Provider', () => {
 
   describe('create', () => {
     it('shows the UI and returns a promise that resolves once the wallet is created', async () => {
-      const promise = ulProvider.create();
+      const promise = ulProvider.initOnboarding();
 
       expect(services.uiController.activeModal.get()).to.be.deep.eq({kind: 'ONBOARDING'});
 
@@ -130,7 +130,8 @@ describe('ULWeb3Provider', () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
-      await expect(ulProvider.create()).to.be.rejectedWith('Wallet cannot be overridden');
+      await expect(ulProvider.initOnboarding()).to.be.rejectedWith('Unexpected wallet state: Deployed');
+      expect(services.uiController.activeModal.get()).to.be.deep.eq({kind: 'IDLE'});
     });
   });
 });

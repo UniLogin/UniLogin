@@ -4,7 +4,7 @@ import {ULWeb3Root, ULWeb3RootProps} from '../react/ULWeb3Root';
 
 export function initUi(props: ULWeb3RootProps) {
   const reactRootElement = createReactRoot();
-  render(<ULWeb3Root {...props}/>, reactRootElement);
+  render(<ULWeb3Root {...props} />, reactRootElement);
 }
 
 export function createReactRoot(rootId = 'universal-login-modal-root') {

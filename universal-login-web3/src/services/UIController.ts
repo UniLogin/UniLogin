@@ -1,6 +1,8 @@
 import {State} from 'reactive-properties';
 import {WalletService} from '@universal-login/sdk';
 import {ULWeb3ProviderState} from '../models/ULWeb3ProviderState';
+import {ensure} from '@universal-login/commons';
+import {UnexpectedWalletState} from '../ui/utils/errors';
 
 export class UIController {
   activeModal = new State<ULWeb3ProviderState>({kind: 'IDLE'});
@@ -37,8 +39,7 @@ export class UIController {
   }
 
   requireWallet() {
-    if (this.walletService.state.kind !== 'Deployed') {
-      this.activeModal.set({kind: 'ONBOARDING'});
-    };
+    ensure(this.walletService.state.kind !== 'Deployed', UnexpectedWalletState, 'Deployed');
+    this.activeModal.set({kind: 'ONBOARDING'});
   }
 }

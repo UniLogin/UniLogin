@@ -63,8 +63,6 @@ export class ULWeb3Provider implements Provider {
 
     this.isLoggedIn = this.walletService.isAuthorized;
 
-    this.sdk.start();
-
     uiInitializer({
       sdk: this.sdk,
       domains: ensDomains,
@@ -73,9 +71,14 @@ export class ULWeb3Provider implements Provider {
     });
   }
 
+  async init() {
+    await this.sdk.start();
+    this.walletService.loadFromStorage();
+  }
+
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    if (this.walletService.state.kind === 'None') {
-      await this.create();
+    if (this.walletService.state.kind !== 'Deployed') {
+      await this.initOnboarding();
     }
 
     switch (payload.method) {
@@ -155,8 +158,7 @@ export class ULWeb3Provider implements Provider {
     return wallet.signMessage(utils.arrayify(message));
   }
 
-  async create() {
-    this.walletService.loadFromStorage();
+  async initOnboarding() {
     this.uiController.requireWallet();
 
     await waitForTrue(this.isLoggedIn);
