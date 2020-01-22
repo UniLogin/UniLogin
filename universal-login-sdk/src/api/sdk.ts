@@ -64,7 +64,7 @@ class UniversalLoginSDK {
     this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.sdkConfig.authorizationsObserverTick);
     this.executionFactory = new ExecutionFactory(this.relayerApi, this.sdkConfig.mineableFactoryTick, this.sdkConfig.mineableFactoryTimeout);
     this.blockchainService = new BlockchainService(this.provider);
-    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.blockchainService, new BlockProperty(this.provider));
+    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.blockchainService, new BlockProperty(this.blockchainService));
     this.balanceChecker = new BalanceChecker(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, sdkConfig?.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokensAddresses);

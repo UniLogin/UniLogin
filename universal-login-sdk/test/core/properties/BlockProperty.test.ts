@@ -14,7 +14,7 @@ describe('INT: BlockProperty', () => {
   let callback: any;
 
   it('no subscriptions', () => {
-    property = new BlockProperty(createMockProvider());
+    property = new BlockProperty(new BlockchainService(createMockProvider()));
     expect(property.get()).to.eq(0);
   });
 
@@ -23,7 +23,7 @@ describe('INT: BlockProperty', () => {
       provider = createMockProvider();
       [wallet] = getWallets(provider);
       provider.pollingInterval = 1;
-      property = new BlockProperty(provider);
+      property = new BlockProperty(new BlockchainService(provider));
       callback = sinon.spy();
     });
 
@@ -68,7 +68,7 @@ describe('INT: BlockProperty', () => {
       provider = createMockProvider();
       [wallet] = getWallets(provider);
       provider.pollingInterval = 1;
-      property = new BlockProperty(provider);
+      property = new BlockProperty(new BlockchainService(provider));
       callback = sinon.spy();
     });
 
