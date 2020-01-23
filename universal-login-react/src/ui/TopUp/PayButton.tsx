@@ -1,4 +1,5 @@
 import React from 'react';
+import {classForComponent} from '../utils/classFor';
 
 export type ButtonState = 'active' | 'hidden' | 'disabled';
 
@@ -15,7 +16,7 @@ export const PayButton = ({onClick, state}: PayButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className="pay-btn"
+      className={classForComponent('pay-btn')}
       disabled={state === 'disabled'}
     >
       Pay

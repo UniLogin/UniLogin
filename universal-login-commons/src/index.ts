@@ -84,3 +84,4 @@ export {escapePressed} from './react/escapePressed';
 export {getSuggestionId} from './react/getSuggestionId';
 export {isDataForFunctionCall} from './core/utils/isDataForFunctionCall';
 export {multiplyBy150Percent} from './core/utils/multiplyBy150Percent';
+export {isClassName} from './react/isClassName';

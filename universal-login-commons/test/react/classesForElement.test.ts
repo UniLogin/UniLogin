@@ -8,7 +8,7 @@ describe('classesForElement', () => {
     expect(classesForInput()).to.eq('input');
   });
 
-  it('with two arruments', () => {
+  it('with two arguments', () => {
     expect(classesForInput('transfer-amount')).to.eq('input input-transfer-amount');
   });
 });

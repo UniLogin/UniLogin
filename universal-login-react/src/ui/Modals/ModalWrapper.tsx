@@ -2,7 +2,7 @@ import React, {ReactNode, useEffect} from 'react';
 import {escapePressed} from '@universal-login/commons';
 import {Notice, NoticeProps} from '../commons/Notice';
 import {useThemeClassFor} from '../utils/classFor';
-import './../styles/modal.sass';
+import './../styles/base/modal.sass';
 import './../styles/modalDefaults.sass';
 import './../styles/themes/UniLogin/modalThemeUniLogin.sass';
 import './../styles/themes/Legacy/modalThemeLegacy.sass';

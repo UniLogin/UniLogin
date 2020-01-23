@@ -1,0 +1,361 @@
+.unilogin-component-top-up
+  display: flex
+  flex-direction: column
+  width: 970px
+  min-height: 615px
+  max-width: 100%
+  padding: 0
+  background: #fff
+
+  .unilogin-component-modal-title
+    margin-bottom: 24px
+
+  .unilogin-component-top-up-methods
+    display: flex
+    align-items: center
+    padding-top: 56px
+    transition: all 0.2s linear
+
+  &.method-selected .unilogin-component-top-up-methods
+    border-bottom: 1px solid
+
+  .unilogin-component-top-up-header
+    display: flex
+    flex-direction: column
+    align-items: center
+    padding: 20px
+    flex-grow: 1
+    transition: flex-grow 0.2s linear
+
+  &.method-selected .unilogin-component-top-up-header
+    flex-grow: initial
+
+  &.method-selected .unilogin-component-top-up-method-icons
+    margin: 0 16px 0 0
+
+  .unilogin-component-top-up-method-title
+    margin: 0
+    font-weight: 500
+    font-size: 16px
+    line-height: 20px
+    text-align: center
+
+  .unilogin-component-top-up-method-text
+    margin: 8px 0 0
+    font-size: 14px
+    line-height: 140%
+    text-align: center
+
+  &.method-selected .unilogin-component-top-up-method-text
+    display: none
+
+  .unilogin-component-top-up-radio-label
+    display: block
+    cursor: pointer
+
+  .unilogin-component-top-up-radio-inner
+    position: relative
+    width: 270px
+    height: 270px
+    border-radius: 4px
+    display: flex
+    align-items: center
+    justify-content: center
+    background: none
+    background: #FFFFFF;
+    border: 1px solid
+
+  &.method-selected .unilogin-component-top-up-radio-inner
+    box-shadow: none
+    flex-direction: row
+
+  .unilogin-component-top-up-radio:checked + .unilogin-component-top-up-radio-inner::after
+    content: ''
+    position: absolute
+    left: 0
+    bottom: 0
+    width: 100%
+    height: 2px
+    background: #0ADBC2
+    border-radius: 4px
+
+  .unilogin-component-top-up-radio-label input
+    position: absolute
+    z-index: -1
+    opacity: 0
+    margin: 10px 0 0 20px
+
+  &.method-selected .unilogin-component-top-up-method
+    width: 270px
+    height: 98px
+
+  .unilogin-component-top-up-method
+    width: 270px
+    height: 270px
+    transition: height 0.2s linear
+
+  .unilogin-component-top-up-radio-inner
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    width: 100%
+    height: 100%
+
+  &.method-selected .unilogin-component-top-up-radio-inner
+    display: flex
+    flex-direction: row
+    align-items: center
+    border: none
+
+  .unilogin-component-top-up-row
+    display: flex
+    align-items: center
+
+  .unilogin-component-top-up-qr-toggler
+    width: 42px
+    height: 42px
+    margin-left: 8px
+    border: 1px solid
+    border-radius: 4px
+    cursor: pointer
+
+    // New styles
+
+  .unilogin-component-top-up-method + .unilogin-component-top-up-method
+    margin-left: 30px
+
+  .unilogin-component-top-up-method-icons
+    display: flex
+    justify-content: center
+    align-items: center
+    margin-bottom: 30px
+    transition: all 0.2s linear
+
+  &.method-selected .unilogin-component-top-up-method-icons
+    margin-bottom: 8px
+
+  .unilogin-component-top-up-method-icon
+    width: 50px
+    height: 50px
+
+  &.method-selected .unilogin-component-top-up-method-icon
+    width: 25px
+    height: 25px
+    transition: all 0.2s linear
+
+  .unilogin-component-top-up-method-icon + .unilogin-component-top-up-method-icon
+    margin-left: 12px
+
+  &.method-selected .unilogin-component-top-up-method-title
+    font-size: 14px
+    line-height: 17px
+
+  .unilogin-component-top-up-method-title
+    margin: 0 0 8px
+    font-size: 18px
+    text-align: center
+    transition: all 0.2s linear
+
+  .unilogin-component-top-up-method-text
+    max-width: 211px
+    margin: 0
+    font-size: 14px
+    text-align: center
+    line-height: 24px
+    transition: all 0.2s linear
+
+  &.method-selected .unilogin-component-top-up-method-text
+    font-size: 12px
+    line-height: 14px
+
+  &.method-selected .unilogin-component-top-up-body
+    flex-grow: 1
+
+  .unilogin-component-top-up-body-inner
+    max-width: 570px
+    padding: 0 20px
+    margin: 0 auto
+
+  .crypto
+    opacity: 0
+    padding: 40px 0
+    transition: all 0.2s linear
+
+  .crypto-selected.crypto
+    opacity: 1
+
+  .qr-code-wrapper
+    text-align: center
+    margin: 25px 0px
+
+  .unilogin-component-info-text-warning
+    font-size: 12px
+    color: #FF4C62
+
+  .unilogin-component-info-text-warning::before
+    // background: url('../assets/icons/info-warning.svg') center no-repeat
+
+  .unilogin-component-info-text-hint
+    margin: 0 5px 0 0
+    padding-left: 17px
+
+  .unilogin-component-info-text-hint::before
+    top: 9px
+    width: 12px
+    height: 12px
+    // background: url('../assets/icons/info.svg') center no-repeat
+    background-size: contain
+
+  .info-block
+    margin-top: 5px
+
+  .info-row
+    display: flex
+    align-items: center
+
+  .visa-logo
+    margin: 0 5px
+    width: 22px
+    height: 11px
+
+  .mastercard-logo
+    width: 18px
+    height: 13px
+
+  .revolut-logo
+    width: 13px
+    height: 13px
+
+  .yoti-logo
+    width: 13px
+    height: 13px
+
+  .apple-pay-logo
+    width: 22px
+    height: 14px
+
+  .fiat
+    padding: 25px 0 40px
+
+  .amount-input-wrapper
+    display: flex
+    height: 32px
+    background: #fff
+    border: 1px solid
+
+  .amount-input
+    width: 100%
+    height: 100%
+    padding-left: 13px
+    font-size: 12px
+    border: none
+
+  .amount-dropdown
+    position: relative
+    width: 90px
+    height: 100%
+
+  .amount-dropdown-btn
+    width: 100%
+    height: 32px
+    padding: 0 25px
+    font-size: 12px
+    text-align: left
+    border: none
+    background: none
+    cursor: pointer
+
+  .amount-dropdown-toggle
+    position: relative
+    padding: 0 31px 0 25px
+    border-left: 1px solid
+
+  .amount-dropdown-toggle::after
+    content: ''
+    position: absolute
+    top: 50%
+    right: 12px
+    width: 8px
+    height: 8px
+    transform: translateY(-50%)
+    // background: url('./../assets/icons/angle.svg') center no-repeat
+    background-size: contain
+
+  .amount-dropdown-btn.expanded::after
+    transform: translateY(-50%) rotate(180deg)
+
+  .amount-dropdown-list
+    position: absolute
+    right: 0
+    bottom: 0
+    transform: translateY(100%)
+    width: 100%
+    margin: 0
+    padding: 0
+    list-style: none
+    background: #fff
+    border: 1px solid
+    z-index: 10
+
+  .fiat-payment-methods
+    display: flex
+
+  .fiat-payment-method
+    opacity: 0
+    transform: scale(0)
+    transition: all 0.2s linear
+
+  .fiat-selected .fiat-payment-method
+    opacity: 1
+    transform: scale(1)
+
+  .fiat-payment-method .unilogin-component-top-up-radio-inner
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 132px
+    height: 97px
+
+  .fiat-payment-method + .fiat-payment-method
+    margin-left: 24px
+
+  .ramp-logo
+    width: 70px
+    height: 27px
+
+  .safello-logo
+    width: 88px
+    height: 32px
+
+  .wyre-logo
+    width: 62px
+    height: 62px
+
+  .unilogin-component-fiat-bottom
+    opacity: 0
+    transform: translateY(30px)
+    transition: all 0.3s linear
+    padding-top: 10px
+    height: 80px
+
+  .fiat-selected .unilogin-component-fiat-bottom
+    opacity: 1
+    transform: translateY(0)
+
+  .unilogin-component-pay-btn
+    margin: 20px auto 0
+    display: block
+    width: 100%
+    max-width: 370px
+    height: 50px
+    font-weight: 500
+    font-size: 14px
+    letter-spacing: -0.08px
+    text-align: center
+    cursor: pointer
+    background: none
+    border-radius: 6px
+
+  .unilogin-component-pay-btn[disabled]
+    cursor: not-allowed

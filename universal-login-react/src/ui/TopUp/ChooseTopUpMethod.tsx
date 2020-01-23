@@ -15,18 +15,17 @@ import {ChooseTopUpMethodHeader} from './ChooseTopUpMethodHeader';
 export interface ChooseTopUpMethodProps {
   walletService: WalletService;
   onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
-  topUpClassName?: string;
   logoColor?: LogoColor;
 }
 
-export const ChooseTopUpMethod = ({walletService, onPayClick, topUpClassName, logoColor}: ChooseTopUpMethodProps) => {
+export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: ChooseTopUpMethodProps) => {
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
   const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
 
   return (
-    <ChooseTopUpMethodWrapper className={topUpClassName} topUpMethod={topUpMethod}>
+    <ChooseTopUpMethodWrapper topUpMethod={topUpMethod}>
       <ChooseTopUpMethodHeader
         topUpMethod={topUpMethod}
         setTopUpMethod={setTopUpMethod}
@@ -43,12 +42,14 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, topUpClassName, lo
         onPaymentMethodChange={setPaymentMethod}
         logoColor={logoColor}
       />}
-      {topUpMethod && <FooterSection className={topUpClassName}>
-        <PayButton
-          onClick={() => onPayClick(paymentMethod!, amount)}
-          state={getPayButtonState(paymentMethod, topUpProviderSupportService, amount, topUpMethod)}
-        />
-      </FooterSection>}
+      {topUpMethod &&
+        <FooterSection>
+          <PayButton
+            onClick={() => onPayClick(paymentMethod!, amount)}
+            state={getPayButtonState(paymentMethod, topUpProviderSupportService, amount, topUpMethod)}
+          />
+        </FooterSection>
+      }
     </ChooseTopUpMethodWrapper>
   );
 };

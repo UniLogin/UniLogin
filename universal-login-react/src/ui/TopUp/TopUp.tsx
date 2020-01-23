@@ -13,19 +13,22 @@ import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import Spinner from '../commons/Spinner';
 import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
+import './../styles/themes/topUpJarvis.sass';
+import './../styles/base/chooseTopUp.sass';
+import './../styles/themes/Default/chooseTopUpThemeDefault.sass';
+import './../styles/themes/Legacy/chooseTopUpThemeLegacy.sass';
 import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
 
 export interface TopUpProps {
   walletService: WalletService;
   startModal?: TopUpComponentType;
-  topUpClassName?: string;
   modalClassName?: string;
   hideModal?: () => void;
   isModal?: boolean;
   logoColor?: LogoColor;
 }
 
-export const TopUp = ({walletService, startModal, modalClassName, hideModal, isModal, topUpClassName, logoColor}: TopUpProps) => {
+export const TopUp = ({walletService, startModal, modalClassName, hideModal, isModal, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
 
@@ -41,7 +44,6 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
     <ChooseTopUpMethod
       walletService={walletService}
       onPayClick={onPayClick}
-      topUpClassName={topUpClassName}
       logoColor={logoColor}
     />
   );

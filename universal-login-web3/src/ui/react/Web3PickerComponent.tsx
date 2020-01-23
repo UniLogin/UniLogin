@@ -42,7 +42,7 @@ export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setPro
 };
 
 const GlobalStyle = createGlobalStyle`
-  .universal-login-default .modal-wrapper {
+  .universal-login-default .unilogin-component-modal-wrapper {
     display: flex;
     flex-direction: column;
     max-width: 770px;
@@ -96,8 +96,6 @@ const GlobalStyle = createGlobalStyle`
       top: 1.1rem;
       right: 1.6rem;
     }
-  }
-
   .universal-login-default .modal {
     overflow: visible;
     background: unset;
@@ -107,7 +105,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   @media only screen and (max-width: 600px) {
-    .universal-login-default .modal-wrapper {
+    .universal-login-default .unilogin-component-modal-wrapper {
       height: 100%;
       overflow-y: auto;
       max-width: unset;
@@ -115,7 +113,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   @media only screen and (orientation: landscape) and (max-width: 1000px) {
-    .universal-login-default .modal-wrapper {
+    .universal-login-default .unilogin-component-modal-wrapper {
       max-width: unset;
     }
   }
