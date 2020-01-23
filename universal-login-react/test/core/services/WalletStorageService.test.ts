@@ -1,8 +1,9 @@
-import {MemoryStorageService, StorageService, WalletStorageService} from '../../../src';
-import {ETHER_NATIVE_TOKEN, ApplicationWallet, SerializableFutureWallet, TEST_GAS_PRICE} from '@universal-login/commons';
-import sinon from 'sinon';
 import {expect} from 'chai';
+import sinon from 'sinon';
 import {Wallet} from 'ethers';
+import {ETHER_NATIVE_TOKEN, ApplicationWallet, SerializableFutureWallet, TEST_GAS_PRICE} from '@universal-login/commons';
+import {MemoryStorageService} from '@universal-login/sdk';
+import {StorageService, WalletStorageService} from '../../../src';
 
 describe('WalletStorageService', () => {
   const baseWallet = {

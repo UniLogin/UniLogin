@@ -12,6 +12,7 @@ export {Execution} from './core/services/ExecutionFactory';
 export {TransferErrors, TransferService} from './core/services/TransferService';
 export {WalletService} from './core/services/WalletService';
 export {StorageEntry} from './core/services/StorageEntry';
+export {MemoryStorageService} from './core/services/MemoryStorageService';
 export {bigNumberMax} from './core/utils/bigNumberMax';
 export {encodeERC20Transfer} from './core/utils/encodeTransferToMessage';
 export {InvalidWalletState} from './core/utils/errors';

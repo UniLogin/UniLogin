@@ -1,9 +1,9 @@
 import {setupTestEnvironment} from './setupTestEnvironment';
 import Web3 from 'web3';
 import {Provider} from 'web3/providers';
+import {MemoryStorageService} from '@universal-login/sdk';
 import {ULWeb3Provider} from '../../src';
 import {ULWeb3RootProps} from '../../src/ui/react/ULWeb3Root';
-import {MemoryStorageService} from '@universal-login/react';
 
 function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider, ULWeb3RootProps] {
   let services: ULWeb3RootProps;
