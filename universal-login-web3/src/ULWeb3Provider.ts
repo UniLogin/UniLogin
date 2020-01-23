@@ -1,6 +1,6 @@
 import {Provider} from 'web3/providers';
 import {Config, getConfigForNetwork, Network} from './config';
-import UniversalLoginSDK, {WalletService, WalletStorageService} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {UIController} from './services/UIController';
 import {providers, utils, constants} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
@@ -56,8 +56,7 @@ export class ULWeb3Provider implements Provider {
       new providers.Web3Provider(this.provider as any),
       applicationInfo && {applicationInfo},
     );
-    const walletStorageService = new WalletStorageService(storageService);
-    this.walletService = new WalletService(this.sdk, walletFromBrain, walletStorageService);
+    this.walletService = new WalletService(this.sdk, walletFromBrain, storageService);
 
     this.uiController = new UIController(this.walletService);
 

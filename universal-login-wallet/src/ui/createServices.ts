@@ -1,7 +1,7 @@
 import React from 'react';
 import {providers} from 'ethers';
 import {walletFromBrain, DeepPartial} from '@universal-login/commons';
-import UniversalLoginSDK, {SdkConfig, WalletService, WalletStorageService} from '@universal-login/sdk';
+import UniversalLoginSDK, {SdkConfig, WalletService} from '@universal-login/sdk';
 import {StorageService} from '@universal-login/react';
 import UserDropdownService from '../app/UserDropdownService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
@@ -39,8 +39,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
   );
   const userDropdownService = new UserDropdownService();
   const storageService = overrides.storageService || new StorageService();
-  const walletStorageService = new WalletStorageService(storageService);
-  const walletService = new WalletService(sdk, walletFromBrain, walletStorageService);
+  const walletService = new WalletService(sdk, walletFromBrain, storageService);
   const walletPresenter = new WalletPresenter(walletService);
   sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
   return {
