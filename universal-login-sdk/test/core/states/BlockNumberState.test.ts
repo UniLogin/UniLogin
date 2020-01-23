@@ -5,16 +5,16 @@ import sinon from 'sinon';
 import {waitUntil} from '@universal-login/commons';
 import {mineBlock} from '@universal-login/contracts/testutils';
 import {BlockchainService} from '@universal-login/contracts';
-import {BlockState} from '../../../src/core/states/BlockState';
+import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 
-describe('INT: BlockState', () => {
+describe('INT: BlockNumberState', () => {
   let provider;
   let wallet: Wallet;
-  let state: BlockState;
+  let state: BlockNumberState;
   let callback: any;
 
   it('no subscriptions', () => {
-    state = new BlockState(new BlockchainService(createMockProvider()));
+    state = new BlockNumberState(new BlockchainService(createMockProvider()));
     expect(state.get()).to.eq(0);
   });
 
@@ -23,7 +23,7 @@ describe('INT: BlockState', () => {
       provider = createMockProvider();
       [wallet] = getWallets(provider);
       provider.pollingInterval = 1;
-      state = new BlockState(new BlockchainService(provider));
+      state = new BlockNumberState(new BlockchainService(provider));
       callback = sinon.spy();
     });
 
@@ -68,7 +68,7 @@ describe('INT: BlockState', () => {
       provider = createMockProvider();
       [wallet] = getWallets(provider);
       provider.pollingInterval = 1;
-      state = new BlockState(new BlockchainService(provider));
+      state = new BlockNumberState(new BlockchainService(provider));
       callback = sinon.spy();
     });
 
