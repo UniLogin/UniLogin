@@ -2,8 +2,9 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {Wallet} from 'ethers';
 import {ETHER_NATIVE_TOKEN, ApplicationWallet, SerializableFutureWallet, TEST_GAS_PRICE} from '@universal-login/commons';
-import {MemoryStorageService} from '@universal-login/sdk';
-import {StorageService, WalletStorageService} from '../../../src';
+import {IStorageService} from '../../../src/core/models/WalletService';
+import {WalletStorageService} from '../../../src/core/services/WalletStorageService';
+import {MemoryStorageService} from '../../../src/core/services/MemoryStorageService';
 
 describe('WalletStorageService', () => {
   const baseWallet = {
@@ -24,7 +25,7 @@ describe('WalletStorageService', () => {
   const STORAGE_KEY = 'wallet';
 
   const setup = () => {
-    const storage: StorageService = {
+    const storage: IStorageService = {
       get: sinon.fake(),
       set: sinon.fake(),
       remove: sinon.fake(),

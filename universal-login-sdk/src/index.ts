@@ -11,6 +11,7 @@ export {SerializedDeployingWallet, SerializedWalletState, WalletState, IStorageS
 export {Execution} from './core/services/ExecutionFactory';
 export {TransferErrors, TransferService} from './core/services/TransferService';
 export {WalletService} from './core/services/WalletService';
+export {WalletStorageService} from './core/services/WalletStorageService';
 export {StorageEntry} from './core/services/StorageEntry';
 export {MemoryStorageService} from './core/services/MemoryStorageService';
 export {bigNumberMax} from './core/utils/bigNumberMax';

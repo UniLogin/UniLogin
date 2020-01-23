@@ -1,6 +1,6 @@
 import {Provider} from 'web3/providers';
 import {Config, getConfigForNetwork, Network} from './config';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService, WalletStorageService} from '@universal-login/sdk';
 import {UIController} from './services/UIController';
 import {providers, utils, constants} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
@@ -8,7 +8,7 @@ import {ensure, Message, walletFromBrain, ApplicationInfo, DEFAULT_GAS_LIMIT} fr
 import {waitForTrue} from './ui/utils/utils';
 import {initUi} from './ui/utils/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
-import {StorageService, WalletStorageService} from '@universal-login/react';
+import {StorageService} from '@universal-login/react';
 import {Property} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
 

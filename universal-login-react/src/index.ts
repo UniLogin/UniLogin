@@ -34,7 +34,6 @@ export {Asset} from './ui/commons/Asset';
 export {Assets} from './ui/commons/Assets';
 export {GasPrice} from './ui/commons/GasPrice';
 export {StorageService} from './core/services/StorageService';
-export {WalletStorageService} from './core/services/WalletStorageService';
 export {Notice} from './ui/commons/Notice';
 export {ConnectionFlow} from './ui/ConnectionFlow';
 export {ExplorerLink} from './ui/commons/ExplorerLink';
