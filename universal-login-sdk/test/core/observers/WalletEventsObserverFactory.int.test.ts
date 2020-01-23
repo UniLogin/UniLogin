@@ -29,9 +29,10 @@ describe('INT: WalletEventsObserverFactory', async () => {
 
   before(async () => {
     ({relayer, sdk} = await setupSdk(deployer));
+    const blockchainService = new BlockchainService(sdk.provider);
     factory = new WalletEventsObserverFactory(
-      new BlockchainService(sdk.provider),
-      new BlockProperty(sdk.provider),
+      blockchainService,
+      new BlockProperty(blockchainService),
     );
     deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);
     filter = {

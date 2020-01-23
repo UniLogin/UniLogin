@@ -1,10 +1,11 @@
-import {waitUntil} from '@universal-login/commons';
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Wallet} from 'ethers';
 import sinon from 'sinon';
+import {waitUntil} from '@universal-login/commons';
+import {mineBlock} from '@universal-login/contracts/testutils';
+import {BlockchainService} from '@universal-login/contracts';
 import {BlockProperty} from '../../../src/core/properties/BlockProperty';
-import {mineBlock} from '../../helpers/mineBlock';
 
 describe('INT: BlockProperty', () => {
   let provider;
@@ -13,7 +14,7 @@ describe('INT: BlockProperty', () => {
   let callback: any;
 
   it('no subscriptions', () => {
-    property = new BlockProperty(createMockProvider());
+    property = new BlockProperty(new BlockchainService(createMockProvider()));
     expect(property.get()).to.eq(0);
   });
 
@@ -22,7 +23,7 @@ describe('INT: BlockProperty', () => {
       provider = createMockProvider();
       [wallet] = getWallets(provider);
       provider.pollingInterval = 1;
-      property = new BlockProperty(provider);
+      property = new BlockProperty(new BlockchainService(provider));
       callback = sinon.spy();
     });
 
@@ -67,7 +68,7 @@ describe('INT: BlockProperty', () => {
       provider = createMockProvider();
       [wallet] = getWallets(provider);
       provider.pollingInterval = 1;
-      property = new BlockProperty(provider);
+      property = new BlockProperty(new BlockchainService(provider));
       callback = sinon.spy();
     });
 

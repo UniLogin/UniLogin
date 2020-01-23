@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import sinon from 'sinon';
 import {getWallets, loadFixture, deployContract} from 'ethereum-waffle';
 import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS, TEST_CONTRACT_ADDRESS} from '@universal-login/commons';
 import {mockProviderWithBlockNumber} from '@universal-login/commons/testutils';
@@ -13,6 +14,7 @@ import basicWalletAndProxy from '../fixtures/basicWalletAndProxy';
 import {setupGnosisSafeContractFixture} from '../fixtures/gnosisSafe';
 import {computeGnosisCounterfactualAddress} from '../../src';
 import {DEPLOY_CONTRACT_NONCE} from '../../src/gnosis-safe@1.1.1/utils';
+import {mineBlock} from '../helpers/mineBlock';
 
 describe('INT: BlockchainService', async () => {
   const expectedBytecode = `0x${getDeployedBytecode(WalletContract as any)}`;
@@ -23,6 +25,7 @@ describe('INT: BlockchainService', async () => {
 
   beforeEach(async () => {
     ({provider, walletContractProxy} = await loadFixture(walletAndProxy));
+    (provider as any).pollingInterval = 5;
     [deployer] = getWallets(provider);
     blockchainService = new BlockchainService(provider);
   });
@@ -129,6 +132,38 @@ describe('INT: BlockchainService', async () => {
       const mockProvider = mockProviderWithBlockNumber('kovan', 1);
       blockchainService = new BlockchainService(mockProvider as providers.Provider);
       expect(await blockchainService.fetchHardforkVersion()).to.eq('istanbul');
+    });
+  });
+
+  describe('handle listeners', () => {
+    it('should not call callback after removeListener', async () => {
+      const callback = sinon.spy();
+      blockchainService.on('block', callback);
+      blockchainService.removeListener('block', callback);
+      await mineBlock(deployer);
+      expect(callback.called).to.be.false;
+    });
+
+    it('should call callback on new block', async () => {
+      const callback = sinon.spy();
+      const initialBlockNumber = await blockchainService.getBlockNumber();
+      blockchainService.on('block', callback);
+      await mineBlock(deployer);
+      expect(callback.calledOnceWithExactly(initialBlockNumber + 1)).to.be.true;
+      blockchainService.removeListener('block', callback);
+    });
+
+    it('should call callback multiply times on new blocks', async () => {
+      const callback = sinon.spy();
+      const expectedCallbackCalls = 3;
+      blockchainService.on('block', callback);
+      await mineBlock(deployer);
+      await mineBlock(deployer);
+      await mineBlock(deployer);
+      blockchainService.removeListener('block', callback);
+      expect(callback.lastCall.calledWithExactly(await blockchainService.getBlockNumber()));
+      expect(callback.callCount).to.be.eq(expectedCallbackCalls);
+      expect(callback.firstCall.calledWithExactly(await blockchainService.getBlockNumber() - expectedCallbackCalls));
     });
   });
 });

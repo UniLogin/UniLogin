@@ -5,10 +5,10 @@ import {Contract, Wallet, providers, utils} from 'ethers';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {waitExpect} from '@universal-login/commons/testutils';
+import {mineBlock} from '@universal-login/contracts/testutils';
 import basicSDK from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../src/api/sdk';
-import {waitExpect} from '@universal-login/commons/testutils';
-import {mineBlock} from '../helpers/mineBlock';
 import {Callback} from 'reactive-properties/dist/Property';
 
 chai.use(solidity);

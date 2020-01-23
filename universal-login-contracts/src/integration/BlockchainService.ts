@@ -20,6 +20,14 @@ export class BlockchainService {
     return this.provider.getLogs(filter);
   }
 
+  on(eventType: providers.EventType, listener: providers.Listener) {
+    return this.provider.on(eventType, listener);
+  }
+
+  removeListener(eventType: providers.EventType, listener: providers.Listener) {
+    return this.provider.removeListener(eventType, listener);
+  }
+
   getInitCode = async (factoryAddress: string) => {
     const factoryContract = new Contract(factoryAddress, WalletProxyFactoryInterface, this.provider);
     return factoryContract.initCode();
