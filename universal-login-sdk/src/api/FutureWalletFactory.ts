@@ -7,7 +7,6 @@ import {BlockchainService, computeGnosisCounterfactualAddress} from '@universal-
 import {ENSService} from '../integration/ethereum/ENSService';
 import UniversalLoginSDK from './sdk';
 import {FutureWallet} from './wallet/FutureWallet';
-// import {DEPLOY_CONTRACT_NONCE} from '@universal-login/contracts/src/gnosis-safe@1.1.1/utils';
 
 export type BalanceDetails = {
   tokenAddress: string;
