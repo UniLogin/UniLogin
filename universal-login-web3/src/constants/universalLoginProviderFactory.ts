@@ -5,5 +5,9 @@ import {getConfigForNetwork} from '../config';
 export const universalLoginProviderFactory: Web3ProviderFactory = {
   name: 'UniversalLogin',
   icon: 'UniversalLogin logo',
-  create: () => new ULWeb3Provider(getConfigForNetwork('kovan')),
+  create: async () => {
+    const provider = new ULWeb3Provider(getConfigForNetwork('kovan'));
+    await provider.init();
+    return provider;
+  },
 };
