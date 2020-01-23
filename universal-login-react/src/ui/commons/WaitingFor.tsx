@@ -1,5 +1,5 @@
 import React from 'react';
-import {ProgressBar} from '../commons/ProgressBar';
+// import {ProgressBar} from '../commons/ProgressBar';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/waitingFor.sass';
 import '../styles/waitingForDefault.sass';
@@ -15,11 +15,12 @@ export const WaitingFor = ({action, className}: WaitingForProps) => {
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="action-title-box">
           {action && <h1 className="action-title">{action}</h1>}
+          <img className="action-spinner" src="" alt="Spinner icon"/>
+        </div>
+        <div className="action-text-box">
+          <p className="action-text">It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it.</p>
         </div>
         <div className="modal-pending-img" />
-        <div className="modal-pending-section">
-          <ProgressBar className="pending-bar"/>
-        </div>
       </div>
     </div>
   );
