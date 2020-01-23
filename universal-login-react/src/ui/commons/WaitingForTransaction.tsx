@@ -3,6 +3,8 @@ import {PublicRelayerConfig} from '@universal-login/commons';
 import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import '../styles/waitingFor.sass';
+import '../styles/waitingForDefault.sass';
 
 export interface WaitingForTransactionProps extends WaitingForProps {
   relayerConfig: PublicRelayerConfig;

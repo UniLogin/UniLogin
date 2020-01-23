@@ -13,6 +13,7 @@ import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import Spinner from '../commons/Spinner';
 import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
+import './../styles/themes/topUpJarvis.sass';
 import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
 
 export interface TopUpProps {

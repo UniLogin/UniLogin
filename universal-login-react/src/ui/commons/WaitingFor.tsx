@@ -1,8 +1,6 @@
 import React from 'react';
 import {ProgressBar} from '../commons/ProgressBar';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import '../styles/waitingFor.sass';
-import '../styles/waitingForDefault.sass';
 
 export interface WaitingForProps {
   action?: string;
