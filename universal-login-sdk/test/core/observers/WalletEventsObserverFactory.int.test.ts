@@ -35,7 +35,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
       const blockchainService = new BlockchainService(sdk.provider);
       factory = new WalletEventsObserverFactory(
         blockchainService,
-        new BlockProperty(blockchainService),
+        new BlockNumberState(blockchainService),
       );
       await factory.start();
       ({proxyWallet, keyPair} = await setupWalletContract(deployer));
@@ -76,7 +76,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
       const blockchainService = new BlockchainService(sdk.provider);
       factory = new WalletEventsObserverFactory(
         blockchainService,
-        new BlockProperty(blockchainService),
+        new BlockNumberState(blockchainService),
       );
       await factory.start();
       deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);
