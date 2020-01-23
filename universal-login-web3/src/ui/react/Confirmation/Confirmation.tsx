@@ -17,7 +17,7 @@ export interface ConfirmationProps {
 }
 
 export const Confirmation = ({onConfirmationResponse, title, message}: ConfirmationProps) => {
-  const [speed, setSpeed] = useState('slow');
+  const [speed, setSpeed] = useState('cheap');
 
   return (
     <>

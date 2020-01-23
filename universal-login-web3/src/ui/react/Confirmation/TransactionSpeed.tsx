@@ -9,7 +9,7 @@ export interface TransactionSpeedProps {
 export const TransactionSpeed = ({selectedValue, onChange}: TransactionSpeedProps) => (
   <Row>
     <RadioButton
-      value="slow"
+      value="cheap"
       selectedValue={selectedValue}
       onChange={onChange}
       time="1 day"
