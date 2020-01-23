@@ -3,7 +3,7 @@ import {BrowserRouter, Route, Switch, Link} from 'react-router-dom';
 import {NavigationColumn} from './ui/commons/NavigationColumn';
 import {WalletSelector} from './ui/WalletSelector/WalletSelector';
 import {EmojiForm} from './ui/Notifications/EmojiForm';
-import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH} from '@universal-login/commons';
+import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH} from '@universal-login/commons';
 import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 import {Settings} from './ui/Settings/Settings';
 import {Onboarding} from './ui/Onboarding/Onboarding';
@@ -19,6 +19,7 @@ import {mockNotifications, CONNECTION_REAL_ADDRESS} from './ui/PlaygroundUtils/m
 import {ModalWrapper} from './ui/Modals/ModalWrapper';
 import {WaitingForOnRampProvider} from './ui/TopUp/Fiat/WaitingForOnRampProvider';
 import {TopUp} from './ui/TopUp/TopUp';
+import {WaitingForTransaction} from './ui/commons/WaitingForTransaction';
 
 export const App = () => {
   const {sdk} = useServices();
@@ -42,7 +43,7 @@ export const App = () => {
     contractAddress: TEST_ACCOUNT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     deploy: async () => deployingWallet,
-    waitForBalance: (async () => { }) as any,
+    waitForBalance: (async () => {}) as any,
     setSupportedToken: (() => {}) as any,
   } as any;
 
@@ -172,6 +173,30 @@ export const App = () => {
               <ModalWrapper>
                 <WaitingForOnRampProvider onRampProviderName={'ramp'} />
               </ModalWrapper>
+            </Route>
+            <Route exact path="/waitForTransaction">
+              <div>
+                <Link to="/waitForTransaction/withHash">With hash</Link><br />
+                <Link to="/waitForTransaction/withoutHash">Without hash</Link>
+              </div>
+            </Route>
+            <Route
+              path="/waitForTransaction/"
+              render={({location}) => {
+                if (!relayerConfig) {
+                  return <Spinner />;
+                } else {
+                  return (
+                    <ModalWrapper>
+                      <WaitingForTransaction
+                        action="Waiting for transaction"
+                        relayerConfig={relayerConfig}
+                        transactionHash={location.pathname === '/waitForTransaction/withHash' ? TEST_TRANSACTION_HASH : undefined}
+                      />
+                    </ModalWrapper>
+                  );
+                }
+              }}>
             </Route>
             <Route component={() => (<p>not found</p>)} />
           </Switch>

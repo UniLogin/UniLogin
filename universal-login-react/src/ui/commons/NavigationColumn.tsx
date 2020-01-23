@@ -18,7 +18,8 @@ export const NavigationColumn = () => (
       <li><Link to="/topUp">Topup</Link></li>
       <li><Link to="/recover">Recover</Link></li>
       <li><Link to="/settings">Settings</Link></li>
-      <li><Link to="/waiting">Waiting</Link></li>
+      <li><Link to="/waiting">Waiting for ramp</Link></li>
+      <li><Link to="/waitForTransaction">Waiting for transaction</Link></li>
     </ul>
   </div>
 );
