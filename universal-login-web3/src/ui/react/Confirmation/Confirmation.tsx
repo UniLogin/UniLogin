@@ -23,7 +23,7 @@ export const Confirmation = ({onConfirmationResponse, title, message}: Confirmat
     <>
       <GlobalStyle/>
       <ModalWrapper>
-        <Box className="confirmation-box">
+        <Box>
           <BoxHeader>
             <UniLoginLogo />
             <CloseButton />
@@ -66,30 +66,35 @@ export const Confirmation = ({onConfirmationResponse, title, message}: Confirmat
 };
 
 const GlobalStyle = createGlobalStyle`
-  .modal-wrapper {
+
+  .universal-login-default .modal-wrapper {
     display: flex;
     flex-direction: column;
-    max-width: 770px !important;
+    max-width: 770px;
     width: 100%;
+    min-height: initial;
+    padding: 0 0 41px;
+    max-height: 100%;
+    overflow-y: auto;
   }
-  .modal {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    background: #ffffff !important;
+  .universal-login-default .modal {
+    background: #ffffff;
+      overflow: visible;
   }
 `;
 
 const Box = styled.div`
   position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
   max-width: 770px;
   width: 100%;
   background: #fff;
   border-radius: 8px;
   padding: 8px;
+
+  @media(max-width: 600px) {
+    border-radius: 0;
+    padding: 8px 16px 16px;
+  }
 `;
 
 const BoxHeader = styled.div`
@@ -103,6 +108,10 @@ const BoxContent = styled.div`
   margin: 0 auto;
   padding: 30px;
   box-sizing: border-box;
+
+  @media(max-width: 600px) {
+    padding: 24px 0 0;
+  }
 `;
 
 const BoxFooter = styled.div`
@@ -110,10 +119,16 @@ const BoxFooter = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  flex-grow: 1;
+  margin-top: 220px;
 
   & ${ButtonPrimary} {
     margin-left: 8px;
+  }
+
+  @media(max-width: 600px) {
+    justify-content: space-between;
+    margin-top: 67px;
+    padding: 0;
   }
 `;
 
@@ -125,15 +140,29 @@ const Row = styled.div`
   & > * {
     width: 100%;
   }
+
+  @media(max-width: 600px) {
+    display: block;
+    margin-bottom: 24px;
+  }
 `;
 
 const TransactionData = styled.div`
   margin-top: 45px;
+
+  @media(max-width: 600px) {
+    margin-top: 24px;
+  }
 `;
 
 const DataLabel = styled(Text)`
   line-height: 17px;
   width: 100px;
+
+  @media(max-width: 600px) {
+    width: auto;
+    margin-bottom: 4px;
+  }
 `;
 
 const Address = styled.p`

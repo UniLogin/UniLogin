@@ -33,6 +33,14 @@ const NoticeWrapper = styled.div`
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
   z-index: -1;
+
+  @media(max-width: 600px) {
+    height: 41px;
+    bottom: 0;
+    transform: translateY(100%);
+    border-radius: 0;
+    padding: 0 16px;
+  }
 `;
 
 const NoticeText = styled.p`
@@ -55,4 +63,9 @@ const NoticeText = styled.p`
     background: url(${warningIcon}) center no-repeat;
     background-size: contain;
   };
+
+  @media(max-width: 600px) {
+    text-align: left;
+    padding-left: 25px;
+  }
 `;

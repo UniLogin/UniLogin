@@ -106,5 +106,13 @@ const RadioLabel = styled.label`
 
   & + & {
     margin-left: 8px;
+
+    @media(max-width: 600px) {
+      margin-left: 30px;
+    }
+  }
+
+  @media(max-width: 600px) {
+    max-width: 129px;
   }
 `;
