@@ -22,7 +22,7 @@ import {DeployedWallet} from './wallet/DeployedWallet';
 import {FutureWallet} from './wallet/FutureWallet';
 import {WalletEventType, WalletEventFilter, WalletEventCallback} from '../core/models/events';
 import WalletEventsObserverFactory from '../core/observers/WalletEventsObserverFactory';
-import {BlockProperty} from '../core/properties/BlockProperty';
+import {BlockNumberState} from '../core/states/BlockNumberState';
 import {WalletContractService} from '../integration/ethereum/WalletContractService';
 import {Beta2Service} from '../integration/ethereum/Beta2Service';
 import {GnosisSafeService} from '../integration/ethereum/GnosisSafeService';
@@ -64,7 +64,7 @@ class UniversalLoginSDK {
     this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.sdkConfig.authorizationsObserverTick);
     this.executionFactory = new ExecutionFactory(this.relayerApi, this.sdkConfig.mineableFactoryTick, this.sdkConfig.mineableFactoryTimeout);
     this.blockchainService = new BlockchainService(this.provider);
-    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.blockchainService, new BlockProperty(this.blockchainService));
+    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.blockchainService, new BlockNumberState(this.blockchainService));
     this.balanceChecker = new BalanceChecker(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, sdkConfig?.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokensAddresses);

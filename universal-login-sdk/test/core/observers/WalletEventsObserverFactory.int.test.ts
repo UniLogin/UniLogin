@@ -9,7 +9,7 @@ import UniversalLoginSDK, {DeployedWallet, WalletEventFilter} from '../../../src
 import WalletEventsObserverFactory from '../../../src/core/observers/WalletEventsObserverFactory';
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
-import {BlockProperty} from '../../../src/core/properties/BlockProperty';
+import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 import {setupGnosisSafeContract, executeAddKeyGnosis, executeRemoveKey} from '@universal-login/contracts/testutils';
 import {Contract} from 'ethers';
 import {waitExpect} from '@universal-login/commons/testutils';
@@ -32,7 +32,7 @@ describe('INT: WalletEventsObserverFactory', async () => {
     const blockchainService = new BlockchainService(sdk.provider);
     factory = new WalletEventsObserverFactory(
       blockchainService,
-      new BlockProperty(blockchainService),
+      new BlockNumberState(blockchainService),
     );
     deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);
     filter = {
