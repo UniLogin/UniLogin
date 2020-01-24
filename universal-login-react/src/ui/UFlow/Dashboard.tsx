@@ -24,7 +24,7 @@ export const Dashboard = (props: DashboardProps) => {
   const deployedWallet = state.kind === 'Deployed' ? state.wallet : undefined;
 
   const [newNotifications, setNewNotifications] = useState<Notification[]>([]);
-  useAsyncEffect(() => deployedWallet?.subscribeAuthorisations(setNewNotifications) as Promise<() => void>, [deployedWallet]);
+  useAsyncEffect(async () => deployedWallet?.subscribeAuthorisations(setNewNotifications) as Promise<() => void>, [deployedWallet]);
 
   useEffect(() => deployedWallet?.subscribeDisconnected(() => walletService.disconnect()), [deployedWallet]);
 
