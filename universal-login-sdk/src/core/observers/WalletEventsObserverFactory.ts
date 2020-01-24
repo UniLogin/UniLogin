@@ -19,26 +19,26 @@ class WalletEventsObserverFactory {
 
   constructor(
     private blockchainService: BlockchainService,
-    private blockNumberState: BlockNumberState,
+    private currentBlock: BlockNumberState,
     storageService: IStorageService = new MemoryStorageService(),
   ) {
     this.storage = new StorageEntry(STORAGE_KEY, asNumber, storageService);
   }
 
   async start() {
-    this.blockNumberState.set(await this.blockchainService.getBlockNumber());
-    this.unsubscribe = this.blockNumberState.subscribe(() => this.fetchEvents());
+    this.currentBlock.set(await this.blockchainService.getBlockNumber());
+    this.unsubscribe = this.currentBlock.subscribe(() => this.fetchEvents());
   }
 
   async fetchEvents() {
-    ensureNotNull(this.blockNumberState.get(), InvalidObserverState);
+    ensureNotNull(this.currentBlock.get(), InvalidObserverState);
     await this.fetchEventsOfTypes(['KeyAdded', 'KeyRemoved', 'AddedOwner', 'RemovedOwner']);
   }
 
   async fetchEventsOfTypes(types: WalletEventType[]) {
-    ensureNotNull(this.blockNumberState.get(), InvalidObserverState);
+    ensureNotNull(this.currentBlock.get(), InvalidObserverState);
     for (const contractAddress of Object.keys(this.observers)) {
-      await this.observers[contractAddress].fetchEvents(this.blockNumberState.get(), types);
+      await this.observers[contractAddress].fetchEvents(this.currentBlock.get(), types);
     }
   }
 
