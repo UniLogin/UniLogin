@@ -1,7 +1,7 @@
 import {Wallet, providers, utils} from 'ethers';
 import {deployContractAndWait} from '@universal-login/commons';
 import {beta2, gnosisSafe} from '@universal-login/contracts';
-import {connect} from '../cli/connectAndExecute';
+import {connectToEthereumNode} from '../cli/connectAndExecute';
 
 export type ConnectAndDeployFactoryBase = {
   nodeUrl: string;
@@ -16,7 +16,7 @@ export interface ConnectAndDeployFactory extends ConnectAndDeployFactoryBase {
 };
 
 export async function connectAndDeployFactory(argv: ConnectAndDeployFactory) {
-  const {wallet} = connect(argv.nodeUrl, argv.privateKey, argv.provider);
+  const {wallet} = connectToEthereumNode(argv.nodeUrl, argv.privateKey, argv.provider);
   await deployFactory(wallet, argv);
 }
 
