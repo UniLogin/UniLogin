@@ -3,7 +3,7 @@ import {deployContractAndWait} from '@universal-login/commons';
 import {beta2, gnosisSafe} from '@universal-login/contracts';
 import {connectToEthereumNode} from '../cli/connectAndExecute';
 
-export type ConnectAndDeployFactoryBase = {
+export type DeployGnosisFactoryArgs = {
   nodeUrl: string;
   privateKey: string;
   provider?: providers.Provider;
@@ -11,7 +11,7 @@ export type ConnectAndDeployFactoryBase = {
   nonce?: utils.BigNumber;
 };
 
-export interface ConnectAndDeployFactory extends ConnectAndDeployFactoryBase {
+export interface ConnectAndDeployFactory extends DeployGnosisFactoryArgs {
   walletContractAddress: string;
 };
 
@@ -31,7 +31,7 @@ export default async function deployBeta2Factory(wallet: Wallet, {nonce, gasPric
   return contractAddress;
 }
 
-export async function deployGnosisFactory(wallet: Wallet, givenTransactionOverrides: ConnectAndDeployFactoryBase): Promise<string> {
+export async function deployGnosisFactory(wallet: Wallet, givenTransactionOverrides: DeployGnosisFactoryArgs): Promise<string> {
   console.log('Deploying factory contract...');
   const transactionOverrides = {
     gasPrice: givenTransactionOverrides.gasPrice && utils.bigNumberify(givenTransactionOverrides.gasPrice),
