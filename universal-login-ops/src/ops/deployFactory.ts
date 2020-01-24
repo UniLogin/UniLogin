@@ -11,16 +11,16 @@ export type DeployGnosisFactoryArgs = {
   nonce?: utils.BigNumber;
 };
 
-export interface ConnectAndDeployFactory extends DeployGnosisFactoryArgs {
+export interface DeployBeta2FactoryArgs extends DeployGnosisFactoryArgs {
   walletContractAddress: string;
 };
 
-export async function connectAndDeployBeta2Factory(argv: ConnectAndDeployFactory) {
+export async function connectAndDeployBeta2Factory(argv: DeployBeta2FactoryArgs) {
   const {wallet} = connectToEthereumNode(argv.nodeUrl, argv.privateKey, argv.provider);
   await deployBeta2Factory(wallet, argv);
 }
 
-export default async function deployBeta2Factory(wallet: Wallet, {nonce, gasPrice, walletContractAddress}: ConnectAndDeployFactory): Promise<string> {
+export default async function deployBeta2Factory(wallet: Wallet, {nonce, gasPrice, walletContractAddress}: DeployBeta2FactoryArgs): Promise<string> {
   console.log('Deploying factory contract...');
   const transactionOverrides = {
     gasPrice: gasPrice && utils.bigNumberify(gasPrice),
