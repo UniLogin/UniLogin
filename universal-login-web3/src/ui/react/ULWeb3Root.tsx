@@ -2,7 +2,7 @@ import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {OnboardingModal, useProperty} from '@universal-login/react';
 import {UIController} from '../../services/UIController';
-import {Confirmation} from './Confirmation';
+import {Confirmation} from './Confirmation/Confirmation';
 import {WaitForTransactionModal} from './WaitingForTransactionModal';
 
 export interface ULWeb3RootProps {
@@ -14,6 +14,7 @@ export interface ULWeb3RootProps {
 
 export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3RootProps) => {
   const modal = useProperty(uiController.activeModal);
+  const message = sdk.getNotice();
 
   switch (modal.kind) {
     case 'IDLE':
@@ -25,7 +26,7 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
         domains={domains}
       />;
     case 'CONFIRMATION':
-      return <Confirmation {...modal.props} />;
+      return <Confirmation message={message} {...modal.props} />;
     case 'WAIT_FOR_TRANSACTION':
       return <WaitForTransactionModal
         transactionHash={modal.props.transactionHash}

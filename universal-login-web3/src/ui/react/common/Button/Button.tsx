@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const BaseButton = styled.button`
   display: block;
+  max-height: 40px;
   padding: 11.5px 24px;
   border-radius: 4px;
   font-weight: 700;
