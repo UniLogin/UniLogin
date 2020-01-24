@@ -90,4 +90,8 @@ export class GnosisSafeService implements IWalletContractService {
   decodeExecute(data: string) {
     return decodeDataForExecTransaction(data);
   }
+
+  isValidMessageHash(messageHash: string, signedMessage: SignedMessage) {
+    return messageHash !== '0x0000000000000000000000000000000000';
+  }
 }

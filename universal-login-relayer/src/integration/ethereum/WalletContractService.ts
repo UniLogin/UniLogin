@@ -96,4 +96,9 @@ export class WalletContractService {
     const service = await this.getWalletService(walletAddress);
     return service.decodeExecute(data);
   }
+
+  async isValidMessageHash(walletAddress: string, messageHash: string, signedMessage: SignedMessage) {
+    const service = await this.getWalletService(walletAddress);
+    return service.isValidMessageHash(messageHash, signedMessage);
+  }
 };
