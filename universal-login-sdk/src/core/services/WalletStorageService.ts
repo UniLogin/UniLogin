@@ -1,14 +1,15 @@
-import {StorageEntry, StorageService} from './StorageService';
-import {ApplicationWallet, asExactly, SerializableFutureWallet} from '@universal-login/commons';
 import {asAnyOf, asObject, asString, cast} from '@restless/sanitizers';
-import {WalletStorage, SerializedDeployingWallet, SerializedWalletState} from '@universal-login/sdk';
+import {ApplicationWallet, asExactly, SerializableFutureWallet} from '@universal-login/commons';
+import {WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
+import {IStorageService} from '../models/IStorageService';
+import {StorageEntry} from './StorageEntry';
 
 const STORAGE_KEY = 'wallet';
 
 export class WalletStorageService implements WalletStorage {
   private storage: StorageEntry<SerializedWalletState>;
 
-  constructor(private storageService: StorageService) {
+  constructor(private storageService: IStorageService) {
     this.storage = new StorageEntry(
       STORAGE_KEY,
       asSerializedState,
