@@ -13,6 +13,7 @@ import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 import {setupWalletContract} from '@universal-login/contracts/testutils';
 import {Contract} from 'ethers';
 import {waitExpect} from '@universal-login/commons/testutils';
+import {BlockNumberService} from '../../../src/core/services/BlockNumberService';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -33,9 +34,10 @@ describe('INT: WalletEventsObserverFactory', async () => {
     before(async () => {
       ({relayer, sdk} = await setupSdk(deployer));
       const blockchainService = new BlockchainService(sdk.provider);
+      const blockNumberService = new BlockNumberService(new BlockNumberState(blockchainService));
       factory = new WalletEventsObserverFactory(
         blockchainService,
-        new BlockNumberState(blockchainService),
+        blockNumberService,
       );
       await factory.start();
       ({proxyWallet, keyPair} = await setupWalletContract(deployer));
@@ -74,9 +76,10 @@ describe('INT: WalletEventsObserverFactory', async () => {
     before(async () => {
       ({relayer, sdk} = await setupSdk(deployer));
       const blockchainService = new BlockchainService(sdk.provider);
+      const blockNumberService = new BlockNumberService(new BlockNumberState(blockchainService));
       factory = new WalletEventsObserverFactory(
         blockchainService,
-        new BlockNumberState(blockchainService),
+        blockNumberService,
       );
       await factory.start();
       deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);

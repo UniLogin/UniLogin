@@ -1,32 +1,32 @@
 import {BlockchainService} from '@universal-login/contracts';
 import {WalletEventCallback, WalletEventFilter, WalletEventType} from '../models/events';
 import {WalletEventsObserver} from './WalletEventsObserver';
-import {BlockNumberState} from '../states/BlockNumberState';
 import {ensureNotNull, Nullable} from '@universal-login/commons';
 import {InvalidObserverState} from '../utils/errors';
 import {Callback} from 'reactive-properties/dist/Property';
+import {BlockNumberService} from '../services/BlockNumberService';
 
 class WalletEventsObserverFactory {
   protected observers: Record<string, WalletEventsObserver> = {};
   private unsubscribe: Nullable<Callback> = null;
 
-  constructor(private blockchainService: BlockchainService, private currentBlock: BlockNumberState) {
+  constructor(private blockchainService: BlockchainService, private blockNumberService: BlockNumberService) {
   }
 
   async start() {
-    this.currentBlock.set(await this.blockchainService.getBlockNumber());
-    this.unsubscribe = this.currentBlock.subscribe(() => this.fetchEvents());
+    this.blockNumberService.set(await this.blockchainService.getBlockNumber());
+    this.unsubscribe = this.blockNumberService.subscribe(() => this.fetchEvents());
   }
 
   async fetchEvents() {
-    ensureNotNull(this.currentBlock.get(), InvalidObserverState);
+    ensureNotNull(this.blockNumberService.get(), InvalidObserverState);
     await this.fetchEventsOfTypes(['KeyAdded', 'KeyRemoved', 'AddedOwner', 'RemovedOwner']);
   }
 
   async fetchEventsOfTypes(types: WalletEventType[]) {
-    ensureNotNull(this.currentBlock.get(), InvalidObserverState);
+    ensureNotNull(this.blockNumberService.get(), InvalidObserverState);
     for (const contractAddress of Object.keys(this.observers)) {
-      await this.observers[contractAddress].fetchEvents(this.currentBlock.get(), types);
+      await this.observers[contractAddress].fetchEvents(this.blockNumberService.get(), types);
     }
   }
 
