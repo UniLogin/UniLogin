@@ -6,7 +6,7 @@ import sinonChai from 'sinon-chai';
 import WalletEventsObserverFactory from '../../../src/core/observers/WalletEventsObserverFactory';
 import {keyAddedEvent, keyRemovedEvent} from '../../helpers/constants';
 import {waitExpect} from '@universal-login/commons/testutils';
-import {BlockNumberService} from '../../../src/core/services/BlockNumberService';
+import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 
 chai.use(sinonChai);
 
@@ -20,18 +20,18 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
   let onKeyRemove: ReturnType<typeof sinon.spy>;
   let factory: WalletEventsObserverFactory;
   let blockchainService: BlockchainService;
-  let blockNumberService: BlockNumberService;
+  let blockNumberState: BlockNumberState;
 
   beforeEach(async () => {
     blockchainService = {
       getBlockNumber: sinon.fake.resolves(0),
     } as any;
-    blockNumberService = {
+    blockNumberState = {
       get: sinon.fake.returns(0),
       set: sinon.fake(),
       subscribe: sinon.fake.returns(() => {}),
     } as any;
-    factory = new WalletEventsObserverFactory(blockchainService, blockNumberService);
+    factory = new WalletEventsObserverFactory(blockchainService, blockNumberState);
     onKeyAdd = sinon.spy();
     onKeyRemove = sinon.spy();
     await factory.start();

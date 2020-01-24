@@ -43,7 +43,6 @@ describe('UNIT: BlockNumberService', () => {
     });
   });
 
-
   it('subscribe', async () => {
     blockNumberService.subscribe(callback);
     expect(blockNumberStateStub.subscribe).to.be.calledOnceWith(callback);
