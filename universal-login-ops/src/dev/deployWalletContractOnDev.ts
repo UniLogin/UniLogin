@@ -2,7 +2,12 @@ import {getContractHash, deployContractAndWait} from '@universal-login/commons';
 import {beta2, deployWalletContract, gnosisSafe} from '@universal-login/contracts';
 import {Wallet, utils} from 'ethers';
 
-export default async function deployWalletContractOnDev(deployWallet: Wallet): Promise<{address: string, walletContractHash: string}> {
+type DeployedMasterConfig = {
+  address: string;
+  walletContractHash: string;
+};
+
+export default async function deployWalletContractOnDev(deployWallet: Wallet): Promise<DeployedMasterConfig> {
   const {address} = await deployWalletContract(deployWallet);
   console.log(`WalletContract address: ${address}`);
   const walletContractHash = getContractHash(beta2.WalletContract);
@@ -10,7 +15,7 @@ export default async function deployWalletContractOnDev(deployWallet: Wallet): P
   return {address, walletContractHash};
 }
 
-export async function deployGnosisSafe(deployWallet: Wallet): Promise<{address: string, walletContractHash: string}> {
+export async function deployGnosisSafe(deployWallet: Wallet): Promise<DeployedMasterConfig> {
   const address = await deployContractAndWait(deployWallet, gnosisSafe.GnosisSafe as any, [], {gasLimit: utils.bigNumberify('6500000')});
   console.log(`WalletContract address: ${address}`);
   const walletContractHash = getContractHash(gnosisSafe.GnosisSafe as any);
