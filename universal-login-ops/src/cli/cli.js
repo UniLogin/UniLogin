@@ -4,7 +4,7 @@ import deployToken from '../ops/deployToken';
 import connectAndExecute from './connectAndExecute';
 import deployMaster from '../ops/deployMaster';
 import deployENSRegistrar from '../ops/deployENSRegistrar';
-import {connectAndDeployBeta2Factory, deployFactoryGnosis} from '../ops/deployFactory';
+import {connectAndDeployBeta2Factory, deployGnosisFactory} from '../ops/deployFactory';
 import {sendFunds} from '../ops/sendFunds';
 import {defaultDeployOptions, ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
 import {registerTestDomain, registerEthDomain} from '../ENS/registerDomain';
@@ -57,7 +57,7 @@ const commandLineBuilder = yargs
   .command('deploy:factorygnosis', 'Deploys counterfactual factory contract for Gnosis Proxy',
     () => {},
     (argv) => {
-      connectAndExecute(argv, deployFactoryGnosis).catch(console.error);
+      connectAndExecute(argv, deployGnosisFactory).catch(console.error);
     })
   .command('deploy:factory [walletContractAddress]', 'Deploys counterfactual factory contract',
     (yargs) => {

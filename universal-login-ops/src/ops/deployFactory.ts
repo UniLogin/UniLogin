@@ -31,7 +31,7 @@ export default async function deployBeta2Factory(wallet: Wallet, {nonce, gasPric
   return contractAddress;
 }
 
-export async function deployFactoryGnosis(wallet: Wallet, givenTransactionOverrides: ConnectAndDeployFactoryBase): Promise<string> {
+export async function deployGnosisFactory(wallet: Wallet, givenTransactionOverrides: ConnectAndDeployFactoryBase): Promise<string> {
   console.log('Deploying factory contract...');
   const transactionOverrides = {
     gasPrice: givenTransactionOverrides.gasPrice && utils.bigNumberify(givenTransactionOverrides.gasPrice),
