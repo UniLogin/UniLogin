@@ -6,7 +6,7 @@ import Relayer from '@universal-login/relayer';
 import basicSDK from '../../fixtures/basicSDK';
 import UniversalLoginSDK from '../../../src/api/sdk';
 import AuthorisationsObserver from '../../../src/core/observers/AuthorisationsObserver';
-import {waitUntil, signRelayerRequest, RelayerRequest} from '@universal-login/commons';
+import {waitUntil, RelayerRequest} from '@universal-login/commons';
 import {utils, Wallet} from 'ethers';
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 
@@ -24,18 +24,18 @@ describe('INT: AuthorisationsObserver', async () => {
   let wallet: Wallet;
   let authorisationRequest: RelayerRequest;
 
-  const createauthorisationRequest = (walletContractAddress: string, privateKey: string) => {
+  const createauthorisationRequest = async (walletContractAddress: string, privateKey: string, sdk: UniversalLoginSDK) => {
     const authorisationRequest: RelayerRequest = {
-      contractAddress,
+      contractAddress: walletContractAddress,
       signature: '',
     };
-    signRelayerRequest(authorisationRequest, privateKey);
+    await sdk.walletContractService.signRelayerRequest(privateKey, authorisationRequest);
     return authorisationRequest;
   };
 
   beforeEach(async () => {
     ({sdk, relayer, contractAddress, privateKey, wallet} = await loadFixture(basicSDK));
-    authorisationRequest = createauthorisationRequest(contractAddress, privateKey);
+    authorisationRequest = await createauthorisationRequest(contractAddress, privateKey, sdk);
     ({authorisationsObserver} = sdk);
   });
 

@@ -6,7 +6,7 @@ import {messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@univers
 import {executeSetRequiredSignatures, emptyMessage} from '@universal-login/contracts/testutils';
 import IMessageRepository from '../../../src/core/models/messages/IMessagesRepository';
 import MessageItem from '../../../src/core/models/messages/MessageItem';
-import basicWalletContractWithMockToken from '../../fixtures/basicWalletContractWithMockToken';
+import {basicWalletContractWithMockToken} from '../../fixtures/basicWalletContractWithMockToken';
 import {getKeyFromHashAndSignature} from '../../../src/core/utils/encodeData';
 import {getKnexConfig} from '../../testhelpers/knex';
 import MessageSQLRepository from '../../../src/integration/sql/services/MessageSQLRepository';

@@ -8,7 +8,7 @@ export interface IWalletContractServiceStrategy {
   lastNonce: (walletAddress: string) => Promise<number>;
   keyExist: (walletAddress: string, key: string) => Promise<boolean>;
   requiredSignatures: (walletAddress: string) => Promise<utils.BigNumber>;
-  signMessage: (privateKey: string, message: Uint8Array | string, walletAddress: string) => string;
+  signMessage: (privateKey: string, message: Uint8Array, walletAddress: string) => string;
   encodeFunction: (method: string, args?: any[], walletAddress?: string) => Promise<string> | string;
   getEventNameFor: (event: string) => WalletEventType;
   signRelayerRequest: (privateKey: string, relayerRequest: RelayerRequest) => RelayerRequest;
@@ -48,7 +48,7 @@ export class WalletContractService {
     return service.requiredSignatures(walletAddress);
   }
 
-  async signMessage(walletAddress: string, privateKey: string, message: Uint8Array | string) {
+  async signMessage(walletAddress: string, privateKey: string, message: Uint8Array) {
     const service = await this.getWalletService(walletAddress);
     return service.signMessage(privateKey, message, walletAddress);
   }

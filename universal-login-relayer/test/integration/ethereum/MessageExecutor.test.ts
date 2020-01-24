@@ -6,7 +6,7 @@ import {Contract, providers, Wallet} from 'ethers';
 import {bigNumberify} from 'ethers/utils';
 import MessageExecutor from '../../../src/integration/ethereum/MessageExecutor';
 import {getTestSignedMessage} from '../../testconfig/message';
-import basicWalletContractWithMockToken from '../../fixtures/basicWalletContractWithMockToken';
+import {basicWalletContractWithMockToken} from '../../fixtures/basicWalletContractWithMockToken';
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 

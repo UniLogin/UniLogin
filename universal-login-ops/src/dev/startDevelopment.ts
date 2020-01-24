@@ -3,15 +3,15 @@ import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet} from 'ethers';
 import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@universal-login/commons';
 import {RelayerClass, Config} from '@universal-login/relayer';
-import {beta2} from '@universal-login/contracts';
+import {gnosisSafe} from '@universal-login/contracts';
 import {mockContracts} from '@universal-login/contracts/testutils';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
 import {startGanache} from './startGanache';
 import {deployENS} from './deployEns';
-import deployWalletContractOnDev from './deployWalletContractOnDev';
+import {deployGnosisSafe} from './deployWalletContractOnDev';
 import deployToken from './deployToken';
-import deployFactory from '../ops/deployFactory';
+import {deployFactoryGnosis} from '../ops/deployFactory';
 import deployENSRegistrar from '../ops/deployENSRegistrar';
 
 const ganachePort = 18545;
@@ -87,7 +87,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
 }
 
 function getProxyContractHash() {
-  const proxyContractHash = getContractHash(beta2.WalletProxy as ContractJSON);
+  const proxyContractHash = getContractHash(gnosisSafe.Proxy as ContractJSON);
   console.log(`beta2.WalletProxy hash: ${proxyContractHash}`);
   return proxyContractHash;
 }
@@ -107,9 +107,9 @@ async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrid
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [, , , , ensDeployer, deployWallet] = await getWallets(provider);
   const ensAddress = await deployENS(ensDeployer, ensDomains);
-  const {address, walletContractHash} = await deployWalletContractOnDev(deployWallet);
+  const {address, walletContractHash} = await deployGnosisSafe(deployWallet);
   const proxyContractHash = getProxyContractHash();
-  const factoryAddress = await deployFactory(deployWallet, {walletContractAddress: address, nodeUrl: 'dev', privateKey: 'dev'});
+  const factoryAddress = await deployFactoryGnosis(deployWallet, {nodeUrl: 'dev', privateKey: 'dev'});
   const saiTokenAddress = await deployToken(deployWallet, mockContracts.MockSai);
   const daiTokenAddress = await deployToken(deployWallet, mockContracts.MockDai);
   const ensRegistrar = await deployENSRegistrar(deployWallet);

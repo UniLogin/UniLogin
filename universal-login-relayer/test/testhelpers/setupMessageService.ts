@@ -5,7 +5,7 @@ import {IMessageValidator} from '@universal-login/commons';
 import MessageHandler from '../../src/core/services/execution/messages/MessageHandler';
 import QueueSQLStore from '../../src/integration/sql/services/QueueSQLStore';
 import AuthorisationStore from '../../src/integration/sql/services/AuthorisationStore';
-import basicWalletContractWithMockToken from '../fixtures/basicWalletContractWithMockToken';
+import {basicWalletContractWithMockToken} from '../fixtures/basicWalletContractWithMockToken';
 import MessageSQLRepository from '../../src/integration/sql/services/MessageSQLRepository';
 import {getContractWhiteList} from '../../src/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../src/core/services/execution/messages/MessageStatusService';

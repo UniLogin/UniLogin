@@ -1,4 +1,4 @@
-import {providers, Contract} from 'ethers';
+import {providers, Contract, utils} from 'ethers';
 import {GnosisSafeInterface, signStringMessage, calculateGnosisStringHash, getPreviousOwner} from '@universal-login/contracts';
 import {IWalletContractServiceStrategy} from './WalletContractService';
 import {ensureNotFalsy, RelayerRequest} from '@universal-login/commons';
@@ -27,10 +27,9 @@ export class GnosisSafeService implements IWalletContractServiceStrategy {
     return this.getContractInstance(walletAddress).getThreshold();
   }
 
-  signMessage(privateKey: string, message: Uint8Array | string, walletAddress?: string) {
+  signMessage(privateKey: string, message: Uint8Array, walletAddress?: string) {
     ensureNotFalsy(walletAddress, WalletNotFound);
-    ensureNotFalsy(typeof message === 'string', TypeError, 'Invalid message type. Expected type: string.');
-    const messageHash = calculateGnosisStringHash(message as string, walletAddress);
+    const messageHash = calculateGnosisStringHash(message, walletAddress);
     return signStringMessage(messageHash, privateKey);
   }
 
@@ -70,7 +69,7 @@ export class GnosisSafeService implements IWalletContractServiceStrategy {
   }
 
   signRelayerRequest(privateKey: string, relayerRequest: RelayerRequest) {
-    const signature = this.signMessage(privateKey, relayerRequest.contractAddress, relayerRequest.contractAddress);
+    const signature = this.signMessage(privateKey, utils.arrayify(utils.toUtf8Bytes(relayerRequest.contractAddress)), relayerRequest.contractAddress);
     relayerRequest.signature = signature;
     return relayerRequest;
   }

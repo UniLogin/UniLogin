@@ -39,9 +39,9 @@ export const signStringMessage = (payload: string, privateKey: string) => {
   return utils.joinSignature(signature);
 };
 
-export const calculateGnosisStringHash = (message: string, contractAddress: string) => {
+export const calculateGnosisStringHash = (message: Uint8Array, contractAddress: string) => {
   const abiCoder = new utils.AbiCoder();
-  const hashOfMsgBytes = utils.solidityKeccak256(['bytes'], [utils.hexlify(utils.toUtf8Bytes(message))]);
+  const hashOfMsgBytes = utils.solidityKeccak256(['bytes'], [message]);
   const msgHash = utils.keccak256(abiCoder.encode(['bytes32', 'bytes32'],
     [SAFE_MSG_TYPEHASH, hashOfMsgBytes]));
   const DOMAIN_SEPARATOR_TYPEHASH = '0x035aff83d86937d35b32e04f0ddc6ff469290eef2f1b692d8a815c89404d4749';

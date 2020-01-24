@@ -6,7 +6,7 @@ import {loadFixture} from 'ethereum-waffle';
 import {Contract, utils, Wallet} from 'ethers';
 import EstimateGasValidator from '../../../../src/integration/ethereum/validators/EstimateGasValidator';
 import {getTestSignedMessage} from '../../../testconfig/message';
-import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
+import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletContractWithMockToken';
 import {setupWalletContractService} from '../../../testhelpers/setupWalletContractService';
 
 describe('INT: EstimateGasValidator', async () => {

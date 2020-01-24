@@ -9,7 +9,7 @@ import {
   getContractHash,
   withENS,
 } from '@universal-login/commons';
-import {deployFactory, beta2, gnosisSafe} from '@universal-login/contracts';
+import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory} from '@universal-login/contracts';
 import {mockContracts} from '@universal-login/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
@@ -27,26 +27,27 @@ type CreateRelayerArgs = {
   wallet: Wallet;
   walletContract: Contract;
   factoryContract: Contract;
+  ensRegistrar: Contract;
 };
 
 export class RelayerUnderTest extends Relayer {
   static async deployBaseContracts(wallet: Wallet) {
-    const walletContract = await deployContract(wallet, WalletContract);
-    const factoryContract = await deployFactory(wallet, walletContract.address);
-    return {walletContract, factoryContract};
+    const walletContract = await deployGnosisSafe(wallet);
+    const factoryContract = await deployProxyFactory(wallet);
+    const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
+    return {walletContract, factoryContract, ensRegistrar};
   }
 
   static async createPreconfigured(wallet: Wallet, port = '33111') {
-    const {walletContract, factoryContract} = await RelayerUnderTest.deployBaseContracts(wallet);
-    return this.createPreconfiguredRelayer({port, wallet, walletContract, factoryContract});
+    const {walletContract, factoryContract, ensRegistrar} = await RelayerUnderTest.deployBaseContracts(wallet);
+    return this.createPreconfiguredRelayer({port, wallet, walletContract, factoryContract, ensRegistrar});
   }
 
-  static async createPreconfiguredRelayer({port, wallet, walletContract, factoryContract}: CreateRelayerArgs) {
+  static async createPreconfiguredRelayer({port, wallet, walletContract, factoryContract, ensRegistrar}: CreateRelayerArgs) {
     const ensBuilder = new ENSBuilder(wallet);
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
     const contractWhiteList = getContractWhiteList();
-    const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
     const mockToken = await deployContract(wallet, mockContracts.MockToken);
     const supportedTokens = [
       {
@@ -112,6 +113,6 @@ export async function clearDatabase(knex: Knex) {
 }
 
 export const getContractWhiteList = () => ({
-  wallet: [getContractHash(WalletContract as ContractJSON)],
-  proxy: [getContractHash(WalletProxy as ContractJSON)],
+  wallet: [getContractHash(WalletContract as ContractJSON), getContractHash(gnosisSafe.GnosisSafe)],
+  proxy: [getContractHash(WalletProxy as ContractJSON), getContractHash(gnosisSafe.Proxy)],
 });

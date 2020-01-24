@@ -6,3 +6,8 @@ export const getTestSignedMessage = (overrides?: Partial<Message>, privateKey: s
   const exampleMessage = {...emptyMessage, from: TEST_ACCOUNT_ADDRESS, to: TEST_ACCOUNT_ADDRESS, ...overrides};
   return messageToSignedMessage(exampleMessage, privateKey, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION);
 };
+
+export const getGnosisTestSignedMessage = (overrides?: Partial<Message>, privateKey: string = TEST_PRIVATE_KEY) => {
+  const exampleMessage = {...emptyMessage, from: TEST_ACCOUNT_ADDRESS, to: TEST_ACCOUNT_ADDRESS, ...overrides};
+  return messageToSignedMessage(exampleMessage, privateKey, CURRENT_NETWORK_VERSION, 'beta3');
+};
