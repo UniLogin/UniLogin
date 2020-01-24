@@ -1,6 +1,7 @@
 import {asAnyOf, asObject, asString, cast} from '@restless/sanitizers';
 import {ApplicationWallet, asExactly, SerializableFutureWallet} from '@universal-login/commons';
-import {IStorageService, WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
+import {WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
+import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';
 
 const STORAGE_KEY = 'wallet';

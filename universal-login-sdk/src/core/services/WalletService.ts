@@ -6,7 +6,8 @@ import {InvalidWalletState, InvalidPassphrase, WalletOverridden, TransactionHash
 import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';
 import {map, State} from 'reactive-properties';
-import {WalletState, IStorageService} from '../models/WalletService';
+import {WalletState} from '../models/WalletService';
+import {IStorageService} from '../models/IStorageService';
 import {WalletSerializer} from './WalletSerializer';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 import {NoopStorageService} from './NoopStorageService';

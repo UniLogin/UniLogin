@@ -1,5 +1,5 @@
 import {cast, Sanitizer} from '@restless/sanitizers';
-import {IStorageService} from '../models/WalletService';
+import {IStorageService} from '../models/IStorageService';
 
 export class StorageEntry<T> {
   constructor(private key: string, private sanitizer: Sanitizer<T>, private storageService: IStorageService) {}

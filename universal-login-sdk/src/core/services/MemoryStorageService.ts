@@ -1,4 +1,4 @@
-import {IStorageService} from '../models/WalletService';
+import {IStorageService} from '../models/IStorageService';
 
 export class MemoryStorageService implements IStorageService {
   private store: Record<string, string | undefined> = {};

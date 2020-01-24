@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {Wallet} from 'ethers';
 import {ETHER_NATIVE_TOKEN, ApplicationWallet, SerializableFutureWallet, TEST_GAS_PRICE} from '@universal-login/commons';
-import {IStorageService} from '../../../src/core/models/WalletService';
+import {IStorageService} from '../../../src/core/models/IStorageService';
 import {WalletStorageService} from '../../../src/core/services/WalletStorageService';
 import {MemoryStorageService} from '../../../src/core/services/MemoryStorageService';
 
