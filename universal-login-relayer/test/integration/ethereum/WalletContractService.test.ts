@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, signString, createKeyPair, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, signString, createKeyPair, CURRENT_NETWORK_VERSION, SignedMessage, calculateMessageHash} from '@universal-login/commons';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
-import {messageToSignedMessage, calculateMessageHash, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, calculateMessageSignature} from '@universal-login/contracts';
+import {messageToSignedMessage, calculateGnosisStringHash, calculateMessageHash as calculateMessageHashGnosis, signStringMessage, GnosisSafeInterface, calculateMessageSignature} from '@universal-login/contracts';
 import {ERC1271} from '@universal-login/contracts';
 import {setupGnosisSafeContract, executeAddKeyGnosis, executeRemoveKey} from '@universal-login/contracts/testutils';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
@@ -9,18 +9,33 @@ import {Contract, Wallet, utils} from 'ethers';
 import createWalletContract from '../../testhelpers/createWalletContract';
 import {getTestSignedMessage} from '../../testconfig/message';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
+import {INVALID_MSG_HASH} from '../../../src/integration/ethereum/GnosisSafeService';
 
 describe('INT: WalletContractService', () => {
   let walletContractService: WalletContractService;
   let proxyContract: Contract;
   let master: Contract;
   let wallet: Wallet;
+  let signedMessage: SignedMessage;
 
   before(async () => {
     const provider = createMockProvider();
     walletContractService = setupWalletContractService(provider);
     [wallet] = getWallets(provider);
     ({proxy: proxyContract, master} = await createWalletContract(wallet));
+    const message = {
+      to: TEST_ACCOUNT_ADDRESS,
+      value: utils.bigNumberify(1),
+      from: proxyContract.address,
+      data: '0x0',
+      gasPrice: TEST_GAS_PRICE,
+      gasToken: ETHER_NATIVE_TOKEN.address,
+      gasLimit: DEFAULT_GAS_LIMIT,
+      nonce: 0,
+      operationType: OperationType.call,
+      refundReceiver: TEST_ACCOUNT_ADDRESS,
+    };
+    signedMessage = messageToSignedMessage(message, wallet.privateKey, 'istanbul', 'beta2');
   });
 
   describe('beta2', () => {
@@ -39,19 +54,6 @@ describe('INT: WalletContractService', () => {
     });
 
     it('recovers signer from message', async () => {
-      const message = {
-        to: TEST_ACCOUNT_ADDRESS,
-        value: utils.bigNumberify(1),
-        from: proxyContract.address,
-        data: '0x0',
-        gasPrice: TEST_GAS_PRICE,
-        gasToken: ETHER_NATIVE_TOKEN.address,
-        gasLimit: DEFAULT_GAS_LIMIT,
-        nonce: 0,
-        operationType: OperationType.call,
-        refundReceiver: TEST_ACCOUNT_ADDRESS,
-      };
-      const signedMessage = messageToSignedMessage(message, wallet.privateKey, 'istanbul', 'beta2');
       expect(await walletContractService.recoverSignerFromMessage(signedMessage)).to.eq(wallet.address);
     });
 
@@ -74,6 +76,15 @@ describe('INT: WalletContractService', () => {
       const signature = signString(message, Wallet.createRandom().privateKey);
       expect(await walletContractService.isValidSignature(utils.hexlify(utils.toUtf8Bytes(message)), proxyContract.address, signature)).to.eq(ERC1271.INVALIDSIGNATURE);
     });
+
+    it('isValidMessageHash returns true if msg hash is correct', async () => {
+      const correctMsgHash = calculateMessageHash(signedMessage);
+      expect(await walletContractService.isValidMessageHash(proxyContract.address, correctMsgHash, signedMessage)).to.be.true;
+    });
+
+    it('isValidMessageHash returns false if msg hash is invalid', async () => {
+      expect(await walletContractService.isValidMessageHash(proxyContract.address, '0x949949', signedMessage)).to.be.false;
+    });
   });
 
   describe('beta3', () => {
@@ -93,7 +104,7 @@ describe('INT: WalletContractService', () => {
 
     it('calculates message hash', async () => {
       const message = {...getTestSignedMessage(), from: proxyContract.address};
-      const testSignedMsgHash = calculateMessageHash(message);
+      const testSignedMsgHash = calculateMessageHashGnosis(message);
       expect(await walletContractService.calculateMessageHash(message)).to.eq(testSignedMsgHash);
     });
 
@@ -173,6 +184,14 @@ describe('INT: WalletContractService', () => {
       const transaction = await executeRemoveKey(wallet, proxyContract.address, newKeyPair.publicKey, keyPair.privateKey);
       const decodedMessage = await walletContractService.decodeExecute(proxyContract.address, transaction.data);
       expect((await walletContractService.decodeKeyFromData(proxyContract.address, decodedMessage.data as string))[0]).to.eq(newKeyPair.publicKey);
+    });
+
+    it('isValidMessageHash returns false if provided messageHash is 0x0000000000000000000000000000000000', async () => {
+      expect(await walletContractService.isValidMessageHash(proxyContract.address, INVALID_MSG_HASH, {} as any)).to.be.false;
+    });
+
+    it('isValidMessageHash returns true if provided messageHash is not 0x0000000000000000000000000000000000', async () => {
+      expect(await walletContractService.isValidMessageHash(proxyContract.address, '0x1234', {} as any)).to.be.true;
     });
   });
 });
