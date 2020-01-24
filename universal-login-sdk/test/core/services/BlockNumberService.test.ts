@@ -50,7 +50,9 @@ describe('UNIT: BlockNumberService', () => {
   });
 
   it('set', async () => {
-    blockNumberService.set(10);
-    expect(blockNumberStateStub.set).to.be.calledOnceWithExactly(10);
+    blockNumberService.set(100);
+    expect(blockNumberStateStub.set).to.be.calledOnceWithExactly(100);
+    expect(blockNumberStorageStub.set).to.be.calledOnceWithExactly('LAST_BLOCK_NUMBER', '100');
+    expect(blockNumberStorageStub.set).to.be.calledImmediatelyBefore(blockNumberStateStub.set);
   });
 });

@@ -26,6 +26,7 @@ export class BlockNumberService {
   }
 
   set(blockNumber: number) {
+    this.storage.set(blockNumber);
     this.blockNumberState.set(blockNumber);
   }
 
