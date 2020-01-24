@@ -13,7 +13,6 @@ import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 import {setupWalletContract} from '@universal-login/contracts/testutils';
 import {Contract} from 'ethers';
 import {waitExpect} from '@universal-login/commons/testutils';
-import {BlockNumberService} from '../../../src/core/services/BlockNumberService';
 
 chai.use(solidity);
 chai.use(sinonChai);
