@@ -1,7 +1,7 @@
 import {EventEmitter} from 'fbemitter';
 import {utils} from 'ethers';
 import {ensure, RequiredBalanceChecker, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT, DeviceInfo, SupportedToken, safeMultiply, MINIMAL_DEPLOYMENT_GAS_LIMIT} from '@universal-login/commons';
-import {computeGnosisCounterfactualAddress, encodeDataForSetup, gnosisSafe} from '@universal-login/contracts';
+import {computeGnosisCounterfactualAddress, encodeDataForSetup, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@universal-login/contracts';
 import ENSService from './ensService';
 import {NotEnoughBalance, InvalidSignature, NotEnoughGas} from '../../core/utils/errors';
 import {Config} from '../../config/relayer';
@@ -24,7 +24,7 @@ export class WalletDeploymentService {
   async setupInitializeData({publicKey, ensName, gasPrice, gasToken}: Omit<DeployArgs, 'signature'>) {
     const ensArgs = await this.ensService.argsFor(ensName);
     const deployment = {owners: [publicKey],
-      requiredConfirmations: 1,
+      requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
       deploymentCallAddress: this.config.ensRegistrar,
       deploymentCallData: new utils.Interface(gnosisSafe.ENSRegistrar.interface as any).functions.register.encode(ensArgs),
       fallbackHandler: AddressZero,

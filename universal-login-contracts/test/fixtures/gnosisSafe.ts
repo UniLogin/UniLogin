@@ -6,7 +6,7 @@ import {encodeDataForSetup, encodeDataForExecTransaction} from '../../src/gnosis
 import {deployGnosisSafe, deployProxyFactory} from '../../src/gnosis-safe@1.1.1/deployContracts';
 import {computeGnosisCounterfactualAddress, getPreviousOwner} from '../../src/gnosis-safe@1.1.1/utils';
 import {Provider} from 'ethers/providers';
-import {messageToSignedMessage} from '../../src';
+import {messageToSignedMessage, INITIAL_REQUIRED_CONFIRMATIONS} from '../../src';
 
 export async function setupGnosisSafeContract(wallet: Wallet) {
   const gnosisSafe = await deployGnosisSafe(wallet);
@@ -14,7 +14,7 @@ export async function setupGnosisSafeContract(wallet: Wallet) {
   const keyPair = createKeyPair();
   const deployment = {
     owners: [keyPair.publicKey],
-    requiredConfirmations: 1,
+    requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
     deploymentCallAddress: AddressZero,
     deploymentCallData: '0x0',
     fallbackHandler: AddressZero,
