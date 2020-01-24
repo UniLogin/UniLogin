@@ -26,8 +26,8 @@ export const CloseButton = styled.button`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(135deg);
-    width: 11px;
-    height: 1px;
+    width: 1px;
+    height: 11px;
     background-color: #7D7C9C;
   }
 `;

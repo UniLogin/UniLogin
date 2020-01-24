@@ -26,16 +26,14 @@ export const ModalWrapper = ({modalPosition, children, modalClassName, hideModal
   });
 
   return (
-    <>
-      <div className={modalClassName ? `universal-login ${modalClassName}` : 'universal-login-default'}>
-        <div className="modal-overlay" onClick={hideModal} />
-        <div className={`modal-wrapper ${modalPosition || 'center'}`}>
-          <div className="modal">
-            {!!hideModal && <button onClick={hideModal} className="modal-close-btn" />}
-            {children}
-          </div>
+    <div className={modalClassName ? `universal-login ${modalClassName}` : 'universal-login-default'}>
+      <div className="modal-overlay" onClick={hideModal} />
+      <div className={`modal-wrapper ${modalPosition || 'center'}`}>
+        <div className="modal">
+          {!!hideModal && <button onClick={hideModal} className="modal-close-btn" />}
+          {children}
         </div>
       </div>
-    </>
+    </div>
   );
 };
