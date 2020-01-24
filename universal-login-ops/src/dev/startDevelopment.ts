@@ -11,7 +11,7 @@ import {startGanache} from './startGanache';
 import {deployENS} from './deployEns';
 import {deployGnosisSafe} from './deployWalletContractOnDev';
 import deployToken from './deployToken';
-import {deployFactoryGnosis} from '../ops/deployFactory';
+import {deployGnosisFactory} from '../ops/deployFactory';
 import deployENSRegistrar from '../ops/deployENSRegistrar';
 
 const ganachePort = 18545;
@@ -109,7 +109,7 @@ async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrid
   const ensAddress = await deployENS(ensDeployer, ensDomains);
   const {address, walletContractHash} = await deployGnosisSafe(deployWallet);
   const proxyContractHash = getProxyContractHash();
-  const factoryAddress = await deployFactoryGnosis(deployWallet, {nodeUrl: 'dev', privateKey: 'dev'});
+  const factoryAddress = await deployGnosisFactory(deployWallet, {nodeUrl: 'dev', privateKey: 'dev'});
   const saiTokenAddress = await deployToken(deployWallet, mockContracts.MockSai);
   const daiTokenAddress = await deployToken(deployWallet, mockContracts.MockDai);
   const ensRegistrar = await deployENSRegistrar(deployWallet);
