@@ -193,9 +193,13 @@ export class WalletService {
       this.disconnect();
       return;
     }
-    const execution = await this.state.wallet.removeCurrentKey(executionOptions);
-    execution.waitToBeSuccess().then(() => this.disconnect());
-    return execution;
+    const existingKeysCount = (await this.state.wallet.getKeys()).length;
+    if (existingKeysCount > 1) {
+      const execution = await this.state.wallet.removeCurrentKey(executionOptions);
+      execution.waitToBeSuccess().then(() => this.disconnect());
+      return execution;
+    }
+    this.disconnect();
   }
 
   disconnect(): void {

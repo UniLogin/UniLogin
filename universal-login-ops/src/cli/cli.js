@@ -3,11 +3,13 @@ import startDevelopment from '../dev/startDevelopment';
 import deployToken from '../ops/deployToken';
 import connectAndExecute from './connectAndExecute';
 import deployMaster from '../ops/deployMaster';
-import {connectAndDeployFactory} from '../ops/deployFactory';
+import deployENSRegistrar from '../ops/deployENSRegistrar';
+import {connectAndDeployFactory, deployFactoryGnosis} from '../ops/deployFactory';
 import {sendFunds} from '../ops/sendFunds';
 import {defaultDeployOptions, ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
 import {registerTestDomain, registerEthDomain} from '../ENS/registerDomain';
 import {registerENSName} from '../ENS/registerENSName';
+import {deployGnosisSafe} from '../dev/deployWalletContractOnDev';
 
 const commandLineBuilder = yargs
   .usage('Usage: $0 [command] [options]')
@@ -41,6 +43,21 @@ const commandLineBuilder = yargs
     () => {},
     (argv) => {
       connectAndExecute(argv, deployMaster).catch(console.error);
+    })
+  .command('deploy:ensregistrar', 'Deploys wallet master contract',
+    () => {},
+    (argv) => {
+      connectAndExecute(argv, deployENSRegistrar).catch(console.error);
+    })
+  .command('deploy:gnosis', 'Deploys Gnosis Safe contract',
+    () => {},
+    (argv) => {
+      connectAndExecute(argv, deployGnosisSafe).catch(console.error);
+    })
+  .command('deploy:factorygnosis', 'Deploys counterfactual factory contract for Gnosis Proxy',
+    () => {},
+    (argv) => {
+      connectAndExecute(argv, deployFactoryGnosis).catch(console.error);
     })
   .command('deploy:factory [walletContractAddress]', 'Deploys counterfactual factory contract',
     (yargs) => {

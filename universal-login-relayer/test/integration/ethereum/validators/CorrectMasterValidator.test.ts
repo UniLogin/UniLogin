@@ -5,7 +5,7 @@ import {Contract, Wallet} from 'ethers';
 import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTest';
 import CorrectMasterValidator from '../../../../src/integration/ethereum/validators/CorrectMasterValidator';
 import {getTestSignedMessage} from '../../../testconfig/message';
-import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
+import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletContractWithMockToken';
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
 import {setupWalletContractService} from '../../../testhelpers/setupWalletContractService';
 

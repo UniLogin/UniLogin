@@ -26,7 +26,7 @@ export class GnosisSafeService implements IWalletContractService {
   }
 
   recoverSignerFromMessage(message: SignedMessage) {
-    return utils.verifyMessage(
+    return utils.recoverAddress(
       this.calculateMessageHash(message),
       message.signature,
     );
@@ -48,7 +48,7 @@ export class GnosisSafeService implements IWalletContractService {
 
   recoverFromRelayerRequest(relayerRequest: RelayerRequest) {
     return utils.recoverAddress(
-      calculateGnosisStringHash(relayerRequest.contractAddress, relayerRequest.contractAddress),
+      calculateGnosisStringHash(utils.arrayify(utils.toUtf8Bytes(relayerRequest.contractAddress)), relayerRequest.contractAddress),
       relayerRequest.signature!,
     );
   }

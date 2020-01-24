@@ -73,14 +73,10 @@ describe('INT: WalletContractService', () => {
 
     it('correctly calculates signature', async () => {
       const message = 'Hi, how are you?';
-      const msgHash = calculateGnosisStringHash(message, proxyWallet.address);
+      const messagePayload = utils.arrayify(utils.toUtf8Bytes(message));
+      const msgHash = calculateGnosisStringHash(messagePayload, proxyWallet.address);
       const signature = signStringMessage(msgHash, keyPair.privateKey);
-      expect(await walletService.signMessage(proxyWallet.address, keyPair.privateKey, message)).to.eq(signature);
-    });
-
-    it('throws error if message is not string', async () => {
-      const message = 'Hi, how are you?';
-      await expect(walletService.signMessage(proxyWallet.address, keyPair.privateKey, utils.toUtf8Bytes(message))).to.be.rejectedWith('Invalid message type. Expected type: string.');
+      expect(await walletService.signMessage(proxyWallet.address, keyPair.privateKey, messagePayload)).to.eq(signature);
     });
 
     it('encodes function that adds key', async () => {

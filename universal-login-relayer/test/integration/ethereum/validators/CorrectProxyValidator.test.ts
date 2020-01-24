@@ -5,7 +5,7 @@ import {Contract, Wallet} from 'ethers';
 import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTest';
 import CorrectProxyValidator from '../../../../src/integration/ethereum/validators/CorrectProxyValidator';
 import {getTestSignedMessage} from '../../../testconfig/message';
-import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
+import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletContractWithMockToken';
 
 describe('INT: CorrectProxyValidator', async () => {
   let message: MessageWithFrom;

@@ -44,12 +44,12 @@ describe('calculateMessageHash', () => {
 
   it('calculate string message hash', async () => {
     const msg = 'Hi!';
-    expect(await proxy.getMessageHash(utils.hexlify(utils.toUtf8Bytes(msg)))).to.eq(calculateGnosisStringHash(msg, proxy.address));
+    expect(await proxy.getMessageHash(utils.hexlify(utils.toUtf8Bytes(msg)))).to.eq(calculateGnosisStringHash(utils.arrayify(utils.toUtf8Bytes(msg)), proxy.address));
   });
 
   it('calculate signature', async () => {
     const msg = 'Hi!';
-    const msgHash = calculateGnosisStringHash(msg, proxy.address);
+    const msgHash = calculateGnosisStringHash(utils.arrayify(utils.toUtf8Bytes(msg)), proxy.address);
     const signature = signStringMessage(msgHash, keyPair.privateKey);
     const signatureValidator = new Contract(proxy.address, ISignatureValidatorInterface, provider);
     expect(await signatureValidator.isValidSignature(utils.hexlify(utils.toUtf8Bytes(msg)), signature)).to.eq('0x20c13b0b');

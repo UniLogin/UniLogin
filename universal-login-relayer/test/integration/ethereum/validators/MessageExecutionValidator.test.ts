@@ -4,7 +4,7 @@ import {loadFixture, deployContract} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, Message, IMessageValidator} from '@universal-login/commons';
 import {unsignedMessageToSignedMessage} from '@universal-login/contracts';
 import {emptyMessage, mockContracts} from '@universal-login/contracts/testutils';
-import basicWalletContractWithMockToken from '../../../fixtures/basicWalletContractWithMockToken';
+import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletContractWithMockToken';
 import MessageExecutionValidator from '../../../../src/integration/ethereum/validators/MessageExecutionValidator';
 import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTest';
 import {transferMessage} from '../../../fixtures/basicWalletContract';

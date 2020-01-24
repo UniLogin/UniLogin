@@ -17,6 +17,7 @@ export async function setupTestEnvironment() {
     ensDomains,
     mockToken,
     wallets,
+    ensRegistrar,
   } = await loadFixture(prerequisites);
 
   const providerWithENS = withENS(deployer.provider as providers.Web3Provider, ensAddress);
@@ -38,6 +39,7 @@ export async function setupTestEnvironment() {
     chainSpec: {
       ensAddress,
     },
+    ensRegistrar: ensRegistrar.address,
     ensRegistrars: ensDomains,
     walletContractAddress: walletContract.address,
     contractWhiteList,
