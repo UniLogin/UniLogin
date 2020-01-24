@@ -11,7 +11,7 @@ export default async function deployWalletContractOnDev(deployWallet: Wallet): P
 }
 
 export async function deployGnosisSafe(deployWallet: Wallet): Promise<{address: string, walletContractHash: string}> {
-  const address = await deployContractAndWait(deployWallet, gnosisSafe.GnosisSafe, [], {gasLimit: utils.bigNumberify('6500000')});
+  const address = await deployContractAndWait(deployWallet, gnosisSafe.GnosisSafe as any, [], {gasLimit: utils.bigNumberify('6500000')});
   console.log(`WalletContract address: ${address}`);
   const walletContractHash = getContractHash(gnosisSafe.GnosisSafe as any);
   console.log(`WalletContract hash: ${walletContractHash}`);
