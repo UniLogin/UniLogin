@@ -13,7 +13,7 @@ import walletAndProxy from '../fixtures/walletAndProxy';
 import basicWalletAndProxy from '../fixtures/basicWalletAndProxy';
 import {setupGnosisSafeContractFixture} from '../fixtures/gnosisSafe';
 import {computeGnosisCounterfactualAddress} from '../../src';
-import {DEPLOY_CONTRACT_NONCE} from '../../src/gnosis-safe@1.1.1/utils';
+import {DEPLOY_CONTRACT_NONCE} from '../../src/gnosis-safe@1.1.1/constants';
 import {mineBlock} from '../helpers/mineBlock';
 
 describe('INT: BlockchainService', async () => {
