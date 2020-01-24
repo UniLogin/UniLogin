@@ -18,7 +18,11 @@ export class BlockNumberService {
   }
 
   get() {
-    return this.blockNumberState.get();
+    const storageValue = this.storage.get();
+    if (storageValue === null) {
+      return this.blockNumberState.get();
+    }
+    return storageValue;
   }
 
   set(blockNumber: number) {
