@@ -6,7 +6,6 @@ import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet} from 'ethers';
 import {DeployedWallet} from '../../../src/api/wallet/DeployedWallet';
 import {FutureWallet} from '../../../src/api/wallet/FutureWallet';
-import {SerializedWalletState} from '../../../src/core/models/WalletService';
 import {DeployingWallet} from '../../../src';
 
 chai.use(chaiAsPromised);
@@ -58,31 +57,29 @@ describe('UNIT: WalletService', () => {
       name: 'justyna.mylogin.eth',
       privateKey: TEST_PRIVATE_KEY,
       deploymentHash: TEST_MESSAGE_HASH,
-    },
-    sdk,
-    );
+    }, sdk);
 
     futureWallet = {
       contractAddress: TEST_ACCOUNT_ADDRESS,
       privateKey: TEST_PRIVATE_KEY,
-      gasPrice: TEST_GAS_PRICE,
       ensName: 'justyna.mylogin.eth',
+      gasPrice: TEST_GAS_PRICE,
       gasToken: ETHER_NATIVE_TOKEN.address,
       deploy: async () => deployingWallet,
-      waitForBalance: (async () => { }) as any,
+      waitForBalance: (async () => {}) as any,
       setSupportedToken: (() => {}) as any,
     } as any;
 
     storage = {
-      load: (): SerializedWalletState => ({kind: 'Deployed', wallet: applicationWallet}),
-      save: sinon.fake(),
+      get: () => JSON.stringify({kind: 'Deployed', wallet: applicationWallet}),
+      set: sinon.fake(),
       remove: sinon.fake(),
     };
   });
 
   beforeEach(() => {
     walletService = new WalletService(sdk, walletFromPassphrase, storage);
-    storage.save.resetHistory();
+    storage.set.resetHistory();
   });
 
   it('successful recover', async () => {
@@ -103,32 +100,34 @@ describe('UNIT: WalletService', () => {
     walletService.setWallet(applicationWallet);
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
-    expect(storage.save).to.be.calledWith({kind: 'None'});
+    expect(storage.set).to.be.calledWith('wallet', JSON.stringify({kind: 'None'}));
   });
 
   it('connect set state to Deployed', () => {
     walletService.setWallet(applicationWallet);
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include(applicationWallet);
-    expect(storage.save).to.be.calledWith({kind: 'Deployed', wallet: applicationWallet});
+    expect(storage.set).to.be.calledWith('wallet', JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
   });
 
   it('roundtrip', () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
     walletService.setFutureWallet(futureWallet, 'justyna.mylogin.eth');
-    expect(walletService.state).to.deep.eq({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet});
-    expect(storage.save).to.be.calledWith({
-      kind: 'Future',
-      name: 'justyna.mylogin.eth',
-      wallet: {
-        contractAddress: futureWallet.contractAddress,
-        privateKey: futureWallet.privateKey,
-        ensName: 'justyna.mylogin.eth',
-        gasToken: ETHER_NATIVE_TOKEN.address,
-        gasPrice: TEST_GAS_PRICE,
-      },
-    });
+    expect(storage.set).to.be.calledWith('wallet', JSON.stringify({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet}));
+    expect(storage.set).to.be.calledWith(
+      'wallet',
+      JSON.stringify({
+        kind: 'Future',
+        name: 'justyna.mylogin.eth',
+        wallet: {
+          contractAddress: futureWallet.contractAddress,
+          privateKey: futureWallet.privateKey,
+          ensName: 'justyna.mylogin.eth',
+          gasPrice: TEST_GAS_PRICE,
+          gasToken: ETHER_NATIVE_TOKEN.address,
+        },
+      }));
 
     walletService.setDeployed();
     expect(walletService.state.kind).to.eq('Deployed');
@@ -145,7 +144,7 @@ describe('UNIT: WalletService', () => {
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include(applicationWallet);
 
-    expect(storage.save).to.be.calledWith({kind: 'Deployed', wallet: applicationWallet});
+    expect(storage.set).to.be.calledWith('wallet', JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
   });
 
   it('should throw if future wallet is not set', () => {

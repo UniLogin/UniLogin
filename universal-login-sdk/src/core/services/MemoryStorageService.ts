@@ -1,6 +1,6 @@
-import {StorageService} from './StorageService';
+import {IStorageService} from '../models/IStorageService';
 
-export class MemoryStorageService implements StorageService {
+export class MemoryStorageService implements IStorageService {
   private store: Record<string, string | undefined> = {};
 
   get(key: string): string | null {

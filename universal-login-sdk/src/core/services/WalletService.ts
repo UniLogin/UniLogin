@@ -7,14 +7,17 @@ import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';
 import {map, State} from 'reactive-properties';
 import {WalletState} from '../models/WalletService';
+import {IStorageService} from '../models/IStorageService';
 import {WalletSerializer} from './WalletSerializer';
-import {NoopWalletStorage} from './NoopWalletStorage';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
+import {NoopStorageService} from './NoopStorageService';
+import {WalletStorageService} from './WalletStorageService';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
 export class WalletService {
   private readonly walletSerializer: WalletSerializer;
+  private readonly walletStorage: WalletStorage;
 
   stateProperty = new State<WalletState>({kind: 'None'});
 
@@ -34,8 +37,9 @@ export class WalletService {
   constructor(
     public readonly sdk: UniversalLoginSDK,
     private readonly walletFromPassphrase: WalletFromBackupCodes = walletFromBrain,
-    private readonly storage: WalletStorage = new NoopWalletStorage(),
+    storageService: IStorageService = new NoopStorageService(),
   ) {
+    this.walletStorage = new WalletStorageService(storageService);
     this.walletSerializer = new WalletSerializer(sdk);
   }
 
@@ -209,13 +213,13 @@ export class WalletService {
   saveToStorage(state: WalletState) {
     const serialized = this.walletSerializer.serialize(state);
     if (serialized !== undefined) {
-      this.storage.save(serialized);
+      this.walletStorage.save(serialized);
     }
   }
 
   loadFromStorage() {
     ensure(this.state.kind === 'None', WalletOverridden);
-    const state = this.storage.load();
+    const state = this.walletStorage.load();
     this.stateProperty.set(this.walletSerializer.deserialize(state));
   }
 
