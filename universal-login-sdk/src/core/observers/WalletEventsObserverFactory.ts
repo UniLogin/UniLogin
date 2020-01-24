@@ -15,18 +15,20 @@ const STORAGE_KEY = 'LAST_BLOCK_NUMBER';
 class WalletEventsObserverFactory {
   protected observers: Record<string, WalletEventsObserver> = {};
   private unsubscribe: Nullable<Callback> = null;
-  storage: StorageEntry<number>;
+  private blockNumberStorage: StorageEntry<number>;
+  private lastBlockNumber = 0;
 
   constructor(
     private blockchainService: BlockchainService,
     private currentBlock: BlockNumberState,
     storageService: IStorageService = new MemoryStorageService(),
   ) {
-    this.storage = new StorageEntry(STORAGE_KEY, asNumber, storageService);
+    this.blockNumberStorage = new StorageEntry(STORAGE_KEY, asNumber, storageService);
   }
 
   async start() {
     this.currentBlock.set(await this.blockchainService.getBlockNumber());
+    this.lastBlockNumber = this.blockNumberStorage.get() || this.currentBlock.get();
     this.unsubscribe = this.currentBlock.subscribe(() => this.fetchEvents());
   }
 
@@ -37,8 +39,14 @@ class WalletEventsObserverFactory {
 
   async fetchEventsOfTypes(types: WalletEventType[]) {
     ensureNotNull(this.currentBlock.get(), InvalidObserverState);
+    const currentBlockNumber = this.currentBlock.get();
+    if (currentBlockNumber === this.lastBlockNumber) {
+      return;
+    }
+    this.lastBlockNumber = currentBlockNumber;
+    this.blockNumberStorage.set(this.lastBlockNumber);
     for (const contractAddress of Object.keys(this.observers)) {
-      await this.observers[contractAddress].fetchEvents(this.currentBlock.get(), types);
+      await this.observers[contractAddress].fetchEvents(currentBlockNumber, types);
     }
   }
 
