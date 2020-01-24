@@ -4,7 +4,7 @@ import deployToken from '../ops/deployToken';
 import connectAndExecute from './connectAndExecute';
 import deployMaster from '../ops/deployMaster';
 import deployENSRegistrar from '../ops/deployENSRegistrar';
-import {connectAndDeployFactory, deployFactoryGnosis} from '../ops/deployFactory';
+import {connectAndDeployBeta2Factory, deployFactoryGnosis} from '../ops/deployFactory';
 import {sendFunds} from '../ops/sendFunds';
 import {defaultDeployOptions, ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
 import {registerTestDomain, registerEthDomain} from '../ENS/registerDomain';
@@ -67,7 +67,7 @@ const commandLineBuilder = yargs
         });
     },
     (argv) => {
-      connectAndDeployFactory(argv).catch(console.error);
+      connectAndDeployBeta2Factory(argv).catch(console.error);
     })
   .command('send [to] [amount] [currency]', 'Sends funds to specified address',
     (yargs) => {

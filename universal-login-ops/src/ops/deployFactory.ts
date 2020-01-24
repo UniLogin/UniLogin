@@ -15,12 +15,12 @@ export interface ConnectAndDeployFactory extends ConnectAndDeployFactoryBase {
   walletContractAddress: string;
 };
 
-export async function connectAndDeployFactory(argv: ConnectAndDeployFactory) {
+export async function connectAndDeployBeta2Factory(argv: ConnectAndDeployFactory) {
   const {wallet} = connectToEthereumNode(argv.nodeUrl, argv.privateKey, argv.provider);
-  await deployFactory(wallet, argv);
+  await deployBeta2Factory(wallet, argv);
 }
 
-export default async function deployFactory(wallet: Wallet, {nonce, gasPrice, walletContractAddress}: ConnectAndDeployFactory): Promise<string> {
+export default async function deployBeta2Factory(wallet: Wallet, {nonce, gasPrice, walletContractAddress}: ConnectAndDeployFactory): Promise<string> {
   console.log('Deploying factory contract...');
   const transactionOverrides = {
     gasPrice: gasPrice && utils.bigNumberify(gasPrice),
