@@ -1,5 +1,5 @@
 import {ETHER_NATIVE_TOKEN, createKeyPair} from '@universal-login/commons';
-import {DEPLOY_CONTRACT_NONCE, deployGnosisSafe, deployProxyFactory, encodeDataForSetup, computeGnosisCounterfactualAddress, GnosisSafeInterface, ProxyFactoryInterface, ENSInterface, gnosisSafe as gnosisSafeContracts} from '@universal-login/contracts';
+import {DEPLOY_CONTRACT_NONCE, deployGnosisSafe, deployProxyFactory, encodeDataForSetup, computeGnosisCounterfactualAddress, GnosisSafeInterface, ProxyFactoryInterface, ENSInterface, gnosisSafe as gnosisSafeContracts, INITIAL_REQUIRED_CONFIRMATIONS} from '@universal-login/contracts';
 import {Contract, utils, Wallet} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {DEPLOY_GAS_LIMIT, parseDomain} from '@universal-login/commons';
@@ -20,7 +20,7 @@ export const deployGnosisSafeProxy = async (wallet: Wallet, proxyFactoryAddress:
   const keyPair = createKeyPair();
   const deployment = {
     owners: [keyPair.publicKey],
-    requiredConfirmations: 1,
+    requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
     deploymentCallAddress: AddressZero,
     deploymentCallData: '0x0',
     fallbackHandler: AddressZero,
@@ -47,7 +47,7 @@ export const deployGnosisSafeProxyWithENS = async (wallet: Wallet, proxyFactoryA
   const keyPair = createKeyPair();
   const deployment = {
     owners: [keyPair.publicKey],
-    requiredConfirmations: 1,
+    requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
     deploymentCallAddress: ensRegistrar,
     deploymentCallData: new utils.Interface(gnosisSafeContracts.ENSRegistrar.interface as any).functions.register.encode(args),
     fallbackHandler: AddressZero,

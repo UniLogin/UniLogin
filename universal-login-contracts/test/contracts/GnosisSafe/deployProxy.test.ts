@@ -11,6 +11,7 @@ import {computeGnosisCounterfactualAddress} from '../../../src/gnosis-safe@1.1.1
 import ENSRegistrar from '../../../dist/contracts/ENSRegistrar.json';
 import {TransactionResponse} from 'ethers/providers';
 import {messageToSignedMessage} from '../../../src';
+import {INITIAL_REQUIRED_CONFIRMATIONS} from '../../../src/gnosis-safe@1.1.1/constants';
 
 describe('GnosisSafe', async () => {
   const domain = 'mylogin.eth';
@@ -39,7 +40,7 @@ describe('GnosisSafe', async () => {
     const data = new utils.Interface(ENSRegistrar.interface as any).functions.register.encode(args);
     const deployment = {
       owners: [keyPair.publicKey],
-      requiredConfirmations: 1,
+      requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
       deploymentCallAddress: ensRegistrar.address,
       deploymentCallData: data,
       fallbackHandler: AddressZero,

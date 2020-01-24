@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {createKeyPair} from '@universal-login/commons';
-import {SENTINEL_OWNERS, getPreviousOwner} from '../../../src/gnosis-safe@1.1.1/utils';
+import {getPreviousOwner} from '../../../src/gnosis-safe@1.1.1/utils';
+import {SENTINEL_OWNERS} from '../../../src/gnosis-safe@1.1.1/constants';
 import {Wallet} from 'ethers';
 
 describe('UNIT: GnosisSafeUtils', () => {
