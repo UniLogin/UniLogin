@@ -77,4 +77,9 @@ export class Beta2Service implements IWalletContractService {
   decodeExecute(data: string) {
     return decodeDataForExecuteSigned(data);
   }
+
+  isValidMessageHash(messageHash: string, signedMessage: SignedMessage) {
+    const calculatedMessageHash = this.calculateMessageHash(signedMessage);
+    return messageHash === calculatedMessageHash;
+  }
 }

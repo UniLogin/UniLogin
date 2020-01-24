@@ -18,4 +18,5 @@ export default interface IWalletContractService {
   decodeKeyFromData: (data: string) => string[];
   decodeKeysFromData: (data: string) => string[];
   decodeExecute: (data: string) => DecodedMessage | DecodedMessageGnosis;
+  isValidMessageHash: (messageHash: string, signedMessage: SignedMessage) => boolean;
 }
