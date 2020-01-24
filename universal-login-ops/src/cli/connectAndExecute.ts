@@ -11,11 +11,11 @@ export type CommandOverrides = {
 };
 
 export default async function connectAndExecute<T>(overrides: CommandOverrides, command: AsyncCommand<T>) {
-  const {wallet} = connect(overrides.nodeUrl, overrides.privateKey);
+  const {wallet} = connectToEthereumNode(overrides.nodeUrl, overrides.privateKey);
   await command(wallet, overrides);
 }
 
-export const connect = (givenNodeUrl: string, privateKey: string, givenProvider?: providers.Provider) => {
+export const connectToEthereumNode = (givenNodeUrl: string, privateKey: string, givenProvider?: providers.Provider) => {
   const nodeUrl = givenNodeUrl || devJsonRpcUrl;
   const provider = givenProvider || new providers.JsonRpcProvider(nodeUrl);
   const wallet = new Wallet(privateKey, provider);
