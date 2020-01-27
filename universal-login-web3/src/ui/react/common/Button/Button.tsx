@@ -10,6 +10,7 @@ const BaseButton = styled.button`
   line-height: 17px;
   box-sizing: border-box;
   border: none;
+  cursor: pointer;
 `;
 
 export const ButtonPrimary = styled(BaseButton)`
