@@ -16,7 +16,6 @@ class WalletEventsObserverFactory {
   protected observers: Record<string, WalletEventsObserver> = {};
   private unsubscribe: Nullable<Callback> = null;
   private blockNumberStorage: StorageEntry<number>;
-  private lastBlockNumber = 0;
 
   constructor(
     private blockchainService: BlockchainService,
@@ -28,7 +27,9 @@ class WalletEventsObserverFactory {
 
   async start() {
     this.currentBlock.set(await this.blockchainService.getBlockNumber());
-    this.lastBlockNumber = this.blockNumberStorage.get() || this.currentBlock.get();
+    if (!this.blockNumberStorage.get()) {
+      this.blockNumberStorage.set(this.currentBlock.get());
+    }
     this.unsubscribe = this.currentBlock.subscribe(() => this.fetchEvents());
   }
 
@@ -40,11 +41,13 @@ class WalletEventsObserverFactory {
   async fetchEventsOfTypes(types: WalletEventType[]) {
     ensureNotNull(this.currentBlock.get(), InvalidObserverState);
     const currentBlockNumber = this.currentBlock.get();
-    if (currentBlockNumber === this.lastBlockNumber) {
+    const storageBlockNumber = this.blockNumberStorage.get();
+    ensureNotNull(this.unsubscribe, Error, 'WalletEventsObserverFactory is not started');
+    ensureNotNull(storageBlockNumber, Error, 'Missing storageBlockNumber');
+    if (currentBlockNumber === storageBlockNumber) {
       return;
     }
-    this.lastBlockNumber = currentBlockNumber;
-    this.blockNumberStorage.set(this.lastBlockNumber);
+    this.blockNumberStorage.set(currentBlockNumber);
     for (const contractAddress of Object.keys(this.observers)) {
       await this.observers[contractAddress].fetchEvents(currentBlockNumber, types);
     }
@@ -59,6 +62,7 @@ class WalletEventsObserverFactory {
   stop() {
     ensureNotNull(this.unsubscribe, InvalidObserverState);
     this.unsubscribe();
+    this.unsubscribe = null;
   }
 
   async finalizeAndStop() {

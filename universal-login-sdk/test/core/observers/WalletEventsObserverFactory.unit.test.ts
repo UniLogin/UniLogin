@@ -34,7 +34,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
       subscribe: sinon.fake.returns(() => {}),
     } as any;
     storageService = {
-      get: sinon.fake.returns(0),
+      get: sinon.fake.returns(1),
       set: sinon.fake(),
     } as any;
 
