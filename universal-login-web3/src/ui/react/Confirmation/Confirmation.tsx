@@ -8,7 +8,6 @@ import {TransactionSpeed} from './TransactionSpeed';
 import {TransactionFee} from './TransactionFee';
 import {ButtonPrimary, ButtonSecondary} from '../common/Button/Button';
 import {UniLoginLogo} from '../common/UniLoginLogo';
-import {Notice} from '../common/Notice';
 
 export interface ConfirmationProps {
   title: string;
@@ -22,7 +21,7 @@ export const Confirmation = ({onConfirmationResponse, title, message}: Confirmat
   return (
     <>
       <GlobalStyle/>
-      <ModalWrapper>
+      <ModalWrapper message={message}>
         <Box>
           <BoxHeader>
             <UniLoginLogo />
@@ -59,7 +58,6 @@ export const Confirmation = ({onConfirmationResponse, title, message}: Confirmat
             <ButtonPrimary onClick={() => onConfirmationResponse(true)}>Confirm</ButtonPrimary>
           </BoxFooter>
         </Box>
-        <Notice message={message} />
       </ModalWrapper>
     </>
   );
@@ -73,7 +71,6 @@ const GlobalStyle = createGlobalStyle`
     max-width: 770px;
     width: 100%;
     min-height: initial;
-    padding: 0 0 41px;
     max-height: 100%;
     overflow-y: auto;
   }
