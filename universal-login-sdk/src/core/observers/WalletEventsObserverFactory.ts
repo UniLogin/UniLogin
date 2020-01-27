@@ -2,7 +2,7 @@ import {BlockchainService} from '@universal-login/contracts';
 import {WalletEventCallback, WalletEventFilter, WalletEventType} from '../models/events';
 import {WalletEventsObserver} from './WalletEventsObserver';
 import {ensureNotNull, Nullable} from '@universal-login/commons';
-import {InvalidObserverState} from '../utils/errors';
+import {InvalidObserverState, MissingParameter} from '../utils/errors';
 import {Callback} from 'reactive-properties/dist/Property';
 import {BlockNumberState} from '../states/BlockNumberState';
 import {IStorageService} from '../models/IStorageService';
@@ -42,8 +42,7 @@ class WalletEventsObserverFactory {
     ensureNotNull(this.currentBlock.get(), InvalidObserverState);
     const currentBlockNumber = this.currentBlock.get();
     const storageBlockNumber = this.blockNumberStorage.get();
-    ensureNotNull(this.unsubscribe, Error, 'WalletEventsObserverFactory is not started');
-    ensureNotNull(storageBlockNumber, Error, 'Missing storageBlockNumber');
+    ensureNotNull(storageBlockNumber, MissingParameter, 'storageBlockNumber');
     if (currentBlockNumber === storageBlockNumber) {
       return;
     }
