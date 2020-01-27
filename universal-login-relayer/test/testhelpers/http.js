@@ -10,7 +10,7 @@ import {
   waitForContractDeploy,
   DEPLOY_GAS_LIMIT,
 } from '@universal-login/commons';
-import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, deployProxyFactory, deployGnosisSafe, gnosisSafe} from '@universal-login/contracts';
+import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, deployProxyFactory, deployGnosisSafe, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@universal-login/contracts';
 import {getFutureAddress} from '@universal-login/contracts/testutils';
 import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
@@ -87,7 +87,7 @@ export const getSetupData = async (keyPair, ensName, ensAddress, provider, gasPr
   const registrarAddress = await ens.owner(utils.namehash(domain));
   const deployment = {
     owners: [keyPair.publicKey],
-    requiredConfirmations: 1,
+    requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
     deploymentCallAddress: ensRegistrarAddress,
     deploymentCallData: new utils.Interface(gnosisSafe.ENSRegistrar.interface).functions.register.encode([hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress]),
     fallbackHandler: AddressZero,

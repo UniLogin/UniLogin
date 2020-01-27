@@ -8,7 +8,8 @@ export {BlockchainService} from './integration/BlockchainService';
 
 export {deployGnosisSafe, deployProxyFactory} from './gnosis-safe@1.1.1/deployContracts';
 export {encodeDataForSetup, encodeDataForExecTransaction} from './gnosis-safe@1.1.1/encode';
-export {computeGnosisCounterfactualAddress, calculateMessageHash, signStringMessage, calculateGnosisStringHash, calculateMessageSignature, SENTINEL_OWNERS, getPreviousOwner, DEPLOY_CONTRACT_NONCE} from './gnosis-safe@1.1.1/utils';
+export {computeGnosisCounterfactualAddress, calculateMessageHash, signStringMessage, calculateGnosisStringHash, calculateMessageSignature, getPreviousOwner} from './gnosis-safe@1.1.1/utils';
+export {SENTINEL_OWNERS, DEPLOY_CONTRACT_NONCE, INITIAL_REQUIRED_CONFIRMATIONS} from './gnosis-safe@1.1.1/constants';
 export {GnosisSafeInterface, ProxyFactoryInterface, ProxyInterface, IProxyInterface, ISignatureValidatorInterface} from './gnosis-safe@1.1.1/interfaces';
 
 import * as beta2 from './beta2/contracts';

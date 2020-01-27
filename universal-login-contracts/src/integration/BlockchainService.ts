@@ -2,7 +2,8 @@ import {Contract, providers, utils} from 'ethers';
 import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion, PROXY_VERSIONS} from '@universal-login/commons';
 import {WalletProxyInterface, WalletProxyFactoryInterface} from '../../test/helpers/interfaces';
 import {IProxyInterface} from '../gnosis-safe@1.1.1/interfaces';
-import {DEPLOY_CONTRACT_NONCE, computeGnosisCounterfactualAddress} from '../gnosis-safe@1.1.1/utils';
+import {computeGnosisCounterfactualAddress} from '../gnosis-safe@1.1.1/utils';
+import {DEPLOY_CONTRACT_NONCE} from '../gnosis-safe@1.1.1/constants';
 
 export class BlockchainService {
   constructor(private provider: providers.Provider) {

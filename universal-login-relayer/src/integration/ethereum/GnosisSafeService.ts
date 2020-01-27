@@ -6,6 +6,8 @@ import {GAS_LIMIT_MARGIN, decodeDataForExecTransaction} from '../../core/utils/m
 import {isDataForFunctionCall, decodeParametersFromData, getRemovedKey} from '../../core/utils/encodeData';
 import {AddressZero} from 'ethers/constants';
 
+export const INVALID_MSG_HASH = '0x0000000000000000000000000000000000';
+
 export class GnosisSafeService implements IWalletContractService {
   constructor(private provider: providers.Provider) {
   }
@@ -89,5 +91,9 @@ export class GnosisSafeService implements IWalletContractService {
 
   decodeExecute(data: string) {
     return decodeDataForExecTransaction(data);
+  }
+
+  isValidMessageHash(messageHash: string, signedMessage: SignedMessage) {
+    return messageHash !== INVALID_MSG_HASH;
   }
 }

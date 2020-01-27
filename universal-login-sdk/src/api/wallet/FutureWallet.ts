@@ -5,9 +5,8 @@ import {DeploymentReadyObserver} from '../../core/observers/DeploymentReadyObser
 import {InvalidAddressOrEnsName} from '../../core/utils/errors';
 import UniversalLoginSDK from '../sdk';
 import {utils} from 'ethers';
-import {encodeDataForSetup} from '@universal-login/contracts';
+import {setupInitData} from '../../core/utils/setupInitData';
 import {ENSService} from '../../integration/ethereum/ENSService';
-import {AddressZero} from 'ethers/constants';
 
 export class FutureWallet implements SerializableFutureWallet {
   contractAddress: string;
@@ -44,7 +43,7 @@ export class FutureWallet implements SerializableFutureWallet {
 
   deploy = async (): Promise<DeployingWallet> => {
     ensure(isValidEnsName(this.ensName), InvalidAddressOrEnsName, this.ensName);
-    const initData = await FutureWallet.setupInitData(this.publicKey, this.ensName, this.gasPrice, this.gasToken, this.ensService, this.relayerAddress);
+    const initData = await setupInitData(this.publicKey, this.ensName, this.gasPrice, this.gasToken, this.ensService, this.relayerAddress);
     const signature = await calculateInitializeSignature(initData, this.privateKey);
     const {deploymentHash} = await this.sdk.relayerApi.deploy(this.publicKey, this.ensName, this.gasPrice, this.gasToken, signature, this.sdk.sdkConfig.applicationInfo);
     return new DeployingWallet({deploymentHash, contractAddress: this.contractAddress, name: this.ensName, privateKey: this.privateKey}, this.sdk);
@@ -55,19 +54,4 @@ export class FutureWallet implements SerializableFutureWallet {
   };
 
   getMinimalAmount = () => utils.formatEther(utils.bigNumberify(this.gasPrice).mul(DEPLOY_GAS_LIMIT).toString());
-
-  static async setupInitData(publicKey: string, ensName: string, gasPrice: string, gasToken: string, ensService: ENSService, relayerAddress: string) {
-    const ensRegistrarData = await ensService.getRegistrarData(ensName);
-    const deployment = {
-      owners: [publicKey],
-      requiredConfirmations: 1,
-      deploymentCallAddress: ensService.ensRegistrarAddress,
-      deploymentCallData: ensRegistrarData,
-      fallbackHandler: AddressZero,
-      paymentToken: gasToken,
-      payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),
-      refundReceiver: relayerAddress,
-    };
-    return encodeDataForSetup(deployment);
-  }
 }

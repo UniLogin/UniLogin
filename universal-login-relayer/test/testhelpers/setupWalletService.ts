@@ -2,7 +2,7 @@ import {EventEmitter} from 'fbemitter';
 import sinon from 'sinon';
 import {Wallet, Contract, utils} from 'ethers';
 import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {encodeDataForSetup, computeGnosisCounterfactualAddress, deployGnosisSafe, deployProxyFactory, gnosisSafe} from '@universal-login/contracts';
+import {encodeDataForSetup, computeGnosisCounterfactualAddress, deployGnosisSafe, deployProxyFactory, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@universal-login/contracts';
 import {WalletDeploymentService} from '../../src/integration/ethereum/WalletDeploymentService';
 import {buildEnsService} from './buildEnsService';
 import {WalletDeployer} from '../../src/integration/ethereum/WalletDeployer';
@@ -36,7 +36,7 @@ export const getSetupData = async (keyPair: KeyPair, ensName: string, ensService
   const args = await ensService.argsFor(ensName);
   const deployment = {
     owners: [keyPair.publicKey],
-    requiredConfirmations: 1,
+    requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
     deploymentCallAddress: ensRegistrarAddress,
     deploymentCallData: new utils.Interface(gnosisSafe.ENSRegistrar.interface as any).functions.register.encode(args),
     fallbackHandler: AddressZero,
