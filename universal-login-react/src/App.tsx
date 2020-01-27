@@ -20,6 +20,8 @@ import {ModalWrapper} from './ui/Modals/ModalWrapper';
 import {WaitingForOnRampProvider} from './ui/TopUp/Fiat/WaitingForOnRampProvider';
 import {TopUp} from './ui/TopUp/TopUp';
 import {WaitingForTransaction} from './ui/commons/WaitingForTransaction';
+import SpinnerLoader from './ui/commons/SpinnerLoader';
+import EthereumIcon from './ui/assets/icons/ether.svg';
 
 export const App = () => {
   const {sdk} = useServices();
@@ -176,12 +178,12 @@ export const App = () => {
             </Route>
             <Route exact path="/waitForTransaction">
               <div>
-                <Link to="/waitForTransaction/withHash">With hash</Link><br />
-                <Link to="/waitForTransaction/withoutHash">Without hash</Link>
+                <Link to="/waitForTransactionWithHash">With hash</Link><br />
+                <Link to="/waitForTransactionWithoutHash">Without hash</Link>
               </div>
             </Route>
             <Route
-              path="/waitForTransaction/"
+              path="/waitForTransactionWithHash"
               render={({location}) => {
                 if (!relayerConfig) {
                   return <Spinner />;
@@ -191,7 +193,24 @@ export const App = () => {
                       <WaitingForTransaction
                         action="Waiting for transaction"
                         relayerConfig={relayerConfig}
-                        transactionHash={location.pathname === '/waitForTransaction/withHash' ? TEST_TRANSACTION_HASH : undefined}
+                        transactionHash={TEST_TRANSACTION_HASH}
+                      />
+                    </ModalWrapper>
+                  );
+                }
+              }}>
+            </Route>
+            <Route
+              path="/waitForTransactionWithoutHash"
+              render={({location}) => {
+                if (!relayerConfig) {
+                  return <Spinner />;
+                } else {
+                  return (
+                    <ModalWrapper>
+                      <WaitingForTransaction
+                        action="Waiting for transaction"
+                        relayerConfig={relayerConfig}
                       />
                     </ModalWrapper>
                   );

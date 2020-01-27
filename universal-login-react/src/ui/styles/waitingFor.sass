@@ -1,17 +1,31 @@
 .universal-login-waiting-for
+  @import url('https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap');
+  font-family: 'Roboto', sans-serif;
+
   .action-title-box
     padding-top: 30px
     position: relative
+    display: flex
+    justify-content: center
+    align-items: center
+
+    .spinner-loader
+      border: 2px solid green
+      padding-top: .5rem
+      margin-right: 1rem
+
 
   .action-title
     font-size: 30px
-    font-weight: 500
+    font-weight: 300
+    line-height: 29px
 
   .action-text-box
     margin: 0 5rem
 
   .action-text
     text-align: center
+    line-height: 140%
 
   .action-spinner
     position: absolute
@@ -40,6 +54,11 @@
     margin: auto
     max-width: 650px
     padding: 10px 43px 30px
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    color: #439DB0;
 
   .transaction-hash-title
     font-size: 14px

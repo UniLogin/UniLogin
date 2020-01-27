@@ -3,6 +3,8 @@ import {PublicRelayerConfig} from '@universal-login/commons';
 import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import {ButtonLink} from './Button/ButtonLink';
+import UnicornGif from '../assets/gifs/unicorn.gif';
 
 export interface WaitingForTransactionProps extends WaitingForProps {
   relayerConfig: PublicRelayerConfig;
@@ -17,12 +19,13 @@ const Body = ({action, relayerConfig, transactionHash, className, info}: Waiting
       className={className}
     />
     <div className="modal-pending-section">
-      <h3 className="transaction-hash-title">Transaction hash</h3>
+      <ButtonLink text='See pending transaction' onClick={() => console.log()}/>
       <ExplorerLink
         chainName={relayerConfig.chainSpec.name}
         transactionHash={transactionHash}
       />
     </div>
+    <img src={UnicornGif} alt="Unicorn gif"/>
     {info && <p className="info-text">{info}</p>}
   </div>
 );
