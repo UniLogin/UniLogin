@@ -7,9 +7,7 @@ body {
 }
 
 .playground-theme-select {
-  position: absolute;
-  top: 25px;
-  left: 25px;
+  display: block;
 }
 
 .playground-navigation {
@@ -17,7 +15,6 @@ body {
   padding: 40px 20px 20px;
   background: lightskyblue;
 }
-
 
 .playground-navigation ul {
   list-style: none;

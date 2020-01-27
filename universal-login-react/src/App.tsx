@@ -21,7 +21,7 @@ import {WaitingForOnRampProvider} from './ui/TopUp/Fiat/WaitingForOnRampProvider
 import {TopUp} from './ui/TopUp/TopUp';
 import {WaitingForTransaction} from './ui/commons/WaitingForTransaction';
 import {ThemesPlayground} from './ui/Playground/ThemesPlayground';
-import {ThemeSwitcher} from './ui/Playground/ThemeSwitcher';
+import {ThemeProvider} from './ui/themes/Theme';
 
 export const App = () => {
   const {sdk} = useServices();
@@ -63,7 +63,7 @@ export const App = () => {
 
   return (
     <BrowserRouter>
-      <ThemeSwitcher>
+      <ThemeProvider>
         <div className="playground">
           <NavigationColumn />
           <div className="playground-content">
@@ -206,7 +206,7 @@ export const App = () => {
             </Switch>
           </div>
         </div>
-      </ThemeSwitcher>
+      </ThemeProvider>
     </BrowserRouter >
   );
 };

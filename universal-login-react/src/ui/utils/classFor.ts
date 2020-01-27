@@ -5,12 +5,11 @@ export function classForComponent(componentName: string) {
   return `unilogin-component-${componentName}`;
 }
 
-export function classFor(componentName: string) {
-  return `${classForComponent(componentName)} ${themeClassFor()}`;
+export function useClassFor(componentName: string) {
+  return `${classForComponent(componentName)} ${useThemeClassFor()}`;
 }
 
-export const themeClassFor = () => {
-  const theme = useContext(ThemeContext);
-  console.log(`useContext: ${theme}`);
+export const useThemeClassFor = () => {
+  const [theme] = useContext(ThemeContext);
   return `unilogin-theme-${theme}`;
 };
