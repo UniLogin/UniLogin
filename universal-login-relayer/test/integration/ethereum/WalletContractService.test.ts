@@ -135,7 +135,7 @@ describe('INT: WalletContractService', () => {
       const messagePayload = utils.arrayify(utils.toUtf8Bytes(message));
       const msgHash = calculateGnosisStringHash(messagePayload, proxyContract.address);
       const signature = signStringMessage(msgHash, Wallet.createRandom().privateKey);
-      await expect(walletContractService.isValidSignature(utils.hexlify(utils.toUtf8Bytes(message)), proxyContract.address, signature)).to.be.rejectedWith('Invalid owner provided');
+      expect(await walletContractService.isValidSignature(utils.hexlify(utils.toUtf8Bytes(message)), proxyContract.address, signature)).to.eq(ERC1271.INVALIDSIGNATURE);
     });
 
     it('decodes execute', async () => {
