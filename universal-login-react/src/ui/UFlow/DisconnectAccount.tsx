@@ -29,7 +29,7 @@ export const DisconnectAccount = ({walletService, onDisconnectProgress, onAccoun
           <p className="disconnect-account-subtitle">You will lose access to your funds from this device.</p>
           <div className="disconnect-account-form">
             <div className="disconnect-account-input-wrapper">
-              <label htmlFor="username" className="disconnect-account-label">Type your username</label>
+              <label htmlFor="username" className="disconnect-account-label">Type your ENS name e.g. satoshi.example.eth</label>
               <input
                 id="username"
                 className={getInputClassName(errors.usernameError)}
