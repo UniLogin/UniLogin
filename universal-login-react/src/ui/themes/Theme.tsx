@@ -1,6 +1,8 @@
-import React, {ReactNode, useState} from 'react';
+import React, {createContext, ReactNode, useState} from 'react';
 
-export const ThemeContext = React.createContext<[string, (newTheme: string) => void]>(['default', (newTheme: string) => {}]);
+type ContextProps = [string, (newTheme: string) => void];
+
+export const ThemeContext = createContext<ContextProps>(['default', (newTheme: string) => {}]);
 
 export type ThemeProps = {
   children: ReactNode;
