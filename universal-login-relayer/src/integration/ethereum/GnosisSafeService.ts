@@ -1,11 +1,10 @@
 import {Contract, utils, providers} from 'ethers';
 import {SignedMessage, RelayerRequest} from '@universal-login/commons';
-import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface, calculateGnosisStringHash, encodeDataForExecTransaction, gnosisSafe, ERC1271} from '@universal-login/contracts';
+import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface, calculateGnosisStringHash, encodeDataForExecTransaction, gnosisSafe, ERC1271, isInvalidOwnerError} from '@universal-login/contracts';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GAS_LIMIT_MARGIN, decodeDataForExecTransaction} from '../../core/utils/messages/serialisation';
 import {isDataForFunctionCall, decodeParametersFromData, getRemovedKey} from '../../core/utils/encodeData';
 import {AddressZero} from 'ethers/constants';
-
 export const INVALID_MSG_HASH = '0x0000000000000000000000000000000000';
 
 export class GnosisSafeService implements IWalletContractService {
@@ -44,14 +43,12 @@ export class GnosisSafeService implements IWalletContractService {
     try {
       return await walletProxy.isValidSignature(message, signature);
     } catch (e) {
-      if (this.isInvalidOwnerError(e)) {
+      if (isInvalidOwnerError(e)) {
         return ERC1271.INVALIDSIGNATURE;
       }
       throw e;
     }
   }
-
-  isInvalidOwnerError = (error: Error) => error.message === 'VM Exception while processing transaction: revert Invalid owner provided';
 
   getRelayerRequestMessage(relayerRequest: RelayerRequest) {
     return utils.hexlify(utils.toUtf8Bytes(relayerRequest.contractAddress));
