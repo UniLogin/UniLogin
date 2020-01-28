@@ -2,7 +2,7 @@ import React from 'react';
 import './../styles/notice.sass';
 
 export interface NoticeProps {
-  message: string;
+  message?: string;
 }
 
 export const Notice = ({message}: NoticeProps) => {
