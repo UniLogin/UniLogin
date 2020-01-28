@@ -11,6 +11,7 @@ type ErrorType =
   'TransactionHashNotFound' |
   'TokenNotFound' |
   'MissingMessageHash' |
+  'MissingParameter' |
   'InvalidPassphrase' |
   'InvalidWalletState'|
   'TimeoutError' |
@@ -160,6 +161,13 @@ export class MissingConfiguration extends NotFound {
   constructor() {
     super('Relayer configuration not yet loaded', 'MissingConfiguration');
     Object.setPrototypeOf(this, MissingConfiguration.prototype);
+  }
+}
+
+export class MissingParameter extends NotFound {
+  constructor(parameterName: string) {
+    super(`Missing parameter: ${parameterName}`, 'MissingParameter');
+    Object.setPrototypeOf(this, MissingParameter.prototype);
   }
 }
 

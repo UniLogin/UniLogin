@@ -1,4 +1,5 @@
 import {ObservedCurrency, ApplicationInfo} from '@universal-login/commons';
+import {IStorageService} from '../core/models/IStorageService';
 
 export interface SdkConfig {
   applicationInfo: ApplicationInfo;
@@ -11,4 +12,5 @@ export interface SdkConfig {
   priceObserverTick: number;
   mineableFactoryTick: number;
   mineableFactoryTimeout: number;
+  storageService: IStorageService;
 }

@@ -10,7 +10,7 @@ import WalletEventsObserverFactory from '../../../src/core/observers/WalletEvent
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
 import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
-import {setupWalletContract} from '@universal-login/contracts/testutils';
+import {setupWalletContract, mineBlock} from '@universal-login/contracts/testutils';
 import {Contract} from 'ethers';
 import {waitExpect} from '@universal-login/commons/testutils';
 
@@ -33,9 +33,10 @@ describe('INT: WalletEventsObserverFactory', async () => {
     before(async () => {
       ({relayer, sdk} = await setupSdk(deployer));
       const blockchainService = new BlockchainService(sdk.provider);
+      const blockNumberState = new BlockNumberState(blockchainService);
       factory = new WalletEventsObserverFactory(
         blockchainService,
-        new BlockNumberState(blockchainService),
+        blockNumberState,
       );
       await factory.start();
       ({proxyWallet, keyPair} = await setupWalletContract(deployer));
@@ -48,19 +49,37 @@ describe('INT: WalletEventsObserverFactory', async () => {
 
     it('subscribe to KeyAdded', async () => {
       const callback = sinon.spy();
-      await factory.subscribe('KeyAdded', filter, callback);
+      const unsubscribe = factory.subscribe('KeyAdded', filter, callback);
       await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
       await waitExpect(() => expect(callback).to.have.been.calledOnce);
-      expect(callback).to.have.been.calledWith({key: publicKey});
+      expect(callback).to.have.been.calledOnceWith({key: publicKey});
+      unsubscribe();
     });
 
     it('subscribe to KeyRemoved', async () => {
       const callbackRemove = sinon.spy();
-      await factory.subscribe('KeyRemoved', filter, callbackRemove);
+      const unsubscribe = factory.subscribe('KeyRemoved', filter, callbackRemove);
       const execution = await deployedWallet.removeKey(publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
       await waitExpect(() => expect(callbackRemove).to.have.been.calledOnce);
       expect(callbackRemove).to.have.been.calledWith({key: publicKey});
+      unsubscribe();
+    });
+
+    it('callback is called after factory is restarted', async () => {
+      const callback = sinon.spy();
+      let unsubscribe = factory.subscribe('KeyAdded', filter, callback);
+      const execution = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
+      factory.stop();
+      unsubscribe();
+      await execution.waitToBeSuccess();
+      await mineBlock(deployer);
+      await factory.start();
+      unsubscribe = factory.subscribe('KeyAdded', filter, callback);
+      await mineBlock(deployer);
+      await waitExpect(() => expect(callback).to.have.been.calledOnce);
+      expect(callback).to.have.been.calledOnceWith({key: publicKey});
+      unsubscribe();
     });
 
     after(async () => {
@@ -74,9 +93,10 @@ describe('INT: WalletEventsObserverFactory', async () => {
     before(async () => {
       ({relayer, sdk} = await setupSdk(deployer));
       const blockchainService = new BlockchainService(sdk.provider);
+      const blockNumberState = new BlockNumberState(blockchainService);
       factory = new WalletEventsObserverFactory(
         blockchainService,
-        new BlockNumberState(blockchainService),
+        blockNumberState,
       );
       await factory.start();
       deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);
@@ -88,20 +108,38 @@ describe('INT: WalletEventsObserverFactory', async () => {
 
     it('subscribe to KeyAdded', async () => {
       const callbackGnosis = sinon.spy();
-      await factory.subscribe('AddedOwner', filter, callbackGnosis);
+      const unsubscribe = factory.subscribe('AddedOwner', filter, callbackGnosis);
       const {waitToBeSuccess} = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
       await waitToBeSuccess();
       await waitExpect(() => expect(callbackGnosis).to.have.been.calledOnce);
       expect(callbackGnosis).to.have.been.calledWith({key: publicKey});
+      unsubscribe();
     });
 
     it('subscribe to RemovedOwner', async () => {
       const callbackRemoveGnosis = sinon.spy();
-      await factory.subscribe('RemovedOwner', filter, callbackRemoveGnosis);
+      const unsubscribe = factory.subscribe('RemovedOwner', filter, callbackRemoveGnosis);
       const execution = await deployedWallet.removeKey(publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
       await waitExpect(() => expect(callbackRemoveGnosis).to.have.been.calledOnce);
       expect(callbackRemoveGnosis).to.have.been.calledWith({key: publicKey});
+      unsubscribe();
+    });
+
+    it('callback is called after factory is restarted', async () => {
+      const callback = sinon.spy();
+      let unsubscribe = factory.subscribe('AddedOwner', filter, callback);
+      const execution = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
+      factory.stop();
+      unsubscribe();
+      await execution.waitToBeSuccess();
+      await mineBlock(deployer);
+      await factory.start();
+      unsubscribe = factory.subscribe('AddedOwner', filter, callback);
+      await mineBlock(deployer);
+      await waitExpect(() => expect(callback).to.have.been.calledOnce);
+      expect(callback).to.have.been.calledOnceWith({key: publicKey});
+      unsubscribe();
     });
 
     after(async () => {

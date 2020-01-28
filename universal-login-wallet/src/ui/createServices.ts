@@ -21,6 +21,7 @@ interface Overrides {
 }
 
 export const createServices = (config: Config, overrides: Overrides = {}) => {
+  const storageService = overrides.storageService || new StorageService();
   const sdkConfig = {
     ...overrides.sdkConfig,
     applicationInfo: {
@@ -30,6 +31,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     paymentOptions: {},
     observedTokensAddresses: config.tokens,
     saiTokenAddress: config.saiTokenAddress,
+    storageService,
   };
   const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(
@@ -38,7 +40,6 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     sdkConfig,
   );
   const userDropdownService = new UserDropdownService();
-  const storageService = overrides.storageService || new StorageService();
   const walletService = new WalletService(sdk, walletFromBrain, storageService);
   const walletPresenter = new WalletPresenter(walletService);
   sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
