@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import ProviderSelect from './ProviderSelect';
 import {Title} from './common/Text/Title';
 import {Text} from './common/Text/Text';
-import {Notice} from './common/Notice';
 import {createGlobalStyle} from 'styled-components';
 
 interface IWeb3PickerComponentProps {
@@ -42,9 +41,6 @@ export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setPro
           </ProviderList>
           <LoginButton onClick={() => setProvider(selectedProvider)}>Login</LoginButton>
         </ModalBoxWrapper>
-        <ModalNotice>
-          <Notice message='This is a test environment running on Ropsten network'/>
-        </ModalNotice>
       </ModalBox>
       <ModalBackground />
     </ModalWrapper>
@@ -90,31 +86,6 @@ const GlobalStyle = createGlobalStyle`
   @media only screen and (orientation: landscape) and (max-width: 1000px) {
     .universal-login-default .modal-wrapper {
       max-width: unset;
-    }
-  }
-`;
-
-const ModalNotice = styled.div`
-  & > div {
-    bottom: 0;
-    z-index: -1000;
-  }
-
-  @media only screen and (max-width: 600px) {
-    & > div {
-      z-index: 100;
-      bottom: 3.9rem;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-  }
-
-  @media only screen and (orientation: landscape) and (max-height: 425px) {
-    & > div {
-      z-index: 100;
-      bottom: 3.9rem;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
     }
   }
 `;
