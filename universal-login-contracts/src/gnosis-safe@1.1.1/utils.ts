@@ -52,3 +52,5 @@ export const getPreviousOwner = (owners: string[], currentOwner: string) => {
     return owners[currentOwnerIndex - 1];
   }
 };
+
+export const isInvalidOwnerError = (error: any) => error.message === 'VM Exception while processing transaction: revert Invalid owner provided' || (error.reason[0] === 'Invalid owner provided' && error.reason.length === 1);
