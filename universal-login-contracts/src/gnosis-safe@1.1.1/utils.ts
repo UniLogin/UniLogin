@@ -53,4 +53,11 @@ export const getPreviousOwner = (owners: string[], currentOwner: string) => {
   }
 };
 
-export const isInvalidOwnerError = (error: any) => error.message === 'VM Exception while processing transaction: revert Invalid owner provided' || (error.reason[0] === 'Invalid owner provided' && error.reason.length === 1);
+export const isInvalidOwnerError = (error: any) =>
+  isInvalidOwnerErrorGanache(error) || isInvalidOwnerErrorMainchain(error);
+
+const isInvalidOwnerErrorGanache = (error: any) =>
+  error.message === 'VM Exception while processing transaction: revert Invalid owner provided';
+
+const isInvalidOwnerErrorMainchain = (error: any) =>
+  error.reason[0] === 'Invalid owner provided' && error.reason.length === 1;
