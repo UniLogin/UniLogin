@@ -1,7 +1,7 @@
 import {join} from 'path';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Route, Switch, useHistory} from 'react-router';
-import {Funds, Devices, BackupCodes, Notice, TopUp} from '@universal-login/react';
+import {Funds, Devices, BackupCodes, Notice, TopUp, useAsyncEffect} from '@universal-login/react';
 import {Header} from './Header';
 import {useServices} from '../../hooks';
 import ModalTransfer from '../Modals/Transfer/ModalTransfer';
@@ -13,7 +13,7 @@ const HomeScreen = () => {
   const deployedWallet = walletService.getDeployedWallet();
   const notice = deployedWallet.sdk.getNotice();
 
-  useEffect(() => deployedWallet.subscribeDisconnected(() => walletService.disconnect()), []);
+  useAsyncEffect(() => deployedWallet.subscribeDisconnected(() => walletService.disconnect()), []);
 
   const history = useHistory();
 

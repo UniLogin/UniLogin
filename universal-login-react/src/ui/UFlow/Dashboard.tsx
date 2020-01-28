@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {MemoryRouter} from 'react-router';
 import {DeployedWallet, setBetaNotice, WalletService} from '@universal-login/sdk';
 import logoIcon from '../assets/icons/U.svg';
@@ -26,7 +26,7 @@ export const Dashboard = (props: DashboardProps) => {
   const [newNotifications, setNewNotifications] = useState<Notification[]>([]);
   useAsyncEffect(async () => deployedWallet?.subscribeAuthorisations(setNewNotifications) as Promise<() => void>, [deployedWallet]);
 
-  useEffect(() => deployedWallet?.subscribeDisconnected(() => walletService.disconnect()), [deployedWallet]);
+  useAsyncEffect(async () => deployedWallet?.subscribeDisconnected(() => walletService.disconnect()), [deployedWallet]);
 
   if (!deployedWallet) {
     return null;
