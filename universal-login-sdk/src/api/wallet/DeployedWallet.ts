@@ -130,9 +130,10 @@ export class DeployedWallet extends AbstractWallet {
     return this.sdk.subscribeToBalances(this.contractAddress, callback);
   }
 
-  subscribeDisconnected(onDisconnected: Procedure) {
+  async subscribeDisconnected(onDisconnected: Procedure) {
+    const eventName = await this.sdk.walletContractService.getEventNameFor(this.contractAddress, 'KeyRemoved');
     const unsubscribe = this.sdk.subscribe(
-      'KeyRemoved',
+      eventName,
       {contractAddress: this.contractAddress, key: this.publicKey},
       () => onDisconnected(),
     );
