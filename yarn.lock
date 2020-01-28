@@ -1039,10 +1039,10 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@ramp-network/ramp-instant-sdk@1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@ramp-network/ramp-instant-sdk/-/ramp-instant-sdk-1.5.1.tgz#16656ddc5d1b3b62a4c4a25619ec963a613c25bc"
-  integrity sha512-dvgPvBSxCpz0VXFy7zH8X1ICdGlAilhUkU/zIlKkutC+u4ZVdbYf53p3uquaYP33/AKtOOqmmFefcaEBN9pUTg==
+"@ramp-network/ramp-instant-sdk@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@ramp-network/ramp-instant-sdk/-/ramp-instant-sdk-1.7.0.tgz#aee260de49ef148aaa8323de1414555918a7415c"
+  integrity sha512-6ZAkwxdYSXn1kkQ9oHzgDu2kox99Sg6weIYfSVzN7iJsoscPRtsKSii0j+gGSiblooyyyIpAYARtlPuIqkOUJQ==
   dependencies:
     body-scroll-lock "^2.6.4"
 

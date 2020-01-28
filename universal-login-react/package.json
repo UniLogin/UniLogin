@@ -20,7 +20,7 @@
     "start:dev": "ts-node scripts/dev-start.ts"
   },
   "dependencies": {
-    "@ramp-network/ramp-instant-sdk": "1.5.1",
+    "@ramp-network/ramp-instant-sdk": "^1.7.0",
     "@restless/sanitizers": "^0.2.2",
     "@universal-login/commons": "0.4.4",
     "@universal-login/sdk": "0.4.4",
