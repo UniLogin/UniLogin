@@ -3,6 +3,7 @@ import {PublicRelayerConfig} from '@universal-login/commons';
 import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import '../styles/base/waitingForTransaction.sass';
 
 export interface WaitingForTransactionProps extends WaitingForProps {
   relayerConfig: PublicRelayerConfig;
@@ -16,8 +17,8 @@ const Body = ({action, relayerConfig, transactionHash, className, info}: Waiting
       action={action}
       className={className}
     />
-    <div className="modal-pending-section">
-      <h3 className="transaction-hash-title">Transaction hash</h3>
+    <div className="unilogin-component-waitingfortransaction-modal-pending-section">
+      <h3 className="unilogin-component-waitingfortransaction-transaction-hash-title">Transaction hash</h3>
       <ExplorerLink
         chainName={relayerConfig.chainSpec.name}
         transactionHash={transactionHash}
@@ -28,7 +29,7 @@ const Body = ({action, relayerConfig, transactionHash, className, info}: Waiting
 );
 
 export const WaitingForTransaction = (props: WaitingForTransactionProps) => (
-  <div className="universal-login-waiting-for-transaction">
+  <div className="unilogin-component-waitinfortransaction">
     <div className={getStyleForTopLevelComponent(props.className)}>
       <Body {...props} />
     </div>
