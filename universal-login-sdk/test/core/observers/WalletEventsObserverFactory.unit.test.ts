@@ -131,11 +131,13 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
       expect(onKeyAdd2).to.not.have.been.called;
     });
 
-    it('subscribe twice with 2 unsubscribes', async () => {
+    it('callbacks does not called if unsubscribes called ', async () => {
       const unsubscribe = factory.subscribe('KeyAdded', filter, onKeyAdd);
       const unsubscribe2 = factory.subscribe('KeyAdded', filter, onKeyAdd2);
       unsubscribe();
       unsubscribe2();
+      sinon.replace(blockNumberState, 'get', sinon.fake.returns(2));
+      factory.fetchEvents();
       expect(onKeyAdd).to.not.have.been.called;
       expect(onKeyAdd2).to.not.have.been.called;
     });
