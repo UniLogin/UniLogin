@@ -6,10 +6,11 @@ export const ThemeContext = createContext<ContextProps>(['default', (newTheme: s
 
 export type ThemeProps = {
   children: ReactNode;
+  initialTheme?: string;
 };
 
-export const ThemeProvider = ({children}: ThemeProps) => {
-  const themeHook = useState('default');
+export const ThemeProvider = ({children, initialTheme}: ThemeProps) => {
+  const themeHook = useState(initialTheme || 'default');
 
   return (
     <ThemeContext.Provider value={themeHook}>
