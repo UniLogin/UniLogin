@@ -82,6 +82,18 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
         expect(onKeyRemove).to.not.have.been.called;
       });
     });
+
+    it('does not called if factory started but does not have subscriptions', async () => {
+      const spy = sinon.spy(factory, 'fetchEventsOfTypes');
+      await factory.fetchEvents();
+      expect(spy).to.not.have.been.called;
+    });
+
+    it('called if factory started but does not have subscriptions', async () => {
+      const spy = sinon.spy(factory, 'fetchEventsOfTypes');
+      await factory.fetchEvents();
+      expect(spy).to.not.have.been.calledTwice;
+    });
   });
 
   describe('subscribe', () => {
@@ -90,6 +102,12 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
     beforeEach(() => {
       onKeyAdd2 = sinon.spy();
       blockchainService.getLogs = async (filter) => filter.topics?.includes('0x654abba5d3170185ed25c9b41f7d2094db3643986b05e9e9cab37028b800ad7e') ? [keyAddedEvent] : [];
+    });
+
+    it('fetch after subscribe', async () => {
+      const spy = sinon.spy(factory, 'fetchEvents');
+      factory.subscribe('KeyAdded', filter, onKeyAdd);
+      expect(spy).calledOnce;
     });
 
     it('subscribe twice', async () => {
@@ -116,7 +134,6 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
     it('subscribe twice with 2 unsubscribes', async () => {
       const unsubscribe = factory.subscribe('KeyAdded', filter, onKeyAdd);
       const unsubscribe2 = factory.subscribe('KeyAdded', filter, onKeyAdd2);
-      sinon.replace(blockNumberState, 'get', sinon.fake.returns(2));
       unsubscribe();
       unsubscribe2();
       expect(onKeyAdd).to.not.have.been.called;

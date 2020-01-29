@@ -35,27 +35,32 @@ class WalletEventsObserverFactory {
 
   async fetchEvents() {
     ensureNotNull(this.currentBlock.get(), InvalidObserverState);
+    if (Object.keys(this.observers).length === 0) {
+      return;
+    }
     await this.fetchEventsOfTypes(['KeyAdded', 'KeyRemoved', 'AddedOwner', 'RemovedOwner']);
   }
 
   async fetchEventsOfTypes(types: WalletEventType[]) {
-    ensureNotNull(this.currentBlock.get(), InvalidObserverState);
     const currentBlockNumber = this.currentBlock.get();
     const storageBlockNumber = this.blockNumberStorage.get();
+    ensureNotNull(currentBlockNumber, InvalidObserverState);
     ensureNotNull(storageBlockNumber, MissingParameter, 'storageBlockNumber');
     if (currentBlockNumber === storageBlockNumber) {
       return;
     }
     this.blockNumberStorage.set(currentBlockNumber);
     for (const contractAddress of Object.keys(this.observers)) {
-      await this.observers[contractAddress].fetchEvents(currentBlockNumber, types);
+      await this.observers[contractAddress].fetchEvents(storageBlockNumber + 1, types);
     }
   }
 
   subscribe(eventType: WalletEventType, filter: WalletEventFilter, callback: WalletEventCallback) {
     this.observers[filter.contractAddress] = this.observers[filter.contractAddress] || new WalletEventsObserver(filter.contractAddress, this.blockchainService);
     const observableRecord = {key: filter.key, callback};
-    return this.observers[filter.contractAddress].subscribe(eventType, observableRecord);
+    const unsubscribe = this.observers[filter.contractAddress].subscribe(eventType, observableRecord);
+    this.fetchEvents();
+    return unsubscribe;
   }
 
   stop() {
