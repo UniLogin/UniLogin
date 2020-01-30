@@ -40,7 +40,7 @@
     "clean": "rimraf dist"
   },
   "engines": {
-    "node": "^11.15.0"
+    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
