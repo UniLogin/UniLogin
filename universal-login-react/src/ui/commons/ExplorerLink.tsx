@@ -1,5 +1,6 @@
 import React from 'react';
 import {getEtherscanUrl} from '../../core/utils/getEtherscanUrl';
+import {classForComponent} from '../utils/classFor';
 import '../styles/base/waitingForTransaction.sass';
 
 interface ExplorerLinkProps {
@@ -8,11 +9,11 @@ interface ExplorerLinkProps {
 }
 
 export const ExplorerLink = ({chainName, transactionHash}: ExplorerLinkProps) => (
-  <p className="unilogin-component-waitingfortransaction-txn-hash-text">
+  <p className={classForComponent('waitingfortransaction-txn-hash-text')}>
     {transactionHash
       ? (
         <a
-          className="unilogin-component-waitingfortransaction-txn-hash-link"
+          className={classForComponent('waitingfortransaction-txn-hash-link')}
           href={getEtherscanUrl(chainName, transactionHash!)}
           target="_blank"
           rel="noopener noreferrer"

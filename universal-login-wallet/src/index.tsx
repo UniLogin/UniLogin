@@ -36,7 +36,7 @@ const AppBootstrapper = () => {
 
   return (
     <ServiceContext.Provider value={services}>
-      <ThemeProvider initialTheme={'jarvis'}>
+      <ThemeProvider theme={'jarvis'}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
