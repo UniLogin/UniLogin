@@ -2,6 +2,7 @@ import React from 'react';
 import {OnRampProviderName, getOnRampProviderLogo} from './getOnRampProviderLogo';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {WaitingFor} from '../../commons/WaitingFor';
+import '../../styles/base/waitingForOnRampProvider.sass';
 
 export interface WaitingForOnRampProviderProps {
   onRampProviderName: OnRampProviderName;
