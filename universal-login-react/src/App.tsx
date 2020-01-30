@@ -63,7 +63,7 @@ export const App = () => {
 
   return (
     <BrowserRouter>
-      <ThemeProvider theme='unilogin'>
+      <ThemeProvider>
         <div className="playground">
           <NavigationColumn />
           <div className="playground-content">
@@ -180,6 +180,7 @@ export const App = () => {
               </Route>
               <Route exact path="/waitForTransaction">
                 <div>
+                  <ThemesPlayground/>
                   <Link to="/waitForTransactionWithHash">With hash</Link><br />
                   <Link to="/waitForTransactionWithoutHash">Without hash</Link>
                 </div>
