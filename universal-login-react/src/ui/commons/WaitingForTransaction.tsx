@@ -3,10 +3,11 @@ import {PublicRelayerConfig} from '@universal-login/commons';
 import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import {useThemeClassFor, classForComponent} from '../utils/classFor';
+import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/waitingForTransaction.sass';
 import '../styles/themes/Legacy/waitingForTransactionThemeLegacy.sass';
 import '../styles/themes/Jarvis/waitingForTransactionThemeJarvis.sass';
+import '../styles/themes/UniLogin/waitingForTransactionThemeUniLogin.sass';
 
 export interface WaitingForTransactionProps extends WaitingForProps {
   relayerConfig: PublicRelayerConfig;
@@ -32,7 +33,7 @@ const Body = ({action, relayerConfig, transactionHash, className, info}: Waiting
 );
 
 export const WaitingForTransaction = (props: WaitingForTransactionProps) => (
-  <div className={`unilogin-component-waitingfortransaction ${useThemeClassFor()}`}>
+  <div className={useClassFor('waitingfortransaction')}>
     <div className={getStyleForTopLevelComponent(props.className)}>
       <Body {...props} />
     </div>

@@ -63,7 +63,7 @@ export const App = () => {
 
   return (
     <BrowserRouter>
-      <ThemeProvider>
+      <ThemeProvider theme='unilogin'>
         <div className="playground">
           <NavigationColumn />
           <div className="playground-content">
