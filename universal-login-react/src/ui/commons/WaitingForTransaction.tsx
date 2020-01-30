@@ -27,9 +27,7 @@ const Body = ({action, relayerConfig, transactionHash, className, info}: Waiting
         transactionHash={transactionHash}
       />
     </div>
-    <div className={'unilogin-component'}>
-      {info && <p className="info-text">{info}</p>}
-    </div>
+    {info && <p className={classForComponent('info-text')}>{info}</p>}
   </div>
 );
 
