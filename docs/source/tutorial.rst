@@ -343,7 +343,7 @@ Parameters:
 
   ::
 
-    universal-login register:eth:domain cool-domain --ensAddress 0x314159265dd8dbb310642f98f50c066173c1259b --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://mainnet.infura.io' --gasPrice 11000000000
+    universal-login register:eth:domain cool-domain --ensAddress 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://mainnet.infura.io' --gasPrice 11000000000
 
   Result:
 
@@ -378,7 +378,7 @@ Parameters:
 
   ::
 
-    universal-login register:test:domain cool-domain 0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A --ensAddress 0x112234455c3a32fd11230c42e7bccd4a84e02010 --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://ropsten.infura.io'
+    universal-login register:test:domain cool-domain 0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A --ensAddress 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://ropsten.infura.io'
 
   Result:
 
@@ -418,7 +418,7 @@ To register your own ENS domain programmatically, you should use DomainRegistrar
       import {providers, Wallet} from 'ethers';
 
       const ensInfo = {
-        ensAddress: '0x112234455c3a32fd11230c42e7bccd4a84e02010',
+        ensAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
         publicResolverAddress: '0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A'
       };
       const provider = new providers.JsonRpcProvider('https://ropsten.infura.io');
