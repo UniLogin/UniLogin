@@ -2,6 +2,7 @@ import React from 'react';
 import {getEtherscanUrl} from '../../core/utils/getEtherscanUrl';
 import {classForComponent} from '../utils/classFor';
 import '../styles/base/waitingForTransaction.sass';
+import linkIcon from '../assets/icons/link.svg';
 
 interface ExplorerLinkProps {
   chainName: string;
@@ -22,5 +23,6 @@ export const ExplorerLink = ({chainName, transactionHash}: ExplorerLinkProps) =>
         </a>
       )
       : 'The transaction hash will show in a moment'}
+    <img src={linkIcon} className={classForComponent('waitingfortransaction-txn-img')}/>
   </p>
 );
