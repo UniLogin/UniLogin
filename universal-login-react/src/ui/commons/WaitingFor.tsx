@@ -1,8 +1,8 @@
 import React from 'react';
 import {ProgressBar} from '../commons/ProgressBar';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import '../styles/waitingFor.sass';
-import '../styles/waitingForDefault.sass';
+import {useClassFor, classForComponent} from '../utils/classFor';
+import '../styles/base/waitingFor.sass';
 
 export interface WaitingForProps {
   action?: string;
@@ -11,14 +11,14 @@ export interface WaitingForProps {
 
 export const WaitingFor = ({action, className}: WaitingForProps) => {
   return (
-    <div className="universal-login-waiting-for">
+    <div className={useClassFor('universal-login-waitingfor')}>
       <div className={getStyleForTopLevelComponent(className)}>
-        <div className="action-title-box">
-          {action && <h1 className="action-title">{action}</h1>}
+        <div className={classForComponent('waitingfor-action-title-box')}>
+          {action && <h1 className={classForComponent('waitingfor-action-title')}>{action}</h1>}
         </div>
-        <div className="modal-pending-img" />
-        <div className="modal-pending-section">
-          <ProgressBar className="pending-bar"/>
+        <div className={classForComponent('waitingfor-modal-pending-img')} />
+        <div className={classForComponent('waitingfor-modal-pending-section')}>
+          <ProgressBar className={classForComponent('waitingfor-pending-bar')}/>
         </div>
       </div>
     </div>

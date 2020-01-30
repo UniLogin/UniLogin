@@ -3,6 +3,10 @@ import {PublicRelayerConfig} from '@universal-login/commons';
 import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import {useThemeClassFor, classForComponent} from '../utils/classFor';
+import '../styles/base/waitingForTransaction.sass';
+import '../styles/themes/Legacy/waitingForTransactionThemeLegacy.sass';
+import '../styles/themes/Jarvis/waitingForTransactionThemeJarvis.sass';
 
 export interface WaitingForTransactionProps extends WaitingForProps {
   relayerConfig: PublicRelayerConfig;
@@ -16,19 +20,19 @@ const Body = ({action, relayerConfig, transactionHash, className, info}: Waiting
       action={action}
       className={className}
     />
-    <div className="modal-pending-section">
-      <h3 className="transaction-hash-title">Transaction hash</h3>
+    <div className={classForComponent('waitingfor-modal-pending-section')}>
+      <h3 className={classForComponent('waitingfortransaction-transaction-hash-title')}>Transaction hash</h3>
       <ExplorerLink
         chainName={relayerConfig.chainSpec.name}
         transactionHash={transactionHash}
       />
     </div>
-    {info && <p className="info-text">{info}</p>}
+    {info && <p className={classForComponent('info-text')}>{info}</p>}
   </div>
 );
 
 export const WaitingForTransaction = (props: WaitingForTransactionProps) => (
-  <div className="universal-login-waiting-for-transaction">
+  <div className={`unilogin-component-waitingfortransaction ${useThemeClassFor()}`}>
     <div className={getStyleForTopLevelComponent(props.className)}>
       <Body {...props} />
     </div>

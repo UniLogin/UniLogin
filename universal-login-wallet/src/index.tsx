@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 import {setBetaNotice} from '@universal-login/sdk';
-import {ErrorBoundary, useAsync} from '@universal-login/react';
+import {ErrorBoundary, useAsync, ThemeProvider} from '@universal-login/react';
 import App from './ui/react/App';
 import {createServices, ServiceContext} from './ui/createServices';
 import getConfig from './config/getConfig';
@@ -36,9 +36,11 @@ const AppBootstrapper = () => {
 
   return (
     <ServiceContext.Provider value={services}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <ThemeProvider theme={'jarvis'}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
     </ServiceContext.Provider>
   );
 };
