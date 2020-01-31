@@ -8,6 +8,7 @@ import '../styles/base/waitingForTransaction.sass';
 import '../styles/themes/Legacy/waitingForTransactionThemeLegacy.sass';
 import '../styles/themes/Jarvis/waitingForTransactionThemeJarvis.sass';
 import '../styles/themes/UniLogin/waitingForTransactionThemeUniLogin.sass';
+import {ButtonClose} from './Button/ButtonClose';
 
 export interface WaitingForTransactionProps extends WaitingForProps {
   relayerConfig: PublicRelayerConfig;
@@ -34,6 +35,7 @@ const Body = ({action, relayerConfig, transactionHash, className, info}: Waiting
 
 export const WaitingForTransaction = (props: WaitingForTransactionProps) => (
   <div className={useClassFor('waitingfortransaction')}>
+    <ButtonClose onClick={() => console.log('hide modal')}/>
     <div className={getStyleForTopLevelComponent(props.className)}>
       <Body {...props} />
     </div>
