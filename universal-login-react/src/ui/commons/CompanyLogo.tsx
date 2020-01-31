@@ -9,4 +9,3 @@ export const CompanyLogo = () => (
     <p className={classForComponent('logo-label')}>BETA</p>
   </div>
 );
-
