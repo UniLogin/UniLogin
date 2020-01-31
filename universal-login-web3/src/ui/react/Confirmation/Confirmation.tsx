@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {GasMode, findGasMode, findGasOption} from '@universal-login/commons';
+import React, {useState, useEffect} from 'react';
+import {GasMode, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import {ModalWrapper, useAsync, Spinner} from '@universal-login/react';
 import {WalletService} from '@universal-login/sdk';
 import styled from 'styled-components';
@@ -16,11 +16,12 @@ import {BoxContent} from '../common/Layout/BoxContent';
 import {BoxFooter} from '../common/Layout/BoxFooter';
 import {Box} from '../common/Layout/Box';
 import {Row} from '../common/Layout/Row';
+import {ConfirmationResponse} from '../../../models/ConfirmationResponse';
 
 export interface ConfirmationProps {
   title: string;
   message: string;
-  onConfirmationResponse: (response: boolean) => void;
+  onConfirmationResponse: (response: ConfirmationResponse) => void;
   walletService: WalletService;
 }
 
@@ -28,13 +29,24 @@ export const Confirmation = ({onConfirmationResponse, title, message, walletServ
   const [gasModes] = useAsync<GasMode[]>(() => walletService.sdk.getGasModes(), []);
 
   const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount'>>({name: '', usdAmount: ''});
-
+  const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
   const onModeChanged = (name: string) => {
-    const {usdAmount} = findGasMode(gasModes!, name);
+    const gasTokenAddress = gasOption.token.address;
+    const {usdAmount, gasOptions} = findGasMode(gasModes!, name);
 
     setMode({name, usdAmount});
+    setGasOption(findGasOption(gasOptions, gasTokenAddress));
   };
+
+  useEffect(() => {
+    if (gasModes) {
+      const {name, usdAmount} = gasModes[FAST_GAS_MODE_INDEX];
+      const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
+      setMode({name, usdAmount});
+      setGasOption(gasOption);
+    }
+  }, [gasModes]);
 
   return gasModes ? (
     <>
@@ -43,7 +55,7 @@ export const Confirmation = ({onConfirmationResponse, title, message, walletServ
         <Box>
           <BoxHeader>
             <UniLoginLogo />
-            <CloseButton onClick={() => onConfirmationResponse(false)} />
+            <CloseButton onClick={() => onConfirmationResponse({isConfirmed: false})} />
           </BoxHeader>
           <BoxContent>
             <Title className="confirmation-title">{title}</Title>
@@ -56,7 +68,7 @@ export const Confirmation = ({onConfirmationResponse, title, message, walletServ
                 <DataLabel>Value:</DataLabel>
                 <ValueRow>
                   <Highlighted>
-                    <Value>5.5 ETH</Value>
+                    <Value>{gasOption.gasPrice.toString} ETH</Value>
                   </Highlighted>
                   <Value>{mode.usdAmount}</Value>
                 </ValueRow>
@@ -72,8 +84,14 @@ export const Confirmation = ({onConfirmationResponse, title, message, walletServ
             </TransactionData>
           </BoxContent>
           <BoxFooter>
-            <ButtonSecondary onClick={() => onConfirmationResponse(false)}>Back</ButtonSecondary>
-            <ButtonPrimary onClick={() => onConfirmationResponse(true)}>Confirm</ButtonPrimary>
+            <ButtonSecondary onClick={() => onConfirmationResponse({isConfirmed: false})}>Back</ButtonSecondary>
+            <ButtonPrimary onClick={() => onConfirmationResponse({
+              isConfirmed: true,
+              gasParameters: {
+                gasPrice: gasOption.gasPrice,
+                gasToken: gasOption.token.address,
+              },
+            })}>Confirm</ButtonPrimary>
           </BoxFooter>
         </Box>
       </ModalWrapper>
@@ -82,49 +100,49 @@ export const Confirmation = ({onConfirmationResponse, title, message, walletServ
 };
 
 const TransactionData = styled.div`
-  margin-top: 45px;
+    margin-top: 45px;
 
   @media(max-width: 600px) {
-    margin-top: 24px;
-  }
-`;
+        margin - top: 24px;
+    }
+  `;
 
 const DataLabel = styled(Text)`
-  line-height: 17px;
-  width: 100px;
+    line-height: 17px;
+    width: 100px;
 
   @media(max-width: 600px) {
-    width: auto;
-    margin-bottom: 4px;
-  }
-`;
+        width: auto;
+      margin-bottom: 4px;
+    }
+  `;
 
 const Address = styled.p`
-  margin: 0;
-  font-size: 14px;
-  line-height: 17px;
-  display: flex;
-  align-items: center;
-  color: #0F0C4A;
-`;
+    margin: 0;
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+    color: #0F0C4A;
+  `;
 
 const ValueRow = styled.div`
-  display: flex;
-  align-items: center;
-`;
+    display: flex;
+    align-items: center;
+  `;
 
 const Value = styled(Text)`
-  line-height: 17px;
-`;
+    line-height: 17px;
+  `;
 
 const Highlighted = styled.div`
-  padding: 4px 8px;
-  background: #E8F9FE;
-  margin-right: 24px;
-  border-radius: 4px;
+    padding: 4px 8px;
+    background: #E8F9FE;
+    margin-right: 24px;
+    border-radius: 4px;
 
   & ${Value} {
-    color: #0F0C4A;
-    font-weight: 500;
-  }
-`;
+        color: #0F0C4A;
+      font-weight: 500;
+    }
+  `;

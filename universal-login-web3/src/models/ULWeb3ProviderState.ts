@@ -1,3 +1,5 @@
+import {ConfirmationResponse} from './ConfirmationResponse';
+
 export type ULWeb3ProviderState = {
   kind: 'IDLE';
 } | {
@@ -5,7 +7,7 @@ export type ULWeb3ProviderState = {
 } | {
   kind: 'CONFIRMATION';
   props: {
-    onConfirmationResponse: (value: boolean) => void;
+    onConfirmationResponse: (response: ConfirmationResponse) => void;
     title: string;
   };
 } | {

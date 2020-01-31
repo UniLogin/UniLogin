@@ -3,6 +3,7 @@ import {WalletService} from '@universal-login/sdk';
 import {ULWeb3ProviderState} from '../models/ULWeb3ProviderState';
 import {ensure} from '@universal-login/commons';
 import {UnexpectedWalletState} from '../ui/utils/errors';
+import {ConfirmationResponse} from '../models/ConfirmationResponse';
 
 export class UIController {
   activeModal = new State<ULWeb3ProviderState>({kind: 'IDLE'});
@@ -15,13 +16,13 @@ export class UIController {
     this.hideModal();
   }
 
-  confirmRequest(title: string) {
-    return new Promise<boolean>((resolve) => {
+  confirmRequest(title: string): Promise<ConfirmationResponse> {
+    return new Promise<ConfirmationResponse>((resolve) => {
       this.activeModal.set({
         kind: 'CONFIRMATION',
         props: {
           title,
-          onConfirmationResponse: (response: boolean) => {
+          onConfirmationResponse: (response: ConfirmationResponse) => {
             this.hideModal();
             resolve(response);
           },
