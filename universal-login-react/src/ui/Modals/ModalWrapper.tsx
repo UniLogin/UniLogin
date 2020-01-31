@@ -1,8 +1,10 @@
 import React, {ReactNode, useEffect} from 'react';
-import './../styles/modal.sass';
-import './../styles/modalDefaults.sass';
 import {escapePressed} from '@universal-login/commons';
 import {Notice, NoticeProps} from '../commons/Notice';
+import {useThemeClassFor} from '../utils/classFor';
+import './../styles/modal.sass';
+import './../styles/modalDefaults.sass';
+import './../styles/themes/UniLogin/modalThemeUniLogin.sass';
 
 interface ModalWrapperProps extends NoticeProps {
   children: ReactNode;
@@ -27,7 +29,7 @@ export const ModalWrapper = ({children, modalClassName, hideModal, message}: Mod
   return (
     <div className={modalClassName ? `universal-login ${modalClassName}` : 'universal-login universal-login-default'}>
       <div className="modal-overlay" onClick={hideModal} />
-      <div className="modal-wrapper">
+      <div className={`${useThemeClassFor()} modal-wrapper`}>
         <div className="modal">
           {!!hideModal && <button onClick={hideModal} className="modal-close-btn" />}
           {children}
