@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {ModalWrapper} from '@universal-login/react';
+import {WalletService} from '@universal-login/sdk';
 import styled from 'styled-components';
 import {Title} from '../common/Text/Title';
 import {Text} from '../common/Text/Text';
@@ -19,6 +20,7 @@ export interface ConfirmationProps {
   title: string;
   message: string;
   onConfirmationResponse: (response: boolean) => void;
+  walletService: WalletService;
 }
 
 export const Confirmation = ({onConfirmationResponse, title, message}: ConfirmationProps) => {
