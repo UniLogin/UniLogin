@@ -5,6 +5,8 @@ import {useThemeClassFor} from '../utils/classFor';
 import './../styles/modal.sass';
 import './../styles/modalDefaults.sass';
 import './../styles/themes/UniLogin/modalThemeUniLogin.sass';
+import './../styles/themes/Legacy/modalThemeLegacy.sass';
+import './../styles/themes/Jarvis/modalThemeJarvis.sass';
 
 interface ModalWrapperProps extends NoticeProps {
   children: ReactNode;

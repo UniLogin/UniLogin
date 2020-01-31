@@ -1,5 +1,4 @@
 import React from 'react';
-// import UImage from '../../assets/U.svg';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/companyLogo.sass';
 
@@ -9,4 +8,3 @@ export const CompanyLogo = () => (
     <p className={classForComponent('logo-label')}>BETA</p>
   </div>
 );
-
