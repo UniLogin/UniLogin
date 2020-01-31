@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {GasMode} from '@universal-login/commons';
+import {GasMode, findGasMode, findGasOption} from '@universal-login/commons';
 import {ModalWrapper, useAsync, Spinner} from '@universal-login/react';
 import {WalletService} from '@universal-login/sdk';
 import styled from 'styled-components';
@@ -26,7 +26,15 @@ export interface ConfirmationProps {
 
 export const Confirmation = ({onConfirmationResponse, title, message, walletService}: ConfirmationProps) => {
   const [gasModes] = useAsync<GasMode[]>(() => walletService.sdk.getGasModes(), []);
-  const [modeName, setModeName] = useState<string>('');
+
+  const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount'>>({name: '', usdAmount: ''});
+
+
+  const onModeChanged = (name: string) => {
+    const {usdAmount} = findGasMode(gasModes!, name);
+
+    setMode({name, usdAmount});
+  };
 
   return gasModes ? (
     <>
@@ -50,12 +58,12 @@ export const Confirmation = ({onConfirmationResponse, title, message, walletServ
                   <Highlighted>
                     <Value>5.5 ETH</Value>
                   </Highlighted>
-                  <Value>12345 USD</Value>
+                  <Value>{mode.usdAmount}</Value>
                 </ValueRow>
               </Row>
               <Row>
                 <DataLabel>Speed:</DataLabel>
-                <TransactionSpeed gasModes={gasModes} selectedValue={modeName} onChange={setModeName} />
+                <TransactionSpeed gasModes={gasModes} selectedValue={mode.name} onChange={onModeChanged} />
               </Row>
               <Row>
                 <DataLabel>Fee:</DataLabel>
