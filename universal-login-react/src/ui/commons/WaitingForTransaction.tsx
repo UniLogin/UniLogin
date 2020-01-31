@@ -4,11 +4,12 @@ import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {useClassFor, classForComponent} from '../utils/classFor';
+import {ButtonClose} from './Button/ButtonClose';
+import {CompanyLogo} from './CompanyLogo';
 import '../styles/base/waitingForTransaction.sass';
 import '../styles/themes/Legacy/waitingForTransactionThemeLegacy.sass';
 import '../styles/themes/Jarvis/waitingForTransactionThemeJarvis.sass';
 import '../styles/themes/UniLogin/waitingForTransactionThemeUniLogin.sass';
-import {ButtonClose} from './Button/ButtonClose';
 
 export interface WaitingForTransactionProps extends WaitingForProps {
   relayerConfig: PublicRelayerConfig;
@@ -35,6 +36,7 @@ const Body = ({action, relayerConfig, transactionHash, className, info}: Waiting
 
 export const WaitingForTransaction = (props: WaitingForTransactionProps) => (
   <div className={useClassFor('waitingfortransaction')}>
+    <CompanyLogo />
     <ButtonClose onClick={() => console.log('hide modal')}/>
     <div className={getStyleForTopLevelComponent(props.className)}>
       <Body {...props} />
