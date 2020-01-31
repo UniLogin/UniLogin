@@ -17,11 +17,12 @@ export interface WaitingForTransactionProps extends WaitingForProps {
   info?: string;
 }
 
-const Body = ({action, relayerConfig, transactionHash, className, info}: WaitingForTransactionProps) => (
+const Body = ({action, description, relayerConfig, transactionHash, className, info}: WaitingForTransactionProps) => (
   <div>
     <WaitingFor
       action={action}
       className={className}
+      description={description}
     />
     <div className={classForComponent('waitingfor-modal-pending-section')}>
       <h3 className={classForComponent('waitingfortransaction-transaction-hash-title')}>Transaction hash</h3>
@@ -39,7 +40,9 @@ export const WaitingForTransaction = (props: WaitingForTransactionProps) => (
     <CompanyLogo />
     <ButtonClose onClick={() => console.log('hide modal')}/>
     <div className={getStyleForTopLevelComponent(props.className)}>
-      <Body {...props} />
+      <Body {...props}
+        description={props.description || 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it.'}
+      />
     </div>
   </div>
 );
