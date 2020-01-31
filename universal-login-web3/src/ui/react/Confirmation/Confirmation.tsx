@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {ModalWrapper} from '@universal-login/react';
+import {GasMode} from '@universal-login/commons';
+import {ModalWrapper, useAsync, Spinner} from '@universal-login/react';
 import {WalletService} from '@universal-login/sdk';
 import styled from 'styled-components';
 import {Title} from '../common/Text/Title';
@@ -23,12 +24,13 @@ export interface ConfirmationProps {
   walletService: WalletService;
 }
 
-export const Confirmation = ({onConfirmationResponse, title, message}: ConfirmationProps) => {
-  const [speed, setSpeed] = useState('cheap');
+export const Confirmation = ({onConfirmationResponse, title, message, walletService}: ConfirmationProps) => {
+  const [gasModes] = useAsync<GasMode[]>(() => walletService.sdk.getGasModes(), []);
+  const [modeName, setModeName] = useState<string>('');
 
-  return (
+  return gasModes ? (
     <>
-      <GlobalStyle/>
+      <GlobalStyle />
       <ModalWrapper message={message}>
         <Box>
           <BoxHeader>
@@ -53,7 +55,7 @@ export const Confirmation = ({onConfirmationResponse, title, message}: Confirmat
               </Row>
               <Row>
                 <DataLabel>Speed:</DataLabel>
-                <TransactionSpeed selectedValue={speed} onChange={setSpeed} />
+                <TransactionSpeed gasModes={gasModes} selectedValue={modeName} onChange={setModeName} />
               </Row>
               <Row>
                 <DataLabel>Fee:</DataLabel>
@@ -68,7 +70,7 @@ export const Confirmation = ({onConfirmationResponse, title, message}: Confirmat
         </Box>
       </ModalWrapper>
     </>
-  );
+  ) : <Spinner />;
 };
 
 const TransactionData = styled.div`
