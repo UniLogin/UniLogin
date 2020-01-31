@@ -9,5 +9,5 @@ interface ButtonCloseProps {
 export const ButtonClose = ({onClick}: ButtonCloseProps) => {
   return (
     <button onClick={() => onClick()} className={useClassFor('button-close')}></button>
-  )
-}
+  );
+};
