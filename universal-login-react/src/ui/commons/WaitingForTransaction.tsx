@@ -24,12 +24,13 @@ const Body = ({action, description, relayerConfig, transactionHash, className, i
       className={className}
       description={description}
     />
-    <div className={classForComponent('waitingfor-modal-pending-section')}>
+    <div className={classForComponent('waitingfortransaction-modal-pending-section')}>
       <h3 className={classForComponent('waitingfortransaction-transaction-hash-title')}>Transaction hash</h3>
       <ExplorerLink
         chainName={relayerConfig.chainSpec.name}
         transactionHash={transactionHash}
       />
+      <div className={classForComponent('waitingfortransaction-pending-img')}></div>
     </div>
     {info && <p className={classForComponent('info-text')}>{info}</p>}
   </div>
