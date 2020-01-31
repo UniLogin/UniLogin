@@ -3,6 +3,8 @@ import {ProgressBar} from '../commons/ProgressBar';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/waitingFor.sass';
+import '../styles/themes/Legacy/waitingForThemeLegacy.sass';
+import '../styles/themes/Jarvis/waitingForThemeJarvis.sass';
 import '../styles/themes/UniLogin/waitingForThemeUniLogin.sass';
 
 export interface WaitingForProps {
