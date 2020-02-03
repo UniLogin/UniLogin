@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {ModalWrapper} from '@universal-login/react';
-import styled, {createGlobalStyle} from 'styled-components';
+import styled from 'styled-components';
 import {Title} from '../common/Text/Title';
 import {Text} from '../common/Text/Text';
 import {CloseButton} from '../common/Button/CloseButton';
@@ -8,6 +8,7 @@ import {TransactionSpeed} from './TransactionSpeed';
 import {TransactionFee} from './TransactionFee';
 import {ButtonPrimary, ButtonSecondary} from '../common/Button/Button';
 import {UniLoginLogo} from '../common/UniLoginLogo';
+import {GlobalStyle} from '../common/GlobalStyle';
 
 export interface ConfirmationProps {
   title: string;
@@ -62,23 +63,6 @@ export const Confirmation = ({onConfirmationResponse, title, message}: Confirmat
     </>
   );
 };
-
-const GlobalStyle = createGlobalStyle`
-
-  .universal-login-default .modal-wrapper {
-    display: flex;
-    flex-direction: column;
-    max-width: 770px;
-    width: 100%;
-    min-height: initial;
-    max-height: 100%;
-    overflow-y: auto;
-  }
-  .universal-login-default .modal {
-    background: #ffffff;
-    overflow: visible;
-  }
-`;
 
 const Box = styled.div`
   position: relative;
