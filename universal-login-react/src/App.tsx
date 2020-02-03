@@ -192,7 +192,7 @@ export const App = () => {
                     return <Spinner />;
                   } else {
                     return (
-                      <ModalWrapper message="This is a test environment running on Ropsten network">
+                      <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
                         <WaitingForTransaction
                           action="Waiting for transaction"
                           relayerConfig={relayerConfig}
@@ -210,7 +210,7 @@ export const App = () => {
                     return <Spinner />;
                   } else {
                     return (
-                      <ModalWrapper message="This is a test environment running on Ropsten network">
+                      <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
                         <WaitingForTransaction
                           action="Waiting for transaction"
                           relayerConfig={relayerConfig}

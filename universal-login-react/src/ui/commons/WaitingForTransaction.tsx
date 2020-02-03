@@ -4,7 +4,6 @@ import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {useClassFor, classForComponent} from '../utils/classFor';
-import {ButtonClose} from './Button/ButtonClose';
 import {CompanyLogo} from './CompanyLogo';
 import '../styles/base/waitingForTransaction.sass';
 import '../styles/themes/Legacy/waitingForTransactionThemeLegacy.sass';
@@ -39,11 +38,8 @@ const Body = ({action, description, relayerConfig, transactionHash, className, i
 export const WaitingForTransaction = (props: WaitingForTransactionProps) => (
   <div className={useClassFor('waitingfortransaction')}>
     <CompanyLogo />
-    <ButtonClose onClick={() => console.log('hide modal')}/>
     <div className={getStyleForTopLevelComponent(props.className)}>
-      <Body {...props}
-        description={props.description || 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it.'}
-      />
+      <Body description ={WAITING_FOR_TRANSACTION_DESCRIPTION} {...props} />
     </div>
   </div>
 );
@@ -56,4 +52,5 @@ export const WaitingForDeployment = (props: WaitingForTransactionProps) => (
   />
 );
 
+const WAITING_FOR_TRANSACTION_DESCRIPTION = 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it.';
 const DEPLOYMENT_INFO = 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it...';
