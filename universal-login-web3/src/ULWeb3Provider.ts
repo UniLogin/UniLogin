@@ -148,7 +148,7 @@ export class ULWeb3Provider implements Provider {
 
   async sign(address: string, message: string) {
     const decodedMessage = utils.toUtf8String(message);
-    if (!await this.uiController.signChallenge('Connect Request', decodedMessage)) {
+    if (!await this.uiController.signChallenge('Sign message', decodedMessage)) {
       return constants.HashZero;
     }
     await this.deployIfNoWalletDeployed();
