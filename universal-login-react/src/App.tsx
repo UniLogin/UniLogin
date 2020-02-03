@@ -180,22 +180,41 @@ export const App = () => {
               </Route>
               <Route exact path="/waitForTransaction">
                 <div>
-                  <Link to="/waitForTransaction/withHash">With hash</Link><br />
-                  <Link to="/waitForTransaction/withoutHash">Without hash</Link>
+                  <ThemesPlayground/>
+                  <Link to="/waitForTransactionWithHash">With hash</Link><br />
+                  <Link to="/waitForTransactionWithoutHash">Without hash</Link>
                 </div>
               </Route>
               <Route
-                path="/waitForTransaction/"
+                path="/waitForTransactionWithHash"
                 render={({location}) => {
                   if (!relayerConfig) {
                     return <Spinner />;
                   } else {
                     return (
-                      <ModalWrapper>
+                      <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
                         <WaitingForTransaction
                           action="Waiting for transaction"
                           relayerConfig={relayerConfig}
-                          transactionHash={location.pathname === '/waitForTransaction/withHash' ? TEST_TRANSACTION_HASH : undefined}
+                          transactionHash={TEST_TRANSACTION_HASH}
+                        />
+                      </ModalWrapper>
+                    );
+                  }
+                }}>
+              </Route>
+              <Route
+                path="/waitForTransactionWithoutHash"
+                render={({location}) => {
+                  if (!relayerConfig) {
+                    return <Spinner />;
+                  } else {
+                    return (
+                      <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
+                        <WaitingForTransaction
+                          action="Waiting for transaction"
+                          relayerConfig={relayerConfig}
+                          transactionHash={undefined}
                         />
                       </ModalWrapper>
                     );

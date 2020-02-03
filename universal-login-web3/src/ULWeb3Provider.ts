@@ -131,7 +131,7 @@ export class ULWeb3Provider implements Provider {
       return constants.HashZero;
     };
     this.uiController.showWaitForTransaction();
-    await this.ensureWalletIsDeployed();
+    await this.deployIfNoWalletDeployed();
     const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
     const execution = await this.walletService.getDeployedWallet().execute(transactionWithDefaults);
 
@@ -150,7 +150,7 @@ export class ULWeb3Provider implements Provider {
     if (!await this.uiController.confirmRequest('Do you want sign challenge?')) {
       return constants.HashZero;
     }
-    await this.ensureWalletIsDeployed();
+    await this.deployIfNoWalletDeployed();
 
     const wallet = this.walletService.getDeployedWallet();
     ensure(wallet.contractAddress !== address, Error, `Address ${address} is not available to sign`);
@@ -165,7 +165,7 @@ export class ULWeb3Provider implements Provider {
     this.uiController.finishOnboarding();
   }
 
-  private async ensureWalletIsDeployed() {
+  private async deployIfNoWalletDeployed() {
     if (!this.walletService.walletDeployed.get()) {
       this.uiController.requireWallet();
       await waitForTrue(this.walletService.walletDeployed);

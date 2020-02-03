@@ -3,7 +3,7 @@ import {useClassFor} from '../utils/classFor';
 import {ThemedComponent} from '../commons/ThemedComponent';
 import {ThemeContext} from '../themes/Theme';
 
-const themes = ['default', 'jarvis'];
+const themes = ['default', 'jarvis', 'unilogin'];
 
 export const ThemesPlayground = () => {
   const [, setTheme] = useContext(ThemeContext);
