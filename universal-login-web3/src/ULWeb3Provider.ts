@@ -147,7 +147,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sign(address: string, message: string) {
-    if (!await this.uiController.confirmRequest('Do you want sign challenge?')) {
+    if (!await this.uiController.signChallenge('Connect Request', 'Application would like to connect to your UniLogin account')) {
       return constants.HashZero;
     }
     await this.deployIfNoWalletDeployed();
