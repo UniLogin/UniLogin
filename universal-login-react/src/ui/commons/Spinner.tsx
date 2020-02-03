@@ -1,5 +1,9 @@
 import React from 'react';
+import {useThemeClassFor} from '../utils/classFor';
 import '../styles/spinner.css';
+import '../styles/themes/Legacy/spinnerThemeLegacy.sass';
+import '../styles/themes/Jarvis/spinnerThemeJarvis.sass';
+import '../styles/themes/UniLogin/spinnerThemeUniLogin.sass';
 
 interface SpinnerProps {
   className?: string;
@@ -11,8 +15,8 @@ export const Spinner = ({className, dotClassName}: SpinnerProps) => {
   const spinnerDotClassName = dotClassName ? `spinner-dot ${dotClassName}` : 'spinner-dot';
 
   return (
-    <div className="universal-login">
-      <div className={spinnerClassName}>
+    <div className='universal-login'>
+      <div className={`${useThemeClassFor()} ${spinnerClassName}`}>
         <div className={spinnerDotClassName}/>
         <div className={spinnerDotClassName}/>
         <div className={spinnerDotClassName}/>
