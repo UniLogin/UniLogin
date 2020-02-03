@@ -1,7 +1,6 @@
 import React from 'react';
 import {useThemeClassFor, classForComponent} from '../utils/classFor';
 import './../styles/notice.sass';
-import './../styles/themes/Legacy/noticeThemeLegacy.sass';
 import './../styles/themes/Jarvis/noticeThemeJarvis.sass';
 export interface NoticeProps {
   message?: string;
