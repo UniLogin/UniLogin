@@ -19,7 +19,7 @@ export class UIController {
   confirmRequest(title: string): Promise<ConfirmationResponse> {
     return new Promise<ConfirmationResponse>((resolve) => {
       this.activeModal.set({
-        kind: 'CONFIRMATION',
+        kind: 'TRANSACTION_CONFIRMATION',
         props: {
           title,
           onConfirmationResponse: (response: ConfirmationResponse) => {

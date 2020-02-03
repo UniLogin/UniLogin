@@ -18,14 +18,14 @@ import {Box} from '../common/Layout/Box';
 import {Row} from '../common/Layout/Row';
 import {ConfirmationResponse} from '../../../models/ConfirmationResponse';
 
-export interface ConfirmationProps {
+export interface ConfirmationTransactionProps {
   title: string;
   message: string;
   onConfirmationResponse: (response: ConfirmationResponse) => void;
   walletService: WalletService;
 }
 
-export const Confirmation = ({onConfirmationResponse, title, message, walletService}: ConfirmationProps) => {
+export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService}: ConfirmationTransactionProps) => {
   const [gasModes] = useAsync<GasMode[]>(() => walletService.sdk.getGasModes(), []);
 
   const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount'>>({name: '', usdAmount: ''});

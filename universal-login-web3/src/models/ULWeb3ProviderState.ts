@@ -5,7 +5,7 @@ export type ULWeb3ProviderState = {
 } | {
   kind: 'ONBOARDING';
 } | {
-  kind: 'CONFIRMATION';
+  kind: 'TRANSACTION_CONFIRMATION';
   props: {
     onConfirmationResponse: (response: ConfirmationResponse) => void;
     title: string;
