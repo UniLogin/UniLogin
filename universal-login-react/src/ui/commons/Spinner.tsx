@@ -15,7 +15,7 @@ export const Spinner = ({className, dotClassName}: SpinnerProps) => {
   const spinnerDotClassName = dotClassName ? `spinner-dot ${dotClassName}` : 'spinner-dot';
 
   return (
-    <div className='universal-login'>
+    <div className="universal-login">
       <div className={`${useThemeClassFor()} ${spinnerClassName}`}>
         <div className={spinnerDotClassName}/>
         <div className={spinnerDotClassName}/>
