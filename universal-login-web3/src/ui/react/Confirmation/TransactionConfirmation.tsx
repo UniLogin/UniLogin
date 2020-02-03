@@ -65,7 +65,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
             <TransactionData>
               <Row>
                 <DataLabel>Send to:</DataLabel>
-                <Address>0x67ABC896789DB67890DEF5678EF5678A</Address>
+                <Address>{transaction.to}</Address>
               </Row>
               <Row>
                 <DataLabel>Value:</DataLabel>
