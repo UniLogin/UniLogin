@@ -1,0 +1,50 @@
+.unilogin-theme-unilogin.modal-wrapper
+  min-width: 770px
+
+  @media only screen and (max-width: 770px)
+    min-width: 100%
+
+  @media only screen and (max-width: 600px)
+    min-width: 100%
+
+
+.unilogin-theme-unilogin
+  .modal
+    @media only screen and (max-width: 600px)
+      min-height: calc(100vh - 42px)
+      background: #fff
+
+    @media only screen and (max-width: 600px)
+      border-radius: unset
+
+.unilogin-theme-unilogin .modal-close-btn
+  position: absolute
+  display: block
+  width: 24px
+  height: 24px
+  border-radius: 50%
+  border: 1px solid rgba(67, 157, 176, 0.4)
+  background: none
+  cursor: pointer
+  right: .8rem
+  top: .8rem
+
+  &::before
+    content: ''
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%) rotate(45deg)
+    width: 1px
+    height: 11px
+    background-color: #7D7C9C
+
+  &::after
+    content: ''
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%) rotate(135deg)
+    width: 1px
+    height: 11px
+    background-color: #7D7C9C

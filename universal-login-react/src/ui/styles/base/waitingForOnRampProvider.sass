@@ -5,9 +5,13 @@
   .waiting-for-ramp
     display: flex
     align-items: center
-    width: 900px
-    height: 500px
+    min-width: 900px
+    min-height: 500px
     padding: 30px
+
+    @only screen and (min-width: 900px)
+      min-width: unset
+      min-height: unset
 
   .waiting-for-ramp-content
     max-width: 700px
