@@ -19,8 +19,7 @@ export const WaitingFor = ({action, description, className}: WaitingForProps) =>
     <div className={useClassFor('universal-login-waitingfor')}>
       <div className={getStyleForTopLevelComponent(className)}>
         <div className={classForComponent('waitingfor-action-title-box')}>
-          <Spinner />
-          {action && <h1 className={classForComponent('waitingfor-action-title')}>{action}</h1>}
+          {action && <h1 className={classForComponent('waitingfor-action-title')}><Spinner />{action}</h1>}
           {description && <p className={classForComponent('waitingfor-action-description')}>{description}</p>}
         </div>
         <div className={classForComponent('waitingfor-modal-pending-img')} />
