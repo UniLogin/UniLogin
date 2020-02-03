@@ -1,4 +1,5 @@
 import {ConfirmationResponse} from './ConfirmationResponse';
+import {Message} from '@universal-login/commons';
 
 export type ULWeb3ProviderState = {
   kind: 'IDLE';
@@ -9,6 +10,7 @@ export type ULWeb3ProviderState = {
   props: {
     onConfirmationResponse: (response: ConfirmationResponse) => void;
     title: string;
+    transaction: Partial<Message>;
   };
 } | {
   kind: 'SIGN_CONFIRMATION';

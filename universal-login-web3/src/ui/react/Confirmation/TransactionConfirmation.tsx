@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {GasMode, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import styled from 'styled-components';
+import {utils} from 'ethers';
+import {GasMode, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, ensureNotFalsy} from '@universal-login/commons';
 import {ModalWrapper, useAsync, Spinner} from '@universal-login/react';
 import {WalletService} from '@universal-login/sdk';
-import styled from 'styled-components';
 import {Title} from '../common/Text/Title';
 import {Text} from '../common/Text/Text';
 import {CloseButton} from '../common/Button/CloseButton';
@@ -23,9 +24,11 @@ export interface ConfirmationTransactionProps {
   message: string;
   onConfirmationResponse: (response: ConfirmationResponse) => void;
   walletService: WalletService;
+  transaction: Partial<Message>;
 }
 
-export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService}: ConfirmationTransactionProps) => {
+export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction}: ConfirmationTransactionProps) => {
+  ensureNotFalsy(transaction.value, Error, 'Missing parameter of Transaction: value');
   const [gasModes] = useAsync<GasMode[]>(() => walletService.sdk.getGasModes(), []);
 
   const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount'>>({name: '', usdAmount: ''});
@@ -68,7 +71,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
                 <DataLabel>Value:</DataLabel>
                 <ValueRow>
                   <Highlighted>
-                    <Value>{gasOption.gasPrice.toString} ETH</Value>
+                    <Value>{utils.formatEther(transaction.value)} ETH</Value>
                   </Highlighted>
                   <Value>{mode.usdAmount}</Value>
                 </ValueRow>

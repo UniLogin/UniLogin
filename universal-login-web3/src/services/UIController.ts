@@ -1,7 +1,7 @@
 import {State} from 'reactive-properties';
 import {WalletService} from '@universal-login/sdk';
 import {ULWeb3ProviderState} from '../models/ULWeb3ProviderState';
-import {ensure} from '@universal-login/commons';
+import {ensure, Message} from '@universal-login/commons';
 import {UnexpectedWalletState} from '../ui/utils/errors';
 import {ConfirmationResponse} from '../models/ConfirmationResponse';
 
@@ -16,12 +16,13 @@ export class UIController {
     this.hideModal();
   }
 
-  confirmRequest(title: string): Promise<ConfirmationResponse> {
+  confirmRequest(title: string, transaction: Partial<Message>): Promise<ConfirmationResponse> {
     return new Promise<ConfirmationResponse>((resolve) => {
       this.activeModal.set({
         kind: 'TRANSACTION_CONFIRMATION',
         props: {
           title,
+          transaction,
           onConfirmationResponse: (response: ConfirmationResponse) => {
             this.hideModal();
             resolve(response);
