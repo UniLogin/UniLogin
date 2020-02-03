@@ -22,6 +22,7 @@ describe('ULWeb3Provider', () => {
   beforeEach(async () => {
     ({relayer, deployer, services, web3, ulProvider} = await setupTestEnvironmentWithWeb3());
     (ulProvider as any).uiController.confirmRequest = sinon.stub().resolves(true);
+    (ulProvider as any).uiController.signChallenge = sinon.stub().resolves(true);
   });
 
   afterEach(async () => {
