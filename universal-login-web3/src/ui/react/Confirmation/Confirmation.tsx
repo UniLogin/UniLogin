@@ -9,6 +9,11 @@ import {TransactionFee} from './TransactionFee';
 import {ButtonPrimary, ButtonSecondary} from '../common/Button/Button';
 import {UniLoginLogo} from '../common/UniLoginLogo';
 import {GlobalStyle} from '../common/GlobalStyle';
+import {BoxHeader} from '../common/Layout/BoxHeader';
+import {BoxContent} from '../common/Layout/BoxContent';
+import {BoxFooter} from '../common/Layout/BoxFooter';
+import {Box} from '../common/Layout/Box';
+import {Row} from '../common/Layout/Row';
 
 export interface ConfirmationProps {
   title: string;
@@ -63,74 +68,6 @@ export const Confirmation = ({onConfirmationResponse, title, message}: Confirmat
     </>
   );
 };
-
-const Box = styled.div`
-  position: relative;
-  max-width: 770px;
-  width: 100%;
-  background: #fff;
-  border-radius: 8px;
-  padding: 8px;
-
-  @media(max-width: 600px) {
-    min-height: calc(100vh - 41px);
-    display: flex;
-    flex-direction: column;
-    padding: 8px 16px 16px;
-    border-radius: 0;
-  }
-`;
-
-const BoxHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const BoxContent = styled.div`
-  max-width: 530px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 30px;
-  box-sizing: border-box;
-
-  @media(max-width: 600px) {
-    padding: 24px 0 0;
-  }
-`;
-
-const BoxFooter = styled.div`
-  padding: 0 30px 24px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  margin-top: 220px;
-  flex-grow: 1;
-
-  & ${ButtonPrimary} {
-    margin-left: 8px;
-  }
-
-  @media(max-width: 600px) {
-    justify-content: space-between;
-    margin-top: 67px;
-    padding: 0;
-  }
-`;
-
-const Row = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-
-  & > * {
-    width: 100%;
-  }
-
-  @media(max-width: 600px) {
-    display: block;
-    margin-bottom: 24px;
-  }
-`;
 
 const TransactionData = styled.div`
   margin-top: 45px;
