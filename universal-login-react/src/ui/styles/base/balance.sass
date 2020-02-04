@@ -1,0 +1,44 @@
+@import '../helpers/breakpoints'
+.unilogin-component-user-balance
+  .unilogin-component-balance
+    margin-top: 40px
+
+  .unilogin-component-balance-text
+    margin: 0 auto 22px
+    font-weight: 600
+    font-size: 20px
+    text-align: center
+    line-height: normal
+
+    +media(s)
+      font-size: 16px
+      line-height: 24px
+      margin-bottom: 8px
+
+  .unilogin-component-balance-amount
+    margin: 0 auto
+    font-weight: 600
+    font-size: 44px
+    text-align: center
+    line-height: normal
+
+    +media(s)
+      font-size: 32px
+      line-height: 48px
+
+    +media(s)
+      font-size: 32px
+      line-height: 48px
+
+  .unilogin-component-balance-buttons
+    display: flex
+    justify-content: center
+
+  .unilogin-component-balance-buttons > :not(:last-child)
+    margin-right: 1.5rem
+
+  .unilogin-component-balance-spinner-wrapper
+    height: 117px
+    display: flex
+    align-items: center
+    justify-content: center
