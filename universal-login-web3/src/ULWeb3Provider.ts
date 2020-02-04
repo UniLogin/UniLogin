@@ -127,23 +127,27 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sendTransaction(transaction: Partial<Message>): Promise<string> {
-    if (!await this.uiController.confirmRequest('Confirm transaction')) {
-      return constants.HashZero;
-    };
-    this.uiController.showWaitForTransaction();
-    await this.deployIfNoWalletDeployed();
-    const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
-    const execution = await this.walletService.getDeployedWallet().execute(transactionWithDefaults);
+    try {
+      if (!await this.uiController.confirmRequest('Confirm transaction')) {
+        return constants.HashZero;
+      };
+      this.uiController.showWaitForTransaction();
+      await this.deployIfNoWalletDeployed();
+      const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
+      const execution = await this.walletService.getDeployedWallet().execute(transactionWithDefaults);
 
-    const succeeded = await execution.waitForTransactionHash();
-    if (!succeeded.transactionHash) {
+      const succeeded = await execution.waitForTransactionHash();
+      if (!succeeded.transactionHash) {
+        throw new Error('Expected tx hash to not be null');
+      }
+      this.uiController.showWaitForTransaction(succeeded.transactionHash);
+      const status = await execution.waitToBeSuccess();
       this.uiController.hideModal();
-      throw new Error('Expected tx hash to not be null');
+      return succeeded.transactionHash;
+    } catch (e) {
+      this.uiController.showError(e.message);
+      return constants.HashZero;
     }
-    this.uiController.showWaitForTransaction(succeeded.transactionHash);
-    await execution.waitToBeSuccess();
-    this.uiController.hideModal();
-    return succeeded.transactionHash;
   }
 
   async sign(address: string, message: string) {

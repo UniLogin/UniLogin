@@ -54,6 +54,10 @@ export class UIController {
     this.activeModal.set({kind: 'IDLE'});
   }
 
+  showError(errorMessage?: string) {
+    this.activeModal.set({kind: 'ERROR', props: {errorMessage}});
+  }
+
   requireWallet() {
     ensure(this.walletService.state.kind !== 'Deployed', UnexpectedWalletState, 'Deployed');
     this.activeModal.set({kind: 'ONBOARDING'});
