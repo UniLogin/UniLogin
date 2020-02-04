@@ -5,9 +5,10 @@ import {DeployedWallet} from '@universal-login/sdk';
 import {Balance} from '../commons/Balance';
 import {Assets} from '../commons/Assets';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
-import './../styles/funds.sass';
-import './../styles/fundsDefault.sass';
 import {NewDeviceMessage} from './Devices/NewDeviceMessage';
+import {PrimaryButton} from '../commons/buttons/PrimaryButton';
+import {useClassFor, classForComponent} from '../utils/classFor';
+import '../styles/base/funds.sass';
 
 interface FundsProps {
   deployedWallet: DeployedWallet;
@@ -24,9 +25,9 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, onD
   useAsyncEffect(() => sdk.subscribeToAggregatedBalance(contractAddress, setTotalTokensValue), []);
 
   return (
-    <div className="universal-login-funds">
+    <div className={useClassFor('universal-login-funds')}>
       <div className={getStyleForTopLevelComponent(className)}>
-        <div className="funds">
+        <div className={classForComponent('funds')}>
           <NewDeviceMessage
             deployedWallet={deployedWallet}
             onManageClick={onDeviceMessageClick}
@@ -36,10 +37,10 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, onD
             amount={totalTokensValue['USD']}
             className={className}
           />
-          <div className="funds-row">
-            <div className="funds-buttons">
-              <button className="funds-btn funds-topup" onClick={onTopUpClick}>Top-up</button>
-              <button id="transferFunds" className="funds-btn funds-send" onClick={onSendClick}>Send</button>
+          <div className={classForComponent('funds-row')}>
+            <div className={classForComponent('funds-buttons')}>
+              <PrimaryButton title="Top-up" className="funds-topup" onClick={onTopUpClick}/>
+              <PrimaryButton title="Send" className="funds-send" onClick={onTopUpClick}/>
             </div>
             <Assets
               deployedWallet={deployedWallet}
