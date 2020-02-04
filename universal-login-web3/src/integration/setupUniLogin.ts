@@ -1,15 +1,18 @@
+import {ApplicationInfo} from '@universal-login/commons';
+import Web3 from 'web3';
 import {ULWeb3Provider} from '../ULWeb3Provider';
+import {Network} from '../config';
 
-interface CreateOverrides {
-  network: string;
+interface SetupUniLoginOverrides {
+  applicationInfo?: ApplicationInfo;
 }
 
-export const setupUniLogin = (applicationInfo: any, overrides?: CreateOverrides) => ({
+export const setupUniLogin = (web3: Web3, overrides?: SetupUniLoginOverrides) => ({
   name: 'UniversalLogin',
   icon: 'UniversalLogin logo',
   create: async () => {
-    const networkVersion = overrides?.network ? overrides.network : (window as any).web3.currentProvider.networkVersion;
-    const provider = ULWeb3Provider.getDefaultProvider(networkVersion, applicationInfo);
+    const networkVersion = (await web3.eth.net.getId()).toString() as Network;
+    const provider = ULWeb3Provider.getDefaultProvider(networkVersion, overrides?.applicationInfo);
     await provider.init();
     return provider;
   },
