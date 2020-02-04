@@ -6,7 +6,7 @@ export type Network
   | '3' | 'ropsten'
   | '4' | 'rinkeby'
   | '42' | 'kovan'
-  | '1580811901671' | 'ganache';
+  | '8545' | 'ganache';
 
 export interface Config {
   provider: Provider;
@@ -44,7 +44,7 @@ export function getConfigForNetwork(network: Network): Config {
         relayerUrl: 'https://relayer-kovan.herokuapp.com',
         ensDomains: ['poppularapp.test'],
       };
-    case '1580811901671':
+    case '8545':
     case 'ganache':
       return {
         provider: new Web3.providers.HttpProvider('http://localhost:18545'),

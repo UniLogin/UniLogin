@@ -16,9 +16,7 @@ export const setupUniLogin = (web3: Web3, overrides?: SetupUniLoginOverrides) =>
     const networkVersion = (await web3.eth.net.getId()).toString() as Network;
     const uniLoginConfig = getConfigForNetwork(networkVersion);
     const provider = new ULWeb3Provider({
-      provider: uniLoginConfig.provider,
-      relayerUrl: uniLoginConfig.relayerUrl,
-      ensDomains: uniLoginConfig.ensDomains,
+      ...uniLoginConfig,
       applicationInfo: overrides?.applicationInfo,
       storageService: overrides?.storageService,
     });
