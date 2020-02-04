@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Message, Notification, PartialRequired, PublicRelayerConfig, resolveName, SdkExecutionOptions, TokenDetailsService, TokensValueConverter} from '@universal-login/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Message, Notification, PartialRequired, PublicRelayerConfig, resolveName, SdkExecutionOptions, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator} from '@universal-login/commons';
 import {BlockchainService} from '@universal-login/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -41,6 +41,7 @@ class UniversalLoginSDK {
   readonly gasPriceOracle: GasPriceOracle;
   readonly gasModeService: GasModeService;
   readonly sdkConfig: SdkConfig;
+  readonly sufficientBalanceValidator: SufficientBalanceValidator;
   readonly factoryAddress?: string;
   readonly featureFlagsService: FeatureFlagsService;
   readonly messageConverter: MessageConverter;
@@ -67,6 +68,7 @@ class UniversalLoginSDK {
     const blockNumberState = new BlockNumberState(this.blockchainService);
     this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.blockchainService, blockNumberState, this.sdkConfig.storageService);
     this.balanceChecker = new BalanceChecker(this.provider);
+    this.sufficientBalanceValidator = new SufficientBalanceValidator(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, sdkConfig?.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokensAddresses);
     this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.sdkConfig.observedCurrencies, this.sdkConfig.priceObserverTick);
