@@ -9,6 +9,7 @@ import {NewDeviceMessage} from './Devices/NewDeviceMessage';
 import {PrimaryButton} from '../commons/buttons/PrimaryButton';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/funds.sass';
+import '../styles/themes/UniLogin/fundsThemeUniLogin.sass';
 
 interface FundsProps {
   deployedWallet: DeployedWallet;
@@ -33,15 +34,18 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, onD
             onManageClick={onDeviceMessageClick}
             className={className}
           />
-          <Balance
-            amount={totalTokensValue['USD']}
-            className={className}
-          />
-          <div className={classForComponent('funds-row')}>
+          <div className={classForComponent('balance-wrapper')}>
+            <Balance
+              amount={totalTokensValue['USD']}
+              className={className}
+            />
             <div className={classForComponent('funds-buttons')}>
               <PrimaryButton title="Top-up" className="funds-topup" onClick={onTopUpClick}/>
               <PrimaryButton title="Send" className="funds-send" onClick={onTopUpClick}/>
             </div>
+          </div>
+          <div className={classForComponent('funds-row')}>
+
             <Assets
               deployedWallet={deployedWallet}
               className={className}
