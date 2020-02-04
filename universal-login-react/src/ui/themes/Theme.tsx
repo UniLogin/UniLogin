@@ -10,7 +10,7 @@ export type ThemeProps = {
 };
 
 export const ThemeProvider = ({children, theme}: ThemeProps) => {
-  const themeHook = useState(theme || 'default');
+  const themeHook = useState(theme || 'unilogin');
 
   return (
     <ThemeContext.Provider value={themeHook}>
