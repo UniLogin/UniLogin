@@ -5,7 +5,8 @@ export type Network
   = '1' | 'mainnet'
   | '3' | 'ropsten'
   | '4' | 'rinkeby'
-  | '42' | 'kovan';
+  | '42' | 'kovan'
+  | '8545' | 'ganache';
 
 export interface Config {
   provider: Provider;
@@ -42,6 +43,13 @@ export function getConfigForNetwork(network: Network): Config {
         provider: new Web3.providers.HttpProvider('https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d'),
         relayerUrl: 'https://relayer-kovan.herokuapp.com',
         ensDomains: ['poppularapp.test'],
+      };
+    case '8545':
+    case 'ganache':
+      return {
+        provider: new Web3.providers.HttpProvider('http://localhost:18545'),
+        relayerUrl: 'http://localhost:3311',
+        ensDomains: ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'],
       };
     default:
       throw new Error(`Invalid network: ${network}`);
