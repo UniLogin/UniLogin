@@ -30,6 +30,22 @@ export class UIController {
     });
   }
 
+  signChallenge(title: string, signMessage: string) {
+    return new Promise<boolean>((resolve) => {
+      this.activeModal.set({
+        kind: 'SIGN_CONFIRMATION',
+        props: {
+          title,
+          signMessage,
+          onConfirmationResponse: (response: boolean) => {
+            this.hideModal();
+            resolve(response);
+          },
+        },
+      });
+    });
+  }
+
   showWaitForTransaction(transactionHash?: string) {
     this.activeModal.set({kind: 'WAIT_FOR_TRANSACTION', props: {transactionHash}});
   }
