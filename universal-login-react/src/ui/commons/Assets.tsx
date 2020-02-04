@@ -9,6 +9,7 @@ import {getIconForToken} from '../../core/utils/getIconForToken';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import './../styles/base/assetsList.sass';
 import './../styles/themes/Legacy/assetsListThemeLegacy.sass';
+import './../styles/themes/UniLogin/assetsListThemeUniLogin.sass';
 
 export interface AssetsProps {
   deployedWallet: DeployedWallet;
