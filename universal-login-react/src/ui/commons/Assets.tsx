@@ -3,11 +3,12 @@ import {utils} from 'ethers';
 import {DeployedWallet} from '@universal-login/sdk';
 import {TokenDetailsWithBalance} from '@universal-login/commons';
 import {Asset} from './Asset';
-import './../styles/assetsList.sass';
-import './../styles/assetsListDefaults.sass';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {getIconForToken} from '../../core/utils/getIconForToken';
+import {useClassFor, classForComponent} from '../utils/classFor';
+import './../styles/base/assetsList.sass';
+import './../styles/themes/Legacy/assetsListThemeLegacy.sass';
 
 export interface AssetsProps {
   deployedWallet: DeployedWallet;
@@ -20,11 +21,11 @@ export const Assets = ({deployedWallet, className}: AssetsProps) => {
   useAsyncEffect(() => deployedWallet.subscribeToBalances(setTokenDetailsWithBalance), []);
 
   return (
-    <div className="universal-login-assets">
+    <div className={useClassFor('assets-wrapper')}>
       <div className={getStyleForTopLevelComponent(className)}>
-        <div className="assets">
-          <p className="assets-title">My Assets</p>
-          <div className="assets-list">
+        <div className={classForComponent('assets')}>
+          <p className={classForComponent('assets-title')}>My Assets</p>
+          <div className={classForComponent('assets-list')}>
             {tokenDetailsWithBalance.map(({name, symbol, balance}: TokenDetailsWithBalance) => (
               <Asset
                 key={`${name}-${symbol}`}

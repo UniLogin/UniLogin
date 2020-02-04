@@ -1,0 +1,69 @@
+@import '../helpers/breakpoints'
+
+.unilogin-component-assets-item-wrapper
+  width: 100%
+
+  .unilogin-component-assets-item
+    display: flex
+    justify-content: space-between
+    padding: 15px 0
+    width: 100%
+
+    +media(s)
+      padding: 8px
+
+  .unilogin-component-assets-item-left
+    display: flex
+
+    .unilogin-component-assets-price
+      text-align: left
+
+  .unilogin-component-assets-item-right
+    .unilogin-component-assets-price
+      text-align: right
+
+  .unilogin-component-assets-img-wrapper
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 30px
+    margin-right: 10px
+
+  .unilogin-component-currency-accordion-img
+    height: 30px
+
+  .unilogin-component-assets-img
+    max-width: 100%
+
+  .unilogin-component-assets-name
+    margin: 0
+    font-size: 14px
+    text-transform: capitalize
+    text-align: left
+    line-height: normal
+
+  .unilogin-component-assets-price
+    margin: 0
+    font-size: 12px
+    text-align: left
+    line-height: normal
+
+    +media(s)
+      font-size: 14px
+
+    +media(s)
+      font-size: 14px
+
+  .unilogin-component-assets-balance
+    margin: 0
+    font-size: 14px
+    line-height: normal
+
+  .unilogin-component-assets-balance-converted
+    display: flex
+    justify-content: flex-end
+
+  .unilogin-component-assets-price-tilde
+    margin: 0px 3px 0px
+    font-weight: bold
+    font-size: 12px

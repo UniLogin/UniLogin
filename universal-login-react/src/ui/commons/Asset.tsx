@@ -3,9 +3,12 @@ import {TokensPrices} from '@universal-login/commons';
 import UniversalLoginSDK from '@universal-login/sdk';
 import Spinner from './Spinner';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import {getTildeGivenAmount, formatCurrency} from '../../core/utils/formatCurrency';
+import {useClassFor, classForComponent} from '../utils/classFor';
 import './../styles/assetsItem.sass';
 import './../styles/assetsItemDefault.sass';
-import {getTildeGivenAmount, formatCurrency} from '../../core/utils/formatCurrency';
+import './../styles/base/assetsItem.sass';
+import './../styles/themes/Legacy/assetsItemThemeLegacy.sass';
 
 export interface AssetProps {
   sdk: UniversalLoginSDK;
@@ -34,23 +37,23 @@ export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps)
   }, [usdPrice, balance]);
 
   return (
-    <div key={name} className="universal-login-assets-item">
+    <div key={name} className={useClassFor('assets-item-wrapper')}>
       <div className={getStyleForTopLevelComponent(className)}>
-        <div className="assets-item">
-          <div className="assets-item-left">
-            <div className="assets-img-wrapper">
-              <img src={icon} alt={symbol} className="currency-accordion-img" />
+        <div className={classForComponent('assets-item')}>
+          <div className={classForComponent('assets-item-left')}>
+            <div className={classForComponent('assets-img-wrapper')}>
+              <img src={icon} alt={symbol} className={classForComponent('currency-accordion-img')} />
             </div>
             <div>
-              <p className="assets-name">{name}</p>
-              <p className="assets-price">1 {symbol} = ${usdPrice}</p>
+              <p className={classForComponent('assets-name')}>{name}</p>
+              <p className={classForComponent('assets-price')}>1 {symbol} = ${usdPrice}</p>
             </div>
           </div>
-          <div className="assets-item-right">
-            {balance ? <p className="assets-balance"> {balance} {symbol}</p> : <Spinner/>}
-            <div className="assets-balance-converted">
-              <p className="assets-price-tilde">{getTildeGivenAmount(usdAmount)}</p>
-              <p className="assets-price">{formatCurrency(usdAmount)}</p>
+          <div className={classForComponent('assets-item-right')}>
+            {balance ? <p className={classForComponent('assets-balance')}> {balance} {symbol}</p> : <Spinner/>}
+            <div className={classForComponent('assets-balance-converted')}>
+              <p className={classForComponent('assets-price-tilde')}>{getTildeGivenAmount(usdAmount)}</p>
+              <p className={classForComponent('assets-price')}>{formatCurrency(usdAmount)}</p>
             </div>
 
           </div>
