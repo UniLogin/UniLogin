@@ -26,7 +26,7 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, onD
   useAsyncEffect(() => sdk.subscribeToAggregatedBalance(contractAddress, setTotalTokensValue), []);
 
   return (
-    <div className={useClassFor('universal-login-funds')}>
+    <div className={useClassFor('funds-wrapper')}>
       <div className={getStyleForTopLevelComponent(className)}>
         <div className={classForComponent('funds')}>
           <NewDeviceMessage
