@@ -73,7 +73,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
                   <Highlighted>
                     <Value>{utils.formatEther(transaction.value)} ETH</Value>
                   </Highlighted>
-                  <Value>{mode.usdAmount}</Value>
+                  <Value>10 USD</Value>
                 </ValueRow>
               </Row>
               <Row>
