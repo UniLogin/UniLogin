@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import UniLoginLogo from '../assets/U.svg';
+import MetamaskLogo from '../assets/MetaMaskLogoTitle.svg';
 
 interface IWeb3ProviderProps {
   name: string;
@@ -29,6 +30,8 @@ const ProviderSelect = ({name, icon, labelTop, labelBottom, indicator, selectedP
   const pickLogo = (): string | undefined => {
     switch (name) {
       case 'UniversalLogin': return UniLoginLogo;
+      case 'Metamask': return MetamaskLogo;
+      default: return icon;
     }
   };
 

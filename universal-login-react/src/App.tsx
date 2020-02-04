@@ -194,7 +194,7 @@ export const App = () => {
                     return (
                       <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
                         <WaitingForTransaction
-                          action="Waiting for transaction"
+                          action="Waiting for transfer"
                           relayerConfig={relayerConfig}
                           transactionHash={TEST_TRANSACTION_HASH}
                         />
@@ -212,7 +212,7 @@ export const App = () => {
                     return (
                       <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
                         <WaitingForTransaction
-                          action="Waiting for transaction"
+                          action="Waiting for transfer"
                           relayerConfig={relayerConfig}
                           transactionHash={undefined}
                         />
