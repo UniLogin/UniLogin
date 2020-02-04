@@ -94,6 +94,7 @@ export class ULWeb3Provider implements Provider {
             result,
           });
         } catch (err) {
+          this.uiController.showError(err.message);
           callback(err);
         }
         break;
@@ -127,27 +128,22 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sendTransaction(transaction: Partial<Message>): Promise<string> {
-    try {
-      if (!await this.uiController.confirmRequest('Confirm transaction')) {
-        return constants.HashZero;
-      };
-      this.uiController.showWaitForTransaction();
-      await this.deployIfNoWalletDeployed();
-      const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
-      const execution = await this.walletService.getDeployedWallet().execute(transactionWithDefaults);
-
-      const succeeded = await execution.waitForTransactionHash();
-      if (!succeeded.transactionHash) {
-        throw new Error('Expected tx hash to not be null');
-      }
-      this.uiController.showWaitForTransaction(succeeded.transactionHash);
-      const status = await execution.waitToBeSuccess();
-      this.uiController.hideModal();
-      return succeeded.transactionHash;
-    } catch (e) {
-      this.uiController.showError(e.message);
+    if (!await this.uiController.confirmRequest('Confirm transaction')) {
       return constants.HashZero;
+    };
+    this.uiController.showWaitForTransaction();
+    await this.deployIfNoWalletDeployed();
+    const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
+    const execution = await this.walletService.getDeployedWallet().execute(transactionWithDefaults);
+
+    const succeeded = await execution.waitForTransactionHash();
+    if (!succeeded.transactionHash) {
+      throw new Error('Expected tx hash to not be null');
     }
+    this.uiController.showWaitForTransaction(succeeded.transactionHash);
+    await execution.waitToBeSuccess();
+    this.uiController.hideModal();
+    return succeeded.transactionHash;
   }
 
   async sign(address: string, message: string) {
