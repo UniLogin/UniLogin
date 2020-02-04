@@ -1,15 +1,11 @@
 import React from 'react';
-// import './../styles/balance.sass';
-// import './../styles/balanceDefault.sass';
-import './../styles/base/balance.sass';
-import './../styles/themes/Legacy/balanceThemeLegacy.sass';
-import './../styles/themes/UniLogin/balanceThemeUniLogin.sass';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {formatCurrency} from '../../core/utils/formatCurrency';
 import Spinner from './Spinner';
 import {useClassFor, classForComponent} from '../utils/classFor';
-import {PrimaryButton} from './buttons/PrimaryButton';
-
+import './../styles/base/balance.sass';
+import './../styles/themes/Legacy/balanceThemeLegacy.sass';
+import './../styles/themes/UniLogin/balanceThemeUniLogin.sass';
 export interface BalanceProps {
   amount: number | undefined;
   className?: string;
