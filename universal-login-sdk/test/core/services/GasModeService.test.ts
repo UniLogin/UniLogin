@@ -30,7 +30,42 @@ describe('UNIT: GasModeService', () => {
   const getCurrencyAmountSpy = sinon.spy((gasModeService as any).getCurrencyAmount);
   (gasModeService as any).getCurrencyAmount = getCurrencyAmountSpy;
 
-  it('get modes', async () => {
+  const expectedModes = [
+    {
+      name: 'cheap',
+      usdAmount: '0.0000367702',
+      gasOptions: [{
+        gasPrice: utils.bigNumberify('29894200000000'),
+        token: TEST_TOKEN_DETAILS[0],
+      },
+      {
+        gasPrice: utils.bigNumberify('29894200000000'),
+        token: TEST_TOKEN_DETAILS[1],
+      },
+      {
+        gasPrice: gasPrices.cheap,
+        token: TEST_TOKEN_DETAILS[2],
+      }],
+    },
+    {
+      name: 'fast',
+      usdAmount: '0.00004412424',
+      gasOptions: [{
+        gasPrice: utils.bigNumberify('35873040000000'),
+        token: TEST_TOKEN_DETAILS[0],
+      },
+      {
+        gasPrice: utils.bigNumberify('35873040000000'),
+        token: TEST_TOKEN_DETAILS[1],
+      },
+      {
+        gasPrice: gasPrices.fast,
+        token: TEST_TOKEN_DETAILS[2],
+      }],
+    },
+  ];
+
+  it('getModes', async () => {
     const modes = await gasModeService.getModes();
     expect(gasPriceOracle.getGasPrices).calledOnce;
 
@@ -44,39 +79,12 @@ describe('UNIT: GasModeService', () => {
     expect(getCurrencyAmountSpy.getCall(7)).calledWith(gasPrices.fast, TEST_TOKEN_DETAILS[2].symbol);
     expect(getCurrencyAmountSpy.callCount).to.eq(8);
 
-    expect(modes).to.be.deep.eq([
-      {
-        name: 'cheap',
-        usdAmount: '0.0000367702',
-        gasOptions: [{
-          gasPrice: utils.bigNumberify('29894200000000'),
-          token: TEST_TOKEN_DETAILS[0],
-        },
-        {
-          gasPrice: utils.bigNumberify('29894200000000'),
-          token: TEST_TOKEN_DETAILS[1],
-        },
-        {
-          gasPrice: gasPrices.cheap,
-          token: TEST_TOKEN_DETAILS[2],
-        }],
-      },
-      {
-        name: 'fast',
-        usdAmount: '0.00004412424',
-        gasOptions: [{
-          gasPrice: utils.bigNumberify('35873040000000'),
-          token: TEST_TOKEN_DETAILS[0],
-        },
-        {
-          gasPrice: utils.bigNumberify('35873040000000'),
-          token: TEST_TOKEN_DETAILS[1],
-        },
-        {
-          gasPrice: gasPrices.fast,
-          token: TEST_TOKEN_DETAILS[2],
-        }],
-      },
-    ]);
+    expect(modes).to.be.deep.eq(expectedModes);
+  });
+
+  it('getModesWithUsedPrices', async () => {
+    const {modes, prices} = await gasModeService.getModesWithUsedPrices();
+    expect(modes).to.be.deep.eq(expectedModes);
+    expect(prices).to.be.deep.eq(tokenPrices);
   });
 });
