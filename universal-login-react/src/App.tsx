@@ -11,7 +11,7 @@ import {useServices} from './core/services/useServices';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
-import {DeployedWallet, DeployingWallet} from '@universal-login/sdk';
+import {DeployedWallet, DeployingWallet, setBetaNotice} from '@universal-login/sdk';
 import {Spinner} from './ui/commons/Spinner';
 import {useAsync} from './ui/hooks/useAsync';
 import {WalletService} from '@universal-login/sdk';
@@ -22,7 +22,6 @@ import {TopUp} from './ui/TopUp/TopUp';
 import {WaitingForTransaction} from './ui/commons/WaitingForTransaction';
 import {ThemesPlayground} from './ui/Playground/ThemesPlayground';
 import {ThemeProvider} from './ui/themes/Theme';
-import {OnboardingModal} from './ui/Onboarding/OnboardingModal';
 
 export const App = () => {
   const {sdk} = useServices();
@@ -30,6 +29,8 @@ export const App = () => {
     await sdk.fetchRelayerConfig();
     return sdk.getRelayerConfig();
   }, []);
+
+  setBetaNotice(sdk);
 
   const [walletService] = useState(() => new WalletService(sdk));
 
@@ -104,21 +105,6 @@ export const App = () => {
                     onConnect={() => console.log('connected')}
                     onCreate={() => history.push('/onboarding/success')}
                   />}
-              />
-              <Route
-                exact
-                path="/onboardingModal"
-                render={({history}) =>
-                  <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
-                    <OnboardingModal
-                      sdk={sdk}
-                      walletService={walletService}
-                      domains={['mylogin.eth', 'universal-id.eth']}
-                      tryEnablingMetamask={tryEnablingMetamask}
-                      onConnect={() => console.log('connected')}
-                      onCreate={() => history.push('/onboarding/success')}
-                    />
-                  </ModalWrapper>}
               />
               <Route exact path="/walletSelector">
                 <WalletSelector
