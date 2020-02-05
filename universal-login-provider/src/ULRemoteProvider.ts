@@ -4,7 +4,7 @@ export class ULIFrameProvider {
   private iframe?: HTMLIFrameElement
   private listeners: Record<number, (response: any) => void | undefined> = {}
 
-  init() {
+  constructor() {
     this.iframe = document.createElement('iframe');
     this.iframe.setAttribute('src', IFRAME_BACKEND_URL);
     document.getElementsByTagName('body')[0].appendChild(this.iframe);
@@ -25,6 +25,10 @@ export class ULIFrameProvider {
       }
       this.listeners[rpc.id](rpc)
     })
+  }
+
+  static create() {
+    return new ULIFrameProvider()
   }
 
   send(msg: any, cb: (error: any, response: any) => void) {
