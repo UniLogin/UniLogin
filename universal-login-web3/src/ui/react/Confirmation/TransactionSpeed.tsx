@@ -1,29 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
+import {GasMode} from '@universal-login/commons';
 
-export interface TransactionSpeedProps {
+export interface TransactionSpeedSelectionProps {
   selectedValue: string;
   onChange: (value: string) => void;
 }
 
-export const TransactionSpeed = ({selectedValue, onChange}: TransactionSpeedProps) => (
-  <Row>
-    <RadioButton
-      value="cheap"
-      selectedValue={selectedValue}
-      onChange={onChange}
-      time="1 day"
-    />
-    <RadioButton
-      value="fast"
-      selectedValue={selectedValue}
-      onChange={onChange}
-      time="1 min"
-    />
-  </Row>
-);
+export interface TransactionSpeedProps extends TransactionSpeedSelectionProps {
+  gasModes: GasMode[];
+}
 
-interface RadioButtonProps extends TransactionSpeedProps {
+export const TransactionSpeed = ({gasModes, selectedValue, onChange}: TransactionSpeedProps) => {
+  return (
+    <Row>
+      {gasModes.map(({name, usdAmount}) => (
+        <RadioButton
+          key={name}
+          value={name}
+          selectedValue={selectedValue}
+          onChange={onChange}
+          time="1 day"
+        />
+      ))}
+    </Row>
+  );
+};
+
+interface RadioButtonProps extends TransactionSpeedSelectionProps {
   value: string;
   time: string;
 }

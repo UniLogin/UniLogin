@@ -1,8 +1,9 @@
 import {State} from 'reactive-properties';
 import {WalletService} from '@universal-login/sdk';
 import {ULWeb3ProviderState} from '../models/ULWeb3ProviderState';
-import {ensure} from '@universal-login/commons';
+import {ensure, Message} from '@universal-login/commons';
 import {UnexpectedWalletState} from '../ui/utils/errors';
+import {ConfirmationResponse} from '../models/ConfirmationResponse';
 
 export class UIController {
   activeModal = new State<ULWeb3ProviderState>({kind: 'IDLE'});
@@ -16,13 +17,14 @@ export class UIController {
     this.hideModal();
   }
 
-  confirmRequest(title: string) {
-    return new Promise<boolean>((resolve) => {
+  confirmRequest(title: string, transaction: Partial<Message>): Promise<ConfirmationResponse> {
+    return new Promise<ConfirmationResponse>((resolve) => {
       this.activeModal.set({
-        kind: 'CONFIRMATION',
+        kind: 'TRANSACTION_CONFIRMATION',
         props: {
           title,
-          onConfirmationResponse: (response: boolean) => {
+          transaction,
+          onConfirmationResponse: (response: ConfirmationResponse) => {
             this.hideModal();
             resolve(response);
           },
@@ -53,6 +55,10 @@ export class UIController {
 
   hideModal() {
     this.activeModal.set({kind: 'IDLE'});
+  }
+
+  showError(errorMessage?: string) {
+    this.activeModal.set({kind: 'ERROR', props: {errorMessage}});
   }
 
   requireWallet() {

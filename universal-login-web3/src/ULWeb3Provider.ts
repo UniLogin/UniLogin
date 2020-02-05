@@ -11,6 +11,7 @@ import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
 import {StorageService} from '@universal-login/react';
 import {Property, forEach} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
+import {getOrCreateUlButton} from './ui/utils/initUi';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
@@ -98,6 +99,7 @@ export class ULWeb3Provider implements Provider {
             result,
           });
         } catch (err) {
+          this.uiController.showError(err.message);
           callback(err);
         }
         break;
@@ -137,17 +139,18 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sendTransaction(transaction: Partial<Message>): Promise<string> {
-    if (!await this.uiController.confirmRequest('Confirm transaction')) {
+    const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
+    const confirmationResponse = await this.uiController.confirmRequest('Confirm transaction', transactionWithDefaults);
+    if (!confirmationResponse.isConfirmed) {
       return constants.HashZero;
     };
+    const transactionWithGasParameters = {...transactionWithDefaults, ...confirmationResponse.gasParameters};
     this.uiController.showWaitForTransaction();
     await this.deployIfNoWalletDeployed();
-    const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
-    const execution = await this.walletService.getDeployedWallet().execute(transactionWithDefaults);
+    const execution = await this.walletService.getDeployedWallet().execute(transactionWithGasParameters);
 
     const succeeded = await execution.waitForTransactionHash();
     if (!succeeded.transactionHash) {
-      this.uiController.hideModal();
       throw new Error('Expected tx hash to not be null');
     }
     this.uiController.showWaitForTransaction(succeeded.transactionHash);
@@ -183,8 +186,9 @@ export class ULWeb3Provider implements Provider {
     }
   }
 
-  initWeb3Button(element: Element) {
-    renderLogoButton(element, this.walletService);
+  initWeb3Button(styles?: Record<string, string>) {
+    const element = getOrCreateUlButton(styles);
+    renderLogoButton(element as Element, this.walletService);
   }
 
   finalizeAndStop() {

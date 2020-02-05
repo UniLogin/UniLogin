@@ -41,3 +41,4 @@ export {ExplorerLink} from './ui/commons/ExplorerLink';
 export {WaitingForTransaction, WaitingForTransactionProps, WaitingForDeployment} from './ui/commons/WaitingForTransaction';
 export {WaitingForOnRampProvider, WaitingForOnRampProviderProps} from './ui/TopUp/Fiat/WaitingForOnRampProvider';
 export {ThemeProvider, ThemeContext} from './ui/themes/Theme';
+export {calculateTransactionFee} from './core/utils/calculateTransactionFee';
