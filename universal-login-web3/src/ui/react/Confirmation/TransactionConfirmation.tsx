@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {utils} from 'ethers';
-import {GasMode, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, ensureNotFalsy} from '@universal-login/commons';
+import {GasMode, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, ensureNotFalsy, TokensPrices} from '@universal-login/commons';
 import {ModalWrapper, useAsync, Spinner} from '@universal-login/react';
 import {WalletService} from '@universal-login/sdk';
 import {Title} from '../common/Text/Title';
@@ -29,29 +29,28 @@ export interface ConfirmationTransactionProps {
 
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction}: ConfirmationTransactionProps) => {
   ensureNotFalsy(transaction.value, Error, 'Missing parameter of Transaction: value');
-  const [gasModes] = useAsync<GasMode[]>(() => walletService.sdk.getGasModes(), []);
-
+  const [modesAndPrices] = useAsync<{modes: GasMode[], prices: TokensPrices}>(() => walletService.sdk.gasModeService.getModesWithUsedPrices(), []);
   const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount'>>({name: '', usdAmount: ''});
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
   const onModeChanged = (name: string) => {
     const gasTokenAddress = gasOption.token.address;
-    const {usdAmount, gasOptions} = findGasMode(gasModes!, name);
+    const {usdAmount, gasOptions} = findGasMode(modesAndPrices?.modes!, name);
 
     setMode({name, usdAmount});
     setGasOption(findGasOption(gasOptions, gasTokenAddress));
   };
 
   useEffect(() => {
-    if (gasModes) {
-      const {name, usdAmount} = gasModes[FAST_GAS_MODE_INDEX];
-      const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
+    if (modesAndPrices) {
+      const {name, usdAmount} = modesAndPrices.modes[FAST_GAS_MODE_INDEX];
+      const gasOption = findGasOption(modesAndPrices.modes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
       setMode({name, usdAmount});
       setGasOption(gasOption);
     }
-  }, [gasModes]);
+  }, [modesAndPrices]);
 
-  return gasModes ? (
+  return modesAndPrices ? (
     <>
       <GlobalStyle />
       <ModalWrapper message={message}>
@@ -78,7 +77,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
               </Row>
               <Row>
                 <DataLabel>Speed:</DataLabel>
-                <TransactionSpeed gasModes={gasModes} selectedValue={mode.name} onChange={onModeChanged} />
+                <TransactionSpeed gasModes={modesAndPrices.modes} selectedValue={mode.name} onChange={onModeChanged} />
               </Row>
               <Row>
                 <DataLabel>Fee:</DataLabel>
