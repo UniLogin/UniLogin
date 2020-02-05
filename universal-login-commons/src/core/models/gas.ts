@@ -1,5 +1,6 @@
 import {TokenDetails} from './TokenData';
 import {utils} from 'ethers';
+import {TokensPrices} from './CurrencyData';
 
 export interface GasOption {
   token: TokenDetails;
@@ -16,5 +17,10 @@ export interface GasParameters {
   gasToken: string;
   gasPrice: utils.BigNumber;
 }
+
+export type GasModesWithPrices = {
+  modes: GasMode[];
+  prices: TokensPrices;
+};
 
 export type OnGasParametersChanged = (gasParameters: GasParameters) => void;
