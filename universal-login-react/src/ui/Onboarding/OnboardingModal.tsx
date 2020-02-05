@@ -1,17 +1,29 @@
 import React from 'react';
 import {Onboarding, OnboardingProps} from './Onboarding';
+import {CompanyLogo} from '../commons/CompanyLogo';
+import {useClassFor, classForComponent} from '../utils/classFor';
+import {ModalProgressBar} from '../commons/ModalProgressBar';
+import '../styles/base/onboardingModal.sass';
+import '../styles/themes/UniLogin/onboardingModalThemeUniLogin.sass';
 
 export function OnboardingModal(props: OnboardingProps) {
   return (
-    <div className="onboarding-modal-container">
-      <div className="onboarding-modal-content">
-        <p style={{color: 'white', fontSize: 20, textAlign: 'center'}}>
+    <div className={useClassFor('onboarding-modal')}>
+      <CompanyLogo />
+      <div className={classForComponent('onboarding-progress-wrapper')}>
+        <ModalProgressBar progress={100}/>
+      </div>
+      <div className={classForComponent('onboarding-modal-wrapper')}>
+        <h1 className={classForComponent('onboarding-modal-title')}>
           Create or connect account
+        </h1>
+        <p className={classForComponent('onboarding-modal-description')}>
+          Type a nickname to create account or your current username to login.
         </p>
-        <p style={{color: 'white', fontSize: 15}}>
-          Type a nickname you want
-        </p>
-        <Onboarding {...props} />
+        <div className={classForComponent('onboarding-modal-input-section')}>
+          <p className={classForComponent('onboarding-modal-label')}>Your nickname:</p>
+          <Onboarding {...props} />
+        </div>
       </div>
     </div>
   );
