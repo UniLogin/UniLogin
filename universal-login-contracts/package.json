@@ -1,12 +1,12 @@
 {
   "name": "@universal-login/contracts",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "license": "MIT",
   "main": "dist/cjs/src/index.js",
   "types": "dist/esm/src/index.d.ts",
   "module": "dist/esm/src/index.js",
   "dependencies": {
-    "@universal-login/commons": "0.5.2",
+    "@universal-login/commons": "0.5.3",
     "ens-builder": "^2.0.0",
     "ethers": "^4.0.39"
   },
