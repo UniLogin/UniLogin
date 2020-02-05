@@ -6,6 +6,7 @@ import {UnexpectedWalletState} from '../ui/utils/errors';
 
 export class UIController {
   activeModal = new State<ULWeb3ProviderState>({kind: 'IDLE'});
+  dashboardVisible = new State<boolean>(false)
 
   constructor(
     private walletService: WalletService,
@@ -57,5 +58,13 @@ export class UIController {
   requireWallet() {
     ensure(this.walletService.state.kind !== 'Deployed', UnexpectedWalletState, 'Deployed');
     this.activeModal.set({kind: 'ONBOARDING'});
+  }
+
+  openDashboard() {
+    this.dashboardVisible.set(true)
+  }
+
+  closeDashboard() {
+    this.dashboardVisible.set(false)
   }
 }

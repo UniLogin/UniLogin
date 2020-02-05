@@ -31,6 +31,14 @@ class ULRemoteProvider {
     console.log('>', msg)
     this.iframe!.contentWindow!.postMessage({ type: 'ulRPC', payload: msg }, '*')
   }
+
+  openDashboard() {
+    this.send({ method: 'ul_open_dashboard' }, () => {})
+  }
+
+  closeDashboard() {
+    this.send({ method: 'ul_close_dashboard' }, () => {})
+  }
 }
 
 

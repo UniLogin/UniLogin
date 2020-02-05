@@ -20,6 +20,7 @@ export {useModalService, IModalService, ShowModal} from './core/services/useModa
 export {Onboarding} from './ui/Onboarding/Onboarding';
 export {OnboardingModal} from './ui/Onboarding/OnboardingModal';
 export {LogoButton} from './ui/UFlow/LogoButton';
+export {ManualDashboard} from './ui/UFlow/ManualDashboard';
 export {Funds} from './ui/UFlow/Funds';
 export {DisconnectAccount} from './ui/UFlow/DisconnectAccount';
 export {BackupCodes} from './ui/BackupCodes/BackupCodes';
