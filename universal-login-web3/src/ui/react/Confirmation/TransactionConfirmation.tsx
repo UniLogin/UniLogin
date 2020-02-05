@@ -29,8 +29,10 @@ export interface ConfirmationTransactionProps {
 
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction}: ConfirmationTransactionProps) => {
   ensureNotFalsy(transaction.value, Error, 'Missing parameter of Transaction: value');
+  ensureNotFalsy(transaction.gasLimit, Error, 'Missing parameter of Transaction: gasLimit');
   const [modesAndPrices] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
-  const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount'>>({name: '', usdAmount: ''});
+  const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount'>>({name: '', usdAmount: '0'});
+
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
   const onModeChanged = (name: string) => {
@@ -81,7 +83,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
               </Row>
               <Row>
                 <DataLabel>Fee:</DataLabel>
-                <TransactionFee />
+                <TransactionFee mode={mode} gasLimit={transaction.gasLimit} gasOption={gasOption}/>
               </Row>
             </TransactionData>
           </BoxContent>

@@ -128,15 +128,15 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sendTransaction(transaction: Partial<Message>): Promise<string> {
-    const confirmationResponse = await this.uiController.confirmRequest('Confirm transaction', transaction);
+    const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
+    const confirmationResponse = await this.uiController.confirmRequest('Confirm transaction', transactionWithDefaults);
     if (!confirmationResponse.isConfirmed) {
       return constants.HashZero;
     };
-    transaction = {...transaction, ...confirmationResponse.gasParameters};
+    const transactionWithGasParameters = {...transactionWithDefaults, ...confirmationResponse.gasParameters};
     this.uiController.showWaitForTransaction();
     await this.deployIfNoWalletDeployed();
-    const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
-    const execution = await this.walletService.getDeployedWallet().execute(transactionWithDefaults);
+    const execution = await this.walletService.getDeployedWallet().execute(transactionWithGasParameters);
 
     const succeeded = await execution.waitForTransactionHash();
     if (!succeeded.transactionHash) {
