@@ -12,7 +12,7 @@ export * from './core/models/ContractJSON';
 export {CurrencyToValue, ObservedCurrency, TokensPrices} from './core/models/CurrencyData';
 export {DeployArgs} from './core/models/deploy';
 export {ENSDomainInfo} from './core/models/ENSDomainInfo';
-export {GasMode, GasOption, GasParameters, OnGasParametersChanged} from './core/models/gas';
+export {GasMode, GasOption, GasParameters, OnGasParametersChanged, GasModesWithPrices} from './core/models/gas';
 export {IMessageValidator} from './core/models/IMessageValidator';
 export {IPGeolocationApiConfig} from './core/models/IPGeolocationApiConfig';
 export {KeyPair} from './core/models/keyPair';

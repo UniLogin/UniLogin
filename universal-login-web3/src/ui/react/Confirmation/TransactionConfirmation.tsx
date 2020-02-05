@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {utils} from 'ethers';
-import {GasMode, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, ensureNotFalsy, TokensPrices} from '@universal-login/commons';
+import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, ensureNotFalsy} from '@universal-login/commons';
 import {ModalWrapper, useAsync, Spinner} from '@universal-login/react';
 import {WalletService} from '@universal-login/sdk';
 import {Title} from '../common/Text/Title';
@@ -29,7 +29,7 @@ export interface ConfirmationTransactionProps {
 
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction}: ConfirmationTransactionProps) => {
   ensureNotFalsy(transaction.value, Error, 'Missing parameter of Transaction: value');
-  const [modesAndPrices] = useAsync<{modes: GasMode[], prices: TokensPrices}>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
+  const [modesAndPrices] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
   const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount'>>({name: '', usdAmount: ''});
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
