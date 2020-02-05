@@ -1,15 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
+import {BigNumberish} from 'ethers/utils';
+import {GasMode, GasOption, safeMultiply} from '@universal-login/commons';
+import {calculateTransactionFee} from '@universal-login/react';
 import ethereumIcon from '../../assets/ethereum.svg';
 import {Text} from '../common/Text/Text';
 
-export const TransactionFee = () => (
+export interface TransactionFeeProps {
+  mode: Pick<GasMode, 'name' | 'usdAmount'>;
+  gasLimit: BigNumberish;
+  gasOption: GasOption;
+}
+
+export const TransactionFee = ({mode, gasLimit, gasOption}: TransactionFeeProps) => (
   <FeeBlock>
     <Logo src={ethereumIcon} alt="ethereum logo"/>
     <FeeRow>
       <div>
-        <FeeAmount>0.098729 ETH</FeeAmount>
-        <FeeText>= 1 USD</FeeText>
+        <FeeAmount>{safeMultiply(gasOption.gasPrice, gasLimit)} {gasOption.token.symbol}</FeeAmount>
+        <FeeText>= {calculateTransactionFee(mode.usdAmount, gasLimit)} USD</FeeText>
       </div>
       <div>
         <Text>Your balance</Text>
