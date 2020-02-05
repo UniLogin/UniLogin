@@ -109,14 +109,16 @@ export const App = () => {
                 exact
                 path="/onboardingModal"
                 render={({history}) =>
-                  <OnboardingModal
-                    sdk={sdk}
-                    walletService={walletService}
-                    domains={['mylogin.eth', 'universal-id.eth']}
-                    tryEnablingMetamask={tryEnablingMetamask}
-                    onConnect={() => console.log('connected')}
-                    onCreate={() => history.push('/onboarding/success')}
-                  />}
+                  <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
+                    <OnboardingModal
+                      sdk={sdk}
+                      walletService={walletService}
+                      domains={['mylogin.eth', 'universal-id.eth']}
+                      tryEnablingMetamask={tryEnablingMetamask}
+                      onConnect={() => console.log('connected')}
+                      onCreate={() => history.push('/onboarding/success')}
+                    />
+                  </ModalWrapper>}
               />
               <Route exact path="/walletSelector">
                 <WalletSelector
