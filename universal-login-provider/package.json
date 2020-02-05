@@ -1,12 +1,19 @@
 {
   "name": "@universal-login/provider",
   "version": "0.5.2",
-  "main": "dist/index.js",
+  "main": "dist/cjs/index.js",
+  "types": "dist/esm/index.d.ts",
+  "module": "dist/esm/index.js",
   "license": "MIT",
   "files": [
     "package.json",
     "dist"
   ],
+  "scripts": {
+    "build": "yarn build:cjs && yarn build:esm",
+    "build:cjs": "tsc --outDir dist/cjs --declaration false",
+    "build:esm": "tsc --outDir dist/esm --module ES6"
+  },
   "devDependencies": {
     "typescript": "^3.7.5"
   }
