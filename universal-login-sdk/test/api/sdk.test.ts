@@ -80,8 +80,7 @@ describe('INT: SDK', async () => {
       const mockToken = await deployContract(wallet, mockContracts.MockToken);
       await mockToken.transfer(walletContract.address, 1);
       message = {...message, gasToken: mockToken.address};
-      const {waitToBeSuccess} = await sdk.execute(message, privateKey);
-      await expect(waitToBeSuccess()).to.be.eventually.rejectedWith('Error: Not enough tokens');
+      await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Not enough tokens');
     });
 
     it('when not enough gas', async () => {
