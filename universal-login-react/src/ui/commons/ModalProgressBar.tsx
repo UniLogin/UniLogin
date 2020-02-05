@@ -13,5 +13,5 @@ export const ModalProgressBar = ({steps, progress}: ModalProgressBarProps) => {
     <div className={useClassFor('modal-progress-bar')}>
       <div className={classForComponent('modal-progress-bar-current')}></div>
     </div>
-  )
-}
+  );
+};
