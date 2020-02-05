@@ -22,6 +22,7 @@ import {TopUp} from './ui/TopUp/TopUp';
 import {WaitingForTransaction} from './ui/commons/WaitingForTransaction';
 import {ThemesPlayground} from './ui/Playground/ThemesPlayground';
 import {ThemeProvider} from './ui/themes/Theme';
+import {OnboardingModal} from './ui/Onboarding/OnboardingModal';
 
 export const App = () => {
   const {sdk} = useServices();
@@ -96,6 +97,19 @@ export const App = () => {
                 path="/onboarding"
                 render={({history}) =>
                   <Onboarding
+                    sdk={sdk}
+                    walletService={walletService}
+                    domains={['mylogin.eth', 'universal-id.eth']}
+                    tryEnablingMetamask={tryEnablingMetamask}
+                    onConnect={() => console.log('connected')}
+                    onCreate={() => history.push('/onboarding/success')}
+                  />}
+              />
+              <Route
+                exact
+                path="/onboardingModal"
+                render={({history}) =>
+                  <OnboardingModal
                     sdk={sdk}
                     walletService={walletService}
                     domains={['mylogin.eth', 'universal-id.eth']}
