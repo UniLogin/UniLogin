@@ -83,7 +83,7 @@ describe('UNIT: GasModeService', () => {
   });
 
   it('getModesWithUsedPrices', async () => {
-    const {modes, prices} = await gasModeService.getModesWithUsedPrices();
+    const {modes, prices} = await gasModeService.getModesWithPrices();
     expect(modes).to.be.deep.eq(expectedModes);
     expect(prices).to.be.deep.eq(tokenPrices);
   });

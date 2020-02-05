@@ -36,7 +36,7 @@ export class GasModeService {
     return safeMultiply(gasPrice, multiplier);
   }
 
-  async getModesWithUsedPrices() {
+  async getModesWithPrices() {
     const gasPrices = await this.gasPriceOracle.getGasPrices();
     const prices = await this.priceObserver.getCurrentPrices();
     return {
@@ -49,6 +49,6 @@ export class GasModeService {
   }
 
   async getModes(): Promise<GasMode[]> {
-    return (await this.getModesWithUsedPrices()).modes;
+    return (await this.getModesWithPrices()).modes;
   };
 }
