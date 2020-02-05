@@ -176,8 +176,8 @@ export class ULWeb3Provider implements Provider {
     }
   }
 
-  initWeb3Button() {
-    const element = getOrCreateUlButton();
+  initWeb3Button(styles?: Record<string, string>) {
+    const element = getOrCreateUlButton(styles);
     renderLogoButton(element as Element, this.walletService);
   }
 

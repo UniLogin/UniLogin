@@ -32,7 +32,7 @@ export const ExamplePlayground = () => {
 
   async function create() {
     !universalLogin.isLoggedIn.get() && await universalLogin.initOnboarding();
-    universalLogin.initWeb3Button();
+    universalLogin.initWeb3Button({top: '150px', right: '100px'});
   }
 
   function remove() {
