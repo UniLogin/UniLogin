@@ -7,7 +7,8 @@
     "universal-login-relayer",
     "universal-login-sdk",
     "universal-login-wallet",
-    "universal-login-web3"
+    "universal-login-web3",
+    "universal-login-provider"
   ],
   "version": "0.5.2"
 }

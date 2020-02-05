@@ -1,0 +1,13 @@
+{
+  "name": "@universal-login/provider",
+  "version": "0.5.2",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "files": [
+    "package.json",
+    "dist"
+  ],
+  "devDependencies": {
+    "typescript": "^3.7.5"
+  }
+}

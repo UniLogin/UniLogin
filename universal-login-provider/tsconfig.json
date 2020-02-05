@@ -2,7 +2,9 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "allowJs": false,
-    "outDir": "public/dist",
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "dist",
     "downlevelIteration": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,

@@ -1,10 +1,12 @@
-class ULRemoteProvider {
+const IFRAME_BACKEND_URL = 'https://html-1bzwf3635.now.sh';
+
+export class ULIFrameProvider {
   private iframe?: HTMLIFrameElement
   private listeners: Record<number, (response: any) => void | undefined> = {}
 
   init() {
     this.iframe = document.createElement('iframe');
-    this.iframe.setAttribute('src', 'http://localhost:8080');
+    this.iframe.setAttribute('src', IFRAME_BACKEND_URL);
     document.getElementsByTagName('body')[0].appendChild(this.iframe);
 
     window.addEventListener('message', event => {
@@ -40,11 +42,3 @@ class ULRemoteProvider {
     this.send({ method: 'ul_close_dashboard' }, () => {})
   }
 }
-
-
-const provider = new ULRemoteProvider()
-provider.init()
-
-declare const Web3: any;
-
-(window as any).web3 = new Web3(provider)

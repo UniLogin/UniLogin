@@ -22,9 +22,8 @@
 /universal-login-web3/dist/
 /universal-login-web3/node_modules/
 /universal-login-web3/yarn-error.log
-/universal-login-web3-cdn/dist/
-/universal-login-web3-cdn/public/dist/
-/universal-login-web3-cdn/node_modules/
-/universal-login-web3-cdn/yarn-error.log
+/universal-login-provider/dist/
+/universal-login-provider/node_modules/
+/universal-login-provider/yarn-error.log
 yarn-error.log
 .cache
