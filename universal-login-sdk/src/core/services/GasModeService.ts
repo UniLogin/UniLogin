@@ -31,18 +31,24 @@ export class GasModeService {
     };
   }
 
-  private getCurrencyAmount(gasPrice: utils.BigNumber, symbol: string, tokensPrices: TokensPrices) {
+  getCurrencyAmount(gasPrice: utils.BigNumber, symbol: string, tokensPrices: TokensPrices) {
     const multiplier = this.getTokenPriceInversed(tokensPrices, symbol);
     return safeMultiply(gasPrice, multiplier);
   }
 
-  async getModes(): Promise<GasMode[]> {
+  async getModesWithUsedPrices() {
     const gasPrices = await this.gasPriceOracle.getGasPrices();
-    const tokensPrices = await this.priceObserver.getCurrentPrices();
-
-    return [
-      this.createMode('cheap', gasPrices.cheap, tokensPrices),
-      this.createMode('fast', gasPrices.fast, tokensPrices),
-    ];
+    const prices = await this.priceObserver.getCurrentPrices();
+    return {
+      modes: [
+        this.createMode('cheap', gasPrices.cheap, prices),
+        this.createMode('fast', gasPrices.fast, prices),
+      ],
+      prices,
+    };
   }
+
+  async getModes(): Promise<GasMode[]> {
+    return (await this.getModesWithUsedPrices()).modes;
+  };
 }

@@ -1,5 +1,6 @@
 import React, {useRef} from 'react';
 import Web3 from 'web3';
+import {utils} from 'ethers';
 import {ULWeb3Provider} from '../../../ULWeb3Provider';
 
 const config = {
@@ -23,7 +24,7 @@ export const ExamplePlayground = () => {
       const res = await web3.eth.sendTransaction({
         from: (await web3.eth.getAccounts())[0],
         to: '0x7ffC57839B00206D1ad20c69A1981b489f772031',
-        value: '500000000000000',
+        value: utils.parseEther('0.05').toString(),
       });
       console.log(res);
     } catch (err) {
