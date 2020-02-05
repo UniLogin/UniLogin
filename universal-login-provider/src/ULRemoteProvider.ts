@@ -6,6 +6,13 @@ export class ULIFrameProvider {
 
   constructor() {
     this.iframe = document.createElement('iframe');
+    // this.iframe.style.position = 'fixed';
+    this.iframe.style.width = '100vw';
+    this.iframe.style.height = '100vh';
+    this.iframe.style.left = '0';
+    this.iframe.style.top = '0';
+    this.iframe.style.background = 'none transparent';
+    this.iframe.style.border = 'none';
     this.iframe.setAttribute('src', IFRAME_BACKEND_URL);
     document.getElementsByTagName('body')[0].appendChild(this.iframe);
 
