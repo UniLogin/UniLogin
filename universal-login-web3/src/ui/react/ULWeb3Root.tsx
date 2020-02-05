@@ -2,7 +2,7 @@ import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
 import {OnboardingModal, useProperty} from '@universal-login/react';
 import {UIController} from '../../services/UIController';
-import {Confirmation} from './Confirmation/Confirmation';
+import {TransactionConfirmation} from './Confirmation/TransactionConfirmation';
 import {WaitForTransactionModal} from './WaitingForTransactionModal';
 import {SignConfirmation} from './Confirmation/SignConfirmation';
 
@@ -28,8 +28,8 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
       />;
     case 'SIGN_CONFIRMATION':
       return <SignConfirmation message={message} {...modal.props} />;
-    case 'CONFIRMATION':
-      return <Confirmation message={message} {...modal.props} />;
+    case 'TRANSACTION_CONFIRMATION':
+      return <TransactionConfirmation message={message} walletService={walletService} {...modal.props} />;
     case 'WAIT_FOR_TRANSACTION':
       return <WaitForTransactionModal
         transactionHash={modal.props.transactionHash}
