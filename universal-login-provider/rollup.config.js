@@ -1,4 +1,8 @@
 import typescript from '@rollup/plugin-typescript'
+import resolve from '@rollup/plugin-node-resolve'
+import json from '@rollup/plugin-json'
+import { terser } from "rollup-plugin-terser";
+
 
 import pkg from './package.json'
 
@@ -7,9 +11,15 @@ export default {
   output: {
     name: 'ULIFrameProvider',
     file: pkg.browser,
-    format: 'umd'
+    format: 'umd',
   },
   plugins: [
-    typescript()
+    resolve({
+      only: ['@universal-login/commons', /universal-login/],
+      modulesOnly: true,
+    }),
+    json(),
+    typescript(),
+    terser(),
   ]
 }
