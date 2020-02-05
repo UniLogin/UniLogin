@@ -8,6 +8,7 @@ import {OnboardingSteps} from './OnboardingSteps';
 import {Route, MemoryRouter} from 'react-router-dom';
 import {Switch} from 'react-router';
 import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocation';
+import {OnboardingModalWrapper} from './OnboardingModal';
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -33,7 +34,7 @@ export const Onboarding = (props: OnboardingProps) => {
               exact
               path="/selector"
               render={({history}) =>
-                <>
+                <OnboardingModalWrapper hideModal={() => console.log('hide modal')} message={props.sdk.getNotice()}>
                   <div className="perspective">
                     <WalletSelector
                       sdk={props.sdk}
@@ -47,7 +48,7 @@ export const Onboarding = (props: OnboardingProps) => {
                       actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
                     />
                   </div>
-                </>}
+                </OnboardingModalWrapper>}
             />
             <Route
               exact
