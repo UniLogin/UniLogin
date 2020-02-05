@@ -94,6 +94,7 @@ export class ULWeb3Provider implements Provider {
             result,
           });
         } catch (err) {
+          this.uiController.showError(err.message);
           callback(err);
         }
         break;
@@ -139,7 +140,6 @@ export class ULWeb3Provider implements Provider {
 
     const succeeded = await execution.waitForTransactionHash();
     if (!succeeded.transactionHash) {
-      this.uiController.hideModal();
       throw new Error('Expected tx hash to not be null');
     }
     this.uiController.showWaitForTransaction(succeeded.transactionHash);

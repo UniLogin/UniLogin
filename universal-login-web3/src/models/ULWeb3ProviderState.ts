@@ -24,4 +24,9 @@ export type ULWeb3ProviderState = {
   props: {
     transactionHash?: string;
   };
+} | {
+  kind: 'ERROR';
+  props: {
+    errorMessage?: string;
+  };
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {OnboardingModal, useProperty} from '@universal-login/react';
+import {ErrorMessage, ModalWrapper, OnboardingModal, useProperty} from '@universal-login/react';
 import {UIController} from '../../services/UIController';
 import {TransactionConfirmation} from './Confirmation/TransactionConfirmation';
 import {WaitForTransactionModal} from './WaitingForTransactionModal';
@@ -35,6 +35,13 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
         transactionHash={modal.props.transactionHash}
         relayerConfig={sdk.getRelayerConfig()}
       />;
+    case 'ERROR':
+      return <ModalWrapper
+        message={message}
+        hideModal={() => uiController.hideModal()}
+      >
+        <ErrorMessage message={modal.props.errorMessage}/>
+      </ModalWrapper>;
     default:
       throw Error(`Invalid user interface state: ${modal}`);
   }
