@@ -9,6 +9,7 @@ import './../styles/assetsItem.sass';
 import './../styles/assetsItemDefault.sass';
 import './../styles/base/assetsItem.sass';
 import './../styles/themes/Legacy/assetsItemThemeLegacy.sass';
+import './../styles/themes/UniLogin/assetsItemThemeUniLogin.sass';
 
 export interface AssetProps {
   sdk: UniversalLoginSDK;
