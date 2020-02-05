@@ -1,1 +1,3 @@
-export { ULIFrameProvider } from './ULRemoteProvider'
+import { ULIFrameProvider } from './ULRemoteProvider'
+
+export default ULIFrameProvider
