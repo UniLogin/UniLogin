@@ -1,0 +1,10 @@
+{
+  "name": "@universal-login/web3-cdn",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^11.3.0",
+    "typescript": "^3.7.5"
+  }
+}

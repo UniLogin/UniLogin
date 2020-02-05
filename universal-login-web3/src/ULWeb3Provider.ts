@@ -9,7 +9,7 @@ import {waitForTrue} from './ui/utils/utils';
 import {initUi} from './ui/utils/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
 import {StorageService} from '@universal-login/react';
-import {Property} from 'reactive-properties';
+import {Property, forEach} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
 
 export interface ULWeb3ProviderOptions {
@@ -57,6 +57,8 @@ export class ULWeb3Provider implements Provider {
       applicationInfo && {applicationInfo},
     );
     this.walletService = new WalletService(this.sdk, walletFromBrain, storageService);
+
+    this.walletService.stateProperty.pipe(forEach(s => console.log('wallet state', s)))
 
     this.uiController = new UIController(this.walletService);
 
