@@ -1,5 +1,5 @@
 import React from 'react';
-import {UNIVERSAL_LOGIN_LOGO_URL as DEFAULT_LOGO} from '@universal-login/commons';
+import {UNIVERSAL_LOGIN_LOGO_URL as DEFAULT_LOGO, EMPTY_LOGO} from '@universal-login/commons';
 
 interface LogoProps {
   logo: string;
@@ -20,4 +20,4 @@ export const Logo = ({logo, applicationName, deviceType}: LogoProps) => {
   );
 };
 
-const isLogoEmpty = (logo: string) => logo === 'none' || logo === '';
+const isLogoEmpty = (logo: string) => logo === EMPTY_LOGO || logo === '';
