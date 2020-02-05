@@ -17,3 +17,20 @@ export function createReactRoot(rootId = 'universal-login-modal-root') {
   document.getElementsByTagName('body')[0].appendChild(reactRoot);
   return reactRoot;
 }
+
+export const getOrCreateUlButton = (styles?: Record<string, string>) => {
+  const element = document.getElementById('ul-btn') ? document.getElementById('ul-btn') : createReactRoot('ul-btn');
+  setStylesOnElement(defaultUlButtonStyle, document.getElementById('ul-btn') as HTMLDivElement);
+  styles && setStylesOnElement(styles, document.getElementById('ul-btn') as HTMLDivElement);
+  return element;
+};
+
+const defaultUlButtonStyle = {
+  position: 'absolute',
+  top: '20px',
+  right: '30px',
+};
+
+const setStylesOnElement = (styles: Record<string, string>, element: HTMLDivElement) => {
+  Object.assign(element.style, styles);
+};

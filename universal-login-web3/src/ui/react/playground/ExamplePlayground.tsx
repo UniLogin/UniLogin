@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import Web3 from 'web3';
 import {utils} from 'ethers';
 import {ULWeb3Provider} from '../../../ULWeb3Provider';
@@ -16,7 +16,6 @@ const universalLogin = ULWeb3Provider.getDefaultProvider({
 const web3 = new Web3(universalLogin);
 
 export const ExamplePlayground = () => {
-  const ulButton = useRef<HTMLDivElement | null>(null);
   universalLogin.init();
 
   async function sendTx() {
@@ -34,7 +33,7 @@ export const ExamplePlayground = () => {
 
   async function create() {
     !universalLogin.isLoggedIn.get() && await universalLogin.initOnboarding();
-    universalLogin.initWeb3Button(ulButton.current!);
+    universalLogin.initWeb3Button({top: '150px', right: '100px'});
   }
 
   function remove() {
@@ -47,7 +46,6 @@ export const ExamplePlayground = () => {
       <button onClick={sendTx}>Send TX</button>
       <button onClick={create}>Create wallet</button>
       <button onClick={remove}>Remove wallet</button>
-      <div ref={ref => {ulButton.current = ref;}} />
     </div>
   );
 };
