@@ -30,7 +30,8 @@
     "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/cjs/test/testconfig -t 10000 \"dist/cjs/test/**/*.js\"",
     "clean": "rimraf dist",
     "start": "webpack-dev-server --mode development",
-    "start:example": "ts-node src/scripts/dev-start.ts"
+    "start:example": "ts-node src/scripts/dev-start.ts",
+    "build:iframe": "webpack --config webpack.iframe.config.js --mode production"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
