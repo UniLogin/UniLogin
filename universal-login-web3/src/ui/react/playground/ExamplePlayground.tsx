@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import Web3 from 'web3';
 import {ULWeb3Provider} from '../../../ULWeb3Provider';
 

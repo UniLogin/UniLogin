@@ -14,4 +14,4 @@ export function createReactRoot(rootId = 'universal-login-modal-root') {
   return reactRoot;
 }
 
-export const getOrCreateUlButton = () => document.getElementById('ul-btn') === null ? createReactRoot('ul-btn') : document.getElementById('ul-btn');
+export const getOrCreateUlButton = () => document.getElementById('ul-btn') ? document.getElementById('ul-btn') : createReactRoot('ul-btn');
