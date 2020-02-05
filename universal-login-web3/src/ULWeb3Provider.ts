@@ -11,6 +11,7 @@ import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
 import {StorageService} from '@universal-login/react';
 import {Property} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
+import {getOrCreateUlButton} from './ui/utils/initUi';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
@@ -175,8 +176,9 @@ export class ULWeb3Provider implements Provider {
     }
   }
 
-  initWeb3Button(element: Element) {
-    renderLogoButton(element, this.walletService);
+  initWeb3Button() {
+    const element = getOrCreateUlButton();
+    renderLogoButton(element as Element, this.walletService);
   }
 
   finalizeAndStop() {
