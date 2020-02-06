@@ -59,7 +59,7 @@ export class ULWeb3Provider implements Provider {
     );
     this.walletService = new WalletService(this.sdk, walletFromBrain, storageService);
 
-    this.walletService.stateProperty.pipe(forEach(s => console.log('wallet state', s)))
+    this.walletService.stateProperty.pipe(forEach(s => console.log('wallet state', s)));
 
     this.uiController = new UIController(this.walletService);
 
@@ -120,11 +120,11 @@ export class ULWeb3Provider implements Provider {
       case 'personal_sign':
         return this.sign(params[1], params[0]);
       case 'ul_open_dashboard':
-        this.uiController.openDashboard()
-        break
+        this.uiController.openDashboard();
+        break;
       case 'ul_close_dashboard':
-        this.uiController.closeDashboard()
-        break
+        this.uiController.closeDashboard();
+        break;
       default:
         throw new Error(`Method not supported: ${method}`);
     }

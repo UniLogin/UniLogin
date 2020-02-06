@@ -7,7 +7,7 @@ import {ConfirmationResponse} from '../models/ConfirmationResponse';
 
 export class UIController {
   activeModal = new State<ULWeb3ProviderState>({kind: 'IDLE'});
-  dashboardVisible = new State<boolean>(false)
+  dashboardVisible = new State<boolean>(false);
 
   constructor(
     private walletService: WalletService,
@@ -67,10 +67,10 @@ export class UIController {
   }
 
   openDashboard() {
-    this.dashboardVisible.set(true)
+    this.dashboardVisible.set(true);
   }
 
   closeDashboard() {
-    this.dashboardVisible.set(false)
+    this.dashboardVisible.set(false);
   }
 }
