@@ -34,7 +34,9 @@ export class Web3PickerProvider implements Provider {
           result: [],
         });
       }
-      await this.show();
+      if (!await this.show()) {
+        return;
+      }
     }
     ensureNotFalsy(this.currentProvider, TypeError);
     return this.currentProvider.send(payload, callback);
@@ -64,6 +66,7 @@ export class Web3PickerProvider implements Provider {
     this.lazyCreateReactRoot();
     this.isVisible.set(true);
     await waitForFalse(this.isVisible);
+    return !!this.currentProvider;
   }
 }
 
