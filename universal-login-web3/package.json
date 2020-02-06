@@ -14,6 +14,7 @@
     "ethers": "^4.0.39",
     "reactive-properties": "^0.1.5",
     "styled-components": "^5.0.0",
+    "url": "^0.11.0",
     "web3": "^1.2.1"
   },
   "peerDependencies": {
@@ -24,13 +25,14 @@
     "prebuild": "yarn clean",
     "build:cjs": "tsc --outDir dist/cjs --declaration false && cpx \"src/ui/assets/**/*\" dist/cjs/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/cjs/src/ui/styles",
     "build:esm": "tsc --outDir dist/esm --module ES6 && cpx \"src/ui/assets/**/*\" dist/esm/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/esm/src/ui/styles",
-    "build": "yarn build:cjs && yarn build:esm",
+    "build": "yarn build:cjs && yarn build:esm && yarn build:iframe",
     "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "test": "yarn build:cjs && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/cjs/test/testconfig -t 10000 \"dist/cjs/test/**/*.js\"",
     "clean": "rimraf dist",
     "start": "webpack-dev-server --mode development",
-    "start:example": "ts-node src/scripts/dev-start.ts"
+    "start:example": "ts-node src/scripts/dev-start.ts",
+    "build:iframe": "webpack --config webpack.iframe.config.js --mode production"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",

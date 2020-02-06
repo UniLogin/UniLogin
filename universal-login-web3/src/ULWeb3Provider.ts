@@ -87,6 +87,8 @@ export class ULWeb3Provider implements Provider {
       case 'eth_accounts':
       case 'eth_sign':
       case 'personal_sign':
+      case 'ul_open_dashboard':
+      case 'ul_close_dashboard':
         try {
           const result = await this.handle(payload.method, payload.params);
           callback(null, {
@@ -115,6 +117,12 @@ export class ULWeb3Provider implements Provider {
         return this.sign(params[0], params[1]);
       case 'personal_sign':
         return this.sign(params[1], params[0]);
+      case 'ul_open_dashboard':
+        this.uiController.openDashboard();
+        break;
+      case 'ul_close_dashboard':
+        this.uiController.closeDashboard();
+        break;
       default:
         throw new Error(`Method not supported: ${method}`);
     }

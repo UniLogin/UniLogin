@@ -1,6 +1,6 @@
 import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {ErrorMessage, ModalWrapper, Onboarding, useProperty} from '@universal-login/react';
+import {ErrorMessage, ModalWrapper, Onboarding, useProperty, ManualDashboard} from '@universal-login/react';
 import {UIController} from '../../services/UIController';
 import {TransactionConfirmation} from './Confirmation/TransactionConfirmation';
 import {WaitForTransactionModal} from './WaitingForTransactionModal';
@@ -19,7 +19,11 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
 
   switch (modal.kind) {
     case 'IDLE':
-      return <div />;
+      return <ManualDashboard
+        walletService={walletService}
+        isVisible={uiController.dashboardVisible}
+        onClose={() => uiController.closeDashboard()}
+      />;
     case 'ONBOARDING':
       return <Onboarding
         sdk={sdk}
