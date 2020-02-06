@@ -8,7 +8,7 @@ import './../styles/themes/UniLogin/modalThemeUniLogin.sass';
 import './../styles/themes/Legacy/modalThemeLegacy.sass';
 import './../styles/themes/Jarvis/modalThemeJarvis.sass';
 
-interface ModalWrapperProps extends NoticeProps {
+export interface ModalWrapperProps extends NoticeProps {
   children: ReactNode;
   modalClassName?: string;
   hideModal?: () => void;
