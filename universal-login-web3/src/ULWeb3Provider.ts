@@ -42,6 +42,7 @@ export class ULWeb3Provider implements Provider {
   private readonly uiController: UIController;
 
   readonly isLoggedIn: Property<boolean>;
+  readonly isUiVisible: Property<boolean>;
 
   constructor({
     provider,
@@ -62,6 +63,7 @@ export class ULWeb3Provider implements Provider {
     this.uiController = new UIController(this.walletService);
 
     this.isLoggedIn = this.walletService.isAuthorized;
+    this.isUiVisible = this.uiController.isUiVisible;
 
     uiInitializer({
       sdk: this.sdk,
