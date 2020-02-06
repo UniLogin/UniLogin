@@ -1,4 +1,4 @@
-import {RpcBridge} from '@universal-login/commons'
+import {RpcBridge} from './RpcBridge'
 
 const IFRAME_BACKEND_URL = 'https://html-1bzwf3635.now.sh';
 
