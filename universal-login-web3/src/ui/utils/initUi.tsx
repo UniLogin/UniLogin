@@ -2,6 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import {ULWeb3Root, ULWeb3RootProps} from '../react/ULWeb3Root';
 import {ThemeProvider} from '@universal-login/react';
+import '../styles/index.css';
 
 export function initUi(props: ULWeb3RootProps) {
   const reactRootElement = createReactRoot();
