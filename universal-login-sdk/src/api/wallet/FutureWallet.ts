@@ -55,5 +55,5 @@ export class FutureWallet implements SerializableFutureWallet {
 
   getMinimalAmount = () => utils.formatEther(
     multiplyBy150Percent(
-      utils.bigNumberify(this.gasPrice).mul(DEPLOY_GAS_LIMIT).toString()));
+      utils.bigNumberify(this.gasPrice).mul(DEPLOY_GAS_LIMIT)));
 }
