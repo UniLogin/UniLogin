@@ -3,11 +3,6 @@ import {ensure, isDataForFunctionCall} from '@universal-login/commons';
 import {beta2} from '@universal-login/contracts';
 import {InvalidHexData} from './errors';
 
-export const isDataForFunctionCall = (data: string, contract: any, functionName: string) => {
-  const functionSignature = new utils.Interface(contract.interface).functions[functionName].sighash;
-  return functionSignature === data.slice(0, functionSignature.length);
-};
-
 export const isAddKeyCall = (data: string) => isDataForFunctionCall(data, beta2.WalletContract.interface, 'addKey');
 export const isAddKeysCall = (data: string) => isDataForFunctionCall(data, beta2.WalletContract.interface, 'addKeys');
 export const isRemoveKeyCall = (data: string) => isDataForFunctionCall(data, beta2.WalletContract.interface, 'removeKey');
