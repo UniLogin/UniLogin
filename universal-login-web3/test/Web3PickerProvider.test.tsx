@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {Web3Picker} from '../src/ui/react/Web3Picker';
-import {Web3Strategy} from '../src/Web3Strategy';
+import {Web3PickerProvider} from '../src/Web3PickerProvider';
 import {Web3ProviderFactory} from '../src/models/Web3ProviderFactory';
 import {Provider} from 'web3/providers';
 
@@ -25,18 +24,15 @@ describe('UNIT: Web3Picker', () => {
     id: 1,
   };
 
-  let web3Strategy: Web3Strategy;
-  let web3Picker: Web3Picker;
+  let web3Strategy: Web3PickerProvider;
 
   beforeEach(() => {
-    web3Strategy = new Web3Strategy(factories, {send: () => sendReadSpy()} as Provider);
-    web3Picker = new Web3Picker(web3Strategy, factories);
-    web3Picker.show = sinon.stub().returns({waitForPick: async () => {}});
-    web3Strategy.web3picker = web3Picker;
+    web3Strategy = new Web3PickerProvider(factories, {send: () => sendReadSpy()} as Provider);
+    web3Strategy.show = sinon.stub().resolves(undefined);
   });
 
   it('Pick ul provider', async () => {
-    await web3Picker.setProvider(universalLoginProviderFactory.name);
+    await web3Strategy.setProvider(universalLoginProviderFactory.name);
     expect(createStub.calledOnce).to.be.true;
     web3Strategy.send(jsonRpcReq, () => {});
     expect(sendSpy.calledOnce).to.be.true;
@@ -44,7 +40,7 @@ describe('UNIT: Web3Picker', () => {
   });
 
   it('Pick not existed provider', async () => {
-    await expect(web3Picker.setProvider('non-exist-name'))
+    await expect(web3Strategy.setProvider('non-exist-name'))
       .rejectedWith('Invalid provider: non-exist-name');
   });
 

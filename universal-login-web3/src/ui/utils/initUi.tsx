@@ -3,6 +3,7 @@ import {render} from 'react-dom';
 import {ULWeb3Root, ULWeb3RootProps} from '../react/ULWeb3Root';
 import {ThemeProvider} from '@universal-login/react';
 import '../styles/index.css';
+import {IWeb3PickerComponentProps, Web3PickerComponent} from '../react/Web3PickerComponent';
 
 export function initUi(props: ULWeb3RootProps) {
   const reactRootElement = createReactRoot();
@@ -35,3 +36,8 @@ const defaultUlButtonStyle = {
 const setStylesOnElement = (styles: Record<string, string>, element: HTMLDivElement) => {
   Object.assign(element.style, styles);
 };
+
+export function initPickerUi(props: IWeb3PickerComponentProps) {
+  const root = createReactRoot('universal-login-web3-picker');
+  render(<Web3PickerComponent {...props} />, root);
+}

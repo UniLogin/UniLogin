@@ -9,7 +9,7 @@ import {Title} from './common/Text/Title';
 import {Text} from './common/Text/Text';
 import {createGlobalStyle} from 'styled-components';
 
-interface IWeb3PickerComponentProps {
+export interface IWeb3PickerComponentProps {
   isVisibleProp: Property<boolean>;
   hideModal: () => void;
   factories: Web3ProviderFactory[];
