@@ -32,12 +32,12 @@ describe('INT: BlockchainService', async () => {
 
   it('getCode returns 0x if contract does not existing', async () => {
     const bytecode = await blockchainService.getCode(TEST_ACCOUNT_ADDRESS);
-    expect(bytecode).to.be.eq('0x');
+    expect(bytecode).to.eq('0x');
   });
 
   it('getCode returns bytecode of existing contract', async () => {
     const {address} = await deployWalletContract(deployer);
-    expect(await blockchainService.getCode(address)).to.be.eq(expectedBytecode);
+    expect(await blockchainService.getCode(address)).to.eq(expectedBytecode);
   });
 
   it('getBlockNumber should return increased block number', async () => {
@@ -46,7 +46,7 @@ describe('INT: BlockchainService', async () => {
     await deployWalletContract(deployer);
     const blockNumber2 = await blockchainService.getBlockNumber();
     expect(blockNumber2).greaterThan(blockNumber);
-    expect(blockNumber2).to.be.eq(blockNumber + 1);
+    expect(blockNumber2).to.eq(blockNumber + 1);
   });
 
   it('getLogs should return array of logs if match the logs', async () => {
@@ -65,7 +65,7 @@ describe('INT: BlockchainService', async () => {
   });
 
   it('should return empty array if does not match the logs', async () => {
-    expect(await blockchainService.getLogs({address: TEST_ACCOUNT_ADDRESS})).to.be.deep.eq([]);
+    expect(await blockchainService.getLogs({address: TEST_ACCOUNT_ADDRESS})).to.deep.eq([]);
   });
 
   it('creates future gnosis', async () => {
@@ -162,7 +162,7 @@ describe('INT: BlockchainService', async () => {
       await mineBlock(deployer);
       blockchainService.removeListener('block', callback);
       expect(callback.lastCall.calledWithExactly(await blockchainService.getBlockNumber()));
-      expect(callback.callCount).to.be.eq(expectedCallbackCalls);
+      expect(callback.callCount).to.eq(expectedCallbackCalls);
       expect(callback.firstCall.calledWithExactly(await blockchainService.getBlockNumber() - expectedCallbackCalls));
     });
   });

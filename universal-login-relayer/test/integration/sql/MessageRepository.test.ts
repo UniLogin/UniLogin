@@ -52,15 +52,15 @@ for (const config of [{
     });
 
     it('roundtrip', async () => {
-      expect(await messageRepository.isPresent(messageHash)).to.be.eq(false, 'store is not initially empty');
+      expect(await messageRepository.isPresent(messageHash)).to.eq(false, 'store is not initially empty');
       await messageRepository.add(messageHash, messageItem);
-      expect(await messageRepository.isPresent(messageHash)).to.be.eq(true);
+      expect(await messageRepository.isPresent(messageHash)).to.eq(true);
       messageItem.message = bignumberifySignedMessageFields(stringifySignedMessageFields(messageItem.message));
-      expect(await messageRepository.get(messageHash)).to.be.deep.eq(messageItem);
-      expect(await messageRepository.isPresent(messageHash)).to.be.eq(true);
+      expect(await messageRepository.get(messageHash)).to.deep.eq(messageItem);
+      expect(await messageRepository.isPresent(messageHash)).to.eq(true);
       const removedPendingExecution = await messageRepository.remove(messageHash);
-      expect(await messageRepository.isPresent(messageHash)).to.be.eq(false);
-      expect(removedPendingExecution).to.be.deep.eq(messageItem);
+      expect(await messageRepository.isPresent(messageHash)).to.eq(false);
+      expect(removedPendingExecution).to.deep.eq(messageItem);
     });
 
     it('containSignature should return false if signature not collected', async () => {
@@ -93,8 +93,8 @@ for (const config of [{
         const expectedTransactionHash = TEST_TRANSACTION_HASH;
         await messageRepository.markAsPending(messageHash, expectedTransactionHash);
         const {transactionHash, state} = await messageRepository.get(messageHash);
-        expect(transactionHash).to.be.eq(expectedTransactionHash);
-        expect(state).to.be.eq('Pending');
+        expect(transactionHash).to.eq(expectedTransactionHash);
+        expect(state).to.eq('Pending');
       });
 
       it('should throw error if transactionHash is invalid', async () => {
@@ -109,7 +109,7 @@ for (const config of [{
       const expectedState = 'Queued';
       await messageRepository.setState(messageHash, expectedState);
       const {state} = await messageRepository.get(messageHash);
-      expect(state).to.be.eq(expectedState);
+      expect(state).to.eq(expectedState);
     });
 
     it('should mark message item as error', async () => {
@@ -117,8 +117,8 @@ for (const config of [{
       const expectedMessageError = 'Pending Message Store Error';
       await messageRepository.markAsError(messageHash, expectedMessageError);
       const {error, state} = await messageRepository.get(messageHash);
-      expect(error).to.be.eq(expectedMessageError);
-      expect(state).to.be.eq('Error');
+      expect(error).to.eq(expectedMessageError);
+      expect(state).to.eq('Error');
     });
 
     it('should throw error if signed message is missed', async () => {
@@ -130,11 +130,11 @@ for (const config of [{
       await messageRepository.add(messageHash, messageItem);
       await messageRepository.addSignature(messageHash, signedMessage.signature, wallet.address);
       const key = getKeyFromHashAndSignature(messageHash, signedMessage.signature);
-      expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: signedMessage.signature}]);
+      expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.deep.eq([{key, signature: signedMessage.signature}]);
       const {signature} = unsignedMessageToSignedMessage(unsignedMessage, actionKey);
       await messageRepository.addSignature(messageHash, signature, actionWallet.address);
       const key2 = getKeyFromHashAndSignature(messageHash, signature);
-      expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: signedMessage.signature}, {key: key2, signature}]);
+      expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.deep.eq([{key, signature: signedMessage.signature}, {key: key2, signature}]);
     });
 
     after(async () => {

@@ -45,7 +45,7 @@ describe('INT: MessageHandler', async () => {
     const {messageHash} = await messageHandler.handleMessage(signedMessage);
     await executionWorker.stopLater();
     const messageEntry = await messageHandler.getStatus(messageHash);
-    expect(messageEntry.error).to.be.eq('Error: Not enough tokens');
+    expect(messageEntry.error).to.eq('Error: Not enough tokens');
   });
 
   it('Error when not enough gas', async () => {
@@ -65,7 +65,7 @@ describe('INT: MessageHandler', async () => {
       await waitExpect(async () => expect(await provider.getBalance(msg.to)).to.eq(expectedBalance));
       const {state, transactionHash} = await messageHandler.getStatus(messageHash);
       expect(transactionHash).to.not.be.null;
-      expect(state).to.be.eq('Success');
+      expect(state).to.eq('Success');
     });
   });
 
@@ -104,7 +104,7 @@ describe('INT: MessageHandler', async () => {
       await executionWorker.stopLater();
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
       const devices = await devicesStore.get(walletContract.address);
-      expect(devices.map(({publicKey}) => publicKey)).to.be.deep.eq(keys);
+      expect(devices.map(({publicKey}) => publicKey)).to.deep.eq(keys);
     });
   });
 
@@ -123,7 +123,7 @@ describe('INT: MessageHandler', async () => {
 
       await messageHandler.handleMessage(signedMessage);
       await executionWorker.stopLater();
-      expect(await devicesStore.get(walletContract.address, otherWallet.address)).to.be.deep.eq([]);
+      expect(await devicesStore.get(walletContract.address, otherWallet.address)).to.deep.eq([]);
       expect(await walletContract.keyExist(otherWallet.address)).to.eq(false);
     });
   });

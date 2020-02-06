@@ -23,8 +23,8 @@ describe('UNIT: PriceObserver', () => {
     expect(callback).to.have.been.calledThrice;
     unsubscribe();
 
-    expect(callback.secondCall.args[0]).to.deep.equal(PRICES_BEFORE);
-    expect(callback.thirdCall.args[0]).to.deep.equal(PRICES_AFTER);
+    expect(callback.secondCall.args[0]).to.deep.eq(PRICES_BEFORE);
+    expect(callback.thirdCall.args[0]).to.deep.eq(PRICES_AFTER);
   });
 
   it('2 subscription', async () => {
@@ -42,8 +42,8 @@ describe('UNIT: PriceObserver', () => {
     expect(callback1).to.have.been.calledTwice;
     expect(callback2).to.have.been.calledOnce;
 
-    expect(callback1.secondCall.args[0]).to.deep.equal(PRICES_BEFORE);
-    expect(callback2.firstCall.args[0]).to.deep.equal(PRICES_BEFORE);
+    expect(callback1.secondCall.args[0]).to.deep.eq(PRICES_BEFORE);
+    expect(callback2.firstCall.args[0]).to.deep.eq(PRICES_BEFORE);
 
     await mockedPriceObserver.execute();
     await waitUntil(() => !!callback2.secondCall);
@@ -53,6 +53,6 @@ describe('UNIT: PriceObserver', () => {
     expect(callback1).to.have.been.calledTwice;
     expect(callback2).to.have.been.calledTwice;
 
-    expect(callback2.secondCall.args[0]).to.deep.equal(PRICES_AFTER);
+    expect(callback2.secondCall.args[0]).to.deep.eq(PRICES_AFTER);
   });
 });

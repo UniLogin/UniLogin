@@ -9,6 +9,6 @@ describe('INT: walletFromBrain', () => {
 
   it('return correct wallet', async () => {
     const expectedWallet = new Wallet(privateKey);
-    expect(await walletFromBrain(name, passphrase)).to.be.deep.eq(expectedWallet);
+    expect(await walletFromBrain(name, passphrase)).to.deep.eq(expectedWallet);
   });
 });

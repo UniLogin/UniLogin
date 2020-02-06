@@ -32,6 +32,6 @@ describe('INT: MessageExecutor', async () => {
     const transactionResponse = await messageExecutor.execute(signedMessage);
     await transactionResponse.wait();
     const balance = await provider.getBalance(signedMessage.to);
-    expect(balance).to.be.eq(expectedBalance);
+    expect(balance).to.eq(expectedBalance);
   });
 });

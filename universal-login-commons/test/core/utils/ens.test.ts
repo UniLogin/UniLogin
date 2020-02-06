@@ -109,7 +109,7 @@ describe('UNIT: ENS', () => {
   describe('isValidEnsName', () => {
     const itValidatesEnsName = (ensName: string, result: boolean) => {
       it(`returns ${result} for ${ensName}`, () => {
-        expect(isValidEnsName(ensName)).to.be.eq(result);
+        expect(isValidEnsName(ensName)).to.eq(result);
       });
     };
 
