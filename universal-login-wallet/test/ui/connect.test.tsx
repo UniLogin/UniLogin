@@ -46,7 +46,7 @@ describe('UI: Connection flow', () => {
     await appPage.connection().waitForEmojiView();
     const publicKey = (new Wallet(services.walletService.getConnectingWallet().privateKey)).address;
     await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasPrice, gasLimit, gasToken});
-    await waitExpect(() => expect(services.walletPresenter.getName()).to.be.eq(name));
+    await waitExpect(() => expect(services.walletPresenter.getName()).to.eq(name));
     await appPage.login().waitForCongratulations();
     await appPage.login().goToHomeView();
     expect(appPage.dashboard().getWalletBalance()).to.startWith('$1.99');

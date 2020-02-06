@@ -73,7 +73,7 @@ describe('INT: SDK', async () => {
       const {waitToBeSuccess} = await sdk.execute(message, privateKey);
       const {transactionHash, state} = await waitToBeSuccess();
       expect(transactionHash).to.be.properHex(64);
-      expect(state).to.be.eq('Success');
+      expect(state).to.eq('Success');
     });
 
     it('when not enough tokens ', async () => {

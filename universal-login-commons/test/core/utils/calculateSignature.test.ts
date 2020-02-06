@@ -79,7 +79,7 @@ describe('concatenateSignatures', () => {
   it('Should concatenate two signatures arrays', () => {
     const expected = `${signature1}${signature2.replace('0x', '')}`;
     const concatenate = concatenateSignatures([signature1, signature2]);
-    expect(concatenate).to.be.equal(expected);
+    expect(concatenate).to.eq(expected);
   });
 
   it('concentrates 3 signatures', () => {

@@ -20,7 +20,7 @@ describe('handleApiResponse', () => {
     );
 
     const result = await handleApiResponse(response as any);
-    expect(result).to.deep.equal({x: 1});
+    expect(result).to.deep.eq({x: 1});
   });
 
   it('works for error response', async () => {
@@ -31,7 +31,7 @@ describe('handleApiResponse', () => {
 
     const promise = handleApiResponse(response as any);
     await expect(promise).to.be.rejected;
-    expect(await promise.catch((x) => x)).to.deep.equal(({x: 1}));
+    expect(await promise.catch((x) => x)).to.deep.eq(({x: 1}));
   });
 
   it('works for empty success response', async () => {
@@ -41,7 +41,7 @@ describe('handleApiResponse', () => {
     );
 
     const result = await handleApiResponse(response as any);
-    expect(result).to.equal('');
+    expect(result).to.eq('');
   });
 
   it('works for empty error response', async () => {

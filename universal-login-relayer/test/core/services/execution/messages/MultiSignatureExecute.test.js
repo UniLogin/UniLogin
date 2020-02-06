@@ -46,7 +46,7 @@ describe('INT: MultiSignatureExecute', async () => {
     const {messageHash} = await messageHandler.handleMessage(signedMessage1);
     await executionWorker.stopLater();
     const messageEntry = await messageHandler.getStatus(messageHash);
-    expect(messageEntry.error).to.be.eq('Error: Not enough tokens');
+    expect(messageEntry.error).to.eq('Error: Not enough tokens');
   });
 
   it('Error when not enough gas', async () => {
@@ -73,7 +73,7 @@ describe('INT: MultiSignatureExecute', async () => {
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       const {state, transactionHash} = await messageHandler.getStatus(messageHash);
       expect(transactionHash).to.not.be.null;
-      expect(state).to.be.eq('Success');
+      expect(state).to.eq('Success');
     });
   });
 
@@ -100,8 +100,8 @@ describe('INT: MultiSignatureExecute', async () => {
         await messageHandler.handleMessage(signedMessage0);
         await messageHandler.handleMessage(signedMessage1);
         const status = await messageHandler.getStatus(messageHash);
-        expect(status.required).to.be.eq(2);
-        expect(status.totalCollected).to.be.eq(status.required);
+        expect(status.required).to.eq(2);
+        expect(status.totalCollected).to.eq(status.required);
         await executionWorker.stopLater();
       });
 

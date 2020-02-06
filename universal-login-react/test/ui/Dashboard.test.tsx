@@ -26,14 +26,14 @@ describe('INT: Dashboard', () => {
   it('update usd balance amount', async () => {
     dashboard.clickInitButton();
     await waitExpect(() =>
-      expect(dashboard.funds().getUsdBalance()).to.be.eq(`$${initialAmount}`),
+      expect(dashboard.funds().getUsdBalance()).to.eq(`$${initialAmount}`),
     );
     await wallet.sendTransaction({
       to: deployedWallet.contractAddress,
       value: utils.parseEther('2'),
     });
     await waitExpect(() =>
-      expect(dashboard.funds().getUsdBalance()).to.be.eq('$399.99'),
+      expect(dashboard.funds().getUsdBalance()).to.eq('$399.99'),
     );
   });
 });
