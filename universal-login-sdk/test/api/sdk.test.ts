@@ -83,6 +83,11 @@ describe('INT: SDK', async () => {
       await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Not enough tokens');
     });
 
+    it('when not enough ether', async () => {
+      const amountToTransfer = (await otherWallet.getBalance()).add(utils.parseEther('0.5'));
+      await expect(sdk.execute({...message, to: otherWallet.address, value: amountToTransfer}, privateKey)).rejectedWith('Not enough tokens');
+    });
+
     it('when not enough gas', async () => {
       const baseGas = 88720;
       const notEnoughGasLimit = 100;
