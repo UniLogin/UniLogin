@@ -23,7 +23,6 @@ export class WalletService {
 
   walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed'));
   isAuthorized = this.walletDeployed;
-  requiredDeploymentBalance = '0';
 
   get state() {
     return this.stateProperty.get();
@@ -62,7 +61,6 @@ export class WalletService {
     const gasModes = await this.sdk.getGasModes();
     const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
     const futureWallet = await this.sdk.createFutureWallet(name, gasOption.gasPrice.toString(), gasOption.token.address);
-    this.requiredDeploymentBalance = futureWallet.getMinimalAmount();
     this.setFutureWallet(futureWallet, name);
     return futureWallet;
   }
@@ -224,7 +222,8 @@ export class WalletService {
   }
 
   getRequiredDeploymentBalance() {
-    return this.requiredDeploymentBalance;
+    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
+    return this.state.wallet.getMinimalAmount();
   }
 
   isKind(kind: string) {
