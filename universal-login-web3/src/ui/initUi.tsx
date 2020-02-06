@@ -25,7 +25,7 @@ export const getOrCreateUlButton = (styles: Record<string, string> = {}) => {
   setStylesOnElement({
     ...defaultUlButtonStyle,
     ...styles,
-  }, element as HTMLDivElement);
+  }, element);
   return element;
 };
 
@@ -35,7 +35,7 @@ const defaultUlButtonStyle = {
   right: '30px',
 };
 
-const setStylesOnElement = (styles: Record<string, string>, element: HTMLDivElement) => {
+const setStylesOnElement = (styles: Record<string, string>, element: HTMLElement) => {
   Object.assign(element.style, styles);
 };
 
