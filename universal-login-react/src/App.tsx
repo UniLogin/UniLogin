@@ -11,7 +11,7 @@ import {useServices} from './core/services/useServices';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
-import {DeployedWallet, DeployingWallet} from '@universal-login/sdk';
+import {DeployedWallet, DeployingWallet, setBetaNotice} from '@universal-login/sdk';
 import {Spinner} from './ui/commons/Spinner';
 import {useAsync} from './ui/hooks/useAsync';
 import {WalletService} from '@universal-login/sdk';
@@ -29,6 +29,8 @@ export const App = () => {
     await sdk.fetchRelayerConfig();
     return sdk.getRelayerConfig();
   }, []);
+
+  setBetaNotice(sdk);
 
   const [walletService] = useState(() => new WalletService(sdk));
 

@@ -18,7 +18,6 @@ export {ChooseTopUpMethod} from './ui/TopUp/ChooseTopUpMethod';
 export {ModalWrapper} from './ui/Modals/ModalWrapper';
 export {useModalService, IModalService, ShowModal} from './core/services/useModalService';
 export {Onboarding} from './ui/Onboarding/Onboarding';
-export {OnboardingModal} from './ui/Onboarding/OnboardingModal';
 export {LogoButton} from './ui/UFlow/LogoButton';
 export {ManualDashboard} from './ui/UFlow/ManualDashboard';
 export {Funds} from './ui/UFlow/Funds';
