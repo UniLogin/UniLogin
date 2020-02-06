@@ -1,5 +1,5 @@
 import {BalanceDetails} from '../FutureWalletFactory';
-import {SerializableFutureWallet, ensure, isValidEnsName, calculateInitializeSignature, SupportedToken, DEPLOY_GAS_LIMIT} from '@universal-login/commons';
+import {SerializableFutureWallet, ensure, isValidEnsName, calculateInitializeSignature, SupportedToken, DEPLOY_GAS_LIMIT, multiplyBy150Percent} from '@universal-login/commons';
 import {DeployingWallet} from './DeployingWallet';
 import {DeploymentReadyObserver} from '../../core/observers/DeploymentReadyObserver';
 import {InvalidAddressOrEnsName} from '../../core/utils/errors';
@@ -53,5 +53,7 @@ export class FutureWallet implements SerializableFutureWallet {
     this.deploymentReadyObserver.setSupportedToken(supportedToken);
   };
 
-  getMinimalAmount = () => utils.formatEther(utils.bigNumberify(this.gasPrice).mul(DEPLOY_GAS_LIMIT).toString());
+  getMinimalAmount = () => utils.formatEther(
+    multiplyBy150Percent(
+      utils.bigNumberify(this.gasPrice).mul(DEPLOY_GAS_LIMIT).toString()));
 }

@@ -223,7 +223,7 @@ export class WalletService {
 
   getRequiredDeploymentBalance() {
     ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
-    return multiplyBy150Percent(this.state.wallet.getMinimalAmount());
+    return this.state.wallet.getMinimalAmount();
   }
 
   isKind(kind: string) {
