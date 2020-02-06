@@ -1,7 +1,7 @@
 import {providers, utils} from 'ethers';
 import {ensure, IMessageValidator, PaymentOptions, SignedMessage, NotEnoughTokens} from '../../..';
 import {BalanceChecker} from '../BalanceChecker';
-import {getGasToken} from '../../../core/utils/getGasToken';
+import {getFeeCurrencyValueFrom} from '../../../core/utils/getFeeCurrencyValueFrom';
 
 export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: Omit<PaymentOptions, 'refundReceiver'>, walletContractAddress: string, balanceChecker: BalanceChecker) => {
   const balance = await balanceChecker.getBalance(walletContractAddress, gasToken);
@@ -16,9 +16,9 @@ export class SufficientBalanceValidator implements IMessageValidator {
   }
 
   async validate(signedMessage: SignedMessage) {
-    const gasTokenDetails = getGasToken(signedMessage);
-    const balance = await this.balanceChecker.getBalance(signedMessage.from, gasTokenDetails.address);
-    const hasEnoughToken = balance.gte(gasTokenDetails.balance);
+    const feeCurrencyValue = getFeeCurrencyValueFrom(signedMessage);
+    const balance = await this.balanceChecker.getBalance(signedMessage.from, feeCurrencyValue.address);
+    const hasEnoughToken = balance.gte(feeCurrencyValue.balance);
     ensure(hasEnoughToken, NotEnoughTokens);
   }
 }
