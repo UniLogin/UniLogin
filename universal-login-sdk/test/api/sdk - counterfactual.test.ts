@@ -51,8 +51,8 @@ describe('INT: SDK counterfactual deployment', () => {
     await waitForBalance();
     const {waitToBeSuccess} = await deploy();
     const deployedWallet = await waitToBeSuccess();
-    expect(deployedWallet.contractAddress).to.be.eq(contractAddress);
-    expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(gnosisSafe.Proxy)}`);
+    expect(deployedWallet.contractAddress).to.eq(contractAddress);
+    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(gnosisSafe.Proxy)}`);
     const message = {...emptyMessage, from: contractAddress, to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1'), gasLimit: DEFAULT_GAS_LIMIT};
     await expect(sdk.execute(message, privateKey)).to.be.fulfilled;
     await expect(deploy()).to.be.rejected;

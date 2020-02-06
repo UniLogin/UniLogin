@@ -95,7 +95,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
     expect(status.transactionHash).to.be.null;
-    expect(status.error).to.be.equal(`Error: ENS name ${ensName} already taken`);
+    expect(status.error).to.equal(`Error: ENS name ${ensName} already taken`);
   });
 
   it('Counterfactual deployment with token payment', async () => {
@@ -136,7 +136,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
     expect(status.transactionHash).to.be.null;
-    expect(status.error).to.be.equal('Error: Not enough balance');
+    expect(status.error).to.equal('Error: Not enough balance');
   });
 
   it('Counterfactual deployment fail if invalid ENS name', async () => {
@@ -158,7 +158,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
     expect(status.transactionHash).to.be.null;
-    expect(status.error).to.be.equal(`Error: ENS domain ${invalidEnsName} does not exist or is not compatible with Universal Login`);
+    expect(status.error).to.equal(`Error: ENS domain ${invalidEnsName} does not exist or is not compatible with Universal Login`);
   });
 
   it('Counterfactual deployment fail if invalid signature', async () => {
@@ -179,7 +179,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
     expect(status.transactionHash).to.be.null;
-    expect(status.error).to.be.equal('Error: Invalid signature ');
+    expect(status.error).to.equal('Error: Invalid signature ');
   });
 
   it('Endpoint for checking deployment status should return 404 for not-existing hash', async () => {

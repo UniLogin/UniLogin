@@ -39,7 +39,7 @@ describe('CONTRACT: WalletProxy', async () => {
       const countBefore = await proxyAsWallet.count();
       await wallet.sendTransaction({to: walletProxy.address, data, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
       const countAfter = await proxyAsWallet.count();
-      expect(countAfter - countBefore).to.be.equal(1);
+      expect(countAfter - countBefore).to.equal(1);
     });
   });
 });

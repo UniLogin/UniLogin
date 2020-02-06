@@ -63,7 +63,7 @@ describe('INT: FutureWalletFactory', async () => {
     const {waitToBeSuccess, deploymentHash} = await deploy();
     expect(deploymentHash).to.be.properHex(64);
     const deployedWallet = await waitToBeSuccess();
-    expect(await provider.getCode(contractAddress)).to.be.eq(`0x${getDeployedBytecode(gnosisSafe.Proxy as ContractJSON)}`);
+    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(gnosisSafe.Proxy as ContractJSON)}`);
 
     expect(deployedWallet.contractAddress).to.eq(contractAddress);
     expect(deployedWallet.name).to.eq(ensName);
@@ -79,7 +79,7 @@ describe('INT: FutureWalletFactory', async () => {
     await expect(deploy())
       .to.be.eventually.rejectedWith('MYNAME.mylogin.eth is not valid');
     const balanceAfter = await wallet.getBalance();
-    expect(balanceBefore).to.be.equal(balanceAfter);
+    expect(balanceBefore).to.equal(balanceAfter);
   });
 
   after(async () => {

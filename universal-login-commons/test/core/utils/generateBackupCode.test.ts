@@ -142,19 +142,19 @@ describe('Daefen', () => {
     });
 
     it('Bigger than 2^53', () => {
-      expect(fromWords('Omkeu Ugekum Opo')).to.be.eq(bigNumberify('9007199254740993'));
+      expect(fromWords('Omkeu Ugekum Opo')).to.eq(bigNumberify('9007199254740993'));
     });
 
     it('2^64', () => {
-      expect(fromWords('Iches Afygei Mojciv')).to.be.eq(bigNumberify('18446744073709551615'));
-      expect(fromWords('Iches Afygei Mojciw')).to.be.eq(bigNumberify('18446744073709551616'));
-      expect(fromWords('Iches Afygei Mojciz')).to.be.eq(bigNumberify('18446744073709551617'));
+      expect(fromWords('Iches Afygei Mojciv')).to.eq(bigNumberify('18446744073709551615'));
+      expect(fromWords('Iches Afygei Mojciw')).to.eq(bigNumberify('18446744073709551616'));
+      expect(fromWords('Iches Afygei Mojciz')).to.eq(bigNumberify('18446744073709551617'));
     });
 
     it('2^128', () => {
-      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Haf')).to.be.eq(bigNumberify('340282366920938463463374607431768211455'));
-      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Hag')).to.be.eq(bigNumberify('340282366920938463463374607431768211456'));
-      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Hah')).to.be.eq(bigNumberify('340282366920938463463374607431768211457'));
+      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Haf')).to.eq(bigNumberify('340282366920938463463374607431768211455'));
+      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Hag')).to.eq(bigNumberify('340282366920938463463374607431768211456'));
+      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Hah')).to.eq(bigNumberify('340282366920938463463374607431768211457'));
     });
   });
 

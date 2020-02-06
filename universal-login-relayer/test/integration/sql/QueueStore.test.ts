@@ -41,7 +41,7 @@ for (const config of [{
     it('add message', async () => {
       const returnedMessageHash = await executionQueue.addMessage(messageHash);
       expect(messageHash).to.be.a('string');
-      expect(messageHash).to.be.eq(returnedMessageHash);
+      expect(messageHash).to.eq(returnedMessageHash);
     });
 
     it('message round trip', async () => {
@@ -50,12 +50,12 @@ for (const config of [{
       const messageHash2 = calculateMessageHash(signedMessage2);
       await executionQueue.addMessage(messageHash2);
       const nextMessageHash = (await executionQueue.getNext())!.hash;
-      expect(nextMessageHash).to.be.equal(messageHash1);
-      expect(nextMessageHash).to.be.eq(messageHash);
+      expect(nextMessageHash).to.equal(messageHash1);
+      expect(nextMessageHash).to.eq(messageHash);
       await executionQueue.remove(messageHash1);
       const nextMessageHash2 = (await executionQueue.getNext())!.hash;
-      expect(nextMessageHash2).to.be.equal(messageHash2);
-      expect(nextMessageHash2).to.be.eq(calculateMessageHash(signedMessage2));
+      expect(nextMessageHash2).to.equal(messageHash2);
+      expect(nextMessageHash2).to.eq(calculateMessageHash(signedMessage2));
       await executionQueue.remove(messageHash2);
       expect(await executionQueue.getNext()).to.be.undefined;
     });

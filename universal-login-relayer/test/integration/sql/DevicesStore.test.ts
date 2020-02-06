@@ -48,7 +48,7 @@ describe('INT: DevicesStore', () => {
   it('should remove element', async () => {
     await devicesStore.add(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO);
     const removeItemsCount = await devicesStore.remove(TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS);
-    expect(removeItemsCount).to.be.eq(1);
+    expect(removeItemsCount).to.eq(1);
     const devices = await devicesStore.get(TEST_CONTRACT_ADDRESS);
     expect(devices).length(0);
   });

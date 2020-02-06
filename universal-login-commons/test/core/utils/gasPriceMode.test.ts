@@ -19,7 +19,7 @@ describe('Helpers for GasMode ', () => {
     for (const gasMode of TEST_GAS_MODES) {
       for (const gasOption of gasMode.gasOptions) {
         it(`gasMode: ${gasMode.name}, gasToken: ${gasOption.token.address}`, () => {
-          expect(getGasPriceFor(TEST_GAS_MODES, gasMode.name, gasOption.token.address)).to.be.eq(gasOption.gasPrice);
+          expect(getGasPriceFor(TEST_GAS_MODES, gasMode.name, gasOption.token.address)).to.eq(gasOption.gasPrice);
         });
       }
     }
@@ -36,7 +36,7 @@ describe('Helpers for GasMode ', () => {
 
     for (const gasMode of TEST_GAS_MODES) {
       it(`gas mode name: ${gasMode.name}`, () => {
-        expect(findGasMode(TEST_GAS_MODES, gasMode.name)).to.be.eq(gasMode);
+        expect(findGasMode(TEST_GAS_MODES, gasMode.name)).to.eq(gasMode);
       });
     }
   });
@@ -54,7 +54,7 @@ describe('Helpers for GasMode ', () => {
 
     for (const gasOption of gasOptions) {
       it(`gasToken: ${gasOption.token.symbol}`, () => {
-        expect(findGasOption(gasOptions, gasOption.token.address)).to.be.eq(gasOption);
+        expect(findGasOption(gasOptions, gasOption.token.address)).to.eq(gasOption);
       });
     }
   });
