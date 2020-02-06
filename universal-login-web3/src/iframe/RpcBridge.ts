@@ -59,4 +59,4 @@ export class RpcBridge {
 
 const MAGIC = 'UNIVERSAL_LOGIN'
 
-const isRealId = (id: any) => id != null && !isNaN(id)
+const isRealId = (id: any) => typeof id === 'number'

@@ -1,6 +1,6 @@
 import {RpcBridge} from './RpcBridge'
 
-const IFRAME_BACKEND_URL = 'https://html-1bzwf3635.now.sh';
+const IFRAME_BACKEND_URL = 'https://universal-provider-backend.netlify.com';
 
 export class ULIFrameProvider {
   private iframe: HTMLIFrameElement
