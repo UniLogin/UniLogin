@@ -19,6 +19,7 @@ export interface OnboardingProps {
   className?: string;
   modalClassName?: string;
   tryEnablingMetamask?: () => Promise<string | undefined>;
+  hideModal?: () => void;
 }
 
 export const Onboarding = (props: OnboardingProps) => {
@@ -34,7 +35,7 @@ export const Onboarding = (props: OnboardingProps) => {
               exact
               path="/selector"
               render={({history}) =>
-                <OnboardingModalWrapper hideModal={() => console.log('hide modal')} message={props.sdk.getNotice()}>
+                <OnboardingModalWrapper hideModal={props.hideModal} message={props.sdk.getNotice()}>
                   <div className="perspective">
                     <WalletSelector
                       sdk={props.sdk}
