@@ -38,13 +38,15 @@ export class ULIFrameProvider {
 
 function createIFrame() {
   const iframe = document.createElement('iframe');
-  // iframe.style.position = 'fixed';
-  iframe.style.width = '100vw';
-  iframe.style.height = '100vh';
-  iframe.style.left = '0';
-  iframe.style.top = '0';
-  iframe.style.background = 'none transparent';
-  iframe.style.border = 'none';
+  Object.assign(iframe.style, {
+    // position: 'fixed',
+    width: '100vw',
+    height: '100vh',
+    left: '0',
+    top: '0',
+    background: 'none transparent',
+    border: 'none',
+  })
   iframe.setAttribute('src', IFRAME_BACKEND_URL);
   document.getElementsByTagName('body')[0].appendChild(iframe);
   return iframe;
