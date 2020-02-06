@@ -1,8 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {ULWeb3Root, ULWeb3RootProps} from '../react/ULWeb3Root';
+import {ULWeb3Root, ULWeb3RootProps} from './react/ULWeb3Root';
 import {ThemeProvider} from '@universal-login/react';
-import '../styles/index.css';
+import './styles/index.css';
 import {IWeb3PickerComponentProps, Web3PickerComponent} from '../react/Web3PickerComponent';
 
 export function initUi(props: ULWeb3RootProps) {

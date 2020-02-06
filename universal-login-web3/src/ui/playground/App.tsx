@@ -1,8 +1,8 @@
-import React from 'react';
+import React from '../react';
 import {Link, BrowserRouter} from 'react-router-dom';
 import {Route} from 'react-router';
-import {ExamplePlayground} from './react/playground/ExamplePlayground';
-import {Web3PickerPlayground} from './react/playground/Web3PickerPlayground';
+import {ExamplePlayground} from '../react/playground/ExamplePlayground';
+import {Web3PickerPlayground} from '../react/playground/Web3PickerPlayground';
 
 export const App = () => {
   return (

@@ -3,7 +3,7 @@ import {Web3ProviderFactory} from './models/Web3ProviderFactory';
 import {State} from 'reactive-properties';
 import {ensureNotFalsy} from '@universal-login/commons';
 import {InvalidProvider} from './ui/utils/errors';
-import {initPickerUi} from './ui/utils/initUi';
+import {initPickerUi} from './ui/initUi';
 import {waitForFalse} from './ui/utils/utils';
 
 export class Web3PickerProvider implements Provider {
