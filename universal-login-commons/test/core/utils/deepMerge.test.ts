@@ -30,7 +30,7 @@ describe('UNIT: deepMerge', () => {
   });
 
   it('merge obj2 with obj1', () => {
-    expect(deepMerge(obj2, obj1)).to.be.deep.eq(obj1);
+    expect(deepMerge(obj2, obj1)).to.deep.eq(obj1);
   });
 
   it('empty merged to non-empty', () => {
@@ -86,7 +86,7 @@ describe('UNIT: deepMerge', () => {
         c3: 30,
       },
     };
-    expect(deepMerge(a, b)).to.be.deep.eq({
+    expect(deepMerge(a, b)).to.deep.eq({
       a1: 10,
       a2: 2,
       b: {

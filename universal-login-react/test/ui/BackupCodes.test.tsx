@@ -33,7 +33,7 @@ describe('INT: BackupCodes', () => {
     });
     dashboard.backupCodes().clickGenerate();
     await waitExpect(
-      () => expect(dashboard.backupCodes().getBackupCodes().length).to.be.eq(1),
+      () => expect(dashboard.backupCodes().getBackupCodes().length).to.eq(1),
       13000,
     );
   }).timeout(15000);

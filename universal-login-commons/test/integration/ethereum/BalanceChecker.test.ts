@@ -24,13 +24,13 @@ describe('INT: BalanceChecker', async () => {
   describe('ETH', async () => {
     it('0 ETH', async () => {
       const balance = await balanceChecker.getBalance(TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN.address);
-      expect(balance).to.equal('0');
+      expect(balance).to.eq('0');
     });
 
     it('1 ETH', async () => {
       await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1')});
       const balance = await balanceChecker.getBalance(TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN.address);
-      expect(balance).to.equal(WeiPerEther);
+      expect(balance).to.eq(WeiPerEther);
     });
   });
 
@@ -41,13 +41,13 @@ describe('INT: BalanceChecker', async () => {
 
     it('0 tokens', async () => {
       const balance = await balanceChecker.getBalance(TEST_ACCOUNT_ADDRESS, mockToken.address);
-      expect(balance).to.equal('0');
+      expect(balance).to.eq('0');
     });
 
     it('1 token', async () => {
       await mockToken.transfer(TEST_ACCOUNT_ADDRESS, utils.bigNumberify('1'));
       const balance = await balanceChecker.getBalance(TEST_ACCOUNT_ADDRESS, mockToken.address);
-      expect(balance).to.equal(ethers.constants.One);
+      expect(balance).to.eq(ethers.constants.One);
     });
 
     it('not deployed', async () => {

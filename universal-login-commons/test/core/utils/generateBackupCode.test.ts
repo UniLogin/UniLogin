@@ -54,25 +54,25 @@ describe('Daefen', () => {
 
   describe('fromBase', () => {
     it('for number equal 0', () => {
-      expect(fromBase(bigNumberify(0), bigNumberify(2))).to.be.deep.eq([0]);
-      expect(fromBase(bigNumberify(0), bigNumberify(4))).to.be.deep.eq([0]);
-      expect(fromBase(bigNumberify(0), bigNumberify(10))).to.be.deep.eq([0]);
+      expect(fromBase(bigNumberify(0), bigNumberify(2))).to.deep.eq([0]);
+      expect(fromBase(bigNumberify(0), bigNumberify(4))).to.deep.eq([0]);
+      expect(fromBase(bigNumberify(0), bigNumberify(10))).to.deep.eq([0]);
     });
 
     describe('for value greater than base', () => {
       for (const value of [1, 2, 4, 5, 7, 9, 10, 15, 100]) {
         it(`Value ${value}, base: ${value + 1}`, () => {
           const asBigNumber = bigNumberify(value);
-          expect(fromBase(asBigNumber, asBigNumber.add(1))).to.be.deep.eq([value]);
+          expect(fromBase(asBigNumber, asBigNumber.add(1))).to.deep.eq([value]);
         });
       }
     });
 
     it('for base equal 2', () => {
       const base = bigNumberify(2);
-      expect(fromBase(bigNumberify(2), base)).to.be.deep.eq([1, 0]);
-      expect(fromBase(bigNumberify(3), base)).to.be.deep.eq([1, 1]);
-      expect(fromBase(bigNumberify(8), base)).to.be.deep.eq([1, 0, 0, 0]);
+      expect(fromBase(bigNumberify(2), base)).to.deep.eq([1, 0]);
+      expect(fromBase(bigNumberify(3), base)).to.deep.eq([1, 1]);
+      expect(fromBase(bigNumberify(8), base)).to.deep.eq([1, 0, 0, 0]);
     });
   });
 
@@ -142,19 +142,19 @@ describe('Daefen', () => {
     });
 
     it('Bigger than 2^53', () => {
-      expect(fromWords('Omkeu Ugekum Opo')).to.be.eq(bigNumberify('9007199254740993'));
+      expect(fromWords('Omkeu Ugekum Opo')).to.eq(bigNumberify('9007199254740993'));
     });
 
     it('2^64', () => {
-      expect(fromWords('Iches Afygei Mojciv')).to.be.eq(bigNumberify('18446744073709551615'));
-      expect(fromWords('Iches Afygei Mojciw')).to.be.eq(bigNumberify('18446744073709551616'));
-      expect(fromWords('Iches Afygei Mojciz')).to.be.eq(bigNumberify('18446744073709551617'));
+      expect(fromWords('Iches Afygei Mojciv')).to.eq(bigNumberify('18446744073709551615'));
+      expect(fromWords('Iches Afygei Mojciw')).to.eq(bigNumberify('18446744073709551616'));
+      expect(fromWords('Iches Afygei Mojciz')).to.eq(bigNumberify('18446744073709551617'));
     });
 
     it('2^128', () => {
-      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Haf')).to.be.eq(bigNumberify('340282366920938463463374607431768211455'));
-      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Hag')).to.be.eq(bigNumberify('340282366920938463463374607431768211456'));
-      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Hah')).to.be.eq(bigNumberify('340282366920938463463374607431768211457'));
+      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Haf')).to.eq(bigNumberify('340282366920938463463374607431768211455'));
+      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Hag')).to.eq(bigNumberify('340282366920938463463374607431768211456'));
+      expect(fromWords('Gysohy Koaraf Epokuw Gopwud Naprom Hah')).to.eq(bigNumberify('340282366920938463463374607431768211457'));
     });
   });
 

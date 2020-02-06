@@ -152,7 +152,7 @@ describe('UNIT: WalletSerializer', () => {
         },
       });
       ensure(state.kind === 'Deploying', AssertionError, `Expected state.kind to be 'Deploying', but was ${state.kind}`);
-      expect(state.wallet).to.be.deep.include({
+      expect(state.wallet).to.deep.include({
         ...TEST_APPLICATION_WALLET,
         deploymentHash: TEST_DEPLOYING_WALLET.deploymentHash,
       });

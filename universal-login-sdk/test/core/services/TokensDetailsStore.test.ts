@@ -22,37 +22,37 @@ describe('INT: TokensDetailsStore', () => {
     await tokensDetailsStore.fetchTokensDetails();
     const {address, name, symbol} = tokensDetailsStore.tokensDetails[0];
 
-    expect(address).to.equal(mockToken.address);
-    expect(name).to.equal('MockToken');
-    expect(symbol).to.equal('Mock');
+    expect(address).to.eq(mockToken.address);
+    expect(name).to.eq('MockToken');
+    expect(symbol).to.eq('Mock');
   });
 
   it('ether details', async () => {
     await tokensDetailsStore.fetchTokensDetails();
     const {address, name, symbol} = tokensDetailsStore.tokensDetails[1];
 
-    expect(address).to.equal(ETHER_NATIVE_TOKEN.address);
-    expect(name).to.equal(ETHER_NATIVE_TOKEN.name);
-    expect(symbol).to.equal(ETHER_NATIVE_TOKEN.symbol);
+    expect(address).to.eq(ETHER_NATIVE_TOKEN.address);
+    expect(name).to.eq(ETHER_NATIVE_TOKEN.name);
+    expect(symbol).to.eq(ETHER_NATIVE_TOKEN.symbol);
   });
 
   it('symbol -> address', async () => {
     await tokensDetailsStore.fetchTokensDetails();
     const {symbol} = tokensDetailsStore.tokensDetails[0];
 
-    expect(tokensDetailsStore.getTokenAddress(symbol)).to.equal(mockToken.address);
+    expect(tokensDetailsStore.getTokenAddress(symbol)).to.eq(mockToken.address);
   });
 
   it('symbol -> undefined', async () => {
     await tokensDetailsStore.fetchTokensDetails();
 
-    expect(tokensDetailsStore.getTokenAddress('FAKE')).to.equal(undefined);
+    expect(tokensDetailsStore.getTokenAddress('FAKE')).to.eq(undefined);
   });
 
   it('address -> token', async () => {
     await tokensDetailsStore.fetchTokensDetails();
     const expectedToken = tokensDetailsStore.tokensDetails[0];
-    expect(tokensDetailsStore.getTokenByAddress(expectedToken.address)).to.deep.equal(expectedToken);
+    expect(tokensDetailsStore.getTokenByAddress(expectedToken.address)).to.deep.eq(expectedToken);
   });
 
   it('address -> error', async () => {

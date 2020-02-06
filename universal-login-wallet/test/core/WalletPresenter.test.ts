@@ -20,7 +20,7 @@ describe('WalletFormatter', async () => {
 
   it('return name if applicationWallet exist', () => {
     walletService.setWallet(applicationWallet);
-    expect(walletPresenter.getName()).to.be.eq(applicationWallet.name);
+    expect(walletPresenter.getName()).to.eq(applicationWallet.name);
   });
 
   it('return empty string if applicationWallet not exist', () => {
@@ -29,7 +29,7 @@ describe('WalletFormatter', async () => {
 
   it('return contract address if applicationWallet exist', () => {
     walletService.setWallet(applicationWallet);
-    expect(walletPresenter.getContractAddress()).to.be.eq(applicationWallet.contractAddress);
+    expect(walletPresenter.getContractAddress()).to.eq(applicationWallet.contractAddress);
   });
 
   it('return empty string if applicationWallet not exist', () => {

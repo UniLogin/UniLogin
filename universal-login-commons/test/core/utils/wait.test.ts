@@ -53,7 +53,7 @@ describe('waitExpect', async () => {
     try {
       await waitExpect(() => expect(expected).to.be.true, 1, 1);
     } catch (e) {
-      expect(e.message).is.equal('expected false to be true');
+      expect(e.message).is.eq('expected false to be true');
     }
   });
 });

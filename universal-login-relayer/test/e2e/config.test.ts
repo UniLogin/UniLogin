@@ -32,7 +32,7 @@ describe('E2E: Relayer - Config routes', async () => {
     };
     const result = await chai.request(relayer.getServer())
       .get('/config');
-    expect(result.body.config).to.be.deep.eq(expectedConfig);
+    expect(result.body.config).to.deep.eq(expectedConfig);
   });
 
   it('getPublicConfig should return PublicConfig', () => {
@@ -52,7 +52,7 @@ describe('E2E: Relayer - Config routes', async () => {
     };
     const publicConfig = getPublicConfig(relayer.getConfig());
 
-    expect(publicConfig).to.be.deep.eq(expectedConfig);
+    expect(publicConfig).to.deep.eq(expectedConfig);
   });
 
   after(async () => {
