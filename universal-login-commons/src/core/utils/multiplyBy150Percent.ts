@@ -1,3 +1,3 @@
 import {utils} from 'ethers';
 
-export const multiplyBy150Percent = (numberToMultiply: string) => utils.bigNumberify(numberToMultiply).mul(3).div(2).toString();
+export const multiplyBy150Percent = (numberToMultiply: utils.BigNumberish) => utils.bigNumberify(numberToMultiply.toString()).mul(3).div(2).toString();
