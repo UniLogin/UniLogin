@@ -1,13 +1,12 @@
 import {RpcBridge} from './RpcBridge';
-
-const IFRAME_BACKEND_URL = 'https://universal-provider-backend.netlify.com';
+import {DEFAULT_CONFIG} from './config'
 
 export class ULIFrameProvider {
   private iframe: HTMLIFrameElement;
   private bridge: RpcBridge;
 
-  constructor() {
-    this.iframe = createIFrame();
+  constructor(config = DEFAULT_CONFIG) {
+    this.iframe = createIFrame(config.backendUrl);
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
       this.handleRpc.bind(this),
@@ -19,8 +18,8 @@ export class ULIFrameProvider {
 
   }
 
-  static create() {
-    return new ULIFrameProvider();
+  static create(config = DEFAULT_CONFIG) {
+    return new ULIFrameProvider(config);
   }
 
   send(msg: any, cb: (error: any, response: any) => void) {
@@ -36,7 +35,7 @@ export class ULIFrameProvider {
   }
 }
 
-function createIFrame() {
+function createIFrame(url: string) {
   const iframe = document.createElement('iframe');
   Object.assign(iframe.style, {
     // position: 'fixed',
@@ -47,7 +46,7 @@ function createIFrame() {
     background: 'none transparent',
     border: 'none',
   })
-  iframe.setAttribute('src', IFRAME_BACKEND_URL);
+  iframe.setAttribute('src', url);
   document.getElementsByTagName('body')[0].appendChild(iframe);
   return iframe;
 }
