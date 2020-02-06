@@ -27,11 +27,15 @@ export class ULIFrameProvider {
     this.bridge.send(msg, cb);
   }
 
+  setDashboardVisibility(visible: boolean) {
+    this.send({method: 'ul_set_dashboard_visibility', params: [visible]}, () => {});
+  }
+
   openDashboard() {
-    this.send({method: 'ul_open_dashboard'}, () => {});
+    this.setDashboardVisibility(true)
   }
 
   closeDashboard() {
-    this.send({method: 'ul_close_dashboard'}, () => {});
+    this.setDashboardVisibility(false)
   }
 }

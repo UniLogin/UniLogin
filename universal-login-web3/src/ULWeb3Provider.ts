@@ -117,11 +117,8 @@ export class ULWeb3Provider implements Provider {
         return this.sign(params[0], params[1]);
       case 'personal_sign':
         return this.sign(params[1], params[0]);
-      case 'ul_open_dashboard':
-        this.uiController.openDashboard();
-        break;
-      case 'ul_close_dashboard':
-        this.uiController.closeDashboard();
+      case 'ul_set_dashboard_visibility':
+        this.uiController.setDashboardVisibility(!!params[0]);
         break;
       default:
         throw new Error(`Method not supported: ${method}`);

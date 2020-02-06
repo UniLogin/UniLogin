@@ -66,11 +66,7 @@ export class UIController {
     this.activeModal.set({kind: 'ONBOARDING'});
   }
 
-  openDashboard() {
-    this.dashboardVisible.set(true);
-  }
-
-  closeDashboard() {
-    this.dashboardVisible.set(false);
+  setDashboardVisibility(visible: boolean) {
+    this.dashboardVisible.set(visible);
   }
 }
