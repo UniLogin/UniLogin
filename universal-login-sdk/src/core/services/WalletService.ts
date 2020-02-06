@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil, multiplyBy150Percent} from '@universal-login/commons';
+import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil} from '@universal-login/commons';
 import UniversalLoginSDK from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
