@@ -11,7 +11,7 @@ export const OnboardingStepsWrapper = ({children, hideModal, message}: ModalWrap
     <div className={useClassFor('onboarding-modal')}>
       <CompanyLogo />
       <div className={classForComponent('onboarding-progress-wrapper')}>
-        <ModalProgressBar progress={100}/>
+        <ModalProgressBar />
       </div>
       <div className={classForComponent('onboarding-modal-wrapper')}>
         <h1 className={classForComponent('onboarding-modal-title')}>
