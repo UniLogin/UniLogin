@@ -2,19 +2,11 @@ import React from 'react';
 import {render} from 'react-dom';
 import {ULWeb3Root, ULWeb3RootProps} from '../react/ULWeb3Root';
 import {ThemeProvider} from '@universal-login/react';
-import {createGlobalStyle} from 'styled-components';
-
-const GlobalStyle = createGlobalStyle`
-  .universal-login-default .modal-wrapper {
-    font-family: 'Lato', sans-serif;
-  }
-`;
 
 export function initUi(props: ULWeb3RootProps) {
   const reactRootElement = createReactRoot();
   render(
     <ThemeProvider theme="unilogin">
-      <GlobalStyle/>
       <ULWeb3Root {...props} />
     </ThemeProvider>, reactRootElement);
 }
