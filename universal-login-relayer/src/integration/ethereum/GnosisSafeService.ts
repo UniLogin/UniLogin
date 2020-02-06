@@ -72,7 +72,7 @@ export class GnosisSafeService implements IWalletContractService {
   }
 
   isAddKeyCall(data: string) {
-    return isDataForFunctionCall(data, gnosisSafe.GnosisSafe, 'addOwnerWithThreshold');
+    return isDataForFunctionCall(data, gnosisSafe.GnosisSafe.interface, 'addOwnerWithThreshold');
   }
 
   isAddKeysCall(data: string) {
@@ -80,7 +80,7 @@ export class GnosisSafeService implements IWalletContractService {
   }
 
   isRemoveKeyCall(data: string) {
-    return isDataForFunctionCall(data, gnosisSafe.GnosisSafe, 'removeOwner');
+    return isDataForFunctionCall(data, gnosisSafe.GnosisSafe.interface, 'removeOwner');
   }
 
   decodeKeyFromData(data: string) {
