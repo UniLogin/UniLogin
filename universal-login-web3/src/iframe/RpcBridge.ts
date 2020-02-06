@@ -3,7 +3,7 @@ export type Callback = (error: any, response: any) => void;
 export type Handler = (msg: any, cb: Callback) => void;
 
 export class RpcBridge {
-  private readonly callbacks: Record<keyof any, Callback | undefined> = {};
+  private readonly callbacks: Record<number, Callback | undefined> = {};
 
   constructor(
     private readonly sendMessage: (msg: any) => void,
@@ -11,17 +11,18 @@ export class RpcBridge {
   ) {}
 
   handleMessage(msg: any) {
-    if (msg.magic !== MAGIC) {
-      return;
+    if (msg.magic === MAGIC && msg.payload !== undefined) {
+      this.handleRpc(msg.payload);
     }
-    const rpc = msg.payload;
+  }
 
+  private handleRpc(rpc: any) {
     if (rpc.method !== undefined) {
       this.handler(rpc, (error, response) => {
         if (error) {
           this.sendWithMagic({jsonrpc: '2.0', error: error, id: isRealId(rpc.id) ? rpc.id : null});
         } else {
-          this.sendMessage(response);
+          this.sendWithMagic(response);
         }
       });
     } else if (isRealId(rpc.id) && this.callbacks[rpc.id] !== undefined) {
@@ -37,7 +38,7 @@ export class RpcBridge {
   }
 
   send(msg: any, cb: Callback) {
-    if (msg.id != null) {
+    if (isRealId(msg.id)) {
       this.callbacks[msg.id] = cb;
     }
     this.sendWithMagic(msg);
