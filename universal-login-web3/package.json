@@ -24,7 +24,7 @@
     "prebuild": "yarn clean",
     "build:cjs": "tsc --outDir dist/cjs --declaration false && cpx \"src/ui/assets/**/*\" dist/cjs/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/cjs/src/ui/styles",
     "build:esm": "tsc --outDir dist/esm --module ES6 && cpx \"src/ui/assets/**/*\" dist/esm/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/esm/src/ui/styles",
-    "build": "yarn build:cjs && yarn build:esm",
+    "build": "yarn build:cjs && yarn build:esm && yarn build:iframe",
     "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "test": "yarn build:cjs && yarn test:nobuild",
     "test:nobuild": "cross-env NODE_ENV=test mocha --require ./dist/cjs/test/testconfig -t 10000 \"dist/cjs/test/**/*.js\"",
