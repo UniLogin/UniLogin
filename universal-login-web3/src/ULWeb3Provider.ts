@@ -89,8 +89,7 @@ export class ULWeb3Provider implements Provider {
       case 'eth_accounts':
       case 'eth_sign':
       case 'personal_sign':
-      case 'ul_open_dashboard':
-      case 'ul_close_dashboard':
+      case 'ul_set_dashboard_visibility':
         try {
           const result = await this.handle(payload.method, payload.params);
           callback(null, {
