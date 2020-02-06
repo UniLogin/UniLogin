@@ -50,13 +50,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/ui/index.html',
     }),
-    new webpack.DefinePlugin({
-      'process.env.DAI_TOKEN_ADDRESS': JSON.stringify(process.env.DAI_TOKEN_ADDRESS),
-      'process.env.SAI_TOKEN_ADDRESS': JSON.stringify(process.env.SAI_TOKEN_ADDRESS),
-      'process.env.RELAYER_URL': JSON.stringify(process.env.RELAYER_URL),
-      'process.env.ENS_DOMAIN_1': JSON.stringify(process.env.ENS_DOMAIN_1),
-      'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL),
-    }),
   ],
   devServer: {
     historyApiFallback: true,
