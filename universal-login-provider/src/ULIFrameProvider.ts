@@ -1,5 +1,5 @@
 import {RpcBridge} from './RpcBridge';
-import {DEFAULT_CONFIG} from './config'
+import {DEFAULT_CONFIG} from './config';
 import {createIFrame} from './createIframe';
 
 export class ULIFrameProvider {
@@ -35,4 +35,3 @@ export class ULIFrameProvider {
     this.send({method: 'ul_close_dashboard'}, () => {});
   }
 }
-
