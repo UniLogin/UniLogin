@@ -1,11 +1,7 @@
-import {providers, utils} from 'ethers';
-import {ensure, IMessageValidator, PaymentOptions, SignedMessage, NotEnoughTokens} from '../../..';
+import {providers} from 'ethers';
+import {ensure, IMessageValidator, SignedMessage, NotEnoughTokens} from '../../..';
 import {BalanceChecker} from '../BalanceChecker';
-
-export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: Omit<PaymentOptions, 'refundReceiver'>, walletContractAddress: string, balanceChecker: BalanceChecker) => {
-  const balance = await balanceChecker.getBalance(walletContractAddress, gasToken);
-  return balance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
-};
+import {getFeeCurrencyValueFrom} from '../../../core/utils/getFeeCurrencyValueFrom';
 
 export class SufficientBalanceValidator implements IMessageValidator {
   private balanceChecker: BalanceChecker;
@@ -15,11 +11,9 @@ export class SufficientBalanceValidator implements IMessageValidator {
   }
 
   async validate(signedMessage: SignedMessage) {
-    const paymentOptions: Omit<PaymentOptions, 'refundReceiver'> = {
-      gasToken: signedMessage.gasToken,
-      gasLimit: utils.bigNumberify(signedMessage.safeTxGas).add(signedMessage.baseGas),
-      gasPrice: signedMessage.gasPrice,
-    };
-    ensure(await hasEnoughToken(paymentOptions, signedMessage.from, this.balanceChecker), NotEnoughTokens);
+    const feeCurrencyValue = getFeeCurrencyValueFrom(signedMessage);
+    const balance = await this.balanceChecker.getBalance(signedMessage.from, feeCurrencyValue.address);
+    const hasEnoughToken = balance.gte(feeCurrencyValue.balance);
+    ensure(hasEnoughToken, NotEnoughTokens);
   }
 }
