@@ -1,4 +1,4 @@
-import {RpcBridge} from '@universal-login/web3/dist/src/services/RpcBridge';
+import {RpcBridge} from './RpcBridge';
 import {DEFAULT_CONFIG} from './config';
 import {createIFrame} from './createIframe';
 
