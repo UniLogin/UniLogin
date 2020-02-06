@@ -80,7 +80,7 @@ describe('Message', () => {
     };
 
     const actualUnsginedMessage = messageToUnsignedMessage(message, networkVersion, walletVersion);
-    expect(actualUnsginedMessage).to.deep.equal(expectedUnsignedMessage);
+    expect(actualUnsginedMessage).to.deep.eq(expectedUnsignedMessage);
   });
 
   it('messageToUnsignedMessage for istanbul', async () => {
@@ -101,7 +101,7 @@ describe('Message', () => {
     };
 
     const actualUnsginedMessage = messageToUnsignedMessage(message, networkVersion, walletVersion);
-    expect(actualUnsginedMessage).to.deep.equal(expectedUnsignedMessage);
+    expect(actualUnsginedMessage).to.deep.eq(expectedUnsignedMessage);
   });
 
   it('unsignedMessageToSignedMessage', async () => {

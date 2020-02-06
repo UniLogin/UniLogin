@@ -6,18 +6,18 @@ describe('safeMultiply', () => {
   it('111.11 USD/ETH * 2 ETH = 222.22 USD', () => {
     const actualEthTotalWorth = safeMultiply(utils.parseEther('2'), 111.11);
 
-    expect(actualEthTotalWorth).to.equal('222.22');
+    expect(actualEthTotalWorth).to.eq('222.22');
   });
 
   it('111.11 USD/ETH * 0 ETH = 0 USD', () => {
     const actualEthTotalWorth = safeMultiply(utils.parseEther('0'), 111.11);
 
-    expect(actualEthTotalWorth).to.equal('0.0');
+    expect(actualEthTotalWorth).to.eq('0.0');
   });
 
   it('0 USD/ETH * 2 ETH = 0 USD', () => {
     const actualEthTotalWorth = safeMultiply(utils.parseEther('2'), 0);
 
-    expect(actualEthTotalWorth).to.equal('0.0');
+    expect(actualEthTotalWorth).to.eq('0.0');
   });
 });

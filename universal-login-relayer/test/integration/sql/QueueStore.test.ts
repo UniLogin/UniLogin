@@ -50,11 +50,11 @@ for (const config of [{
       const messageHash2 = calculateMessageHash(signedMessage2);
       await executionQueue.addMessage(messageHash2);
       const nextMessageHash = (await executionQueue.getNext())!.hash;
-      expect(nextMessageHash).to.equal(messageHash1);
+      expect(nextMessageHash).to.eq(messageHash1);
       expect(nextMessageHash).to.eq(messageHash);
       await executionQueue.remove(messageHash1);
       const nextMessageHash2 = (await executionQueue.getNext())!.hash;
-      expect(nextMessageHash2).to.equal(messageHash2);
+      expect(nextMessageHash2).to.eq(messageHash2);
       expect(nextMessageHash2).to.eq(calculateMessageHash(signedMessage2));
       await executionQueue.remove(messageHash2);
       expect(await executionQueue.getNext()).to.be.undefined;

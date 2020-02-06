@@ -79,7 +79,7 @@ describe('INT: FutureWalletFactory', async () => {
     await expect(deploy())
       .to.be.eventually.rejectedWith('MYNAME.mylogin.eth is not valid');
     const balanceAfter = await wallet.getBalance();
-    expect(balanceBefore).to.equal(balanceAfter);
+    expect(balanceBefore).to.eq(balanceAfter);
   });
 
   after(async () => {

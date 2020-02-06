@@ -80,7 +80,7 @@ describe('UNIT: getDeviceInfo', () => {
     };
     result.time = expectedResult.time;
 
-    expect(expectedResult).to.deep.equal(result);
+    expect(expectedResult).to.deep.eq(result);
   });
 
   it('Test getDeviceInfo with real ip', async () => {
@@ -107,6 +107,6 @@ describe('UNIT: getDeviceInfo', () => {
     };
     result.time = expectedResult.time;
 
-    expect(expectedResult).to.deep.equal(result);
+    expect(expectedResult).to.deep.eq(result);
   });
 });

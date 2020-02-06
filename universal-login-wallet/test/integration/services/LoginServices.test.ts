@@ -46,7 +46,7 @@ describe('Login', () => {
 
       expect(privateKey).to.not.be.null;
       expect(contractAddress).to.not.be.null;
-      expect(walletService.getDeployedWallet().asApplicationWallet).to.deep.equal({name, privateKey, contractAddress});
+      expect(walletService.getDeployedWallet().asApplicationWallet).to.deep.eq({name, privateKey, contractAddress});
     });
   });
 

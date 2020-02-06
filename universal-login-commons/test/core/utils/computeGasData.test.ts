@@ -8,19 +8,19 @@ describe('UNIT: GasDataComputation', async () => {
     it('0x', async () => {
       const data = '0x';
 
-      expect(gasComputation.computeGasData(data)).to.equal(0);
+      expect(gasComputation.computeGasData(data)).to.eq(0);
     });
 
     it('0xbeef', async () => {
       const data = '0xbeef';
 
-      expect(gasComputation.computeGasData(data)).to.equal(136);
+      expect(gasComputation.computeGasData(data)).to.eq(136);
     });
 
     it('0x00ef', async () => {
       const data = '0x00ef';
 
-      expect(gasComputation.computeGasData(data)).to.equal(72);
+      expect(gasComputation.computeGasData(data)).to.eq(72);
     });
 
     it('long hex', async () => {
@@ -28,7 +28,7 @@ describe('UNIT: GasDataComputation', async () => {
       const twentyNonZeroBytes = 'f65bc65a5043e6582b38aa2269bafd759fcdfe32';
       const data = `0x${twentyNonZeroBytes}${tenZeroBytes}`;
 
-      expect(gasComputation.computeGasData(data)).to.equal(1400);
+      expect(gasComputation.computeGasData(data)).to.eq(1400);
     });
 
     it('invalid hex', async () => {
@@ -48,7 +48,7 @@ describe('UNIT: GasDataComputation', async () => {
     const gasComputation = new GasDataComputation('istanbul');
     const itComputesCostForData = (data: string, expectedResult: number) =>
       it(`${data} costs ${expectedResult}`, async () => {
-        expect(gasComputation.computeGasData(data)).to.equal(expectedResult);
+        expect(gasComputation.computeGasData(data)).to.eq(expectedResult);
       });
 
     itComputesCostForData('0x', 0);

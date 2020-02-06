@@ -38,8 +38,8 @@ describe('INT: BalanceObserver', () => {
       const balances = await balanceObserver.getBalances();
 
       expect(balances).to.be.lengthOf(2);
-      expect(balances[0].balance).to.equal(utils.parseEther('0.5'));
-      expect(balances[1].balance).to.equal(utils.parseEther('0.3'));
+      expect(balances[0].balance).to.eq(utils.parseEther('0.5'));
+      expect(balances[1].balance).to.eq(utils.parseEther('0.3'));
     });
 
     it('1 subscription - no change', async () => {
@@ -56,7 +56,7 @@ describe('INT: BalanceObserver', () => {
       expect(callback).to.have.been.calledTwice;
       const actualtokenBalances = callback.secondCall.args[0] as TokenDetailsWithBalance[];
       actualtokenBalances[0].balance = normalizeBigNumber(actualtokenBalances[0].balance);
-      expect(callback.secondCall.args[0]).to.deep.equal(expectedTokenBalances);
+      expect(callback.secondCall.args[0]).to.deep.eq(expectedTokenBalances);
     });
 
     it('1 subscription - change balance', async () => {
@@ -98,11 +98,11 @@ describe('INT: BalanceObserver', () => {
 
       const actualTokenBalances1 = callback1.secondCall.args[0];
       actualTokenBalances1[0].balance = normalizeBigNumber(actualTokenBalances1[0].balance);
-      expect(actualTokenBalances1).to.deep.equal(expectedTokenBalances);
+      expect(actualTokenBalances1).to.deep.eq(expectedTokenBalances);
       expect(callback1).to.have.been.calledTwice;
       const actualTokenBalances2 = callback2.firstCall.args[0];
       actualTokenBalances2[0].balance = normalizeBigNumber(actualTokenBalances2[0].balance);
-      expect(actualTokenBalances2).to.deep.equal(expectedTokenBalances);
+      expect(actualTokenBalances2).to.deep.eq(expectedTokenBalances);
       expect(callback2).to.have.been.calledOnce;
       expect((balanceObserver as any).lastTokenBalances).to.deep.eq([]);
     });
@@ -130,12 +130,12 @@ describe('INT: BalanceObserver', () => {
 
       const actualTokenBalancesAfterTransaction1 = callback1.thirdCall.args[0];
       actualTokenBalancesAfterTransaction1[0].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction1[0].balance);
-      expect(actualTokenBalancesAfterTransaction1).to.deep.equal(expectedTokenBalancesAfterTransaction);
+      expect(actualTokenBalancesAfterTransaction1).to.deep.eq(expectedTokenBalancesAfterTransaction);
       expect(callback1).to.have.been.calledThrice;
 
       const actualTokenBalancesAfterTransaction2 = callback2.thirdCall.args[0];
       actualTokenBalancesAfterTransaction2[0].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction2[0].balance);
-      expect(actualTokenBalancesAfterTransaction2).to.deep.equal(expectedTokenBalancesAfterTransaction);
+      expect(actualTokenBalancesAfterTransaction2).to.deep.eq(expectedTokenBalancesAfterTransaction);
       expect(callback2).to.have.been.calledThrice;
       expect((balanceObserver as any).lastTokenBalances).to.deep.eq([]);
     });
