@@ -22,7 +22,7 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
       return <ManualDashboard
         walletService={walletService}
         isVisible={uiController.dashboardVisible}
-        onClose={() => uiController.closeDashboard()}
+        onClose={() => uiController.setDashboardVisibility(false)}
       />;
     case 'ONBOARDING':
       return <Onboarding

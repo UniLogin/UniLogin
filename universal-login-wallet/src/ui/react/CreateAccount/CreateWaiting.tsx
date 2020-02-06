@@ -1,9 +1,9 @@
 import React from 'react';
-import {ModalWrapper, WaitingForDeployment, useAsyncEffect} from '@universal-login/react';
-import {useServices} from '../../hooks';
+import {Redirect} from 'react-router-dom';
 import {ensure} from '@universal-login/commons';
 import {InvalidWalletState, WalletState} from '@universal-login/sdk';
-import {Redirect} from 'react-router-dom';
+import {ModalWrapper, WaitingForDeployment, useAsyncEffect, DEPLOYMENT_DESCRIPTION} from '@universal-login/react';
+import {useServices} from '../../hooks';
 
 interface CreateWaitingProps {
   walletState: WalletState;
@@ -32,6 +32,7 @@ export function CreateWaiting({walletState}: CreateWaitingProps) {
             transactionHash={walletState.transactionHash}
             relayerConfig={sdk.getRelayerConfig()}
             className="jarvis-styles"
+            info={DEPLOYMENT_DESCRIPTION}
           />
         </ModalWrapper>
       </div>
