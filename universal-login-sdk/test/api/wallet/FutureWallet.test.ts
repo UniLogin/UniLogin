@@ -43,7 +43,7 @@ describe('UNIT: FutureWallet', () => {
   });
 
   it('returns minimal amount to deploy', async () => {
-    const expectedMinimalAmount = utils.formatEther(multiplyBy150Percent(utils.bigNumberify(TEST_GAS_PRICE).mul(DEPLOY_GAS_LIMIT)));
+    const expectedMinimalAmount = utils.formatEther(multiplyBy150Percent(utils.bigNumberify(TEST_GAS_PRICE).mul(DEPLOY_GAS_LIMIT).toString()));
     expect(futureWallet.getMinimalAmount()).to.eq(expectedMinimalAmount);
   });
 });
