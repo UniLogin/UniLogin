@@ -1,9 +1,9 @@
 import {Contract, utils, providers} from 'ethers';
-import {SignedMessage, RelayerRequest} from '@universal-login/commons';
+import {isDataForFunctionCall, SignedMessage, RelayerRequest} from '@universal-login/commons';
 import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface, calculateGnosisStringHash, encodeDataForExecTransaction, gnosisSafe, ERC1271, isInvalidOwnerError} from '@universal-login/contracts';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GAS_LIMIT_MARGIN, decodeDataForExecTransaction} from '../../core/utils/messages/serialisation';
-import {isDataForFunctionCall, decodeParametersFromData, getRemovedKey} from '../../core/utils/encodeData';
+import {decodeParametersFromData, getRemovedKey} from '../../core/utils/encodeData';
 import {AddressZero} from 'ethers/constants';
 export const INVALID_MSG_HASH = '0x0000000000000000000000000000000000';
 
