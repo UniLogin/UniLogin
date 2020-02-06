@@ -16,7 +16,7 @@ describe('INT: SufficientBalanceValidator', () => {
     const [wallet] = await getWallets(provider);
     const token = await deployContract(wallet, MockToken);
     await token.transfer(TEST_CONTRACT_ADDRESS, utils.parseEther('1'));
-    signedMessage = getTestSignedMessage(TEST_PRIVATE_KEY, token.address)
+    signedMessage = getTestSignedMessage(TEST_PRIVATE_KEY, {gasToken: token.address});
   });
 
   it('successfully pass the validation', async () => {
@@ -25,6 +25,10 @@ describe('INT: SufficientBalanceValidator', () => {
 
   it('passes when not enough gas', async () => {
     await expect(validator.validate({...signedMessage, safeTxGas: 100, baseGas: 1000})).to.be.eventually.fulfilled;
+  });
+
+  it('throws when not enough funds for transfer value', async () => {
+    await expect(validator.validate({...signedMessage, value: utils.parseEther('2.0')})).to.be.eventually.rejectedWith('Not enough tokens');
   });
 
   it('throws when not enough tokens', async () => {
