@@ -27,10 +27,6 @@ describe('INT: SufficientBalanceValidator', () => {
     await expect(validator.validate({...signedMessage, safeTxGas: 100, baseGas: 1000})).to.be.eventually.fulfilled;
   });
 
-  it('throws when not enough funds for transfer value', async () => {
-    await expect(validator.validate({...signedMessage, value: utils.parseEther('2.0')})).to.be.eventually.rejectedWith('Not enough tokens');
-  });
-
   it('throws when not enough tokens', async () => {
     await expect(validator.validate({...signedMessage, safeTxGas: utils.parseEther('2.0')})).to.be.eventually.rejectedWith('Not enough tokens');
   });
