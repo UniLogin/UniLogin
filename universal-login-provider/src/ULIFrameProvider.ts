@@ -16,7 +16,15 @@ export class ULIFrameProvider {
   }
 
   private handleRpc(msg: any, cb: (error: any, response: any) => void) {
+    switch (msg.method) {
+      case 'ul_set_iframe_visibility':
+        this.setIframeVisibility(msg.params[0]);
+        break;
+    }
+  }
 
+  private setIframeVisibility(visible: boolean) {
+    this.iframe.style.display = visible ? 'unset' : 'none';
   }
 
   static create(config = DEFAULT_CONFIG) {
@@ -27,11 +35,15 @@ export class ULIFrameProvider {
     this.bridge.send(msg, cb);
   }
 
+  setDashboardVisibility(visible: boolean) {
+    this.send({method: 'ul_set_dashboard_visibility', params: [visible]}, () => {});
+  }
+
   openDashboard() {
-    this.send({method: 'ul_open_dashboard'}, () => {});
+    this.setDashboardVisibility(true);
   }
 
   closeDashboard() {
-    this.send({method: 'ul_close_dashboard'}, () => {});
+    this.setDashboardVisibility(false);
   }
 }

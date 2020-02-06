@@ -11,7 +11,7 @@ export class RpcBridge {
   ) {}
 
   handleMessage(msg: any) {
-    if (msg.magic === MAGIC && msg.payload !== undefined) {
+    if (msg.protocolId === PROTOCOL_ID && msg.payload !== undefined) {
       this.handleRpc(msg.payload);
     }
   }
@@ -20,31 +20,31 @@ export class RpcBridge {
     if (rpc.method !== undefined) {
       this.handler(rpc, (error, response) => {
         if (error) {
-          this.sendWithMagic({jsonrpc: '2.0', error: error, id: isRealId(rpc.id) ? rpc.id : null});
+          this.sendWithProtocolId({jsonrpc: '2.0', error: error, id: isProperId(rpc.id) ? rpc.id : null});
         } else {
-          this.sendWithMagic(response);
+          this.sendWithProtocolId(response);
         }
       });
-    } else if (isRealId(rpc.id) && this.callbacks[rpc.id] !== undefined) {
+    } else if (isProperId(rpc.id) && this.callbacks[rpc.id] !== undefined) {
       this.callbacks[rpc.id]!(null, rpc);
     }
   }
 
-  private sendWithMagic(payload: any) {
+  private sendWithProtocolId(payload: any) {
     this.sendMessage({
-      magic: MAGIC,
+      protocolId: PROTOCOL_ID,
       payload,
     });
   }
 
   send(msg: any, cb: Callback) {
-    if (isRealId(msg.id)) {
+    if (isProperId(msg.id)) {
       this.callbacks[msg.id] = cb;
     }
-    this.sendWithMagic(msg);
+    this.sendWithProtocolId(msg);
   }
 }
 
-const MAGIC = 'UNIVERSAL_LOGIN';
+const PROTOCOL_ID = 'UNIVERSAL_LOGIN';
 
-const isRealId = (id: any) => typeof id === 'number';
+const isProperId = (id: unknown) => typeof id === 'number';

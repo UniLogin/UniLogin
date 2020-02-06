@@ -1,4 +1,4 @@
-import {State} from 'reactive-properties';
+import {State, Property, combine} from 'reactive-properties';
 import {WalletService} from '@universal-login/sdk';
 import {ULWeb3ProviderState} from '../models/ULWeb3ProviderState';
 import {ensure, Message} from '@universal-login/commons';
@@ -9,9 +9,16 @@ export class UIController {
   activeModal = new State<ULWeb3ProviderState>({kind: 'IDLE'});
   dashboardVisible = new State<boolean>(false);
 
+  isUiVisible: Property<boolean>;
+
   constructor(
     private walletService: WalletService,
-  ) {}
+  ) {
+    this.isUiVisible = combine(
+      [this.activeModal, this.dashboardVisible],
+      (state, dashboardVisible) => state.kind !== 'IDLE' || dashboardVisible,
+    );
+  }
 
   finishOnboarding() {
     this.hideModal();
@@ -66,11 +73,7 @@ export class UIController {
     this.activeModal.set({kind: 'ONBOARDING'});
   }
 
-  openDashboard() {
-    this.dashboardVisible.set(true);
-  }
-
-  closeDashboard() {
-    this.dashboardVisible.set(false);
+  setDashboardVisibility(visible: boolean) {
+    this.dashboardVisible.set(visible);
   }
 }
