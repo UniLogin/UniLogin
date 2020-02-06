@@ -1,0 +1,172 @@
+*
+  box-sizing: border-box
+
+html
+  font-size: 65%
+
+.perspective
+  perspective: 1000px
+
+.unilogin-component-selector-input-wrapper
+  position: relative
+
+.unilogin-component-selector-input-img
+  position: absolute
+  top: 25px
+  left: 12px
+  transform: translateY(-50%)
+
+.unilogin-component-input-wallet-selector
+  text-transform: lowercase
+
+.input-unilogin-component-input-wallet-selector,
+.unilogin-component-selector-sign-button,
+.unilogin-component-ethereum-account
+  width: 100%
+  height: 45px
+  padding: 12px 46px 12px 42px
+  border-radius: 5px
+
+.unilogin-component-selector-input-wrapper,
+.unilogin-component-selector-sign-button,
+.unilogin-component-ethereum-account
+  transition: transform 0.8s
+  visibility: visible
+  transform-style: preserve-3d
+  transform: rotateX(170deg)
+  backface-visibility: hidden
+  -webkit-backface-visibility: hidden
+
+.unilogin-component-selector-sign-button
+  position: absolute
+  top: 0
+  display: flex
+  align-items: center
+  border: 0
+  transform: rotateX(-180deg)
+  padding: 0 15px
+  cursor: pointer
+
+.unilogin-component-ethereum-account
+  position: absolute
+  top: 0
+  display: flex
+  align-items: center
+  padding: 0 15px
+  color: #fff
+  color: #666
+  text-align: center
+  background: #fff
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+.unilogin-component-selector-sign-img,
+.unilogin-component-ethereum-account-img
+  padding: 0 15px 0 0
+  border-right: 1px solid #fff
+  margin-right: 15px
+
+.unilogin-component-selector-sign-text,
+.unilogin-component-ethereum-account-text
+  margin: 0
+  color: #fff
+  text-transform: uppercase
+
+.unilogin-component-ethereum-account-text
+  text-overflow: ellipsis
+  overflow: hidden
+  white-space: nowrap
+
+.unilogin-component-suggestions-list
+  padding: 8px 0
+  margin-top: 8px
+  border-radius: 5px
+  list-style: none
+  background: #fff
+
+.unilogin-component-suggestions-item-btn
+  display: flex
+  justify-content: space-between
+  align-items: center
+  width: 100%
+  padding: 10px 20.5px
+  background: none
+  border: none
+
+.unilogin-component-suggestions-item-btn-text
+  margin: 0
+
+.unilogin-component-suggestions-item-text
+  margin: 0
+  word-break: break-word
+  text-align: left
+
+.unilogin-component-suggestions-ens-name
+  margin: 12px auto 7px
+  text-align: center
+  color: #fff
+  font-size: 14px
+
+.unilogin-component-suggestions-hint
+  margin: 0 auto 7px
+  text-align: center
+  font-size: 12px
+  color: #fff
+  opacity: 0.7
+
+.unilogin-component-single-suggestion-hint
+  margin: 0 7px 7px
+  text-align: center
+  font-size: 12px
+  color: #fff
+  opacity: 0.7
+
+.unilogin-component-single-suggestion-btn
+  display: block
+  padding: 12px 0
+  text-align: center
+  text-transform: uppercase
+  font-weight: 700
+  font-size: 13px
+  line-height: 19px
+  color: #0FB989
+  width: 100%
+  background: none
+  border: none
+  cursor: pointer
+
+.unilogin-component-ens-name
+  letter-spacing: .5px
+  font-size: 1.4rem
+
+.unilogin-component-spinner-busy-indicator
+  position: absolute !important
+  right: 10px
+  top: 2px
+  width: 37px !important
+  height: 37px !important
+
+.unilogin-component-show-initial,
+  .unilogin-component-selector-sign-button
+    transform: rotateX(0)
+    opacity: 1
+
+  .unilogin-component-selector-sign-button:hover,
+  .unilogin-component-selector-sign-button:focus
+    border-width: 2px
+    transform: rotateX(15deg) scale(1.05)
+
+  .unilogin-component-selector-sign-button:active
+    border-width: 2px
+    transform: rotateX(-60deg)
+
+.unilogin-component-show-picker
+  .unilogin-component-selector-input-wrapper
+    transform: rotateX(0)
+    opacity: 1
+
+.unilogin-component-show-account
+  .unilogin-component-ethereum-account
+    transform: rotateX(0)
+    opacity: 1
