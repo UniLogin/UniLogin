@@ -1,0 +1,27 @@
+{
+  "name": "@universal-login/provider",
+  "version": "0.5.2",
+  "main": "dist/cjs/index.js",
+  "types": "dist/esm/index.d.ts",
+  "module": "dist/esm/index.js",
+  "browser": "dist/umd/index.js",
+  "license": "MIT",
+  "files": [
+    "package.json",
+    "dist"
+  ],
+  "scripts": {
+    "build": "yarn build:cjs && yarn build:esm && yarn build:umd",
+    "build:cjs": "tsc --outDir dist/cjs --declaration false",
+    "build:esm": "tsc --outDir dist/esm --module ES6",
+    "build:umd": "rollup -c",
+    "lint": "eslint 'src/**/*.ts'"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-typescript": "^3.0.0",
+    "rollup": "^1.31.0",
+    "rollup-plugin-terser": "^5.2.0",
+    "typescript": "^3.7.5"
+  }
+}
