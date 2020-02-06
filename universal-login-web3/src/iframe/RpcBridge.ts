@@ -1,44 +1,44 @@
-export type Callback = (error: any, response: any) => void
+export type Callback = (error: any, response: any) => void;
 
 export type Handler =
-  (msg: any, cb: Callback) => void
+  (msg: any, cb: Callback) => void;
 
 export class RpcBridge {
-  private readonly callbacks: Record<keyof any, Callback | undefined> = {}
+  private readonly callbacks: Record<keyof any, Callback | undefined> = {};
 
-  constructor (
+  constructor(
     private readonly sendMessage: (msg: any) => void,
     private readonly handler: Handler,
   ) { }
 
   handleMessage(msg: any) {
     if (msg.magic !== MAGIC) {
-      return
+      return;
     }
-    const rpc = msg.payload
+    const rpc = msg.payload;
 
-    if(rpc.method !== undefined) {
+    if (rpc.method !== undefined) {
       this.handler(rpc, (error, response) => {
-        if(error) {
-          if(isRealId(rpc.id)) {
+        if (error) {
+          if (isRealId(rpc.id)) {
             this.sendWithMagic({
-              "jsonrpc": "2.0",
-              "error": error,
-              "id": rpc.id
-            })
+              jsonrpc: '2.0',
+              error: error,
+              id: rpc.id,
+            });
           }
         } else {
-          this.sendMessage(response)
+          this.sendMessage(response);
         }
-      })
+      });
     } else {
-      if(!isRealId(rpc.id)) {
-        return
+      if (!isRealId(rpc.id)) {
+        return;
       }
-      if(this.callbacks[rpc.id] === undefined) {
-        return
+      if (this.callbacks[rpc.id] === undefined) {
+        return;
       }
-      this.callbacks[rpc.id]!(null, rpc)
+      this.callbacks[rpc.id]!(null, rpc);
     }
   }
 
@@ -46,17 +46,17 @@ export class RpcBridge {
     this.sendMessage({
       magic: MAGIC,
       payload,
-    })
+    });
   }
 
   send(msg: any, cb: Callback) {
-    if(msg.id != null) {
-      this.callbacks[msg.id] = cb
+    if (msg.id != null) {
+      this.callbacks[msg.id] = cb;
     }
-    this.sendWithMagic(msg)
+    this.sendWithMagic(msg);
   }
 }
 
-const MAGIC = 'UNIVERSAL_LOGIN'
+const MAGIC = 'UNIVERSAL_LOGIN';
 
-const isRealId = (id: any) => typeof id === 'number'
+const isRealId = (id: any) => typeof id === 'number';

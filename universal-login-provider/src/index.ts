@@ -1,3 +1,3 @@
-import { ULIFrameProvider } from './ULIFrameProvider'
+import {ULIFrameProvider} from './ULIFrameProvider';
 
-export default ULIFrameProvider
+export default ULIFrameProvider;
