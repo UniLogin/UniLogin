@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
   .universal-login-default .modal-wrapper {
     font-family: 'Lato', sans-serif;
   }
-`
+`;
 
 export function initUi(props: ULWeb3RootProps) {
   const reactRootElement = createReactRoot();

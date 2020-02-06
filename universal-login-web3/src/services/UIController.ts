@@ -9,7 +9,7 @@ export class UIController {
   activeModal = new State<ULWeb3ProviderState>({kind: 'IDLE'});
   dashboardVisible = new State<boolean>(false);
 
-  isUiVisible: Property<boolean>
+  isUiVisible: Property<boolean>;
 
   constructor(
     private walletService: WalletService,
@@ -17,7 +17,7 @@ export class UIController {
     this.isUiVisible = combine(
       [this.activeModal, this.dashboardVisible],
       (state, dashboardVisible) => state.kind !== 'IDLE' || dashboardVisible,
-    )
+    );
   }
 
   finishOnboarding() {

@@ -12,5 +12,5 @@ const bridge = new RpcBridge(
 window.addEventListener('message', e => bridge.handleMessage(e.data));
 
 universalLogin.isUiVisible.pipe(forEach(
-  isVisible => bridge.send({ method: 'ul_set_iframe_visibility', params: [isVisible] }, () => {})
-))
+  isVisible => bridge.send({method: 'ul_set_iframe_visibility', params: [isVisible]}, () => {}),
+));
