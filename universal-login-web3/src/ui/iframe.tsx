@@ -1,5 +1,5 @@
 import {ULWeb3Provider} from '../ULWeb3Provider';
-import {RpcBridge} from './RpcBridge';
+import {RpcBridge} from '../services/RpcBridge';
 import {forEach} from 'reactive-properties';
 
 const universalLogin = ULWeb3Provider.getDefaultProvider('kovan');

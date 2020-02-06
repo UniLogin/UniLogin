@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 module.exports = {
-  entry: './src/iframe/index.tsx',
+  entry: './src/ui/iframe.tsx',
   output: {
     filename: 'main.[hash].js',
     path: path.join(__dirname, '/dist/html'),
