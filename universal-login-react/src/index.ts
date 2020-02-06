@@ -37,7 +37,7 @@ export {StorageService} from './core/services/StorageService';
 export {Notice} from './ui/commons/Notice';
 export {ConnectionFlow} from './ui/ConnectionFlow';
 export {ExplorerLink} from './ui/commons/ExplorerLink';
-export {WaitingForTransaction, WaitingForTransactionProps, WaitingForDeployment, WAITING_FOR_TRANSACTION_DESCRIPTION} from './ui/commons/WaitingForTransaction';
+export {WaitingForTransaction, WaitingForTransactionProps, WaitingForDeployment, DEPLOYMENT_DESCRIPTION} from './ui/commons/WaitingForTransaction';
 export {WaitingForOnRampProvider, WaitingForOnRampProviderProps} from './ui/TopUp/Fiat/WaitingForOnRampProvider';
 export {ThemeProvider, ThemeContext} from './ui/themes/Theme';
 export {calculateTransactionFee} from './core/utils/calculateTransactionFee';
