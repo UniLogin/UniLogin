@@ -1,7 +1,9 @@
-import {ApplicationInfo} from '@universal-login/commons';
 import Web3 from 'web3';
+import {Web3ProviderFactory} from '../models/Web3ProviderFactory';
+import {Strategy} from './UniLogin';
+import {getConfigForNetwork, Network} from '../config';
 import {ULWeb3Provider} from '../ULWeb3Provider';
-import {Network, getConfigForNetwork} from '../config';
+import {ApplicationInfo} from '@universal-login/commons';
 import {StorageService} from '@universal-login/react';
 
 export interface SetupUniLoginOverrides {
@@ -24,3 +26,18 @@ export const setupUniLogin = (web3: Web3, overrides?: SetupUniLoginOverrides) =>
     return provider;
   },
 });
+
+export const setupStrategies = (web3: Web3, strategies: Strategy[], overrides?: SetupUniLoginOverrides) => {
+  const provider = web3.currentProvider;
+  return strategies.map(strategy => {
+    switch (strategy) {
+      case 'UniLogin':
+        return setupUniLogin(web3, overrides);
+      case 'Metamask':
+        const defaultStrategy: Web3ProviderFactory = {icon: 'Metamask logo', name: 'Metamask', create: () => provider};
+        return defaultStrategy;
+      default:
+        return strategy;
+    }
+  });
+};

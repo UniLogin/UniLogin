@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 import {Web3PickerProvider} from '../Web3PickerProvider';
 import {Web3ProviderFactory} from '../models/Web3ProviderFactory';
-import {setupStrategies} from '../utils/setupStrategies';
+import {setupStrategies} from './setupStrategies';
 import {getApplicationInfoFromDocument} from '../ui/utils/applicationInfo';
 import {ApplicationInfo} from '@universal-login/commons';
 
