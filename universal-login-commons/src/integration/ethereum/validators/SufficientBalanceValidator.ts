@@ -13,7 +13,7 @@ export class SufficientBalanceValidator implements IMessageValidator {
   async validate(signedMessage: SignedMessage) {
     const feeCurrencyValue = getFeeCurrencyValueFrom(signedMessage);
     const balance = await this.balanceChecker.getBalance(signedMessage.from, feeCurrencyValue.address);
-    const hasEnoughToken = balance.gte(feeCurrencyValue.balance);
+    const hasEnoughToken = balance.gte(feeCurrencyValue.value);
     ensure(hasEnoughToken, NotEnoughTokens);
   }
 }

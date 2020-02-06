@@ -10,7 +10,7 @@ describe('UNIT: getTransferCurrencyValueFrom', () => {
     const signedMessage = getTestSignedMessage(TEST_PRIVATE_KEY, {value: '100'});
     expect(getTransferCurrencyValueFrom(signedMessage)).to.deep.eq({
       address: ETHER_NATIVE_TOKEN.address,
-      balance: utils.bigNumberify('100'),
+      value: utils.bigNumberify('100'),
     });
   });
 
@@ -25,7 +25,7 @@ describe('UNIT: getTransferCurrencyValueFrom', () => {
     const signedMessage = getTestSignedMessage(TEST_PRIVATE_KEY, {value: '0', to: TEST_TOKEN_ADDRESS, data: transferData});
     expect(getTransferCurrencyValueFrom(signedMessage)).to.deep.eq({
       address: TEST_TOKEN_ADDRESS,
-      balance: expectedValue,
+      value: expectedValue,
     });
   });
 });
