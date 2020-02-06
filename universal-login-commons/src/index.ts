@@ -82,3 +82,4 @@ export {classesForElement} from './react/classesForElement';
 export {copy} from './react/copy';
 export {escapePressed} from './react/escapePressed';
 export {getSuggestionId} from './react/getSuggestionId';
+export {isDataForFunctionCall} from './core/utils/isDataForFunctionCall';

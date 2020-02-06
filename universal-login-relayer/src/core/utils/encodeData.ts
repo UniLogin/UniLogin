@@ -1,16 +1,11 @@
 import {utils} from 'ethers';
+import {ensure, isDataForFunctionCall} from '@universal-login/commons';
 import {beta2} from '@universal-login/contracts';
-import {ensure} from '@universal-login/commons';
 import {InvalidHexData} from './errors';
 
-export const isDataForFunctionCall = (data: string, contract: any, functionName: string) => {
-  const functionSignature = new utils.Interface(contract.interface).functions[functionName].sighash;
-  return functionSignature === data.slice(0, functionSignature.length);
-};
-
-export const isAddKeyCall = (data: string) => isDataForFunctionCall(data, beta2.WalletContract, 'addKey');
-export const isAddKeysCall = (data: string) => isDataForFunctionCall(data, beta2.WalletContract, 'addKeys');
-export const isRemoveKeyCall = (data: string) => isDataForFunctionCall(data, beta2.WalletContract, 'removeKey');
+export const isAddKeyCall = (data: string) => isDataForFunctionCall(data, beta2.interfaces.WalletContractInterface, 'addKey');
+export const isAddKeysCall = (data: string) => isDataForFunctionCall(data, beta2.interfaces.WalletContractInterface, 'addKeys');
+export const isRemoveKeyCall = (data: string) => isDataForFunctionCall(data, beta2.interfaces.WalletContractInterface, 'removeKey');
 
 export const getFunctionParametersData = (data: string) => {
   ensure(data.startsWith('0x'), InvalidHexData, data);
