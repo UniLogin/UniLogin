@@ -48,9 +48,9 @@ export const WaitingForDeployment = (props: WaitingForTransactionProps) => (
   <WaitingForTransaction
     {...props}
     action={props.action || 'Wallet creation'}
-    info={props.info || DEPLOYMENT_INFO}
+    description={props.description || WAITING_FOR_TRANSACTION_DESCRIPTION}
+    info={props.info}
   />
 );
 
-const WAITING_FOR_TRANSACTION_DESCRIPTION = 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it.';
-const DEPLOYMENT_INFO = 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it...';
+export const WAITING_FOR_TRANSACTION_DESCRIPTION = 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it.';
