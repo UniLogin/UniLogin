@@ -61,7 +61,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         key: keyPair.publicKey,
       });
     expect(body).length(1);
-    expect(body).to.be.deep.eq([{
+    expect(body).to.deep.eq([{
       contractAddress,
       publicKey: keyPair.publicKey,
       deviceInfo: {

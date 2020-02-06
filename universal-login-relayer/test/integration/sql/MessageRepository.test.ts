@@ -56,11 +56,11 @@ for (const config of [{
       await messageRepository.add(messageHash, messageItem);
       expect(await messageRepository.isPresent(messageHash)).to.be.eq(true);
       messageItem.message = bignumberifySignedMessageFields(stringifySignedMessageFields(messageItem.message));
-      expect(await messageRepository.get(messageHash)).to.be.deep.eq(messageItem);
+      expect(await messageRepository.get(messageHash)).to.deep.eq(messageItem);
       expect(await messageRepository.isPresent(messageHash)).to.be.eq(true);
       const removedPendingExecution = await messageRepository.remove(messageHash);
       expect(await messageRepository.isPresent(messageHash)).to.be.eq(false);
-      expect(removedPendingExecution).to.be.deep.eq(messageItem);
+      expect(removedPendingExecution).to.deep.eq(messageItem);
     });
 
     it('containSignature should return false if signature not collected', async () => {
@@ -130,11 +130,11 @@ for (const config of [{
       await messageRepository.add(messageHash, messageItem);
       await messageRepository.addSignature(messageHash, signedMessage.signature, wallet.address);
       const key = getKeyFromHashAndSignature(messageHash, signedMessage.signature);
-      expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: signedMessage.signature}]);
+      expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.deep.eq([{key, signature: signedMessage.signature}]);
       const {signature} = unsignedMessageToSignedMessage(unsignedMessage, actionKey);
       await messageRepository.addSignature(messageHash, signature, actionWallet.address);
       const key2 = getKeyFromHashAndSignature(messageHash, signature);
-      expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.be.deep.eq([{key, signature: signedMessage.signature}, {key: key2, signature}]);
+      expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.deep.eq([{key, signature: signedMessage.signature}, {key: key2, signature}]);
     });
 
     after(async () => {

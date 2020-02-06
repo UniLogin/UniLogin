@@ -65,7 +65,7 @@ describe('INT: BlockchainService', async () => {
   });
 
   it('should return empty array if does not match the logs', async () => {
-    expect(await blockchainService.getLogs({address: TEST_ACCOUNT_ADDRESS})).to.be.deep.eq([]);
+    expect(await blockchainService.getLogs({address: TEST_ACCOUNT_ADDRESS})).to.deep.eq([]);
   });
 
   it('creates future gnosis', async () => {

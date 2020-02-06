@@ -15,13 +15,13 @@ describe('UNIT: TokensValueConverter', () => {
     it('0 ETH', () => {
       const actualEthTotalWorth = tokensValueConverter.getTokenTotalWorth(utils.parseEther('0'), currencyToValue);
 
-      expect(actualEthTotalWorth).to.be.deep.equal(currencyToValueWithZeros);
+      expect(actualEthTotalWorth).to.deep.equal(currencyToValueWithZeros);
     });
 
     it('2 ETH', () => {
       const actualEthTotalWorth = tokensValueConverter.getTokenTotalWorth(utils.parseEther('2'), currencyToValue);
 
-      expect(actualEthTotalWorth).to.be.deep.equal({
+      expect(actualEthTotalWorth).to.deep.equal({
         USD: 2 * currencyToValue.USD,
         DAI: 2 * currencyToValue.DAI,
         SAI: 2 * currencyToValue.SAI,
@@ -59,7 +59,7 @@ describe('UNIT: TokensValueConverter', () => {
     it('[]', async () => {
       const actualTotalWorth = tokensValueConverter.getTotal([], tokensPrices);
 
-      expect(actualTotalWorth).to.be.deep.equal(currencyToValueWithZeros);
+      expect(actualTotalWorth).to.deep.equal(currencyToValueWithZeros);
     });
 
     it('[ETH , DAI, SAI]', async () => {
@@ -72,7 +72,7 @@ describe('UNIT: TokensValueConverter', () => {
 
       const actualTotalWorth = tokensValueConverter.getTotal(tokenDetailsWithBalance, tokensPrices);
 
-      expect(actualTotalWorth).to.be.deep.equal(expectedTotalWorth);
+      expect(actualTotalWorth).to.deep.equal(expectedTotalWorth);
     });
   });
 });

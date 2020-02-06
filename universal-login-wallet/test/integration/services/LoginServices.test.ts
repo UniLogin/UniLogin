@@ -70,7 +70,7 @@ describe('Login', () => {
         {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
       await waitToBeSuccess();
       await waitExpect(() => expect(!!callback.firstCall).to.be.true);
-      expect(securityCode).to.be.deep.eq(expectedSecurityCode);
+      expect(securityCode).to.deep.eq(expectedSecurityCode);
     });
   });
 

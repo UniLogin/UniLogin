@@ -104,7 +104,7 @@ describe('INT: MessageHandler', async () => {
       await executionWorker.stopLater();
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
       const devices = await devicesStore.get(walletContract.address);
-      expect(devices.map(({publicKey}) => publicKey)).to.be.deep.eq(keys);
+      expect(devices.map(({publicKey}) => publicKey)).to.deep.eq(keys);
     });
   });
 
@@ -123,7 +123,7 @@ describe('INT: MessageHandler', async () => {
 
       await messageHandler.handleMessage(signedMessage);
       await executionWorker.stopLater();
-      expect(await devicesStore.get(walletContract.address, otherWallet.address)).to.be.deep.eq([]);
+      expect(await devicesStore.get(walletContract.address, otherWallet.address)).to.deep.eq([]);
       expect(await walletContract.keyExist(otherWallet.address)).to.eq(false);
     });
   });

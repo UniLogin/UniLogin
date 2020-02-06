@@ -90,7 +90,7 @@ describe('INT: PendingMessages', () => {
       await pendingMessages.add(signedMessage);
       await pendingMessages.add(signedMessage2);
       const {collectedSignatures} = await pendingMessages.getStatus(messageHash);
-      expect(collectedSignatures).to.be.deep.eq([signedMessage.signature, signedMessage2.signature]);
+      expect(collectedSignatures).to.deep.eq([signedMessage.signature, signedMessage2.signature]);
     });
 
     it('should not accept same signature twice', async () => {

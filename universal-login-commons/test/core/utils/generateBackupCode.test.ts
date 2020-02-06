@@ -54,25 +54,25 @@ describe('Daefen', () => {
 
   describe('fromBase', () => {
     it('for number equal 0', () => {
-      expect(fromBase(bigNumberify(0), bigNumberify(2))).to.be.deep.eq([0]);
-      expect(fromBase(bigNumberify(0), bigNumberify(4))).to.be.deep.eq([0]);
-      expect(fromBase(bigNumberify(0), bigNumberify(10))).to.be.deep.eq([0]);
+      expect(fromBase(bigNumberify(0), bigNumberify(2))).to.deep.eq([0]);
+      expect(fromBase(bigNumberify(0), bigNumberify(4))).to.deep.eq([0]);
+      expect(fromBase(bigNumberify(0), bigNumberify(10))).to.deep.eq([0]);
     });
 
     describe('for value greater than base', () => {
       for (const value of [1, 2, 4, 5, 7, 9, 10, 15, 100]) {
         it(`Value ${value}, base: ${value + 1}`, () => {
           const asBigNumber = bigNumberify(value);
-          expect(fromBase(asBigNumber, asBigNumber.add(1))).to.be.deep.eq([value]);
+          expect(fromBase(asBigNumber, asBigNumber.add(1))).to.deep.eq([value]);
         });
       }
     });
 
     it('for base equal 2', () => {
       const base = bigNumberify(2);
-      expect(fromBase(bigNumberify(2), base)).to.be.deep.eq([1, 0]);
-      expect(fromBase(bigNumberify(3), base)).to.be.deep.eq([1, 1]);
-      expect(fromBase(bigNumberify(8), base)).to.be.deep.eq([1, 0, 0, 0]);
+      expect(fromBase(bigNumberify(2), base)).to.deep.eq([1, 0]);
+      expect(fromBase(bigNumberify(3), base)).to.deep.eq([1, 1]);
+      expect(fromBase(bigNumberify(8), base)).to.deep.eq([1, 0, 0, 0]);
     });
   });
 

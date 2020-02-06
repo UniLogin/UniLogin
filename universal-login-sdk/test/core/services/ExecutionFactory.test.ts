@@ -45,7 +45,7 @@ describe('UNIT: ExecutionFactory', async () => {
       status.state = 'Success';
       const execution = await executionFactory.createExecution(signedMessage);
       const messageStatus = await execution.waitToBeSuccess();
-      expect(messageStatus).to.be.deep.eq(status);
+      expect(messageStatus).to.deep.eq(status);
       expect(getStatus.callCount).be.eq(2);
     });
 
@@ -54,7 +54,7 @@ describe('UNIT: ExecutionFactory', async () => {
       status.error = 'Error: waitToBeMined';
 
       const execution = await executionFactory.createExecution(signedMessage);
-      expect(execution.messageStatus).to.be.deep.eq(defaultStatus);
+      expect(execution.messageStatus).to.deep.eq(defaultStatus);
       await expect(execution.waitToBeSuccess()).to.be.rejectedWith('Error: waitToBeMined');
       expect(getStatus.callCount).be.eq(2);
     });
@@ -66,7 +66,7 @@ describe('UNIT: ExecutionFactory', async () => {
 
       execute.returns({status});
       const execution = await executionFactory.createExecution(signedMessage);
-      expect(await execution.waitToBeSuccess()).to.be.deep.eq(status);
+      expect(await execution.waitToBeSuccess()).to.deep.eq(status);
       expect(getStatus.callCount).be.eq(0);
     });
   });
@@ -77,7 +77,7 @@ describe('UNIT: ExecutionFactory', async () => {
 
       const {waitForTransactionHash} = await executionFactory.createExecution(signedMessage);
       const messageStatus = await waitForTransactionHash();
-      expect(messageStatus).to.be.deep.eq(status);
+      expect(messageStatus).to.deep.eq(status);
       expect(getStatus.callCount).be.eq(2);
     });
 
@@ -86,7 +86,7 @@ describe('UNIT: ExecutionFactory', async () => {
 
       const {waitForTransactionHash} = await executionFactory.createExecution(signedMessage);
       const messageStatus = await waitForTransactionHash();
-      expect(messageStatus).to.be.deep.eq(status);
+      expect(messageStatus).to.deep.eq(status);
       expect(getStatus.callCount).be.eq(2);
     });
 
@@ -95,9 +95,9 @@ describe('UNIT: ExecutionFactory', async () => {
       status.error = 'Error: waitToBeMined';
 
       const execution = await executionFactory.createExecution(signedMessage);
-      expect(execution.messageStatus).to.be.deep.eq(defaultStatus);
+      expect(execution.messageStatus).to.deep.eq(defaultStatus);
       const messageStatus = await execution.waitForTransactionHash();
-      expect(messageStatus).to.be.deep.eq(status);
+      expect(messageStatus).to.deep.eq(status);
       expect(getStatus.callCount).be.eq(2);
     });
 
