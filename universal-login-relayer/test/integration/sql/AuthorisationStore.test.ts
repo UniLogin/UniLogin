@@ -22,7 +22,7 @@ describe('INT: Authorisation Store', async () => {
 
   beforeEach(async () => {
     provider = createMockProvider();
-    [wallet, otherWallet] = await getWallets(provider);
+    [wallet, otherWallet] = getWallets(provider);
     database = getKnexConfig();
     authorisationStore = new AuthorisationStore(database);
     const {walletService, factoryContract, ensService, ensRegistrar, walletContractAddress} = await setupWalletService(wallet);

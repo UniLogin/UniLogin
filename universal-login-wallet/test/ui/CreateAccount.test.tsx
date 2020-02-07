@@ -20,7 +20,7 @@ describe('UI: Creation flow', () => {
   const expectedHomeBalance = '$1.99';
 
   before(async () => {
-    const [wallet] = await getWallets(createMockProvider());
+    const [wallet] = getWallets(createMockProvider());
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
   });
