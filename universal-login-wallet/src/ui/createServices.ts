@@ -42,7 +42,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
   const userDropdownService = new UserDropdownService();
   const walletService = new WalletService(sdk, walletFromBrain, storageService);
   const walletPresenter = new WalletPresenter(walletService);
-  sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
+  sdk.featureFlagsService.enableAll(new URLSearchParams(window?.location?.search).getAll('feature'));
   return {
     sdk,
     config,
