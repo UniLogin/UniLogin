@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --mode development --progress",
     "prebuild": "yarn clean",
     "build": "webpack --mode production --progress",
-    "test": "cross-env NODE_ENV=test mocha -t 10000 -r ts-node/register/transpile-only -r ./test/integration/register 'test/**/*.ts'",
+    "test": "cross-env NODE_ENV=test mocha -t 10000 -r ts-node/register/transpile-only -r ./test/integration/register.ts 'test/**/*.ts'",
     "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "clean": "rimraf dist",
     "start:dev": "ts-node scripts/dev-start.ts",
