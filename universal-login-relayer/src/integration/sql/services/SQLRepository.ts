@@ -10,6 +10,10 @@ export class SQLRepository<T extends Mineable> implements IRepository<T> {
   }
 
   async add(hash: string, item: T) {
+    const rows = await this.knex(this.tableName).where('hash', hash);
+    if (rows.length > 0) {
+      throw new Error('Hash already exists in database');
+    }
     await this.knex
       .insert({
         hash,
