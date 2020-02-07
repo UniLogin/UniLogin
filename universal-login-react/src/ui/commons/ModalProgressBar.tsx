@@ -1,6 +1,7 @@
 import React from 'react';
 import {useClassFor, classForComponent} from '../utils/classFor';
-import '../styles/base/modalProgressBar.sass'
+import {getModalProgressWidth} from '../../core/utils/getModalProgressWidth';
+import '../styles/base/modalProgressBar.sass';
 import '../styles/themes/UniLogin/modalProgressBarThemeUniLogin.sass';
 
 interface ModalProgressBarProps {
@@ -8,10 +9,10 @@ interface ModalProgressBarProps {
   progress?: number;
 }
 
-export const ModalProgressBar = ({steps = 5, progress = 1}: ModalProgressBarProps) => {
+export const ModalProgressBar = ({steps = 0, progress = 0}: ModalProgressBarProps) => {
   return (
     <div className={useClassFor('modal-progress-bar')}>
-      <div style={{width: `${progress / steps * 40}rem`}} className={classForComponent('modal-progress-bar-current')}></div>
+      <div style={{width: `${getModalProgressWidth(progress, steps)}rem`}} className={classForComponent('modal-progress-bar-current')}></div>
     </div>
   );
 };
