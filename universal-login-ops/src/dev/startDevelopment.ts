@@ -26,6 +26,7 @@ const databaseConfig = {
   migrations: {
     tableName: 'knex_migrations',
     directory: getMigrationPath(),
+    loadExtensions: ['.js'],
   },
 };
 
