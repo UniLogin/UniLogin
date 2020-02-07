@@ -6,10 +6,13 @@ import {
 import UniversalLoginSDK from '@universal-login/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import ethLogo from '../assets/icons/ethereum-logo.svg';
-import './../styles/walletSelector.css';
-import './../styles/walletSelectorDefaults.css';
-import './../styles/hint.css';
 import {EnsNamePicker} from './EnsNamePicker';
+import {classForComponent, useClassFor} from '../utils/classFor';
+import './../styles/hint.css';
+import './../styles/base/walletSelector.sass';
+import './../styles/themes/Legacy/walletSelectorThemeLegacy.sass';
+import './../styles/themes/Jarvis/walletSelectorThemeJarvis.sass';
+import './../styles/themes/UniLogin/walletSelectorThemeUniLogin.sass';
 
 export interface WalletSelectorProps {
   onCreateClick?(ensName: string): Promise<void> | void;
@@ -47,7 +50,7 @@ export const WalletSelector = ({
   };
 
   return (
-    <div className={`universal-login ${accountStatus}`}>
+    <div className={`universal-login ${useClassFor(accountStatus)}`}>
       <div className={getStyleForTopLevelComponent(className)}>
         <EnsNamePicker
           onCreateClick={onCreateClick}
@@ -57,13 +60,13 @@ export const WalletSelector = ({
           actions={actions}
           placeholder={placeholder}
         />
-        <button className="selector-sign-button" onClick={onDetectClick}>
-          <img className="selector-sign-img" src={ethLogo} alt="Ethereum Logo" />
-          <p className="selector-sign-text">Sign in with Ethereum</p>
+        <button className={classForComponent('selector-sign-button')} onClick={onDetectClick}>
+          <img className={classForComponent('selector-sign-img')} src={ethLogo} alt="Ethereum Logo" />
+          <p className={classForComponent('selector-sign-text')}>Sign in with Ethereum</p>
         </button>
-        <div className="ethereum-account">
-          <img className="ethereum-account-img" src={ethLogo} alt="Ethereum Logo" />
-          <p className="ethereum-account-text">{ethAccount}</p>
+        <div className={classForComponent('ethereum-account')}>
+          <img className={classForComponent('ethereum-account-img')} src={ethLogo} alt="Ethereum Logo" />
+          <p className={classForComponent('ethereum-account-text')}>{ethAccount}</p>
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ require('dotenv').config();
 import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 
 const developmentConfig: Config = {
-  domains: ['mylogin.eth'],
+  domains: ['mylogin.eth', 'poppularapp.eth', 'universal-id.eth'],
   relayerUrl: 'http://localhost:3311',
   jsonRpcUrl: 'http://localhost:18545',
   tokens: [ETHER_NATIVE_TOKEN.address, process.env.SAI_TOKEN_ADDRESS!, process.env.DAI_TOKEN_ADDRESS!],
