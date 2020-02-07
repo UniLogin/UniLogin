@@ -22,8 +22,8 @@ export class SufficientBalanceValidator implements IMessageValidator {
     const transferCurrencyValue = getTransferCurrencyValueFrom(signedMessage);
     if (transferCurrencyValue) {
       if (transferCurrencyValue.address === feeCurrencyValue.address) {
-        const value = transferCurrencyValue.value.add(feeCurrencyValue.value);
-        await this.ensureEnoughBalance(signedMessage.from, {value, address: feeCurrencyValue.address});
+        const value = transferCurrencyValue.add(feeCurrencyValue);
+        await this.ensureEnoughBalance(signedMessage.from, value);
       } else {
         await this.ensureEnoughBalance(signedMessage.from, feeCurrencyValue);
         await this.ensureEnoughBalance(signedMessage.from, transferCurrencyValue);

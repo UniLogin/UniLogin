@@ -9,22 +9,17 @@ import {CurrencyValue} from '../models/CurrencyValue';
 
 export const getTransferCurrencyValueFrom = (signedMessage: SignedMessage): Nullable<CurrencyValue> => {
   const value = utils.bigNumberify(signedMessage.value);
-  if (value.gt('0')) {
-    return {
-      address: ETHER_NATIVE_TOKEN.address,
-      value,
-    };
+  if (value.gt(0)) {
+    return CurrencyValue.fromWei(value, ETHER_NATIVE_TOKEN.address);
   } else {
     const data = signedMessage.data.toString();
     const ierc20Interface = new utils.Interface(IERC20.abi as Abi);
     if (isDataForFunctionCall(data, ierc20Interface, 'transfer')) {
-      return {
-        address: signedMessage.to,
-        value: new utils.AbiCoder((_, value) => value).decode(
-          ['address', 'uint256'],
-          `0x${data.slice(10)}`,
-        )[1],
-      };
+      const value = new utils.AbiCoder((_, value) => value).decode(
+        ['address', 'uint256'],
+        `0x${data.slice(10)}`,
+      )[1];
+      return CurrencyValue.fromWei(value, signedMessage.to);
     } else {
       return null;
     }
