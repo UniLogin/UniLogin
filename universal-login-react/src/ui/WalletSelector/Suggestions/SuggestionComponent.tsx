@@ -7,6 +7,7 @@ import {MultipleSuggestion} from './MultipleSuggestion';
 import {TakenOrInvalidSuggestion} from './TakenOrInvalidSuggestion';
 import {InvalidForConnectionSuggestion} from './InvalidForConnectionSuggestion';
 import {Suggestion} from '../../../core/models/Suggestion';
+import {classForComponent} from '../../utils/classFor';
 
 interface SuggestionComponentProps {
   suggestion: Suggestion;
@@ -40,8 +41,8 @@ export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, sug
       return <InvalidForConnectionSuggestion />;
     case 'Connection':
       return (
-        <ul className="suggestions-list">
-          <li className="suggestions-item">
+        <ul className={classForComponent('suggestions-list')}>
+          <li className={classForComponent('suggestions-item')}>
             <SingleSuggestion
               hint='Do you want to connect to this account?'
               operationType='connect'
@@ -54,8 +55,8 @@ export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, sug
       );
     case 'Creation':
       return (
-        <ul className="suggestions-list">
-          <li className="suggestions-item">
+        <ul className={classForComponent('suggestions-list')}>
+          <li className={classForComponent('suggestions-item')}>
             <SingleSuggestion
               hint='This username is available'
               operationType='create new'
@@ -68,9 +69,9 @@ export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, sug
       );
     case 'Available':
       return (
-        <ul className="suggestions-list">
+        <ul className={classForComponent('suggestions-list')}>
           {suggestion.suggestions.map(element => (
-            <li key={element.name} className="suggestions-item">
+            <li key={element.name} className={classForComponent('suggestions-item')}>
               <MultipleSuggestion
                 suggestion={element.name}
                 selectedSuggestion={selectedSuggestion}

@@ -54,6 +54,6 @@ export class WalletDeploymentService {
 
   getTokensWithMinimalAmount(gasPrice: string) {
     return this.supportedTokens.map((supportedToken) =>
-      ({...supportedToken, minimalAmount: safeMultiply(MINIMAL_DEPLOYMENT_GAS_LIMIT, gasPrice)}));
+      ({...supportedToken, minimalAmount: safeMultiply(utils.bigNumberify(MINIMAL_DEPLOYMENT_GAS_LIMIT), gasPrice)}));
   }
 }

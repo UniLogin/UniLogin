@@ -16,7 +16,7 @@ describe('UNIT: Coding transaction data', () => {
 
   it('should correctly encode SignedMessage', () => {
     const encoded = encodeDataForExecuteSigned(message);
-    expect(encoded).to.be.eq(encodedMessage);
+    expect(encoded).to.eq(encodedMessage);
   });
 
   it('should correctly decode encoded SignedMessage', () => {

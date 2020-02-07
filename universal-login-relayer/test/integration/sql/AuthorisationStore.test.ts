@@ -50,12 +50,12 @@ describe('INT: Authorisation Store', async () => {
     const itemToRemove = await authorisationStore.get(contractAddress, keyPair.publicKey);
     const removedItemsCount = await authorisationStore.removeRequest(contractAddress, keyPair.publicKey);
     expect(itemToRemove).to.deep.eq(request);
-    expect(removedItemsCount).to.be.eq(1);
+    expect(removedItemsCount).to.eq(1);
   });
 
   it('Remove non-existing item', async () => {
     const removedItemsCount = await authorisationStore.removeRequest(contractAddress, keyPair.publicKey);
-    expect(removedItemsCount).to.be.eq(0);
+    expect(removedItemsCount).to.eq(0);
   });
 
   it('Many authorisation requests roundtrip', async () => {

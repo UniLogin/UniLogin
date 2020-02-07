@@ -6,12 +6,17 @@ import '../styles/base/onboardingModal.sass';
 import '../styles/themes/UniLogin/onboardingModalThemeUniLogin.sass';
 import {ModalWrapperProps, ModalWrapper} from '../Modals/ModalWrapper';
 
-export const OnboardingStepsWrapper = ({children, hideModal, message}: ModalWrapperProps) =>
+interface OnboardingStepsWrapperProps extends ModalWrapperProps {
+  steps?: number;
+  progress?: number;
+}
+
+export const OnboardingStepsWrapper = ({children, hideModal, message, steps, progress}: OnboardingStepsWrapperProps) =>
   <ModalWrapper hideModal={hideModal} message={message}>
     <div className={useClassFor('onboarding-modal')}>
       <CompanyLogo />
       <div className={classForComponent('onboarding-progress-wrapper')}>
-        <ModalProgressBar />
+        <ModalProgressBar steps={steps} progress={progress} />
       </div>
       <div className={classForComponent('onboarding-modal-wrapper')}>
         <h1 className={classForComponent('onboarding-modal-title')}>

@@ -79,12 +79,12 @@ describe('UNIT: GasModeService', () => {
     expect(getCurrencyAmountSpy.getCall(7)).calledWith(gasPrices.fast, TEST_TOKEN_DETAILS[2].symbol);
     expect(getCurrencyAmountSpy.callCount).to.eq(8);
 
-    expect(modes).to.be.deep.eq(expectedModes);
+    expect(modes).to.deep.eq(expectedModes);
   });
 
   it('getModesWithUsedPrices', async () => {
     const {modes, prices} = await gasModeService.getModesWithPrices();
-    expect(modes).to.be.deep.eq(expectedModes);
-    expect(prices).to.be.deep.eq(tokenPrices);
+    expect(modes).to.deep.eq(expectedModes);
+    expect(prices).to.deep.eq(tokenPrices);
   });
 });

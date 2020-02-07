@@ -3,17 +3,18 @@ import {getSuggestionId} from '@universal-login/commons';
 import {SingleSuggestionProps} from '../../../core/models/SuggestionProps';
 import {EnsName} from '../../commons/EnsName';
 import {Spinner} from '../../commons/Spinner';
+import {classForComponent} from '../../utils/classFor';
 
 export const SingleSuggestion = ({onClick, operationType, suggestion, hint, selectedSuggestion}: SingleSuggestionProps) => {
   return (
     <>
-      <div className="suggestions-ens-name">
+      <div className={classForComponent('suggestions-ens-name')}>
         <EnsName value={suggestion} />
       </div>
-      <p className="single-suggestion-hint">{hint}</p>
+      <p className={classForComponent('single-suggestion-hint')}>{hint}</p>
       {selectedSuggestion === suggestion
-        ? <Spinner className='spinner-small-center' />
-        : <button className="single-suggestion-btn" id={getSuggestionId(operationType)} onClick={() => onClick(suggestion)}>
+        ? <Spinner className={classForComponent('spinner-small-center')} />
+        : <button className={classForComponent('single-suggestion-btn')} id={getSuggestionId(operationType)} onClick={() => onClick(suggestion)}>
           {operationType}
         </button>}
     </>

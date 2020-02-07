@@ -80,9 +80,9 @@ describe('INT: PendingMessages', () => {
       await pendingMessages.add(signedMessage);
       const status = await pendingMessages.getStatus(messageHash);
       const {collectedSignatures, state} = status;
-      expect(status.collectedSignatures.length).to.be.eq(1);
-      expect(state).to.be.eq('AwaitSignature');
-      expect(collectedSignatures[0]).to.be.eq(signedMessage.signature);
+      expect(status.collectedSignatures.length).to.eq(1);
+      expect(state).to.eq('AwaitSignature');
+      expect(collectedSignatures[0]).to.eq(signedMessage.signature);
     });
 
     it('should sign signedMessage', async () => {
@@ -90,7 +90,7 @@ describe('INT: PendingMessages', () => {
       await pendingMessages.add(signedMessage);
       await pendingMessages.add(signedMessage2);
       const {collectedSignatures} = await pendingMessages.getStatus(messageHash);
-      expect(collectedSignatures).to.be.deep.eq([signedMessage.signature, signedMessage2.signature]);
+      expect(collectedSignatures).to.deep.eq([signedMessage.signature, signedMessage2.signature]);
     });
 
     it('should not accept same signature twice', async () => {
