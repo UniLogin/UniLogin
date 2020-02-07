@@ -6,7 +6,7 @@ import {StorageService} from '@universal-login/react';
 import UserDropdownService from '../app/UserDropdownService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
 
-interface Config {
+export interface Config {
   domains: string[];
   relayerUrl: string;
   jsonRpcUrl: string;
@@ -14,7 +14,7 @@ interface Config {
   saiTokenAddress?: string;
 }
 
-interface Overrides {
+export interface Overrides {
   provider?: providers.Provider;
   storageService?: StorageService;
   sdkConfig?: DeepPartial<SdkConfig>;
