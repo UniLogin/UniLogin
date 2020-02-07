@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {MemoryStorageService} from '@universal-login/sdk';
-import {setupStrategies} from '../../src/utils/setupStrategies';
+import {setupStrategies} from '../../src/api/setupStrategies';
 import {Web3ProviderFactory} from '../../src/models/Web3ProviderFactory';
 
 describe('UNIT: setupStrategies', () => {

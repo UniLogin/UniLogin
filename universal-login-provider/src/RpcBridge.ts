@@ -1,1 +1,1 @@
-../../universal-login-web3/src/iframe/RpcBridge.ts
+../../universal-login-web3/src/services/RpcBridge.ts

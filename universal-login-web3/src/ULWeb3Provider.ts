@@ -6,12 +6,12 @@ import {providers, utils, constants} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {ensure, Message, walletFromBrain, ApplicationInfo, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {waitForTrue} from './ui/utils/utils';
-import {initUi} from './ui/utils/initUi';
+import {initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
 import {StorageService} from '@universal-login/react';
 import {Property} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
-import {getOrCreateUlButton} from './ui/utils/initUi';
+import {getOrCreateUlButton} from './ui/initUi';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
