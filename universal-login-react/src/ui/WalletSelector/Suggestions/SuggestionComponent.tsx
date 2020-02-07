@@ -68,19 +68,43 @@ export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, sug
         </ul>
       );
     case 'Available':
+      const createSuggestions = suggestion.suggestions.filter(element => element.kind === 'Creation');
+      const connectSuggestions = suggestion.suggestions.filter(element => element.kind === 'Connection');
       return (
-        <ul className={classForComponent('suggestions-list')}>
-          {suggestion.suggestions.map(element => (
-            <li key={element.name} className={classForComponent('suggestions-item')}>
-              <MultipleSuggestion
-                suggestion={element.name}
-                selectedSuggestion={selectedSuggestion}
-                operationType={element.kind === 'Creation' ? 'create new' : 'connect'}
-                onClick={element.kind === 'Creation' ? handleCreateClick : handleConnectClick}
-              />
-            </li>
-          ))}
-        </ul>
+        <div className={classForComponent('suggestions-wrapper')}>
+          {createSuggestions.length !== 0 &&
+          <div className={classForComponent('suggestions-group')}>
+            <p className={classForComponent('suggestions-group-label')}>New user?</p>
+            <ul className={classForComponent('suggestions-list')}>
+              {createSuggestions.map(element => (
+                <li key={element.name} className={classForComponent('suggestions-item')}>
+                  <MultipleSuggestion
+                    suggestion={element.name}
+                    selectedSuggestion={selectedSuggestion}
+                    operationType={'create new'}
+                    onClick={handleCreateClick}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>}
+          {connectSuggestions.length !== 0 &&
+          <div className={classForComponent('suggestions-group')}>
+            <p className={classForComponent('suggestions-group-label')}>Already have an account</p>
+            <ul className={classForComponent('suggestions-list')}>
+              {connectSuggestions.map(element => (
+                <li key={element.name} className={classForComponent('suggestions-item')}>
+                  <MultipleSuggestion
+                    suggestion={element.name}
+                    selectedSuggestion={selectedSuggestion}
+                    operationType={'connect'}
+                    onClick={handleConnectClick}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>}
+        </div>
       );
   }
 };
