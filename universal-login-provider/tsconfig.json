@@ -2,8 +2,6 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "allowJs": false,
-    "sourceMap": true,
-    "declaration": true,
     "outDir": "dist",
     "downlevelIteration": true,
     "esModuleInterop": true,
@@ -14,6 +12,6 @@
     ]
   },
   "include": [
-    "src",
+    "src"
   ]
 }

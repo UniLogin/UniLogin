@@ -9,11 +9,10 @@
   "scripts": {
     "prebuild": "yarn clean",
     "build": "yarn build:cjs && yarn build:esm",
-    "build:cjs": "tsc --outDir dist/cjs --declaration false",
+    "build:cjs": "tsc --outDir dist/cjs --module commonjs",
     "build:esm": "tsc --outDir dist/esm --module ES6",
     "clean": "rimraf dist",
-    "test": "yarn build:cjs && yarn test:nobuild",
-    "test:nobuild": "mocha -t 10000 \"dist/cjs/test/**/*.js\"",
+    "test": "mocha -r ts-node/register/transpile-only -t 10000 'test/**/*.ts'",
     "lint": "eslint '{src,test}/**/*.ts'"
   },
   "devDependencies": {

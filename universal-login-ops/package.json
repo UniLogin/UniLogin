@@ -13,11 +13,10 @@
     "build": "yarn build:cjs && yarn build:esm",
     "copy:contracts:cjs": "cpx \"src/contracts/**/*\" dist/cjs/src/contracts",
     "copy:contracts:esm": "cpx \"src/contracts/**/*\" dist/esm/src/contracts",
-    "build:cjs": "tsc --outDir dist/cjs --p tsconfig.build.json --declaration false && yarn copy:contracts:cjs",
+    "build:cjs": "tsc --outDir dist/cjs --p tsconfig.build.json --module commonjs && yarn copy:contracts:cjs",
     "build:esm": "tsc --outDir dist/esm --p tsconfig.build.json --module ES6 && yarn copy:contracts:esm",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
-    "test": "yarn build:cjs && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha",
+    "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only 'test/**/*.{ts,js}'",
     "cli": "ts-node ./scripts/cli",
     "clean": "rimraf dist"
   },
