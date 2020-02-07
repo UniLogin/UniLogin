@@ -1,5 +1,6 @@
 import React from 'react';
 import {parseDomain} from '@universal-login/commons';
+import {classForComponent} from '../utils/classFor';
 
 interface EnsNameProps {
   value: string;
@@ -7,5 +8,5 @@ interface EnsNameProps {
 
 export const EnsName = ({value}: EnsNameProps) => {
   const [name, domain] = parseDomain(value);
-  return <p className="ens-name"><b>{name}</b>.{domain}</p>;
+  return <p className={classForComponent('ens-name')}><b>{name}</b>.{domain}</p>;
 };
