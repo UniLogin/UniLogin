@@ -8,5 +8,6 @@ export interface KnexConfig {
   migrations: {
     tableName?: string;
     directory?: string;
+    loadExtensions?: string[];
   };
 }

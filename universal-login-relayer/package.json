@@ -29,7 +29,7 @@
     "prebuild": "yarn clean",
     "build": "yarn build:cjs && yarn build:esm",
     "build:cjs": "tsc --outDir dist/cjs --module commonjs",
-    "build:esm": "tsc --outDir dist/esm --module ES6 && rm dist/esm/src/integration/sql/migrations/*.d.ts",
+    "build:esm": "tsc --outDir dist/esm --module ES6",
     "start": "node dist/cjs/src/http/start.js",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only -t 10000 --exit 'test/**/*.{js,ts}'",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
