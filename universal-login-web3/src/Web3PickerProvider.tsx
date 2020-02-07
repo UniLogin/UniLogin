@@ -16,6 +16,7 @@ export class Web3PickerProvider implements Provider {
   constructor(
     public readonly factories: Web3ProviderFactory[],
     public readonly readProvider: Provider,
+    private readonly uiInitializer = initPickerUi,
   ) {
   }
 
@@ -53,7 +54,7 @@ export class Web3PickerProvider implements Provider {
   private lazyCreateReactRoot() {
     if (!this.reactRootCreated) {
       this.reactRootCreated = true;
-      initPickerUi({
+      this.uiInitializer({
         isVisibleProp: this.isVisible,
         hideModal: () => this.isVisible.set(false),
         setProvider: this.setProvider.bind(this),
