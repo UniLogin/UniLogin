@@ -15,11 +15,10 @@
     "prebuild": "yarn clean",
     "build": "yarn build:contracts && yarn build:ts",
     "build:ts": "yarn build:cjs && yarn build:esm",
-    "build:cjs": "tsc --outDir dist/cjs --declaration false",
+    "build:cjs": "tsc --outDir dist/cjs --declaration false --declarationMap false",
     "build:esm": "tsc --outDir dist/esm --module ES6",
     "build:contracts": "mkdir -p dist/contracts && waffle .waffle.js",
-    "test": "yarn build:cjs && yarn test:nobuild",
-    "test:nobuild": "mocha -t 10000 'dist/cjs/test/**/*.js'",
+    "test": "mocha -r ts-node/register/transpile-only -t 10000 'test/**/*.ts'",
     "lint": "yarn lint:js && yarn lint:sol",
     "lint:js": "eslint '{src,test}/**/*.{js,ts}'",
     "lint:sol": "solium -d contracts",
@@ -42,7 +41,7 @@
     "mocha": "^5.2.0",
     "openzeppelin-solidity": "^2.1.1",
     "rimraf": "^2.6.3",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.7.0"
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
   }
 }
