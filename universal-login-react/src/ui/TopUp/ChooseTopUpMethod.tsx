@@ -11,6 +11,9 @@ import {TopUpMethod} from '../../core/models/TopUpMethod';
 import {getPayButtonState} from '../../app/TopUp/getPayButtonState';
 import {ChooseTopUpMethodWrapper} from './ChooseTopUpMethodWrapper';
 import {ChooseTopUpMethodHeader} from './ChooseTopUpMethodHeader';
+import {ModalProgressBar} from '../commons/ModalProgressBar';
+import {classForComponent} from '../utils/classFor';
+import {CompanyLogo} from '../commons/CompanyLogo';
 
 export interface ChooseTopUpMethodProps {
   walletService: WalletService;
@@ -26,6 +29,10 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: Choose
 
   return (
     <ChooseTopUpMethodWrapper topUpMethod={topUpMethod}>
+      <CompanyLogo />
+      <div className={classForComponent('onboarding-progress-wrapper')}>
+        <ModalProgressBar />
+      </div>
       <ChooseTopUpMethodHeader
         topUpMethod={topUpMethod}
         setTopUpMethod={setTopUpMethod}
