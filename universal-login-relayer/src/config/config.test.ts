@@ -50,6 +50,7 @@ export const config: Config = Object.freeze({
     },
     migrations: {
       directory: path.join(__dirname, '../integration/sql/migrations'),
+      loadExtensions: ['.js'],
     },
   },
   maxGasLimit: 500000,
