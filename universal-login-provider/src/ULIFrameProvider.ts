@@ -24,13 +24,22 @@ export class ULIFrameProvider {
   }
 
   private handleRpc(msg: any, cb: (error: any, response: any) => void) {
-    console.log(msg)
+    console.log('ULIFrameProvider.handleRpc', msg)
     switch (msg.method) {
       case 'ul_set_iframe_visibility':
         this.setIframeVisibility(msg.params[0]);
         break;
       default:
-        this.upstream.send(msg, cb);
+        this.sendUpstream(msg, cb);
+    }
+  }
+
+  private sendUpstream(msg: any, cb: (error: any, response: any) => void) {
+    if ((this.upstream as any).sendAsync) {
+      console.log('sendAsync');
+      (this.upstream as any).sendAsync(msg, cb);
+    } else {
+      this.upstream.send(msg, cb);
     }
   }
 

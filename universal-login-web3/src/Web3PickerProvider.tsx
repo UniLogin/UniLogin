@@ -22,7 +22,6 @@ export class Web3PickerProvider implements Provider {
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    console.log(payload)
     if (!this.currentProvider.get()) {
       if (!isAccountDependantRpc(payload.method)) {
         return this.readProvider.send(payload, callback);

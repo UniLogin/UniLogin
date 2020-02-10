@@ -17,6 +17,7 @@ export class RpcBridge {
   }
 
   private handleRpc(rpc: any) {
+    console.log('bridge.handleRpc', rpc)
     if (rpc.method !== undefined) {
       this.handler(rpc, this.getCallbackHandler(isProperId(rpc.id) ? rpc.id : null));
     } else if (isProperId(rpc.id)) {
@@ -36,6 +37,7 @@ export class RpcBridge {
 
   private getCallbackHandler(id: number | null) {
     return (error: any, response: any) => {
+      console.log('bridge.callbackHandler', error, response)
       if (error) {
         this.sendWithProtocolId({jsonrpc: '2.0', error: error, id});
       } else {
