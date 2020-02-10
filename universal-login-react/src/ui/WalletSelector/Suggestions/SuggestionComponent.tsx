@@ -73,21 +73,23 @@ export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, sug
       return (
         <div className={classForComponent('suggestions-wrapper')}>
           {createSuggestions.length !== 0 &&
-          <SuggestionGroup
-            suggestions={createSuggestions}
-            label='New user?'
-            selectedSuggestion={selectedSuggestion}
-            type='create new'
-            onClick={handleCreateClick}
-          />}
+            <SuggestionGroup
+              suggestions={createSuggestions}
+              label='New user?'
+              selectedSuggestion={selectedSuggestion}
+              type='create new'
+              onClick={handleCreateClick}
+            />
+          }
           {connectSuggestions.length !== 0 &&
-          <SuggestionGroup
-            suggestions={connectSuggestions}
-            label='Already have an account'
-            selectedSuggestion={selectedSuggestion}
-            type='connect'
-            onClick={handleConnectClick}
-          />}
+            <SuggestionGroup
+              suggestions={connectSuggestions}
+              label='Already have an account'
+              selectedSuggestion={selectedSuggestion}
+              type='connect'
+              onClick={handleConnectClick}
+            />
+          }
         </div>
       );
   }

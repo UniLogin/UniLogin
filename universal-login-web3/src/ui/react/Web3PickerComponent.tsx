@@ -25,7 +25,7 @@ export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setPro
   const [selectedProvider, setSelectedProvider] = useState('UniversalLogin');
 
   return isVisible
-    ? <ModalWrapper hideModal={hideModal} message='This is a test environment running on Ropsten network'>
+    ? <ModalWrapper hideModal={hideModal}>
       <GlobalStyle />
       <ModalBox>
         <ModalTitle>Login with your wallet</ModalTitle>
