@@ -3,7 +3,7 @@ export type Callback = (error: any, response: any) => void;
 export type Handler = (msg: any, cb: Callback) => void;
 
 export class RpcBridge {
-  private readonly callbacks: Record<number, Set<Callback>> = {};
+  private readonly callbacks: Record<number, Set<Callback> | undefined> = {};
 
   constructor(
     private readonly sendMessage: (msg: any) => void,
