@@ -13,7 +13,7 @@
     "copy:assets:cjs": "cpx \"src/ui/assets/**/*\" dist/cjs/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/cjs/src/ui/styles",
     "copy:assets:esm": "cpx \"src/ui/assets/**/*\" dist/esm/src/ui/assets && cpx \"src/ui/styles/**/*\" dist/esm/src/ui/styles",
     "build": "yarn build:cjs && yarn build:esm",
-    "build:cjs": "tsc --outDir dist/cjs --module commonjs && yarn copy:assets:cjs",
+    "build:cjs": "tsc --outDir dist/cjs --declaration false --declarationMap false && yarn copy:assets:cjs",
     "build:esm": "tsc --outDir dist/esm --module ES6 && yarn copy:assets:esm",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only -r ./test/testconfig -t 10000 --exit 'test/**/*.ts'",
     "start:dev": "ts-node scripts/dev-start.ts"

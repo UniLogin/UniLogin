@@ -15,7 +15,7 @@
     "prebuild": "yarn clean",
     "build": "yarn build:contracts && yarn build:ts",
     "build:ts": "yarn build:cjs && yarn build:esm",
-    "build:cjs": "tsc --outDir dist/cjs --module commonjs",
+    "build:cjs": "tsc --outDir dist/cjs --declaration false --declarationMap false",
     "build:esm": "tsc --outDir dist/esm --module ES6",
     "build:contracts": "mkdir -p dist/contracts && waffle .waffle.js",
     "test": "mocha -r ts-node/register/transpile-only -t 10000 'test/**/*.ts'",
