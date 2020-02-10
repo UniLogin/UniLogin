@@ -35,7 +35,11 @@ export const Onboarding = (props: OnboardingProps) => {
               exact
               path="/selector"
               render={({history}) =>
-                <OnboardingStepsWrapper hideModal={props.hideModal} message={props.sdk.getNotice()}>
+                <OnboardingStepsWrapper
+                  hideModal={props.hideModal}
+                  message={props.sdk.getNotice()}
+                  steps={5}
+                  progress={1}>
                   <div className="perspective">
                     <WalletSelector
                       sdk={props.sdk}

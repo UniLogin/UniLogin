@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  entry: './src/ui/index.tsx',
+  entry: './src/ui/react/playground/index.tsx',
   output: {
     filename: 'main.[hash].js',
     path: path.join(__dirname, '/dist/html'),

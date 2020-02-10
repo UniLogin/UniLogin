@@ -26,6 +26,7 @@ const databaseConfig = {
   migrations: {
     tableName: 'knex_migrations',
     directory: getMigrationPath(),
+    loadExtensions: ['.js'],
   },
 };
 
@@ -105,7 +106,7 @@ declare interface StartDevelopmentOverrides {
 async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrides = {}) {
   const jsonRpcUrl = nodeUrl || await startGanache(ganachePort);
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
-  const [, , , , ensDeployer, deployWallet] = await getWallets(provider);
+  const [, , , , ensDeployer, deployWallet] = getWallets(provider);
   const ensAddress = await deployENS(ensDeployer, ensDomains);
   const {address, walletContractHash} = await deployGnosisSafe(deployWallet);
   const proxyContractHash = getProxyContractHash();

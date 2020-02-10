@@ -15,7 +15,7 @@ describe('SendFunds', () => {
 
   beforeEach(async () => {
     provider = createMockProvider();
-    [wallet] = await getWallets(provider);
+    [wallet] = getWallets(provider);
     args = {
       nodeUrl: '',
       privateKey: wallet.privateKey,

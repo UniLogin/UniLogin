@@ -40,7 +40,7 @@ describe('UI: Transfer', () => {
   };
 
   beforeEach(async () => {
-    const [wallet] = await getWallets(createMockProvider());
+    const [wallet] = getWallets(createMockProvider());
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
     ({appWrapper, appPage, services} = await setupUI(relayer, mockTokenContract.address));

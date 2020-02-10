@@ -10,7 +10,7 @@ import {createPreconfiguredServices} from './ServicesUnderTests';
 
 export const setupUI = async (relayer: Relayer, tokenAddress?: string) => {
   const name = 'name.mylogin.eth';
-  const [wallet] = await getWallets(relayer.provider);
+  const [wallet] = getWallets(relayer.provider);
   const tokens = tokenAddress ? [tokenAddress, ETHER_NATIVE_TOKEN.address] : [ETHER_NATIVE_TOKEN.address];
   const services = await createPreconfiguredServices(relayer.provider, relayer, tokens);
   await services.sdk.tokensDetailsStore.fetchTokensDetails();
