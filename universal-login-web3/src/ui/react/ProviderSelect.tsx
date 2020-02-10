@@ -19,10 +19,10 @@ interface IProviderButton {
   selectedProvider: string;
 }
 
-const isMetamaskPresent = () => (window as any).ethereum && (window as any).ethereum.isMetaMask;
+const isMetamaskPresent = () => !!(window as any).ethereum;
 
 const ProviderSelect = ({name, icon, labelTop, labelBottom, selectedProvider, onClick}: IWeb3ProviderProps) =>
-  <ProviderButton name={name} selectedProvider={selectedProvider} onClick={onClick}>
+  <ProviderButton disabled={name === 'Metamask' && !isMetamaskPresent()} name={name} selectedProvider={selectedProvider} onClick={onClick}>
     {(labelTop) && <ProviderLabelTop>{labelTop}</ProviderLabelTop>}
     <img src={icon} alt={name + ' logo'}/>
     {(labelBottom) && <ProviderLabelBottom>{labelBottom}</ProviderLabelBottom>}
@@ -48,9 +48,13 @@ const ProviderButton = styled.button<IProviderButton>`
   }
 
   ${props => props.selectedProvider === props.name && `
-    box-shadow: 0px 10px 40px rgba(0, 131, 188, 0.12);
-    border: 1px solid rgba(8, 174, 197, 0.5);
+  box-shadow: 0px 10px 40px rgba(0, 131, 188, 0.12);
+  border: 1px solid rgba(8, 174, 197, 0.5);
   `};
+
+  &:disabled {
+    box-shadow: none;
+  }
 `;
 
 const ProviderLabelTop = styled.p`
