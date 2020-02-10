@@ -1,14 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import UniLoginLogo from '../assets/U.svg';
-import MetamaskLogo from '../assets/MetaMaskLogoTitle.svg';
 
 interface IWeb3ProviderProps {
   name: string;
   icon?: string;
   labelTop?: string;
   labelBottom?: string;
-  indicator?: boolean;
   selectedProvider: string;
   onClick: () => void;
 }
@@ -22,39 +19,17 @@ interface IProviderButton {
   selectedProvider: string;
 }
 
-const ProviderSelect = ({name, icon, labelTop, labelBottom, indicator, selectedProvider, onClick}: IWeb3ProviderProps) => {
-  const labelTopElement = (labelTop) ? <ProviderLabelTop>{labelTop}</ProviderLabelTop> : '';
-  const labelBottomElement = (labelBottom) ? <ProviderLabelBottom>{labelBottom}</ProviderLabelBottom> : '';
-  const indicatorElement = (indicator) ? <Indicator status={indicator}/> : '';
+const isMetamaskPresent = () => (window as any).ethereum && (window as any).ethereum.isMetaMask;
 
-  const pickLogo = (): string | undefined => {
-    switch (name) {
-      case 'UniversalLogin': return UniLoginLogo;
-      case 'Metamask': return MetamaskLogo;
-      default: return icon;
-    }
-  };
+const ProviderSelect = ({name, icon, labelTop, labelBottom, selectedProvider, onClick}: IWeb3ProviderProps) =>
+  <ProviderButton name={name} selectedProvider={selectedProvider} onClick={onClick}>
+    {(labelTop) && <ProviderLabelTop>{labelTop}</ProviderLabelTop>}
+    <img src={icon} alt={name + ' logo'}/>
+    {(labelBottom) && <ProviderLabelBottom>{labelBottom}</ProviderLabelBottom>}
+    {(name === 'Metamask') && <Indicator status={isMetamaskPresent()}/>}
+  </ProviderButton>;
 
-  const logoImage = pickLogo();
-
-  return (
-    <ProviderButton name={name} selectedProvider={selectedProvider} onClick={onClick}>
-      {labelTopElement}
-      <ProviderLogo src={logoImage} alt={name + ' logo'}/>
-      {labelBottomElement}
-      {indicatorElement}
-    </ProviderButton>
-  );
-};
-
-const Indicator: React.FunctionComponent<IIndicatorProps> = props => {
-  const indicator = (props.status) ? <ProviderIndicatorGreen /> : <ProviderIndicatorRed />;
-  return (
-    <div>
-      {indicator}
-    </div>
-  );
-};
+const Indicator: React.FunctionComponent<IIndicatorProps> = props => (props.status) ? <ProviderIndicatorGreen /> : <ProviderIndicatorRed />;
 
 const ProviderButton = styled.button<IProviderButton>`
   background: #fff;
@@ -112,9 +87,6 @@ const ProviderIndicatorRed = styled.div`
   right: .7rem;
   border-radius: 50%;
   background: red;
-`;
-
-const ProviderLogo = styled.img`
 `;
 
 export default ProviderSelect;
