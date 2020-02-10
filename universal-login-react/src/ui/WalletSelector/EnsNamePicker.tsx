@@ -14,7 +14,6 @@ import {getSuggestion} from '../../core/utils/getSuggestion';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {useOutsideClick} from '../hooks/useClickOutside';
 import {useClassFor, classForComponent} from '../utils/classFor';
-import {Suggestion} from '../../core/models/Suggestion';
 
 export interface EnsNamePicker {
   onCreateClick?(ensName: string): Promise<void> | void;
@@ -43,22 +42,14 @@ export const EnsNamePicker = ({
 
   const [suggestions, setSuggestions] = useState<Suggestions | undefined>({connections: [], creations: []});
 
-  const [suggestion, setSuggestion] = useState<Suggestion | undefined>({kind: 'None'});
-
-  const setAllSuggestions = (suggestions: Suggestions) => {
-    if (suggestions) {
-      setSuggestions(suggestions);
-      setSuggestion(getSuggestion(suggestions, actions, ensName));
-    }
-  };
+  const suggestion = suggestions && getSuggestion(suggestions, actions, ensName);
 
   useEffect(() => {
     setSuggestions(undefined);
-    debouncedSuggestionsService.getSuggestions(ensName, setAllSuggestions);
+    debouncedSuggestionsService.getSuggestions(ensName, setSuggestions);
   }, [ensName]);
 
   const [suggestionVisible, setSuggestionVisible] = useState(false);
-
   const ref = useRef(null);
   useOutsideClick(ref, () => setSuggestionVisible(false));
 
