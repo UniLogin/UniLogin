@@ -9,7 +9,6 @@
       "shims"
     ],
     "allowJs": false,
-    "declaration": true,
     "downlevelIteration": true
   },
   "include": [
