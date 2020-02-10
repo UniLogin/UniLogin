@@ -32,7 +32,8 @@
     "clean": "rimraf dist",
     "start": "webpack-dev-server --mode development",
     "start:example": "ts-node src/scripts/dev-start.ts",
-    "build:iframe": "webpack --config webpack.iframe.config.js --mode production"
+    "build:iframe": "webpack --config webpack.iframe.config.js --mode production",
+    "start:iframe": "webpack-dev-server --config webpack.iframe.config.js --mode development"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",

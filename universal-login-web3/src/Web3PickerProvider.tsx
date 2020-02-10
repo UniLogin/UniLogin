@@ -7,10 +7,10 @@ import {initPickerUi} from './ui/initUi';
 import {waitForFalse} from './ui/utils/utils';
 
 export class Web3PickerProvider implements Provider {
-  currentProvider?: Provider;
+  readonly currentProvider = new State<Provider | undefined>(undefined);
   providerName = 'Web3Picker';
 
-  private readonly isVisible = new State(false);
+  readonly isVisible = new State(false);
   private reactRootCreated = false;
 
   constructor(
@@ -18,10 +18,12 @@ export class Web3PickerProvider implements Provider {
     public readonly readProvider: Provider,
     private readonly uiInitializer = initPickerUi,
   ) {
+    console.log(this)
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    if (!this.currentProvider) {
+    console.log(payload)
+    if (!this.currentProvider.get()) {
       if (!isAccountDependantRpc(payload.method)) {
         return this.readProvider.send(payload, callback);
       }
@@ -39,16 +41,19 @@ export class Web3PickerProvider implements Provider {
         return;
       }
     }
-    ensureNotFalsy(this.currentProvider, TypeError);
-    return this.currentProvider.send(payload, callback);
+    const provider = this.currentProvider.get();
+    ensureNotFalsy(provider, TypeError);
+    return provider.send(payload, callback);
   }
 
   async setProvider(providerName: string) {
+    console.log('set', providerName)
     const factory = this.factories.find((factory) => factory.name === providerName);
     ensureNotFalsy(factory, InvalidProvider, providerName);
-    this.currentProvider = await factory.create();
+    this.currentProvider.set(await factory.create());
     this.providerName = providerName;
     this.isVisible.set(false);
+    console.log(this);
   }
 
   private lazyCreateReactRoot() {
@@ -67,7 +72,7 @@ export class Web3PickerProvider implements Provider {
     this.lazyCreateReactRoot();
     this.isVisible.set(true);
     await waitForFalse(this.isVisible);
-    return !!this.currentProvider;
+    return !!this.currentProvider.get();
   }
 }
 
@@ -77,4 +82,5 @@ const isAccountDependantRpc = (method: string) => [
   'eth_accounts',
   'eth_sign',
   'personal_sign',
+  'ul_set_dashboard_visibility',
 ].includes(method);

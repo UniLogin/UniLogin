@@ -8,6 +8,7 @@ export function createIFrame(url: string) {
     top: '0',
     background: 'none transparent',
     border: 'none',
+    display: 'none',
   });
   iframe.setAttribute('src', url);
   document.getElementsByTagName('body')[0].appendChild(iframe);

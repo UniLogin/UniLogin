@@ -15,7 +15,9 @@
     "build:cjs": "tsc --outDir dist/cjs --declaration false",
     "build:esm": "tsc --outDir dist/esm --module ES6",
     "build:umd": "rollup -c",
-    "lint": "eslint 'src/**/*.ts'"
+    "test": "echo 'No tests yet :('",
+    "lint": "eslint 'src/**/*.ts'",
+    "build:watch": "yarn build:umd --watch"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.2",
