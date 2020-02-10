@@ -3,11 +3,11 @@ import {ensureNotFalsy, WalletSuggestionAction} from '@universal-login/commons';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
 import {SingleSuggestion} from './SingleSuggestion';
-import {MultipleSuggestion} from './MultipleSuggestion';
 import {TakenOrInvalidSuggestion} from './TakenOrInvalidSuggestion';
 import {InvalidForConnectionSuggestion} from './InvalidForConnectionSuggestion';
 import {Suggestion} from '../../../core/models/Suggestion';
 import {classForComponent} from '../../utils/classFor';
+import {SuggestionGroup} from './SuggestionGroup';
 
 interface SuggestionComponentProps {
   suggestion: Suggestion;
@@ -73,37 +73,21 @@ export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, sug
       return (
         <div className={classForComponent('suggestions-wrapper')}>
           {createSuggestions.length !== 0 &&
-          <div className={classForComponent('suggestions-group')}>
-            <p className={classForComponent('suggestions-group-label')}>New user?</p>
-            <ul className={classForComponent('suggestions-list')}>
-              {createSuggestions.map(element => (
-                <li key={element.name} className={classForComponent('suggestions-item')}>
-                  <MultipleSuggestion
-                    suggestion={element.name}
-                    selectedSuggestion={selectedSuggestion}
-                    operationType={'create new'}
-                    onClick={handleCreateClick}
-                  />
-                </li>
-              ))}
-            </ul>
-          </div>}
+          <SuggestionGroup
+            suggestions={createSuggestions}
+            label='New user?'
+            selectedSuggestion={selectedSuggestion}
+            type='create new'
+            onClick={handleCreateClick}
+          />}
           {connectSuggestions.length !== 0 &&
-          <div className={classForComponent('suggestions-group')}>
-            <p className={classForComponent('suggestions-group-label')}>Already have an account</p>
-            <ul className={classForComponent('suggestions-list')}>
-              {connectSuggestions.map(element => (
-                <li key={element.name} className={classForComponent('suggestions-item')}>
-                  <MultipleSuggestion
-                    suggestion={element.name}
-                    selectedSuggestion={selectedSuggestion}
-                    operationType={'connect'}
-                    onClick={handleConnectClick}
-                  />
-                </li>
-              ))}
-            </ul>
-          </div>}
+          <SuggestionGroup
+            suggestions={connectSuggestions}
+            label='Already have an account'
+            selectedSuggestion={selectedSuggestion}
+            type='connect'
+            onClick={handleConnectClick}
+          />}
         </div>
       );
   }
