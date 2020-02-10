@@ -13,7 +13,7 @@ export const ExplorerLink = ({chainName, transactionHash}: ExplorerLinkProps) =>
   <p className={classForComponent('waitingfortransaction-txn-hash-text')}>
     {transactionHash
       ? (
-        <div>
+        <>
           <a
             className={classForComponent('waitingfortransaction-txn-hash-link')}
             href={getEtherscanUrl(chainName, transactionHash!)}
@@ -23,7 +23,7 @@ export const ExplorerLink = ({chainName, transactionHash}: ExplorerLinkProps) =>
             See pending transaction
           </a>
           <img src={linkIcon} className={classForComponent('waitingfortransaction-txn-img')}/>
-        </div>
+        </>
       )
       : 'The transaction hash will show in a moment'}
   </p>
