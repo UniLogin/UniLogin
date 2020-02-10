@@ -20,7 +20,7 @@ describe('INT: Core tools test', async () => {
 
   before(async () => {
     provider = createMockProvider();
-    [wallet, otherWallet] = await getWallets(provider);
+    [wallet, otherWallet] = getWallets(provider);
   });
 
   describe('getFunctionParametersData', () => {

@@ -12,7 +12,7 @@ describe('INT: TokensDetailsStore', () => {
 
   before(async () => {
     const provider = createMockProvider();
-    const [wallet] = await getWallets(provider);
+    const [wallet] = getWallets(provider);
     mockToken = await deployContract(wallet, mockContracts.MockToken, []);
     tokenDetailsService = new TokenDetailsService(provider);
     tokensDetailsStore = new TokensDetailsStore(tokenDetailsService, [mockToken.address, ETHER_NATIVE_TOKEN.address]);

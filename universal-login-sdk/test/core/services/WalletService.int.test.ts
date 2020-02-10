@@ -18,7 +18,7 @@ describe('INT: WalletService', async () => {
   let wallet: Wallet;
 
   before(async () => {
-    ([wallet] = await getWallets(createMockProvider()));
+    ([wallet] = getWallets(createMockProvider()));
     ({sdk, relayer} = await setupSdk(wallet));
   });
 
