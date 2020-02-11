@@ -30,13 +30,7 @@ function initPicker() {
   let web3PickerProvider: Web3PickerProvider;
   const bridge = new RpcBridge(
     msg => window.top.postMessage(msg, '*'),
-    (req, cb) => {
-      if (req.method) {
-        web3PickerProvider.send(req, cb as any);
-      } else {
-        console.warn('Error ignored', req)
-      }
-    },
+    (req, cb) => web3PickerProvider.send(req, cb as any),
   );
   window.addEventListener('message', e => bridge.handleMessage(e.data));
   const web3 = new Web3(bridge);

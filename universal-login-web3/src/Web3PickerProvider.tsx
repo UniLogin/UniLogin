@@ -17,9 +17,7 @@ export class Web3PickerProvider implements Provider {
     public readonly factories: Web3ProviderFactory[],
     public readonly readProvider: Provider,
     private readonly uiInitializer = initPickerUi,
-  ) {
-    console.log(this)
-  }
+  ) { }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
     if (!this.currentProvider.get()) {
@@ -46,13 +44,11 @@ export class Web3PickerProvider implements Provider {
   }
 
   async setProvider(providerName: string) {
-    console.log('set', providerName)
     const factory = this.factories.find((factory) => factory.name === providerName);
     ensureNotFalsy(factory, InvalidProvider, providerName);
     this.currentProvider.set(await factory.create());
     this.providerName = providerName;
     this.isVisible.set(false);
-    console.log(this);
   }
 
   private lazyCreateReactRoot() {
