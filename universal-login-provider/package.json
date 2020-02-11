@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/provider",
-  "version": "0.5.2",
+  "version": "0.5.7",
   "main": "dist/cjs/index.js",
   "types": "dist/esm/index.d.ts",
   "module": "dist/esm/index.js",

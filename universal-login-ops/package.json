@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/ops",
-  "version": "0.5.3",
+  "version": "0.5.7",
   "description": "",
   "main": "dist/cjs/src/index.js",
   "types": "dist/esm/src/index.d.ts",
@@ -21,10 +21,10 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@universal-login/commons": "0.5.3",
-    "@universal-login/contracts": "0.5.3",
-    "@universal-login/relayer": "0.5.3",
-    "@universal-login/sdk": "0.5.3",
+    "@universal-login/commons": "0.5.7",
+    "@universal-login/contracts": "0.5.7",
+    "@universal-login/relayer": "0.5.7",
+    "@universal-login/sdk": "0.5.7",
     "cross-spawn": "^6.0.5",
     "dotenv": "^8.1.0",
     "ens-builder": "^2.0.1",
