@@ -73,15 +73,19 @@ describe('INT: SDK', async () => {
       const {waitToBeSuccess} = await sdk.execute(message, privateKey);
       const {transactionHash, state} = await waitToBeSuccess();
       expect(transactionHash).to.be.properHex(64);
-      expect(state).to.be.eq('Success');
+      expect(state).to.eq('Success');
     });
 
     it('when not enough tokens ', async () => {
       const mockToken = await deployContract(wallet, mockContracts.MockToken);
       await mockToken.transfer(walletContract.address, 1);
       message = {...message, gasToken: mockToken.address};
-      const {waitToBeSuccess} = await sdk.execute(message, privateKey);
-      await expect(waitToBeSuccess()).to.be.eventually.rejectedWith('Error: Not enough tokens');
+      await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Not enough tokens');
+    });
+
+    it('when not enough ether', async () => {
+      const amountToTransfer = (await otherWallet.getBalance()).add(utils.parseEther('0.5'));
+      await expect(sdk.execute({...message, to: otherWallet.address, value: amountToTransfer}, privateKey)).rejectedWith('Not enough tokens');
     });
 
     it('when not enough gas', async () => {

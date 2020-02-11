@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {ModalWrapper, useProperty} from '@universal-login/react';
 import {Property} from 'reactive-properties';
 import {Web3ProviderFactory} from '../../models/Web3ProviderFactory';
-import {CloseButton} from './common/Button/CloseButton';
 import {ButtonPrimary} from './common/Button/Button';
 import styled from 'styled-components';
 import ProviderSelect from './ProviderSelect';
@@ -10,7 +9,7 @@ import {Title} from './common/Text/Title';
 import {Text} from './common/Text/Text';
 import {createGlobalStyle} from 'styled-components';
 
-interface IWeb3PickerComponentProps {
+export interface IWeb3PickerComponentProps {
   isVisibleProp: Property<boolean>;
   hideModal: () => void;
   factories: Web3ProviderFactory[];
@@ -26,23 +25,18 @@ export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setPro
   const [selectedProvider, setSelectedProvider] = useState('UniversalLogin');
 
   return isVisible
-    ? <ModalWrapper>
+    ? <ModalWrapper hideModal={hideModal}>
       <GlobalStyle />
       <ModalBox>
-        <ModalBoxWrapper>
-          <ButtonExit onClick={() => hideModal()}>
-          </ButtonExit>
-          <ModalTitle>Login with your wallet</ModalTitle>
-          <ModalText>Please select your provider</ModalText>
-          <ProviderList providerCount={factories.length}>
-            {factories.map(({name, icon}) =>
-              <ProviderSelect selectedProvider={selectedProvider} name={name} icon={icon} key={name} onClick={() => setSelectedProvider(name)}/>,
-            )}
-          </ProviderList>
-          <LoginButton onClick={() => setProvider(selectedProvider)}>Login</LoginButton>
-        </ModalBoxWrapper>
+        <ModalTitle>Login with your wallet</ModalTitle>
+        <ModalText>Please select your provider</ModalText>
+        <ProviderList providerCount={factories.length}>
+          {factories.map(({name, icon}) =>
+            <ProviderSelect selectedProvider={selectedProvider} name={name} icon={icon} key={name} onClick={() => setSelectedProvider(name)}/>,
+          )}
+        </ProviderList>
+        <LoginButton onClick={() => setProvider(selectedProvider)}>Login</LoginButton>
       </ModalBox>
-      <ModalBackground />
     </ModalWrapper>
     : null;
 };
@@ -59,9 +53,49 @@ const GlobalStyle = createGlobalStyle`
     max-height: 100%;
     padding: unset;
     overflow-y: auto;
+    @import url('https://fonts.googleapis.com/css?family=Lato:300,400&display=swap');
+    font-family: 'Lato', sans-serif;
   }
 
-  .universal-login-default .modal-wrapper .center {
+  .universal-login-default .modal-close-btn {
+    z-index: 100;
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid rgba(67, 157, 176, 0.4);
+    background: none;
+    cursor: pointer;
+    right: .8rem;
+    top: .8rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 1px;
+      height: 11px;
+      background-color: #7D7C9C;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      width: 1px;
+      height: 11px;
+      background-color: #7D7C9C;
+    }
+
+    @media only screen and (max-width: 600px) {
+      top: 1.1rem;
+      right: 1.6rem;
+    }
   }
 
   .universal-login-default .modal {
@@ -69,6 +103,7 @@ const GlobalStyle = createGlobalStyle`
     background: unset;
     overflow-y: auto;
     border-radius: unset;
+    height: 100%;
   }
 
   @media only screen and (max-width: 600px) {
@@ -77,10 +112,6 @@ const GlobalStyle = createGlobalStyle`
       overflow-y: auto;
       max-width: unset;
     }
-
-    .universal-login-default .modal {
-      min-height: 100%;
-    }
   }
 
   @media only screen and (orientation: landscape) and (max-width: 1000px) {
@@ -90,20 +121,10 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const ButtonExit = styled(CloseButton)`
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  cursor: pointer;
-
-  &::after, &::before {
-    background-color: rgba(67, 157, 176, 0.4);
-  }
-`;
-
 const ModalTitle = styled(Title)`
   font-size: 2.4rem;
   margin-top: 6.2rem;
+  font-weight: 300;
 
   @media only screen and (orientation: landscape) and (max-width: 1000px) {
     grid-template-columns: 1fr;
@@ -113,6 +134,7 @@ const ModalTitle = styled(Title)`
   @media only screen and (max-width: 600px) {
     grid-template-columns: 1fr;
     margin-top: 6.2rem;
+    font-weight: normal;
   }
 `;
 
@@ -136,6 +158,7 @@ const ProviderList = styled.div<IProviderListProps>`
   @media only screen and (max-width: 600px) {
     margin-top: 1.6rem;
     grid-template-columns: 1fr;
+    margin-bottom: 2.5rem;
   }
 `;
 
@@ -150,13 +173,13 @@ const ModalBox = styled.div`
   border-radius: .8rem;
   position: relative;
   padding-bottom: 3.2px;
-  /* background-color: #fff; */
+  background-color: #fff;
 
   @media only screen and (max-width: 600px) {
     min-width: unset;
     min-height: unset;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     border-radius: unset;
     padding: 0 1.6rem;
   }
@@ -167,31 +190,21 @@ const ModalBox = styled.div`
 
   @media only screen and (orientation: landscape) {
     width: 100%;
-    /* padding: 0 1.6rem; */
     padding-top: 0;
   }
 
   @media only screen and (orientation: landscape) and (max-width: 600px) {
     width: 100%;
-    /* padding: 0 1.6rem; */
     padding-top: 0;
     border-radius: unset;
   }
 
   @media only screen and (orientation: landscape) and (max-width: 1000px) {
     width: 100%;
-    /* padding: 0 1.6rem; */
     padding-top: 0;
   }
 
 
-`;
-
-const ModalBoxWrapper = styled.div`
-  height: 100%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
 `;
 
 const LoginButton = styled(ButtonPrimary)`
@@ -202,27 +215,6 @@ const LoginButton = styled(ButtonPrimary)`
 
   @media only screen and (max-width: 600px) {
     margin-top: auto;
-    margin-bottom: 5.5rem;
-  }
-`;
-
-const ModalBackground = styled.div`
-  width: 100%;
-  height: calc(100% - 26px);
-  z-index: -100;
-  background-color: #fff;
-  position: absolute;
-  border-radius: .8rem;
-  top: 0;
-  left: 0;
-
-  @media only screen and (max-width: 600px) {
-    height: 100%;
-    border-radius: 0;
-  }
-
-  @media only screen and (orientation: landscape) and (max-height: 425px) {
-    height: 100%;
-    border-radius: 0;
+    margin-bottom: 1.6rem;
   }
 `;

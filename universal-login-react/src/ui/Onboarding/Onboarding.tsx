@@ -8,6 +8,7 @@ import {OnboardingSteps} from './OnboardingSteps';
 import {Route, MemoryRouter} from 'react-router-dom';
 import {Switch} from 'react-router';
 import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocation';
+import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -18,6 +19,7 @@ export interface OnboardingProps {
   className?: string;
   modalClassName?: string;
   tryEnablingMetamask?: () => Promise<string | undefined>;
+  hideModal?: () => void;
 }
 
 export const Onboarding = (props: OnboardingProps) => {
@@ -33,7 +35,11 @@ export const Onboarding = (props: OnboardingProps) => {
               exact
               path="/selector"
               render={({history}) =>
-                <>
+                <OnboardingStepsWrapper
+                  hideModal={props.hideModal}
+                  message={props.sdk.getNotice()}
+                  steps={5}
+                  progress={1}>
                   <div className="perspective">
                     <WalletSelector
                       sdk={props.sdk}
@@ -47,7 +53,7 @@ export const Onboarding = (props: OnboardingProps) => {
                       actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
                     />
                   </div>
-                </>}
+                </OnboardingStepsWrapper>}
             />
             <Route
               exact

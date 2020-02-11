@@ -18,7 +18,7 @@ describe('INT: BackupCodes', () => {
   let relayer: Relayer;
 
   beforeEach(async () => {
-    ([wallet] = await getWallets(createMockProvider()));
+    ([wallet] = getWallets(createMockProvider()));
     ({deployedWallet, relayer} = await setupDeployedWallet(wallet, ensName));
     const appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
     dashboard = new DashboardPage(appWrapper);
@@ -33,7 +33,7 @@ describe('INT: BackupCodes', () => {
     });
     dashboard.backupCodes().clickGenerate();
     await waitExpect(
-      () => expect(dashboard.backupCodes().getBackupCodes().length).to.be.eq(1),
+      () => expect(dashboard.backupCodes().getBackupCodes().length).to.eq(1),
       13000,
     );
   }).timeout(15000);

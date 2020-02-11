@@ -22,7 +22,7 @@ describe('UNIT: RelayerRequest', () => {
     it('valid signature', () => {
       signRelayerRequest(relayerRequest, privateKey);
 
-      expect(relayerRequest.signature).to.deep.equal(expectedSignature);
+      expect(relayerRequest.signature).to.deep.eq(expectedSignature);
 
       const payloadDigest = utils.arrayify(hashRelayerRequest(relayerRequest));
       expect(utils.verifyMessage(payloadDigest, relayerRequest.signature!)).to.eq(signerAddress);
@@ -33,7 +33,7 @@ describe('UNIT: RelayerRequest', () => {
 
       signRelayerRequest(relayerRequest, attackerPrivateKey);
 
-      expect(relayerRequest.signature).to.not.deep.equal(expectedSignature);
+      expect(relayerRequest.signature).to.not.deep.eq(expectedSignature);
     });
   });
 
@@ -43,7 +43,7 @@ describe('UNIT: RelayerRequest', () => {
     expect(verifyRelayerRequest(relayerRequest, signerAddress)).to.be.true;
 
     const computedAddress = recoverFromRelayerRequest(relayerRequest);
-    expect(computedAddress).to.equal(signerAddress);
+    expect(computedAddress).to.eq(signerAddress);
   });
 
   it('hashRelayerRequest', () => {
@@ -51,6 +51,6 @@ describe('UNIT: RelayerRequest', () => {
 
     const payloadDigest = hashRelayerRequest(relayerRequest);
 
-    expect(payloadDigest).to.equal(expectedPayloadDigest);
+    expect(payloadDigest).to.eq(expectedPayloadDigest);
   });
 });

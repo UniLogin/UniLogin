@@ -1,19 +1,44 @@
-.unilogin-theme-unilogin .unilogin-component-waitingfor-action-title-box
-  padding: 7rem 4.3rem 3rem
+.unilogin-theme-unilogin.unilogin-component-waitingfor
+  .unilogin-component-waitingfor-action-title-box
+      padding: 7rem 4.3rem 3rem
+      display: flex
+      justify-content: center
+      align-items: center
+      flex-direction: column
 
-  @media only screen and ( max-width: 600px)
-    padding: 4rem 4.3rem 3rem
+      @media only screen and ( max-width: 600px)
+        padding: 6.2rem 2.2rem 3rem
 
-.unilogin-theme-unilogin .unilogin-component-waitingfor-action-title
-  font-size: 30px
-  font-weight: 300
-  line-height: 29px
-  color: #0F0C4A
-  margin-top: 0
-  margin-bottom: 2.4rem
+  .unilogin-component-waitingfor-action-title
+      display: inline-block
+      width: min-content
+      white-space: nowrap
+      font-size: 30px
+      font-weight: 300
+      line-height: 29px
+      color: #0F0C4A
+      margin-top: 0
+      margin-bottom: 2.4rem
+      position: relative
 
-  @media only screen and ( max-width: 600px)
-    font-size: 24px
+      @media only screen and ( max-width: 600px)
+        font-size: 24px
 
-.unilogin-theme-unilogin .unilogin-component-waitingfor-modal-pending-section
-  display: none
+  .unilogin-component-waitingfor-action-title-wrapper
+      display: flex
+      width: 100%
+      justify-content: center
+
+
+  .unilogin-component-waitingfor-modal-pending-section
+      display: none
+
+  .spinner
+      display: inline-block
+      position: absolute
+      top: -.5rem
+      left: -4.5rem
+
+      @media only screen and (max-width: 400px)
+        top: -.1rem
+        left: -3.5rem

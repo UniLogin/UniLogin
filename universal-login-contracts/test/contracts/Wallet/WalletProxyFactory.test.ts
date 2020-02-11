@@ -9,7 +9,7 @@ import {ensAndMasterFixture} from '../../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../../helpers/argumentsEncoding';
 import {WalletContractInterface, WalletProxyFactoryInterface} from '../../helpers/interfaces';
 import {setupInitializeWithENSArgs} from '../../helpers/ProxyUtils';
-import {MAGICVALUE} from '../../../src/ERC1271/constants.js';
+import {MAGICVALUE} from '../../../src/ERC1271/constants';
 
 chai.use(solidity);
 
@@ -99,6 +99,6 @@ describe('Counterfactual Factory', () => {
     await mockToken.transfer(futureAddress, utils.parseEther('1.0'));
     const expectedBalance = DEPLOYMENT_REFUND.mul(gasPrice);
     await factoryContract.createContract(keyPair.publicKey, initializeData, signature, {gasPrice: utils.bigNumberify(gasPrice)});
-    expect(await mockToken.balanceOf(wallet.address)).to.be.eq(expectedBalance);
+    expect(await mockToken.balanceOf(wallet.address)).to.eq(expectedBalance);
   });
 });

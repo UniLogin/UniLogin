@@ -10,7 +10,9 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
+    "declaration": true,
     "sourceMap": true,
+    "declarationMap": true,
     "target": "es5",
     "moduleResolution": "node"
   },

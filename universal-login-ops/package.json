@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/ops",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "",
   "main": "dist/cjs/src/index.js",
   "types": "dist/esm/src/index.d.ts",
@@ -13,19 +13,18 @@
     "build": "yarn build:cjs && yarn build:esm",
     "copy:contracts:cjs": "cpx \"src/contracts/**/*\" dist/cjs/src/contracts",
     "copy:contracts:esm": "cpx \"src/contracts/**/*\" dist/esm/src/contracts",
-    "build:cjs": "tsc --outDir dist/cjs --p tsconfig.build.json --declaration false && yarn copy:contracts:cjs",
+    "build:cjs": "tsc --outDir dist/cjs --p tsconfig.build.json --declaration false --declarationMap false && yarn copy:contracts:cjs",
     "build:esm": "tsc --outDir dist/esm --p tsconfig.build.json --module ES6 && yarn copy:contracts:esm",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
-    "test": "yarn build:cjs && yarn test:nobuild",
-    "test:nobuild": "cross-env NODE_ENV=test mocha",
+    "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only 'test/**/*.{ts,js}'",
     "cli": "ts-node ./scripts/cli",
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@universal-login/commons": "0.5.2",
-    "@universal-login/contracts": "0.5.2",
-    "@universal-login/relayer": "0.5.2",
-    "@universal-login/sdk": "0.5.2",
+    "@universal-login/commons": "0.5.3",
+    "@universal-login/contracts": "0.5.3",
+    "@universal-login/relayer": "0.5.3",
+    "@universal-login/sdk": "0.5.3",
     "cross-spawn": "^6.0.5",
     "dotenv": "^8.1.0",
     "ens-builder": "^2.0.1",
@@ -56,7 +55,7 @@
     "rimraf": "^2.6.3",
     "sinon": "^7.4.1",
     "sinon-chai": "^3.3.0",
-    "ts-node": "^8.0.2",
-    "typescript": "^3.7.0"
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
   }
 }

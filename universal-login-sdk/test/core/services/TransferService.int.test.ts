@@ -31,7 +31,7 @@ describe('INT: TransferService', () => {
   let balance: string;
 
   before(async () => {
-    [wallet] = await getWallets(createMockProvider());
+    [wallet] = getWallets(createMockProvider());
     ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
     ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
     const walletService = new WalletService(sdk);

@@ -23,7 +23,7 @@ describe('INT: resolveName', () => {
   it('successfully resolved', async () => {
     const keyPair = createKeyPair();
     await ensBuilder.registerAddress('alex', 'mylogin.eth', keyPair.publicKey);
-    expect(await resolveName(provider, ensAddress, 'alex.mylogin.eth')).to.be.eq(keyPair.publicKey);
+    expect(await resolveName(provider, ensAddress, 'alex.mylogin.eth')).to.eq(keyPair.publicKey);
   });
 
   it('null if resolver is not resolved', async () => {

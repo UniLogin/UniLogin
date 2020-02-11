@@ -1,9 +1,10 @@
 import React from 'react';
+import {classForComponent} from '../../utils/classFor';
 
 export const KeepTypingSuggestion = () => (
-  <ul className="suggestions-list">
-    <li className="suggestions-item">
-      <p className="suggestions-hint">This name is too short. Keep typing..</p>
+  <ul className={classForComponent('suggestions-list')}>
+    <li className={classForComponent('suggestions-item')}>
+      <p className={classForComponent('suggestions-hint')}>Nickname is too short. Type minimum 3 letters</p>
     </li>
   </ul>
 );

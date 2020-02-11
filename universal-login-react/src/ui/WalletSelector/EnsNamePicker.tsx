@@ -13,6 +13,7 @@ import {Spinner} from '../..';
 import {getSuggestion} from '../../core/utils/getSuggestion';
 import UniversalLoginSDK from '@universal-login/sdk';
 import {useOutsideClick} from '../hooks/useClickOutside';
+import {useClassFor, classForComponent} from '../utils/classFor';
 
 export interface EnsNamePicker {
   onCreateClick?(ensName: string): Promise<void> | void;
@@ -40,6 +41,9 @@ export const EnsNamePicker = ({
   const [ensName, setEnsName] = useState('');
 
   const [suggestions, setSuggestions] = useState<Suggestions | undefined>({connections: [], creations: []});
+
+  const suggestion = suggestions && getSuggestion(suggestions, actions, ensName);
+
   useEffect(() => {
     setSuggestions(undefined);
     debouncedSuggestionsService.getSuggestions(ensName, setSuggestions);
@@ -51,14 +55,14 @@ export const EnsNamePicker = ({
 
   return (
     <div ref={ref}>
-      <div className="selector-input-wrapper">
+      <div className={useClassFor('selector-input-wrapper')}>
         <img
           src={Logo}
           alt="Universal login logo"
-          className="selector-input-img"
+          className={classForComponent('selector-input-img')}
         />
         <Input
-          className="wallet-selector"
+          className={`${classForComponent('input-wallet-selector')} ${suggestion?.kind === 'KeepTyping' && 'error'}`}
           id="loginInput"
           onChange={(event) => setEnsName(event.target.value.toLowerCase())}
           placeholder={placeholder}
@@ -66,12 +70,12 @@ export const EnsNamePicker = ({
           checkSpelling={false}
           onFocus={() => setSuggestionVisible(true)}
         />
-        {suggestions === undefined && <Spinner className="spinner-busy-indicator" />}
+        {suggestions === undefined && ensName !== '' && <Spinner className={classForComponent('spinner-busy-indicator')} />}
       </div>
       {
-        suggestionVisible && suggestions !== undefined &&
+        suggestionVisible && suggestions !== undefined && suggestion &&
         <SuggestionComponent
-          suggestion={getSuggestion(suggestions, actions, ensName)}
+          suggestion={suggestion}
           onCreateClick={onCreateClick}
           onConnectClick={onConnectClick}
           actions={actions}

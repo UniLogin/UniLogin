@@ -35,7 +35,7 @@ describe('INT: DeployedWallet', async () => {
     expect(await deployedWallet.keyExist(publicKey)).to.be.false;
     expect(await deployedWallet.keyExist(publicKey2)).to.be.false;
     expect(await deployedWallet.keyExist(deployedWallet.publicKey)).to.be.true;
-    expect(await deployedWallet.getNonce()).to.be.eq(0);
+    expect(await deployedWallet.getNonce()).to.eq(0);
     expect(await deployedWallet.getKeys()).to.deep.eq([deployedWallet.publicKey]);
     expect(await deployedWallet.getRequiredSignatures()).to.eq(1);
     expect((await deployedWallet.getConnectedDevices())[0]).to.include({
@@ -66,16 +66,16 @@ describe('INT: DeployedWallet', async () => {
     let {transactionHash, state} = await waitForSuccess(deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS));
     expect(await deployedWallet.keyExist(publicKey)).to.be.true;
     expect(await deployedWallet.getKeys()).to.include(publicKey);
-    expect(await deployedWallet.getNonce()).to.be.eq(1);
+    expect(await deployedWallet.getNonce()).to.eq(1);
     expect(transactionHash).to.be.properHex(64);
-    expect(state).to.be.eq('Success');
+    expect(state).to.eq('Success');
 
     ({transactionHash, state} = await waitForSuccess(deployedWallet.removeKey(publicKey, TEST_EXECUTION_OPTIONS)));
     expect(await deployedWallet.keyExist(publicKey)).to.be.false;
     expect(await deployedWallet.getKeys()).not.to.include(publicKey);
-    expect(await deployedWallet.getNonce()).to.be.eq(2);
+    expect(await deployedWallet.getNonce()).to.eq(2);
     expect(transactionHash).to.be.properHex(64);
-    expect(state).to.be.eq('Success');
+    expect(state).to.eq('Success');
   });
 
   xit('addKeys', async () => {
@@ -84,9 +84,9 @@ describe('INT: DeployedWallet', async () => {
     expect(await deployedWallet.keyExist(publicKey2)).to.be.true;
     expect(await deployedWallet.getKeys()).to.include(publicKey);
     expect(await deployedWallet.getKeys()).to.include(publicKey2);
-    expect(await deployedWallet.getNonce()).to.be.eq(1);
+    expect(await deployedWallet.getNonce()).to.eq(1);
     expect(transactionHash).to.be.properHex(64);
-    expect(state).to.be.eq('Success');
+    expect(state).to.eq('Success');
   });
 
   afterEach(async () => {

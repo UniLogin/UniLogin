@@ -21,7 +21,8 @@ describe('ULWeb3Provider', () => {
 
   beforeEach(async () => {
     ({relayer, deployer, services, web3, ulProvider} = await setupTestEnvironmentWithWeb3());
-    (ulProvider as any).uiController.confirmRequest = sinon.stub().resolves(true);
+    (ulProvider as any).uiController.confirmRequest = sinon.stub().resolves({isConfirmed: true, gasParameters: {}});
+    (ulProvider as any).uiController.signChallenge = sinon.stub().resolves(true);
   });
 
   afterEach(async () => {
@@ -32,7 +33,7 @@ describe('ULWeb3Provider', () => {
 
   describe('send transaction', () => {
     it('triggers wallet create flow', async () => {
-      expect(services.uiController.activeModal.get()).to.be.deep.eq({kind: 'IDLE'});
+      expect(services.uiController.activeModal.get()).to.deep.eq({kind: 'IDLE'});
 
       web3.eth.sendTransaction({
         to: Wallet.createRandom().address,
@@ -40,7 +41,7 @@ describe('ULWeb3Provider', () => {
       });
 
       await waitExpect(() => {
-        return expect(services.uiController.activeModal.get()).to.be.deep.eq({kind: 'ONBOARDING'});
+        return expect(services.uiController.activeModal.get()).to.deep.eq({kind: 'ONBOARDING'});
       });
     });
 
@@ -117,13 +118,13 @@ describe('ULWeb3Provider', () => {
     it('shows the UI and returns a promise that resolves once the wallet is created', async () => {
       const promise = ulProvider.initOnboarding();
 
-      expect(services.uiController.activeModal.get()).to.be.deep.eq({kind: 'ONBOARDING'});
+      expect(services.uiController.activeModal.get()).to.deep.eq({kind: 'ONBOARDING'});
 
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
       await promise;
-      expect(services.uiController.activeModal.get()).to.be.deep.eq({kind: 'IDLE'});
+      expect(services.uiController.activeModal.get()).to.deep.eq({kind: 'IDLE'});
     });
 
     it('throw error if wallet is already there', async () => {
@@ -131,7 +132,7 @@ describe('ULWeb3Provider', () => {
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
       await expect(ulProvider.initOnboarding()).to.be.rejectedWith('Unexpected wallet state: Deployed');
-      expect(services.uiController.activeModal.get()).to.be.deep.eq({kind: 'IDLE'});
+      expect(services.uiController.activeModal.get()).to.deep.eq({kind: 'IDLE'});
     });
   });
 });

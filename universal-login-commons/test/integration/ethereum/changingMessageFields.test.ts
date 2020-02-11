@@ -49,10 +49,10 @@ describe('UNIT: Parsing Transaction', () => {
   });
 
   it('should parse BigNumber to string', () => {
-    expect(stringifySignedMessageFields(signedMessage)).to.deep.equal(parsedTransaction);
+    expect(stringifySignedMessageFields(signedMessage)).to.deep.eq(parsedTransaction);
   });
 
   it('should parse string to BigNumber', () => {
-    expect(bignumberifySignedMessageFields(parsedTransaction)).to.deep.equal(signedMessage);
+    expect(bignumberifySignedMessageFields(parsedTransaction)).to.deep.eq(signedMessage);
   });
 });

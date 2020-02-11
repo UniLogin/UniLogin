@@ -12,7 +12,7 @@ function printWallets(wallets) {
 }
 
 async function startGanache(port) {
-  const options = {accounts: defaultAccounts, hardfork: 'constantinople'};
+  const options = {accounts: defaultAccounts, hardfork: 'constantinople', network_id: 8545};
   const server = Ganache.server(options);
   const listenPromise = promisify(server.listen);
   await listenPromise(port);
@@ -20,7 +20,7 @@ async function startGanache(port) {
   const jsonRpcUrl = `http://localhost:${port}`;
 
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
-  const wallets = await getWallets(provider);
+  const wallets = getWallets(provider);
   printWallets(wallets);
 
   console.log(`  Node url (ganache): ${jsonRpcUrl}...`);

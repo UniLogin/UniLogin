@@ -28,13 +28,13 @@ describe('UNIT: BackupCodesService', () => {
   });
 
   it('initial state', () => {
-    expect(backupCodesService.state.get()).to.be.deep.eq({kind: 'Initial'});
+    expect(backupCodesService.state.get()).to.deep.eq({kind: 'Initial'});
   });
 
   describe('generate', () => {
     it('failure state if gasParameters undefined', async () => {
       await backupCodesService.generate(undefined);
-      expect(backupCodesService.state.get()).to.be.deep.eq({
+      expect(backupCodesService.state.get()).to.deep.eq({
         kind: 'Failure',
         error: 'Missing gas parameters',
       });
@@ -42,7 +42,7 @@ describe('UNIT: BackupCodesService', () => {
 
     it('successful call', async () => {
       await backupCodesService.generate(INITIAL_GAS_PARAMETERS);
-      expect(backupCodesService.state.get()).to.be.deep.eq({
+      expect(backupCodesService.state.get()).to.deep.eq({
         kind: 'Generated',
         codes: ['350', '506', '372', '483', '576', '48'],
       });

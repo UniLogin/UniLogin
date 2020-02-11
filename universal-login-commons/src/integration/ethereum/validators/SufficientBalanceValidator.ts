@@ -1,11 +1,9 @@
-import {providers, utils} from 'ethers';
-import {ensure, IMessageValidator, PaymentOptions, SignedMessage, NotEnoughTokens} from '../../..';
+import {providers} from 'ethers';
+import {ensure, IMessageValidator, SignedMessage, NotEnoughTokens} from '../../..';
 import {BalanceChecker} from '../BalanceChecker';
-
-export const hasEnoughToken = async ({gasToken, gasPrice, gasLimit}: Omit<PaymentOptions, 'refundReceiver'>, walletContractAddress: string, balanceChecker: BalanceChecker) => {
-  const balance = await balanceChecker.getBalance(walletContractAddress, gasToken);
-  return balance.gte(utils.bigNumberify(gasLimit).mul(gasPrice));
-};
+import {getFeeCurrencyValueFrom} from '../../../core/utils/getFeeCurrencyValueFrom';
+import {getTransferCurrencyValueFrom} from '../../../core/utils/getTransferCurrencyValueFrom';
+import {CurrencyValue} from '../../../core/models/CurrencyValue';
 
 export class SufficientBalanceValidator implements IMessageValidator {
   private balanceChecker: BalanceChecker;
@@ -14,12 +12,24 @@ export class SufficientBalanceValidator implements IMessageValidator {
     this.balanceChecker = new BalanceChecker(this.provider);
   }
 
+  private async ensureEnoughBalance(address: string, currencyValue: CurrencyValue): Promise<void> {
+    const balance = await this.balanceChecker.getBalance(address, currencyValue.address);
+    ensure(balance.gte(currencyValue.value), NotEnoughTokens);
+  }
+
   async validate(signedMessage: SignedMessage) {
-    const paymentOptions: Omit<PaymentOptions, 'refundReceiver'> = {
-      gasToken: signedMessage.gasToken,
-      gasLimit: utils.bigNumberify(signedMessage.safeTxGas).add(signedMessage.baseGas),
-      gasPrice: signedMessage.gasPrice,
-    };
-    ensure(await hasEnoughToken(paymentOptions, signedMessage.from, this.balanceChecker), NotEnoughTokens);
+    const feeCurrencyValue = getFeeCurrencyValueFrom(signedMessage);
+    const transferCurrencyValue = getTransferCurrencyValueFrom(signedMessage);
+    if (transferCurrencyValue) {
+      if (transferCurrencyValue.address === feeCurrencyValue.address) {
+        const value = transferCurrencyValue.add(feeCurrencyValue);
+        await this.ensureEnoughBalance(signedMessage.from, value);
+      } else {
+        await this.ensureEnoughBalance(signedMessage.from, feeCurrencyValue);
+        await this.ensureEnoughBalance(signedMessage.from, transferCurrencyValue);
+      }
+    } else {
+      await this.ensureEnoughBalance(signedMessage.from, feeCurrencyValue);
+    }
   }
 }

@@ -11,7 +11,7 @@ import {useServices} from './core/services/useServices';
 import {LogoButton} from './ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
 import './ui/styles/playground.css';
-import {DeployedWallet, DeployingWallet} from '@universal-login/sdk';
+import {DeployedWallet, DeployingWallet, setBetaNotice} from '@universal-login/sdk';
 import {Spinner} from './ui/commons/Spinner';
 import {useAsync} from './ui/hooks/useAsync';
 import {WalletService} from '@universal-login/sdk';
@@ -29,6 +29,8 @@ export const App = () => {
     await sdk.fetchRelayerConfig();
     return sdk.getRelayerConfig();
   }, []);
+
+  setBetaNotice(sdk);
 
   const [walletService] = useState(() => new WalletService(sdk));
 
@@ -98,10 +100,11 @@ export const App = () => {
                   <Onboarding
                     sdk={sdk}
                     walletService={walletService}
-                    domains={['mylogin.eth', 'universal-id.eth']}
+                    domains={['mylogin.eth', 'universal-id.eth', 'poppularapp.eth']}
                     tryEnablingMetamask={tryEnablingMetamask}
                     onConnect={() => console.log('connected')}
                     onCreate={() => history.push('/onboarding/success')}
+                    hideModal={() => history.push('/')}
                   />}
               />
               <Route exact path="/walletSelector">
@@ -194,7 +197,7 @@ export const App = () => {
                     return (
                       <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
                         <WaitingForTransaction
-                          action="Waiting for transaction"
+                          action="Waiting for transfer"
                           relayerConfig={relayerConfig}
                           transactionHash={TEST_TRANSACTION_HASH}
                         />
@@ -212,7 +215,7 @@ export const App = () => {
                     return (
                       <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
                         <WaitingForTransaction
-                          action="Waiting for transaction"
+                          action="Waiting for transfer"
                           relayerConfig={relayerConfig}
                           transactionHash={undefined}
                         />

@@ -17,7 +17,7 @@ describe('INT: Dashboard', () => {
   let dashboard: DashboardPage;
 
   beforeEach(async () => {
-    ([wallet] = await getWallets(createMockProvider()));
+    ([wallet] = getWallets(createMockProvider()));
     ({deployedWallet} = await setupDeployedWallet(wallet, ensName));
     const appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
     dashboard = new DashboardPage(appWrapper);
@@ -26,14 +26,14 @@ describe('INT: Dashboard', () => {
   it('update usd balance amount', async () => {
     dashboard.clickInitButton();
     await waitExpect(() =>
-      expect(dashboard.funds().getUsdBalance()).to.be.eq(`$${initialAmount}`),
+      expect(dashboard.funds().getUsdBalance()).to.eq(`$${initialAmount}`),
     );
     await wallet.sendTransaction({
       to: deployedWallet.contractAddress,
       value: utils.parseEther('2'),
     });
     await waitExpect(() =>
-      expect(dashboard.funds().getUsdBalance()).to.be.eq('$399.99'),
+      expect(dashboard.funds().getUsdBalance()).to.eq('$399.99'),
     );
   });
 });

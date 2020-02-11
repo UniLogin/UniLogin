@@ -6,11 +6,12 @@ import {providers, utils, constants} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {ensure, Message, walletFromBrain, ApplicationInfo, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
 import {waitForTrue} from './ui/utils/utils';
-import {initUi} from './ui/utils/initUi';
+import {initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
 import {StorageService} from '@universal-login/react';
 import {Property} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
+import {getOrCreateUlButton} from './ui/initUi';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
@@ -41,6 +42,7 @@ export class ULWeb3Provider implements Provider {
   private readonly uiController: UIController;
 
   readonly isLoggedIn: Property<boolean>;
+  readonly isUiVisible: Property<boolean>;
 
   constructor({
     provider,
@@ -61,6 +63,7 @@ export class ULWeb3Provider implements Provider {
     this.uiController = new UIController(this.walletService);
 
     this.isLoggedIn = this.walletService.isAuthorized;
+    this.isUiVisible = this.uiController.isUiVisible;
 
     uiInitializer({
       sdk: this.sdk,
@@ -86,6 +89,7 @@ export class ULWeb3Provider implements Provider {
       case 'eth_accounts':
       case 'eth_sign':
       case 'personal_sign':
+      case 'ul_set_dashboard_visibility':
         try {
           const result = await this.handle(payload.method, payload.params);
           callback(null, {
@@ -94,6 +98,7 @@ export class ULWeb3Provider implements Provider {
             result,
           });
         } catch (err) {
+          this.uiController.showError(err.message);
           callback(err);
         }
         break;
@@ -113,6 +118,9 @@ export class ULWeb3Provider implements Provider {
         return this.sign(params[0], params[1]);
       case 'personal_sign':
         return this.sign(params[1], params[0]);
+      case 'ul_set_dashboard_visibility':
+        this.uiController.setDashboardVisibility(!!params[0]);
+        break;
       default:
         throw new Error(`Method not supported: ${method}`);
     }
@@ -127,17 +135,18 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sendTransaction(transaction: Partial<Message>): Promise<string> {
-    if (!await this.uiController.confirmRequest('Confirm transaction')) {
+    const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
+    const confirmationResponse = await this.uiController.confirmRequest('Confirm transaction', transactionWithDefaults);
+    if (!confirmationResponse.isConfirmed) {
       return constants.HashZero;
     };
+    const transactionWithGasParameters = {...transactionWithDefaults, ...confirmationResponse.gasParameters};
     this.uiController.showWaitForTransaction();
     await this.deployIfNoWalletDeployed();
-    const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, ...transaction};
-    const execution = await this.walletService.getDeployedWallet().execute(transactionWithDefaults);
+    const execution = await this.walletService.getDeployedWallet().execute(transactionWithGasParameters);
 
     const succeeded = await execution.waitForTransactionHash();
     if (!succeeded.transactionHash) {
-      this.uiController.hideModal();
       throw new Error('Expected tx hash to not be null');
     }
     this.uiController.showWaitForTransaction(succeeded.transactionHash);
@@ -147,7 +156,8 @@ export class ULWeb3Provider implements Provider {
   }
 
   async sign(address: string, message: string) {
-    if (!await this.uiController.confirmRequest('Do you want sign challenge?')) {
+    const decodedMessage = utils.toUtf8String(message);
+    if (!await this.uiController.signChallenge('Sign message', decodedMessage)) {
       return constants.HashZero;
     }
     await this.deployIfNoWalletDeployed();
@@ -172,8 +182,9 @@ export class ULWeb3Provider implements Provider {
     }
   }
 
-  initWeb3Button(element: Element) {
-    renderLogoButton(element, this.walletService);
+  initWeb3Button(styles?: Record<string, string>) {
+    const element = getOrCreateUlButton(styles);
+    renderLogoButton(element as Element, this.walletService);
   }
 
   finalizeAndStop() {

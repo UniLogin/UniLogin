@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/commons",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Unviersal Login Common source code",
   "main": "dist/cjs/src/index.js",
   "types": "dist/esm/src/index.d.ts",
@@ -9,11 +9,10 @@
   "scripts": {
     "prebuild": "yarn clean",
     "build": "yarn build:cjs && yarn build:esm",
-    "build:cjs": "tsc --outDir dist/cjs --declaration false",
+    "build:cjs": "tsc --outDir dist/cjs --declaration false --declarationMap false",
     "build:esm": "tsc --outDir dist/esm --module ES6",
     "clean": "rimraf dist",
-    "test": "yarn build:cjs && yarn test:nobuild",
-    "test:nobuild": "mocha -t 10000 \"dist/cjs/test/**/*.js\"",
+    "test": "mocha -r ts-node/register/transpile-only -t 10000 'test/**/*.ts'",
     "lint": "eslint '{src,test}/**/*.ts'"
   },
   "devDependencies": {
@@ -32,8 +31,8 @@
     "rimraf": "^2.6.3",
     "sinon": "^7.2.3",
     "sinon-chai": "^3.3.0",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.7.0"
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
   },
   "dependencies": {
     "@restless/ethereum": "^0.2.1",

@@ -25,7 +25,7 @@ export function OnboardingWaitForDeployment({walletService, onSuccess}: Onboardi
   ensure(walletState.kind === 'Deploying', InvalidWalletState, 'Deploying', walletState.kind);
 
   return (
-    <ModalWrapper>
+    <ModalWrapper message={walletService.sdk.getNotice()}>
       <WaitingForDeployment
         relayerConfig={walletService.sdk.getRelayerConfig()}
         transactionHash={walletState.transactionHash}
