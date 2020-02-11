@@ -21,13 +21,9 @@ export class RpcBridge {
       this.handleRequest(rpc);
     } else if (isProperId(rpc.id)) {
       this.handleResponse(rpc);
-    } else if (rpc.error !== undefined && isProperId(rpc.id)) {
-      this.handleErrorResponse(rpc);
+    } else {
+      throw new Error(`Rpc Bridge: Invalid rpc request: ${rpc}`);
     }
-  }
-
-  private handleErrorResponse(rpc: any) {
-    this.handler(rpc, this.getCallbackHandler(rpc.id));
   }
 
   private handleResponse(rpc: any) {
