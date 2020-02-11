@@ -15,8 +15,8 @@ import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
 import './../styles/themes/topUpJarvis.sass';
 import './../styles/base/chooseTopUp.sass';
-import './../styles/themes/Default/chooseTopUpThemeDefault.sass';
 import './../styles/themes/Legacy/chooseTopUpThemeLegacy.sass';
+import './../styles/themes/UniLogin/chooseTopUpThemeUniLogin.sass';
 import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
 
 export interface TopUpProps {
@@ -52,7 +52,7 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
     return <Spinner />;
   } else if (modal === TopUpComponentType.choose) {
     if (isModal) {
-      return <ModalWrapper modalClassName="top-up-modal" hideModal={hideModal}>{getTopUpMethodChooser()}</ModalWrapper>;
+      return <ModalWrapper message='This is a test environment running on Ropsten network' modalClassName="top-up-modal" hideModal={hideModal}>{getTopUpMethodChooser()}</ModalWrapper>;
     }
     return getTopUpMethodChooser();
   } else if (modal === TopUpComponentType.safello) {

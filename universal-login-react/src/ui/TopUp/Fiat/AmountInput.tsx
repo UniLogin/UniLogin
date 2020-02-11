@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useClassFor, classForComponent} from '../../utils/classFor';
 
 export interface AmountInputProps {
   amount: string;
@@ -18,14 +19,14 @@ export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: A
   };
 
   return (
-    <div className="amount-input-wrapper">
+    <div className={useClassFor('amount-input-wrapper')}>
       <input
         value={amount}
         type="number"
-        className="amount-input"
+        className={classForComponent('amount-input')}
         onChange={event => onChange(event.target.value)}
       />
-      <div className="amount-dropdown">
+      <div className={classForComponent('amount-dropdown')}>
         <button
           className={`amount-dropdown-btn ${disabled ? '' : 'amount-dropdown-toggle'} ${expanded ? 'expanded' : ''}`}
           onClick={() => disabled || setExpanded(!expanded)}
@@ -33,12 +34,12 @@ export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: A
           {selectedCurrency}
         </button>
         {expanded &&
-          <ul className="amount-dropdown-list">
+          <ul className={classForComponent('amount-dropdown-list')}>
             {currenciesList
               .filter(currency => currency !== selectedCurrency)
               .map(currency => (
                 <li key={currency}>
-                  <button onClick={() => onCurrencyItemClick(currency)} className="amount-dropdown-btn">{currency}</button>
+                  <button onClick={() => onCurrencyItemClick(currency)} className={classForComponent('amount-dropdown-btn')}>{currency}</button>
                 </li>
               ))
             }

@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../styles/base/components/modal/modalTitle.sass';
+import '../../styles/themes/Legacy/components/modal/modalTitleThemeLegacy.sass';
 import {useClassFor} from '../../utils/classFor';
 
 interface ModalTitleProps {

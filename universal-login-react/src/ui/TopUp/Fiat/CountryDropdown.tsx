@@ -4,7 +4,7 @@ import {countries} from '../../../core/utils/countries';
 import {ThemedComponent} from '../../commons/ThemedComponent';
 import {classForComponent} from '../../utils/classFor';
 import '../../styles/base/components/countrySelect.sass';
-import '../../styles/themes/Default/components/countrySelectThemeDefault.sass';
+import '../../styles/themes/UniLogin/components/countrySelectThemeUniLogin.sass';
 import '../../styles/themes/Jarvis/components/countrySelectThemeJarvis.sass';
 import '../../styles/themes/Legacy/components/countrySelectThemeLegacy.sass';
 
