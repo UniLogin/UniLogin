@@ -3,7 +3,7 @@ export type Callback = (error: any, response: any) => void;
 export type Handler = (msg: any, cb: Callback) => void;
 
 export class RpcBridge {
-  private readonly callbacks: Record<number, Callback | undefined> = {};
+  private readonly callbacks: Record<number, Set<Callback> | undefined> = {};
 
   constructor(
     private readonly sendMessage: (msg: any) => void,
@@ -11,23 +11,43 @@ export class RpcBridge {
   ) {}
 
   handleMessage(msg: any) {
-    if (msg.protocolId === PROTOCOL_ID && msg.payload !== undefined) {
+    if (msg !== undefined && msg.protocolId === PROTOCOL_ID && msg.payload !== undefined) {
       this.handleRpc(msg.payload);
     }
   }
 
   private handleRpc(rpc: any) {
     if (rpc.method !== undefined) {
-      this.handler(rpc, (error, response) => {
-        if (error) {
-          this.sendWithProtocolId({jsonrpc: '2.0', error: error, id: isProperId(rpc.id) ? rpc.id : null});
-        } else {
-          this.sendWithProtocolId(response);
-        }
-      });
-    } else if (isProperId(rpc.id) && this.callbacks[rpc.id] !== undefined) {
-      this.callbacks[rpc.id]!(null, rpc);
+      this.handleRequest(rpc);
+    } else if (isProperId(rpc.id)) {
+      this.handleResponse(rpc);
     }
+  }
+
+  private handleResponse(rpc: any) {
+    if (rpc.error !== undefined) {
+      this.notify(rpc.id, rpc.error, undefined);
+    } else {
+      this.notify(rpc.id, null, rpc);
+    }
+  }
+
+  private handleRequest(rpc: any) {
+    this.handler(rpc, this.getCallbackHandler(isProperId(rpc.id) ? rpc.id : null));
+  }
+
+  private notify(id: number, error: any, response: any) {
+    this.callbacks[id]?.forEach(cb => cb(error, response));
+  }
+
+  private getCallbackHandler(id: number) {
+    return (error: any, response: any) => {
+      if (error) {
+        this.sendWithProtocolId({jsonrpc: '2.0', error: error, id});
+      } else {
+        this.sendWithProtocolId(response);
+      }
+    };
   }
 
   private sendWithProtocolId(payload: any) {
@@ -39,7 +59,7 @@ export class RpcBridge {
 
   send(msg: any, cb: Callback) {
     if (isProperId(msg.id)) {
-      this.callbacks[msg.id] = cb;
+      (this.callbacks[msg.id] = this.callbacks[msg.id] ?? new Set()).add(cb);
     }
     this.sendWithProtocolId(msg);
   }
