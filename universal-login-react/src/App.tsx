@@ -104,6 +104,7 @@ export const App = () => {
                     tryEnablingMetamask={tryEnablingMetamask}
                     onConnect={() => console.log('connected')}
                     onCreate={() => history.push('/onboarding/success')}
+                    hideModal={() => history.push('/')}
                   />}
               />
               <Route exact path="/walletSelector">

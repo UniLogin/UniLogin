@@ -3,11 +3,11 @@ import {ensureNotFalsy, WalletSuggestionAction} from '@universal-login/commons';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
 import {SingleSuggestion} from './SingleSuggestion';
-import {MultipleSuggestion} from './MultipleSuggestion';
 import {TakenOrInvalidSuggestion} from './TakenOrInvalidSuggestion';
 import {InvalidForConnectionSuggestion} from './InvalidForConnectionSuggestion';
 import {Suggestion} from '../../../core/models/Suggestion';
 import {classForComponent} from '../../utils/classFor';
+import {SuggestionGroup} from './SuggestionGroup';
 
 interface SuggestionComponentProps {
   suggestion: Suggestion;
@@ -68,19 +68,29 @@ export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, sug
         </ul>
       );
     case 'Available':
+      const createSuggestions = suggestion.suggestions.filter(element => element.kind === 'Creation');
+      const connectSuggestions = suggestion.suggestions.filter(element => element.kind === 'Connection');
       return (
-        <ul className={classForComponent('suggestions-list')}>
-          {suggestion.suggestions.map(element => (
-            <li key={element.name} className={classForComponent('suggestions-item')}>
-              <MultipleSuggestion
-                suggestion={element.name}
-                selectedSuggestion={selectedSuggestion}
-                operationType={element.kind === 'Creation' ? 'create new' : 'connect'}
-                onClick={element.kind === 'Creation' ? handleCreateClick : handleConnectClick}
-              />
-            </li>
-          ))}
-        </ul>
+        <div className={classForComponent('suggestions-wrapper')}>
+          {createSuggestions.length !== 0 &&
+            <SuggestionGroup
+              suggestions={createSuggestions}
+              label='New user?'
+              selectedSuggestion={selectedSuggestion}
+              type='create new'
+              onClick={handleCreateClick}
+            />
+          }
+          {connectSuggestions.length !== 0 &&
+            <SuggestionGroup
+              suggestions={connectSuggestions}
+              label='Already have an account'
+              selectedSuggestion={selectedSuggestion}
+              type='connect'
+              onClick={handleConnectClick}
+            />
+          }
+        </div>
       );
   }
 };
