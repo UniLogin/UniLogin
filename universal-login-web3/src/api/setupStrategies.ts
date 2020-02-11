@@ -1,4 +1,3 @@
-import Web3 from 'web3';
 import {Web3ProviderFactory} from '../models/Web3ProviderFactory';
 import {Strategy} from './UniLogin';
 import {getConfigForNetwork, Network} from '../config';
@@ -31,8 +30,7 @@ export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverr
   },
 });
 
-export const setupStrategies = (web3: Web3, strategies: Strategy[], overrides?: SetupUniLoginOverrides) => {
-  const provider = web3.currentProvider;
+export const setupStrategies = (provider: Provider, strategies: Strategy[], overrides?: SetupUniLoginOverrides) => {
   return strategies.map(strategy => {
     switch (strategy) {
       case 'UniLogin':

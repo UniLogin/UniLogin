@@ -3,7 +3,6 @@ import {RpcBridge} from '../services/RpcBridge';
 import {forEach} from 'reactive-properties';
 import {setupStrategies} from '../api/setupStrategies';
 import {Web3PickerProvider} from '../Web3PickerProvider';
-import Web3 from 'web3';
 import {EMPTY_LOGO} from '@universal-login/commons';
 
 function setIframeVisibility(bridge: RpcBridge, isVisible: boolean) {
@@ -33,9 +32,8 @@ function initPicker() {
     (req, cb) => web3PickerProvider.send(req, cb as any),
   );
   window.addEventListener('message', e => bridge.handleMessage(e.data));
-  const web3 = new Web3(bridge);
   const applicationInfo = {applicationName: 'Embeded', logo: EMPTY_LOGO, type: 'laptop'}; // TODO: get from query
-  const web3ProviderFactories = setupStrategies(web3, ['Metamask', 'UniLogin'], {applicationInfo});
+  const web3ProviderFactories = setupStrategies(bridge, ['Metamask', 'UniLogin'], {applicationInfo});
   web3PickerProvider = new Web3PickerProvider(web3ProviderFactories, bridge);
 
   web3PickerProvider.isVisible.pipe(forEach(isVisible => setIframeVisibility(bridge, isVisible)));

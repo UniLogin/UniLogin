@@ -1,4 +1,4 @@
-import {promisify} from 'util'
+import {promisify} from 'util';
 import {Provider} from 'web3/providers';
 
 export async function getNetworkId(provider: Provider): Promise<string> {
