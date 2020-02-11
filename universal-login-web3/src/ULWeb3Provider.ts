@@ -90,6 +90,7 @@ export class ULWeb3Provider implements Provider {
       case 'eth_sign':
       case 'personal_sign':
       case 'ul_set_dashboard_visibility':
+      case 'eth_requestAccounts':
         try {
           const result = await this.handle(payload.method, payload.params);
           callback(null, {
@@ -113,6 +114,7 @@ export class ULWeb3Provider implements Provider {
         const tx = params[0];
         return this.sendTransaction(tx);
       case 'eth_accounts':
+      case 'eth_requestAccounts':
         return this.getAccounts();
       case 'eth_sign':
         return this.sign(params[0], params[1]);

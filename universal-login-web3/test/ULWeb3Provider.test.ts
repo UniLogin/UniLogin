@@ -3,6 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
 import Web3 from 'web3';
 import {utils, Wallet} from 'ethers';
+import {promisify} from 'util';
 import {waitExpect} from '@universal-login/commons/testutils';
 import {RelayerUnderTest} from '@universal-login/relayer';
 import {createWallet} from '@universal-login/sdk/testutils';
@@ -86,6 +87,27 @@ describe('ULWeb3Provider', () => {
       services.walletService.setWallet(deployedWallet.asApplicationWallet);
 
       expect(await web3.eth.getAccounts()).to.deep.eq([deployedWallet.contractAddress]);
+    });
+  });
+
+  describe('requestAccounts', () => {
+    const requestAccounts = async () => (
+      await promisify(ulProvider.send.bind(ulProvider))({method: 'eth_requestAccounts'} as any) as any
+    ).result;
+
+    it('initialize onboarding when wallet does not exist', async () => {
+      const initOnboardingSpy = sinon.spy(() => null);
+      sinon.replace(ulProvider, 'initOnboarding', initOnboardingSpy);
+      expect(await requestAccounts()).to.deep.eq([]);
+      expect(initOnboardingSpy.calledOnce).to.be.true;
+      sinon.restore();
+    });
+
+    it('returns single address when wallet is connected', async () => {
+      const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
+      services.walletService.setWallet(deployedWallet.asApplicationWallet);
+
+      expect(await requestAccounts()).to.deep.eq([deployedWallet.contractAddress]);
     });
   });
 
