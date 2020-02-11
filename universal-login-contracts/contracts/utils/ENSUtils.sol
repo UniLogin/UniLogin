@@ -1,9 +1,26 @@
 pragma solidity ^0.5.2;
 
-import "@ensdomains/ens/contracts/ENS.sol";
-import "@ensdomains/ens/contracts/FIFSRegistrar.sol";
-import "@ensdomains/ens/contracts/ReverseRegistrar.sol";
-import "@ensdomains/resolver/contracts/PublicResolver.sol";
+
+interface ReverseRegistrar {
+    function setName(string calldata name) external;
+}
+
+
+interface PublicResolver {
+    function setAddr(bytes32 node, address contractAddress) external;
+    function name(bytes32 node) external view returns(string memory);
+}
+
+
+interface FIFSRegistrar {
+    function register(bytes32 hashLabel, address contractAddress) external;
+}
+
+
+interface ENS {
+    function setResolver(bytes32 node, address contractAddress) external;
+    function owner(bytes32 node) external returns(address);
+}
 
 
 contract ENSUtils {
