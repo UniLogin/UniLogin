@@ -24,7 +24,6 @@ export class ULIFrameProvider {
   }
 
   private handleRpc(msg: any, cb: (error: any, response: any) => void) {
-    console.log('ULIFrameProvider.handleRpc', msg);
     switch (msg.method) {
       case 'ul_set_iframe_visibility':
         this.setIframeVisibility(msg.params[0]);
