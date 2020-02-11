@@ -41,6 +41,9 @@ export const EnsNamePicker = ({
   const [ensName, setEnsName] = useState('');
 
   const [suggestions, setSuggestions] = useState<Suggestions | undefined>({connections: [], creations: []});
+
+  const suggestion = suggestions && getSuggestion(suggestions, actions, ensName);
+
   useEffect(() => {
     setSuggestions(undefined);
     debouncedSuggestionsService.getSuggestions(ensName, setSuggestions);
@@ -59,7 +62,7 @@ export const EnsNamePicker = ({
           className={classForComponent('selector-input-img')}
         />
         <Input
-          className={classForComponent('input-wallet-selector')}
+          className={`${classForComponent('input-wallet-selector')} ${suggestion?.kind === 'KeepTyping' && 'error'}`}
           id="loginInput"
           onChange={(event) => setEnsName(event.target.value.toLowerCase())}
           placeholder={placeholder}
@@ -70,9 +73,9 @@ export const EnsNamePicker = ({
         {suggestions === undefined && ensName !== '' && <Spinner className={classForComponent('spinner-busy-indicator')} />}
       </div>
       {
-        suggestionVisible && suggestions !== undefined &&
+        suggestionVisible && suggestions !== undefined && suggestion &&
         <SuggestionComponent
-          suggestion={getSuggestion(suggestions, actions, ensName)}
+          suggestion={suggestion}
           onCreateClick={onCreateClick}
           onConnectClick={onConnectClick}
           actions={actions}

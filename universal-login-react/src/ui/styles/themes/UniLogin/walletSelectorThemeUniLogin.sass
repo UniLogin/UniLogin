@@ -7,15 +7,12 @@
     border: 1px solid #BDE6F2
     color: #0F0C4A
 
+  .input-unilogin-component-input-wallet-selector.error
+    border: 1px solid #EB5465
+
   .unilogin-component-input:focus
     border: 1px solid #0FB989
     outline: none
-
-
-  .unilogin-component-suggestions-list
-    box-shadow: 0px 20px 104px rgba(0, 131, 188, 0.1)
-    border-radius: 4px
-
 
   .unilogin-component-suggestions-item-btn:hover,
   .unilogin-component-suggestions-item-btn:focus,
@@ -45,7 +42,22 @@
     color: #FFFFFF
 
   .unilogin-component-suggestions-hint
-    color: #0F0C4A
+    color:#E44557
+    font-size: 1.2rem
+    text-align: left
+    position: relative
+    padding-top: .9rem
+    padding-left: 3.4rem
+
+    &::before
+      content: ''
+      height: 1.5rem
+      width: 1.5rem
+      position: absolute
+      top: 1.1rem
+      left: 1.6rem
+      background-image: url('../../../assets/icons/warning.svg')
+      background-repeat: no-repeat
 
   .unilogin-component-selector-sign-button,
   .unilogin-component-ethereum-account
@@ -70,3 +82,19 @@
   .input-unilogin-component-input-wallet-selector
     padding: 12px 46px 12px 16px
     font-weight: bold
+
+  .unilogin-component-suggestions-wrapper
+    margin-top: .8rem
+    background: #fff
+    box-shadow: 0px 20px 104px rgba(0, 131, 188, 0.1)
+    border-radius: 4px
+
+  .unilogin-component-suggestions-group:not(:last-child)
+    border-bottom: 1px solid rgba(185,195,248,0.2)
+
+  .unilogin-component-suggestions-group-label
+    text-align: left
+    text-transform: uppercase
+    color: #7D7C9C
+    opacity: .8
+    padding-left: 1.6rem

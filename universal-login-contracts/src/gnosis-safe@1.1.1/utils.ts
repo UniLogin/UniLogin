@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {getDeployData, SignedMessage, UnsignedMessage} from '@universal-login/commons';
 import ProxyContract from './contracts/Proxy.json';
-import {SAFE_TX_TYPEHASH, DOMAIN_SEPARATOR_TYPEHASH, SAFE_MSG_TYPEHASH, SENTINEL_OWNERS} from './constants.js';
+import {SAFE_TX_TYPEHASH, DOMAIN_SEPARATOR_TYPEHASH, SAFE_MSG_TYPEHASH, SENTINEL_OWNERS} from './constants';
 
 export const computeGnosisCounterfactualAddress = (proxyFactoryAddress: string, saltNonce: number, initializeData: string, gnosisSafeAddress: string) => {
   const deployData = getDeployData(ProxyContract, [gnosisSafeAddress]);

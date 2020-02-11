@@ -9,7 +9,7 @@ import {ensAndMasterFixture} from '../../fixtures/walletContract';
 import {switchENSNameInInitializeArgs} from '../../helpers/argumentsEncoding';
 import {WalletContractInterface, WalletProxyFactoryInterface} from '../../helpers/interfaces';
 import {setupInitializeWithENSArgs} from '../../helpers/ProxyUtils';
-import {MAGICVALUE} from '../../../src/ERC1271/constants.js';
+import {MAGICVALUE} from '../../../src/ERC1271/constants';
 
 chai.use(solidity);
 

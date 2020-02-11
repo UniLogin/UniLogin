@@ -17,7 +17,7 @@ describe('INT: Dashboard', () => {
   let dashboard: DashboardPage;
 
   beforeEach(async () => {
-    ([wallet] = await getWallets(createMockProvider()));
+    ([wallet] = getWallets(createMockProvider()));
     ({deployedWallet} = await setupDeployedWallet(wallet, ensName));
     const appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
     dashboard = new DashboardPage(appWrapper);

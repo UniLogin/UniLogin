@@ -18,7 +18,7 @@ describe('INT: BackupCodes', () => {
   let relayer: Relayer;
 
   beforeEach(async () => {
-    ([wallet] = await getWallets(createMockProvider()));
+    ([wallet] = getWallets(createMockProvider()));
     ({deployedWallet, relayer} = await setupDeployedWallet(wallet, ensName));
     const appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
     dashboard = new DashboardPage(appWrapper);

@@ -9,7 +9,7 @@ interface TopUpWithCryptoProps {
 
 const DeploymentWithCryptoInfo = ({minimalAmount}: {minimalAmount?: string}) =>
   <>
-    <p className="info-text">Send {minimalAmount || '...'} ETH to this address</p>
+    <p className="info-text">Send at least {minimalAmount || '...'} ETH to this address</p>
     <p className="info-text">This screen will update itself as soon as we detect a mined transaction</p>
   </>;
 
