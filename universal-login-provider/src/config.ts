@@ -3,5 +3,5 @@ export interface ProviderConfig {
 }
 
 export const DEFAULT_CONFIG: ProviderConfig = {
-  backendUrl: 'http://localhost:8080', // 'https://universal-provider-backend.netlify.com',
+  backendUrl: 'https://universal-provider-backend.netlify.com',
 };
