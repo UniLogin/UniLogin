@@ -4,9 +4,7 @@ import {getWallets, loadFixture, deployContract} from 'ethereum-waffle';
 import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS, TEST_CONTRACT_ADDRESS} from '@universal-login/commons';
 import {mockProviderWithBlockNumber} from '@universal-login/commons/testutils';
 import {deployWalletContract} from '../../src/beta2/deployMaster';
-import WalletContract from '../../dist/contracts/Wallet.json';
 import MockContract from '../../dist/contracts/MockContract.json';
-import WalletProxy from '../../dist/contracts/WalletProxy.json';
 import {BlockchainService} from '../../src/integration/BlockchainService';
 import {providers, Contract, Wallet} from 'ethers';
 import walletAndProxy from '../fixtures/walletAndProxy';
@@ -15,6 +13,9 @@ import {setupGnosisSafeContractFixture} from '../fixtures/gnosisSafe';
 import {computeGnosisCounterfactualAddress} from '../../src';
 import {DEPLOY_CONTRACT_NONCE} from '../../src/gnosis-safe@1.1.1/constants';
 import {mineBlock} from '../helpers/mineBlock';
+import {beta2} from '../../src/index';
+
+const {WalletProxy, WalletContract} = beta2;
 
 describe('INT: BlockchainService', async () => {
   const expectedBytecode = `0x${getDeployedBytecode(WalletContract as any)}`;
