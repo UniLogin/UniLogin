@@ -19,23 +19,35 @@ export class RpcBridge {
   private handleRpc(rpc: any) {
     console.log('bridge.handleRpc', rpc)
     if (rpc.method !== undefined) {
-      this.handler(rpc, this.getCallbackHandler(isProperId(rpc.id) ? rpc.id : null));
+      this.handleRequest(rpc);
     } else if (isProperId(rpc.id)) {
-      if (rpc.error !== undefined) {
-        this.notify(rpc.id, rpc.error, undefined);
-      } else {
-        this.notify(rpc.id, null, rpc);
-      }
-    } else if (rpc.error !== undefined) {
-      this.handler(rpc, this.getCallbackHandler(isProperId(rpc.id) ? rpc.id : null));
+      this.handleResponse(rpc);
+    } else if (rpc.error !== undefined && isProperId(rpc.id)) {
+      this.handleErrorResponse(rpc);
     }
+  }
+
+  private handleErrorResponse(rpc: any) {
+    this.handler(rpc, this.getCallbackHandler(rpc.id));
+  }
+
+  private handleResponse(rpc: any) {
+    if (rpc.error !== undefined) {
+      this.notify(rpc.id, rpc.error, undefined);
+    } else {
+      this.notify(rpc.id, null, rpc);
+    }
+  }
+
+  private handleRequest(rpc: any) {
+    this.handler(rpc, this.getCallbackHandler(isProperId(rpc.id) ? rpc.id : null));
   }
 
   private notify(id: number, error: any, response: any) {
     this.callbacks[id]?.forEach(cb => cb(error, response));
   }
 
-  private getCallbackHandler(id: number | null) {
+  private getCallbackHandler(id: number) {
     return (error: any, response: any) => {
       console.log('bridge.callbackHandler', error, response)
       if (error) {

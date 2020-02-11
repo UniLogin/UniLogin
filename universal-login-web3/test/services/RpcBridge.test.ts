@@ -58,13 +58,13 @@ describe('INT: RpcBridge', () => {
     expect(resp).to.be.calledWith('error');
   });
 
-  it('can respond with an error to a message without an id', () => {
+  it('error responses to a message without an id are ignored', () => {
     const resp = sinon.fake();
     bobHandle.callsFake((msg, cb) => cb('error'));
     alice.send({method: 'foo'}, resp);
     expect(bobHandle).to.be.calledWith({method: 'foo'});
     expect(resp).to.not.be.called;
-    expect(aliceHandle).to.be.calledWith({jsonrpc: '2.0', error: 'error', id: null});
+    expect(aliceHandle).to.not.be.called;
   });
 
   it('filters out junk messages', () => {
