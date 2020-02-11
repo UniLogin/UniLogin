@@ -35,7 +35,6 @@ export class ULIFrameProvider {
 
   private sendUpstream(msg: any, cb: (error: any, response: any) => void) {
     if ((this.upstream as any).sendAsync) {
-      console.log('sendAsync');
       (this.upstream as any).sendAsync(msg, cb);
     } else {
       this.upstream.send(msg, cb);
