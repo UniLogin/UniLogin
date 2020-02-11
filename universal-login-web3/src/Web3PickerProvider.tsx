@@ -78,4 +78,5 @@ const isAccountDependantRpc = (method: string) => [
   'eth_sign',
   'personal_sign',
   'ul_set_dashboard_visibility',
+  'eth_requestAccounts',
 ].includes(method);
