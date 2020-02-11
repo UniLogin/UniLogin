@@ -10,6 +10,8 @@ export class ULIFrameProvider {
   private iframe: HTMLIFrameElement;
   private bridge: RpcBridge;
 
+  readonly isUniLogin = true;
+
   constructor(
     private readonly upstream: Provider,
     config = DEFAULT_CONFIG,
