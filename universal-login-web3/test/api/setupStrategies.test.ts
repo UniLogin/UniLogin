@@ -6,7 +6,7 @@ import UniLoginLogo from '../../src/ui/assets/U.svg';
 import MetamaskLogo from '../../src/ui/assets/MetaMaskLogoTitle.svg';
 
 describe('UNIT: setupStrategies', () => {
-  const mockWeb3 = {eth: {net: {getId: () => '1'}}, currentProvider: {}};
+  const mockWeb3 = {currentProvider: {send: (_: any, cb: any) => cb(null, {result: '1'})}};
 
   it('return UniLogin strategy for UniLogin', async () => {
     const applicationInfo = {
