@@ -16,6 +16,7 @@ import './../styles/topUpDefaults.sass';
 import './../styles/themes/topUpJarvis.sass';
 import './../styles/base/chooseTopUp.sass';
 import './../styles/themes/Legacy/chooseTopUpThemeLegacy.sass';
+import './../styles/themes/Jarvis/chooseTopUpThemeJarvis.sass';
 import './../styles/themes/UniLogin/chooseTopUpThemeUniLogin.sass';
 import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
 

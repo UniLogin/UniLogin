@@ -30,9 +30,6 @@
   &.method-selected .unilogin-component-top-up-header
     flex-grow: initial
 
-  &.method-selected .unilogin-component-top-up-method-icons
-    margin: 0 16px 0 0
-
   .unilogin-component-top-up-method-title
     margin: 0
     font-weight: 500
@@ -45,9 +42,6 @@
     font-size: 14px
     line-height: 140%
     text-align: center
-
-  &.method-selected .unilogin-component-top-up-method-text
-    display: none
 
   .unilogin-component-top-up-radio-label
     display: block
@@ -62,22 +56,12 @@
     align-items: center
     justify-content: center
     background: none
-    background: #FFFFFF;
+    background: #FFFFFF
     border: 1px solid
 
   &.method-selected .unilogin-component-top-up-radio-inner
     box-shadow: none
     flex-direction: row
-
-  .unilogin-component-top-up-radio:checked + .unilogin-component-top-up-radio-inner::after
-    content: ''
-    position: absolute
-    left: 0
-    bottom: 0
-    width: 100%
-    height: 2px
-    background: #0ADBC2
-    border-radius: 4px
 
   .unilogin-component-top-up-radio-label input
     position: absolute
@@ -185,7 +169,7 @@
   .crypto-selected.crypto
     opacity: 1
 
-  .qr-code-wrapper
+  .unilogin-component-qr-code-wrapper
     text-align: center
     margin: 25px 0px
 
@@ -251,52 +235,7 @@
     font-size: 12px
     border: none
 
-  .amount-dropdown
-    position: relative
-    width: 90px
-    height: 100%
 
-  .amount-dropdown-btn
-    width: 100%
-    height: 32px
-    padding: 0 25px
-    font-size: 12px
-    text-align: left
-    border: none
-    background: none
-    cursor: pointer
-
-  .amount-dropdown-toggle
-    position: relative
-    padding: 0 31px 0 25px
-    border-left: 1px solid
-
-  .amount-dropdown-toggle::after
-    content: ''
-    position: absolute
-    top: 50%
-    right: 12px
-    width: 8px
-    height: 8px
-    transform: translateY(-50%)
-    // background: url('./../assets/icons/angle.svg') center no-repeat
-    background-size: contain
-
-  .amount-dropdown-btn.expanded::after
-    transform: translateY(-50%) rotate(180deg)
-
-  .amount-dropdown-list
-    position: absolute
-    right: 0
-    bottom: 0
-    transform: translateY(100%)
-    width: 100%
-    margin: 0
-    padding: 0
-    list-style: none
-    background: #fff
-    border: 1px solid
-    z-index: 10
 
   .fiat-payment-methods
     display: flex
