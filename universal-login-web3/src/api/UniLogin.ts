@@ -18,7 +18,7 @@ export class UniLogin {
     return web3PickerProvider;
   }
 
-  static async showDialog(web3: Web3, overrideStyles?: Record<string, string>) {
+  static async showPicker(web3: Web3, overrideStyles?: Record<string, string>) {
     const currentProvider = web3.currentProvider;
     if (!(currentProvider instanceof Web3PickerProvider)) {
       return;
