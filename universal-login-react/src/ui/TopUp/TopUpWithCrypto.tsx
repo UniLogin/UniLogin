@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {QRCode} from 'react-qr-svg';
 import {WalletService} from '@universal-login/sdk';
-import {classForComponent} from '../utils/classFor';
+import {useThemeName, classForComponent} from '../utils/classFor';
 import {Label} from '../commons/Form/Label';
 import {InputCopy} from '../commons/Form/InputCopy';
 import {InfoText} from '../commons/Text/InfoText';
@@ -26,7 +26,7 @@ export const TopUpWithCrypto = ({walletService}: TopUpWithCryptoProps) => {
   const [cryptoClass, setCryptoClass] = useState('');
   const contractAddress = walletService.getContractAddress();
   const [isQrCodeVisible, setIsQrCodeVisible] = useState(false);
-
+  const theme = useThemeName();
   useEffect(() => {
     setCryptoClass('crypto-selected');
   }, []);
@@ -48,8 +48,8 @@ export const TopUpWithCrypto = ({walletService}: TopUpWithCryptoProps) => {
             />
           </div>
 
-          {isQrCodeVisible &&
-            <div className="qr-code-wrapper">
+          {(isQrCodeVisible || theme === 'default' || theme === 'jarvis') &&
+            <div className={classForComponent('qr-code-wrapper')}>
               <QRCode
                 level="M"
                 bgColor="#ffffff"
