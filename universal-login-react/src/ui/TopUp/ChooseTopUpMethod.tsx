@@ -31,7 +31,7 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: Choose
     <ChooseTopUpMethodWrapper topUpMethod={topUpMethod}>
       <CompanyLogo />
       <div className={classForComponent('onboarding-progress-wrapper')}>
-        <ModalProgressBar />
+        <ModalProgressBar steps={3} progress={2}/>
       </div>
       <ChooseTopUpMethodHeader
         topUpMethod={topUpMethod}
