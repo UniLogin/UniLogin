@@ -9,9 +9,13 @@ function setIframeVisibility(bridge: RpcBridge, isVisible: boolean) {
   bridge.send({method: 'ul_set_iframe_visibility', params: [isVisible]}, () => {});
 }
 
-function initProviderOnly() {
+function sendReadySignal(bridge: RpcBridge) {
+  bridge.send({method: 'ul_ready'}, () => {});
+}
+
+async function initProviderOnly() {
   const universalLogin = ULWeb3Provider.getDefaultProvider('kovan');
-  universalLogin.init();
+  await universalLogin.init();
 
   const bridge = new RpcBridge(
     msg => window.top.postMessage(msg, '*'),
@@ -22,6 +26,8 @@ function initProviderOnly() {
   universalLogin.isUiVisible.pipe(forEach(
     isVisible => setIframeVisibility(bridge, isVisible),
   ));
+
+  sendReadySignal(bridge);
 }
 
 function initPicker() {
@@ -42,6 +48,8 @@ function initPicker() {
       return (provider as ULWeb3Provider).isUiVisible.pipe(forEach(isVisible => setIframeVisibility(bridge, isVisible)));
     }
   }));
+
+  sendReadySignal(bridge);
 }
 
 if (window.location.search.includes('picker')) {

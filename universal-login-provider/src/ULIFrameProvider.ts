@@ -1,6 +1,7 @@
 import {RpcBridge} from './RpcBridge';
 import {DEFAULT_CONFIG} from './config';
 import {createIFrame} from './createIframe';
+import {State, waitFor} from 'reactive-properties';
 
 export interface Provider {
   send: (msg: any, cb: (err: any, response: any) => void) => void;
@@ -9,6 +10,7 @@ export interface Provider {
 export class ULIFrameProvider {
   private iframe: HTMLIFrameElement;
   private bridge: RpcBridge;
+  private isReady = new State(false);
 
   readonly isUniLogin = true;
 
@@ -29,6 +31,9 @@ export class ULIFrameProvider {
     switch (msg.method) {
       case 'ul_set_iframe_visibility':
         this.setIframeVisibility(msg.params[0]);
+        break;
+      case 'ul_ready':
+        this.isReady.set(true);
         break;
       default:
         this.sendUpstream(msg, cb);
@@ -55,7 +60,8 @@ export class ULIFrameProvider {
     return new ULIFrameProvider(upstream, config, true);
   }
 
-  send(msg: any, cb: (error: any, response: any) => void) {
+  async send(msg: any, cb: (error: any, response: any) => void) {
+    await this.isReady.pipe(waitFor(Boolean));
     this.bridge.send(msg, cb);
   }
 
