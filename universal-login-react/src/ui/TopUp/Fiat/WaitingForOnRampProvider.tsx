@@ -3,7 +3,8 @@ import {OnRampProviderName, getOnRampProviderLogo} from './getOnRampProviderLogo
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {WaitingFor} from '../../commons/WaitingFor';
 import '../../styles/base/waitingForOnRampProvider.sass';
-import {classForComponent} from '../../utils/classFor';
+import '../../styles/themes/Legacy/waitingForOnRampProviderThemeLegacy.sass';
+import {classForComponent, useClassFor} from '../../utils/classFor';
 
 export interface WaitingForOnRampProviderProps {
   onRampProviderName: OnRampProviderName;
@@ -15,7 +16,7 @@ export const WaitingForOnRampProvider = ({className, onRampProviderName, logoCol
   const onRampProviderLogo = getOnRampProviderLogo(onRampProviderName, logoColor);
   const note = `Waiting for ${onRampProviderName} to send you money`;
   return (
-    <div className={classForComponent('waiting-for-ramp')}>
+    <div className={useClassFor('waiting-for-ramp')}>
       <div className={getStyleForTopLevelComponent(className)}>
         <div className={classForComponent('waiting-for-ramp')}>
           <div className={classForComponent('waiting-for-ramp-content')}>
