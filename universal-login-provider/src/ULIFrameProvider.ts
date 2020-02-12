@@ -1,7 +1,7 @@
 import {RpcBridge} from './RpcBridge';
 import {DEFAULT_CONFIG} from './config';
 import {createIFrame} from './createIframe';
-import {State, waitFor} from 'reactive-properties';
+import {forEach, State, waitFor} from 'reactive-properties';
 
 export interface Provider {
   send: (msg: any, cb: (err: any, response: any) => void) => void;
@@ -25,6 +25,24 @@ export class ULIFrameProvider {
       this.handleRpc.bind(this),
     );
     window.addEventListener('message', e => this.bridge.handleMessage(e.data));
+
+    this.observeDomForUlButtons();
+  }
+
+  private observeDomForUlButtons() {
+    const mutationObserver = new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if(mutation.target instanceof Element) {
+          mutation.target.querySelectorAll(`button#${this.config.ulButtonId}`)
+            .forEach(element => {
+              if(element instanceof HTMLButtonElement) {
+                this.initUlButton(element)
+              }
+            });
+        }
+      }
+    });
+    mutationObserver.observe(document.body, { childList: true, subtree: true })
   }
 
   private handleRpc(msg: any, cb: (error: any, response: any) => void) {
@@ -77,6 +95,8 @@ export class ULIFrameProvider {
     this.setDashboardVisibility(false);
   }
 
+  private boundOpenDashboard = this.openDashboard.bind(this);
+
   initUlButton(element: HTMLButtonElement) {
     Object.assign(element.style, {
       display: 'inline-block',
@@ -92,6 +112,6 @@ export class ULIFrameProvider {
       <img src="${this.config.logoUrl}" alt="U" >
     `;
 
-    element.addEventListener('click', () => this.openDashboard());
+    element.addEventListener('click', this.boundOpenDashboard);
   }
 }
