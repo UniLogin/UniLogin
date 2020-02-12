@@ -22,7 +22,7 @@ interface IProviderListProps {
 
 export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setProvider}: IWeb3PickerComponentProps) => {
   const isVisible = useProperty(isVisibleProp);
-  const [selectedProvider, setSelectedProvider] = useState('UniversalLogin');
+  const [selectedProvider, setSelectedProvider] = useState('UniLogin');
 
   return isVisible
     ? <ModalWrapper hideModal={hideModal}>

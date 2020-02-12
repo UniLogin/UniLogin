@@ -38,7 +38,7 @@ function initPicker() {
 
   web3PickerProvider.isVisible.pipe(forEach(isVisible => setIframeVisibility(bridge, isVisible)));
   web3PickerProvider.currentProvider.pipe(forEach(provider => {
-    if ((provider as any)?.isUniversalLogin) {
+    if ((provider as any)?.isUniLogin) {
       return (provider as ULWeb3Provider).isUiVisible.pipe(forEach(isVisible => setIframeVisibility(bridge, isVisible)));
     }
   }));
