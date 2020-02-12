@@ -24,7 +24,7 @@ export class UniLogin {
       return;
     }
     await currentProvider.show();
-    if (currentProvider.providerName === 'UniversalLogin') {
+    if (currentProvider.providerName === 'UniLogin') {
       (currentProvider.currentProvider.get()! as ULWeb3Provider).initWeb3Button(overrideStyles);
     }
   }

@@ -15,7 +15,7 @@ export interface SetupUniLoginOverrides {
 }
 
 export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverrides) => ({
-  name: 'UniversalLogin',
+  name: 'UniLogin',
   icon: UniLoginLogo,
   create: async () => {
     const networkVersion = await getNetworkId(provider) as Network;

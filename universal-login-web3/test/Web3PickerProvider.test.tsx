@@ -10,8 +10,8 @@ describe('UNIT: Web3Picker', () => {
   const readProvider = {send: sinon.spy()};
   const ulProvider = {send: sinon.spy()};
   const ulFactory = {
-    name: 'UniversalLogin',
-    icon: 'UniversalLogin logo',
+    name: 'UniLogin',
+    icon: 'UniLogin logo',
     create: sinon.stub().resolves(ulProvider),
   };
   const rpcRequest = (method = 'eth_blockNumber') => ({

@@ -61,8 +61,8 @@ function setupWeb3(web3) {
     new Web3Strategy(
       [
         {
-          name: 'UniversalLogin',
-          icon: 'UniversalLogin logo',
+          name: 'UniLogin',
+          icon: 'UniLogin logo',
           create: () => ulWeb3
         },
         {
