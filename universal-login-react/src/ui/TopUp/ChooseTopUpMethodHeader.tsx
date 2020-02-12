@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {TopUpMethod} from '../../core/models/TopUpMethod';
 import {TopUpRadioCrypto, TopUpRadioFiat} from './TopUpRadio';
 import {ModalTitle} from '../commons/Modal/ModalTitle';
@@ -10,25 +10,34 @@ interface ChooseTopUpMethodHeaderProps {
   setTopUpMethod: (arg: TopUpMethod) => void;
 };
 
-export const ChooseTopUpMethodHeader = ({topUpMethod, setTopUpMethod}: ChooseTopUpMethodHeaderProps) => (
-  <div className={classForComponent('top-up-header')}>
-    <ModalTitle>Choose a top-up method</ModalTitle>
-    <ModalText>To create your account please choose a top-up method to fund your account.</ModalText>
-    <div className={classForComponent('top-up-methods')}>
-      <TopUpRadioCrypto
-        id="topup-btn-crypto"
-        onClick={() => setTopUpMethod('crypto')}
-        checked={topUpMethod === 'crypto'}
-        name="top-up-method"
-        className={`${classForComponent('top-up-method')} ${topUpMethod === 'crypto' ? 'active' : ''}`}
-      />
-      <TopUpRadioFiat
-        id="topup-btn-fiat"
-        onClick={() => setTopUpMethod('fiat')}
-        checked={topUpMethod === 'fiat'}
-        name="top-up-method"
-        className={`${classForComponent('top-up-method')} ${topUpMethod === 'fiat' ? 'active' : ''}`}
-      />
+export const ChooseTopUpMethodHeader = ({topUpMethod, setTopUpMethod}: ChooseTopUpMethodHeaderProps) => {
+  const [isTextVisible, setIsTextVisible] = useState(true);
+
+  const onMethodClick = (method: TopUpMethod) => {
+    setTopUpMethod(method);
+    setIsTextVisible(false);
+  };
+
+  return (
+    <div className={classForComponent('top-up-header')}>
+      <ModalTitle>Choose a top-up method</ModalTitle>
+      {isTextVisible && <ModalText>To create your account please choose a top-up method to fund your account.</ModalText>}
+      <div className={classForComponent('top-up-methods')}>
+        <TopUpRadioCrypto
+          id="topup-btn-crypto"
+          onClick={() => onMethodClick('crypto')}
+          checked={topUpMethod === 'crypto'}
+          name="top-up-method"
+          className={`${classForComponent('top-up-method')} ${topUpMethod === 'crypto' ? 'active' : ''}`}
+        />
+        <TopUpRadioFiat
+          id="topup-btn-fiat"
+          onClick={() => onMethodClick('fiat')}
+          checked={topUpMethod === 'fiat'}
+          name="top-up-method"
+          className={`${classForComponent('top-up-method')} ${topUpMethod === 'fiat' ? 'active' : ''}`}
+        />
+      </div>
     </div>
-  </div>
-);
+  );
+};
