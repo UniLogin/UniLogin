@@ -34,7 +34,7 @@ export class ULWeb3Provider implements Provider {
     });
   }
 
-  readonly isUniversalLogin = true;
+  readonly isUniLogin = true;
 
   private readonly provider: Provider;
   private readonly sdk: UniversalLoginSDK;
