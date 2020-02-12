@@ -4,6 +4,7 @@ import {Web3ProviderFactory} from '../models/Web3ProviderFactory';
 import {setupStrategies} from './setupStrategies';
 import {getApplicationInfoFromDocument} from '../ui/utils/applicationInfo';
 import {ApplicationInfo} from '@universal-login/commons';
+import {ULWeb3Provider} from '../ULWeb3Provider';
 
 export type Strategy = 'UniLogin' | 'Metamask' | Web3ProviderFactory;
 
@@ -15,5 +16,16 @@ export class UniLogin {
     const web3PickerProvider = new Web3PickerProvider(web3ProviderFactories, provider);
     web3.setProvider(web3PickerProvider);
     return web3PickerProvider;
+  }
+
+  static async showDialog(web3: Web3, overrideStyles?: Record<string, string>) {
+    const currentProvider = web3.currentProvider;
+    if (!(currentProvider instanceof Web3PickerProvider)) {
+      return;
+    }
+    await currentProvider.show();
+    if (currentProvider.providerName === 'UniversalLogin') {
+      (currentProvider.currentProvider.get()! as ULWeb3Provider).initWeb3Button(overrideStyles);
+    }
   }
 }
