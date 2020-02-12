@@ -1,7 +1,7 @@
 import {RpcBridge} from './RpcBridge';
 import {DEFAULT_CONFIG} from './config';
 import {createIFrame} from './createIframe';
-import {forEach, State, waitFor} from 'reactive-properties';
+import {State, waitFor} from 'reactive-properties';
 
 export interface Provider {
   send: (msg: any, cb: (err: any, response: any) => void) => void;
