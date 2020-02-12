@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {useClassFor, classForComponent} from '../../utils/classFor';
+import './../../styles/base/components/amountSelect.sass';
+import './../../styles/themes/UniLogin/components/amountSelectThemeUniLogin.sass';
 
 export interface AmountInputProps {
   amount: string;
@@ -28,8 +30,8 @@ export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: A
       />
       <div className={classForComponent('amount-dropdown')}>
         <button
-          className={`amount-dropdown-btn ${disabled ? '' : 'amount-dropdown-toggle'} ${expanded ? 'expanded' : ''}`}
-          onClick={() => disabled || setExpanded(!expanded)}
+          className={`${classForComponent('amount-dropdown-btn')} ${disabled ? '' : classForComponent('amount-dropdown-toggle')} ${expanded ? 'expanded' : ''}`}
+          onClick={() => setExpanded(!expanded)}
         >
           {selectedCurrency}
         </button>
