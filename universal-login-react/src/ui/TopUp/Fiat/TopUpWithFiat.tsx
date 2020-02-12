@@ -11,6 +11,7 @@ import {IPGeolocationService} from '../../../integration/http/IPGeolocationServi
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
 import {classForComponent} from '../../utils/classFor';
 import {Label} from '../../commons/Form/Label';
+import {InfoText} from '../../commons/Text/InfoText';
 
 export interface TopUpWithFiatProps {
   walletService: WalletService;
@@ -63,17 +64,6 @@ export const TopUpWithFiat = ({walletService, logoColor, topUpProviderSupportSer
             setCountry={changeCountry}
             setCurrency={setCurrency}
           />
-          {topUpProviderSupportService.isInputAmountUsed(paymentMethod) &&
-            <>
-              <Label>Amount</Label>
-              <AmountInput
-                selectedCurrency={currency}
-                setCurrency={setCurrency}
-                amount={amount}
-                onChange={onAmountChange}
-              />
-            </>
-          }
           {!!country && <>
             <p className={`
               ${classForComponent('top-up-label')}
@@ -87,6 +77,18 @@ export const TopUpWithFiat = ({walletService, logoColor, topUpProviderSupportSer
               logoColor={logoColor}
             />
           </>}
+          {topUpProviderSupportService.isInputAmountUsed(paymentMethod) &&
+            <>
+              <Label>Amount</Label>
+              <AmountInput
+                selectedCurrency={currency}
+                setCurrency={setCurrency}
+                amount={amount}
+                onChange={onAmountChange}
+              />
+              <InfoText>Minimum amount is 30 GBP</InfoText>
+            </>
+          }
           <div className={classForComponent('fiat-bottom')}>
             {!!country && <FiatFooter paymentMethod={paymentMethod} walletService={walletService} />}
           </div>
