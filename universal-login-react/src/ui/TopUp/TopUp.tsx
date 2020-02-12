@@ -13,7 +13,6 @@ import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import Spinner from '../commons/Spinner';
 import './../styles/topUp.sass';
 import './../styles/topUpDefaults.sass';
-import './../styles/themes/topUpJarvis.sass';
 import './../styles/base/chooseTopUp.sass';
 import './../styles/themes/Legacy/chooseTopUpThemeLegacy.sass';
 import './../styles/themes/Jarvis/chooseTopUpThemeJarvis.sass';

@@ -1,1 +1,1 @@
-export const isClassName = (className?: string) => className ? className : '';
+export const isClassName = (className?: string) => className || '';
