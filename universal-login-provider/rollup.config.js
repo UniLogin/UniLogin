@@ -1,7 +1,9 @@
-import typescript from '@rollup/plugin-typescript'
-import { terser } from "rollup-plugin-terser";
+import typescript from '@rollup/plugin-typescript';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import {terser} from 'rollup-plugin-terser';
 
-import pkg from './package.json'
+import pkg from './package.json';
 
 export default {
   input: 'src/index.ts',
@@ -12,6 +14,8 @@ export default {
   },
   plugins: [
     typescript(),
-    terser(),
-  ]
-}
+    resolve(),
+    commonjs(),
+    terser({output: {comments: false}}),
+  ],
+};

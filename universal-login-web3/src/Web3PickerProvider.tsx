@@ -27,13 +27,6 @@ export class Web3PickerProvider implements Provider {
       if (this.isVisible.get()) {
         return;
       }
-      if (payload.method === 'eth_accounts') {
-        return callback(null, {
-          jsonrpc: payload.jsonrpc,
-          id: payload.id,
-          result: [],
-        });
-      }
       if (!await this.show()) {
         return;
       }
