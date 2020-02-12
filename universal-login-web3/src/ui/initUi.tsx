@@ -31,7 +31,7 @@ export const getOrCreateUlButton = (styles: Record<string, string> = {}) => {
 
 const defaultUlButtonStyle = {
   position: 'absolute',
-  top: '20px',
+  top: '12px',
   right: '30px',
 };
 
