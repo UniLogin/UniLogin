@@ -5,6 +5,7 @@ import {WaitingFor} from '../../commons/WaitingFor';
 import '../../styles/base/waitingForOnRampProvider.sass';
 import '../../styles/themes/Legacy/waitingForOnRampProviderThemeLegacy.sass';
 import '../../styles/themes/UniLogin/waitingForOnRampProviderThemeUniLogin.sass';
+import '../../styles/themes/Jarvis/waitingForOnRampProviderThemeJarvis.sass';
 import {classForComponent, useClassFor} from '../../utils/classFor';
 
 export interface WaitingForOnRampProviderProps {
