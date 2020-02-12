@@ -4,6 +4,7 @@ import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLe
 import {WaitingFor} from '../../commons/WaitingFor';
 import '../../styles/base/waitingForOnRampProvider.sass';
 import '../../styles/themes/Legacy/waitingForOnRampProviderThemeLegacy.sass';
+import '../../styles/themes/UniLogin/waitingForOnRampProviderThemeUniLogin.sass';
 import {classForComponent, useClassFor} from '../../utils/classFor';
 
 export interface WaitingForOnRampProviderProps {
@@ -22,6 +23,7 @@ export const WaitingForOnRampProvider = ({className, onRampProviderName, logoCol
           <div className={classForComponent('waiting-for-ramp-content')}>
             <img src={onRampProviderLogo} className={classForComponent('waiting-for-ramp-img')}/>
             <WaitingFor action={note} className={className}/>
+            <div className={classForComponent('waitingforonramp-pending-img')}></div>
           </div>
         </div>
       </div>
