@@ -15,7 +15,7 @@ describe('UNIT: setupStrategies', () => {
       type: 'laptop',
     };
     const result = setupStrategies(mockProvider, ['UniLogin'], {applicationInfo, storageService: new MemoryStorageService()});
-    expect(result[0].name).to.eq('UniversalLogin');
+    expect(result[0].name).to.eq('UniLogin');
     expect(result[0].icon).to.eq(UniLoginLogo);
     expect(result[0].create).to.not.be.null;
     const ulWeb3Provider = await result[0].create();

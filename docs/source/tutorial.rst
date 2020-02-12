@@ -50,7 +50,7 @@ Detecting Universal-Login
   To detect whether the web3 is running with UniversalLogin use the following code:
   ::
 
-    const usingUniversalLogin = web3.currentProvider && web3.currentProvider.isUniversalLogin;
+    const usingUniversalLogin = web3.currentProvider && web3.currentProvider.isUniLogin;
 
 Starting with SDK
 ^^^^^^^^^^^^^^^^^
