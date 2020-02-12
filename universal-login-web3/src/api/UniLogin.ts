@@ -11,9 +11,9 @@ export class UniLogin {
   static setupWeb3Picker(web3: Web3, strategies: Strategy[], givenApplicationInfo?: Partial<ApplicationInfo>) {
     const provider = web3.currentProvider;
     const applicationInfo = {...getApplicationInfoFromDocument(), ...givenApplicationInfo};
-    const web3ProviderFactories = setupStrategies(web3, strategies, {applicationInfo});
-    const web3Strategy = new Web3PickerProvider(web3ProviderFactories, provider);
-    web3.setProvider(web3Strategy);
-    return web3Strategy;
+    const web3ProviderFactories = setupStrategies(web3.currentProvider, strategies, {applicationInfo});
+    const web3PickerProvider = new Web3PickerProvider(web3ProviderFactories, provider);
+    web3.setProvider(web3PickerProvider);
+    return web3PickerProvider;
   }
 }
