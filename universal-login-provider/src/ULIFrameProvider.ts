@@ -16,7 +16,7 @@ export class ULIFrameProvider {
 
   constructor(
     private readonly upstream: Provider,
-    config = DEFAULT_CONFIG,
+    private readonly config = DEFAULT_CONFIG,
     enablePicker = false,
   ) {
     this.iframe = createIFrame(config.backendUrl + (enablePicker ? '?picker' : ''));
@@ -75,5 +75,23 @@ export class ULIFrameProvider {
 
   closeDashboard() {
     this.setDashboardVisibility(false);
+  }
+
+  initUlButton(element: HTMLButtonElement) {
+    Object.assign(element.style, {
+      display: 'inline-block',
+      background: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      position: 'relative',
+      width: '60px',
+      height: '60px',
+    });
+
+    element.innerHTML = `
+      <img src="${this.config.logoUrl}" alt="U" >
+    `;
+
+    element.addEventListener('click', () => this.openDashboard());
   }
 }
