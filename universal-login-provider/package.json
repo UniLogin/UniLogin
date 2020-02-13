@@ -28,6 +28,6 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "reactive-properties": "^0.1.7"
+    "reactive-properties": "^0.1.9"
   }
 }

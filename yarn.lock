@@ -11238,15 +11238,10 @@ react@^16.8.6:
     prop-types "^15.6.2"
     scheduler "^0.13.6"
 
-reactive-properties@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/reactive-properties/-/reactive-properties-0.1.5.tgz#14ce6f64a5c1c1fce420a273a49c9c481b2a7333"
-  integrity sha512-HlS6uaOSasRQRNuGFDyNvv0gEqbmS9FJMqQWwEeYw/0GHobpQfmhf7KzD+d0U+vO/2TfRXMkbM7DYxEuR48xNQ==
-
-reactive-properties@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/reactive-properties/-/reactive-properties-0.1.7.tgz#8479f7830fe3b175b6cad8eebc1fda74468a3af6"
-  integrity sha512-AUWw697Wm0YyBd7sD5B7gt69py2pmVhujkWIpvPmTweD00gc0YaW3vHiS6CmxQn9uIeESqDnPmlSQ8ZW5sIXTg==
+reactive-properties@^0.1.9:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/reactive-properties/-/reactive-properties-0.1.9.tgz#1a54126d50e0ef8fe9ec9d69331d0443f7fcd98a"
+  integrity sha512-JnpaBQq21FI5ygD0ULkwD4ijvvd36vQVicYVydXrA4biqpGjSAHe95N8CdLtflwkojMBvz9oQygQeifLOpKX3w==
 
 read-cmd-shim@^1.0.1:
   version "1.0.1"
