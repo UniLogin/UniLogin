@@ -26,7 +26,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     ...overrides.sdkConfig,
     applicationInfo: {
       applicationName: 'Jarvis',
-      logo: 'https://universal-login-mainnet.netlify.com/logo.ico',
+      logo: 'https://beta.jarvis.network/logo.ico',
     },
     paymentOptions: {},
     observedTokensAddresses: config.tokens,
