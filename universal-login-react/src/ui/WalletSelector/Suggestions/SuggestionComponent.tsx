@@ -7,7 +7,7 @@ import {TakenOrInvalidSuggestion} from './TakenOrInvalidSuggestion';
 import {InvalidForConnectionSuggestion} from './InvalidForConnectionSuggestion';
 import {Suggestion} from '../../../core/models/Suggestion';
 import {classForComponent} from '../../utils/classFor';
-import {SuggestionGroup} from './SuggestionGroup';
+import {SuggestionGroupMultiple, SuggestionGroupSingle} from './SuggestionGroup';
 
 interface SuggestionComponentProps {
   suggestion: Suggestion;
@@ -41,31 +41,29 @@ export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, sug
       return <InvalidForConnectionSuggestion />;
     case 'Connection':
       return (
-        <ul className={classForComponent('suggestions-list')}>
-          <li className={classForComponent('suggestions-item')}>
-            <SingleSuggestion
-              hint='Do you want to connect to this account?'
-              operationType='connect'
-              onClick={handleConnectClick}
-              suggestion={suggestion.name}
-              selectedSuggestion={selectedSuggestion}
-            />
-          </li>
-        </ul>
+        <div className={classForComponent('suggestions-wrapper')}>
+          <SuggestionGroupSingle
+            hint='This username is available'
+            label='Already have an account?'
+            operationType='connect'
+            onClick={handleConnectClick}
+            suggestion={suggestion.name}
+            selectedSuggestion={selectedSuggestion}
+          />
+        </div>
       );
     case 'Creation':
       return (
-        <ul className={classForComponent('suggestions-list')}>
-          <li className={classForComponent('suggestions-item')}>
-            <SingleSuggestion
-              hint='This username is available'
-              operationType='create new'
-              onClick={handleCreateClick}
-              suggestion={suggestion.name}
-              selectedSuggestion={selectedSuggestion}
-            />
-          </li>
-        </ul>
+        <div className={classForComponent('suggestions-wrapper')}>
+          <SuggestionGroupSingle
+            hint='This username is available'
+            label='New user?'
+            operationType='create new'
+            onClick={handleCreateClick}
+            suggestion={suggestion.name}
+            selectedSuggestion={selectedSuggestion}
+          />
+        </div>
       );
     case 'Available':
       const createSuggestions = suggestion.suggestions.filter(element => element.kind === 'Creation');
@@ -73,20 +71,20 @@ export const SuggestionComponent = ({onCreateClick, onConnectClick, actions, sug
       return (
         <div className={classForComponent('suggestions-wrapper')}>
           {createSuggestions.length !== 0 &&
-            <SuggestionGroup
+            <SuggestionGroupMultiple
               suggestions={createSuggestions}
               label='New user?'
               selectedSuggestion={selectedSuggestion}
-              type='create new'
+              operationType='create new'
               onClick={handleCreateClick}
             />
           }
           {connectSuggestions.length !== 0 &&
-            <SuggestionGroup
+            <SuggestionGroupMultiple
               suggestions={connectSuggestions}
-              label='Already have an account'
+              label='Already have an account?'
               selectedSuggestion={selectedSuggestion}
-              type='connect'
+              operationType='connect'
               onClick={handleConnectClick}
             />
           }
