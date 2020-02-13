@@ -6,7 +6,7 @@
   "module": "dist/esm/src/index.js",
   "license": "MIT",
   "dependencies": {
-    "@restless/sanitizers": "^0.2.2",
+    "@restless/sanitizers": "^0.2.3",
     "@universal-login/commons": "0.5.7",
     "@universal-login/contracts": "0.5.7",
     "cryptocompare": "^1.0.0",

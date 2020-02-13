@@ -1,70 +1,114 @@
+import {asAnyOf, asExactly, asNumber, asObject, asOptional, castOr, Result} from '@restless/sanitizers';
+
 export type Callback = (error: any, response: any) => void;
 
 export type Handler = (msg: any, cb: Callback) => void;
 
 export class RpcBridge {
-  private readonly callbacks: Record<number, Set<Callback> | undefined> = {};
+  private nextId = 0;
+  private readonly callbacks: Record<number, Callback | undefined> = {};
 
   constructor(
     private readonly sendMessage: (msg: any) => void,
     private readonly handler: Handler,
   ) {}
 
-  handleMessage(msg: any) {
-    if (msg !== undefined && msg.protocolId === PROTOCOL_ID && msg.payload !== undefined) {
-      this.handleRpc(msg.payload);
+  handleMessage(msg: unknown) {
+    const result = castOr(msg, asRpcMessage, undefined);
+    if(result) {
+      this.handleRpc(result);
     }
   }
 
-  private handleRpc(rpc: any) {
-    if (rpc.method !== undefined) {
+  send(msg: unknown, cb: Callback) {
+    const id = this.getId();
+    this.callbacks[id] = cb;
+    this.sendRpc({
+      protocolId: 'UNIVERSAL_LOGIN',
+      id,
+      isRequest: true,
+      payload: msg,
+    });
+  }
+
+  private getId() {
+    return this.nextId++
+  }
+
+  private handleRpc(rpc: RpcRequest | RpcResponse) {
+    if (rpc.isRequest) {
       this.handleRequest(rpc);
-    } else if (isProperId(rpc.id)) {
+    } else {
       this.handleResponse(rpc);
     }
   }
 
-  private handleResponse(rpc: any) {
+  private handleResponse(rpc: RpcResponse) {
+    const cb = this.callbacks[rpc.id];
+    delete this.callbacks[rpc.id];
     if (rpc.error !== undefined) {
-      this.notify(rpc.id, rpc.error, undefined);
+      cb?.(rpc.error, undefined)
     } else {
-      this.notify(rpc.id, null, rpc);
+      cb?.(null, rpc.response)
     }
   }
 
-  private handleRequest(rpc: any) {
-    this.handler(rpc, this.getCallbackHandler(isProperId(rpc.id) ? rpc.id : null));
-  }
-
-  private notify(id: number, error: any, response: any) {
-    this.callbacks[id]?.forEach(cb => cb(error, response));
+  private handleRequest(rpc: RpcRequest) {
+    this.handler(rpc.payload, this.getCallbackHandler(rpc.id));
   }
 
   private getCallbackHandler(id: number) {
     return (error: any, response: any) => {
       if (error) {
-        this.sendWithProtocolId({jsonrpc: '2.0', error: error, id});
+        this.sendRpc({
+          protocolId: 'UNIVERSAL_LOGIN',
+          id,
+          isRequest: false,
+          error,
+        });
       } else {
-        this.sendWithProtocolId(response);
+        this.sendRpc({
+          protocolId: 'UNIVERSAL_LOGIN',
+          id,
+          isRequest: false,
+          response,
+        });
       }
     };
   }
 
-  private sendWithProtocolId(payload: any) {
-    this.sendMessage({
-      protocolId: PROTOCOL_ID,
-      payload,
-    });
-  }
-
-  send(msg: any, cb: Callback) {
-    if (isProperId(msg.id)) {
-      (this.callbacks[msg.id] = this.callbacks[msg.id] ?? new Set()).add(cb);
-    }
-    this.sendWithProtocolId(msg);
+  private sendRpc(rpc: RpcRequest | RpcResponse) {
+    this.sendMessage(rpc);
   }
 }
 
-const PROTOCOL_ID = 'UNIVERSAL_LOGIN';
+interface RpcRequest {
+  protocolId: 'UNIVERSAL_LOGIN'
+  id: number,
+  isRequest: true
+  payload: unknown
+}
 
-const isProperId = (id: unknown) => typeof id === 'number';
+interface RpcResponse {
+  protocolId: 'UNIVERSAL_LOGIN'
+  id: number,
+  isRequest: false
+  error?: unknown,
+  response?: unknown,
+}
+
+const asRpcMessage = asAnyOf([
+  asObject<RpcRequest>({
+    protocolId: asExactly('UNIVERSAL_LOGIN'),
+    id: asNumber,
+    isRequest: asExactly(true),
+    payload: Result.ok,
+  }),
+  asObject<RpcResponse>({
+    protocolId: asExactly('UNIVERSAL_LOGIN'),
+    id: asNumber,
+    isRequest: asExactly(false),
+    error: asOptional(Result.ok),
+    response: asOptional(Result.ok),
+  }),
+], 'RpcMessage');
