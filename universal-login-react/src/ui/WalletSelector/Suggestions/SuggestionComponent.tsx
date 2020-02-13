@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {ensureNotFalsy, WalletSuggestionAction} from '@universal-login/commons';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
-import {SingleSuggestion} from './SingleSuggestion';
 import {TakenOrInvalidSuggestion} from './TakenOrInvalidSuggestion';
 import {InvalidForConnectionSuggestion} from './InvalidForConnectionSuggestion';
 import {Suggestion} from '../../../core/models/Suggestion';
