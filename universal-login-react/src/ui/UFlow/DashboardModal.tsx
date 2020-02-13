@@ -78,13 +78,11 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
             )}
           />
           <Route path="/dashboard/waitingForTransfer" exact>
-            <SubDialogWrapper message={notice} ensName={name}>
-              <WaitingForTransaction
-                action="Transferring funds"
-                relayerConfig={relayerConfig!}
-                transactionHash={transactionHash}
-              />
-            </SubDialogWrapper>
+            <WaitingForTransaction
+              action="Transferring funds"
+              relayerConfig={relayerConfig!}
+              transactionHash={transactionHash}
+            />
           </Route>
           <Route path="/dashboard/devices">
             <DialogWrapper message={notice} deployedWallet={deployedWallet}>

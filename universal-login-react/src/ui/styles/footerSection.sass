@@ -1,38 +1,36 @@
 @import helpers/breakpoints
 
-.universal-login-footer
-  .unilogin-component-footer-section
-    display: flex
-    justify-content: space-between
-    align-items: flex-end
-    border-top: 1px solid
-    padding: 18px 40px 32px
+.unilogin-component-footer-section
+  display: flex
+  justify-content: space-between
+  align-items: flex-end
+  padding: 18px 40px 32px
 
-    +media(s)
-      padding: 15px
-      flex-direction: column
-      justify-content: center
-      align-items: center
-
-  .unilogin-component-footer-section:empty
-    display: none
-
-  .footer-deny-btn,
-  .footer-approve-btn
-    width: 170px
-    height: 40px
-    border-radius: 3px
-    font-weight: 500
-    font-size: 14px
-    line-height: 17px
-    text-align: center
-
-  .footer-approve-btn
-    margin-left: 12px
-
-  .footer-buttons-row
-    display: flex
+  +media(s)
+    padding: 15px
+    flex-direction: column
+    justify-content: center
     align-items: center
 
-    +media(s)
-      margin: 30px 0 10px
+.unilogin-component-footer-section:empty
+  display: none
+
+.footer-deny-btn,
+.footer-approve-btn
+  width: 170px
+  height: 40px
+  border-radius: 3px
+  font-weight: 500
+  font-size: 14px
+  line-height: 17px
+  text-align: center
+
+.footer-approve-btn
+  margin-left: 12px
+
+.footer-buttons-row
+  display: flex
+  align-items: center
+
+  +media(s)
+    margin: 30px 0 10px
