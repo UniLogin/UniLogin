@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@ramp-network/ramp-instant-sdk": "^1.7.0",
-    "@restless/sanitizers": "^0.2.2",
+    "@restless/sanitizers": "^0.2.3",
     "@universal-login/commons": "0.5.7",
     "@universal-login/sdk": "0.5.7",
     "dotenv": "^8.1.0",
@@ -33,7 +33,7 @@
     "react-router-dom": "^5.1.2",
     "react-transition-group": "^4.2.2",
     "react-use-mutable": "^0.1.0",
-    "reactive-properties": "^0.1.5",
+    "reactive-properties": "^0.1.8",
     "use-subscription": "^1.0.0"
   },
   "peerDependencies": {
