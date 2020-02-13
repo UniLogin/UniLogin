@@ -29,7 +29,6 @@ export function CreateTopUp() {
           history.push('/selectDeployName');
         }}
         modalClassName="topup-modal-wrapper"
-        topUpClassName="jarvis-styles"
         logoColor="black"
       />
     </div>

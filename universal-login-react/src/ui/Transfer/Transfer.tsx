@@ -61,7 +61,7 @@ export const Transfer = ({transferService, onTransferTriggered, transferClassNam
             errors={errors.to}
           />
         </div>
-        <FooterSection className={transferClassName}>
+        <FooterSection>
           <GasPrice
             isDeployed={true}
             deployedWallet={transferService.deployedWallet}

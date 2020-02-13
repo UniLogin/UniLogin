@@ -9,6 +9,9 @@ import {countries} from '../../../core/utils/countries';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {IPGeolocationService} from '../../../integration/http/IPGeolocationService';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
+import {classForComponent} from '../../utils/classFor';
+import {Label} from '../../commons/Form/Label';
+import {InfoText} from '../../commons/Text/InfoText';
 
 export interface TopUpWithFiatProps {
   walletService: WalletService;
@@ -52,31 +55,20 @@ export const TopUpWithFiat = ({walletService, logoColor, topUpProviderSupportSer
   useAsyncEffect(recognizeUserCountry, []);
 
   return (
-    <div className="top-up-body">
-      <div className="top-up-body-inner">
+    <div className={classForComponent('top-up-body')}>
+      <div className={classForComponent('top-up-body-inner')}>
         <div className="fiat fiat-selected">
-          <div className="fiat-inputs">
-            <div className="fiat-input-item">
-              <p className="top-up-label">Country</p>
-              <CountryDropdown
-                selectedCountry={country}
-                setCountry={changeCountry}
-                setCurrency={setCurrency}
-              />
-            </div>
-            {topUpProviderSupportService.isInputAmountUsed(paymentMethod) &&
-              <div className="fiat-input-item">
-                <p className="top-up-label">Amount</p>
-                <AmountInput
-                  selectedCurrency={currency}
-                  setCurrency={setCurrency}
-                  amount={amount}
-                  onChange={onAmountChange}
-                />
-              </div>}
-          </div>
+          <Label>Country</Label>
+          <CountryDropdown
+            selectedCountry={country}
+            setCountry={changeCountry}
+            setCurrency={setCurrency}
+          />
           {!!country && <>
-            <p className="top-up-label fiat-payment-methods-title">Payment method</p>
+            <p className={`
+              ${classForComponent('top-up-label')}
+              ${classForComponent('fiat-methods-title')}
+            `}>Payment method</p>
             <FiatPaymentMethods
               selectedCountry={country}
               supportService={topUpProviderSupportService}
@@ -85,7 +77,19 @@ export const TopUpWithFiat = ({walletService, logoColor, topUpProviderSupportSer
               logoColor={logoColor}
             />
           </>}
-          <div className="fiat-bottom">
+          {topUpProviderSupportService.isInputAmountUsed(paymentMethod) &&
+            <>
+              <Label>Amount</Label>
+              <AmountInput
+                selectedCurrency={currency}
+                setCurrency={setCurrency}
+                amount={amount}
+                onChange={onAmountChange}
+              />
+              <InfoText>Minimum amount is 30 GBP</InfoText>
+            </>
+          }
+          <div className={classForComponent('fiat-bottom')}>
             {!!country && <FiatFooter paymentMethod={paymentMethod} walletService={walletService} />}
           </div>
         </div>
