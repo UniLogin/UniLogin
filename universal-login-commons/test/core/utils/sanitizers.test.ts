@@ -5,8 +5,9 @@ import {cast} from '@restless/sanitizers';
 import {asGasParameters} from '../../../src/core/utils/sanitizers/asGasParameters';
 import {asTransferDetails, asHexString} from '../../../src';
 import {asBigNumber} from '../../../src/core/utils/sanitizers/asBigNumber';
+import {asApplicationInfo} from '../../../src/core/utils/sanitizers/asApplicationInfo';
 
-describe('sanitizers', () => {
+describe('UNIT: sanitizers', () => {
   describe('asBigNumber', () => {
     it('input to cast as BigNumber', () => {
       const expectedBigNumber = utils.bigNumberify('0');
@@ -76,6 +77,46 @@ describe('sanitizers', () => {
     it('Fails if not a hex', () => {
       const input = '0xa4ebe7c508b5ed32427f0d9fe1802fc2af027aada5e985ebc1e18ff8d11e854X';
       expect(() => cast(input, asHexString(66))).to.throw;
+    });
+  });
+
+  describe('asApplicationInfo', () => {
+    it('works for proper applicationInfo', () => {
+      const expectedApplicationInfo = {
+        applicationName: 'UniLogin',
+        logo: 'UniLogo',
+        type: 'web',
+      };
+      const applicationInfo = cast(expectedApplicationInfo, asApplicationInfo);
+      expect(applicationInfo).to.deep.eq(expectedApplicationInfo);
+    });
+
+    it('fails if parameter missing', () => {
+      const applicationInfo = {
+        applicationName: 'UniLogin',
+        logo: 'UniLogo',
+      };
+      expect(() => cast(applicationInfo, asApplicationInfo)).throws('Cannot cast');
+    });
+
+    it('works if all required fields present', () => {
+      const expectedApplicationInfo = {
+        applicationName: 'UniLogin',
+        logo: 'UniLogo',
+        type: 'web',
+      };
+      const appInfoWithExtraField = {...expectedApplicationInfo, extraField: 'extraField'};
+      const applicationInfo = cast(appInfoWithExtraField, asApplicationInfo);
+      expect(applicationInfo).to.deep.eq(expectedApplicationInfo);
+    });
+
+    it('fails if required parameter missing', () => {
+      const applicationInfo = {
+        applicationName: 'UniLogin',
+        logo: 'UniLogo',
+        extraField: 'extraField',
+      };
+      expect(() => cast(applicationInfo, asApplicationInfo)).throws('Cannot cast');
     });
   });
 });

@@ -2,6 +2,8 @@ import {RpcBridge} from './RpcBridge';
 import {DEFAULT_CONFIG} from './config';
 import {createIFrame} from './createIframe';
 import {State, waitFor} from 'reactive-properties';
+import {getApplicationInfoFromDocument} from './applicationInfo';
+import {buildIframeUrl} from './buildIframeUrl';
 
 export interface Provider {
   send: (msg: any, cb: (err: any, response: any) => void) => void;
@@ -19,7 +21,9 @@ export class ULIFrameProvider {
     private readonly config = DEFAULT_CONFIG,
     enablePicker = false,
   ) {
-    this.iframe = createIFrame(config.backendUrl + (enablePicker ? '?picker' : ''));
+    const applicationInfo = getApplicationInfoFromDocument();
+    const uriComponent = buildIframeUrl(config.backendUrl, applicationInfo, enablePicker);
+    this.iframe = createIFrame(uriComponent);
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
       this.handleRpc.bind(this),
