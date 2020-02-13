@@ -229,10 +229,19 @@
     font-size: 14px
     color: #6e798e
 
-  .copy-btn
+  .unilogin-component-copy-button
     outline: none
+    border: none
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 50px
+    height: 45px
+    margin-left: 5px
+    position: absolute
+    right: 0
 
-  .copy-btn::before
+  .unilogin-component-copy-button::before
     position: absolute
     top: 50%
     left: 50%
@@ -245,7 +254,19 @@
     background-color: #2ec9f5
 
   .unilogin-component-copy-feedback::after
+    content: ''
+    position: absolute
+    bottom: 0
+    left: calc(50% - 1px)
+    width: 6px
+    height: 6px
+    transform: rotate(-45deg) translateX(-50%)
     background-color: #2ec9f5
+
+  .unilogin-component-copy-button:active .unilogin-component-copy-feedback
+    visibility: visible
+    opacity: 1
+    transition: opacity 0s linear
 
   .address-modal-text
     margin-top: 12px
