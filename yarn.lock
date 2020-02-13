@@ -1083,6 +1083,11 @@
   resolved "https://registry.yarnpkg.com/@restless/sanitizers/-/sanitizers-0.2.2.tgz#bb54d54f92168a839d66daa621359a470cf2f3a0"
   integrity sha512-Cv7NWOChJa3QIRYzjbMQkemLqrkKxH4FHnNTaUL5sDFzHQDSsz2fQ1LBp3t+VDdfn7CmNJNs9XwJ92TsJZKtrA==
 
+"@restless/sanitizers@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@restless/sanitizers/-/sanitizers-0.2.3.tgz#e73412397c94c94da55c5a3dbf35eaecd6dfe257"
+  integrity sha512-RoBmMXFJ43m/slRz543TZjbTgGHXnpi23iviU4oZ+3W78d1y/IaVSk7lJ0+CcgeA54OGsHPnPSkPv4hOEQUH3A==
+
 "@rollup/plugin-commonjs@^11.0.2":
   version "11.0.2"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-11.0.2.tgz#837cc6950752327cb90177b608f0928a4e60b582"
@@ -11238,15 +11243,10 @@ react@^16.8.6:
     prop-types "^15.6.2"
     scheduler "^0.13.6"
 
-reactive-properties@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/reactive-properties/-/reactive-properties-0.1.5.tgz#14ce6f64a5c1c1fce420a273a49c9c481b2a7333"
-  integrity sha512-HlS6uaOSasRQRNuGFDyNvv0gEqbmS9FJMqQWwEeYw/0GHobpQfmhf7KzD+d0U+vO/2TfRXMkbM7DYxEuR48xNQ==
-
-reactive-properties@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/reactive-properties/-/reactive-properties-0.1.7.tgz#8479f7830fe3b175b6cad8eebc1fda74468a3af6"
-  integrity sha512-AUWw697Wm0YyBd7sD5B7gt69py2pmVhujkWIpvPmTweD00gc0YaW3vHiS6CmxQn9uIeESqDnPmlSQ8ZW5sIXTg==
+reactive-properties@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/reactive-properties/-/reactive-properties-0.1.8.tgz#5235a51f76bbe891d2c6646da0f2d94a2ff605a3"
+  integrity sha512-l5Y/9QRgrDRhSYkpeoSmxNlX9p2BSRu+4MhOb0SjWzMp67diWaXRJuigZIRwbT6pWRMfQEnOFC5WmZteN/f8wQ==
 
 read-cmd-shim@^1.0.1:
   version "1.0.1"
