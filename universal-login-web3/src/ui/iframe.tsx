@@ -4,6 +4,7 @@ import {combine, flat, forEach, map, State} from 'reactive-properties';
 import {setupStrategies} from '../api/setupStrategies';
 import {Web3PickerProvider} from '../Web3PickerProvider';
 import {EMPTY_LOGO} from '@universal-login/commons';
+import {ProviderOnlyIframeInitializer} from '../services/ProviderOnlyIframeInitializer';
 
 function setIframeVisibility(bridge: RpcBridge, isVisible: boolean) {
   bridge.send({method: 'ul_set_iframe_visibility', params: [isVisible]}, () => {});
@@ -11,23 +12,6 @@ function setIframeVisibility(bridge: RpcBridge, isVisible: boolean) {
 
 function sendReadySignal(bridge: RpcBridge) {
   bridge.send({method: 'ul_ready'}, () => {});
-}
-
-async function initProviderOnly() {
-  const universalLogin = ULWeb3Provider.getDefaultProvider('kovan');
-  await universalLogin.init();
-
-  const bridge = new RpcBridge(
-    msg => window.top.postMessage(msg, '*'),
-    universalLogin.send.bind(universalLogin) as any,
-  );
-  window.addEventListener('message', e => bridge.handleMessage(e.data));
-
-  universalLogin.isUiVisible.pipe(forEach(
-    isVisible => setIframeVisibility(bridge, isVisible),
-  ));
-
-  sendReadySignal(bridge);
 }
 
 function initPicker() {
@@ -59,5 +43,6 @@ function initPicker() {
 if (window.location.search.includes('picker')) {
   initPicker();
 } else {
-  initProviderOnly();
+  const providerOnlyIframeInitializer = new ProviderOnlyIframeInitializer();
+  providerOnlyIframeInitializer.init()
 }
