@@ -7,6 +7,7 @@ import '../../styles/themes/Legacy/waitingForOnRampProviderThemeLegacy.sass';
 import '../../styles/themes/UniLogin/waitingForOnRampProviderThemeUniLogin.sass';
 import '../../styles/themes/Jarvis/waitingForOnRampProviderThemeJarvis.sass';
 import {classForComponent, useClassFor} from '../../utils/classFor';
+import {ModalWrapper} from '../../Modals/ModalWrapper';
 
 export interface WaitingForOnRampProviderProps {
   onRampProviderName: OnRampProviderName;
@@ -19,15 +20,17 @@ export const WaitingForOnRampProvider = ({className, onRampProviderName, logoCol
   const note = `Waiting for ${onRampProviderName} to send you money`;
   return (
     <div className={useClassFor('waiting-for-ramp')}>
-      <div className={getStyleForTopLevelComponent(className)}>
-        <div className={classForComponent('waiting-for-ramp')}>
-          <div className={classForComponent('waiting-for-ramp-content')}>
-            <img src={onRampProviderLogo} className={classForComponent('waiting-for-ramp-img')}/>
-            <WaitingFor action={note} className={className}/>
-            <div className={classForComponent('waitingforonramp-pending-img')}></div>
+      <ModalWrapper>
+        <div className={getStyleForTopLevelComponent(className)}>
+          <div className={classForComponent('waiting-for-ramp')}>
+            <div className={classForComponent('waiting-for-ramp-content')}>
+              <img src={onRampProviderLogo} className={classForComponent('waiting-for-ramp-img')}/>
+              <WaitingFor action={note} className={className}/>
+              <div className={classForComponent('waitingforonramp-pending-img')}></div>
+            </div>
           </div>
         </div>
-      </div>
+      </ModalWrapper>
     </div>
   );
 };
