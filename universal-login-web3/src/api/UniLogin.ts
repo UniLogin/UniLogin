@@ -18,12 +18,11 @@ export class UniLogin {
     return web3PickerProvider;
   }
 
-  static async showPicker(web3: Web3, overrideStyles?: Record<string, string>) {
+  static async showUniButton(web3: Web3, overrideStyles?: Record<string, string>) {
     const currentProvider = web3.currentProvider;
     if (!(currentProvider instanceof Web3PickerProvider)) {
       return;
     }
-    await currentProvider.show();
     if (currentProvider.providerName === 'UniLogin') {
       (currentProvider.currentProvider.get()! as ULWeb3Provider).initWeb3Button(overrideStyles);
     }
