@@ -1,12 +1,12 @@
 import {Web3PickerProvider} from '../Web3PickerProvider';
 import {setupStrategies} from '../api/setupStrategies';
-import {combine, flat, forEach, map, State} from 'reactive-properties';
+import {combine, flat, map, Property, State} from 'reactive-properties';
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {EMPTY_LOGO} from '@universal-login/commons';
 import {IframeInitializerBase} from './IframeInitializerBase';
 import {Provider} from 'web3/providers';
 
-export class PickerIframeInitializer extends IframeInitializerBase{
+export class PickerIframeInitializer extends IframeInitializerBase {
   private readonly provider: Web3PickerProvider;
 
   constructor() {
@@ -16,22 +16,17 @@ export class PickerIframeInitializer extends IframeInitializerBase{
     this.provider = new Web3PickerProvider(web3ProviderFactories, this.bridge);
   }
 
-  init() {
-    const isUiVisible = combine([
+  protected getProvider(): Provider {
+    return this.provider;
+  }
+
+  protected getIsUiVisible(): Property<boolean> {
+    return combine([
       this.provider.isVisible,
       this.provider.currentProvider.pipe(
         map(provider => provider instanceof ULWeb3Provider ? provider.isUiVisible : new State(false)),
         flat,
       ),
     ], (a, b) => a || b);
-    isUiVisible.pipe(forEach(
-      isVisible => this.setIframeVisibility(isVisible),
-    ));
-
-    this.sendReadySignal();
-  }
-
-  protected getProvider(): Provider {
-    return this.provider;
   }
 }

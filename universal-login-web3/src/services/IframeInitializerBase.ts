@@ -1,10 +1,9 @@
 import {RpcBridge} from './RpcBridge';
 import {Provider} from 'web3/providers';
+import {forEach, Property} from 'reactive-properties';
 
 export abstract class IframeInitializerBase {
   protected readonly bridge: RpcBridge;
-
-  protected abstract getProvider(): Provider;
 
   constructor() {
     this.bridge = new RpcBridge(
@@ -14,11 +13,23 @@ export abstract class IframeInitializerBase {
     window.addEventListener('message', e => this.bridge.handleMessage(e.data));
   }
 
-  protected setIframeVisibility(isVisible: boolean) {
+  protected abstract getProvider(): Provider;
+
+  protected abstract getIsUiVisible(): Property<boolean>;
+
+  async start() {
+    this.getIsUiVisible().pipe(forEach(
+      isVisible => this.setIframeVisibility(isVisible),
+    ));
+
+    this.sendReadySignal();
+  }
+
+  private setIframeVisibility(isVisible: boolean) {
     this.bridge.send({method: 'ul_set_iframe_visibility', params: [isVisible]}, () => {});
   }
 
-  protected sendReadySignal() {
+  private sendReadySignal() {
     this.bridge.send({method: 'ul_ready'}, () => {});
   }
 }
