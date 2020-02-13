@@ -1,16 +1,9 @@
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {RpcBridge} from './RpcBridge';
 import {forEach} from 'reactive-properties';
+import {IframeInitializerBase} from './IframeInitializerBase';
 
-export class ProviderOnlyIframeInitializer {
-
-  setIframeVisibility(bridge: RpcBridge, isVisible: boolean) {
-    bridge.send({method: 'ul_set_iframe_visibility', params: [isVisible]}, () => {});
-  }
-
-  sendReadySignal(bridge: RpcBridge) {
-    bridge.send({method: 'ul_ready'}, () => {});
-  }
+export class ProviderOnlyIframeInitializer extends IframeInitializerBase{
 
   async init() {
     const universalLogin = ULWeb3Provider.getDefaultProvider('kovan');

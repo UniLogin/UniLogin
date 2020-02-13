@@ -4,16 +4,10 @@ import {setupStrategies} from '../api/setupStrategies';
 import {combine, flat, forEach, map, State} from 'reactive-properties';
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {EMPTY_LOGO} from '@universal-login/commons';
+import {IframeInitializerBase} from './IframeInitializerBase';
 
-export class PickerIframeInitializer {
+export class PickerIframeInitializer extends IframeInitializerBase{
 
-  setIframeVisibility(bridge: RpcBridge, isVisible: boolean) {
-    bridge.send({method: 'ul_set_iframe_visibility', params: [isVisible]}, () => {});
-  }
-
-  sendReadySignal(bridge: RpcBridge) {
-    bridge.send({method: 'ul_ready'}, () => {});
-  }
   init() {
     // eslint-disable-next-line prefer-const
     let web3PickerProvider: Web3PickerProvider;
