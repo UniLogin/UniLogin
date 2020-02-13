@@ -87,13 +87,11 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
     );
   } else if (modal === TopUpComponentType.waitForRamp) {
     return (
-      <ModalWrapper modalClassName={modalClassName}>
-        <WaitingForOnRampProvider
-          className={modalClassName}
-          onRampProviderName={'ramp'}
-          logoColor={logoColor}
-        />
-      </ModalWrapper>
+      <WaitingForOnRampProvider
+        className={modalClassName}
+        onRampProviderName={'ramp'}
+        logoColor={logoColor}
+      />
     );
   } else {
     throw new Error(`Unsupported type: ${modal}`);
