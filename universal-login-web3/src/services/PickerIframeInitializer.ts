@@ -7,16 +7,19 @@ import {IframeInitializerBase} from './IframeInitializerBase';
 import {Provider} from 'web3/providers';
 
 export class PickerIframeInitializer extends IframeInitializerBase{
-  private provider: Web3PickerProvider | undefined;
+  private readonly provider: Web3PickerProvider;
 
-  init() {
+  constructor() {
+    super();
     const applicationInfo = {applicationName: 'Embeded', logo: EMPTY_LOGO, type: 'laptop'}; // TODO: get from query
     const web3ProviderFactories = setupStrategies(this.bridge, ['Metamask', 'UniLogin'], {applicationInfo});
     this.provider = new Web3PickerProvider(web3ProviderFactories, this.bridge);
+  }
 
+  init() {
     const isUiVisible = combine([
-      this.provider!.isVisible,
-      this.provider!.currentProvider.pipe(
+      this.provider.isVisible,
+      this.provider.currentProvider.pipe(
         map(provider => provider instanceof ULWeb3Provider ? provider.isUiVisible : new State(false)),
         flat,
       ),
@@ -29,6 +32,6 @@ export class PickerIframeInitializer extends IframeInitializerBase{
   }
 
   protected getProvider(): Provider {
-    return this.provider!;
+    return this.provider;
   }
 }

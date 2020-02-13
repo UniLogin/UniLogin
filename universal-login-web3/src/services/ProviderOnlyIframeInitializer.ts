@@ -4,13 +4,17 @@ import {IframeInitializerBase} from './IframeInitializerBase';
 import {Provider} from 'web3/providers';
 
 export class ProviderOnlyIframeInitializer extends IframeInitializerBase{
-  private provider: ULWeb3Provider | undefined;
+  private readonly provider: ULWeb3Provider;
+
+  constructor() {
+    super();
+    this.provider = ULWeb3Provider.getDefaultProvider('kovan');
+  }
 
   async init() {
-    this.provider = ULWeb3Provider.getDefaultProvider('kovan');
-    await this.provider!.init();
+    await this.provider.init();
 
-    this.provider!.isUiVisible.pipe(forEach(
+    this.provider.isUiVisible.pipe(forEach(
       isVisible => this.setIframeVisibility(isVisible),
     ));
 
@@ -18,6 +22,6 @@ export class ProviderOnlyIframeInitializer extends IframeInitializerBase{
   }
 
   protected getProvider(): Provider {
-    return this.provider!;
+    return this.provider;
   }
 }
