@@ -32,17 +32,17 @@ export class ULIFrameProvider {
   private observeDomForUlButtons() {
     const mutationObserver = new MutationObserver(mutations => {
       for (const mutation of mutations) {
-        if(mutation.target instanceof Element) {
+        if (mutation.target instanceof Element) {
           mutation.target.querySelectorAll(`button#${this.config.ulButtonId}`)
             .forEach(element => {
-              if(element instanceof HTMLButtonElement) {
-                this.initUlButton(element)
+              if (element instanceof HTMLButtonElement) {
+                this.initUlButton(element);
               }
             });
         }
       }
     });
-    mutationObserver.observe(document.body, { childList: true, subtree: true })
+    mutationObserver.observe(document.body, {childList: true, subtree: true});
   }
 
   private handleRpc(msg: any, cb: (error: any, response: any) => void) {
