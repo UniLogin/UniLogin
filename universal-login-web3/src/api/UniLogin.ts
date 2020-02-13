@@ -27,4 +27,12 @@ export class UniLogin {
       (currentProvider.currentProvider.get()! as ULWeb3Provider).initWeb3Button(overrideStyles);
     }
   }
+
+  static async isUniLogin(web3: Web3) {
+    const currentProvider = web3.currentProvider;
+    if (!(currentProvider instanceof Web3PickerProvider)) {
+      return false;
+    }
+    return (currentProvider.currentProvider.get()! as ULWeb3Provider).isUniLogin;
+  }
 }
