@@ -1,13 +1,10 @@
 import {Web3ProviderFactory} from '../models/Web3ProviderFactory';
-import {Strategy} from './UniLogin';
-import {getConfigForNetwork, Network} from '../config';
-import {ULWeb3Provider} from '../ULWeb3Provider';
+import {Strategy, UniLogin} from './UniLogin';
 import {ApplicationInfo} from '@universal-login/commons';
 import {StorageService} from '@universal-login/react';
 import UniLoginLogo from '../ui/assets/U.svg';
 import MetamaskLogo from '../ui/assets/MetaMaskLogoTitle.svg';
 import {Provider} from 'web3/providers';
-import {getNetworkId} from '../utils/getNetworkId';
 
 export interface SetupUniLoginOverrides {
   applicationInfo?: ApplicationInfo;
@@ -17,17 +14,7 @@ export interface SetupUniLoginOverrides {
 export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverrides) => ({
   name: 'UniLogin',
   icon: UniLoginLogo,
-  create: async () => {
-    const networkVersion = await getNetworkId(provider) as Network;
-    const uniLoginConfig = getConfigForNetwork(networkVersion);
-    const ulProvider = new ULWeb3Provider({
-      ...uniLoginConfig,
-      applicationInfo: overrides?.applicationInfo,
-      storageService: overrides?.storageService,
-    });
-    await ulProvider.init();
-    return ulProvider;
-  },
+  create: () => UniLogin.createULProvider(provider, overrides),
 });
 
 export const setupStrategies = (provider: Provider, strategies: Strategy[], overrides?: SetupUniLoginOverrides) => {

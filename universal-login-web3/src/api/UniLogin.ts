@@ -1,10 +1,14 @@
 import Web3 from 'web3';
 import {Web3PickerProvider} from '../Web3PickerProvider';
 import {Web3ProviderFactory} from '../models/Web3ProviderFactory';
-import {setupStrategies} from './setupStrategies';
+import {setupStrategies, SetupUniLoginOverrides} from './setupStrategies';
 import {getApplicationInfoFromDocument} from '../ui/utils/applicationInfo';
 import {ApplicationInfo} from '@universal-login/commons';
 import {ULWeb3Provider} from '../ULWeb3Provider';
+import {getNetworkId} from '../utils/getNetworkId';
+import {getConfigForNetwork, Network} from '../config';
+import {JsonRpcProvider} from 'ethers/providers';
+import {Provider} from 'web3/providers';
 
 export type Strategy = 'UniLogin' | 'Metamask' | Web3ProviderFactory;
 
@@ -35,4 +39,16 @@ export class UniLogin {
     }
     return (currentProvider.currentProvider.get()! as ULWeb3Provider).isUniLogin;
   }
+
+  static async createULProvider(provider: Provider | JsonRpcProvider, overrides?: SetupUniLoginOverrides) {
+    const networkVersion = await getNetworkId(provider) as Network;
+    const uniLoginConfig = getConfigForNetwork(networkVersion);
+    const ulProvider = new ULWeb3Provider({
+      ...uniLoginConfig,
+      applicationInfo: overrides?.applicationInfo,
+      storageService: overrides?.storageService,
+    });
+    await ulProvider.init();
+    return ulProvider;
+  };
 }
