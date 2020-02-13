@@ -30,7 +30,7 @@ describe('INT: RpcBridge', () => {
     expect(resp).to.be.calledWith(null, {id: 1, response: 'bar'});
   });
 
-  it('can send a response to message twice', () => {
+  it('can not send a response to message twice', () => {
     const resp = sinon.fake();
     bobHandle.callsFake((msg, cb) => {
       cb(null, {id: 1, response: 'bar'});
@@ -39,15 +39,15 @@ describe('INT: RpcBridge', () => {
     alice.send({id: 1, method: 'foo'}, resp);
     expect(bobHandle).to.be.calledWith({id: 1, method: 'foo'});
     expect(resp).to.be.calledWith(null, {id: 1, response: 'bar'});
-    expect(resp).to.be.calledWith(null, {id: 1, response: 'baz'});
+    expect(resp).to.be.calledOnce;
   });
 
-  it('response to a message without an id is a noop', () => {
+  it('can respond to a message without an id', () => {
     const resp = sinon.fake();
     bobHandle.callsFake((msg, cb) => cb(null, {id: 1, response: 'bar'}));
     alice.send({method: 'foo'}, resp);
     expect(bobHandle).to.be.calledWith({method: 'foo'});
-    expect(resp).to.not.be.called;
+    expect(resp).to.be.calledWith(null, {id: 1, response: 'bar'});
   });
 
   it('can respond with an error to a message with id', () => {
@@ -58,13 +58,12 @@ describe('INT: RpcBridge', () => {
     expect(resp).to.be.calledWith('error');
   });
 
-  it('error responses to a message without an id are ignored', () => {
+  it('can respond with an error to a message without an id', () => {
     const resp = sinon.fake();
     bobHandle.callsFake((msg, cb) => cb('error'));
     alice.send({method: 'foo'}, resp);
     expect(bobHandle).to.be.calledWith({method: 'foo'});
-    expect(resp).to.not.be.called;
-    expect(aliceHandle).to.not.be.called;
+    expect(resp).to.be.calledWith('error');
   });
 
   it('filters out junk messages', () => {
