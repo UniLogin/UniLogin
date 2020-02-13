@@ -16,7 +16,7 @@ export class ULIFrameProvider {
 
   constructor(
     private readonly upstream: Provider,
-    config = DEFAULT_CONFIG,
+    private readonly config = DEFAULT_CONFIG,
     enablePicker = false,
   ) {
     this.iframe = createIFrame(config.backendUrl + (enablePicker ? '?picker' : ''));
@@ -25,6 +25,24 @@ export class ULIFrameProvider {
       this.handleRpc.bind(this),
     );
     window.addEventListener('message', e => this.bridge.handleMessage(e.data));
+
+    this.observeDomForUlButtons();
+  }
+
+  private observeDomForUlButtons() {
+    const mutationObserver = new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if (mutation.target instanceof Element) {
+          mutation.target.querySelectorAll(`button#${this.config.ulButtonId}`)
+            .forEach(element => {
+              if (element instanceof HTMLButtonElement) {
+                this.initUlButton(element);
+              }
+            });
+        }
+      }
+    });
+    mutationObserver.observe(document.body, {childList: true, subtree: true});
   }
 
   private handleRpc(msg: any, cb: (error: any, response: any) => void) {
@@ -75,5 +93,25 @@ export class ULIFrameProvider {
 
   closeDashboard() {
     this.setDashboardVisibility(false);
+  }
+
+  private boundOpenDashboard = this.openDashboard.bind(this);
+
+  initUlButton(element: HTMLButtonElement) {
+    Object.assign(element.style, {
+      display: 'inline-block',
+      background: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      position: 'relative',
+      width: '60px',
+      height: '60px',
+    });
+
+    element.innerHTML = `
+      <img src="${this.config.logoUrl}" alt="U" >
+    `;
+
+    element.addEventListener('click', this.boundOpenDashboard);
   }
 }
