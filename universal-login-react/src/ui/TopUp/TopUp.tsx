@@ -52,7 +52,7 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
     return <Spinner />;
   } else if (modal === TopUpComponentType.choose) {
     if (isModal) {
-      return <ModalWrapper message='This is a test environment running on Ropsten network' modalClassName="top-up-modal" hideModal={hideModal}>{getTopUpMethodChooser()}</ModalWrapper>;
+      return <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>{getTopUpMethodChooser()}</ModalWrapper>;
     }
     return getTopUpMethodChooser();
   } else if (modal === TopUpComponentType.safello) {
