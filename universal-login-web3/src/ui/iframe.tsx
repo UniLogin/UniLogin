@@ -1,6 +1,6 @@
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {RpcBridge} from '../services/RpcBridge';
-import {forEach} from 'reactive-properties';
+import {combine, flat, forEach, map, State} from 'reactive-properties';
 import {setupStrategies} from '../api/setupStrategies';
 import {Web3PickerProvider} from '../Web3PickerProvider';
 import {EMPTY_LOGO} from '@universal-login/commons';
@@ -42,12 +42,16 @@ function initPicker() {
   const web3ProviderFactories = setupStrategies(bridge, ['Metamask', 'UniLogin'], {applicationInfo});
   web3PickerProvider = new Web3PickerProvider(web3ProviderFactories, bridge);
 
-  web3PickerProvider.isVisible.pipe(forEach(isVisible => setIframeVisibility(bridge, isVisible)));
-  web3PickerProvider.currentProvider.pipe(forEach(provider => {
-    if ((provider as any)?.isUniLogin) {
-      return (provider as ULWeb3Provider).isUiVisible.pipe(forEach(isVisible => setIframeVisibility(bridge, isVisible)));
-    }
-  }));
+  const isUiVisible = combine([
+    web3PickerProvider.isVisible,
+    web3PickerProvider.currentProvider.pipe(
+      map(provider => provider instanceof ULWeb3Provider ? provider.isUiVisible : new State(false)),
+      flat,
+    ),
+  ], (a, b) => a || b);
+  isUiVisible.pipe(forEach(
+    isVisible => setIframeVisibility(bridge, isVisible),
+  ));
 
   sendReadySignal(bridge);
 }
