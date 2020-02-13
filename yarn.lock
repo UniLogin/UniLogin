@@ -1078,10 +1078,15 @@
     "@types/express" "^4.16.0"
     express "^4.16.0"
 
-"@restless/sanitizers@^0.2.0", "@restless/sanitizers@^0.2.2":
+"@restless/sanitizers@^0.2.0":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@restless/sanitizers/-/sanitizers-0.2.2.tgz#bb54d54f92168a839d66daa621359a470cf2f3a0"
   integrity sha512-Cv7NWOChJa3QIRYzjbMQkemLqrkKxH4FHnNTaUL5sDFzHQDSsz2fQ1LBp3t+VDdfn7CmNJNs9XwJ92TsJZKtrA==
+
+"@restless/sanitizers@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@restless/sanitizers/-/sanitizers-0.2.3.tgz#e73412397c94c94da55c5a3dbf35eaecd6dfe257"
+  integrity sha512-RoBmMXFJ43m/slRz543TZjbTgGHXnpi23iviU4oZ+3W78d1y/IaVSk7lJ0+CcgeA54OGsHPnPSkPv4hOEQUH3A==
 
 "@rollup/plugin-commonjs@^11.0.2":
   version "11.0.2"

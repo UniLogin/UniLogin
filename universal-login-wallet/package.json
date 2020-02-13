@@ -16,7 +16,7 @@
     "start:production": "webpack-dev-server --mode production"
   },
   "dependencies": {
-    "@restless/sanitizers": "^0.2.2",
+    "@restless/sanitizers": "^0.2.3",
     "@universal-login/commons": "0.5.7",
     "@universal-login/react": "0.5.7",
     "@universal-login/sdk": "0.5.7",
