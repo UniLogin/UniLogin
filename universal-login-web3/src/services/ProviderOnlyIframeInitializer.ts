@@ -1,24 +1,23 @@
 import {ULWeb3Provider} from '../ULWeb3Provider';
-import {RpcBridge} from './RpcBridge';
 import {forEach} from 'reactive-properties';
 import {IframeInitializerBase} from './IframeInitializerBase';
+import {Provider} from 'web3/providers';
 
 export class ProviderOnlyIframeInitializer extends IframeInitializerBase{
+  private provider: ULWeb3Provider | undefined;
 
   async init() {
-    const universalLogin = ULWeb3Provider.getDefaultProvider('kovan');
-    await universalLogin.init();
+    this.provider = ULWeb3Provider.getDefaultProvider('kovan');
+    await this.provider!.init();
 
-    const bridge = new RpcBridge(
-      msg => window.top.postMessage(msg, '*'),
-      universalLogin.send.bind(universalLogin) as any,
-    );
-    window.addEventListener('message', e => bridge.handleMessage(e.data));
-
-    universalLogin.isUiVisible.pipe(forEach(
-      isVisible => this.setIframeVisibility(bridge, isVisible),
+    this.provider!.isUiVisible.pipe(forEach(
+      isVisible => this.setIframeVisibility(isVisible),
     ));
 
-    this.sendReadySignal(bridge);
+    this.sendReadySignal();
+  }
+
+  protected getProvider(): Provider {
+    return this.provider!;
   }
 }
