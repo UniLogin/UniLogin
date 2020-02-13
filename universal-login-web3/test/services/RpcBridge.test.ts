@@ -39,7 +39,7 @@ describe('INT: RpcBridge', () => {
     alice.send({id: 1, method: 'foo'}, resp);
     expect(bobHandle).to.be.calledWith({id: 1, method: 'foo'});
     expect(resp).to.be.calledWith(null, {id: 1, response: 'bar'});
-    expect(resp).to.be.calledOnce
+    expect(resp).to.be.calledOnce;
   });
 
   it('can respond to a message without an id', () => {
