@@ -6,7 +6,7 @@ import '../../styles/base/waitingForOnRampProvider.sass';
 import '../../styles/themes/Legacy/waitingForOnRampProviderThemeLegacy.sass';
 import '../../styles/themes/UniLogin/waitingForOnRampProviderThemeUniLogin.sass';
 import '../../styles/themes/Jarvis/waitingForOnRampProviderThemeJarvis.sass';
-import {classForComponent, useClassFor} from '../../utils/classFor';
+import {classForComponent, useClassFor, useThemeName} from '../../utils/classFor';
 import {ModalWrapper} from '../../Modals/ModalWrapper';
 
 export interface WaitingForOnRampProviderProps {
@@ -15,8 +15,9 @@ export interface WaitingForOnRampProviderProps {
   logoColor?: string;
 }
 
-export const WaitingForOnRampProvider = ({className, onRampProviderName, logoColor = 'white'}: WaitingForOnRampProviderProps) => {
-  const onRampProviderLogo = getOnRampProviderLogo(onRampProviderName, logoColor);
+export const WaitingForOnRampProvider = ({className, onRampProviderName, logoColor}: WaitingForOnRampProviderProps) => {
+  const logoColorByTheme = (useThemeName() === 'default') ? 'white' : 'black';
+  const onRampProviderLogo = getOnRampProviderLogo(onRampProviderName, logoColor || logoColorByTheme);
   const note = `Waiting for ${onRampProviderName} to send you money`;
   return (
     <div className={useClassFor('waiting-for-ramp')}>

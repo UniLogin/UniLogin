@@ -177,9 +177,7 @@ export const App = () => {
               <Route exact path="/settings" render={() => <Settings deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)} />} />
               <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />
               <Route exact path="/waiting">
-                <ModalWrapper>
-                  <WaitingForOnRampProvider onRampProviderName={'ramp'} />
-                </ModalWrapper>
+                <WaitingForOnRampProvider onRampProviderName={'ramp'} />
               </Route>
               <Route exact path="/waitForTransaction">
                 <div>
