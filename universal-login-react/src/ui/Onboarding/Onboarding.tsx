@@ -9,6 +9,8 @@ import {Route, MemoryRouter} from 'react-router-dom';
 import {Switch} from 'react-router';
 import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocation';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
+import {classForComponent} from '../utils/classFor';
+import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
 
 export interface OnboardingProps {
   sdk: UniversalLoginSDK;
@@ -68,7 +70,7 @@ export const Onboarding = (props: OnboardingProps) => {
             <Route
               path="/connectFlow"
               render={({history, location}) =>
-                <ModalWrapper hideModal={() => history.push('/selector')}>
+                <ModalWrapper modalClassName={classForComponent('connection-modal-default-theme')} hideModal={() => history.push('/selector')}>
                   <ConnectionFlow
                     basePath="/connectFlow"
                     onCancel={() => history.push('/selector')}

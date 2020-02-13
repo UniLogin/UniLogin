@@ -1,476 +1,6 @@
 @import helpers/breakpoints
 
-.top-up-modal
-  .modal-wrapper
-    +media(s)
-      padding: 0
-
-  .modal-close-btn
-    position: absolute
-    top: 20px
-    right: 25px
-    border: none
-
 .universal-login-topup
-  .top-up
-    display: flex
-    flex-direction: column
-    width: 970px
-    max-width: 100%
-    min-height: 670px
-
-  .top-up-header
-    display: flex
-    flex-direction: column
-    align-items: center
-    padding: 20px
-    flex-grow: 1
-    transition: flex-grow 0.2s linear
-
-  .top-up.method-selected .top-up-header
-    flex-grow: initial
-
-  .top-up-title
-    font-family: inherit
-    text-align: center
-
-  .top-up-radio-label
-    display: block
-    cursor: pointer
-
-  .top-up-radio-inner
-    position: relative
-    width: 132px
-    height: 132px
-    display: flex
-    align-items: center
-    justify-content: center
-    background: none
-    border: 1px solid
-
-  .top-up-radio:checked + .top-up-radio-inner
-    border: 1px solid #2ec9f5
-
-  .top-up-radio-label input
-    position: absolute
-    z-index: -1
-    opacity: 0
-    margin: 10px 0 0 20px
-
-  .top-up.method-selected .top-up-method
-    width: 270px
-    height: 98px
-
-  .top-up-method
-    width: 270px
-    height: 270px
-    transition: height 0.2s linear
-
-  .top-up-method .top-up-radio-inner
-    display: flex
-    flex-direction: column
-    justify-content: center
-    align-items: center
-    width: 100%
-    height: 100%
-
-  .top-up-methods
-    display: flex
-    align-items: center
-    flex-grow: 1
-    max-width: 100%
-    transition: all 0.2s linear
-
-  .top-up-method + .top-up-method
-    margin-left: 30px
-
-  .top-up-method-icons
-    display: flex
-    justify-content: center
-    align-items: center
-    margin-bottom: 30px
-    transition: all 0.2s linear
-
-  .top-up.method-selected .top-up-method-icons
-    margin-bottom: 8px
-
-  .top-up-method-icon
-    width: 50px
-    height: 50px
-
-  .top-up.method-selected .top-up-method-icon
-    width: 25px
-    height: 25px
-    transition: all 0.2s linear
-
-  .top-up-method-icon + .top-up-method-icon
-    margin-left: 12px
-
-  .top-up.method-selected .top-up-method-title
-    font-size: 14px
-    line-height: 17px
-
-  .top-up-method-title
-    margin: 0 0 8px
-    font-size: 18px
-    text-align: center
-    transition: all 0.2s linear
-
-  .top-up-method-text
-    max-width: 211px
-    margin: 0
-    font-size: 14px
-    text-align: center
-    line-height: 24px
-    transition: all 0.2s linear
-
-  .top-up.method-selected .top-up-method-text
-    font-size: 12px
-    line-height: 14px
-
-  .top-up.method-selected .top-up-body
-    flex-grow: 1
-
-  .top-up-body-inner
-    max-width: 570px
-    padding: 0 20px
-    margin: 0 auto
-
-  .crypto
-    opacity: 0
-    padding: 40px 0
-    transition: all 0.2s linear
-
-  .crypto-selected.crypto
-    opacity: 1
-
-  .top-up-label
-    font-size: 10px
-    margin: 0 0 8px
-    text-align: left
-    line-height: normal
-
-  .qr-code-wrapper
-    text-align: center
-    border: 1px solid #E1E1F0
-    background: #FFFFFF
-    margin: 25px 0px
-    padding: 25px 0px
-
-  .input-address-wrapper
-    background: #FFFFFF
-    border: 1px solid #E1E1F0
-    display: flex
-    align-items: center
-
-  .input-address
-    width: 100%
-    height: 45px
-    padding: 0 25px
-    background: #FFFFFF
-    font-size: 14px
-    color: #6e798e
-    border: none
-    text-overflow: ellipsis
-    overflow: hidden
-    white-space: nowrap
-
-  .copy-btn
-    position: relative
-    margin: 0
-    border: none
-    display: flex
-    align-items: center
-    justify-content: center
-    width: 50px
-    height: 45px
-    margin-left: 5px
-
-  .copy-btn::before
-    content: ''
-    height: 20px
-    width: 20px
-    background: url('./../assets/icons/copy.svg') center no-repeat
-
-  .copy-btn-feedback
-    visibility: hidden
-    opacity: 0
-    position: absolute
-    top: -27px
-    padding: 0px 5px
-    font-size: 12px
-    line-height: 18px
-    transition: visibility 0s 1s, opacity 1s linear
-
-  .copy-btn-feedback::after
-    content: ''
-    position: absolute
-    bottom: 0
-    left: calc(50% - 1px)
-    width: 6px
-    height: 6px
-    transform: rotate(-45deg) translateX(-50%)
-
-  .copy-btn:active .copy-btn-feedback
-    visibility: visible
-    opacity: 1
-    transition: opacity 0s linear
-
-  .info-text
-    position: relative
-    margin: 5px 0
-    padding-left: 28px
-    font-size: 12px
-    color: #A4A8B4
-    line-height: 24px
-    text-align: left
-    line-height: normal
-
-  .info-text::before
-    content: ''
-    position: absolute
-    top: 50%
-    left: 0
-    width: 18px
-    height: 18px
-    transform: translateY(-50%)
-    background: url('../assets/icons/info.svg') center no-repeat
-
-  .info-text-warning
-    font-size: 12px
-    color: #FF4C62
-
-  .info-text-warning::before
-    background: url('../assets/icons/info-warning.svg') center no-repeat
-
-  .info-text-hint
-    margin: 0 5px 0 0
-    padding-left: 17px
-
-  .info-text-hint::before
-    top: 9px
-    width: 12px
-    height: 12px
-    background: url('../assets/icons/info.svg') center no-repeat
-    background-size: contain
-
-  .info-block
-    margin-top: 5px
-
-  .info-row
-    display: flex
-    align-items: center
-
-  .visa-logo
-    margin: 0 5px
-    width: 22px
-    height: 11px
-
-  .mastercard-logo
-    width: 18px
-    height: 13px
-
-  .revolut-logo
-    width: 13px
-    height: 13px
-
-  .yoti-logo
-    width: 13px
-    height: 13px
-
-  .apple-pay-logo
-    width: 22px
-    height: 14px
-
-  .fiat
-    padding: 25px 0 40px
-
-  .fiat-inputs
-    display: flex
-    justify-content: space-between
-
-  .fiat-input-item
-    width: 45%
-
-  .fiat-input-item + .fiat-input-item
-    margin-left: 30px
-
-  .country-select
-    position: relative
-    background: #fff
-
-  .country-select-btn
-    display: flex
-    align-items: center
-    width: 100%
-    height: 32px
-    border: none
-    background: none
-    cursor: pointer
-
-  .country-select-toggle
-    position: relative
-    padding-right: 20px
-    border: 1px solid
-
-  .country-select-toggle::after
-    content: ''
-    position: absolute
-    top: 50%
-    right: 14px
-    width: 10px
-    height: 8px
-    transform: translateY(-50%)
-    background: url('./../assets/icons/angle.svg') center no-repeat
-    background-size: contain
-
-  .country-select-toggle.expanded::after
-    transform: translateY(-50%) rotate(180deg)
-
-  .country-select-text
-    margin: 0
-
-  .country-select-img
-    display: block
-    margin-right: 9px
-
-  .country-select-list
-    position: absolute
-    bottom: 0
-    left: 0
-    transform: translateY(100%)
-    width: 100%
-    max-height: 270px
-    margin: 0
-    padding: 0
-    list-style: none
-    border: 1px solid
-    border-top: none
-    overflow: auto
-    background: #fff
-    z-index: 10
-
-  .amount-input-wrapper
-    display: flex
-    height: 32px
-    background: #fff
-    border: 1px solid
-
-  .amount-input
-    width: 100%
-    height: 100%
-    padding-left: 13px
-    font-size: 12px
-    border: none
-
-  .amount-dropdown
-    position: relative
-    width: 90px
-    height: 100%
-
-  .amount-dropdown-btn
-    width: 100%
-    height: 32px
-    padding: 0 25px
-    font-size: 12px
-    text-align: left
-    border: none
-    background: none
-    cursor: pointer
-
-  .amount-dropdown-toggle
-    position: relative
-    padding: 0 31px 0 25px
-    border-left: 1px solid
-
-  .amount-dropdown-toggle::after
-    content: ''
-    position: absolute
-    top: 50%
-    right: 12px
-    width: 8px
-    height: 8px
-    transform: translateY(-50%)
-    background: url('./../assets/icons/angle.svg') center no-repeat
-    background-size: contain
-
-  .amount-dropdown-btn.expanded::after
-    transform: translateY(-50%) rotate(180deg)
-
-  .amount-dropdown-list
-    position: absolute
-    right: 0
-    bottom: 0
-    transform: translateY(100%)
-    width: 100%
-    margin: 0
-    padding: 0
-    list-style: none
-    background: #fff
-    border: 1px solid
-    z-index: 10
-
-  .fiat-payment-methods
-    display: flex
-
-  .fiat-payment-method
-    opacity: 0
-    transform: scale(0)
-    transition: all 0.2s linear
-
-  .fiat-selected .fiat-payment-method
-    opacity: 1
-    transform: scale(1)
-
-  .fiat-payment-method .top-up-radio-inner
-    display: flex
-    align-items: center
-    justify-content: center
-    width: 132px
-    height: 97px
-
-  .fiat-payment-method + .fiat-payment-method
-    margin-left: 24px
-
-  .ramp-logo
-    width: 70px
-    height: 27px
-
-  .safello-logo
-    width: 88px
-    height: 32px
-
-  .wyre-logo
-    width: 62px
-    height: 62px
-
-  .fiat-bottom
-    opacity: 0
-    transform: translateY(30px)
-    transition: all 0.3s linear
-    padding-top: 10px
-    height: 80px
-
-  .fiat-selected .fiat-bottom
-    opacity: 1
-    transform: translateY(0)
-
-  .pay-btn
-    margin: 20px auto 0
-    display: block
-    width: 100%
-    max-width: 370px
-    height: 50px
-    font-weight: 500
-    font-size: 14px
-    letter-spacing: -0.08px
-    text-align: center
-    cursor: pointer
-    background: none
-    border-radius: 6px
-
-  .pay-btn[disabled]
-    cursor: not-allowed
 
 @media screen and (max-width: 600px)
   .universal-login-topup .top-up
@@ -486,28 +16,28 @@
     font-size: 16px
     text-align: left
 
-  .universal-login-topup .top-up-methods
+  .universal-login-topup .unilogin-component-top-up-methods
     margin-top: 16px
     flex-direction: column
 
-  .universal-login-topup .top-up.method-selected .top-up-methods
+  .universal-login-topup .top-up.method-selected .unilogin-component-top-up-methods
     margin-top: 16px
     flex-direction: row
 
-  .universal-login-topup .top-up-method
+  .universal-login-topup .unilogin-component-top-up-method
     width: 265px
     height: 232px
 
-  .universal-login-topup .top-up.method-selected .top-up-method
+  .universal-login-topup .top-up.method-selected .unilogin-component-top-up-method
     height: 72px
 
-  .universal-login-topup .top-up.method-selected .top-up-method + .top-up-method
+  .universal-login-topup .top-up.method-selected .unilogin-component-top-up-method + .unilogin-component-top-up-method
     margin: 0 0 0 15px
 
-  .universal-login-topup .top-up-method + .top-up-method
+  .universal-login-topup .unilogin-component-top-up-method + .unilogin-component-top-up-method
     margin: 15px 0 0
 
-  .universal-login-topup .top-up.method-selected .top-up-method-text
+  .universal-login-topup .top-up.method-selected .unilogin-component-top-up-method-text
     display: none
 
   .universal-login-topup .crypto
@@ -543,16 +73,7 @@
     letter-spacing: -0.08px
     text-align: center
 
-  .universal-login-topup .fiat-inputs
-    flex-direction: column
-
-  .universal-login-topup .fiat-input-item
-    width: 100%
-
-  .universal-login-topup .fiat-input-item + .fiat-input-item
-    margin: 16px 0 0
-
-  .universal-login-topup .fiat .fiat-payment-methods-title
+  .universal-login-topup .fiat .unilogin-component-fiat-methods-title
     margin-top: 15px
 
   .universal-login-topup .fiat-payment-methods
@@ -570,11 +91,11 @@
   .universal-login-topup .fiat-selected .fiat-payment-method
     width: 47.5%
 
-  .universal-login-topup .fiat-payment-method .top-up-radio-inner
+  .universal-login-topup .fiat-payment-method .unilogin-component-top-up-radio-inner
     width: 100%
 
-  .universal-login-topup .universal-login .modal-wrapper
+  .universal-login-topup .universal-login .unilogin-component-modal-wrapper
     height: 100%
 
-  .universal-login-topup .pay-btn
+  .universal-login-topup .unilogin-component-pay-btn
     margin-top: 40px

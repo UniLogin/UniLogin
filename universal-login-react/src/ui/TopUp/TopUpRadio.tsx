@@ -1,9 +1,10 @@
 import React, {ReactNode} from 'react';
-import {Omit} from '@universal-login/commons';
-import daiIcon from './../assets/icons/dai.svg';
+import {Omit, isClassName} from '@universal-login/commons';
 import EthereumIcon from './../assets/icons/ether.svg';
-import cardIcon from './../assets/topUp/card.svg';
-import bankIcon from './../assets/topUp/bank.svg';
+import daiIcon from './../assets/icons/dai.svg';
+import cardIcon from './../assets/icons/card.svg';
+import bankIcon from './../assets/icons/bank.svg';
+import {classForComponent} from '../utils/classFor';
 
 export interface TopUpRadioProps {
   onClick: () => void;
@@ -18,16 +19,16 @@ export const TopUpRadio = ({id, onClick, checked, children, className, name}: To
   <label
     id={id}
     onClick={onClick}
-    className={`top-up-radio-label ${className || ''}`}
+    className={`${classForComponent('top-up-radio-label')} ${isClassName(className)}`}
   >
     <input
-      className="top-up-radio"
+      className={classForComponent('top-up-radio')}
       type="radio"
       name={name}
       checked={checked}
       readOnly
     />
-    <div className="top-up-radio-inner">
+    <div className={classForComponent('top-up-radio-inner')}>
       {children}
     </div>
   </label>
@@ -35,22 +36,22 @@ export const TopUpRadio = ({id, onClick, checked, children, className, name}: To
 
 export const TopUpRadioCrypto = (props: Omit<TopUpRadioProps, 'children'>) => (
   <TopUpRadio {...props}>
-    <div className="top-up-method-icons">
-      <img className="top-up-method-icon" src={daiIcon} alt="Dai" />
-      <img className="top-up-method-icon" src={EthereumIcon} alt="Ethereum" />
+    <div className={classForComponent('top-up-method-icons')}>
+      <img className={classForComponent('top-up-method-icon')} src={EthereumIcon} alt="Ethereum" />
+      <img className={classForComponent('top-up-method-icon')} src={daiIcon} alt="Dai" />
     </div>
-    <p className="top-up-method-title">Crypto</p>
-    <p className="top-up-method-text">Free-Deposit ETH or DAI</p>
+    <p className={classForComponent('top-up-method-title')}>Crypto</p>
+    <p className={classForComponent('top-up-method-text')}>Free-Deposit ETH or DAI</p>
   </TopUpRadio>
 );
 
 export const TopUpRadioFiat = (props: Omit<TopUpRadioProps, 'children'>) => (
   <TopUpRadio {...props}>
-    <div className="top-up-method-icons">
-      <img className="top-up-method-icon" src={cardIcon} alt="card" />
-      <img className="top-up-method-icon" src={bankIcon} alt="Dai" />
+    <div className={classForComponent('top-up-method-icons')}>
+      <img className={classForComponent('top-up-method-icon')} src={cardIcon} alt="card" />
+      <img className={classForComponent('top-up-method-icon')} src={bankIcon} alt="Dai" />
     </div>
-    <p className="top-up-method-title">Fiat</p>
-    <p className="top-up-method-text">Buy using credit card or bank account</p>
+    <p className={classForComponent('top-up-method-title')}>Fiat</p>
+    <p className={classForComponent('top-up-method-text')}>Buy using credit card or bank account</p>
   </TopUpRadio>
 );

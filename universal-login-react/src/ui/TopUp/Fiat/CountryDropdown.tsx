@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
 import {Country} from '../../../core/models/Country';
 import {countries} from '../../../core/utils/countries';
+import {ThemedComponent} from '../../commons/ThemedComponent';
+import {classForComponent} from '../../utils/classFor';
+import '../../styles/base/components/countrySelect.sass';
+import '../../styles/themes/UniLogin/components/countrySelectThemeUniLogin.sass';
+import '../../styles/themes/Jarvis/components/countrySelectThemeJarvis.sass';
+import '../../styles/themes/Legacy/components/countrySelectThemeLegacy.sass';
 
 export interface CountrySelectProps {
   selectedCountry?: string;
@@ -25,10 +31,10 @@ export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: Coun
       <button
         onClick={() => setExpanded(!expanded)}
         key={name || 'no-country'}
-        className={`country-select-btn country-select-toggle ${expanded ? 'expanded' : ''}`}
+        className={`unilogin-component-country-select-btn unilogin-component-country-select-toggle ${expanded ? 'expanded' : ''}`}
       >
-        {flag && <img src={flag} alt="" className="country-select-img"/>}
-        <p className="country-select-text">{name || 'Select your country'}</p>
+        {flag && <img src={flag} alt="" className={classForComponent('country-select-img')} />}
+        <p className={classForComponent('country-select-text')}>{name || 'Select your country'}</p>
       </button>
     );
   };
@@ -36,9 +42,9 @@ export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: Coun
   const countrySelectionList = () => {
     if (expanded) {
       return (
-        <ul className="country-select-list">
+        <ul className={classForComponent('country-select-list')}>
           {countries.map(country => (
-            <li key={country.name} className="country-select-item">
+            <li key={country.name} className={classForComponent('country-select-item')}>
               <CountryDropdownItem
                 {...country}
                 onDropdownItemClick={onDropdownItemClick}
@@ -52,10 +58,10 @@ export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: Coun
   };
 
   return (
-    <div className="country-select">
+    <ThemedComponent name="country-select">
       {countrySelectionButton()}
       {countrySelectionList()}
-    </div>
+    </ThemedComponent>
   );
 };
 
@@ -64,12 +70,12 @@ interface CountryDropdownItemProps extends Country {
 }
 
 const CountryDropdownItem = ({name, code, currency, onDropdownItemClick}: CountryDropdownItemProps) => (
-  <button onClick={() => onDropdownItemClick(name, currency)} className="country-select-btn">
+  <button onClick={() => onDropdownItemClick(name, currency)} className={classForComponent('country-select-btn')}>
     <img
       src={require(`../../assets/flags/${code.toLowerCase()}.svg`)}
       alt={`${name} flag`}
-      className="country-select-img"
+      className={classForComponent('country-select-img')}
     />
-    <p className="country-select-text">{name}</p>
+    <p className={classForComponent('country-select-text')}>{name}</p>
   </button>
 );

@@ -19,12 +19,12 @@ export default class DashboardPage {
   }
 
   async waitForHideModal() {
-    await waitForUI(this.wrapper, () => !this.wrapper.exists('.modal-wrapper'), 4000);
+    await waitForUI(this.wrapper, () => !this.wrapper.exists('.unilogin-component-modal-wrapper'), 4000);
     await this.waitForDashboard();
   }
 
   async closeModal() {
-    this.wrapper.find('.modal-close-btn').simulate('click');
+    this.wrapper.find('.close-button').simulate('click');
     return this.waitForHideModal();
   }
 

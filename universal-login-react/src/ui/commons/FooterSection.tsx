@@ -1,19 +1,12 @@
 import React, {ReactNode} from 'react';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/footerSection.sass';
 import './../styles/footerSectionDefault.sass';
+import {useClassFor} from '../utils/classFor';
 
 export interface FooterSectionProps {
   children: ReactNode;
-  className?: string;
 }
 
-export const FooterSection = ({children, className}: FooterSectionProps) => {
-  return (
-    <div className="universal-login-footer">
-      <div className={getStyleForTopLevelComponent(className)}>
-        <div className="footer-section">{children}</div>
-      </div>
-    </div>
-  );
-};
+export const FooterSection = ({children}: FooterSectionProps) => (
+  <div className={useClassFor('footer-section')}>{children}</div>
+);

@@ -1,137 +1,98 @@
 .universal-login-topup
-  .universal-login-default
+  .unilogin-component-top-up
+    padding: 20px 0 0
+    background: radial-gradient(720.65px at 50% 0%, #0C0E57 0%, #14052C 100%)
 
-    .top-up
-      padding: 20px 0 0
-      background: radial-gradient(720.65px at 50% 0%, #0C0E57 0%, #14052C 100%)
+  .qr-code-wrapper
+    text-align: center
+    border-radius: 6px
+    border: none
+    background: #362F6A
 
-    .top-up-title
-      margin: 0 0 27px
-      font-weight: 600
-      font-size: 20px
-      color: #FFFFFF
-      text-align: center
+  .input-address-wrapper
+    background: #362F6A
+    border-radius: 6px
+    border: none
 
-    .top-up-radio-inner
-      background: #262053
-      box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90)
-      border-radius: 6px
-      border-color: transparent
+  .input-address
+    background: transparent
+    font-size: 14px
+    color: #FFFFFF
 
-    .top-up-method-title
-      font-size: 18px
-      font-weight: 500
-      color: #FFFFFF
-      text-align: center
+  .address-copy-btn
+    background: none
+    border: none
 
-    .top-up-method-text
-      font-size: 14px
-      color: #A4A8B4
-      text-align: center
-      line-height: 24px
+  .unilogin-component-country-select
+    background: #362F6A
+    border-radius: 2px
 
-    .top-up-label
-      color: #B9C3F8
-      margin: 0 0 5px
-      font-weight: 600
-      text-transform: uppercase
+  .unilogin-component-country-select-toggle
+    border: none
 
-    .qr-code-wrapper
-      text-align: center
-      border-radius: 6px
-      border: none
-      background: #362F6A
+  .unilogin-component-country-select-list
+    border: none
+    background: #362F6A
+    border-radius: 2px
+    bottom: -3px
 
-    .input-address-wrapper
-      background: #362F6A
-      border-radius: 6px
-      border: none
+  .unilogin-component-country-select-toggle::after
+    background: url('./../assets/icons/angle-light.svg') center no-repeat
+    background-size: contain
 
-    .input-address
-      background: transparent
-      font-size: 14px
-      color: #FFFFFF
+  .unilogin-component-country-select-img
+    width: 17px
+    height: 12px
+    background: #FFFFFF
+    border-radius: 2px
 
-    .address-copy-btn
-      background: none
-      border: none
+  .unilogin-component-country-select-text
+    font-size: 12px
+    color: #FFFFFF
 
-    .top-up-radio:checked + .top-up-radio-inner
-      border: 1px solid #0fb989
+  .unilogin-component-amount-input-wrapper
+    background: #362F6A
+    border-radius: 2px
+    border: none
 
-    .country-select
-      background: #362F6A
-      border-radius: 2px
+  .unilogin-component-amount-input
+    background: #362F6A
+    font-size: 12px
+    color: #FFFFFF
+    border-radius: 2px
 
-    .country-select-toggle
-      border: none
+  .unilogin-component-amount-dropdown-btn
+    border: none
+    color: #FFFFFF
 
-    .country-select-list
-      border: none
-      background: #362F6A
-      border-radius: 2px
-      bottom: -3px
+  .unilogin-component-amount-dropdown-toggle::after
+    background: url('./../assets/icons/angle-light.svg') center no-repeat
+    background-size: contain
 
-    .country-select-toggle::after
-      background: url('./../assets/icons/angle-light.svg') center no-repeat
-      background-size: contain
+  .unilogin-component-amount-dropdown-list
+    background: #362F6A
+    border: none
+    border-radius: 2px
+    bottom: -3px
 
-    .fiat-inputs
-      margin-bottom: 33px
+  .unilogin-component-pay-btn
+    background: #0FB989
+    border: none
+    color: #FFFFFF
 
-    .country-select-img
-      width: 17px
-      height: 12px
-      background: #FFFFFF
-      border-radius: 2px
+  .unilogin-component-pay-btn[disabled]
+    background: #262053
+    color: #928fa9
 
-    .country-select-text
-      font-size: 12px
-      color: #FFFFFF
+  .copy-btn
+    background: none
+    border: none
+    cursor: pointer
+    outline: none
 
-    .amount-input-wrapper
-      background: #362F6A
-      border-radius: 2px
-      border: none
+  .unilogin-component-copy-feedback
+    color: #FFFFFF
+    background-color: #0FB989
 
-    .amount-input
-      background: #362F6A
-      font-size: 12px
-      color: #FFFFFF
-      border-radius: 2px
-
-    .amount-dropdown-btn
-      border: none
-      color: #FFFFFF
-
-    .amount-dropdown-toggle::after
-      background: url('./../assets/icons/angle-light.svg') center no-repeat
-      background-size: contain
-
-    .amount-dropdown-list
-      background: #362F6A
-      border: none
-      border-radius: 2px
-      bottom: -3px
-
-    .pay-btn
-      background: #0FB989
-      border: none
-      color: #FFFFFF
-
-    .pay-btn[disabled]
-      background: #262053
-      color: #928fa9
-
-    .copy-btn
-      background: none
-      border: none
-      cursor: pointer
-      outline: none
-
-    .copy-btn-feedback
-      color: #FFFFFF
-      background-color: #0FB989
-
-    .copy-btn-feedback::after
-      background-color: #0FB989
+  .unilogin-component-copy-feedback::after
+    background-color: #0FB989

@@ -3,6 +3,7 @@ import {TopUpRadio} from '../TopUpRadio';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
 import {getOnRampProviderLogo} from './getOnRampProviderLogo';
+import {useThemeName} from './../../utils/classFor';
 
 interface FiatPaymentMethodsProps {
   selectedCountry: string;
@@ -32,11 +33,11 @@ const FiatProviderTopUp = ({topUpProvider, providerLogo, setPaymentMethod, curre
   </TopUpRadio>
 );
 
-export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMethod, setPaymentMethod, logoColor = 'white'}: FiatPaymentMethodsProps) => {
-  const rampLogo = getOnRampProviderLogo('ramp', logoColor);
-  const safelloLogo = getOnRampProviderLogo('safello', logoColor);
-  const wyreLogo = getOnRampProviderLogo('wyre', logoColor);
-
+export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMethod, setPaymentMethod, logoColor}: FiatPaymentMethodsProps) => {
+  const getLogoColorByTheme = (useThemeName() === 'default') ? 'white' : 'black';
+  const rampLogo = getOnRampProviderLogo('ramp', logoColor || getLogoColorByTheme);
+  const safelloLogo = getOnRampProviderLogo('safello', logoColor || getLogoColorByTheme);
+  const wyreLogo = getOnRampProviderLogo('wyre', logoColor || getLogoColorByTheme);
   return (
     <div className="fiat-payment-methods">
       {supportService.checkRampSupport(selectedCountry) &&

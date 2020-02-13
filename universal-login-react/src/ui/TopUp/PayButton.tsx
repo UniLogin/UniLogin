@@ -1,4 +1,7 @@
 import React from 'react';
+import {useClassFor} from '../utils/classFor';
+import '../styles/base/payButton.sass';
+import '../styles/themes/UniLogin/payButtonThemeUniLogin.sass';
 
 export type ButtonState = 'active' | 'hidden' | 'disabled';
 
@@ -8,6 +11,7 @@ export interface PayButtonProps {
 }
 
 export const PayButton = ({onClick, state}: PayButtonProps) => {
+  const buttonClass = useClassFor('pay-btn');
   if (state === 'hidden') {
     return null;
   }
@@ -15,7 +19,7 @@ export const PayButton = ({onClick, state}: PayButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className="pay-btn"
+      className={buttonClass}
       disabled={state === 'disabled'}
     >
       Pay

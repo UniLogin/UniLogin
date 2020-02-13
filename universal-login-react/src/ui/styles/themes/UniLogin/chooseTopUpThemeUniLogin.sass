@@ -1,0 +1,105 @@
+.unilogin-theme-unilogin.unilogin-component-top-up
+  @import url('https://fonts.googleapis.com/css?family=Lato:300,400&display=swap')
+  font-family: 'Lato', sans-serif
+  .unilogin-component-top-up-radio-inner
+    border: 1px solid rgba(190, 207, 217, 0.6)
+
+  .unilogin-component-top-up-radio-inner:hover
+    border: none
+    box-shadow: 0px 10px 40px rgba(0, 131, 188, 0.12)
+
+  &.method-selected .unilogin-component-top-up-radio-inner
+    border: none
+    box-shadow: none
+
+  .unilogin-component-top-up-header
+    padding-top: 4rem
+
+  .unilogin-component-top-up-method-title
+    color: #0F0C4A
+
+  .unilogin-component-top-up-method-text
+    color: #7D7C9C
+
+  .unilogin-component-top-up-radio:checked + .unilogin-component-top-up-radio-inner::after
+    content: ''
+    position: absolute
+    left: 0
+    bottom: 0
+    width: 100%
+    height: 2px
+    background: #0ADBC2
+    border-radius: 4px
+
+  &.method-selected .unilogin-component-top-up-methods
+    border-color: #e4f3f6
+
+  &.method-selected .unilogin-component-top-up-method-icons
+    margin: 0 16px 0 0
+
+  .unilogin-component-top-up-qr-toggler
+    background: #F3FCFF url('../../../assets/themes/Default/qr.svg') center no-repeat
+    border: 1px solid #BDE6F2
+
+  .unilogin-component-input
+    background: #F3FCFF
+    border: 1px solid #BDE6F2
+    box-sizing: border-box
+    border-radius: 4px
+
+  .unilogin-component-amount-input-wrapper
+    background: #F3FCFF
+    border-radius: 4px
+    border: none
+    height: 4.2rem
+
+  .unilogin-component-amount-input
+    background: #F3FCFF
+    font-size: 1.4rem
+    color: #0F0C4A
+    border-radius: 4px
+    border-top-right-radius: 0
+    border-bottom-right-radius: 0
+    border: 1px solid #BDE6F2
+    border-right: none
+    -webkit-appearance: none
+    -moz-appearance: textfield
+    box-sizing: border-box
+
+  .unilogin-component-top-up-body-inner
+    padding: 0
+
+  .unilogin-component-fiat-methods-title
+    color: #7D7C9C
+    opacity: 0.8
+    font-size: 1.2rem
+    font-weight: 400
+    text-transform: uppercase
+
+  .fiat-payment-methods
+    margin-bottom: 2.4rem
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+
+    .unilogin-component-top-up-radio-inner
+      width: 100%
+      height: 5rem
+
+  .unilogin-component-pay-btn
+    margin-bottom: 2.4rem
+
+  .unilogin-component-fiat-bottom
+    display: none
+
+  .unilogin-component-top-up-method-title
+    font-size: 1.6rem
+    font-weight: bold
+
+  &.method-selected .unilogin-component-top-up-method-text
+    display: none
+
+.unilogin-theme-unilogin .unilogin-component-top-up.method-selected .unilogin-component-top-up-method
+  height: 45px
+
+.unilogin-theme-unilogin .unilogin-component-top-up.method-selected .unilogin-component-top-up-methods
+  padding-top: 3.2rem

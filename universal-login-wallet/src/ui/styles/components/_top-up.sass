@@ -1,24 +1,12 @@
-.top-up-modal .modal-close-btn
-  position: absolute
-  top: 20px
-  right: 25px
-  background: none
-  border: none
-  background: url('./../assets/icons/close.svg') center no-repeat
-
-  +media(s)
-    top: 25px
-    right: 15px
-
 .universal-login-topup
   .jarvis-styles
-    .top-up
+    .unilogin-component-top-up
       display: flex
       flex-direction: column
       max-width: 100%
       min-height: 590px
 
-    .top-up-header
+    .unilogin-component-top-up-header
       display: flex
       flex-direction: column
       align-items: center
@@ -26,7 +14,7 @@
       flex-grow: 1
       transition: flex-grow 0.2s linear
 
-    .top-up.method-selected .top-up-header
+    .top-up.method-selected .unilogin-component-top-up-header
       flex-grow: initial
 
     .top-up-title
@@ -36,16 +24,16 @@
       color: #31405E
       text-align: center
 
-    .top-up-radio-label
+    .unilogin-component-top-up-radio-label
       display: block
       cursor: pointer
 
-    .top-up-radio-inner
+    .unilogin-component-top-up-radio-inner
       position: relative
       background: #FFFFFF
       border: 1px solid #E1E1F0
 
-    .top-up-radio-inner::after
+    .unilogin-component-top-up-radio-inner::after
       content: ''
       display: none
       position: absolute
@@ -55,28 +43,28 @@
       height: 16px
       background: #2EC9F5 url('./../assets/icons/checkmark.svg') center no-repeat
 
-    .top-up-radio:checked + .top-up-radio-inner
+    .unilogin-component-top-up-radio:checked + .unilogin-component-top-up-radio-inner
       border: 2px solid #2ec9f5
 
-    .top-up-radio:checked + .top-up-radio-inner::after
+    .unilogin-component-top-up-radio:checked + .unilogin-component-top-up-radio-inner::after
       display: block
 
-    .top-up-radio-label input
+    .unilogin-component-top-up-radio-label input
       position: absolute
       z-index: -1
       opacity: 0
       margin: 10px 0 0 20px
 
-    .top-up.method-selected .top-up-method
+    .top-up.method-selected .unilogin-component-top-up-method
       width: 270px
       height: 98px
 
-    .top-up-method
+    .unilogin-component-top-up-method
       width: 270px
       height: 270px
       transition: height 0.2s linear
 
-    .top-up-method .top-up-radio-inner
+    .unilogin-component-top-up-method .unilogin-component-top-up-radio-inner
       display: flex
       flex-direction: column
       justify-content: center
@@ -84,10 +72,10 @@
       width: 100%
       height: 100%
 
-    .top-up.method-selected .top-up-methods
+    .top-up.method-selected .unilogin-component-top-up-methods
       margin-top: 40px
 
-    .top-up-methods
+    .unilogin-component-top-up-methods
       display: flex
       align-items: center
       justify-content: center
@@ -96,37 +84,37 @@
       max-width: 100%
       transition: all 0.2s linear
 
-    .top-up-method + .top-up-method
+    .unilogin-component-top-up-method + .unilogin-component-top-up-method
       margin-left: 30px
 
-    .top-up-method-icons
+    .unilogin-component-top-up-method-icons
       display: flex
       justify-content: center
       align-items: center
       margin-bottom: 30px
       transition: all 0.2s linear
 
-    .top-up.method-selected .top-up-method-icons
+    .top-up.method-selected .unilogin-component-top-up-method-icons
       margin-bottom: 8px
 
-    .top-up-method-icon
+    .unilogin-component-top-up-method-icon
       width: 50px
       height: 50px
 
-    .top-up.method-selected .top-up-method-icon
+    .top-up.method-selected .unilogin-component-top-up-method-icon
       width: 25px
       height: 25px
       transition: all 0.2s linear
 
-    .top-up-method-icon + .top-up-method-icon
+    .unilogin-component-top-up-method-icon + .unilogin-component-top-up-method-icon
       margin-left: 12px
 
-    .top-up.method-selected .top-up-method-title
+    .top-up.method-selected .unilogin-component-top-up-method-title
       margin-bottom: 5px
       font-size: 14px
       line-height: 17px
 
-    .top-up-method-title
+    .unilogin-component-top-up-method-title
       margin: 0 0 8px
       font-weight: 500
       font-size: 18px
@@ -134,7 +122,7 @@
       text-align: center
       transition: all 0.2s linear
 
-    .top-up-method-text
+    .unilogin-component-top-up-method-text
       max-width: 211px
       margin: 0
       font-size: 14px
@@ -143,16 +131,16 @@
       line-height: 24px
       transition: all 0.2s linear
 
-    .top-up.method-selected .top-up-method-text
+    .top-up.method-selected .unilogin-component-top-up-method-text
       font-size: 12px
       line-height: 14px
 
-    .top-up.method-selected .top-up-body
+    .top-up.method-selected .unilogin-component-top-up-body
       flex-grow: 1
       padding: 0 20px
       min-height: 327px
 
-    .top-up-body-inner
+    .unilogin-component-top-up-body-inner
       max-width: 570px
       margin: 0 auto
 
@@ -171,13 +159,9 @@
       border: none
       border: 1px solid #E1E1F0
 
-    .top-up-label
-      display: block
-      margin-bottom: 6px
+    .unilogin-component-label
       font-weight: 700
-      font-size: 10px
       color: #AFB2BD
-      text-transform: uppercase
 
     .input-address
       width: 100%
@@ -195,14 +179,13 @@
       top: 50%
       left: 50%
       transform: translate(-50%, -50%)
-      background: url('../assets/icons/copy.svg') center no-repeat
 
-    .copy-btn-feedback
+    .unilogin-component-copy-feedback
       top: -15px
       color: #FFFFFF
       background-color: #2ec9f5
 
-    .copy-btn-feedback::after
+    .unilogin-component-copy-feedback::after
       background-color: #2ec9f5
 
     .address-modal-text
@@ -212,7 +195,7 @@
       letter-spacing: -0.07px
       line-height: 24px
 
-    .info-text
+    .unilogin-component-info-text
       position: relative
       margin: 5px 0 0
       padding-left: 28px
@@ -220,7 +203,7 @@
       color: #A4A8B4
       line-height: 24px
 
-    .info-text::before
+    .unilogin-component-info-text::before
       content: ''
       position: absolute
       top: 50%
@@ -230,17 +213,17 @@
       transform: translateY(-50%)
       background: url('../assets/topUp/info.svg') center no-repeat
 
-    .info-text-warning
+    .unilogin-component-info-text-warning
       font-size: 12px
       color: #FF4C62
-    .info-text-warning::before
+    .unilogin-component-info-text-warning::before
       background: url('../assets/topUp/info-warning.svg') center no-repeat
 
-    .info-text-hint
+    .unilogin-component-info-text-hint
       margin: 0 5px 0 0
       padding-left: 17px
 
-    .info-text-hint::before
+    .unilogin-component-info-text-hint::before
       top: 5px
       transform: translateY(0)
       width: 12px
@@ -275,26 +258,22 @@
     .fiat
       padding: 25px 0 40px
 
-    .fiat-inputs
-      display: flex
-      justify-content: space-between
-
-    .fiat-input-item + .fiat-input-item
+    .unilogin-component-fiat-input-item + .unilogin-component-fiat-input-item
       margin-left: 30px
 
-    .country-select
+    .unilogin-component-country-select
       position: relative
       background: #fff
 
-    .country-select-btn
+    .unilogin-component-country-select-btn
       padding: 0 0 0 12px
 
-    .country-select-toggle
+    .unilogin-component-country-select-toggle
       position: relative
       padding-right: 20px
       border: 1px solid #E1E1F0
 
-    .country-select-toggle::after
+    .unilogin-component-country-select-toggle::after
       content: ''
       position: absolute
       top: 50%
@@ -305,21 +284,21 @@
       background: url('./../assets/topUp/angle.svg') center no-repeat
       background-size: contain
 
-    .country-select-toggle.expanded::after
+    .unilogin-component-country-select-toggle.expanded::after
       transform: translateY(-50%) rotate(180deg)
 
-    .country-select-text
+    .unilogin-component-country-select-text
       margin: 0
       font-size: 12px
       color: #000000
 
-    .country-select-img
+    .unilogin-component-country-select-img
       display: block
       width: 17px
       height: 12px
       margin-right: 9px
 
-    .country-select-list
+    .unilogin-component-country-select-list
       position: absolute
       bottom: 0
       left: 0
@@ -398,7 +377,7 @@
       border: 1px solid #E1E1F0
       z-index: 10
 
-    .fiat .fiat-payment-methods-title
+    .fiat .unilogin-component-fiat-methods-title
       margin: 35px auto 0
       text-align: left
       line-height: normal
@@ -415,7 +394,7 @@
       opacity: 1
       transform: scale(1)
 
-    .fiat-payment-method .top-up-radio-inne
+    .fiat-payment-method .unilogin-component-top-up-radio-inne
       display: flex
       align-items: center
       justify-content: center
@@ -437,18 +416,18 @@
       width: 62px
       height: 62px
 
-    .fiat-bottom
+    .unilogin-component-fiat-bottom
       opacity: 0
       transform: translateY(30px)
       transition: all 0.3s linear
       padding-top: 10px
       height: 60px
 
-    .fiat-selected .fiat-bottom
+    .fiat-selected .unilogin-component-fiat-bottom
       opacity: 1
       transform: translateY(0)
 
-    .pay-btn
+    .unilogin-component-pay-btn
       display: block
       width: 100%
       max-width: 370px
@@ -461,12 +440,12 @@
       text-align: center
       border: none
       cursor: pointer
-    .pay-btn[disabled]
+    .unilogin-component-pay-btn[disabled]
       background: #DBDBE4
       color: #FFFFFF
       cursor: not-allowed
 
-    .top-up
+    .unilogin-component-top-up
       +media(s)
         min-height: 100vh
         height: auto
@@ -477,34 +456,34 @@
         font-size: 16px
         text-align: left
 
-    .top-up-methods
+    .unilogin-component-top-up-methods
       +media(s)
         margin-top: 16px
         flex-direction: column
 
-    .top-up.method-selected .top-up-methods
+    .top-up.method-selected .unilogin-component-top-up-methods
       +media(s)
         margin-top: 16px
         flex-direction: row
 
-    .top-up-method
+    .unilogin-component-top-up-method
       +media(s)
         width: 265px
         height: 232px
 
-    .top-up.method-selected .top-up-method
+    .top-up.method-selected .unilogin-component-top-up-method
       +media(s)
         height: 72px
 
-    .top-up.method-selected .top-up-method + .top-up-method
+    .top-up.method-selected .unilogin-component-top-up-method + .unilogin-component-top-up-method
       +media(s)
         margin: 0 0 0 15px
 
-    .top-up-method + .top-up-method
+    .unilogin-component-top-up-method + .unilogin-component-top-up-method
       +media(s)
         margin: 15px 0 0
 
-    .top-up.method-selected .top-up-method-text
+    .top-up.method-selected .unilogin-component-top-up-method-text
       +media(s)
         display: none
 
@@ -546,19 +525,15 @@
         letter-spacing: -0.08px
         text-align: center
 
-    .fiat-inputs
-      +media(s)
-        flex-direction: column
-
-    .fiat-input-item
+    .unilogin-component-fiat-input-item
       +media(s)
         width: 100%
 
-    .fiat-input-item + .fiat-input-item
+    .unilogin-component-fiat-input-item + .unilogin-component-fiat-input-item
       +media(s)
         margin: 16px 0 0
 
-    .fiat .fiat-payment-methods-title
+    .fiat .unilogin-component-fiat-methods-title
       +media(s)
         margin-top: 15px
 
@@ -582,15 +557,15 @@
       +media(s)
         width: 47.5%
 
-    .fiat-payment-method .top-up-radio-inner
+    .fiat-payment-method .unilogin-component-top-up-radio-inner
       +media(s)
         width: 100%
 
-    .universal-login .modal-wrapper
+    .universal-login .unilogin-component-modal-wrapper
       +media(s)
         height: 100%
 
-    .pay-btn
+    .unilogin-component-pay-btn
       +media(s)
         margin-top: 40px
 
