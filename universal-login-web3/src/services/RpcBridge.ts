@@ -15,7 +15,7 @@ export class RpcBridge {
 
   handleMessage(msg: unknown) {
     const result = castOr(msg, asRpcMessage, undefined);
-    if(result) {
+    if (result) {
       this.handleRpc(result);
     }
   }
@@ -32,7 +32,7 @@ export class RpcBridge {
   }
 
   private getId() {
-    return this.nextId++
+    return this.nextId++;
   }
 
   private handleRpc(rpc: RpcRequest | RpcResponse) {
@@ -47,9 +47,9 @@ export class RpcBridge {
     const cb = this.callbacks[rpc.id];
     delete this.callbacks[rpc.id];
     if (rpc.error !== undefined) {
-      cb?.(rpc.error, undefined)
+      cb?.(rpc.error, undefined);
     } else {
-      cb?.(null, rpc.response)
+      cb?.(null, rpc.response);
     }
   }
 
@@ -83,18 +83,18 @@ export class RpcBridge {
 }
 
 interface RpcRequest {
-  protocolId: 'UNIVERSAL_LOGIN'
-  id: number,
-  isRequest: true
-  payload: unknown
+  protocolId: 'UNIVERSAL_LOGIN';
+  id: number;
+  isRequest: true;
+  payload: unknown;
 }
 
 interface RpcResponse {
-  protocolId: 'UNIVERSAL_LOGIN'
-  id: number,
-  isRequest: false
-  error?: unknown,
-  response?: unknown,
+  protocolId: 'UNIVERSAL_LOGIN';
+  id: number;
+  isRequest: false;
+  error?: unknown;
+  response?: unknown;
 }
 
 const asRpcMessage = asAnyOf([
