@@ -18,7 +18,7 @@ export class UniLogin {
     return web3PickerProvider;
   }
 
-  static async showUniButton(web3: Web3, overrideStyles?: Record<string, string>) {
+  static showUniButton(web3: Web3, overrideStyles?: Record<string, string>) {
     const currentProvider = web3.currentProvider;
     if (!(currentProvider instanceof Web3PickerProvider)) {
       return;
@@ -28,7 +28,7 @@ export class UniLogin {
     }
   }
 
-  static async isUniLogin(web3: Web3) {
+  static isUniLogin(web3: Web3) {
     const currentProvider = web3.currentProvider;
     if (!(currentProvider instanceof Web3PickerProvider)) {
       return false;
