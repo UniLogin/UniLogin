@@ -33,7 +33,7 @@
     "react-router-dom": "^5.1.2",
     "react-transition-group": "^4.2.2",
     "react-use-mutable": "^0.1.0",
-    "reactive-properties": "^0.1.8",
+    "reactive-properties": "^0.1.9",
     "use-subscription": "^1.0.0"
   },
   "peerDependencies": {
