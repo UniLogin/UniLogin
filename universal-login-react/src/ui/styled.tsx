@@ -2,22 +2,22 @@ import React, {FunctionComponent, ReactElement} from 'react';
 
 const UNI_LOGIN_PREFIX = 'u';
 
-type PropsOf<T extends readonly string[]> = { [K in T[number]]?: boolean }
+type PropsOf<T extends readonly string[]> = { [K in T[number]]?: boolean };
 
 interface StyledComponentBuilder<P> {
-  (componentName: string): FunctionComponent<P>
-  <A extends string>(componentName: string, modifiers: [A]): FunctionComponent<PropsOf<[A]> & P>
-  <A extends string, B extends string>(componentName: string, modifiers: [A, B]): FunctionComponent<PropsOf<[A, B]> & P>
-  <A extends string, B extends string, C extends string>(componentName: string, modifiers: [A, B, C]): FunctionComponent<PropsOf<[A, B, C]> & P>
-  <A extends string, B extends string, C extends string, D extends string>(componentName: string, modifiers: [A, B, C, D]): FunctionComponent<PropsOf<[A, B, C, D]> & P>
-  <A extends string, B extends string, C extends string, D extends string, E extends string>(componentName: string, modifiers: [A, B, C, D, E]): FunctionComponent<PropsOf<[A, B, C, D, E]> & P>
-  <A extends string, B extends string, C extends string, D extends string, E extends string, F extends string>(componentName: string, modifiers: [A, B, C, D, E, F]): FunctionComponent<PropsOf<[A, B, C, D, E, F]> & P>
+  (componentName: string): FunctionComponent<P>;
+  <A extends string>(componentName: string, modifiers: [A]): FunctionComponent<PropsOf<[A]> & P>;
+  <A extends string, B extends string>(componentName: string, modifiers: [A, B]): FunctionComponent<PropsOf<[A, B]> & P>;
+  <A extends string, B extends string, C extends string>(componentName: string, modifiers: [A, B, C]): FunctionComponent<PropsOf<[A, B, C]> & P>;
+  <A extends string, B extends string, C extends string, D extends string>(componentName: string, modifiers: [A, B, C, D]): FunctionComponent<PropsOf<[A, B, C, D]> & P>;
+  <A extends string, B extends string, C extends string, D extends string, E extends string>(componentName: string, modifiers: [A, B, C, D, E]): FunctionComponent<PropsOf<[A, B, C, D, E]> & P>;
+  <A extends string, B extends string, C extends string, D extends string, E extends string, F extends string>(componentName: string, modifiers: [A, B, C, D, E, F]): FunctionComponent<PropsOf<[A, B, C, D, E, F]> & P>;
 }
 
 function createStyledBuilder<P extends {className?: string}>(
   element: (props: P) => ReactElement<any>,
 ): StyledComponentBuilder<P> {
-  return function(componentName: string, modifiers: string[] = []) {
+  return function (componentName: string, modifiers: string[] = []) {
     return (props: any) => element({
       ...props,
       className: getClassName(componentName, modifiers, props),
@@ -150,7 +150,7 @@ export const styled = {
   track: createStyledBuilder<JSX.IntrinsicElements['track']>(props => <track {...props} />),
   u: createStyledBuilder<JSX.IntrinsicElements['u']>(props => <u {...props} />),
   ul: createStyledBuilder<JSX.IntrinsicElements['ul']>(props => <ul {...props} />),
-  "var": createStyledBuilder<JSX.IntrinsicElements['var']>(props => <var {...props} />),
+  var: createStyledBuilder<JSX.IntrinsicElements['var']>(props => <var {...props} />),
   video: createStyledBuilder<JSX.IntrinsicElements['video']>(props => <video {...props} />),
   wbr: createStyledBuilder<JSX.IntrinsicElements['wbr']>(props => <wbr {...props} />),
   webview: createStyledBuilder<JSX.IntrinsicElements['webview']>(props => <webview {...props} />),
