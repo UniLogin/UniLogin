@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {QRCode} from 'react-qr-svg';
-import {copy} from '@universal-login/commons';
 import {WalletService} from '@universal-login/sdk';
+import {useThemeName, classForComponent} from '../utils/classFor';
+import {Label} from '../commons/Form/Label';
+import {InputCopy} from '../commons/Form/InputCopy';
+import {InfoText} from '../commons/Text/InfoText';
 
 interface TopUpWithCryptoProps {
   walletService: WalletService;
@@ -9,51 +12,54 @@ interface TopUpWithCryptoProps {
 
 const DeploymentWithCryptoInfo = ({minimalAmount}: {minimalAmount?: string}) =>
   <>
-    <p className="info-text">Send at least {minimalAmount || '...'} ETH to this address</p>
-    <p className="info-text">This screen will update itself as soon as we detect a mined transaction</p>
+    <InfoText>Send at least {minimalAmount || '...'} ETH to this address</InfoText>
+    <InfoText>This screen will update itself as soon as we detect a mined transaction</InfoText>
   </>;
 
 const TopUpCryptoInfo = () =>
   <>
-    <p className="info-text">All your Ethereum tokens have the same address</p>
-    <p className="info-text">Only send Ethereum tokens to this address</p>
+    <InfoText>All your Ethereum tokens have the same address</InfoText>
+    <InfoText>Only send Ethereum tokens to this address</InfoText>
   </>;
 
 export const TopUpWithCrypto = ({walletService}: TopUpWithCryptoProps) => {
   const [cryptoClass, setCryptoClass] = useState('');
   const contractAddress = walletService.getContractAddress();
-
+  const [isQrCodeVisible, setIsQrCodeVisible] = useState(false);
+  const theme = useThemeName();
   useEffect(() => {
     setCryptoClass('crypto-selected');
   }, []);
 
   return (
-    <div className="top-up-body">
-      <div className="top-up-body-inner">
+    <div className={classForComponent('top-up-body')}>
+      <div className={classForComponent('top-up-body-inner')}>
         <div className={`crypto ${cryptoClass}`}>
-          <label htmlFor="input-address" className="top-up-label">Send to</label>
-          <div className="input-address-wrapper">
-            <input
+          <Label htmlFor="input-address">Send to</Label>
+          <div className={classForComponent('top-up-row')}>
+            <InputCopy
               id="contract-address"
-              className="input-address"
-              onChange={() => {}}
               defaultValue={contractAddress}
               readOnly
             />
-            <button onClick={() => copy('contract-address')} className="copy-btn">
-              <p className="copy-btn-feedback">Copied</p>
-            </button>
-          </div>
-          <div className="qr-code-wrapper">
-            <QRCode
-              level="M"
-              bgColor="#ffffff"
-              fgColor="#120839"
-              width={128}
-              height={128}
-              value={contractAddress}
+            <button
+              onClick={() => setIsQrCodeVisible(!isQrCodeVisible)}
+              className={classForComponent('top-up-qr-toggler')}
             />
           </div>
+
+          {(isQrCodeVisible || theme === 'default' || theme === 'jarvis') &&
+            <div className={classForComponent('qr-code-wrapper')}>
+              <QRCode
+                level="M"
+                bgColor="#ffffff"
+                fgColor="#120839"
+                width={128}
+                height={128}
+                value={contractAddress}
+              />
+            </div>
+          }
           {walletService.isKind('Future')
             ? <DeploymentWithCryptoInfo minimalAmount={walletService.getRequiredDeploymentBalance()}/>
             : <TopUpCryptoInfo/>

@@ -15,7 +15,7 @@ interface BackupCodesInitialProps {
 
 export const BackupCodesInitial = ({generateBackupCodes, deployedWallet, setGasParameters, className, isButtonDisabled}: BackupCodesInitialProps) => (
   <BackupCodesWrapper className={className}>
-    <FooterSection className={className}>
+    <FooterSection>
       <GasPrice
         isDeployed={true}
         deployedWallet={deployedWallet}

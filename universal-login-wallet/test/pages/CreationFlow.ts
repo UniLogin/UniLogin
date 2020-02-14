@@ -13,7 +13,7 @@ export default class CreationFlow {
   }
 
   getAddress() {
-    return this.wrapper.find('#contract-address').prop('defaultValue');
+    return this.wrapper.find('.unilogin-component-input').prop('defaultValue');
   }
 
   async waitAndGoToWallet(timeout?: number) {

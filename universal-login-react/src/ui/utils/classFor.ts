@@ -13,3 +13,8 @@ export const useThemeClassFor = () => {
   const [theme] = useContext(ThemeContext);
   return `unilogin-theme-${theme}`;
 };
+
+export const useThemeName = () => {
+  const [theme] = useContext(ThemeContext);
+  return `${theme}`;
+};

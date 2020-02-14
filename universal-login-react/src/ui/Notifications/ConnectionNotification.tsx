@@ -68,7 +68,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
           />
           {publicKey && notifications.length > 0 &&
             <div className="correct-input-footer">
-              <FooterSection className={className}>
+              <FooterSection>
                 <GasPrice
                   isDeployed={true}
                   deployedWallet={deployedWallet}

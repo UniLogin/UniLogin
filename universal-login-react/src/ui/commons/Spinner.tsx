@@ -1,7 +1,6 @@
 import React from 'react';
 import {useThemeClassFor} from '../utils/classFor';
 import '../styles/spinner.css';
-import '../styles/themes/Legacy/spinnerThemeLegacy.sass';
 import '../styles/themes/UniLogin/spinnerThemeUniLogin.sass';
 
 interface SpinnerProps {
