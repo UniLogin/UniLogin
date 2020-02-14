@@ -60,6 +60,7 @@ export {getMessageWithSignatures} from './core/utils/messages/signMessage';
 export {hashRelayerRequest, recoverFromRelayerRequest, signRelayerRequest, verifyRelayerRequest} from './core/utils/relayerRequest';
 export {safeMultiply} from './core/utils/safeMultiply';
 export {asExactly} from './core/utils/sanitizers/asExactly';
+export {asApplicationInfo} from './core/utils/sanitizers/asApplicationInfo';
 export {asDeploymentHash, asHexString} from './core/utils/sanitizers/asHexString';
 export {asTransferDetails} from './core/utils/sanitizers/asTransferDetails';
 export {addCodesToNotifications, filterKeyWithCodeByPrefix, filterNotificationByCodePrefix, generateCode, generateCodeWithFakes, isCodeSufficientButInvalid, isProperCodeNumber, isProperSecurityCode, isProperSecurityCodeWithFakes, isValidCode, SECURITY_CODE_LENGTH} from './core/utils/securityCodes';

@@ -1,9 +1,13 @@
 import {ProviderOnlyIframeInitializer} from '../services/ProviderOnlyIframeInitializer';
 import {PickerIframeInitializer} from '../services/PickerIframeInitializer';
-import {EMPTY_LOGO} from '@universal-login/commons';
+import {asApplicationInfo} from '@universal-login/commons';
+import {parseQuery} from './utils/parseQuery';
+import {cast} from '@restless/sanitizers';
 
-const applicationInfo = {applicationName: 'Embeded', logo: EMPTY_LOGO, type: 'laptop'}; // TODO: get from query
-const iframeInitializer = window.location.search.includes('picker')
+const parsedQuery = parseQuery(window.location.search);
+const applicationInfo = cast(JSON.parse(parsedQuery.applicationInfo), asApplicationInfo);
+
+const iframeInitializer = parsedQuery.picker === 'true'
   ? new PickerIframeInitializer(applicationInfo)
   : new ProviderOnlyIframeInitializer();
 
