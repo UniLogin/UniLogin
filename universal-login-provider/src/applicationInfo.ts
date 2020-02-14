@@ -1,6 +1,6 @@
 export const getApplicationInfoFromDocument = () => {
   const applicationName = document.title;
-  const logo = getFaviconUrl();
+  const logo = getFaviconUrl() || 'none';
   return {applicationName, logo, type: 'laptop'};
 };
 
