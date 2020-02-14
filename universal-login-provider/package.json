@@ -1,6 +1,6 @@
 {
   "name": "@universal-login/provider",
-  "version": "0.5.7",
+  "version": "0.5.9",
   "main": "dist/cjs/index.js",
   "types": "dist/esm/index.d.ts",
   "module": "dist/esm/index.js",
@@ -28,7 +28,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "reactive-properties": "^0.1.9",
-    "@restless/sanitizers": "^0.2.3"
+    "@restless/sanitizers": "^0.2.3",
+    "reactive-properties": "^0.1.9"
   }
 }
