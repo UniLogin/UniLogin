@@ -1,8 +1,8 @@
 import React, {FunctionComponent, ReactElement} from 'react';
 
-type ItemsOf<T extends readonly any[]> = T[number]
+const UNI_LOGIN_PREFIX = 'u';
 
-type PropsOf<T extends readonly string[]> = { [K in ItemsOf<T>]?: boolean }
+type PropsOf<T extends readonly string[]> = { [K in T[number]]?: boolean }
 
 interface StyledComponentBuilder<P> {
   (componentName: string): FunctionComponent<P>
@@ -14,25 +14,29 @@ interface StyledComponentBuilder<P> {
   <A extends string, B extends string, C extends string, D extends string, E extends string, F extends string>(componentName: string, modifiers: [A, B, C, D, E, F]): FunctionComponent<PropsOf<[A, B, C, D, E, F]> & P>
 }
 
-const createStyledBuilder = function <P extends {className?: string}>(element: (props: P) => ReactElement<any>): StyledComponentBuilder<P> {
-  return function (componentName: string, modifiers: string[] = []) {
-    return (props: any) =>
-      element({...props, className: getClassName(componentName, modifiers, props, props.className)});
+function createStyledBuilder<P extends {className?: string}>(
+  element: (props: P) => ReactElement<any>,
+): StyledComponentBuilder<P> {
+  return function(componentName: string, modifiers: string[] = []) {
+    return (props: any) => element({
+      ...props,
+      className: getClassName(componentName, modifiers, props),
+    });
   };
-};
+}
 
-const UNI_LOGIN_PREFIX = 'u';
-
-function getClassName(componentName: string, modifiers: readonly string[], props: Record<string, any>, className?: string) {
+function getClassName(
+  componentName: string,
+  modifiers: readonly string[],
+  props: Record<string, any>,
+) {
   const enabledModifiers = modifiers.filter(mod => !!props[mod]);
   return [
     `${UNI_LOGIN_PREFIX}-${componentName}`,
     ...enabledModifiers.map(mod => `${UNI_LOGIN_PREFIX}-${componentName}--${mod}`),
-    ...(className ? [className] : []),
+    ...(props.className ? [props.className] : []),
   ].join(' ');
 }
-
-const x : JSX.IntrinsicElements['a'] = null as any
 
 export const styled = {
   a: createStyledBuilder<JSX.IntrinsicElements['a']>(props => <a {...props} />),
