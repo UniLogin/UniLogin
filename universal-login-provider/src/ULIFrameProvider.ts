@@ -22,8 +22,8 @@ export class ULIFrameProvider {
     enablePicker = false,
   ) {
     const applicationInfo = getApplicationInfoFromDocument();
-    const uriComponent = buildIframeUrl(config.backendUrl, applicationInfo, enablePicker);
-    this.iframe = createIFrame(uriComponent);
+    const iframeUrl = buildIframeUrl(config.backendUrl, applicationInfo, enablePicker);
+    this.iframe = createIFrame(iframeUrl);
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
       this.handleRpc.bind(this),
