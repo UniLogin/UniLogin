@@ -60,7 +60,7 @@ export class ULIFrameProvider {
         break;
       case 'ul_set_notification_indicator':
         this.isNewNotifications.set(msg.params[0]);
-        this.setNotificationsIndicator(this.isNewNotifications.get())
+        this.setNotificationsIndicator(this.isNewNotifications.get());
         break;
       default:
         this.sendUpstream(msg, cb);
