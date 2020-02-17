@@ -71,11 +71,7 @@ export class ULIFrameProvider {
     const uniButton = document.getElementById('unilogin-button');
     if (uniButton) {
       const notificationIndicator = uniButton.getElementsByTagName('div')[0];
-      if (isNewNotification) {
-        Object.assign(notificationIndicator.style, {display: 'block'});
-      } else {
-        Object.assign(notificationIndicator.style, {display: 'none'});
-      }
+      this.setElementVisibility(notificationIndicator, this.isNewNotifications.get());
     }
   }
 
@@ -115,6 +111,14 @@ export class ULIFrameProvider {
   closeDashboard() {
     this.setDashboardVisibility(false);
   }
+
+  private setElementVisibility = (element: HTMLDivElement, isVisible: boolean) => {
+    if (isVisible) {
+      Object.assign(element.style, {display: 'block'});
+    } else {
+      Object.assign(element.style, {display: 'none'});
+    }
+  };
 
   private boundOpenDashboard = this.openDashboard.bind(this);
 
