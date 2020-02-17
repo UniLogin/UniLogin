@@ -69,7 +69,6 @@ export class ULIFrameProvider {
 
   private setNotificationsIndicator(isNewNotification: boolean) {
     const uniButton = document.getElementById('unilogin-button');
-    console.log('setNotificationsIndicator', isNewNotification.toString());
     if (uniButton) {
       const notificationIndicator = uniButton.getElementsByTagName('div')[0];
       if (isNewNotification) {
