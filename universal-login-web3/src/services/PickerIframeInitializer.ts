@@ -28,4 +28,11 @@ export class PickerIframeInitializer extends IframeInitializerBase {
       ),
     ], (a, b) => a || b);
   }
+
+  protected getIsNewNotifications(): Property<boolean> {
+    return this.provider.currentProvider.pipe(
+      map(provider => provider instanceof ULWeb3Provider ? provider.isNewNotifications : new State(false)),
+      flat,
+    );
+  }
 }

@@ -23,4 +23,8 @@ export class ProviderOnlyIframeInitializer extends IframeInitializerBase {
   protected getIsUiVisible(): Property<boolean> {
     return this.provider.isUiVisible;
   }
+
+  protected getIsNewNotifications(): Property<boolean> {
+    return this.provider.isNewNotifications;
+  }
 }

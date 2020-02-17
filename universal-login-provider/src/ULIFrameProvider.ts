@@ -13,6 +13,7 @@ export class ULIFrameProvider {
   private iframe: HTMLIFrameElement;
   private bridge: RpcBridge;
   private isReady = new State(false);
+  private isNewNotifications = new State(false);
 
   readonly isUniLogin = true;
 
@@ -40,7 +41,7 @@ export class ULIFrameProvider {
           mutation.target.querySelectorAll(`button#${this.config.ulButtonId}`)
             .forEach(element => {
               if (element instanceof HTMLButtonElement) {
-                this.initUlButton(element);
+                this.initUlButton(element, this.isNewNotifications.get());
               }
             });
         }
@@ -57,8 +58,25 @@ export class ULIFrameProvider {
       case 'ul_ready':
         this.isReady.set(true);
         break;
+      case 'ul_set_notification_indicator':
+        this.isNewNotifications.set(msg.params[0]);
+        this.setNotificationsIndicator(this.isNewNotifications.get())
+        break;
       default:
         this.sendUpstream(msg, cb);
+    }
+  }
+
+  private setNotificationsIndicator(isNewNotification: boolean) {
+    const uniButton = document.getElementById('unilogin-button');
+    console.log('setNotificationsIndicator', isNewNotification.toString());
+    if (uniButton) {
+      const notificationIndicator = uniButton.getElementsByTagName('div')[0];
+      if (isNewNotification) {
+        Object.assign(notificationIndicator.style, {display: 'block'});
+      } else {
+        Object.assign(notificationIndicator.style, {display: 'none'});
+      }
     }
   }
 
@@ -101,7 +119,7 @@ export class ULIFrameProvider {
 
   private boundOpenDashboard = this.openDashboard.bind(this);
 
-  initUlButton(element: HTMLButtonElement) {
+  initUlButton(element: HTMLButtonElement, isNewNotifications: boolean) {
     Object.assign(element.style, {
       display: 'inline-block',
       background: 'none',
@@ -114,7 +132,20 @@ export class ULIFrameProvider {
 
     element.innerHTML = `
       <img src="${this.config.logoUrl}" alt="U" >
+      <div id='uni-notifications'></div>
     `;
+    const notificationIndicator = element.getElementsByTagName('div')[0];
+    Object.assign(notificationIndicator.style, {
+      display: isNewNotifications ? 'block' : 'none',
+      position: 'absolute',
+      top: '0px',
+      right: '0px',
+      width: '15px',
+      height: '15px',
+      background: '#0FB989',
+      'box-shadow': '0px 5px 4px rgba(0, 0, 0, 0.14516)',
+      'border-radius': '50%',
+    });
 
     element.addEventListener('click', this.boundOpenDashboard);
   }
