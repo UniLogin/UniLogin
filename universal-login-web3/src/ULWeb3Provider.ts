@@ -79,7 +79,9 @@ export class ULWeb3Provider implements Provider {
     await this.sdk.start();
     setBetaNotice(this.sdk);
     this.walletService.loadFromStorage();
-    this.unsubscribeNotifications = await this.subscribeNotifications();
+    if (this.isLoggedIn.get()) {
+      this.unsubscribeNotifications = await this.subscribeNotifications();
+    }
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
@@ -178,6 +180,7 @@ export class ULWeb3Provider implements Provider {
 
     await waitForTrue(this.isLoggedIn);
     this.uiController.finishOnboarding();
+    this.unsubscribeNotifications = await this.subscribeNotifications();
   }
 
   private async deployIfNoWalletDeployed() {
