@@ -61,7 +61,8 @@ describe('INT: PendingMessages', () => {
   it('should check if execution is ready to execute and execution callback', async () => {
     const signedMessage2 = unsignedMessageToSignedMessage(unsignedMessage, actionKey);
     await pendingMessages.add(signedMessage);
-    expect(await pendingMessages.isEnoughSignatures(messageHash)).to.eq(false);
+    const status = await pendingMessages.getStatus(messageHash);
+    expect(await pendingMessages.isEnoughSignatures(status)).to.eq(false);
     expect(spy.calledOnce).to.be.false;
     await pendingMessages.add(signedMessage2);
     expect(spy.calledOnce).to.be.true;
@@ -104,13 +105,15 @@ describe('INT: PendingMessages', () => {
     it('should throw when pending signedMessage already has transaction hash', async () => {
       await pendingMessages.add(signedMessage);
       await messageRepository.markAsPending(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
-      await expect(pendingMessages.ensureCorrectExecution(messageHash))
+      const status = await pendingMessages.getStatus(messageHash);
+      await expect(pendingMessages.ensureCorrectExecution(status))
         .to.be.eventually.rejectedWith('Execution request already processed');
     });
 
     it('should throw error when pending signedMessage has not enough signatures', async () => {
       await pendingMessages.add(signedMessage);
-      await expect(pendingMessages.ensureCorrectExecution(messageHash))
+      const status = await pendingMessages.getStatus(messageHash);
+      await expect(pendingMessages.ensureCorrectExecution(status))
         .to.be.eventually.rejectedWith('Not enough signatures, required 2, got only 1');
     });
   });
