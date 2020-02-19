@@ -113,7 +113,7 @@ export class ULIFrameProvider {
 
   private boundOpenDashboard = this.openDashboard.bind(this);
 
-  private getNotificationsIndicator = () => document.getElementById('unibutton-notifications');
+  private getNotificationsIndicator = () => document.getElementById(`${this.config.ulButtonId}-notifications`);
 
   initUlButton(element: HTMLButtonElement) {
     Object.assign(element.style, {
@@ -128,7 +128,7 @@ export class ULIFrameProvider {
 
     element.innerHTML = `
       <img src="${this.config.logoUrl}" alt="U" >
-      <div id="unibutton-notifications"></div>
+      <div id="${this.config.ulButtonId}-notifications"></div>
     `;
     Object.assign(this.getNotificationsIndicator()!.style, {
       display: this.hasNotifications ? 'block' : 'none',
