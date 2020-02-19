@@ -17,12 +17,22 @@ export abstract class IframeInitializerBase {
 
   protected abstract getIsUiVisible(): Property<boolean>;
 
+  protected abstract getHasNotifications(): Property<boolean>;
+
   async start() {
     this.getIsUiVisible().pipe(forEach(
       isVisible => this.setIframeVisibility(isVisible),
     ));
 
+    this.getHasNotifications().pipe(forEach(
+      hasNotifications => this.setNotificationIndicator(hasNotifications),
+    ));
+
     this.sendReadySignal();
+  }
+
+  private setNotificationIndicator(hasNotifications: boolean) {
+    this.bridge.send({method: 'ul_set_notification_indicator', params: [hasNotifications]}, () => {});
   }
 
   private setIframeVisibility(isVisible: boolean) {

@@ -4,12 +4,12 @@ import UniversalLoginSDK, {WalletService, setBetaNotice} from '@universal-login/
 import {UIController} from './services/UIController';
 import {providers, utils, constants} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
-import {ensure, Message, walletFromBrain, ApplicationInfo, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {ensure, Message, walletFromBrain, ApplicationInfo, DEFAULT_GAS_LIMIT, Nullable} from '@universal-login/commons';
 import {waitForTrue} from './ui/utils/utils';
 import {initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
 import {StorageService} from '@universal-login/react';
-import {Property} from 'reactive-properties';
+import {Property, State} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
 import {getOrCreateUlButton} from './ui/initUi';
 
@@ -40,9 +40,11 @@ export class ULWeb3Provider implements Provider {
   private readonly sdk: UniversalLoginSDK;
   private readonly walletService: WalletService;
   private readonly uiController: UIController;
+  private unsubscribeNotifications: Nullable<Function> = null;
 
   readonly isLoggedIn: Property<boolean>;
   readonly isUiVisible: Property<boolean>;
+  readonly hasNotifications: State<boolean> = new State(false);
 
   constructor({
     provider,
@@ -77,6 +79,9 @@ export class ULWeb3Provider implements Provider {
     await this.sdk.start();
     setBetaNotice(this.sdk);
     this.walletService.loadFromStorage();
+    if (this.isLoggedIn.get()) {
+      this.unsubscribeNotifications = await this.subscribeNotifications();
+    }
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
@@ -175,6 +180,7 @@ export class ULWeb3Provider implements Provider {
 
     await waitForTrue(this.isLoggedIn);
     this.uiController.finishOnboarding();
+    this.unsubscribeNotifications = await this.subscribeNotifications();
   }
 
   private async deployIfNoWalletDeployed() {
@@ -184,12 +190,22 @@ export class ULWeb3Provider implements Provider {
     }
   }
 
+  private async subscribeNotifications() {
+    await waitForTrue(this.isLoggedIn);
+    return this.walletService.getDeployedWallet().subscribeAuthorisations((notifications: Notification[]) => this.setHasNotifications(notifications.length > 0));
+  }
+
+  private setHasNotifications(hasNotifications: boolean) {
+    this.hasNotifications.set(hasNotifications);
+  }
+
   initWeb3Button(styles?: Record<string, string>) {
     const element = getOrCreateUlButton(styles);
     renderLogoButton(element as Element, this.walletService);
   }
 
   finalizeAndStop() {
+    this.unsubscribeNotifications?.();
     return this.sdk.finalizeAndStop();
   }
 }

@@ -13,6 +13,7 @@ export class ULIFrameProvider {
   private iframe: HTMLIFrameElement;
   private bridge: RpcBridge;
   private isReady = new State(false);
+  private hasNotifications = false;
 
   readonly isUniLogin = true;
 
@@ -57,8 +58,19 @@ export class ULIFrameProvider {
       case 'ul_ready':
         this.isReady.set(true);
         break;
+      case 'ul_set_notification_indicator':
+        this.hasNotifications = msg.params[0];
+        this.setNotificationsIndicatorVisibility(this.hasNotifications);
+        break;
       default:
         this.sendUpstream(msg, cb);
+    }
+  }
+
+  private setNotificationsIndicatorVisibility(hasNotifications: boolean) {
+    const notificationsIndicator = this.getNotificationsIndicator();
+    if (notificationsIndicator) {
+      notificationsIndicator.style.display = hasNotifications ? 'block' : 'none';
     }
   }
 
@@ -101,6 +113,8 @@ export class ULIFrameProvider {
 
   private boundOpenDashboard = this.openDashboard.bind(this);
 
+  private getNotificationsIndicator = () => document.getElementById(`${this.config.ulButtonId}-notifications`);
+
   initUlButton(element: HTMLButtonElement) {
     Object.assign(element.style, {
       display: 'inline-block',
@@ -114,7 +128,19 @@ export class ULIFrameProvider {
 
     element.innerHTML = `
       <img src="${this.config.logoUrl}" alt="U" >
+      <div id="${this.config.ulButtonId}-notifications"></div>
     `;
+    Object.assign(this.getNotificationsIndicator()!.style, {
+      display: this.hasNotifications ? 'block' : 'none',
+      position: 'absolute',
+      top: '0px',
+      right: '0px',
+      width: '15px',
+      height: '15px',
+      background: '#0FB989',
+      'box-shadow': '0px 5px 4px rgba(0, 0, 0, 0.14516)',
+      'border-radius': '50%',
+    });
 
     element.addEventListener('click', this.boundOpenDashboard);
   }
