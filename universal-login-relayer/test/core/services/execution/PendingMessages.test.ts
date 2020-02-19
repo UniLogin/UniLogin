@@ -106,15 +106,15 @@ describe('INT: PendingMessages', () => {
       await pendingMessages.add(signedMessage);
       await messageRepository.markAsPending(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
       const status = await pendingMessages.getStatus(messageHash);
-      await expect(pendingMessages.ensureCorrectExecution(status))
-        .to.be.eventually.rejectedWith('Execution request already processed');
+      expect(() => pendingMessages.ensureCorrectExecution(status))
+        .throws('Execution request already processed');
     });
 
     it('should throw error when pending signedMessage has not enough signatures', async () => {
       await pendingMessages.add(signedMessage);
       const status = await pendingMessages.getStatus(messageHash);
-      await expect(pendingMessages.ensureCorrectExecution(status))
-        .to.be.eventually.rejectedWith('Not enough signatures, required 2, got only 1');
+      expect(() => pendingMessages.ensureCorrectExecution(status))
+        .throws('Not enough signatures, required 2, got only 1');
     });
   });
 

@@ -27,14 +27,14 @@ export default class PendingMessages {
     await this.addSignatureToPendingMessage(messageHash, message);
     const status = await this.getStatus(messageHash);
     status.messageHash = messageHash;
-    if (await this.isEnoughSignatures(status)) {
+    if (this.isEnoughSignatures(status)) {
       await this.onReadyToExecute(messageHash, status);
     }
     return status;
   }
 
   private async onReadyToExecute(messageHash: string, status: MessageStatus) {
-    await this.ensureCorrectExecution(status);
+    this.ensureCorrectExecution(status);
     await this.messageRepository.setState(messageHash, 'Queued');
     return this.executionQueue.addMessage(messageHash);
   }
@@ -53,13 +53,13 @@ export default class PendingMessages {
     return this.statusService.getStatus(messageHash);
   }
 
-  async ensureCorrectExecution(messageStatus: MessageStatus) {
+  ensureCorrectExecution(messageStatus: MessageStatus) {
     const {required, transactionHash, totalCollected} = messageStatus;
     ensure(!transactionHash, DuplicatedExecution);
-    ensure(await this.isEnoughSignatures(messageStatus), NotEnoughSignatures, required, totalCollected);
+    ensure(this.isEnoughSignatures(messageStatus), NotEnoughSignatures, required, totalCollected);
   }
 
-  async isEnoughSignatures(messageStatus: MessageStatus): Promise<boolean> {
+  isEnoughSignatures(messageStatus: MessageStatus): boolean {
     const {totalCollected, required} = messageStatus;
     return totalCollected >= required;
   }
