@@ -26,15 +26,14 @@ export default class PendingMessages {
     }
     await this.addSignatureToPendingMessage(messageHash, message);
     const status = await this.getStatus(messageHash);
-    status.messageHash = messageHash;
-    if (await this.isEnoughSignatures(messageHash)) {
-      await this.onReadyToExecute(messageHash, message);
+    if (this.isEnoughSignatures(status)) {
+      await this.onReadyToExecute(messageHash, status);
     }
     return status;
   }
 
-  private async onReadyToExecute(messageHash: string, message: SignedMessage) {
-    await this.ensureCorrectExecution(messageHash);
+  private async onReadyToExecute(messageHash: string, status: MessageStatus) {
+    this.ensureCorrectExecution(status);
     await this.messageRepository.setState(messageHash, 'Queued');
     return this.executionQueue.addMessage(messageHash);
   }
@@ -53,14 +52,14 @@ export default class PendingMessages {
     return this.statusService.getStatus(messageHash);
   }
 
-  async ensureCorrectExecution(messageHash: string) {
-    const {required, transactionHash, totalCollected} = await this.statusService.getStatus(messageHash);
+  ensureCorrectExecution(messageStatus: MessageStatus) {
+    const {required, transactionHash, totalCollected} = messageStatus;
     ensure(!transactionHash, DuplicatedExecution);
-    ensure(await this.isEnoughSignatures(messageHash), NotEnoughSignatures, required, totalCollected);
+    ensure(this.isEnoughSignatures(messageStatus), NotEnoughSignatures, required, totalCollected);
   }
 
-  async isEnoughSignatures(messageHash: string): Promise<boolean> {
-    const {totalCollected, required} = await this.getStatus(messageHash);
+  isEnoughSignatures(messageStatus: MessageStatus): boolean {
+    const {totalCollected, required} = messageStatus;
     return totalCollected >= required;
   }
 }

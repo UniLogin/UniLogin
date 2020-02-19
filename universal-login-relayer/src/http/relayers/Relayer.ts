@@ -127,13 +127,13 @@ class Relayer {
   async stop() {
     await this.executionWorker.stop();
     await this.database.destroy();
-    await this.server.close();
+    this.server.close();
   }
 
   async stopLater() {
     await this.executionWorker.stopLater();
     await this.database.destroy();
-    await this.server.close();
+    this.server.close();
   }
 }
 
