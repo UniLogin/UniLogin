@@ -68,7 +68,7 @@ export class ULIFrameProvider {
   }
 
   private setNotificationsIndicator(hasNotifications: boolean) {
-    const uniButton = document.getElementById('unilogin-button');
+    const uniButton = document.getElementById(this.config.ulButtonId);
     if (uniButton) {
       const notificationIndicator = uniButton.getElementsByTagName('div')[0];
       this.setElementVisibility(notificationIndicator, hasNotifications);
