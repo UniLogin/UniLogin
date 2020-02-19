@@ -5,6 +5,7 @@ import {DeployedWallet} from '@universal-login/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';
+import '../styles/themes/Jarvis/footerThemeJarvis.sass';
 import {useHistory} from 'react-router';
 import {join} from 'path';
 import {FooterSection} from '../commons/FooterSection';
