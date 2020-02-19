@@ -68,10 +68,9 @@ export class ULIFrameProvider {
   }
 
   private setNotificationsIndicator(hasNotifications: boolean) {
-    const uniButton = document.getElementById(this.config.ulButtonId);
-    if (uniButton) {
-      const notificationIndicator = uniButton.getElementsByTagName('div')[0];
-      this.setElementVisibility(notificationIndicator, hasNotifications);
+    const notificationsIndicator = this.getNotificationsIndicator();
+    if (notificationsIndicator) {
+      this.setElementVisibility(notificationsIndicator, hasNotifications);
     }
   }
 
@@ -112,11 +111,13 @@ export class ULIFrameProvider {
     this.setDashboardVisibility(false);
   }
 
-  private setElementVisibility = (element: HTMLDivElement, isVisible: boolean) => {
+  private setElementVisibility = (element: HTMLElement, isVisible: boolean) => {
     element.style.display = isVisible ? 'block' : 'none';
   };
 
   private boundOpenDashboard = this.openDashboard.bind(this);
+
+  private getNotificationsIndicator = () => document.getElementById('unibutton-notifications');
 
   initUlButton(element: HTMLButtonElement) {
     Object.assign(element.style, {
@@ -131,10 +132,9 @@ export class ULIFrameProvider {
 
     element.innerHTML = `
       <img src="${this.config.logoUrl}" alt="U" >
-      <div></div>
+      <div id="unibutton-notifications"></div>
     `;
-    const notificationIndicator = element.getElementsByTagName('div')[0];
-    Object.assign(notificationIndicator.style, {
+    Object.assign(this.getNotificationsIndicator()!.style, {
       display: this.hasNotifications.get() ? 'block' : 'none',
       position: 'absolute',
       top: '0px',
