@@ -26,7 +26,6 @@ export default class PendingMessages {
     }
     await this.addSignatureToPendingMessage(messageHash, message);
     const status = await this.getStatus(messageHash);
-    status.messageHash = messageHash;
     if (this.isEnoughSignatures(status)) {
       await this.onReadyToExecute(messageHash, status);
     }
