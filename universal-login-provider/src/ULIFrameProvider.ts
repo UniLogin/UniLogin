@@ -113,11 +113,7 @@ export class ULIFrameProvider {
   }
 
   private setElementVisibility = (element: HTMLDivElement, isVisible: boolean) => {
-    if (isVisible) {
-      Object.assign(element.style, {display: 'block'});
-    } else {
-      Object.assign(element.style, {display: 'none'});
-    }
+    element.style.display = isVisible ? 'block' : 'none';
   };
 
   private boundOpenDashboard = this.openDashboard.bind(this);
