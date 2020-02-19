@@ -41,7 +41,7 @@ export class ULIFrameProvider {
           mutation.target.querySelectorAll(`button#${this.config.ulButtonId}`)
             .forEach(element => {
               if (element instanceof HTMLButtonElement) {
-                this.initUlButton(element, this.hasNotifications.get());
+                this.initUlButton(element);
               }
             });
         }
@@ -118,7 +118,7 @@ export class ULIFrameProvider {
 
   private boundOpenDashboard = this.openDashboard.bind(this);
 
-  initUlButton(element: HTMLButtonElement, hasNotifications: boolean) {
+  initUlButton(element: HTMLButtonElement) {
     Object.assign(element.style, {
       display: 'inline-block',
       background: 'none',
@@ -135,7 +135,7 @@ export class ULIFrameProvider {
     `;
     const notificationIndicator = element.getElementsByTagName('div')[0];
     Object.assign(notificationIndicator.style, {
-      display: hasNotifications ? 'block' : 'none',
+      display: this.hasNotifications.get() ? 'block' : 'none',
       position: 'absolute',
       top: '0px',
       right: '0px',
