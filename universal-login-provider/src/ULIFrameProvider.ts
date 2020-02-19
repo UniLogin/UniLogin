@@ -135,7 +135,7 @@ export class ULIFrameProvider {
 
     element.innerHTML = `
       <img src="${this.config.logoUrl}" alt="U" >
-      <div id='uni-notifications'></div>
+      <div></div>
     `;
     const notificationIndicator = element.getElementsByTagName('div')[0];
     Object.assign(notificationIndicator.style, {
