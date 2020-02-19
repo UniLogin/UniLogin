@@ -67,11 +67,11 @@ export class ULIFrameProvider {
     }
   }
 
-  private setNotificationsIndicator(isNewNotification: boolean) {
+  private setNotificationsIndicator(hasNotifications: boolean) {
     const uniButton = document.getElementById('unilogin-button');
     if (uniButton) {
       const notificationIndicator = uniButton.getElementsByTagName('div')[0];
-      this.setElementVisibility(notificationIndicator, this.hasNotifications.get());
+      this.setElementVisibility(notificationIndicator, hasNotifications);
     }
   }
 
