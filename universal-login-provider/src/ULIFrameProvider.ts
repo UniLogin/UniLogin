@@ -13,7 +13,7 @@ export class ULIFrameProvider {
   private iframe: HTMLIFrameElement;
   private bridge: RpcBridge;
   private isReady = new State(false);
-  private hasNotifications = new State(false);
+  private hasNotifications = false;
 
   readonly isUniLogin = true;
 
@@ -59,8 +59,8 @@ export class ULIFrameProvider {
         this.isReady.set(true);
         break;
       case 'ul_set_notification_indicator':
-        this.hasNotifications.set(msg.params[0]);
-        this.setNotificationsIndicator(this.hasNotifications.get());
+        this.hasNotifications = msg.params[0];
+        this.setNotificationsIndicator(this.hasNotifications);
         break;
       default:
         this.sendUpstream(msg, cb);
@@ -135,7 +135,7 @@ export class ULIFrameProvider {
       <div id="unibutton-notifications"></div>
     `;
     Object.assign(this.getNotificationsIndicator()!.style, {
-      display: this.hasNotifications.get() ? 'block' : 'none',
+      display: this.hasNotifications ? 'block' : 'none',
       position: 'absolute',
       top: '0px',
       right: '0px',
