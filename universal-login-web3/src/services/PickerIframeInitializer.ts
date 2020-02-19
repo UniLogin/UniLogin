@@ -29,9 +29,9 @@ export class PickerIframeInitializer extends IframeInitializerBase {
     ], (a, b) => a || b);
   }
 
-  protected getIsNewNotifications(): Property<boolean> {
+  protected getHasNotifications(): Property<boolean> {
     return this.provider.currentProvider.pipe(
-      map(provider => provider instanceof ULWeb3Provider ? provider.isNewNotifications : new State(false)),
+      map(provider => provider instanceof ULWeb3Provider ? provider.hasNotifications : new State(false)),
       flat,
     );
   }

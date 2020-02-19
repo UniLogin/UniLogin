@@ -44,7 +44,7 @@ export class ULWeb3Provider implements Provider {
 
   readonly isLoggedIn: Property<boolean>;
   readonly isUiVisible: Property<boolean>;
-  readonly isNewNotifications: State<boolean> = new State(false);
+  readonly hasNotifications: State<boolean> = new State(false);
 
   constructor({
     provider,
@@ -192,11 +192,11 @@ export class ULWeb3Provider implements Provider {
 
   private async subscribeNotifications() {
     await waitForTrue(this.isLoggedIn);
-    return this.walletService.getDeployedWallet().subscribeAuthorisations((notifications: Notification[]) => this.setIsNewNotifications(notifications.length > 0));
+    return this.walletService.getDeployedWallet().subscribeAuthorisations((notifications: Notification[]) => this.setHasNotifications(notifications.length > 0));
   }
 
-  private setIsNewNotifications(isNewNotifications: boolean) {
-    this.isNewNotifications.set(isNewNotifications);
+  private setHasNotifications(hasNotifications: boolean) {
+    this.hasNotifications.set(hasNotifications);
   }
 
   initWeb3Button(styles?: Record<string, string>) {

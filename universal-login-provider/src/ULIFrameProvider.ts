@@ -13,7 +13,7 @@ export class ULIFrameProvider {
   private iframe: HTMLIFrameElement;
   private bridge: RpcBridge;
   private isReady = new State(false);
-  private isNewNotifications = new State(false);
+  private hasNotifications = new State(false);
 
   readonly isUniLogin = true;
 
@@ -41,7 +41,7 @@ export class ULIFrameProvider {
           mutation.target.querySelectorAll(`button#${this.config.ulButtonId}`)
             .forEach(element => {
               if (element instanceof HTMLButtonElement) {
-                this.initUlButton(element, this.isNewNotifications.get());
+                this.initUlButton(element, this.hasNotifications.get());
               }
             });
         }
@@ -59,8 +59,8 @@ export class ULIFrameProvider {
         this.isReady.set(true);
         break;
       case 'ul_set_notification_indicator':
-        this.isNewNotifications.set(msg.params[0]);
-        this.setNotificationsIndicator(this.isNewNotifications.get());
+        this.hasNotifications.set(msg.params[0]);
+        this.setNotificationsIndicator(this.hasNotifications.get());
         break;
       default:
         this.sendUpstream(msg, cb);
@@ -71,7 +71,7 @@ export class ULIFrameProvider {
     const uniButton = document.getElementById('unilogin-button');
     if (uniButton) {
       const notificationIndicator = uniButton.getElementsByTagName('div')[0];
-      this.setElementVisibility(notificationIndicator, this.isNewNotifications.get());
+      this.setElementVisibility(notificationIndicator, this.hasNotifications.get());
     }
   }
 
@@ -122,7 +122,7 @@ export class ULIFrameProvider {
 
   private boundOpenDashboard = this.openDashboard.bind(this);
 
-  initUlButton(element: HTMLButtonElement, isNewNotifications: boolean) {
+  initUlButton(element: HTMLButtonElement, hasNotifications: boolean) {
     Object.assign(element.style, {
       display: 'inline-block',
       background: 'none',
@@ -139,7 +139,7 @@ export class ULIFrameProvider {
     `;
     const notificationIndicator = element.getElementsByTagName('div')[0];
     Object.assign(notificationIndicator.style, {
-      display: isNewNotifications ? 'block' : 'none',
+      display: hasNotifications ? 'block' : 'none',
       position: 'absolute',
       top: '0px',
       right: '0px',
