@@ -9,6 +9,7 @@ export function createIFrame(url: string) {
     background: 'none transparent',
     border: 'none',
     display: 'none',
+    'z-index': '100',
   });
   iframe.setAttribute('src', url);
   document.getElementsByTagName('body')[0].appendChild(iframe);
