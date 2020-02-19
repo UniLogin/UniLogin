@@ -60,17 +60,17 @@ export class ULIFrameProvider {
         break;
       case 'ul_set_notification_indicator':
         this.hasNotifications = msg.params[0];
-        this.setNotificationsIndicator(this.hasNotifications);
+        this.setNotificationsIndicatorVisibility(this.hasNotifications);
         break;
       default:
         this.sendUpstream(msg, cb);
     }
   }
 
-  private setNotificationsIndicator(hasNotifications: boolean) {
+  private setNotificationsIndicatorVisibility(hasNotifications: boolean) {
     const notificationsIndicator = this.getNotificationsIndicator();
     if (notificationsIndicator) {
-      this.setElementVisibility(notificationsIndicator, hasNotifications);
+      notificationsIndicator.style.display = hasNotifications ? 'block' : 'none';
     }
   }
 
@@ -110,10 +110,6 @@ export class ULIFrameProvider {
   closeDashboard() {
     this.setDashboardVisibility(false);
   }
-
-  private setElementVisibility = (element: HTMLElement, isVisible: boolean) => {
-    element.style.display = isVisible ? 'block' : 'none';
-  };
 
   private boundOpenDashboard = this.openDashboard.bind(this);
 
