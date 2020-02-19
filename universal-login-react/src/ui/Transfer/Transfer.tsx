@@ -3,6 +3,7 @@ import {TransferService, TransferErrors, Execution} from '@universal-login/sdk';
 import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, TokenDetailsWithBalance, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
 import '../styles/transfer.sass';
 import '../styles/transferDefaults.sass';
+import './../styles/themes/Jarvis/footerThemeJarvis.sass';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
