@@ -1,4 +1,4 @@
-import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus} from '@unilogin/commons';
+import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus, Device} from '@unilogin/commons';
 import {fetch} from './fetch';
 
 export class RelayerApi {
@@ -23,7 +23,7 @@ export class RelayerApi {
     return this.http('GET', `/wallet/execution/${messageHash}`);
   }
 
-  connect(walletContractAddress: string, key: string, applicationInfo: ApplicationInfo) {
+  connect(walletContractAddress: string, key: string, applicationInfo: ApplicationInfo): Promise<void> {
     return this.http('POST', '/authorisation', {
       walletContractAddress,
       key,
@@ -31,7 +31,7 @@ export class RelayerApi {
     });
   }
 
-  denyConnection(authorisationRequest: RelayerRequest) {
+  denyConnection(authorisationRequest: RelayerRequest): Promise<void> {
     const {contractAddress} = authorisationRequest;
     return this.http('POST', `/authorisation/${contractAddress}`, {
       authorisationRequest,
@@ -45,12 +45,12 @@ export class RelayerApi {
     return this.http('GET', `/authorisation/${contractAddress}?signature=${signature}`);
   }
 
-  cancelConnection(authorisationRequest: RelayerRequest) {
+  cancelConnection(authorisationRequest: RelayerRequest): Promise<void> {
     const {contractAddress} = authorisationRequest;
     return this.http('DELETE', `/authorisation/${contractAddress}`, {authorisationRequest});
   }
 
-  getConnectedDevices(deviceRequest: RelayerRequest) {
+  getConnectedDevices(deviceRequest: RelayerRequest): Promise<Device[]> {
     const {contractAddress, signature} = deviceRequest;
     return this.http('GET', `/devices/${contractAddress}?signature=${signature}`);
   }
