@@ -15,7 +15,6 @@ export class WalletDeploymentService {
   constructor(
     private config: Config,
     private ensService: ENSService,
-    private hooks: EventEmitter,
     private walletDeployer: WalletDeployer,
     private requiredBalanceChecker: RequiredBalanceChecker,
     private devicesService: DevicesService) {
@@ -48,7 +47,6 @@ export class WalletDeploymentService {
     ensure(!!await this.requiredBalanceChecker.findTokenWithRequiredBalance(supportedTokens, contractAddress), NotEnoughBalance);
     const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '1', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: utils.bigNumberify(gasPrice)});
     await this.devicesService.addOrUpdate(contractAddress, publicKey, deviceInfo);
-    this.hooks.emit('created', {transaction, contractAddress});
     return transaction;
   }
 

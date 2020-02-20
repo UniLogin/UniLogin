@@ -16,7 +16,6 @@ export default async function setupWalletService(wallet: Wallet) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const walletContractAddress = (await deployGnosisSafe(wallet)).address;
   const factoryContract = await deployProxyFactory(wallet);
-  const hooks = new EventEmitter();
   const ensRegistrar = (await deployContract(wallet, gnosisSafe.ENSRegistrar)).address;
   const config = {walletContractAddress, factoryAddress: factoryContract.address, supportedTokens: [], ensRegistrar};
   const walletDeployer = new WalletDeployer(factoryContract.address, wallet);
@@ -26,9 +25,8 @@ export default async function setupWalletService(wallet: Wallet) {
   const fakeDevicesService = {
     addOrUpdate: sinon.spy(),
   };
-  const walletService = new WalletDeploymentService(config as any, ensService, hooks, walletDeployer, fakeBalanceChecker as any, fakeDevicesService as any);
+  const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceChecker as any, fakeDevicesService as any);
   const callback = sinon.spy();
-  hooks.addListener('created', callback);
   return {provider, wallet, walletService, callback, factoryContract, ensService, fakeDevicesService, ensRegistrar, walletContractAddress};
 }
 

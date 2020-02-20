@@ -46,10 +46,6 @@ describe('INT: WalletService', async () => {
       expect(await provider.resolveName(ensName)).to.eq(walletContract.address);
     });
 
-    it('should emit created event', async () => {
-      expect(callback).to.be.calledWith(sinon.match({transaction}));
-    });
-
     it('should fail with not existing ENS name', async () => {
       const creationPromise = walletService.deploy({publicKey: wallet.address, ensName: 'alex.non-existing-id.eth', signature: 'SOME_SIGNATURE', gasPrice: '1', gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
       await expect(creationPromise)

@@ -7,7 +7,6 @@ import {WalletContractService} from '../../../integration/ethereum/WalletContrac
 
 export class MinedTransactionHandler {
   constructor(
-    private hooks: EventEmitter,
     private authorisationStore: AuthorisationStore,
     private devicesService: DevicesService,
     private walletContractService: WalletContractService,
@@ -37,7 +36,6 @@ export class MinedTransactionHandler {
   private async handleAddKey(sentTransaction: providers.TransactionResponse, message: DecodedMessage) {
     const [key] = await this.walletContractService.decodeKeyFromData(message.to, message.data as string);
     await this.updateDevicesAndAuthorisations(message.to, key);
-    this.hooks.emit('added', {transaction: sentTransaction, contractAddress: message.to});
   }
 
   private async handleRemoveKey(message: DecodedMessage) {
@@ -50,6 +48,5 @@ export class MinedTransactionHandler {
     for (const key of keys) {
       await this.updateDevicesAndAuthorisations(message.to, key);
     }
-    this.hooks.emit('keysAdded', {transaction: sentTransaction, contractAddress: message.to});
   }
 }
