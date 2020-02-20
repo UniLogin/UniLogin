@@ -33,7 +33,7 @@ describe('INT: MessageHandler', async () => {
   });
 
   afterEach(async () => {
-    executionWorker.stopLater();
+    await executionWorker.stopLater();
     await clearDatabase(knex);
   });
 

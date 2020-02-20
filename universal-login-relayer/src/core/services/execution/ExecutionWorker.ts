@@ -63,6 +63,7 @@ class ExecutionWorker {
   }
 
   async stopLater() {
+    if (this.isStopped()) return;
     this.state = 'stopping';
     while (!this.isStopped()) {
       await sleep(this.tickInterval);
