@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Device} from '@universal-login/commons';
-import {DeployedWallet} from '@universal-login/sdk';
+import {Device} from '@unilogin/commons';
+import {DeployedWallet} from '@unilogin/sdk';
 import {ConnectedDevice} from './ConnectedDevice';
 import {ConfirmationsEdit} from './ConfirmationsEdit';
 import {FeatureFlag} from '../../commons/FeatureFlag';

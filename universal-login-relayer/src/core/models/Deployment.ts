@@ -1,4 +1,4 @@
-import {DeployArgs, DeviceInfo, DeploymentState} from '@universal-login/commons';
+import {DeployArgs, DeviceInfo, DeploymentState} from '@unilogin/commons';
 
 export default interface Deployment extends DeployArgs {
   hash: string;

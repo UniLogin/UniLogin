@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {MemoryRouter} from 'react-router';
-import {DeployedWallet, setBetaNotice, WalletService} from '@universal-login/sdk';
+import {DeployedWallet, setBetaNotice, WalletService} from '@unilogin/sdk';
 import logoIcon from '../assets/icons/U.svg';
 import {useProperty} from '../..';
 import {DashboardModal} from './DashboardModal';

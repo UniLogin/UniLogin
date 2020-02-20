@@ -1,8 +1,8 @@
-import {ETHER_NATIVE_TOKEN, createKeyPair} from '@universal-login/commons';
-import {DEPLOY_CONTRACT_NONCE, deployGnosisSafe, deployProxyFactory, encodeDataForSetup, computeGnosisCounterfactualAddress, GnosisSafeInterface, ProxyFactoryInterface, ENSInterface, gnosisSafe as gnosisSafeContracts, INITIAL_REQUIRED_CONFIRMATIONS} from '@universal-login/contracts';
+import {ETHER_NATIVE_TOKEN, createKeyPair} from '@unilogin/commons';
+import {DEPLOY_CONTRACT_NONCE, deployGnosisSafe, deployProxyFactory, encodeDataForSetup, computeGnosisCounterfactualAddress, GnosisSafeInterface, ProxyFactoryInterface, ENSInterface, gnosisSafe as gnosisSafeContracts, INITIAL_REQUIRED_CONFIRMATIONS} from '@unilogin/contracts';
 import {Contract, utils, Wallet} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {DEPLOY_GAS_LIMIT, parseDomain} from '@universal-login/commons';
+import {DEPLOY_GAS_LIMIT, parseDomain} from '@unilogin/commons';
 
 export default async function createGnosisSafeContract(wallet: Wallet) {
   const gnosisSafe = await deployGnosisSafe(wallet);

@@ -1,4 +1,4 @@
-import {GasParameters} from '@universal-login/commons';
+import {GasParameters} from '@unilogin/commons';
 
 export type ConfirmationResponse = {
   isConfirmed: true;

@@ -19,10 +19,10 @@
   "exclude": [
     "**/build",
     "**/dist",
-    "@universal-login/commons/src**",
-    "@universal-login/relayer/src**",
-    "@universal-login/sdk/src**",
-    "@universal-login/react/src**",
-    "@universal-login/ops/src**"
+    "@unilogin/commons/src**",
+    "@unilogin/relayer/src**",
+    "@unilogin/sdk/src**",
+    "@unilogin/react/src**",
+    "@unilogin/ops/src**"
   ]
 }

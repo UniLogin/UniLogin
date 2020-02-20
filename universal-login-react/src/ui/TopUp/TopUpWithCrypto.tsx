@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {QRCode} from 'react-qr-svg';
-import {WalletService} from '@universal-login/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {useThemeName, classForComponent} from '../utils/classFor';
 import {Label} from '../commons/Form/Label';
 import {InputCopy} from '../commons/Form/InputCopy';

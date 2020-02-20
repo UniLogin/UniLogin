@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {BlockchainService} from '@universal-login/contracts';
+import {BlockchainService} from '@unilogin/contracts';
 import {Beta2Service} from '../../src/integration/ethereum/Beta2Service';
 import {GnosisSafeService} from '../../src/integration/ethereum/GnosisSafeService';
 import {WalletContractService} from '../../src/integration/ethereum/WalletContractService';

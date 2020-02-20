@@ -1,6 +1,6 @@
 import {utils, providers} from 'ethers';
-import {DecodedMessage, SignedMessage, DecodedMessageGnosis} from '@universal-login/commons';
-import {encodeDataForExecuteSigned, WalletContractInterface, GnosisSafeInterface} from '@universal-login/contracts';
+import {DecodedMessage, SignedMessage, DecodedMessageGnosis} from '@unilogin/commons';
+import {encodeDataForExecuteSigned, WalletContractInterface, GnosisSafeInterface} from '@unilogin/contracts';
 import {InvalidHexData} from '../errors';
 import MessageItem from '../../models/messages/MessageItem';
 

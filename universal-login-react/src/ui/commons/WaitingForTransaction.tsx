@@ -1,5 +1,5 @@
 import React from 'react';
-import {PublicRelayerConfig} from '@universal-login/commons';
+import {PublicRelayerConfig} from '@unilogin/commons';
 import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';

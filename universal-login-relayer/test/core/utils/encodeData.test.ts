@@ -8,7 +8,7 @@ import {
   isAddKeysCall,
 } from '../../../src/core/utils/encodeData';
 import {Wallet} from 'ethers';
-import {WalletContractInterface} from '@universal-login/contracts';
+import {WalletContractInterface} from '@unilogin/contracts';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

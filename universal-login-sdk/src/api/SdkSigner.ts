@@ -1,6 +1,6 @@
 import UniversalLoginSDK from './sdk';
 import {ethers, Wallet, utils, providers} from 'ethers';
-import {ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
 import {TransactionHashNotFound} from '../core/utils/errors';
 
 export class SdkSigner extends ethers.Signer {

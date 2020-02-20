@@ -1,5 +1,5 @@
 import {Suggestion, SuggestionItem} from '../models/Suggestion';
-import {WalletSuggestionAction, Suggestions} from '@universal-login/commons';
+import {WalletSuggestionAction, Suggestions} from '@unilogin/commons';
 
 export const getSuggestion = (
   suggestions: Suggestions,

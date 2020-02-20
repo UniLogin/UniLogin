@@ -1,4 +1,4 @@
-import {Device, DeviceInfo} from '@universal-login/commons';
+import {Device, DeviceInfo} from '@unilogin/commons';
 import Knex from 'knex';
 
 export class DevicesStore {

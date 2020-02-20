@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {EMOJI_COLORS, getEmojiSet, getColoredEmojiCode, CATEGORIES} from '@universal-login/commons';
+import {EMOJI_COLORS, getEmojiSet, getColoredEmojiCode, CATEGORIES} from '@unilogin/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {Emoji} from '../commons/Emoji';
 import '../styles/emoji.sass';

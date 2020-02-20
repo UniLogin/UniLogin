@@ -1,4 +1,4 @@
-import {ApplicationWallet} from '@universal-login/commons';
+import {ApplicationWallet} from '@unilogin/commons';
 import {utils} from 'ethers';
 
 export class AbstractWallet implements ApplicationWallet {

@@ -1,5 +1,5 @@
 import {keyAddedEvent, keyRemovedEvent, addedOwnerEvent} from '../../helpers/constants';
-import {TEST_KEY} from '@universal-login/commons';
+import {TEST_KEY} from '@unilogin/commons';
 import {parseArgs, parseArgsGnosis} from '../../../src/core/utils/events';
 import {expect} from 'chai';
 

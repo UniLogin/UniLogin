@@ -1,6 +1,6 @@
 
 import React from 'react';
-import {LocalizationConfig, SafelloConfig} from '@universal-login/commons';
+import {LocalizationConfig, SafelloConfig} from '@unilogin/commons';
 
 interface SafelloProps {
   localizationConfig: LocalizationConfig;

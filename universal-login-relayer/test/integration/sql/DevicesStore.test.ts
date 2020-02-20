@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {DevicesStore} from '../../../src/integration/sql/services/DevicesStore';
-import {TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO, TEST_APPLICATION_INFO} from '@universal-login/commons';
+import {TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO, TEST_APPLICATION_INFO} from '@unilogin/commons';
 import {getKnexConfig} from '../../testhelpers/knex';
 import {clearDatabase} from '../../../src/http/relayers/RelayerUnderTest';
 

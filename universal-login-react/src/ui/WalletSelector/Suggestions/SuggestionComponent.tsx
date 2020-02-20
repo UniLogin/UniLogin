@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ensureNotFalsy, WalletSuggestionAction} from '@universal-login/commons';
+import {ensureNotFalsy, WalletSuggestionAction} from '@unilogin/commons';
 import {KeepTypingSuggestion} from './KeepTypingSuggestion';
 import {MissingParameter} from '../../../core/utils/errors';
 import {TakenOrInvalidSuggestion} from './TakenOrInvalidSuggestion';

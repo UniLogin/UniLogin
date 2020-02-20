@@ -1,4 +1,4 @@
-import {WalletState} from '@universal-login/sdk';
+import {WalletState} from '@unilogin/sdk';
 import {urlMapping} from './constants/urlMapping';
 
 export const needRedirect = (walletState: WalletState, currentLocation: string | string[]) =>

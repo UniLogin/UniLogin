@@ -1,6 +1,6 @@
 import React from 'react';
 import {Switch} from 'react-router-dom';
-import {useProperty} from '@universal-login/react';
+import {useProperty} from '@unilogin/react';
 import HomeScreen from './Home/HomeScreen';
 import NotFound from './NotFound';
 import {WalletRoute} from './WalletRoute';

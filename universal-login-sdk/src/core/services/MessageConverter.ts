@@ -1,5 +1,5 @@
-import {Message, PartialRequired} from '@universal-login/commons';
-import {messageToSignedMessage, BlockchainService} from '@universal-login/contracts';
+import {Message, PartialRequired} from '@unilogin/commons';
+import {messageToSignedMessage, BlockchainService} from '@unilogin/contracts';
 
 export class MessageConverter {
   constructor(private blockchainService: BlockchainService) {

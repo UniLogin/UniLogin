@@ -2,10 +2,10 @@ import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import {utils, Contract, Wallet} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {basicENS} from '@universal-login/commons/testutils';
+import {basicENS} from '@unilogin/commons/testutils';
 import DomainRegistrar from '../../src/ENS/DomainRegistrar';
 import ENSNameRegistrar from '../../src/ENS/ENSNameRegistrar';
-import {ens} from '@universal-login/contracts';
+import {ens} from '@unilogin/contracts';
 
 chai.use(require('chai-string'));
 chai.use(sinonChai);

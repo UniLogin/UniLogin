@@ -5,7 +5,7 @@ import {utils, Contract, Wallet} from 'ethers';
 import KeyHolder from '../../../dist/contracts/KeyHolder.json';
 import MockContract from '../../../dist/contracts/MockContract.json';
 import testableKeyHolder from '../../fixtures/testableKeyHolder';
-import {createKeyPair, TEST_OVERRIDES_FOR_REVERT} from '@universal-login/commons';
+import {createKeyPair, TEST_OVERRIDES_FOR_REVERT} from '@unilogin/commons';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);

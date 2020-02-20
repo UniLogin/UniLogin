@@ -1,7 +1,7 @@
-import {GAS_BASE, GAS_FIXED} from '@universal-login/commons';
-import {waitExpect} from '@universal-login/commons/testutils';
-import {beta2} from '@universal-login/contracts';
-import {encodeFunction, mockContracts} from '@universal-login/contracts/testutils';
+import {GAS_BASE, GAS_FIXED} from '@unilogin/commons';
+import {waitExpect} from '@unilogin/commons/testutils';
+import {beta2} from '@unilogin/contracts';
+import {encodeFunction, mockContracts} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {deployContract} from 'ethereum-waffle';
 import {utils} from 'ethers';

@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
-import {ValidationError, PaymentError as CommonPaymentError} from '@universal-login/commons';
+import {ValidationError, PaymentError as CommonPaymentError} from '@unilogin/commons';
 import {NotFound, PaymentError, Conflict, ValidationFailed, RelayerError, UnauthorisedAddress} from '../../core/utils/errors';
 import {SanitizeError} from '@restless/restless';
 

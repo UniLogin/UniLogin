@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Switch, useHistory} from 'react-router';
 import {join} from 'path';
-import {WalletService} from '@universal-login/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {DevicesList} from './DevicesList';
 import {ConnectionNotification} from '../../Notifications/ConnectionNotification';
 import {DisconnectAccount} from '../DisconnectAccount';

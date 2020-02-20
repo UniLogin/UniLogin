@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {solidity} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, OperationType} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, OperationType} from '@unilogin/commons';
 import {getExecutionArgs} from './helpers/argumentsEncoding';
 
 chai.use(chaiAsPromised);

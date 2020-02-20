@@ -1,10 +1,10 @@
 import {expect} from 'chai';
 import {providers, utils} from 'ethers';
 import {loadFixture, getWallets} from 'ethereum-waffle';
-import {basicENS} from '@universal-login/commons/testutils';
+import {basicENS} from '@unilogin/commons/testutils';
 import {ENSService} from '../../../src/integration/ethereum/ENSService';
-import {deployContract} from '@universal-login/commons';
-import {gnosisSafe} from '@universal-login/contracts';
+import {deployContract} from '@unilogin/commons';
+import {gnosisSafe} from '@unilogin/contracts';
 
 describe('INT: ENSService', async () => {
   let ensAddress: string;

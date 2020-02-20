@@ -2,8 +2,8 @@ import {join} from 'path';
 import React from 'react';
 import {useHistory, Switch} from 'react-router';
 import {Route} from 'react-router-dom';
-import {TransferService, Execution} from '@universal-login/sdk';
-import {ModalTransfer as Transfer, WaitingForTransaction, ErrorMessage} from '@universal-login/react';
+import {TransferService, Execution} from '@unilogin/sdk';
+import {ModalTransfer as Transfer, WaitingForTransaction, ErrorMessage} from '@unilogin/react';
 import {useServices} from '../../../hooks';
 import ModalWrapperClosable from '../ModalWrapperClosable';
 

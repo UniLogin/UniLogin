@@ -1,6 +1,6 @@
 import React from 'react';
-import {Device, DEFAULT_GAS_PRICE} from '@universal-login/commons';
-import {DeployedWallet} from '@universal-login/sdk';
+import {Device, DEFAULT_GAS_PRICE} from '@unilogin/commons';
+import {DeployedWallet} from '@unilogin/sdk';
 
 interface ManageDevicesProps {
   deployedWallet: DeployedWallet;

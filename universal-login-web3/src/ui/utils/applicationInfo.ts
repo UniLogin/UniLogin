@@ -1,5 +1,5 @@
 import url from 'url';
-import {ApplicationInfo, EMPTY_LOGO} from '@universal-login/commons';
+import {ApplicationInfo, EMPTY_LOGO} from '@unilogin/commons';
 
 export const getApplicationInfoFromDocument = (): ApplicationInfo => {
   const applicationName = document.title;

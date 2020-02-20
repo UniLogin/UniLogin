@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {WalletService} from '@universal-login/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {CountryDropdown} from './CountryDropdown';
 import {AmountInput} from './AmountInput';
 import {FiatFooter} from './FiatFooter';

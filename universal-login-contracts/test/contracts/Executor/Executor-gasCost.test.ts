@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {utils, providers, Contract, Wallet} from 'ethers';
-import {calculateMessageSignature, KeyPair, SignedMessagePaymentOptions} from '@universal-login/commons';
+import {calculateMessageSignature, KeyPair, SignedMessagePaymentOptions} from '@unilogin/commons';
 import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage, callMessage} from '../../helpers/ExampleMessages';
 import {getExecutionArgs} from '../../helpers/argumentsEncoding';

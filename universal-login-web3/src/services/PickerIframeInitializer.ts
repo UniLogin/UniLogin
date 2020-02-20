@@ -4,7 +4,7 @@ import {combine, flat, map, Property, State} from 'reactive-properties';
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {IframeInitializerBase} from './IframeInitializerBase';
 import {Provider} from 'web3/providers';
-import {ApplicationInfo} from '@universal-login/commons';
+import {ApplicationInfo} from '@unilogin/commons';
 
 export class PickerIframeInitializer extends IframeInitializerBase {
   private readonly provider: Web3PickerProvider;

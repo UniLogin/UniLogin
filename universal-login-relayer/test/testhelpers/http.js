@@ -9,9 +9,9 @@ import {
   TEST_GAS_PRICE,
   waitForContractDeploy,
   DEPLOY_GAS_LIMIT,
-} from '@universal-login/commons';
-import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, deployProxyFactory, deployGnosisSafe, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@universal-login/contracts';
-import {getFutureAddress} from '@universal-login/contracts/testutils';
+} from '@unilogin/commons';
+import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, deployProxyFactory, deployGnosisSafe, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@unilogin/contracts';
+import {getFutureAddress} from '@unilogin/contracts/testutils';
 import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
 import {AddressZero} from 'ethers/constants';

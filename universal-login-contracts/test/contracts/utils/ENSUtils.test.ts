@@ -3,7 +3,7 @@ import TestableENSUtils from '../../../dist/contracts/TestableENSUtils.json';
 import {deployContract, loadFixture} from 'ethereum-waffle';
 import {utils, providers, Wallet, Contract} from 'ethers';
 import {lookupAddress} from '../../helpers/lookupAddress';
-import {basicENS} from '@universal-login/commons/testutils';
+import {basicENS} from '@unilogin/commons/testutils';
 
 const domain = 'mylogin.eth';
 const label = 'alex';

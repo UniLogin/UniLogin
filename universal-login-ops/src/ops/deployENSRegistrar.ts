@@ -1,6 +1,6 @@
 import {Wallet, Contract, utils} from 'ethers';
-import {deployContractAndWait, TransactionOverrides} from '@universal-login/commons';
-import {gnosisSafe} from '@universal-login/contracts';
+import {deployContractAndWait, TransactionOverrides} from '@unilogin/commons';
+import {gnosisSafe} from '@unilogin/contracts';
 import {CommandOverrides} from '../cli/connectAndExecute';
 import {getTransactionOverrides} from '../utils/getTransactionOverrides';
 

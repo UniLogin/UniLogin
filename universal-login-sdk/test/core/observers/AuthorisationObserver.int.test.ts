@@ -2,11 +2,11 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
-import Relayer from '@universal-login/relayer';
+import Relayer from '@unilogin/relayer';
 import basicSDK from '../../fixtures/basicSDK';
 import UniversalLoginSDK from '../../../src/api/sdk';
 import AuthorisationsObserver from '../../../src/core/observers/AuthorisationsObserver';
-import {waitUntil, RelayerRequest} from '@universal-login/commons';
+import {waitUntil, RelayerRequest} from '@unilogin/commons';
 import {utils, Wallet} from 'ethers';
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 

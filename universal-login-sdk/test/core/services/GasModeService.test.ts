@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
-import {TokensPrices, TEST_TOKEN_DETAILS} from '@universal-login/commons';
+import {TokensPrices, TEST_TOKEN_DETAILS} from '@unilogin/commons';
 import {GasModeService} from '../../../src/core/services/GasModeService';
 import {utils} from 'ethers';
 

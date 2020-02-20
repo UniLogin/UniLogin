@@ -1,6 +1,6 @@
 import {utils, Contract} from 'ethers';
-import {ens} from '@universal-login/contracts';
-import {waitToBeMined, sendAndWaitForTransaction, getDeployTransaction, ensure} from '@universal-login/commons';
+import {ens} from '@unilogin/contracts';
+import {waitToBeMined, sendAndWaitForTransaction, getDeployTransaction, ensure} from '@unilogin/commons';
 import {saveVariables} from '../utils/save';
 import ENSRegistrarBase from './ENSRegistrarBase';
 

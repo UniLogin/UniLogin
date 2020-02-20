@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Spinner from '../commons/Spinner';
-import {WalletService} from '@universal-login/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/connectPassphrase.sass';
 import './../styles/connectPassphraseDefault.sass';

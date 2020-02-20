@@ -1,6 +1,6 @@
 import React from 'react';
 import {useHistory} from 'react-router';
-import {Notice} from '@universal-login/react';
+import {Notice} from '@unilogin/react';
 import {useServices} from '../../hooks';
 
 export const WelcomeScreen = () => {

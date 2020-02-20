@@ -1,5 +1,5 @@
 {
-  "name": "@universal-login/commons",
+  "name": "@unilogin/commons",
   "version": "0.5.10",
   "description": "Unviersal Login Common source code",
   "main": "dist/cjs/src/index.js",

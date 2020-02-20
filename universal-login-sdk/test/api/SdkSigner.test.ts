@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '@universal-login/commons';
+import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '@unilogin/commons';
 import basicSDK from '../fixtures/basicSDK';
 import {SdkSigner} from '../../src/api/SdkSigner';
 

@@ -1,4 +1,4 @@
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage} from '@unilogin/commons';
 import PendingMessages from './PendingMessages';
 import {MessageHandlerValidator} from '../../validators/MessageHandlerValidator';
 

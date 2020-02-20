@@ -1,8 +1,8 @@
 import {createFixtureLoader} from 'ethereum-waffle';
 import {prerequisites} from '../fixtures/prerequisites';
-import {DeepPartial, ETHER_NATIVE_TOKEN, withENS} from '@universal-login/commons';
+import {DeepPartial, ETHER_NATIVE_TOKEN, withENS} from '@unilogin/commons';
 import {providers} from 'ethers';
-import {Config, getContractWhiteList, RelayerUnderTest} from '@universal-login/relayer';
+import {Config, getContractWhiteList, RelayerUnderTest} from '@unilogin/relayer';
 
 const loadFixture = createFixtureLoader();
 

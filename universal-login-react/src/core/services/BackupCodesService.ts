@@ -1,5 +1,5 @@
-import {DeployedWallet} from '@universal-login/sdk';
-import {ensureNotFalsy, GasParameters} from '@universal-login/commons';
+import {DeployedWallet} from '@unilogin/sdk';
+import {ensureNotFalsy, GasParameters} from '@unilogin/commons';
 import {State} from 'reactive-properties';
 
 export type BackupCodesGenerationState = {

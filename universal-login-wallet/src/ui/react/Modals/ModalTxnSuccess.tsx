@@ -1,5 +1,5 @@
 import React from 'react';
-import {ModalWrapper} from '@universal-login/react';
+import {ModalWrapper} from '@unilogin/react';
 import send1x from './../../assets/illustrations/send@1x.png';
 import send2x from './../../assets/illustrations/send@2x.png';
 import {Link} from 'react-router-dom';

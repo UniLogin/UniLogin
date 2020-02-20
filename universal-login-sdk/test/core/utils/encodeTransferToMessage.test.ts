@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, TEST_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_TOKEN_ADDRESS} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, TEST_GAS_LIMIT, TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_TOKEN_ADDRESS} from '@unilogin/commons';
 import {encodeTransferToMessage} from '../../../src/core/utils/encodeTransferToMessage';
-import {IERC20Interface} from '@universal-login/contracts';
+import {IERC20Interface} from '@unilogin/contracts';
 
 describe('UNIT: encodeTransferToMessage', () => {
   const from = TEST_CONTRACT_ADDRESS;

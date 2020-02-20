@@ -1,6 +1,6 @@
 import {NotFound} from '../../src/core/utils/errors';
 import IRepository from '../../src/core/models/messages/IRepository';
-import {MineableState} from '@universal-login/commons';
+import {MineableState} from '@unilogin/commons';
 import {ensureProperTransactionHash} from '../../src/core/utils/validations';
 import {Mineable} from '../../src/core/models/Mineable';
 

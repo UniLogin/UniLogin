@@ -1,5 +1,5 @@
 import React from 'react';
-import {WalletService} from '@universal-login/sdk';
+import {WalletService} from '@unilogin/sdk';
 import MastercardLogo from './../../assets/logos/mastercard.jpg';
 import MastercardLogo2x from './../../assets/logos/mastercard@2x.jpg';
 import VisaLogo from './../../assets/logos/visa.jpg';

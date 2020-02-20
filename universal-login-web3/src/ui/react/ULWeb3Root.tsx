@@ -1,6 +1,6 @@
 import React from 'react';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {ErrorMessage, ModalWrapper, Onboarding, useProperty, ManualDashboard} from '@universal-login/react';
+import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
+import {ErrorMessage, ModalWrapper, Onboarding, useProperty, ManualDashboard} from '@unilogin/react';
 import {UIController} from '../../services/UIController';
 import {TransactionConfirmation} from './Confirmation/TransactionConfirmation';
 import {WaitForTransactionModal} from './WaitingForTransactionModal';

@@ -1,5 +1,5 @@
 import {ReactWrapper} from 'enzyme';
-import {waitUntil, Predicate} from '@universal-login/commons';
+import {waitUntil, Predicate} from '@unilogin/commons';
 
 export const hasChangedOn = (wrapper: ReactWrapper, message: any) => {
   wrapper.update();

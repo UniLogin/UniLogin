@@ -1,5 +1,5 @@
-import {OperationType, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {encodeDataForExecuteSigned} from '@universal-login/contracts';
+import {OperationType, TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
+import {encodeDataForExecuteSigned} from '@unilogin/contracts';
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';

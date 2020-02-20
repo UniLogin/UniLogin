@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {createFullHexString, ensure, Message, GasDataComputation, GAS_FIXED, NetworkVersion, WalletVersion, CONSTANT_EXECUTION_COSTS, SIGNATURE_CHECK_COST, ZERO_NONCE_COST} from '@universal-login/commons';
+import {createFullHexString, ensure, Message, GasDataComputation, GAS_FIXED, NetworkVersion, WalletVersion, CONSTANT_EXECUTION_COSTS, SIGNATURE_CHECK_COST, ZERO_NONCE_COST} from '@unilogin/commons';
 import {encodeDataForExecuteSigned} from './beta2/encode';
 
 export const calculateSafeTxGas = (gasLimit: utils.BigNumberish, baseGas: utils.BigNumberish) => {

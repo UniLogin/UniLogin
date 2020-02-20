@@ -1,5 +1,5 @@
 import React from 'react';
-import {copy} from '@universal-login/commons';
+import {copy} from '@unilogin/commons';
 import {useClassFor, classForComponent} from '../../utils/classFor';
 import './../../styles/base/components/button/copyButton.sass';
 import './../../styles/themes/UniLogin/components/button/copyButtonThemeUniLogin.sass';

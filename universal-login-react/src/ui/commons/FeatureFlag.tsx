@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK from '@unilogin/sdk';
 
 export interface FeatureFlagProps {
   feature: string;

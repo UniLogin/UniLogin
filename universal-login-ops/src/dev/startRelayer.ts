@@ -1,4 +1,4 @@
-import Relayer, {RelayerClass} from '@universal-login/relayer';
+import Relayer, {RelayerClass} from '@unilogin/relayer';
 import {providers, utils} from 'ethers';
 
 export const withENS = (provider: providers.JsonRpcProvider, ensAddress: string) => {

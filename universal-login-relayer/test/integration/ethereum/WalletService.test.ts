@@ -1,5 +1,5 @@
-import {createKeyPair, EMPTY_DEVICE_INFO, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@universal-login/commons';
-import {GnosisSafeInterface} from '@universal-login/contracts';
+import {createKeyPair, EMPTY_DEVICE_INFO, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
+import {GnosisSafeInterface} from '@unilogin/contracts';
 import chai, {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Contract, providers, Wallet} from 'ethers';

@@ -1,4 +1,4 @@
-import {MessageStatus} from '@universal-login/commons';
+import {MessageStatus} from '@unilogin/commons';
 import IMessageRepository from '../../../models/messages/IMessagesRepository';
 import {WalletContractService} from '../../../../integration/ethereum/WalletContractService';
 

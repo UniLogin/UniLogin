@@ -1,4 +1,4 @@
-import {ETHER_NATIVE_TOKEN, createKeyPair, TEST_GAS_PRICE, OperationType, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, createKeyPair, TEST_GAS_PRICE, OperationType, CURRENT_NETWORK_VERSION} from '@unilogin/commons';
 import {Contract, utils, Wallet} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {GnosisSafeInterface} from '../../src/gnosis-safe@1.1.1/interfaces';

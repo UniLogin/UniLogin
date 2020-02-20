@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {DeployedWallet} from '@universal-login/sdk';
-import {DEFAULT_GAS_PRICE} from '@universal-login/commons';
+import {DeployedWallet} from '@unilogin/sdk';
+import {DEFAULT_GAS_PRICE} from '@unilogin/commons';
 import {useAsync} from '../../..';
 
 interface ConfirmationsEditProps {

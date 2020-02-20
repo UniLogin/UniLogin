@@ -1,4 +1,4 @@
-import {IMessageValidator, OperationType, SignedMessage} from '@universal-login/commons';
+import {IMessageValidator, OperationType, SignedMessage} from '@unilogin/commons';
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {AddressZero} from 'ethers/constants';

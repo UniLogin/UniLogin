@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {GasMode, TokensPrices, ObservedCurrency, ensureNotFalsy, safeMultiply} from '@universal-login/commons';
+import {GasMode, TokensPrices, ObservedCurrency, ensureNotFalsy, safeMultiply} from '@unilogin/commons';
 import {TokensDetailsStore} from './TokensDetailsStore';
 import {GasPriceOracle} from '../../integration/ethereum/gasPriceOracle';
 import {PriceObserver} from '../observers/PriceObserver';

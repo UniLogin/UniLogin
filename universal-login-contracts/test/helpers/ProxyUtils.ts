@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {KeyPair} from '@universal-login/commons';
+import {KeyPair} from '@unilogin/commons';
 import {encodeInitializeWithENSData} from '../../src';
 import {EnsDomainData} from './FutureDeployment';
 

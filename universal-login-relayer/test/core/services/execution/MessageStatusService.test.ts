@@ -1,4 +1,4 @@
-import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
+import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH} from '@unilogin/commons';
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import sinon from 'sinon';

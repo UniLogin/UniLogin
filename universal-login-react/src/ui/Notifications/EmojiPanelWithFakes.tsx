@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Emoji} from '../commons/Emoji';
-import {generateCodeWithFakes} from '@universal-login/commons';
+import {generateCodeWithFakes} from '@unilogin/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';

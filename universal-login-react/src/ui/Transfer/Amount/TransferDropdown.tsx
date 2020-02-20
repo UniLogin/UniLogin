@@ -1,6 +1,6 @@
 import React from 'react';
-import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@unilogin/commons';
+import UniversalLoginSDK from '@unilogin/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {useToggler} from '../../hooks/useToggler';
 import {getIconForToken} from '../../../core/utils/getIconForToken';

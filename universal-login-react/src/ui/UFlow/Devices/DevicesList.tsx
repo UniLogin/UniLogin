@@ -1,5 +1,5 @@
 import React from 'react';
-import {DeployedWallet} from '@universal-login/sdk';
+import {DeployedWallet} from '@unilogin/sdk';
 import './../../styles/devices.sass';
 import './../../styles/devicesDefault.sass';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';

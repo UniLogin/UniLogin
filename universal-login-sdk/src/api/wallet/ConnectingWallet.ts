@@ -1,5 +1,5 @@
 import {AbstractWallet} from './AbstractWallet';
-import {Procedure, Nullable} from '@universal-login/commons';
+import {Procedure, Nullable} from '@unilogin/commons';
 
 export class ConnectingWallet extends AbstractWallet {
   unsubscribe: Nullable<Procedure> = null;

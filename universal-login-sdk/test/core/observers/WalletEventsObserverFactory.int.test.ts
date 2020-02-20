@@ -1,6 +1,6 @@
-import {createKeyPair, TEST_EXECUTION_OPTIONS, KeyPair} from '@universal-login/commons';
-import {BlockchainService} from '@universal-login/contracts';
-import {RelayerUnderTest} from '@universal-login/relayer';
+import {createKeyPair, TEST_EXECUTION_OPTIONS, KeyPair} from '@unilogin/commons';
+import {BlockchainService} from '@unilogin/contracts';
+import {RelayerUnderTest} from '@unilogin/relayer';
 import chai, {expect} from 'chai';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import sinon from 'sinon';
@@ -10,9 +10,9 @@ import WalletEventsObserverFactory from '../../../src/core/observers/WalletEvent
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
 import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
-import {setupWalletContract, mineBlock} from '@universal-login/contracts/testutils';
+import {setupWalletContract, mineBlock} from '@unilogin/contracts/testutils';
 import {Contract} from 'ethers';
-import {waitExpect} from '@universal-login/commons/testutils';
+import {waitExpect} from '@unilogin/commons/testutils';
 
 chai.use(solidity);
 chai.use(sinonChai);

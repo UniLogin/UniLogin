@@ -1,4 +1,4 @@
-import {ensure} from '@universal-login/commons';
+import {ensure} from '@unilogin/commons';
 
 export const getEtherscanUrl = (chainName: string, transactionHash: string): string => {
   ensure(chainName.length !== 0, Error, 'Invalid chain name');

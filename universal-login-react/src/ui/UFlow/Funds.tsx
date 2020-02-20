@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {CurrencyToValue} from '@universal-login/commons';
+import {CurrencyToValue} from '@unilogin/commons';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
-import {DeployedWallet} from '@universal-login/sdk';
+import {DeployedWallet} from '@unilogin/sdk';
 import {Balance} from '../commons/Balance';
 import {Assets} from '../commons/Assets';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';

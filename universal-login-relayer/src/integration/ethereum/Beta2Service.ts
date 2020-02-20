@@ -1,9 +1,9 @@
 import {providers, Contract, utils} from 'ethers';
-import {calculateMessageHash, SignedMessage, RelayerRequest, hashRelayerRequest, recoverFromRelayerRequest} from '@universal-login/commons';
-import {WalletContractInterface} from '@universal-login/contracts';
+import {calculateMessageHash, SignedMessage, RelayerRequest, hashRelayerRequest, recoverFromRelayerRequest} from '@unilogin/commons';
+import {WalletContractInterface} from '@unilogin/contracts';
 import {getKeyFromHashAndSignature, isAddKeyCall, isAddKeysCall, isRemoveKeyCall, decodeParametersFromData} from '../../core/utils/encodeData';
 import IWalletContractService from '../../core/models/IWalletContractService';
-import {beta2} from '@universal-login/contracts';
+import {beta2} from '@unilogin/contracts';
 import {messageToTransaction, decodeDataForExecuteSigned} from '../../core/utils/messages/serialisation';
 
 export class Beta2Service implements IWalletContractService {

@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
-import {TransferDetails, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {TransferDetails, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 interface TransferDetailsWithFrom extends TransferDetails {
   from: string;

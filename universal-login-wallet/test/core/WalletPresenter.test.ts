@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY} from '@universal-login/commons';
-import {WalletService} from '@universal-login/sdk';
+import {TEST_ACCOUNT_ADDRESS, TEST_PRIVATE_KEY} from '@unilogin/commons';
+import {WalletService} from '@unilogin/sdk';
 import WalletPresenter from '../../src/core/presenters/WalletPresenter';
 import {Wallet} from 'ethers';
 

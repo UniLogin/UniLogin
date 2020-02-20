@@ -1,4 +1,4 @@
-import {UnsignedMessage, ensure, GAS_BASE} from '@universal-login/commons';
+import {UnsignedMessage, ensure, GAS_BASE} from '@unilogin/commons';
 import {InsufficientGas} from './errors';
 
 export const ensureSufficientGas = (unsingedMessage: UnsignedMessage) => {

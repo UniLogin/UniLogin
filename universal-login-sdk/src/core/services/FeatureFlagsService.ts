@@ -1,4 +1,4 @@
-import {ensure, stringToEnumKey, getEnumKeys} from '@universal-login/commons';
+import {ensure, stringToEnumKey, getEnumKeys} from '@unilogin/commons';
 import {UnexpectedError} from '../utils/errors';
 import {Feature} from '../models/Feature';
 

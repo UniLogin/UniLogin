@@ -1,5 +1,5 @@
 import React from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK from '@unilogin/sdk';
 import {providers} from 'ethers';
 import {Config} from '../../config/types';
 

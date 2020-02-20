@@ -1,7 +1,7 @@
 import {providers, Contract} from 'ethers';
-import {WalletContractInterface} from '@universal-login/contracts';
+import {WalletContractInterface} from '@unilogin/contracts';
 import {IWalletContractServiceStrategy} from './WalletContractService';
-import {sign, signRelayerRequest as signRequest, RelayerRequest} from '@universal-login/commons';
+import {sign, signRelayerRequest as signRequest, RelayerRequest} from '@unilogin/commons';
 import {WalletEventType} from '../../core/models/events';
 
 export class Beta2Service implements IWalletContractServiceStrategy {

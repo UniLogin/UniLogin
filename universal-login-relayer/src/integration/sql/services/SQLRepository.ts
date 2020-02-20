@@ -1,7 +1,7 @@
 import Knex from 'knex';
 import {NotFound} from '../../../core/utils/errors';
 import IRepository from '../../../core/models/messages/IRepository';
-import {MineableState} from '@universal-login/commons';
+import {MineableState} from '@unilogin/commons';
 import {ensureProperTransactionHash} from '../../../core/utils/validations';
 import {Mineable} from '../../../core/models/Mineable';
 

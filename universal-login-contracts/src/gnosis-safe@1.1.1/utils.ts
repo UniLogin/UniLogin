@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {getDeployData, SignedMessage, UnsignedMessage} from '@universal-login/commons';
+import {getDeployData, SignedMessage, UnsignedMessage} from '@unilogin/commons';
 import ProxyContract from './contracts/Proxy.json';
 import {SAFE_TX_TYPEHASH, DOMAIN_SEPARATOR_TYPEHASH, SAFE_MSG_TYPEHASH, SENTINEL_OWNERS} from './constants';
 

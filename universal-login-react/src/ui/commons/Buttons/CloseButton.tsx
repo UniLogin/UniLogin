@@ -1,5 +1,5 @@
 import React from 'react';
-import {isClassName} from '@universal-login/commons';
+import {isClassName} from '@unilogin/commons';
 import {useClassFor} from '../../utils/classFor';
 import '../../styles/base/components/button/closeButton.sass';
 import '../../styles/themes/Jarvis/components/button/closeButtonThemeJarvis.sass';

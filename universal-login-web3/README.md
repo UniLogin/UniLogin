@@ -5,7 +5,7 @@ The easiest way to interact with Universal Login is via web3 providers, that all
 To add universal login web3 to project with yarn, type:
 
 ```bash
-yarn add @universal-login/web3
+yarn add @unilogin/web3
 ```
 
 ## ULWeb3Provider

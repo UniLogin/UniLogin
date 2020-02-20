@@ -1,5 +1,5 @@
-import {getContractHash, deployContractAndWait} from '@universal-login/commons';
-import {beta2, deployWalletContract, gnosisSafe} from '@universal-login/contracts';
+import {getContractHash, deployContractAndWait} from '@unilogin/commons';
+import {beta2, deployWalletContract, gnosisSafe} from '@unilogin/contracts';
 import {Wallet, utils} from 'ethers';
 
 type DeployedMasterConfig = {

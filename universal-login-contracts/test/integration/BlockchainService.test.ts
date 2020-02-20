@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {getWallets, loadFixture, deployContract} from 'ethereum-waffle';
-import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS, TEST_CONTRACT_ADDRESS} from '@universal-login/commons';
-import {mockProviderWithBlockNumber} from '@universal-login/commons/testutils';
+import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
+import {mockProviderWithBlockNumber} from '@unilogin/commons/testutils';
 import {deployWalletContract} from '../../src/beta2/deployMaster';
 import MockContract from '../../dist/contracts/MockContract.json';
 import {BlockchainService} from '../../src/integration/BlockchainService';

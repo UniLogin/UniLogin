@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {TEST_ACCOUNT_ADDRESS, waitUntil, signRelayerRequest, RelayerRequest, createKeyPair} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, waitUntil, signRelayerRequest, RelayerRequest, createKeyPair} from '@unilogin/commons';
 import AuthorisationsObserver from '../../../src/core/observers/AuthorisationsObserver';
 
 describe('UNIT: AuthorisationsObserver', () => {

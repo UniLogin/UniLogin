@@ -1,4 +1,4 @@
-import {TransferDetails} from '@universal-login/commons';
+import {TransferDetails} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {expect} from 'chai';
 import {AmountValidator} from '../../../../src/core/services/validations/AmountValidator';

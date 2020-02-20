@@ -1,6 +1,6 @@
 import {Beta2Service} from './Beta2Service';
-import {BlockchainService} from '@universal-login/contracts';
-import {SignedMessage, RelayerRequest} from '@universal-login/commons';
+import {BlockchainService} from '@unilogin/contracts';
+import {SignedMessage, RelayerRequest} from '@unilogin/commons';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GnosisSafeService} from './GnosisSafeService';
 

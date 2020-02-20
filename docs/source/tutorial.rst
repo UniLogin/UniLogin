@@ -18,12 +18,12 @@ Installation
   To add the provider to your project using npm type the following:
   ::
 
-    npm i web3 @universal-login/web3 react react-dom
+    npm i web3 @unilogin/web3 react react-dom
 
   If you are using yarn than type:
   ::
 
-    yarn add @universal-login/web3 react react-dom
+    yarn add @unilogin/web3 react react-dom
 
 Creating the provider
   ::
@@ -59,12 +59,12 @@ Installation
   To add the SDK to your project using npm type the following:
   ::
 
-    npm i @universal-login/sdk
+    npm i @unilogin/sdk
 
   If you are using yarn than type:
   ::
 
-    yarn add @universal-login/sdk
+    yarn add @unilogin/sdk
 
 .. _development_environment:
 
@@ -75,19 +75,19 @@ Prerequisites
   Before running the development environment, make sure you have **PostgreSQL** installed, up and running.
 
 Installation
-  To use the development environment, you need to install ``@universal-login/ops`` as dev dependency to your project.
+  To use the development environment, you need to install ``@unilogin/ops`` as dev dependency to your project.
 
   With npm:
 
     ::
 
-      npm install @universal-login/ops --save-dev
+      npm install @unilogin/ops --save-dev
 
   With yarn:
 
     ::
 
-      yarn add --dev @universal-login/ops -D
+      yarn add --dev @unilogin/ops -D
 
 Adding a script
   The simplest way to use the development environment is to add a script to ``package.json`` file:
@@ -144,7 +144,7 @@ Below is a snippet doing precisely that for the development environment.
 
 ::
 
-  import UniversalLoginSDK from '@universal-login/sdk';
+  import UniversalLoginSDK from '@unilogin/sdk';
 
   const universalLoginSDK = new UniversalLoginSDK('http://localhost:3311', 'http://localhost:18545');
   const [privateKey, contractAddress] = await sdk.create('myname.mylogin.eth');
@@ -199,7 +199,7 @@ Create UniversalLoginSDK
 In your project, create the UniversalLoginSDK
 ::
 
-  import UniversalLoginSDK from '@universal-login/sdk';
+  import UniversalLoginSDK from '@unilogin/sdk';
   import ethers from 'ethers';
 
 
@@ -271,7 +271,7 @@ Install the universal-login toolkit:
 
 ::
 
-  yarn global add @universal-login/ops
+  yarn global add @unilogin/ops
 
 Test token
 ^^^^^^^^^^

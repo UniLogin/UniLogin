@@ -1,6 +1,6 @@
-import {IMessageValidator, Message, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {unsignedMessageToSignedMessage} from '@universal-login/contracts';
-import {emptyMessage} from '@universal-login/contracts/testutils';
+import {IMessageValidator, Message, TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
+import {unsignedMessageToSignedMessage} from '@unilogin/contracts';
+import {emptyMessage} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
 import {Contract, utils, Wallet} from 'ethers';

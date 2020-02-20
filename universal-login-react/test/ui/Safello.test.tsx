@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import React from 'react';
 import {mount} from 'enzyme';
-import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
 import {Safello} from '../../src/ui/TopUp/OnRamp/Safello';
 
 describe('Safello', () => {

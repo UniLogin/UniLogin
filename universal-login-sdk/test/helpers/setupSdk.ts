@@ -1,6 +1,6 @@
 import {Wallet} from 'ethers';
-import {TEST_SDK_CONFIG, TEST_GAS_MODES} from '@universal-login/commons';
-import {RelayerUnderTest} from '@universal-login/relayer';
+import {TEST_SDK_CONFIG, TEST_GAS_MODES} from '@unilogin/commons';
+import {RelayerUnderTest} from '@unilogin/relayer';
 import UniversalLoginSDK from '../../src/api/sdk';
 
 export async function setupSdk(deployer: Wallet, overridePort = '33111') {

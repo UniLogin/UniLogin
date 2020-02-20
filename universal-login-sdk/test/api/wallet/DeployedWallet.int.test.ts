@@ -4,8 +4,8 @@ import sinonChai from 'sinon-chai';
 import {createFixtureLoader, solidity} from 'ethereum-waffle';
 import {Contract} from 'ethers';
 import basicSDK from '../../fixtures/basicSDK';
-import {RelayerUnderTest} from '@universal-login/relayer';
-import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS} from '@universal-login/commons';
+import {RelayerUnderTest} from '@unilogin/relayer';
+import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS} from '@unilogin/commons';
 import {DeployedWallet} from '../../../src';
 import {waitForSuccess} from '../../helpers/waitForSuccess';
 

@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {useHistory} from 'react-router';
-import {ensure} from '@universal-login/commons';
-import {TopUp} from '@universal-login/react';
+import {ensure} from '@unilogin/commons';
+import {TopUp} from '@unilogin/react';
 import {useServices} from '../../hooks';
-import {InvalidWalletState} from '@universal-login/sdk';
+import {InvalidWalletState} from '@unilogin/sdk';
 
 export function CreateTopUp() {
   const {walletService} = useServices();

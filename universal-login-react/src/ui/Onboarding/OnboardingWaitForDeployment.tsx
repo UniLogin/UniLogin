@@ -1,6 +1,6 @@
 import React from 'react';
-import {ensure} from '@universal-login/commons';
-import {InvalidWalletState, WalletService, DeployedWallet} from '@universal-login/sdk';
+import {ensure} from '@unilogin/commons';
+import {InvalidWalletState, WalletService, DeployedWallet} from '@unilogin/sdk';
 import {WaitingForTransactionProps, WaitingForDeployment} from '../commons/WaitingForTransaction';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';

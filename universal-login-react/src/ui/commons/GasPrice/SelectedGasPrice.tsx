@@ -1,6 +1,6 @@
 import React from 'react';
 import {utils} from 'ethers';
-import {GasOption, safeMultiply} from '@universal-login/commons';
+import {GasOption, safeMultiply} from '@unilogin/commons';
 import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
 

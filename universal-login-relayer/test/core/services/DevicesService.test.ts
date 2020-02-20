@@ -1,4 +1,4 @@
-import {createKeyPair, recoverFromRelayerRequest, signRelayerRequest, TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_DEVICE_INFO, TEST_PRIVATE_KEY} from '@universal-login/commons';
+import {createKeyPair, recoverFromRelayerRequest, signRelayerRequest, TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_DEVICE_INFO, TEST_PRIVATE_KEY} from '@unilogin/commons';
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';

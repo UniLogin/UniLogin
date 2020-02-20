@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {getSuggestion} from '../../../src/core/utils/getSuggestion';
-import {WALLET_SUGGESTION_ALL_ACTIONS, WalletSuggestionAction} from '@universal-login/commons';
+import {WALLET_SUGGESTION_ALL_ACTIONS, WalletSuggestionAction} from '@unilogin/commons';
 
 describe('getSuggestion', () => {
   it('Creation', () => {

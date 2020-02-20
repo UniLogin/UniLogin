@@ -1,5 +1,5 @@
 {
-  "name": "@universal-login/relayer",
+  "name": "@unilogin/relayer",
   "version": "0.5.10",
   "license": "MIT",
   "main": "dist/cjs/src/index.js",
@@ -9,8 +9,8 @@
     "@restless/ethereum": "^0.2.1",
     "@restless/restless": "^0.4.2",
     "@restless/sanitizers": "^0.2.3",
-    "@universal-login/commons": "0.5.10",
-    "@universal-login/contracts": "0.5.10",
+    "@unilogin/commons": "0.5.10",
+    "@unilogin/contracts": "0.5.10",
     "body-parser": "^1.19.0",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",

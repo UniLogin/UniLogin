@@ -1,4 +1,4 @@
-import {MineableState, MineableStatus, ensureNotFalsy, ensure} from '@universal-login/commons';
+import {MineableState, MineableStatus, ensureNotFalsy, ensure} from '@unilogin/commons';
 import {TransactionHashNotFound} from '../utils/errors';
 import {retry} from '../utils/retry';
 

@@ -1,7 +1,7 @@
 import {setupTestEnvironment} from './setupTestEnvironment';
 import Web3 from 'web3';
 import {Provider} from 'web3/providers';
-import {MemoryStorageService} from '@universal-login/sdk';
+import {MemoryStorageService} from '@unilogin/sdk';
 import {ULWeb3Provider} from '../../src';
 import {ULWeb3RootProps} from '../../src/ui/react/ULWeb3Root';
 

@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils, Wallet} from 'ethers';
-import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, SEND_TRANSACTION_GAS_LIMIT} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, SEND_TRANSACTION_GAS_LIMIT} from '@unilogin/commons';
 import {TransferService} from '../../../src/core/services/TransferService';
 import {encodeERC20Transfer} from '../../../src/core/utils/encodeTransferToMessage';
 

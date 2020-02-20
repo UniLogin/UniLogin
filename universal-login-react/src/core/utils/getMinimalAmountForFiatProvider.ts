@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {getEtherPriceInCurrency, bigNumberMax} from '@universal-login/sdk';
+import {getEtherPriceInCurrency, bigNumberMax} from '@unilogin/sdk';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {getPriceInEther} from './getPriceInEther';
 

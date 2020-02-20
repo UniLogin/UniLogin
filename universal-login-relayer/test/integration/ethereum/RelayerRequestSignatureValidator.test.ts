@@ -1,10 +1,10 @@
 import {expect} from 'chai';
 import {Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {signRelayerRequest, TEST_PRIVATE_KEY, recoverFromRelayerRequest} from '@universal-login/commons';
+import {signRelayerRequest, TEST_PRIVATE_KEY, recoverFromRelayerRequest} from '@unilogin/commons';
 import RelayerRequestSignatureValidator from '../../../src/integration/ethereum/validators/RelayerRequestSignatureValidator';
 import createGnosisSafeContract from '../../testhelpers/createGnosisSafeContract';
-import {signStringMessage, calculateGnosisStringHash} from '@universal-login/contracts';
+import {signStringMessage, calculateGnosisStringHash} from '@unilogin/contracts';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 import createWalletContract from '../../testhelpers/createWalletContract';
 

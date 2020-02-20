@@ -1,4 +1,4 @@
-import {BlockchainService} from '@universal-login/contracts';
+import {BlockchainService} from '@unilogin/contracts';
 import {ReferenceCountedState} from './ReferenceCountedState';
 
 export class BlockNumberState extends ReferenceCountedState<number> {

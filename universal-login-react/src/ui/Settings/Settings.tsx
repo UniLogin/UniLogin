@@ -1,5 +1,5 @@
 import React from 'react';
-import {DeployedWallet} from '@universal-login/sdk';
+import {DeployedWallet} from '@unilogin/sdk';
 import ManageDevices from './ManageDevices';
 import BackupCodes from '../BackupCodes/BackupCodes';
 import './../styles/settings.sass';

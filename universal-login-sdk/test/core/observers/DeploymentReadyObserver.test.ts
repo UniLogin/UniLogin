@@ -2,8 +2,8 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, sleep, waitUntil} from '@universal-login/commons';
-import {mockContracts} from '@universal-login/contracts/testutils';
+import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, sleep, waitUntil} from '@unilogin/commons';
+import {mockContracts} from '@unilogin/contracts/testutils';
 import {DeploymentReadyObserver} from '../../../src/core/observers/DeploymentReadyObserver';
 
 describe('INT: DeploymentReadyObserver', () => {

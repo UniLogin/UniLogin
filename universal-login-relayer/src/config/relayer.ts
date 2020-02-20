@@ -1,4 +1,4 @@
-import {ContractWhiteList, SupportedToken, ChainSpec, LocalizationConfig, OnRampConfig, IPGeolocationApiConfig} from '@universal-login/commons';
+import {ContractWhiteList, SupportedToken, ChainSpec, LocalizationConfig, OnRampConfig, IPGeolocationApiConfig} from '@unilogin/commons';
 import {KnexConfig} from './KnexConfig';
 
 export interface Config {

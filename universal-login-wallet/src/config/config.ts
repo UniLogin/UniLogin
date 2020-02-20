@@ -1,5 +1,5 @@
 require('dotenv').config();
-import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 export default Object.freeze({
 

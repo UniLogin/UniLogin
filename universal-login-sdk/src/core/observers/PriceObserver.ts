@@ -1,4 +1,4 @@
-import {ObservedCurrency, TokensPrices} from '@universal-login/commons';
+import {ObservedCurrency, TokensPrices} from '@unilogin/commons';
 import ObserverRunner from './ObserverRunner';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
 import {getPrices} from '../../integration/http/cryptocompare';

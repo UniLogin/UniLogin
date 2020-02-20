@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {TokensValueConverter, BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil} from '@universal-login/commons';
+import {TokensValueConverter, BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil} from '@unilogin/commons';
 import {AggregateBalanceObserver} from '../../../src/core/observers/AggregateBalanceObserver';
 import {BalanceObserver} from '../../../src/core/observers/BalanceObserver';
 import {createMockedPriceObserver} from '../../mock/PriceObserver';

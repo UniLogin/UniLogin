@@ -1,4 +1,4 @@
-import {WyreConfig} from '@universal-login/commons';
+import {WyreConfig} from '@unilogin/commons';
 
 interface WyreProps {
   address: string;

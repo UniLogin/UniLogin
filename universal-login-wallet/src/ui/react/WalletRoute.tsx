@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Redirect, RouteProps, RouteComponentProps} from 'react-router-dom';
 import {getDefaultPathForWalletState} from '../../app/getDefaultPathForWalletState';
-import {WalletState} from '@universal-login/sdk';
+import {WalletState} from '@unilogin/sdk';
 import {needRedirect} from '../../app/needRedirect';
 
 export interface WalletRouteProps extends RouteProps {

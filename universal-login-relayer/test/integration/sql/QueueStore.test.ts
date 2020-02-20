@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
-import {SignedMessage, calculateMessageHash} from '@universal-login/commons';
+import {SignedMessage, calculateMessageHash} from '@unilogin/commons';
 import {getTestSignedMessage} from '../../testconfig/message';
 import {getKnexConfig} from '../../testhelpers/knex';
 import QueueSQLStore from '../../../src/integration/sql/services/QueueSQLStore';

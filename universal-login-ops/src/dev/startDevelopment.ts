@@ -1,10 +1,10 @@
 import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet} from 'ethers';
-import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@universal-login/commons';
-import {RelayerClass, Config} from '@universal-login/relayer';
-import {gnosisSafe} from '@universal-login/contracts';
-import {mockContracts} from '@universal-login/contracts/testutils';
+import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
+import {RelayerClass, Config} from '@unilogin/relayer';
+import {gnosisSafe} from '@unilogin/contracts';
+import {mockContracts} from '@unilogin/contracts/testutils';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
 import {startGanache} from './startGanache';
@@ -94,7 +94,7 @@ function getProxyContractHash() {
 }
 
 function getMigrationPath() {
-  const packagePath = require.resolve('@universal-login/relayer/package.json');
+  const packagePath = require.resolve('@unilogin/relayer/package.json');
   return join(dirname(packagePath), 'dist', 'cjs', 'src', 'integration', 'sql', 'migrations');
 }
 

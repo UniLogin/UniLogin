@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Notification, GasParameters, ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {Notification, GasParameters, ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
 import {EmojiForm} from './EmojiForm';
-import {DeployedWallet} from '@universal-login/sdk';
+import {DeployedWallet} from '@unilogin/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';

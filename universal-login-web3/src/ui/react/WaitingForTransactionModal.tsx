@@ -1,6 +1,6 @@
 import React from 'react';
-import {PublicRelayerConfig} from '@universal-login/commons';
-import {ModalWrapper, WaitingForTransaction} from '@universal-login/react';
+import {PublicRelayerConfig} from '@unilogin/commons';
+import {ModalWrapper, WaitingForTransaction} from '@unilogin/react';
 
 export interface WaitForTransactionModalProps {
   transactionHash?: string;

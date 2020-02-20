@@ -1,4 +1,4 @@
-import {ObservedCurrency, ApplicationInfo} from '@universal-login/commons';
+import {ObservedCurrency, ApplicationInfo} from '@unilogin/commons';
 import {IStorageService} from '../core/models/IStorageService';
 
 export interface SdkConfig {

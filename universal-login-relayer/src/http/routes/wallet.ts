@@ -1,6 +1,6 @@
 import {Router, Request} from 'express';
 import MessageHandler from '../../core/services/execution/messages/MessageHandler';
-import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash} from '@universal-login/commons';
+import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash} from '@unilogin/commons';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject, asNumber} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
