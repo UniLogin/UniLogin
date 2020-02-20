@@ -17,7 +17,7 @@ import {waitExpect} from '@unilogin/commons/testutils';
 chai.use(solidity);
 chai.use(sinonChai);
 
-describe('INT: WalletEventsObserverFactory', async () => {
+describe('INT: WalletEventsObserverFactory', () => {
   const provider = createMockProvider();
   const [deployer] = getWallets(provider);
   const {publicKey} = createKeyPair();

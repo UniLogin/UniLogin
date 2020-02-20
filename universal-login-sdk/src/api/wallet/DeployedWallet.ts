@@ -1,4 +1,4 @@
-import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage, Device, Procedure} from '@unilogin/commons';
+import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage, Device, Procedure, GasMode} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../../core/observers/BalanceObserver';
@@ -44,7 +44,7 @@ export class DeployedWallet extends AbstractWallet {
     return this.removeKey(ownKey, executionOptions);
   }
 
-  async denyRequests() {
+  denyRequests(): Promise<void> {
     return this.sdk.denyRequests(this.contractAddress, this.privateKey);
   }
 
@@ -74,11 +74,11 @@ export class DeployedWallet extends AbstractWallet {
     return this.sdk.walletContractService.keyExist(this.contractAddress, key);
   }
 
-  async getNonce() {
+  getNonce(): Promise<number> {
     return this.sdk.walletContractService.lastNonce(this.contractAddress);
   }
 
-  async getConnectedDevices() {
+  getConnectedDevices(): Promise<any> {
     return this.sdk.getConnectedDevices(this.contractAddress, this.privateKey);
   }
 
@@ -91,7 +91,7 @@ export class DeployedWallet extends AbstractWallet {
     return this.sdk.walletContractService.requiredSignatures(this.contractAddress);
   }
 
-  async getGasModes() {
+  getGasModes(): Promise<GasMode[]> {
     return this.sdk.getGasModes();
   }
 

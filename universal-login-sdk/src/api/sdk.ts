@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Message, Notification, PartialRequired, PublicRelayerConfig, resolveName, SdkExecutionOptions, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator} from '@unilogin/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Message, Notification, PartialRequired, PublicRelayerConfig, resolveName, SdkExecutionOptions, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus} from '@unilogin/commons';
 import {BlockchainService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -119,7 +119,7 @@ class UniversalLoginSDK {
     return this.createDeployedWallet(to, privateKey).removeKey(key, executionOptions);
   }
 
-  async getMessageStatus(messageHash: string) {
+  getMessageStatus(messageHash: string): Promise<MessageStatus> {
     return this.relayerApi.getStatus(messageHash);
   }
 
@@ -164,7 +164,7 @@ class UniversalLoginSDK {
     );
   }
 
-  async execute(message: PartialRequired<Message, 'from'>, privateKey: string): Promise<Execution> {
+  execute(message: PartialRequired<Message, 'from'>, privateKey: string): Promise<Execution> {
     return this.createDeployedWallet(message.from, privateKey).execute(message);
   }
 
@@ -190,7 +190,7 @@ class UniversalLoginSDK {
     return !!(walletContractAddress && await this.blockchainService.getCode(walletContractAddress));
   }
 
-  async resolveName(ensName: string) {
+  resolveName(ensName: string): Promise<Nullable<string>> {
     const {chainSpec} = this.getRelayerConfig();
     return resolveName(this.provider, chainSpec.ensAddress, ensName);
   }
@@ -248,7 +248,7 @@ class UniversalLoginSDK {
     );
   }
 
-  async getGasModes() {
+  getGasModes(): Promise<GasMode[]> {
     return this.gasModeService.getModes();
   }
 

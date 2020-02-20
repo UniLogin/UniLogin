@@ -30,7 +30,7 @@ describe('INT: DeploymentReadyObserver', () => {
     callback = sinon.spy();
     deploymentReadyObserver = new DeploymentReadyObserver(supportedTokens, provider);
     deploymentReadyObserver.tick = 10;
-    unsubscribe = await deploymentReadyObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback);
+    unsubscribe = deploymentReadyObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback);
   });
 
   it('calls callback if ether balance changed', async () => {
@@ -56,8 +56,8 @@ describe('INT: DeploymentReadyObserver', () => {
   });
 
   it('should throw error if is already started', () => {
-    expect(deploymentReadyObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback))
-      .to.be.rejectedWith('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.');
+    expect(() => deploymentReadyObserver.startAndSubscribe(TEST_ACCOUNT_ADDRESS, callback))
+      .throws('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.');
   });
 
   it('set supported tokens, none token', () => {

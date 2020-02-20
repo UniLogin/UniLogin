@@ -69,7 +69,7 @@ class WalletEventsObserverFactory {
     this.unsubscribe = null;
   }
 
-  async finalizeAndStop() {
+  finalizeAndStop() {
     this.stop();
   }
 }

@@ -8,7 +8,7 @@ import {isValidCode, isProperSecurityCode, TEST_SDK_CONFIG} from '@unilogin/comm
 
 const loadFixture = createFixtureLoader();
 
-describe('INT: SDK connecting', async () => {
+describe('INT: SDK connecting', () => {
   let provider: providers.Provider;
   let relayer: RelayerUnderTest;
   let sdk: UniversalLoginSDK;

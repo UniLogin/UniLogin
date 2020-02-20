@@ -17,7 +17,7 @@ export class SdkSigner extends ethers.Signer {
     this.wallet = new Wallet(privateKey, this.provider);
   }
 
-  async getAddress() {
+  async getAddress(): Promise<string> {
     return this.wallet.address;
   }
 

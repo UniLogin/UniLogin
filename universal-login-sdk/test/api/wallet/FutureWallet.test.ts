@@ -20,7 +20,7 @@ describe('UNIT: FutureWallet', () => {
   let futureWallet: FutureWallet;
   let mockSDK: UniversalLoginSDK;
 
-  before(async () => {
+  before(() => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     mockSDK = {
@@ -42,7 +42,7 @@ describe('UNIT: FutureWallet', () => {
     expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
   });
 
-  it('returns minimal amount to deploy', async () => {
+  it('returns minimal amount to deploy', () => {
     const expectedMinimalAmount = utils.formatEther(multiplyBy150Percent(utils.bigNumberify(TEST_GAS_PRICE).mul(DEPLOY_GAS_LIMIT)));
     expect(futureWallet.getMinimalAmount()).to.eq(expectedMinimalAmount);
   });

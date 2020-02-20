@@ -26,14 +26,14 @@ describe('UNIT: ReferenceCountedState', () => {
     expect(state.get()).to.eq(0);
   });
 
-  it('1 subscription', async () => {
+  it('1 subscription', () => {
     const unsubscribe = state.subscribe(callback);
     expect(state.onFirstSubscribe).to.have.been.calledOnce;
     unsubscribe();
     expect(state.onLastUnsubscribe).to.have.been.calledOnce;
   });
 
-  it('2 subscriptions', async () => {
+  it('2 subscriptions', () => {
     const unsubscribe = state.subscribe(callback);
     const unsubscribe2 = state.subscribe(callback);
     expect(state.onFirstSubscribe).to.have.been.calledOnce;

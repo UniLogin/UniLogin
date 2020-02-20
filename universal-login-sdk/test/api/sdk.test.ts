@@ -18,7 +18,7 @@ chai.use(chaiAsPromised);
 const loadFixture = createFixtureLoader();
 const jsonRpcUrl = 'http://localhost:18545';
 
-describe('INT: SDK', async () => {
+describe('INT: SDK', () => {
   let provider: providers.Provider;
   let relayer: RelayerUnderTest;
   let sdk: UniversalLoginSDK;
@@ -40,7 +40,7 @@ describe('INT: SDK', async () => {
     await relayer.clearDatabase();
   });
 
-  describe('Create', async () => {
+  describe('Create', () => {
     describe('Initalization', () => {
       it('creates provider from URL', () => {
         const universalLoginSDK = new UniversalLoginSDK(relayer.url(), jsonRpcUrl, TEST_SDK_CONFIG);
@@ -52,7 +52,7 @@ describe('INT: SDK', async () => {
         expect(await relayer.provider.resolveName('alex.mylogin.eth')).to.eq(contractAddress);
       });
 
-      it('should return ens config', async () => {
+      it('should return ens config', () => {
         const expectedEnsAddress = relayer.getConfig().chainSpec.ensAddress;
         const response = sdk.getRelayerConfig();
         expect(response!.chainSpec.ensAddress).to.eq(expectedEnsAddress);
@@ -60,7 +60,7 @@ describe('INT: SDK', async () => {
     });
   });
 
-  describe('Execute signed message', async () => {
+  describe('Execute signed message', () => {
     it('Should execute signed message', async () => {
       const expectedBalance = (await otherWallet.getBalance()).add(utils.parseEther('0.5'));
       const {waitToBeSuccess} = await sdk.execute({...message, to: otherWallet.address}, privateKey);
@@ -109,8 +109,8 @@ describe('INT: SDK', async () => {
     });
   });
 
-  describe('Get relayer config', async () => {
-    it('getRelayerConfig return config which should have properties', async () => {
+  describe('Get relayer config', () => {
+    it('getRelayerConfig return config which should have properties', () => {
       const relayerConfig = sdk.getRelayerConfig();
       expect(relayerConfig).to.haveOwnProperty('supportedTokens');
       expect(relayerConfig).to.haveOwnProperty('chainSpec');
@@ -122,7 +122,7 @@ describe('INT: SDK', async () => {
     });
   });
 
-  describe('Proxy Exists', async () => {
+  describe('Proxy Exists', () => {
     it('should return correct bytecode', async () => {
       const address = await sdk.resolveName('alex.mylogin.eth');
       expect(address).to.not.be.null;
@@ -153,7 +153,7 @@ describe('INT: SDK', async () => {
       expect(await sdk.walletContractExist('no-such-login.mylogin.eth')).to.be.false;
     });
 
-    describe('Authorisation', async () => {
+    describe('Authorisation', () => {
       it('no pending authorisations', async () => {
         const authorisationRequest = await sdk.walletContractService.signRelayerRequest(privateKey, {contractAddress});
         expect(await sdk.authorisationsObserver.fetchPendingAuthorisations(authorisationRequest)).to.deep.eq([]);
