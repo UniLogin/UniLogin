@@ -3,7 +3,7 @@ import {providers} from 'ethers';
 import {fetchHardforkVersion, ISTANBUL_BLOCK_NUMBER} from '../../../src/integration/ethereum/fetchHardforkVersion';
 import {mockProviderWithBlockNumber} from '../../helpers/mockProvider';
 
-describe('fetchHardforkVersion', async () => {
+describe('fetchHardforkVersion', () => {
   const itReturnsHardforkVersion = (network: string, hardfork: string, blockNumber?: number) =>
     it(`returns ${hardfork} for ${network} ${blockNumber && `for block number equals ${blockNumber}`}`, async () => {
       const provider = mockProviderWithBlockNumber(network, blockNumber || 0);

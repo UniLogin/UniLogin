@@ -27,7 +27,7 @@ const expectedMessage = {
   signature: '0xea229e2779a9838b660b3c45e12f96c07ea838de3ffef621f4b73ae29c9feda06adb51c4c130d063e2aa251759f442a27109e74faddd8665b73072edd4c924b41c',
 };
 
-describe('UNIT: getMessageWithSignatures', async () => {
+describe('UNIT: getMessageWithSignatures', () => {
   it('should return message with signature', async () => {
     const collectedSignatureKeyPairs: CollectedSignatureKeyPair[] = TEST_SIGNATURE_KEY_PAIRS;
     const {signature, ...unsignedMessage} = expectedMessage;

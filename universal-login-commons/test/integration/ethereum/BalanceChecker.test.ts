@@ -9,19 +9,19 @@ import {WeiPerEther} from 'ethers/constants';
 
 chai.use(solidity);
 
-describe('INT: BalanceChecker', async () => {
+describe('INT: BalanceChecker', () => {
   let provider: providers.Provider;
   let balanceChecker: BalanceChecker;
   let wallet: Wallet;
   let mockToken: Contract;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     balanceChecker = new BalanceChecker(provider);
   });
 
-  describe('ETH', async () => {
+  describe('ETH', () => {
     it('0 ETH', async () => {
       const balance = await balanceChecker.getBalance(TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN.address);
       expect(balance).to.eq('0');
@@ -34,7 +34,7 @@ describe('INT: BalanceChecker', async () => {
     });
   });
 
-  describe('ERC20 token', async () => {
+  describe('ERC20 token', () => {
     beforeEach(async () => {
       mockToken = await deployContract(wallet, MockToken);
     });

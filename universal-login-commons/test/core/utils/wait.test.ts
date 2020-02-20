@@ -5,7 +5,7 @@ import {waitExpect} from '../../helpers/waitExpect';
 
 chai.use(chaiAsPromised);
 
-describe('waitUntil', async () => {
+describe('waitUntil', () => {
   it('should return true, if function returns true', async () => {
     const func = () => true;
     expect(await waitUntil(func)).to.be.true;
@@ -33,7 +33,7 @@ describe('waitUntil', async () => {
   });
 });
 
-describe('waitExpect', async () => {
+describe('waitExpect', () => {
   let expected = false;
   const changeExpected = async () => {
     await sleep(5);
