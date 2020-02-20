@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {stringToEther} from '@universal-login/commons';
-import {WalletService} from '@universal-login/sdk';
+import {stringToEther} from '@unilogin/commons';
+import {WalletService} from '@unilogin/sdk';
 import {Safello} from './OnRamp/Safello';
 import {Ramp} from './OnRamp/Ramp';
 import {Wyre} from './OnRamp/Wyre';

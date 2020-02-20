@@ -1,4 +1,4 @@
-import {sleep, onCritical, SignedMessage} from '@universal-login/commons';
+import {sleep, onCritical, SignedMessage} from '@unilogin/commons';
 import {IExecutionQueue} from '../../models/execution/IExecutionQueue';
 import {QueueItem} from '../../models/QueueItem';
 import Deployment from '../../models/Deployment';

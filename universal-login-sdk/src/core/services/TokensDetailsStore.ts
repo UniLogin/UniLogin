@@ -1,4 +1,4 @@
-import {TokenDetails, TokenDetailsService, ensureNotFalsy} from '@universal-login/commons';
+import {TokenDetails, TokenDetailsService, ensureNotFalsy} from '@unilogin/commons';
 import {TokenNotFound} from '../utils/errors';
 
 export class TokensDetailsStore {

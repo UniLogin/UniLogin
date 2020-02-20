@@ -1,5 +1,5 @@
 import {Wallet, utils} from 'ethers';
-import {TransactionOverrides, deployContract} from '@universal-login/commons';
+import {TransactionOverrides, deployContract} from '@unilogin/commons';
 import GnosisSafe from './contracts/GnosisSafe.json';
 import ProxyFactory from './contracts/ProxyFactory.json';
 

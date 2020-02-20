@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ConnectionFlow} from '@universal-login/react';
+import {ConnectionFlow} from '@unilogin/react';
 import {ConnectSelector} from './ConnectSelector';
 import {useServices} from '../../hooks';
 import {useHistory} from 'react-router';

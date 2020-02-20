@@ -1,4 +1,4 @@
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage} from '@unilogin/commons';
 import {GnosisSafeInterface} from './interfaces';
 
 export const encodeDataForExecTransaction = (message: SignedMessage) =>

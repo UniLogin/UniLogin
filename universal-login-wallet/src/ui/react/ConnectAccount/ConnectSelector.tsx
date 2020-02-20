@@ -1,7 +1,7 @@
 import React from 'react';
-import {WalletSelector} from '@universal-login/react';
+import {WalletSelector} from '@unilogin/react';
 import {useWalletConfig, useServices} from '../../hooks';
-import {WalletSuggestionAction} from '@universal-login/commons';
+import {WalletSuggestionAction} from '@unilogin/commons';
 import girlWithDocument1x from './../../assets/illustrations/girlWithDocument@1x.png';
 import girlWithDocument2x from './../../assets/illustrations/girlWithDocument@2x.png';
 import {Link} from 'react-router-dom';

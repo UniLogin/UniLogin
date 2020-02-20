@@ -1,4 +1,4 @@
-import {IPGeolocationApiConfig} from '@universal-login/commons';
+import {IPGeolocationApiConfig} from '@unilogin/commons';
 
 export interface Config {
   domains: string[];

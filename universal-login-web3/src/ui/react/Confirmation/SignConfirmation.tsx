@@ -1,5 +1,5 @@
 import React from 'react';
-import {ModalWrapper} from '@universal-login/react';
+import {ModalWrapper} from '@unilogin/react';
 import styled from 'styled-components';
 import {Title} from '../common/Text/Title';
 import {Text} from '../common/Text/Text';

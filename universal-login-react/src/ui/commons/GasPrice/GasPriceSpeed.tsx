@@ -1,6 +1,6 @@
 import React from 'react';
 import {utils} from 'ethers';
-import {GasMode} from '@universal-login/commons';
+import {GasMode} from '@unilogin/commons';
 import {RadioButton} from './RadioButton';
 
 interface GasPriceSpeedProps {

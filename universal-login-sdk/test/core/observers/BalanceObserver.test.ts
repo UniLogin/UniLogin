@@ -3,8 +3,8 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
-import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails, normalizeBigNumber} from '@universal-login/commons';
-import {mockContracts} from '@universal-login/contracts/testutils';
+import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails, normalizeBigNumber} from '@unilogin/commons';
+import {mockContracts} from '@unilogin/contracts/testutils';
 import {BalanceObserver} from '../../../src/core/observers/BalanceObserver';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
 

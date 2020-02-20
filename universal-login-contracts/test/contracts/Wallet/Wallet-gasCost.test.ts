@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {solidity, loadFixture} from 'ethereum-waffle';
 import {providers, Contract, Wallet, utils} from 'ethers';
-import {createKeyPair, ETHER_NATIVE_TOKEN, getDeployTransaction, ContractJSON, KeyPair} from '@universal-login/commons';
+import {createKeyPair, ETHER_NATIVE_TOKEN, getDeployTransaction, ContractJSON, KeyPair} from '@unilogin/commons';
 import WalletContract from '../../../dist/contracts/Wallet.json';
 import {ensAndMasterFixture, walletContractFixture} from '../../fixtures/walletContract';
 import {createFutureDeploymentWithENS, createFutureDeployment, EnsDomainData} from '../../helpers/FutureDeployment';

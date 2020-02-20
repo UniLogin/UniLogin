@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import {ensure} from '@universal-login/commons';
-import {InvalidWalletState} from '@universal-login/sdk';
+import {ensure} from '@unilogin/commons';
+import {InvalidWalletState} from '@unilogin/sdk';
 import {TopUp, TopUpProps} from '../TopUp/TopUp';
 
 export function OnboardingTopUp(props: TopUpProps) {

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {disconnectAccount, getInputClassName} from '../../core/services/DisconnectAccountService';
-import {WalletService} from '@universal-login/sdk';
+import {WalletService} from '@unilogin/sdk';
 import './../styles/disconnectAccount.sass';
 import './../styles/disconnectAccountDefault.sass';
 

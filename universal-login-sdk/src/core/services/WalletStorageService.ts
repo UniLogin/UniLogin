@@ -1,5 +1,5 @@
 import {asAnyOf, asObject, asString, cast} from '@restless/sanitizers';
-import {ApplicationWallet, asExactly, SerializableFutureWallet} from '@universal-login/commons';
+import {ApplicationWallet, asExactly, SerializableFutureWallet} from '@unilogin/commons';
 import {WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';

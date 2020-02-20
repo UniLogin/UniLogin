@@ -1,5 +1,5 @@
 import React from 'react';
-import {getEmojiCodePoint, getEmojiColor, getEmojiNumber} from '@universal-login/commons';
+import {getEmojiCodePoint, getEmojiColor, getEmojiNumber} from '@unilogin/commons';
 
 interface EmojiProps {
   code: number;

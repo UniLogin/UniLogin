@@ -1,4 +1,4 @@
-import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage, Device, Procedure} from '@universal-login/commons';
+import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage, Device, Procedure} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../../core/observers/BalanceObserver';

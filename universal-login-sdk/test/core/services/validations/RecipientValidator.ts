@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {utils} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS, TransferDetails} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TransferDetails} from '@unilogin/commons';
 import {RecipientValidator} from '../../../../src/core/services/validations/RecipientValidator';
 import {TransferErrors} from '../../../../src/core/services/validations/Validator';
 import UniversalLoginSDK from '../../../../src';

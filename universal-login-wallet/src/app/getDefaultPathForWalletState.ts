@@ -1,4 +1,4 @@
-import {WalletState} from '@universal-login/sdk';
+import {WalletState} from '@unilogin/sdk';
 
 export const getDefaultPathForWalletState = ({kind}: WalletState) => {
   switch (kind) {

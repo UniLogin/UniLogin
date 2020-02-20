@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
-import {ensure, isDataForFunctionCall} from '@universal-login/commons';
-import {beta2} from '@universal-login/contracts';
+import {ensure, isDataForFunctionCall} from '@unilogin/commons';
+import {beta2} from '@unilogin/contracts';
 import {InvalidHexData} from './errors';
 
 export const isAddKeyCall = (data: string) => isDataForFunctionCall(data, beta2.interfaces.WalletContractInterface, 'addKey');

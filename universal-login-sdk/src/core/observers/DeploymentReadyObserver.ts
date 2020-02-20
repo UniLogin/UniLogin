@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {SupportedToken, ensure, RequiredBalanceChecker, BalanceChecker} from '@universal-login/commons';
+import {SupportedToken, ensure, RequiredBalanceChecker, BalanceChecker} from '@unilogin/commons';
 import {ConcurrentDeployment} from '../utils/errors';
 import ObserverRunner from './ObserverRunner';
 

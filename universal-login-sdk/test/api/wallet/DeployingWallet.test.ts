@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import {DeployingWallet} from '../../../src/api/wallet/DeployingWallet';
-import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH} from '@universal-login/commons';
+import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH} from '@unilogin/commons';
 import {SerializedDeployingWallet, DeployedWallet} from '../../../src';
 import {Wallet} from 'ethers';
 

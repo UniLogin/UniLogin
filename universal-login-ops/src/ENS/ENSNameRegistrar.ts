@@ -1,6 +1,6 @@
 import {utils, Contract} from 'ethers';
-import {FIFSRegistrarInterface, PublicResolverInterface, ReverseRegistrarInterface} from '@universal-login/contracts';
-import {waitToBeMined} from '@universal-login/commons';
+import {FIFSRegistrarInterface, PublicResolverInterface, ReverseRegistrarInterface} from '@unilogin/contracts';
+import {waitToBeMined} from '@unilogin/commons';
 import ENSRegistrarBase from './ENSRegistrarBase';
 
 class ENSNameRegistrar extends ENSRegistrarBase {

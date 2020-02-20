@@ -1,4 +1,4 @@
-import {MessageStatus} from '@universal-login/commons';
+import {MessageStatus} from '@unilogin/commons';
 import {Execution} from '../../src';
 
 export async function waitForSuccess(pendingExecution: Promise<Execution>): Promise<MessageStatus> {

@@ -1,5 +1,5 @@
 import {ConfirmationResponse} from './ConfirmationResponse';
-import {Message} from '@universal-login/commons';
+import {Message} from '@unilogin/commons';
 
 export type ULWeb3ProviderState = {
   kind: 'IDLE';

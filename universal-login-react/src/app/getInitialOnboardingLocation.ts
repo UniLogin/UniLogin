@@ -1,4 +1,4 @@
-import {WalletState} from '@universal-login/sdk';
+import {WalletState} from '@unilogin/sdk';
 import {LocationDescriptorObject} from 'history';
 import {UnexpectedWalletState} from '../core/utils/errors';
 

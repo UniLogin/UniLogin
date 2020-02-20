@@ -1,9 +1,9 @@
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_SDK_CONFIG} from '@universal-login/commons';
-import {gnosisSafe} from '@universal-login/contracts';
-import {mockContracts} from '@universal-login/contracts/testutils';
-import {RelayerUnderTest} from '@universal-login/relayer';
+import {TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_SDK_CONFIG} from '@unilogin/commons';
+import {gnosisSafe} from '@unilogin/contracts';
+import {mockContracts} from '@unilogin/contracts/testutils';
+import {RelayerUnderTest} from '@unilogin/relayer';
 import UniversalLoginSDK from '../../src/api/sdk';
 import {createdDeployedWallet} from '../helpers/createDeployedWallet';
 

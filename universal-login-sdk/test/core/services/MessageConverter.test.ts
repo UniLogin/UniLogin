@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import {utils, Contract} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
-import {BlockchainService} from '@universal-login/contracts';
-import {setupWalletContract} from '@universal-login/contracts/testutils';
+import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, KeyPair} from '@unilogin/commons';
+import {BlockchainService} from '@unilogin/contracts';
+import {setupWalletContract} from '@unilogin/contracts/testutils';
 import {MessageConverter} from '../../../src/core/services/MessageConverter';
 
 describe('MessageConverter', () => {

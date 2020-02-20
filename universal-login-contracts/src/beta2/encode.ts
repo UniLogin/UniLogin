@@ -1,4 +1,4 @@
-import {SignedMessage} from '@universal-login/commons';
+import {SignedMessage} from '@unilogin/commons';
 import {interfaces} from './contracts';
 
 const {WalletContractInterface} = interfaces;

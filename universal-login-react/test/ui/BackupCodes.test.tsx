@@ -2,13 +2,13 @@ import {expect} from 'chai';
 import {mount} from 'enzyme';
 import React from 'react';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
-import {DeployedWallet} from '@universal-login/sdk';
-import {waitExpect} from '@universal-login/commons/testutils';
+import {DeployedWallet} from '@unilogin/sdk';
+import {waitExpect} from '@unilogin/commons/testutils';
 import {Wallet} from 'ethers';
 import {DashboardPage} from '../helpers/pages/DashboardPage';
 import {setupDeployedWallet} from '../helpers/setupDeploymentWallet';
 import {Dashboard} from '../../src/ui/UFlow/Dashboard';
-import Relayer from '@universal-login/relayer';
+import Relayer from '@unilogin/relayer';
 
 describe('INT: BackupCodes', () => {
   let wallet: Wallet;

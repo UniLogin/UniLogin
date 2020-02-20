@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {TokensPrices} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
+import {TokensPrices} from '@unilogin/commons';
+import UniversalLoginSDK from '@unilogin/sdk';
 import Spinner from './Spinner';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/assetsItem.sass';

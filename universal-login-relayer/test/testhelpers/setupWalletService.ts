@@ -1,15 +1,15 @@
 import sinon from 'sinon';
 import {Wallet, Contract, utils} from 'ethers';
-import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
-import {encodeDataForSetup, computeGnosisCounterfactualAddress, deployGnosisSafe, deployProxyFactory, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@universal-login/contracts';
+import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {encodeDataForSetup, computeGnosisCounterfactualAddress, deployGnosisSafe, deployProxyFactory, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@unilogin/contracts';
 import {WalletDeploymentService} from '../../src/integration/ethereum/WalletDeploymentService';
 import {buildEnsService} from './buildEnsService';
 import {WalletDeployer} from '../../src/integration/ethereum/WalletDeployer';
 import ENSService from '../../src/integration/ethereum/ensService';
 import {AddressZero} from 'ethers/constants';
 import {deployContract} from 'ethereum-waffle';
-import {DEPLOY_GAS_LIMIT} from '@universal-login/commons';
-import {DEPLOY_CONTRACT_NONCE} from '@universal-login/contracts';
+import {DEPLOY_GAS_LIMIT} from '@unilogin/commons';
+import {DEPLOY_CONTRACT_NONCE} from '@unilogin/contracts';
 
 export default async function setupWalletService(wallet: Wallet) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');

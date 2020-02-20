@@ -1,4 +1,4 @@
-import {TransferDetails} from '@universal-login/commons';
+import {TransferDetails} from '@unilogin/commons';
 import {Validator, TransferErrors} from './Validator';
 
 export class ChainValidator implements Validator<TransferDetails> {

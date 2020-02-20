@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
-import {PublicRelayerConfig} from '@universal-login/commons';
+import {PublicRelayerConfig} from '@unilogin/commons';
 import {startRelayer} from '../testhelpers/http';
 import {getPublicConfig} from '../../src/http/routes/config';
 import {RelayerUnderTest} from '../../src';

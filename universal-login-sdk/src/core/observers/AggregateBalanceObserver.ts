@@ -1,5 +1,5 @@
 import {BalanceObserver} from './BalanceObserver';
-import {TokenDetailsWithBalance, CurrencyToValue, TokensPrices, TokensValueConverter} from '@universal-login/commons';
+import {TokenDetailsWithBalance, CurrencyToValue, TokensPrices, TokensValueConverter} from '@unilogin/commons';
 import {PriceObserver} from './PriceObserver';
 
 export type OnAggregatedBalanceChange = (data: CurrencyToValue) => void;

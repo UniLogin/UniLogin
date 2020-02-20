@@ -1,6 +1,6 @@
-import {KeyPair, createKeyPair} from '@universal-login/commons';
-import {BlockchainService, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, SENTINEL_OWNERS} from '@universal-login/contracts';
-import {setupWalletContract, setupGnosisSafeContract, executeAddKeyGnosis} from '@universal-login/contracts/testutils';
+import {KeyPair, createKeyPair} from '@unilogin/commons';
+import {BlockchainService, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, SENTINEL_OWNERS} from '@unilogin/contracts';
+import {setupWalletContract, setupGnosisSafeContract, executeAddKeyGnosis} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Contract, utils, Wallet} from 'ethers';

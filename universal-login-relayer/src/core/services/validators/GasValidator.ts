@@ -1,4 +1,4 @@
-import {SignedMessage, ensure, GAS_BASE, IMessageValidator} from '@universal-login/commons';
+import {SignedMessage, ensure, GAS_BASE, IMessageValidator} from '@unilogin/commons';
 import {InsufficientGas, GasLimitTooHigh} from '../../utils/errors';
 import {GasComputation} from '../GasComputation';
 import {utils} from 'ethers';

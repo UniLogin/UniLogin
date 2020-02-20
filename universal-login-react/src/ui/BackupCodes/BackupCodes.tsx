@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {DeployedWallet} from '@universal-login/sdk';
+import {DeployedWallet} from '@unilogin/sdk';
 import BackupCodesView from './BackupCodesView';
 import {Prompt} from 'react-router-dom';
 import './../styles/backup.sass';
@@ -7,7 +7,7 @@ import './../styles/backupDefault.sass';
 import {BackupCodesInitial} from './BackupCodesInitial';
 import {ErrorMessage} from '../commons/ErrorMessage';
 import {WaitingForTransaction} from '../commons/WaitingForTransaction';
-import {GasParameters} from '@universal-login/commons';
+import {GasParameters} from '@unilogin/commons';
 import {BackupCodesService} from '../../core/services/BackupCodesService';
 import {useProperty} from '../hooks/useProperty';
 

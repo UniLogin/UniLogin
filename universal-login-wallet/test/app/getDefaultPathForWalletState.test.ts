@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {getDefaultPathForWalletState} from '../../src/app/getDefaultPathForWalletState';
-import {WalletState} from '@universal-login/sdk';
+import {WalletState} from '@unilogin/sdk';
 
 describe('UNIT: getDefaultPathForWalletState', () => {
   const itGetDefaultPathFor = (kind: string, path: string) =>

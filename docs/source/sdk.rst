@@ -33,7 +33,7 @@ Creating an SDK
   Example:
     ::
 
-      import UniversalLoginSDK from '@universal-login/sdk';
+      import UniversalLoginSDK from '@unilogin/sdk';
 
       const sdkConfig = {
         applicationInfo: {

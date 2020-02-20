@@ -2,8 +2,8 @@ import React from 'react';
 import vaultImage from './../../assets/illustrations/vault.png';
 import vaultImage2x from './../../assets/illustrations/vault@2x.png';
 import {useServices, useWalletConfig} from '../../hooks';
-import {WalletSelector} from '@universal-login/react';
-import {WalletSuggestionAction} from '@universal-login/commons';
+import {WalletSelector} from '@unilogin/react';
+import {WalletSuggestionAction} from '@unilogin/commons';
 import {Link} from 'react-router-dom';
 import {useHistory} from 'react-router';
 

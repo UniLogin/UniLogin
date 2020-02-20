@@ -1,5 +1,5 @@
 import React from 'react';
-import {UNIVERSAL_LOGIN_LOGO_URL as DEFAULT_LOGO, EMPTY_LOGO} from '@universal-login/commons';
+import {UNIVERSAL_LOGIN_LOGO_URL as DEFAULT_LOGO, EMPTY_LOGO} from '@unilogin/commons';
 
 interface LogoProps {
   logo: string;

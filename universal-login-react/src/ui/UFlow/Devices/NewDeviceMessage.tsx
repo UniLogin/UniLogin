@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {DeployedWallet} from '@universal-login/sdk';
+import {DeployedWallet} from '@unilogin/sdk';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import './../../styles/newDeviceMessage.sass';
 import './../../styles/newDeviceMessageDefault.sass';

@@ -1,4 +1,4 @@
-import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {SdkConfig} from './SdkConfig';
 import {MemoryStorageService} from '../core/services/MemoryStorageService';
 

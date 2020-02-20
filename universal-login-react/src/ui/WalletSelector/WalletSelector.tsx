@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {
   WALLET_SUGGESTION_ALL_ACTIONS,
   WalletSuggestionAction,
-} from '@universal-login/commons';
-import UniversalLoginSDK from '@universal-login/sdk';
+} from '@unilogin/commons';
+import UniversalLoginSDK from '@unilogin/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import ethLogo from '../assets/icons/ethereum-logo.svg';
 import {EnsNamePicker} from './EnsNamePicker';

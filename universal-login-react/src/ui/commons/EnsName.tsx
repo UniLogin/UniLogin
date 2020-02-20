@@ -1,5 +1,5 @@
 import React from 'react';
-import {parseDomain} from '@universal-login/commons';
+import {parseDomain} from '@unilogin/commons';
 import {classForComponent} from '../utils/classFor';
 
 interface EnsNameProps {

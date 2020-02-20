@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {getInitialOnboardingLocation} from '../../src/app/getInitialOnboardingLocation';
-import {WalletState} from '@universal-login/sdk';
+import {WalletState} from '@unilogin/sdk';
 
 describe('UNIT: getInitialOnboardingLocation', () => {
   const createTestWalletState = (kind: string, wallet?: any) => ({kind, wallet} as WalletState);

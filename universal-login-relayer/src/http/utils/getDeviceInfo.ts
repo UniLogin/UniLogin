@@ -2,7 +2,7 @@ import {Request} from 'express';
 import geoip from 'geoip-lite';
 import moment from 'moment';
 import {UAParser} from 'ua-parser-js';
-import {DeviceInfo, ApplicationInfo} from '@universal-login/commons';
+import {DeviceInfo, ApplicationInfo} from '@unilogin/commons';
 
 export const getDeviceInfo = (req: Request, {applicationName, logo, type}: ApplicationInfo): DeviceInfo => {
   const ipAddress: string = req.headers['x-forwarded-for'] as string || req.ip;

@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import {sendFunds, SendFundsParameters} from '../../src/ops/sendFunds';
 import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 chai.use(solidity);
 chai.use(chaiAsPromised);

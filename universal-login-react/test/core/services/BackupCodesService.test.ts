@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
-import {TEST_TRANSACTION_HASH, INITIAL_GAS_PARAMETERS} from '@universal-login/commons';
+import {TEST_TRANSACTION_HASH, INITIAL_GAS_PARAMETERS} from '@unilogin/commons';
 import {BackupCodesService} from '../../../src/core/services/BackupCodesService';
 
 chai.use(chaiAsPromised);

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ModalWrapper, useProperty} from '@universal-login/react';
+import {ModalWrapper, useProperty} from '@unilogin/react';
 import {Property} from 'reactive-properties';
 import {Web3ProviderFactory} from '../../models/Web3ProviderFactory';
 import {ButtonPrimary} from './common/Button/Button';

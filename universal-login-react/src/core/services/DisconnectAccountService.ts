@@ -1,5 +1,5 @@
-import {WalletService} from '@universal-login/sdk';
-import {DEFAULT_GAS_PRICE} from '@universal-login/commons';
+import {WalletService} from '@unilogin/sdk';
+import {DEFAULT_GAS_PRICE} from '@unilogin/commons';
 import {DISCONNECT} from '../constants/verifyFields';
 
 interface ErrorsType {

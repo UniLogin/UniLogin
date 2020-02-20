@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {DeviceInfo} from '@universal-login/commons';
+import {DeviceInfo} from '@unilogin/commons';
 import {Logo} from './Logo';
 
 export interface ConnectedDeviceViewProps {

@@ -1,5 +1,5 @@
 import path from 'path';
-import {getEnv, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@universal-login/commons';
+import {getEnv, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
 import {Config} from './relayer';
 
 export const config: Config = Object.freeze({

@@ -1,5 +1,5 @@
 import {Contract, providers, utils} from 'ethers';
-import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion, PROXY_VERSIONS} from '@universal-login/commons';
+import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion, PROXY_VERSIONS} from '@unilogin/commons';
 import {interfaces} from '../beta2/contracts';
 import {IProxyInterface} from '../gnosis-safe@1.1.1/interfaces';
 import {computeGnosisCounterfactualAddress} from '../gnosis-safe@1.1.1/utils';

@@ -1,5 +1,5 @@
 import React from 'react';
-import {clamp} from '@universal-login/commons';
+import {clamp} from '@unilogin/commons';
 
 interface ScrollProgressDotsProps {
   dotOpacities: Array<number>;

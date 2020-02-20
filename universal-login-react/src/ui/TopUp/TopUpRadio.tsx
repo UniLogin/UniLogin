@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {Omit, isClassName} from '@universal-login/commons';
+import {Omit, isClassName} from '@unilogin/commons';
 import EthereumIcon from './../assets/icons/ether.svg';
 import daiIcon from './../assets/icons/dai.svg';
 import cardIcon from './../assets/icons/card.svg';

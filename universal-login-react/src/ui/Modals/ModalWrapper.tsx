@@ -1,5 +1,5 @@
 import React, {ReactNode, useEffect} from 'react';
-import {escapePressed} from '@universal-login/commons';
+import {escapePressed} from '@unilogin/commons';
 import {Notice, NoticeProps} from '../commons/Notice';
 import {classForComponent, useClassFor} from '../utils/classFor';
 import './../styles/base/modal.sass';

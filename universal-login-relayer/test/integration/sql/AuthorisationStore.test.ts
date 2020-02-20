@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import Knex from 'knex';
 import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
-import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, EMPTY_DEVICE_INFO} from '@universal-login/commons';
+import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, EMPTY_DEVICE_INFO} from '@unilogin/commons';
 import setupWalletService, {createFutureWallet} from '../../testhelpers/setupWalletService';
 import AuthorisationStore from '../../../src/integration/sql/services/AuthorisationStore';
 import {getKnexConfig} from '../../testhelpers/knex';

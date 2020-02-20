@@ -1,5 +1,5 @@
-import {DeployedWallet} from '@universal-login/sdk';
-import {setupSdk, createWallet} from '@universal-login/sdk/testutils';
+import {DeployedWallet} from '@unilogin/sdk';
+import {setupSdk, createWallet} from '@unilogin/sdk/testutils';
 import {mockSdkPrices} from './mockSdkPrices';
 import {Wallet} from 'ethers';
 

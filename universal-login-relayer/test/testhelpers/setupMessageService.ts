@@ -1,6 +1,6 @@
 import Knex from 'knex';
 import {loadFixture} from 'ethereum-waffle';
-import {IMessageValidator} from '@universal-login/commons';
+import {IMessageValidator} from '@unilogin/commons';
 import MessageHandler from '../../src/core/services/execution/messages/MessageHandler';
 import QueueSQLStore from '../../src/integration/sql/services/QueueSQLStore';
 import AuthorisationStore from '../../src/integration/sql/services/AuthorisationStore';
@@ -22,7 +22,7 @@ import Deployment from '../../src/core/models/Deployment';
 import {MinedTransactionHandler} from '../../src/core/services/execution/MinedTransactionHandler';
 import setupWalletService from './setupWalletService';
 import {GasComputation} from '../../src/core/services/GasComputation';
-import {BlockchainService} from '@universal-login/contracts';
+import {BlockchainService} from '@unilogin/contracts';
 import MessageHandlerValidator from '../../src/core/services/validators/MessageHandlerValidator';
 import PendingMessages from '../../src/core/services/execution/messages/PendingMessages';
 import {WalletContractService} from '../../src/integration/ethereum/WalletContractService';

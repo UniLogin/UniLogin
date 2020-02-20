@@ -1,7 +1,7 @@
 import {providers, Contract, utils} from 'ethers';
-import {GnosisSafeInterface, signStringMessage, calculateGnosisStringHash, getPreviousOwner} from '@universal-login/contracts';
+import {GnosisSafeInterface, signStringMessage, calculateGnosisStringHash, getPreviousOwner} from '@unilogin/contracts';
 import {IWalletContractServiceStrategy} from './WalletContractService';
-import {ensureNotFalsy, RelayerRequest} from '@universal-login/commons';
+import {ensureNotFalsy, RelayerRequest} from '@unilogin/commons';
 import {WalletNotFound} from '../../core/utils/errors';
 
 export class GnosisSafeService implements IWalletContractServiceStrategy {

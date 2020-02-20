@@ -1,5 +1,5 @@
 import {RampInstantSDK, RampInstantEventTypes} from '@ramp-network/ramp-instant-sdk';
-import {RampConfig} from '@universal-login/commons';
+import {RampConfig} from '@unilogin/commons';
 import {useEffect, useState} from 'react';
 import {useMutableCallback} from 'react-use-mutable';
 

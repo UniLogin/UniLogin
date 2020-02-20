@@ -6,7 +6,7 @@ import deployMaster from '../ops/deployMaster';
 import deployENSRegistrar from '../ops/deployENSRegistrar';
 import {connectAndDeployBeta2Factory, deployGnosisFactory} from '../ops/deployFactory';
 import {sendFunds} from '../ops/sendFunds';
-import {defaultDeployOptions, ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
+import {defaultDeployOptions, ETHER_NATIVE_TOKEN, DEV_DEFAULT_PRIVATE_KEY} from '@unilogin/commons';
 import {registerTestDomain, registerEthDomain} from '../ENS/registerDomain';
 import {registerENSName} from '../ENS/registerENSName';
 import {deployGnosisSafe} from '../dev/deployWalletContractOnDev';

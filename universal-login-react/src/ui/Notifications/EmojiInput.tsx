@@ -2,7 +2,7 @@ import {EmojiPlaceholders} from './EmojiPlaceholders';
 import React from 'react';
 import {EmojiKeyboard} from './EmojiKeyboard';
 import {EmojiPanelWithFakes} from './EmojiPanelWithFakes';
-import {SECURITY_CODE_LENGTH} from '@universal-login/commons';
+import {SECURITY_CODE_LENGTH} from '@unilogin/commons';
 
 export interface EmojiInputProps {
   value: number[];

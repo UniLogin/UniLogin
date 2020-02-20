@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@universal-login/monorepo",
+  "name": "@unilogin/monorepo",
   "repository": "git@github.com:UniversalLogin/UniversalLoginSDK.git",
   "author": "Marek Kirejczyk <marek.kirejczyk@gmail.com>",
   "license": "MIT",

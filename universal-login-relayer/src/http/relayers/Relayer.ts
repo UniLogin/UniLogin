@@ -24,7 +24,7 @@ import {MessageStatusService} from '../../core/services/execution/messages/Messa
 import {Beta2Service} from '../../integration/ethereum/Beta2Service';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
-import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig} from '@universal-login/commons';
+import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig} from '@unilogin/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
@@ -34,7 +34,7 @@ import DeploymentExecutor from '../../integration/ethereum/DeploymentExecutor';
 import {MinedTransactionHandler} from '../../core/services/execution/MinedTransactionHandler';
 import {httpsRedirect} from '../middlewares/httpsRedirect';
 import {GasComputation} from '../../core/services/GasComputation';
-import {BlockchainService} from '@universal-login/contracts';
+import {BlockchainService} from '@unilogin/contracts';
 import {MessageHandlerValidator} from '../../core/services/validators/MessageHandlerValidator';
 import PendingMessages from '../../core/services/execution/messages/PendingMessages';
 import {WalletContractService} from '../../integration/ethereum/WalletContractService';

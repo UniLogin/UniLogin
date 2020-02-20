@@ -3,12 +3,12 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
-import {DeployedWallet, WalletService} from '@universal-login/sdk';
-import RelayerUnderTest from '@universal-login/relayer';
+import {DeployedWallet, WalletService} from '@unilogin/sdk';
+import RelayerUnderTest from '@unilogin/relayer';
 import {setupDeployedWallet} from '../../helpers/setupDeploymentWallet';
 import {DISCONNECT} from '../../../src/core/constants/verifyFields';
 import {disconnectAccount} from '../../../src/core/services/DisconnectAccountService';
-import {waitExpect} from '@universal-login/commons/testutils';
+import {waitExpect} from '@unilogin/commons/testutils';
 
 chai.use(sinonChai);
 

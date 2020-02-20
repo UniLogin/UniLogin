@@ -1,7 +1,7 @@
 import {State, Property, combine} from 'reactive-properties';
-import {WalletService} from '@universal-login/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {ULWeb3ProviderState} from '../models/ULWeb3ProviderState';
-import {ensure, Message} from '@universal-login/commons';
+import {ensure, Message} from '@unilogin/commons';
 import {UnexpectedWalletState} from '../ui/utils/errors';
 import {ConfirmationResponse} from '../models/ConfirmationResponse';
 

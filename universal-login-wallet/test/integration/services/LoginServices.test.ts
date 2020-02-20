@@ -7,11 +7,11 @@ import {
   DEFAULT_GAS_PRICE,
   ETHER_NATIVE_TOKEN,
   generateCode,
-} from '@universal-login/commons';
-import {waitExpect} from '@universal-login/commons/testutils';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
-import {setupSdk, createAndSetWallet} from '@universal-login/sdk/testutils';
-import Relayer from '@universal-login/relayer';
+} from '@unilogin/commons';
+import {waitExpect} from '@unilogin/commons/testutils';
+import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
+import {setupSdk, createAndSetWallet} from '@unilogin/sdk/testutils';
+import Relayer from '@unilogin/relayer';
 
 describe('Login', () => {
   let walletService: WalletService;

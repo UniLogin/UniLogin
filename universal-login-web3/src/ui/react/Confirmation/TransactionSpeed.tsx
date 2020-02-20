@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {GasMode} from '@universal-login/commons';
+import {GasMode} from '@unilogin/commons';
 
 export interface TransactionSpeedSelectionProps {
   selectedValue: string;

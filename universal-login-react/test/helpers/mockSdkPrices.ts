@@ -1,4 +1,4 @@
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK from '@unilogin/sdk';
 
 export const mockSdkPrices = (sdk: UniversalLoginSDK) => {
   sdk.priceObserver.getCurrentPrices = () => {

@@ -1,4 +1,4 @@
-import {MessageState} from '@universal-login/commons';
+import {MessageState} from '@unilogin/commons';
 
 export interface Mineable {
   transactionHash: string | null;

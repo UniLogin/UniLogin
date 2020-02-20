@@ -1,5 +1,5 @@
-import {SignedMessage, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {emptyMessage} from '@universal-login/contracts/testutils';
+import {SignedMessage, TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
+import {emptyMessage} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
 import {Contract, providers, Wallet} from 'ethers';

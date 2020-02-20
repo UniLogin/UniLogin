@@ -1,6 +1,6 @@
 import {Contract, Wallet} from 'ethers';
-import {TransactionOverrides} from '@universal-login/commons';
-import {ProxyFactoryInterface} from '@universal-login/contracts';
+import {TransactionOverrides} from '@unilogin/commons';
+import {ProxyFactoryInterface} from '@unilogin/contracts';
 
 export class WalletDeployer {
   private factoryContract: Contract;

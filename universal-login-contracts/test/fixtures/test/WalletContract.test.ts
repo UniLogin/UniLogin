@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Contract, providers, Wallet} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {walletContractFixture} from '../../fixtures/walletContract';
-import {KeyPair} from '@universal-login/commons';
+import {KeyPair} from '@unilogin/commons';
 import {WalletContractInterface} from '../../helpers/interfaces';
 
 describe('WalletContract fixture test', () => {

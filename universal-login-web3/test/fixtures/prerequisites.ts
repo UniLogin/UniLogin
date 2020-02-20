@@ -1,7 +1,7 @@
 import {providers, Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {mockContracts} from '@universal-login/contracts/testutils';
-import {RelayerUnderTest} from '@universal-login/relayer';
+import {mockContracts} from '@unilogin/contracts/testutils';
+import {RelayerUnderTest} from '@unilogin/relayer';
 import ENSBuilder from 'ens-builder';
 
 const DOMAIN_LABEL = 'mylogin';

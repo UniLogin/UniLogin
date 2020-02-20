@@ -1,4 +1,4 @@
-import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE, DEPLOY_GAS_LIMIT, multiplyBy150Percent} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE, DEPLOY_GAS_LIMIT, multiplyBy150Percent} from '@unilogin/commons';
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {providers, utils, Wallet} from 'ethers';

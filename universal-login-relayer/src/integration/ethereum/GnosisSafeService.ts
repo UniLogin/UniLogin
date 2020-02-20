@@ -1,6 +1,6 @@
 import {Contract, utils, providers} from 'ethers';
-import {isDataForFunctionCall, SignedMessage, RelayerRequest} from '@universal-login/commons';
-import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface, calculateGnosisStringHash, encodeDataForExecTransaction, gnosisSafe, ERC1271, isInvalidOwnerError} from '@universal-login/contracts';
+import {isDataForFunctionCall, SignedMessage, RelayerRequest} from '@unilogin/commons';
+import {GnosisSafeInterface, calculateMessageHash, IProxyInterface, ISignatureValidatorInterface, calculateGnosisStringHash, encodeDataForExecTransaction, gnosisSafe, ERC1271, isInvalidOwnerError} from '@unilogin/contracts';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GAS_LIMIT_MARGIN, decodeDataForExecTransaction} from '../../core/utils/messages/serialisation';
 import {decodeParametersFromData, getRemovedKey} from '../../core/utils/encodeData';

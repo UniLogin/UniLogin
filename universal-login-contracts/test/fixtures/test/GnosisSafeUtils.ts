@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {createKeyPair} from '@universal-login/commons';
+import {createKeyPair} from '@unilogin/commons';
 import {getPreviousOwner} from '../../../src/gnosis-safe@1.1.1/utils';
 import {SENTINEL_OWNERS} from '../../../src/gnosis-safe@1.1.1/constants';
 import {Wallet} from 'ethers';

@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
-import {RelayerUnderTest} from '@universal-login/relayer';
+import {TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
+import {RelayerUnderTest} from '@unilogin/relayer';
 import UniversalLoginSDK from '../../../src';
 import {getTargetAddress} from '../../../src/core/utils/getTargetAddress';
 import {setupSdk, createWallet} from '../../helpers';

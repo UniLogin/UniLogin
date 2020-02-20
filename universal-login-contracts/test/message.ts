@@ -1,6 +1,6 @@
 import {utils} from 'ethers';
 import {expect} from 'chai';
-import {SignedMessage, TEST_CONTRACT_ADDRESS, Message, TEST_ACCOUNT_ADDRESS, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_PRIVATE_KEY, OperationType} from '@universal-login/commons';
+import {SignedMessage, TEST_CONTRACT_ADDRESS, Message, TEST_ACCOUNT_ADDRESS, EMPTY_DATA, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_PRIVATE_KEY, OperationType} from '@unilogin/commons';
 import {messageToUnsignedMessage, unsignedMessageToSignedMessage, messageToSignedMessage} from '../src/message';
 import {AddressZero} from 'ethers/constants';
 

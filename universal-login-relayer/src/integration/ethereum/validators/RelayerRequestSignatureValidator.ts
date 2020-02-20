@@ -1,5 +1,5 @@
-import {RelayerRequest, ensure, ensureNotFalsy} from '@universal-login/commons';
-import {ERC1271} from '@universal-login/contracts';
+import {RelayerRequest, ensure, ensureNotFalsy} from '@unilogin/commons';
+import {ERC1271} from '@unilogin/contracts';
 import {UnauthorisedAddress, SignatureNotFound} from '../../../core/utils/errors';
 import {WalletContractService} from '../WalletContractService';
 

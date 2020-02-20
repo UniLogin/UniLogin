@@ -1,7 +1,7 @@
 import {Config} from './types';
 
 require('dotenv').config();
-import {ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 const developmentConfig: Config = {
   domains: ['mylogin.eth', 'poppularapp.eth', 'universal-id.eth'],

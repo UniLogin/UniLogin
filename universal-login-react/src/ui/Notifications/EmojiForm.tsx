@@ -4,7 +4,7 @@ import {
   isValidCode,
   Notification,
   ensureNotFalsy,
-} from '@universal-login/commons';
+} from '@unilogin/commons';
 import {EmojiPlaceholders} from './EmojiPlaceholders';
 import {EmojiInput} from './EmojiInput';
 

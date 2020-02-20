@@ -1,8 +1,8 @@
 import {deployContract} from 'ethereum-waffle';
 import ENSBuilder from 'ens-builder';
-import {ETHER_NATIVE_TOKEN, deepMerge} from '@universal-login/commons';
-import {deployFactory, beta2} from '@universal-login/contracts';
-import {mockContracts} from '@universal-login/contracts/testutils';
+import {ETHER_NATIVE_TOKEN, deepMerge} from '@unilogin/commons';
+import {deployFactory, beta2} from '@unilogin/contracts';
+import {mockContracts} from '@unilogin/contracts/testutils';
 import {getContractWhiteList} from '../../src/http/relayers/RelayerUnderTest';
 import {getConfig} from '../../src/index';
 

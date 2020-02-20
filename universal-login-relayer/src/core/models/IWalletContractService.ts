@@ -1,4 +1,4 @@
-import {SignedMessage, RelayerRequest, DecodedMessage, DecodedMessageGnosis} from '@universal-login/commons';
+import {SignedMessage, RelayerRequest, DecodedMessage, DecodedMessageGnosis} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {TransactionRequest} from 'ethers/providers';
 

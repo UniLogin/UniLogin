@@ -1,6 +1,6 @@
 import {Wallet, providers} from 'ethers';
-import {deployContractAndWait} from '@universal-login/commons';
-import {beta2, gnosisSafe} from '@universal-login/contracts';
+import {deployContractAndWait} from '@unilogin/commons';
+import {beta2, gnosisSafe} from '@unilogin/contracts';
 import {connectToEthereumNode, CommandOverrides} from '../cli/connectAndExecute';
 import {getTransactionOverrides} from '../utils/getTransactionOverrides';
 

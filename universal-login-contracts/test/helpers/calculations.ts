@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {SignedMessagePaymentOptions, createFullHexString, GasDataComputation, CURRENT_NETWORK_VERSION, GAS_FIXED, UnsignedMessage} from '@universal-login/commons';
+import {SignedMessagePaymentOptions, createFullHexString, GasDataComputation, CURRENT_NETWORK_VERSION, GAS_FIXED, UnsignedMessage} from '@unilogin/commons';
 import {encodeDataForExecuteSigned} from '../../src';
 
 export const calculateFinalGasLimit = (safeTxGas: utils.BigNumberish, baseGas: utils.BigNumberish) =>

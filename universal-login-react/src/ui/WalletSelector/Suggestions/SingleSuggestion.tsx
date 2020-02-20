@@ -1,5 +1,5 @@
 import React from 'react';
-import {getSuggestionId} from '@universal-login/commons';
+import {getSuggestionId} from '@unilogin/commons';
 import {SingleSuggestionProps} from '../../../core/models/SuggestionProps';
 import {EnsName} from '../../commons/EnsName';
 import {Spinner} from '../../commons/Spinner';

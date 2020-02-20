@@ -1,6 +1,6 @@
 import {join} from 'path';
 import React from 'react';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
 import {ChooseConnectionMethod} from './ChooseConnectionMethod';
 import {ConnectWithPassphrase} from './ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectWithEmoji';

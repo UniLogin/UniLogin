@@ -1,4 +1,4 @@
-import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo} from '@universal-login/commons';
+import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo} from '@unilogin/commons';
 import {fetch} from './fetch';
 
 export class RelayerApi {

@@ -1,4 +1,4 @@
-import {OperationType, SignedMessage, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {OperationType, SignedMessage, TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
 import {expect} from 'chai';
 import {AddressZero} from 'ethers/constants';
 import {RefundReceiverValidator} from '../../../../src/core/services/validators/RefundReceiverValidator';

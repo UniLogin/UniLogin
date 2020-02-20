@@ -2,16 +2,16 @@ import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {ReactWrapper} from 'enzyme';
 import chai, {expect} from 'chai';
 import React from 'react';
-import {setupSdk, createWallet} from '@universal-login/sdk/testutils';
-import {ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
-import {waitExpect} from '@universal-login/commons/testutils';
+import {setupSdk, createWallet} from '@unilogin/sdk/testutils';
+import {ETHER_NATIVE_TOKEN, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
+import {waitExpect} from '@unilogin/commons/testutils';
 import {createPreconfiguredServices} from '../testhelpers/ServicesUnderTests';
 import {mountWithContext} from '../testhelpers/CustomMount';
 import {Services} from '../../src/ui/createServices';
 import App from '../../src/ui/react/App';
 import {providers, Wallet} from 'ethers';
 import {AppPage} from '../pages/AppPage';
-import Relayer from '@universal-login/relayer';
+import Relayer from '@unilogin/relayer';
 
 chai.use(require('chai-string'));
 

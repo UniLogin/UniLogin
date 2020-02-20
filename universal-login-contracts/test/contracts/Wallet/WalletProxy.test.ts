@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {deployContract, solidity, loadFixture} from 'ethereum-waffle';
 import {Contract, Wallet} from 'ethers';
-import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
 import WalletProxy from '../../../dist/contracts/WalletProxy.json';
 import basicWalletAndProxy from '../../fixtures/basicWalletAndProxy';
 import {MockWalletMasterInterface} from '../../helpers/interfaces';

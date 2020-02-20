@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Contract, utils, providers} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
 import {setupGnosisSafeContractFixture} from '../../fixtures/gnosisSafe';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, KeyPair} from '@unilogin/commons';
 import {calculateMessageHash, calculateGnosisStringHash, signStringMessage} from '../../../src/gnosis-safe@1.1.1/utils';
 import {ISignatureValidatorInterface} from '../../../src';
 

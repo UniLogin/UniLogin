@@ -1,4 +1,4 @@
-import {sleep} from '@universal-login/commons';
+import {sleep} from '@unilogin/commons';
 
 type ObserverRunnerState = 'stop' | 'stopping' | 'running';
 

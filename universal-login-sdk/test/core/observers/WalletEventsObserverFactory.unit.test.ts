@@ -1,11 +1,11 @@
-import {TEST_CONTRACT_ADDRESS, TEST_KEY} from '@universal-login/commons';
-import {BlockchainService} from '@universal-login/contracts';
+import {TEST_CONTRACT_ADDRESS, TEST_KEY} from '@unilogin/commons';
+import {BlockchainService} from '@unilogin/contracts';
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import WalletEventsObserverFactory from '../../../src/core/observers/WalletEventsObserverFactory';
 import {keyAddedEvent, keyRemovedEvent} from '../../helpers/constants';
-import {waitExpect} from '@universal-login/commons/testutils';
+import {waitExpect} from '@unilogin/commons/testutils';
 import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 import {IStorageService} from '../../../src';
 

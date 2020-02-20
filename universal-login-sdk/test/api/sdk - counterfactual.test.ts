@@ -1,10 +1,10 @@
 import chai, {expect} from 'chai';
 import {providers, Wallet, utils} from 'ethers';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG} from '@universal-login/commons';
-import {emptyMessage} from '@universal-login/contracts/testutils';
-import {gnosisSafe} from '@universal-login/contracts';
-import {RelayerUnderTest} from '@universal-login/relayer';
+import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG} from '@unilogin/commons';
+import {emptyMessage} from '@unilogin/contracts/testutils';
+import {gnosisSafe} from '@unilogin/contracts';
+import {RelayerUnderTest} from '@unilogin/relayer';
 import UniversalLoginSDK from '../../src/api/sdk';
 
 chai.use(solidity);

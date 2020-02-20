@@ -3,8 +3,8 @@ import {createFixtureLoader} from 'ethereum-waffle';
 import {utils, providers} from 'ethers';
 import basicSDK from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../src/api/sdk';
-import {RelayerUnderTest} from '@universal-login/relayer';
-import {isValidCode, isProperSecurityCode, TEST_SDK_CONFIG} from '@universal-login/commons';
+import {RelayerUnderTest} from '@unilogin/relayer';
+import {isValidCode, isProperSecurityCode, TEST_SDK_CONFIG} from '@unilogin/commons';
 
 const loadFixture = createFixtureLoader();
 

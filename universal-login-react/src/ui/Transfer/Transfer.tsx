@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {TransferService, TransferErrors, Execution} from '@universal-login/sdk';
-import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, TokenDetailsWithBalance, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {TransferService, TransferErrors, Execution} from '@unilogin/sdk';
+import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, TokenDetailsWithBalance, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import '../styles/transfer.sass';
 import '../styles/transferDefaults.sass';
 import './../styles/themes/Jarvis/footerThemeJarvis.sass';

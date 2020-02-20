@@ -1,8 +1,8 @@
 const ENSBuilder = require('ens-builder');
-import {withENS, parseDomain} from '@universal-login/commons';
+import {withENS, parseDomain} from '@unilogin/commons';
 import {Wallet, Contract, utils} from 'ethers';
 import ENSService from '../../src/integration/ethereum/ensService';
-import {ReverseRegistrarInterface, FIFSRegistrarInterface, PublicResolverInterface, ENSInterface} from '@universal-login/contracts';
+import {ReverseRegistrarInterface, FIFSRegistrarInterface, PublicResolverInterface, ENSInterface} from '@unilogin/contracts';
 
 export const buildEnsService = async (wallet: Wallet, domain: string) => {
   const ensBuilder = new ENSBuilder(wallet);

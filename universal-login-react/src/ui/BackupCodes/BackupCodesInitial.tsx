@@ -1,6 +1,6 @@
 import React from 'react';
-import {DeployedWallet} from '@universal-login/sdk';
-import {OnGasParametersChanged, DEFAULT_GAS_LIMIT} from '@universal-login/commons';
+import {DeployedWallet} from '@unilogin/sdk';
+import {OnGasParametersChanged, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
 import {BackupCodesWrapper} from './BackupCodesWrapper';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';

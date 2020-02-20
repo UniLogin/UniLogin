@@ -3,7 +3,7 @@ import {Web3PickerProvider} from '../Web3PickerProvider';
 import {Web3ProviderFactory} from '../models/Web3ProviderFactory';
 import {setupStrategies} from './setupStrategies';
 import {getApplicationInfoFromDocument} from '../ui/utils/applicationInfo';
-import {ApplicationInfo} from '@universal-login/commons';
+import {ApplicationInfo} from '@unilogin/commons';
 import {ULWeb3Provider} from '../ULWeb3Provider';
 
 export type Strategy = 'UniLogin' | 'Metamask' | Web3ProviderFactory;

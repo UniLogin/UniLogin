@@ -1,7 +1,7 @@
 import {Contract, providers, utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {parseDomain, ENSDomainInfo} from '@universal-login/commons';
-import {ENSInterface, gnosisSafe} from '@universal-login/contracts';
+import {parseDomain, ENSDomainInfo} from '@unilogin/commons';
+import {ENSInterface, gnosisSafe} from '@unilogin/contracts';
 
 export class ENSService {
   private ens: Contract;

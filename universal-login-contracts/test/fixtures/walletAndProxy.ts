@@ -1,6 +1,6 @@
 import {utils, Contract, Wallet, providers} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import WalletContract from '../../dist/contracts/Wallet.json';
 import Proxy from '../../dist/contracts/WalletProxy.json';
 import MockToken from '../../dist/contracts/MockToken.json';

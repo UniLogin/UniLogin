@@ -1,6 +1,6 @@
 import React from 'react';
 import {Property} from 'reactive-properties';
-import {WalletService} from '@universal-login/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {MemoryRouter} from 'react-router-dom';
 import {DashboardModal} from './DashboardModal';
 import {getWindowConfirmation} from '../../core/utils/getWindowConfirmation';

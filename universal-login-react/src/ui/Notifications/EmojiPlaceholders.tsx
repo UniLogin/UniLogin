@@ -1,6 +1,6 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
-import {SECURITY_CODE_LENGTH, isCodeSufficientButInvalid} from '@universal-login/commons';
+import {SECURITY_CODE_LENGTH, isCodeSufficientButInvalid} from '@unilogin/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';

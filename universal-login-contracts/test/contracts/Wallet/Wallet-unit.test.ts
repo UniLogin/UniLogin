@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
 import {utils, Contract, Wallet} from 'ethers';
 import WalletContract from '../../../dist/contracts/TestableWallet.json';
-import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, TEST_OVERRIDES_FOR_REVERT} from '@universal-login/commons';
+import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, TEST_OVERRIDES_FOR_REVERT} from '@unilogin/commons';
 
 describe('UNIT: WalletContract', () => {
   let walletContract: Contract;

@@ -8,9 +8,9 @@ import {
   ETHER_NATIVE_TOKEN,
   getContractHash,
   withENS,
-} from '@universal-login/commons';
-import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory} from '@universal-login/contracts';
-import {mockContracts} from '@universal-login/contracts/testutils';
+} from '@unilogin/commons';
+import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory} from '@unilogin/contracts';
+import {mockContracts} from '@unilogin/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
 import {getConfig} from '../../core/utils/config';

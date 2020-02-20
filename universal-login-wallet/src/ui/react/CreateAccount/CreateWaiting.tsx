@@ -1,8 +1,8 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
-import {ensure} from '@universal-login/commons';
-import {InvalidWalletState, WalletState} from '@universal-login/sdk';
-import {ModalWrapper, WaitingForDeployment, useAsyncEffect, DEPLOYMENT_DESCRIPTION} from '@universal-login/react';
+import {ensure} from '@unilogin/commons';
+import {InvalidWalletState, WalletState} from '@unilogin/sdk';
+import {ModalWrapper, WaitingForDeployment, useAsyncEffect, DEPLOYMENT_DESCRIPTION} from '@unilogin/react';
 import {useServices} from '../../hooks';
 
 interface CreateWaitingProps {

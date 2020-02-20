@@ -1,11 +1,11 @@
 import chai, {expect} from 'chai';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
-import Relayer from '@universal-login/relayer';
+import Relayer from '@unilogin/relayer';
 import {setupSdk} from '../../helpers/setupSdk';
 import UniversalLoginSDK from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, utils} from 'ethers';
-import {ensure, TEST_EXECUTION_OPTIONS} from '@universal-login/commons';
+import {ensure, TEST_EXECUTION_OPTIONS} from '@unilogin/commons';
 import {createWallet} from '../../helpers';
 import {DeployedWallet} from '../../../src';
 

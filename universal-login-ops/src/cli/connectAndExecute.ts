@@ -1,5 +1,5 @@
 import {Wallet, providers} from 'ethers';
-import {devJsonRpcUrl} from '@universal-login/commons';
+import {devJsonRpcUrl} from '@unilogin/commons';
 
 export type AsyncCommand<T> = (wallet: Wallet, overrides: CommandOverrides) => Promise<T>;
 

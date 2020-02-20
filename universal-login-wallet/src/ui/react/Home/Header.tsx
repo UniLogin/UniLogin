@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import logo from '../../assets/logo.svg';
 import {useServices} from '../../hooks';
 import {Link, NavLink} from 'react-router-dom';
-import {useAsyncEffect} from '@universal-login/react';
+import {useAsyncEffect} from '@unilogin/react';
 
 export function Header() {
   const {sdk, walletService} = useServices();

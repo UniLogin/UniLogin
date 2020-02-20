@@ -1,5 +1,5 @@
-import {GAS_FIXED, OperationType, SignedMessage} from '@universal-login/commons';
-import {BlockchainService} from '@universal-login/contracts';
+import {GAS_FIXED, OperationType, SignedMessage} from '@unilogin/commons';
+import {BlockchainService} from '@unilogin/contracts';
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils} from 'ethers';

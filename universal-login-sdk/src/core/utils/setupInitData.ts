@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {DEPLOY_GAS_LIMIT} from '@universal-login/commons';
-import {encodeDataForSetup, INITIAL_REQUIRED_CONFIRMATIONS} from '@universal-login/contracts';
+import {DEPLOY_GAS_LIMIT} from '@unilogin/commons';
+import {encodeDataForSetup, INITIAL_REQUIRED_CONFIRMATIONS} from '@unilogin/contracts';
 import {ENSService} from '../../integration/ethereum/ENSService';
 
 export const setupInitData = async (publicKey: string, ensName: string, gasPrice: string, gasToken: string, ensService: ENSService, relayerAddress: string) => {

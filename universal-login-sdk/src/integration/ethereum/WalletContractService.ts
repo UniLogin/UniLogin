@@ -1,5 +1,5 @@
-import {BlockchainService} from '@universal-login/contracts';
-import {WalletVersion, RelayerRequest} from '@universal-login/commons';
+import {BlockchainService} from '@unilogin/contracts';
+import {WalletVersion, RelayerRequest} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {GnosisSafeService} from './GnosisSafeService';
 import {WalletEventType} from '../../core/models/events';

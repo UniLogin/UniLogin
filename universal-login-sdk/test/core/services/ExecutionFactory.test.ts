@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import sinon, {SinonStub} from 'sinon';
 import {utils} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
-import {messageToSignedMessage} from '@universal-login/contracts';
-import {emptyMessage} from '@universal-login/contracts/testutils';
+import {TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION} from '@unilogin/commons';
+import {messageToSignedMessage} from '@unilogin/contracts';
+import {emptyMessage} from '@unilogin/contracts/testutils';
 import {ExecutionFactory} from '../../../src/core/services/ExecutionFactory';
 import {RelayerApi} from '../../../src/integration/http/RelayerApi';
 

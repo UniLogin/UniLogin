@@ -1,5 +1,5 @@
-import {SignedMessage} from '@universal-login/commons';
-import {encodeDataForExecuteSigned} from '@universal-login/contracts';
+import {SignedMessage} from '@unilogin/commons';
+import {encodeDataForExecuteSigned} from '@unilogin/contracts';
 import {expect} from 'chai';
 import {decodeDataForExecuteSigned} from '../../../src/core/utils/messages/serialisation';
 import {getTestSignedMessage} from '../../testconfig/message';

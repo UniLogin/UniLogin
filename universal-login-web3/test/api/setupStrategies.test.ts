@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {MemoryStorageService} from '@universal-login/sdk';
+import {MemoryStorageService} from '@unilogin/sdk';
 import {setupStrategies} from '../../src/api/setupStrategies';
 import {Web3ProviderFactory} from '../../src/models/Web3ProviderFactory';
 import UniLoginLogo from '../../src/ui/assets/U.svg';

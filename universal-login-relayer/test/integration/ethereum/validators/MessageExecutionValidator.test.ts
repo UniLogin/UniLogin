@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
 import {loadFixture, deployContract} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, Message, IMessageValidator} from '@universal-login/commons';
-import {unsignedMessageToSignedMessage} from '@universal-login/contracts';
-import {emptyMessage, mockContracts} from '@universal-login/contracts/testutils';
+import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, Message, IMessageValidator} from '@unilogin/commons';
+import {unsignedMessageToSignedMessage} from '@unilogin/contracts';
+import {emptyMessage, mockContracts} from '@unilogin/contracts/testutils';
 import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletContractWithMockToken';
 import MessageExecutionValidator from '../../../../src/integration/ethereum/validators/MessageExecutionValidator';
 import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTest';

@@ -1,4 +1,4 @@
-import {MessageStatus, SignedMessage, stringifySignedMessageFields, ensureNotFalsy} from '@universal-login/commons';
+import {MessageStatus, SignedMessage, stringifySignedMessageFields, ensureNotFalsy} from '@unilogin/commons';
 import {RelayerApi} from '../../integration/http/RelayerApi';
 import {MissingMessageHash} from '../utils/errors';
 import {MineableFactory} from './MineableFactory';

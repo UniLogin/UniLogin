@@ -4,7 +4,7 @@ import {promisify} from 'util';
 import {Web3PickerProvider} from '../src/Web3PickerProvider';
 import {Provider} from 'web3/providers';
 import {IWeb3PickerComponentProps} from '../src/ui/react/Web3PickerComponent';
-import {waitExpect} from '@universal-login/commons/testutils';
+import {waitExpect} from '@unilogin/commons/testutils';
 
 describe('UNIT: Web3Picker', () => {
   const readProvider = {send: sinon.spy()};

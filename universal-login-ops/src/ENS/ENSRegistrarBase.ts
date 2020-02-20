@@ -1,6 +1,6 @@
 import {providers, Contract, Wallet, utils, ContractFunction} from 'ethers';
-import {ENSInterface} from '@universal-login/contracts';
-import {TransactionOverrides} from '@universal-login/commons';
+import {ENSInterface} from '@unilogin/contracts';
+import {TransactionOverrides} from '@unilogin/commons';
 
 type ENSInfo = {
   ensAddress: string;

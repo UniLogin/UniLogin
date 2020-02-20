@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {Contract} from 'ethers';
 import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, TokenDetailsService} from '@universal-login/commons';
-import {mockContracts} from '@universal-login/contracts/testutils';
+import {ETHER_NATIVE_TOKEN, TokenDetailsService} from '@unilogin/commons';
+import {mockContracts} from '@unilogin/contracts/testutils';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
 
 describe('INT: TokensDetailsStore', () => {

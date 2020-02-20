@@ -1,4 +1,4 @@
-import {TEST_CONTRACT_ADDRESS} from '@universal-login/commons';
+import {TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
 
 export const keyAddedEvent = {
   blockNumber: 24,

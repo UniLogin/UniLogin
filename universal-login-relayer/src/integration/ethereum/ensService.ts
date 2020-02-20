@@ -1,6 +1,6 @@
 import {utils, Contract, providers} from 'ethers';
-import {ENSInterface} from '@universal-login/contracts';
-import {parseDomain, resolveName, ENSDomainInfo, ensure} from '@universal-login/commons';
+import {ENSInterface} from '@unilogin/contracts';
+import {parseDomain, resolveName, ENSDomainInfo, ensure} from '@unilogin/commons';
 import {InvalidENSDomain, EnsNameTaken} from '../../core/utils/errors';
 
 class ENSService {

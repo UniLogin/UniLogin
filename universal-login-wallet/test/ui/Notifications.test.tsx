@@ -2,12 +2,12 @@ import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
 import {providers, Contract} from 'ethers';
 import {createFixtureLoader, createMockProvider, getWallets} from 'ethereum-waffle';
-import {deployMockToken} from '@universal-login/commons/testutils';
+import {deployMockToken} from '@unilogin/commons/testutils';
 import {Services} from '../../src/ui/createServices';
 import {AppPage} from '../pages/AppPage';
 import {setupUI} from '../testhelpers/setupUI';
-import {waitExpect} from '@universal-login/commons/testutils';
-import {RelayerUnderTest} from '@universal-login/relayer';
+import {waitExpect} from '@unilogin/commons/testutils';
+import {RelayerUnderTest} from '@unilogin/relayer';
 
 describe('UI: Notifications', () => {
   let services: Services;

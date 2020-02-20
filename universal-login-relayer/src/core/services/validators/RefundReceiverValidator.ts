@@ -1,4 +1,4 @@
-import {IMessageValidator, SignedMessage, ensure} from '@universal-login/commons';
+import {IMessageValidator, SignedMessage, ensure} from '@unilogin/commons';
 import {InvalidRefundReceiver} from '../../utils/errors';
 
 export class RefundReceiverValidator implements IMessageValidator {

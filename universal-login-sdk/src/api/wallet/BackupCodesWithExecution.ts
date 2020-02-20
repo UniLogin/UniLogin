@@ -1,4 +1,4 @@
-import {MessageStatus} from '@universal-login/commons';
+import {MessageStatus} from '@unilogin/commons';
 import {Execution} from '../../core/services/ExecutionFactory';
 
 export class BackupCodesWithExecution {

@@ -1,5 +1,5 @@
-import {Message} from '@universal-login/commons';
-import {calculateBaseGas, BlockchainService} from '@universal-login/contracts';
+import {Message} from '@unilogin/commons';
+import {calculateBaseGas, BlockchainService} from '@unilogin/contracts';
 
 export class GasComputation {
   constructor(private blockchainService: BlockchainService) {

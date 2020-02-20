@@ -1,7 +1,7 @@
 import {RpcBridge} from '../../src/services/RpcBridge';
 import sinon, {SinonStub} from 'sinon';
 import {expect} from 'chai';
-import {sleep} from '@universal-login/commons';
+import {sleep} from '@unilogin/commons';
 
 describe('INT: RpcBridge', () => {
   let alice: RpcBridge;

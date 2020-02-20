@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {startRelayerWithRefund} from '../testhelpers/http';
-import {createKeyPair, TEST_APPLICATION_INFO} from '@universal-login/commons';
-import {signStringMessage, calculateGnosisStringHash} from '@universal-login/contracts';
+import {createKeyPair, TEST_APPLICATION_INFO} from '@unilogin/commons';
+import {signStringMessage, calculateGnosisStringHash} from '@unilogin/contracts';
 import {deployGnosisSafeProxy} from '../testhelpers/createGnosisSafeContract';
 import {utils} from 'ethers';
 

@@ -1,5 +1,5 @@
-import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH} from '@universal-login/commons';
-import {waitExpect} from '@universal-login/commons/testutils';
+import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH} from '@unilogin/commons';
+import {waitExpect} from '@unilogin/commons/testutils';
 import {expect, use} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';

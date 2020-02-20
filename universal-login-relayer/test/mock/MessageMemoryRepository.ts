@@ -1,4 +1,4 @@
-import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotFalsy} from '@universal-login/commons';
+import {SignedMessage, stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotFalsy} from '@unilogin/commons';
 import {getKeyFromHashAndSignature} from '../../src/core/utils/encodeData';
 import {InvalidMessage, MessageNotFound} from '../../src/core/utils/errors';
 import MessageItem from '../../src/core/models/messages/MessageItem';

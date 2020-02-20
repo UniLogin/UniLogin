@@ -1,4 +1,4 @@
-import {WalletService} from '@universal-login/sdk';
+import {WalletService} from '@unilogin/sdk';
 
 export class WalletPresenter {
   constructor(

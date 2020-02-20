@@ -1,4 +1,4 @@
-import {ensure, MessageStatus, SignedMessage} from '@universal-login/commons';
+import {ensure, MessageStatus, SignedMessage} from '@unilogin/commons';
 import {MessageStatusService} from './MessageStatusService';
 import {DuplicatedExecution, DuplicatedSignature, InvalidSignature, NotEnoughSignatures} from '../../../utils/errors';
 import IMessageRepository from '../../../models/messages/IMessagesRepository';

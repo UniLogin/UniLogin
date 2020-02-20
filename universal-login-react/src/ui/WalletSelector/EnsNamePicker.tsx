@@ -5,13 +5,13 @@ import {
   SuggestionsService,
   WalletSuggestionAction,
   WALLET_SUGGESTION_ALL_ACTIONS,
-} from '@universal-login/commons';
+} from '@unilogin/commons';
 import {SuggestionComponent} from './Suggestions';
 import {Input} from '../commons/Input';
 import Logo from './../assets/logo.svg';
 import {Spinner} from '../..';
 import {getSuggestion} from '../../core/utils/getSuggestion';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK from '@unilogin/sdk';
 import {useOutsideClick} from '../hooks/useClickOutside';
 import {useClassFor, classForComponent} from '../utils/classFor';
 

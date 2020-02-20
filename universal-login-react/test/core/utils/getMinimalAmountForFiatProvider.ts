@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {getMinimalAmountForFiatProvider} from '../../../src/core/utils/getMinimalAmountForFiatProvider';
 import {TopUpProvider} from '../../../src/core/models/TopUpProvider';
-import * as sdk from '@universal-login/sdk';
+import * as sdk from '@unilogin/sdk';
 
 describe('getMinimalAmountForFiatProvider', () => {
   describe('RAMP provider', () => {

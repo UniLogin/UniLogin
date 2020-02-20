@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {WalletService} from '@universal-login/sdk';
-import {DEV_DEFAULT_PRIVATE_KEY} from '@universal-login/commons';
+import {WalletService} from '@unilogin/sdk';
+import {DEV_DEFAULT_PRIVATE_KEY} from '@unilogin/commons';
 import {useServices} from '../../core/services/useServices';
 import {utils, Wallet} from 'ethers';
 

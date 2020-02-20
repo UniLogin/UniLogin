@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import {BigNumberish} from 'ethers/utils';
-import {GasMode, GasOption, safeMultiply} from '@universal-login/commons';
-import {calculateTransactionFee} from '@universal-login/react';
+import {GasMode, GasOption, safeMultiply} from '@unilogin/commons';
+import {calculateTransactionFee} from '@unilogin/react';
 import ethereumIcon from '../../assets/ethereum.svg';
 import {Text} from '../common/Text/Text';
 

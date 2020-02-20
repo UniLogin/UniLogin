@@ -1,4 +1,4 @@
-import {ObservedCurrency, TokensPrices} from '@universal-login/commons';
+import {ObservedCurrency, TokensPrices} from '@unilogin/commons';
 import {Sanitizer, asObject, asNumber, cast} from '@restless/sanitizers';
 const cryptocompare = require('cryptocompare');
 

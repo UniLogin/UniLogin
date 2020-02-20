@@ -1,8 +1,8 @@
 import React from 'react';
 import {providers} from 'ethers';
-import {walletFromBrain, DeepPartial} from '@universal-login/commons';
-import UniversalLoginSDK, {SdkConfig, WalletService} from '@universal-login/sdk';
-import {StorageService} from '@universal-login/react';
+import {walletFromBrain, DeepPartial} from '@unilogin/commons';
+import UniversalLoginSDK, {SdkConfig, WalletService} from '@unilogin/sdk';
+import {StorageService} from '@unilogin/react';
 import UserDropdownService from '../app/UserDropdownService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
 

@@ -1,5 +1,5 @@
 {
-  "name": "@universal-login/provider",
+  "name": "@unilogin/provider",
   "version": "0.5.10",
   "main": "dist/cjs/index.js",
   "types": "dist/esm/index.d.ts",

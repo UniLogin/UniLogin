@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Device, ensureNotFalsy, DEFAULT_GAS_PRICE} from '@universal-login/commons';
-import {DeployedWallet} from '@universal-login/sdk';
+import {Device, ensureNotFalsy, DEFAULT_GAS_PRICE} from '@unilogin/commons';
+import {DeployedWallet} from '@unilogin/sdk';
 import {useHistory} from 'react-router';
 import {join} from 'path';
 import {ConnectedDeviceView} from './ConnectedDeviceView';

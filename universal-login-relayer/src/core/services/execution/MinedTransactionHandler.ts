@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {EMPTY_DEVICE_INFO, DecodedMessage} from '@universal-login/commons';
+import {EMPTY_DEVICE_INFO, DecodedMessage} from '@unilogin/commons';
 import {DevicesService} from '../DevicesService';
 import AuthorisationStore from '../../../integration/sql/services/AuthorisationStore';
 import {WalletContractService} from '../../../integration/ethereum/WalletContractService';

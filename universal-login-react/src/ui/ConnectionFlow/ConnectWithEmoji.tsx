@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {ensure, generateCode} from '@universal-login/commons';
-import UniversalLoginSDK, {WalletService} from '@universal-login/sdk';
+import {ensure, generateCode} from '@unilogin/commons';
+import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
 import {EmojiPanel} from '../WalletSelector/EmojiPanel';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/emoji.sass';

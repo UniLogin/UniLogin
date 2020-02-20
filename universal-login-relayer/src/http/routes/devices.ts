@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject} from '@restless/sanitizers';
-import {RelayerRequest} from '@universal-login/commons';
+import {RelayerRequest} from '@unilogin/commons';
 import {DevicesService} from '../../core/services/DevicesService';
 
 const getDevices = (devicesService: DevicesService) =>

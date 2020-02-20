@@ -1,4 +1,4 @@
-import {WalletContractInterface, GnosisSafeInterface} from '@universal-login/contracts';
+import {WalletContractInterface, GnosisSafeInterface} from '@unilogin/contracts';
 import {Log} from 'ethers/providers';
 import {WalletEventArgs, WalletEventType} from '../models/events';
 

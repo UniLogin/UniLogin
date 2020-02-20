@@ -1,7 +1,7 @@
 import {RelayerApi} from '../../integration/http/RelayerApi';
 import deepEqual from 'deep-equal';
 import ObserverRunner from './ObserverRunner';
-import {ensure, Notification, RelayerRequest} from '@universal-login/commons';
+import {ensure, Notification, RelayerRequest} from '@unilogin/commons';
 import {ConcurrentAuthorisation} from '../utils/errors';
 
 class AuthorisationsObserver extends ObserverRunner {

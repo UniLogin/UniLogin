@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
-import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, ApplicationWallet, TEST_MESSAGE_HASH, ETHER_NATIVE_TOKEN, TEST_TRANSACTION_HASH, TEST_GAS_PRICE} from '@universal-login/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, ApplicationWallet, TEST_MESSAGE_HASH, ETHER_NATIVE_TOKEN, TEST_TRANSACTION_HASH, TEST_GAS_PRICE} from '@unilogin/commons';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet} from 'ethers';
 import {DeployedWallet} from '../../../src/api/wallet/DeployedWallet';

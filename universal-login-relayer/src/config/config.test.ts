@@ -1,6 +1,6 @@
 import path from 'path';
 import {Config} from './relayer';
-import {UNIVERSAL_LOGIN_LOGO_URL} from '@universal-login/commons';
+import {UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
 
 export const config: Config = Object.freeze({
   port: 'GENERATED',

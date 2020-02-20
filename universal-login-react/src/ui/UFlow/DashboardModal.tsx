@@ -1,4 +1,4 @@
-import {TransferService, WalletService, Execution} from '@universal-login/sdk';
+import {TransferService, WalletService, Execution} from '@unilogin/sdk';
 import React, {useState} from 'react';
 import {Route, Switch, useHistory} from 'react-router';
 import {TopUp} from '../TopUp/TopUp';

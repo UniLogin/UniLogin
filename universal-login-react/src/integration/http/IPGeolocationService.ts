@@ -1,4 +1,4 @@
-import {http, HttpFunction} from '@universal-login/commons';
+import {http, HttpFunction} from '@unilogin/commons';
 import {fetch} from './fetch';
 import {asString, cast} from '@restless/sanitizers';
 import {IPGeolocationError} from '../../core/utils/errors';

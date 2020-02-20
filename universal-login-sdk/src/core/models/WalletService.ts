@@ -1,4 +1,4 @@
-import {ApplicationWallet, SerializableFutureWallet} from '@universal-login/commons';
+import {ApplicationWallet, SerializableFutureWallet} from '@unilogin/commons';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';

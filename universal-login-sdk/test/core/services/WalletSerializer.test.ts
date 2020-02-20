@@ -1,7 +1,7 @@
 import {AssertionError, expect} from 'chai';
 import sinon from 'sinon';
 import {WalletSerializer} from '../../../src/core/services/WalletSerializer';
-import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure, TEST_TRANSACTION_HASH, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure, TEST_TRANSACTION_HASH, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {DeployedWallet, DeployingWallet, FutureWallet} from '../../../src';
 import {Wallet} from 'ethers';
 import {ConnectingWallet} from '../../../src/api/wallet/ConnectingWallet';

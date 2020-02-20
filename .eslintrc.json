@@ -327,8 +327,8 @@
     "no-unsafe-negation": "error",
     "no-restricted-imports": ["error", {
       "patterns": [
-        "@universal-login/*/*",
-        "!@universal-login/*/testutils"
+        "@unilogin/*/*",
+        "!@unilogin/*/testutils"
       ]
     }],
     "no-use-before-define": [

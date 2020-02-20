@@ -1,4 +1,4 @@
-import {ensure, sleep} from '@universal-login/commons';
+import {ensure, sleep} from '@unilogin/commons';
 import {TimeoutError} from './errors';
 
 export async function retry<R>(

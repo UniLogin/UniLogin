@@ -1,6 +1,6 @@
 import {ProviderOnlyIframeInitializer} from '../services/ProviderOnlyIframeInitializer';
 import {PickerIframeInitializer} from '../services/PickerIframeInitializer';
-import {asApplicationInfo} from '@universal-login/commons';
+import {asApplicationInfo} from '@unilogin/commons';
 import {parseQuery} from './utils/parseQuery';
 import {cast} from '@restless/sanitizers';
 

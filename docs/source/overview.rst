@@ -234,7 +234,7 @@ Development environment
 -----------------------
 
 Development environment helps quickly develop and test applications using Universal Login.
-The script that starts development environment can be run from ``@universal-login/ops`` project.
+The script that starts development environment can be run from ``@unilogin/ops`` project.
 The script does a bunch of helpful things:
 
 - creates a mock blockchain (ganache)

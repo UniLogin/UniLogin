@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {waitUntil} from '@universal-login/commons';
+import {waitUntil} from '@unilogin/commons';
 import {PRICES_AFTER, PRICES_BEFORE, createMockedPriceObserver} from '../../mock/PriceObserver';
 
 describe('UNIT: PriceObserver', () => {

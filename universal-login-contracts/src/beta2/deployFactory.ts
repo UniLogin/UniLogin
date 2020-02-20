@@ -1,5 +1,5 @@
 import {Wallet, ContractFactory} from 'ethers';
-import {TransactionOverrides} from '@universal-login/commons';
+import {TransactionOverrides} from '@unilogin/commons';
 import {WalletProxyFactory} from './contracts';
 
 export const deployFactory = async (wallet: Wallet, walletContractAddress: string, overrideOptions?: TransactionOverrides) => {

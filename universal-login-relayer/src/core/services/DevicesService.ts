@@ -1,4 +1,4 @@
-import {Device, DeviceInfo, RelayerRequest} from '@universal-login/commons';
+import {Device, DeviceInfo, RelayerRequest} from '@unilogin/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import RelayerRequestSignatureValidator from '../../integration/ethereum/validators/RelayerRequestSignatureValidator';
 

@@ -1,4 +1,4 @@
-import {ensureNotFalsy, GasParameters, Nullable, TransferDetails, SEND_TRANSACTION_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
+import {ensureNotFalsy, GasParameters, Nullable, TransferDetails, SEND_TRANSACTION_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {bigNumberMax} from '../utils/bigNumberMax';

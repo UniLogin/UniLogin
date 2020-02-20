@@ -1,4 +1,4 @@
-import {MineableState} from '@universal-login/commons';
+import {MineableState} from '@unilogin/commons';
 import {Mineable} from '../Mineable';
 
 export default interface IRepository<T extends Mineable> {

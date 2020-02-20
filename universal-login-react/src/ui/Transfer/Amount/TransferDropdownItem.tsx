@@ -1,7 +1,7 @@
 import React from 'react';
-import UniversalLoginSDK from '@universal-login/sdk';
+import UniversalLoginSDK from '@unilogin/sdk';
 import {Asset} from '../../commons/Asset';
-import {TokenDetails} from '@universal-login/commons';
+import {TokenDetails} from '@unilogin/commons';
 
 export interface DropdownItemProps {
   sdk: UniversalLoginSDK;

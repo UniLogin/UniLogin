@@ -1,6 +1,6 @@
-import {DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType, TEST_CONTRACT_ADDRESS} from '@universal-login/commons';
-import {BlockchainService} from '@universal-login/contracts';
-import {setupWalletContract} from '@universal-login/contracts/testutils';
+import {DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
+import {BlockchainService} from '@unilogin/contracts';
+import {setupWalletContract} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {Contract, utils} from 'ethers';

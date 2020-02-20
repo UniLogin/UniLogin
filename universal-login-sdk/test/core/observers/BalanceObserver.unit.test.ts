@@ -2,8 +2,8 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {Wallet, utils} from 'ethers';
 import {createFixtureLoader} from 'ethereum-waffle';
-import {waitUntil} from '@universal-login/commons';
-import {RelayerUnderTest} from '@universal-login/relayer';
+import {waitUntil} from '@unilogin/commons';
+import {RelayerUnderTest} from '@unilogin/relayer';
 import UniversalLoginSDK from '../../../src/api/sdk';
 import basicSDK from '../../fixtures/basicSDK';
 

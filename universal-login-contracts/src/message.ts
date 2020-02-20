@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature, NetworkVersion, WalletVersion} from '@universal-login/commons';
+import {Message, UnsignedMessage, SignedMessage, calculateMessageSignature, NetworkVersion, WalletVersion} from '@unilogin/commons';
 import {calculateSafeTxGas, calculateBaseGas} from './estimateGas';
 import {calculateMessageSignature as calculateGnosisSignature} from './gnosis-safe@1.1.1/utils';
 

@@ -1,6 +1,6 @@
 import {Validator, TransferErrors} from './Validator';
 import {utils} from 'ethers';
-import {isValidEnsName, TransferDetails} from '@universal-login/commons';
+import {isValidEnsName, TransferDetails} from '@unilogin/commons';
 import UniversalLoginSDK from '../../../api/sdk';
 import {AddressZero} from 'ethers/constants';
 

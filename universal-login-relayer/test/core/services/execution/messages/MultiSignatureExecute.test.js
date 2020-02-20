@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import {utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {calculateMessageHash, GAS_BASE, GAS_FIXED} from '@universal-login/commons';
-import {waitExpect} from '@universal-login/commons/testutils';
-import {executeSetRequiredSignatures, mockContracts} from '@universal-login/contracts/testutils';
+import {calculateMessageHash, GAS_BASE, GAS_FIXED} from '@unilogin/commons';
+import {waitExpect} from '@unilogin/commons/testutils';
+import {executeSetRequiredSignatures, mockContracts} from '@unilogin/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../../testhelpers/setupMessageService';
 import {getConfig} from '../../../../../src';

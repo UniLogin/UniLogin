@@ -1,6 +1,6 @@
 import React from 'react';
 import {RadioButton} from './RadioButton';
-import {GasMode, GasOption, getBalanceOf, TokenDetailsWithBalance, safeMultiply} from '@universal-login/commons';
+import {GasMode, GasOption, getBalanceOf, TokenDetailsWithBalance, safeMultiply} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {isGasTokenDisabled} from '../../../core/utils/isGasTokenDisabled';
 import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';

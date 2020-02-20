@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {TransferDetails, SEND_TRANSACTION_GAS_LIMIT} from '@universal-login/commons';
+import {TransferDetails, SEND_TRANSACTION_GAS_LIMIT} from '@unilogin/commons';
 import {Validator, TransferErrors} from './Validator';
 
 const {formatEther} = utils;

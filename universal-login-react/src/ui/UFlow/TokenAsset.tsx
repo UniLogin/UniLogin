@@ -1,5 +1,5 @@
 import React from 'react';
-import {TokenDetailsWithBalance} from '@universal-login/commons';
+import {TokenDetailsWithBalance} from '@unilogin/commons';
 import {utils} from 'ethers';
 
 export interface TokenAssetProps {

@@ -1,4 +1,4 @@
-import {ContractWhiteList, IMessageValidator, MessageWithFrom, TEST_ACCOUNT_ADDRESS} from '@universal-login/commons';
+import {ContractWhiteList, IMessageValidator, MessageWithFrom, TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
 import {Contract, Wallet} from 'ethers';

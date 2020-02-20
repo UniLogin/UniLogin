@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair, TEST_ACCOUNT_ADDRESS, UnsignedMessage, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION} from '@universal-login/commons';
-import {messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@universal-login/contracts';
-import {executeSetRequiredSignatures, emptyMessage} from '@universal-login/contracts/testutils';
+import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair, TEST_ACCOUNT_ADDRESS, UnsignedMessage, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION} from '@unilogin/commons';
+import {messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@unilogin/contracts';
+import {executeSetRequiredSignatures, emptyMessage} from '@unilogin/contracts/testutils';
 import IMessageRepository from '../../../src/core/models/messages/IMessagesRepository';
 import MessageItem from '../../../src/core/models/messages/MessageItem';
 import {basicWalletContractWithMockToken} from '../../fixtures/basicWalletContractWithMockToken';
