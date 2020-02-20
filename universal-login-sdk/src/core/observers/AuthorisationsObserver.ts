@@ -14,7 +14,7 @@ class AuthorisationsObserver extends ObserverRunner {
     this.tick = tick;
   }
 
-  async execute() {
+  execute(): Promise<void> {
     return this.checkAuthorisationsChangedFor(this.authorisationRequest!);
   }
 

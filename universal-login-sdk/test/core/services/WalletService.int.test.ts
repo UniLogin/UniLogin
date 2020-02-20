@@ -11,7 +11,7 @@ import {DeployedWallet} from '../../../src';
 
 chai.use(solidity);
 
-describe('INT: WalletService', async () => {
+describe('INT: WalletService', () => {
   let walletService: WalletService;
   let sdk: UniversalLoginSDK;
   let relayer: Relayer;

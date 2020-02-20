@@ -11,7 +11,7 @@ import {ENSService} from '../../src/integration/ethereum/ENSService';
 
 chai.use(chaiHttp);
 
-describe('INT: FutureWalletFactory', async () => {
+describe('INT: FutureWalletFactory', () => {
   let provider: providers.Provider;
   let wallet: Wallet;
   let futureWalletFactory: FutureWalletFactory;

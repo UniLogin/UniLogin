@@ -32,12 +32,16 @@ export class FutureWallet implements SerializableFutureWallet {
     this.deploymentReadyObserver = new DeploymentReadyObserver([{address: this.gasToken, minimalAmount: this.getMinimalAmount()}], this.sdk.provider);
   }
 
-  waitForBalance = async () => new Promise<BalanceDetails>(
+  waitForBalance = () => new Promise<BalanceDetails>(
     (resolve) => {
-      this.deploymentReadyObserver.startAndSubscribe(
-        this.contractAddress,
-        (tokenAddress, contractAddress) => resolve({tokenAddress, contractAddress}),
-      ).catch(console.error);
+      try {
+        this.deploymentReadyObserver.startAndSubscribe(
+          this.contractAddress,
+          (tokenAddress, contractAddress) => resolve({tokenAddress, contractAddress}),
+        );
+      } catch (e) {
+        console.error(e);
+      };
     },
   );
 

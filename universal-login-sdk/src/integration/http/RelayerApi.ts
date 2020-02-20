@@ -1,4 +1,4 @@
-import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo} from '@unilogin/commons';
+import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus} from '@unilogin/commons';
 import {fetch} from './fetch';
 
 export class RelayerApi {
@@ -7,11 +7,11 @@ export class RelayerApi {
     this.http = http(fetch)(relayerUrl);
   }
 
-  async getConfig(): Promise<{config: PublicRelayerConfig}> {
+  getConfig(): Promise<{config: PublicRelayerConfig}> {
     return this.http('GET', '/config');
   }
 
-  async execute(message: any) {
+  execute(message: any) {
     return this.http('POST', '/wallet/execution', message)
       .catch((e: any) => {
         // TODO: Maybe wrap this as a custom Error?
@@ -19,11 +19,11 @@ export class RelayerApi {
       });
   }
 
-  async getStatus(messageHash: string) {
+  getStatus(messageHash: string): Promise<MessageStatus> {
     return this.http('GET', `/wallet/execution/${messageHash}`);
   }
 
-  async connect(walletContractAddress: string, key: string, applicationInfo: ApplicationInfo) {
+  connect(walletContractAddress: string, key: string, applicationInfo: ApplicationInfo) {
     return this.http('POST', '/authorisation', {
       walletContractAddress,
       key,
@@ -31,7 +31,7 @@ export class RelayerApi {
     });
   }
 
-  async denyConnection(authorisationRequest: RelayerRequest) {
+  denyConnection(authorisationRequest: RelayerRequest) {
     const {contractAddress} = authorisationRequest;
     return this.http('POST', `/authorisation/${contractAddress}`, {
       authorisationRequest,
@@ -40,22 +40,22 @@ export class RelayerApi {
     });
   }
 
-  async getPendingAuthorisations(authorisationRequest: RelayerRequest) {
+  getPendingAuthorisations(authorisationRequest: RelayerRequest) {
     const {contractAddress, signature} = authorisationRequest;
     return this.http('GET', `/authorisation/${contractAddress}?signature=${signature}`);
   }
 
-  async cancelConnection(authorisationRequest: RelayerRequest) {
+  cancelConnection(authorisationRequest: RelayerRequest) {
     const {contractAddress} = authorisationRequest;
     return this.http('DELETE', `/authorisation/${contractAddress}`, {authorisationRequest});
   }
 
-  async getConnectedDevices(deviceRequest: RelayerRequest) {
+  getConnectedDevices(deviceRequest: RelayerRequest) {
     const {contractAddress, signature} = deviceRequest;
     return this.http('GET', `/devices/${contractAddress}?signature=${signature}`);
   }
 
-  async deploy(publicKey: string, ensName: string, gasPrice: string, gasToken: string, signature: string, applicationInfo: ApplicationInfo) {
+  deploy(publicKey: string, ensName: string, gasPrice: string, gasToken: string, signature: string, applicationInfo: ApplicationInfo) {
     return this.http('POST', '/wallet/deploy', {
       publicKey,
       ensName,
@@ -66,7 +66,7 @@ export class RelayerApi {
     });
   }
 
-  async getDeploymentStatus(deploymentHash: string) {
+  getDeploymentStatus(deploymentHash: string): Promise<DeploymentStatus> {
     return this.http('GET', `/wallet/deploy/${deploymentHash}`);
   }
 }

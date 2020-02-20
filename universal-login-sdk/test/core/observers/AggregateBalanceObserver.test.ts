@@ -21,7 +21,7 @@ describe('INT: AggregateBalanceObserver', () => {
   const {mockedPriceObserver, resetCallCount} = createMockedPriceObserver();
   const tokensValueConverter = new TokensValueConverter(SdkConfigDefault.observedCurrencies);
 
-  beforeEach(async () => {
+  beforeEach(() => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
 
