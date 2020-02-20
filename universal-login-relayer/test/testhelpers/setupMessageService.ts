@@ -1,5 +1,4 @@
 import Knex from 'knex';
-import {EventEmitter} from 'fbemitter';
 import {loadFixture} from 'ethereum-waffle';
 import {IMessageValidator} from '@universal-login/commons';
 import MessageHandler from '../../src/core/services/execution/messages/MessageHandler';

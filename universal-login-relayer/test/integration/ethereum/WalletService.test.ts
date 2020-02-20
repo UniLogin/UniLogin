@@ -2,8 +2,7 @@ import {createKeyPair, EMPTY_DEVICE_INFO, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} fr
 import {GnosisSafeInterface} from '@universal-login/contracts';
 import chai, {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {Contract, providers, utils, Wallet} from 'ethers';
-import sinon from 'sinon';
+import {Contract, providers, Wallet} from 'ethers';
 import sinonChai from 'sinon-chai';
 import ENSService from '../../../src/integration/ethereum/ensService';
 import {WalletDeploymentService} from '../../../src/integration/ethereum/WalletDeploymentService';
@@ -16,7 +15,6 @@ describe('INT: WalletService', async () => {
   let walletService: WalletDeploymentService;
   let provider: providers.Provider;
   let wallet: Wallet;
-  let callback: sinon.SinonSpy;
   let walletContract: Contract;
   let factoryContract: Contract;
   let ensService: ENSService;
@@ -24,15 +22,14 @@ describe('INT: WalletService', async () => {
   let walletContractAddress: string;
   const keyPair = createKeyPair();
   const ensName = 'alex.mylogin.eth';
-  let transaction: utils.Transaction;
   let fakeDevicesService: any;
 
   before(async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
-    ({walletService, callback, factoryContract, ensService, provider, fakeDevicesService, ensRegistrar, walletContractAddress} = await setupWalletService(wallet));
+    ({walletService, factoryContract, ensService, provider, fakeDevicesService, ensRegistrar, walletContractAddress} = await setupWalletService(wallet));
     const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar, walletContractAddress);
-    transaction = await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
+    await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
     walletContract = new Contract(futureContractAddress, GnosisSafeInterface, provider);
   });
 

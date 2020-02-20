@@ -8,7 +8,6 @@ import ENSService from '../../integration/ethereum/ensService';
 import bodyParser from 'body-parser';
 import {Wallet, providers} from 'ethers';
 import cors from 'cors';
-import {EventEmitter} from 'fbemitter';
 import useragent from 'express-useragent';
 import Knex from 'knex';
 import {Server} from 'http';

@@ -1,4 +1,3 @@
-import {EventEmitter} from 'fbemitter';
 import sinon from 'sinon';
 import {Wallet, Contract, utils} from 'ethers';
 import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
@@ -26,8 +25,7 @@ export default async function setupWalletService(wallet: Wallet) {
     addOrUpdate: sinon.spy(),
   };
   const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceChecker as any, fakeDevicesService as any);
-  const callback = sinon.spy();
-  return {provider, wallet, walletService, callback, factoryContract, ensService, fakeDevicesService, ensRegistrar, walletContractAddress};
+  return {provider, wallet, walletService, factoryContract, ensService, fakeDevicesService, ensRegistrar, walletContractAddress};
 }
 
 export const getSetupData = async (keyPair: KeyPair, ensName: string, ensService: ENSService, gasPrice: string, relayerAddress: string, ensRegistrarAddress: string, gasToken = ETHER_NATIVE_TOKEN.address) => {

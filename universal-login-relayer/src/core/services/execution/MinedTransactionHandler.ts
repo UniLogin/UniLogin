@@ -1,4 +1,3 @@
-import {EventEmitter} from 'fbemitter';
 import {providers} from 'ethers';
 import {EMPTY_DEVICE_INFO, DecodedMessage} from '@universal-login/commons';
 import {DevicesService} from '../DevicesService';
