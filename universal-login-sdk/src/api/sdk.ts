@@ -104,21 +104,6 @@ class UniversalLoginSDK {
     return this.getFutureWalletFactory().createNew(ensName, gasPrice, gasToken);
   }
 
-  addKey(to: string, publicKey: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
-    deprecateSDKMethod('addKey');
-    return this.createDeployedWallet(to, privateKey).addKey(publicKey, executionOptions);
-  }
-
-  addKeys(to: string, publicKeys: string[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
-    deprecateSDKMethod('addKeys');
-    return this.createDeployedWallet(to, privateKey).addKeys(publicKeys, executionOptions);
-  }
-
-  removeKey(to: string, key: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
-    deprecateSDKMethod('removeKey');
-    return this.createDeployedWallet(to, privateKey).removeKey(key, executionOptions);
-  }
-
   getMessageStatus(messageHash: string): Promise<MessageStatus> {
     return this.relayerApi.getStatus(messageHash);
   }
@@ -162,20 +147,6 @@ class UniversalLoginSDK {
       this.blockchainService,
       this,
     );
-  }
-
-  execute(message: PartialRequired<Message, 'from'>, privateKey: string): Promise<Execution> {
-    return this.createDeployedWallet(message.from, privateKey).execute(message);
-  }
-
-  protected selfExecute(to: string, method: string, args: any[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
-    deprecateSDKMethod('selfExecute');
-    return this.createDeployedWallet(to, privateKey).selfExecute(method, args, executionOptions);
-  }
-
-  keyExist(walletContractAddress: string, key: string): Promise<boolean> {
-    deprecateSDKMethod('keyExist');
-    return this.createDeployedWallet(walletContractAddress).keyExist(key);
   }
 
   async getWalletContractAddress(ensName: string): Promise<string> {
