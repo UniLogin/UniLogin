@@ -1,4 +1,3 @@
-import {EventEmitter} from 'fbemitter';
 import sinon from 'sinon';
 import {Wallet, Contract, utils} from 'ethers';
 import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@universal-login/commons';
@@ -16,7 +15,6 @@ export default async function setupWalletService(wallet: Wallet) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
   const walletContractAddress = (await deployGnosisSafe(wallet)).address;
   const factoryContract = await deployProxyFactory(wallet);
-  const hooks = new EventEmitter();
   const ensRegistrar = (await deployContract(wallet, gnosisSafe.ENSRegistrar)).address;
   const config = {walletContractAddress, factoryAddress: factoryContract.address, supportedTokens: [], ensRegistrar};
   const walletDeployer = new WalletDeployer(factoryContract.address, wallet);
@@ -26,10 +24,8 @@ export default async function setupWalletService(wallet: Wallet) {
   const fakeDevicesService = {
     addOrUpdate: sinon.spy(),
   };
-  const walletService = new WalletDeploymentService(config as any, ensService, hooks, walletDeployer, fakeBalanceChecker as any, fakeDevicesService as any);
-  const callback = sinon.spy();
-  hooks.addListener('created', callback);
-  return {provider, wallet, walletService, callback, factoryContract, ensService, fakeDevicesService, ensRegistrar, walletContractAddress};
+  const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceChecker as any, fakeDevicesService as any);
+  return {provider, wallet, walletService, factoryContract, ensService, fakeDevicesService, ensRegistrar, walletContractAddress};
 }
 
 export const getSetupData = async (keyPair: KeyPair, ensName: string, ensService: ENSService, gasPrice: string, relayerAddress: string, ensRegistrarAddress: string, gasToken = ETHER_NATIVE_TOKEN.address) => {

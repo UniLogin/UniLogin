@@ -8,7 +8,6 @@ import ENSService from '../../integration/ethereum/ensService';
 import bodyParser from 'body-parser';
 import {Wallet, providers} from 'ethers';
 import cors from 'cors';
-import {EventEmitter} from 'fbemitter';
 import useragent from 'express-useragent';
 import Knex from 'knex';
 import {Server} from 'http';
@@ -49,7 +48,6 @@ export type RelayerClass = {
 
 class Relayer {
   protected readonly port: string;
-  protected readonly hooks: EventEmitter;
   provider: providers.Provider;
   protected readonly wallet: Wallet;
   readonly database: Knex;
@@ -61,7 +59,6 @@ class Relayer {
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
-    this.hooks = new EventEmitter();
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
     this.wallet = new Wallet(config.privateKey, this.provider);
     this.database = Knex(config.database);
@@ -105,12 +102,12 @@ class Relayer {
     const authorisationService = new AuthorisationService(authorisationStore, relayerRequestSignatureValidator, walletContractService);
     const devicesStore = new DevicesStore(this.database);
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
-    const walletService = new WalletDeploymentService(this.config, this.ensService, this.hooks, walletDeployer, requiredBalanceChecker, devicesService);
+    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, requiredBalanceChecker, devicesService);
     const statusService = new MessageStatusService(messageRepository, walletContractService);
     const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, walletContractService);
     const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
     const messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList, walletContractService);
-    const minedTransactionHandler = new MinedTransactionHandler(this.hooks, authorisationStore, devicesService, walletContractService);
+    const minedTransactionHandler = new MinedTransactionHandler(authorisationStore, devicesService, walletContractService);
     const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, walletContractService);
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
