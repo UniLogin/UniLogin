@@ -19,7 +19,7 @@ const loadFixture = createFixtureLoader();
 const gasPrice = DEFAULT_GAS_PRICE;
 const gasLimit = DEFAULT_GAS_LIMIT;
 
-describe('INT: Events', async () => {
+describe('INT: Events', () => {
   let relayer: RelayerUnderTest;
   let provider: providers.Provider;
   let sdk: UniversalLoginSDK;
@@ -42,7 +42,7 @@ describe('INT: Events', async () => {
     await newKeySDK.start();
     const {privateKey: newPrivateKey} = await newKeySDK.connect(contractAddress);
     const publicKeyToAdd = utils.computeAddress(newPrivateKey);
-    await newKeySDK.subscribe('AddedOwner', {contractAddress, key: publicKeyToAdd}, keyCallback);
+    newKeySDK.subscribe('AddedOwner', {contractAddress, key: publicKeyToAdd}, keyCallback);
     await sdk.addKey(contractAddress, publicKeyToAdd.toLowerCase(), privateKey, {gasPrice, gasLimit, gasToken: mockToken.address});
     await mineBlock(wallet);
     await waitExpect(() => expect(keyCallback).to.have.been.calledOnce);

@@ -16,7 +16,7 @@ const filter = {
   key: TEST_KEY,
 };
 
-describe('UNIT: WalletEventsObserverFactory', async () => {
+describe('UNIT: WalletEventsObserverFactory', () => {
   let onKeyAdd: ReturnType<typeof sinon.spy>;
   let onKeyRemove: ReturnType<typeof sinon.spy>;
   let factory: WalletEventsObserverFactory;
@@ -44,7 +44,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
     await factory.start();
   });
 
-  afterEach(async () => {
+  afterEach(() => {
     factory.stop();
   });
 
@@ -104,7 +104,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
       blockchainService.getLogs = async (filter) => filter.topics?.includes('0x654abba5d3170185ed25c9b41f7d2094db3643986b05e9e9cab37028b800ad7e') ? [keyAddedEvent] : [];
     });
 
-    it('fetch after subscribe', async () => {
+    it('fetch after subscribe', () => {
       const spy = sinon.spy(factory, 'fetchEvents');
       factory.subscribe('KeyAdded', filter, onKeyAdd);
       expect(spy).calledOnce;
@@ -131,7 +131,7 @@ describe('UNIT: WalletEventsObserverFactory', async () => {
       expect(onKeyAdd2).to.not.have.been.called;
     });
 
-    it('callbacks does not called if unsubscribes called ', async () => {
+    it('callbacks does not called if unsubscribes called ', () => {
       const unsubscribe = factory.subscribe('KeyAdded', filter, onKeyAdd);
       const unsubscribe2 = factory.subscribe('KeyAdded', filter, onKeyAdd2);
       unsubscribe();

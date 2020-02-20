@@ -6,7 +6,7 @@ import {ENSService} from '../../../src/integration/ethereum/ENSService';
 import {deployContract} from '@unilogin/commons';
 import {gnosisSafe} from '@unilogin/contracts';
 
-describe('INT: ENSService', async () => {
+describe('INT: ENSService', () => {
   let ensAddress: string;
   let ensService: ENSService;
   let provider: providers.Provider;

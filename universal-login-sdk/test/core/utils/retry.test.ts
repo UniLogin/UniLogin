@@ -2,23 +2,20 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {retry} from '../../../src/core/utils/retry';
 
-describe('UNIT: Retry function', async () => {
-  let result: boolean;
-  const callback = sinon.spy(async () => result);
-  const setResultTrue = () => {
-    result = true;
-  };
+describe('UNIT: Retry function', () => {
+  const callback = sinon.stub();
   const retryWhile = (result: any) => !result;
 
   beforeEach(() => {
-    result = false;
+    callback.reset();
+    callback.resolves(false);
   });
 
   it('Should return true', async () => {
-    setTimeout(setResultTrue, 10);
+    callback.onCall(3).resolves(true);
     const returnedResult = await retry(callback, retryWhile, 1000, 2);
     expect(returnedResult).to.be.true;
-    expect(callback.callCount).at.least(3);
+    expect(callback.callCount).eq(4);
   });
 
   it('throw Timeout', async () => {

@@ -4,12 +4,12 @@ import {parseArgs, parseArgsGnosis} from '../../../src/core/utils/events';
 import {expect} from 'chai';
 
 describe('UNIT: parseArgs', () => {
-  it('AddKey', async () => {
+  it('AddKey', () => {
     const result = parseArgs('KeyAdded', keyAddedEvent);
     expect(result.key).to.eq(TEST_KEY);
   });
 
-  it('KeyRemoved', async () => {
+  it('KeyRemoved', () => {
     const result = parseArgs('KeyRemoved', keyRemovedEvent);
     expect(result.key).to.eq(TEST_KEY);
   });

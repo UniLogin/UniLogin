@@ -17,7 +17,7 @@ const loadFixture = createFixtureLoader();
 
 const gasPrice = DEFAULT_GAS_PRICE;
 
-describe('INT: DeployedWallet', async () => {
+describe('INT: DeployedWallet', () => {
   let relayer: RelayerUnderTest;
   let mockToken: Contract;
   let deployedWallet: DeployedWallet;

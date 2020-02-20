@@ -19,7 +19,7 @@ describe('UNIT: AuthorisationsObserver', () => {
       },
     },
   ];
-  const relayerApi = {getPendingAuthorisations: async () => ({response: notifications})};
+  const relayerApi = {getPendingAuthorisations: sinon.stub().resolves({response: notifications})};
   let authorisationsObserver: AuthorisationsObserver;
   let authorisationRequest: RelayerRequest;
   let fakeAuthorisationRequest: RelayerRequest;
@@ -41,7 +41,7 @@ describe('UNIT: AuthorisationsObserver', () => {
     fakeAuthorisationRequest = createauthorisationRequest('0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef', privateKey);
   });
 
-  it('should call callback with authorisation', async () => {
+  it('should call callback with authorisation', () => {
     const callback = sinon.spy();
     const unsubscribe = authorisationsObserver.subscribe(authorisationRequest, callback);
     expect(callback).to.have.been.calledWith([]);
@@ -58,7 +58,7 @@ describe('UNIT: AuthorisationsObserver', () => {
     unsubscribe();
   });
 
-  it('Subscribe. Unsubscribe', async () => {
+  it('Subscribe. Unsubscribe', () => {
     const callback = sinon.spy();
     const callback2 = sinon.spy();
     const unsubscribe = authorisationsObserver.subscribe(authorisationRequest, callback);

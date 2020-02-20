@@ -7,7 +7,7 @@ import {emptyMessage} from '@unilogin/contracts/testutils';
 import {ExecutionFactory} from '../../../src/core/services/ExecutionFactory';
 import {RelayerApi} from '../../../src/integration/http/RelayerApi';
 
-describe('UNIT: ExecutionFactory', async () => {
+describe('UNIT: ExecutionFactory', () => {
   let executionFactory: ExecutionFactory;
   let relayerApi: RelayerApi;
   let signedMessage: SignedMessage;
@@ -16,9 +16,9 @@ describe('UNIT: ExecutionFactory', async () => {
   const getStatus: SinonStub = sinon.stub().returns({status: {}});
   const execute: SinonStub = sinon.stub();
 
-  before(async () => {
+  before(() => {
     signedMessage = messageToSignedMessage({...emptyMessage, from: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('3'), to: TEST_ACCOUNT_ADDRESS}, TEST_PRIVATE_KEY, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION);
-    const messageHash = await calculateMessageHash(signedMessage);
+    const messageHash = calculateMessageHash(signedMessage);
     defaultStatus = {
       transactionHash: TEST_TRANSACTION_HASH,
       required: 1,
@@ -40,7 +40,7 @@ describe('UNIT: ExecutionFactory', async () => {
     execute.returns({status: {...defaultStatus}});
   });
 
-  describe('waitToBeMined', async () => {
+  describe('waitToBeMined', () => {
     it('waitToBeMined success', async () => {
       status.state = 'Success';
       const execution = await executionFactory.createExecution(signedMessage);

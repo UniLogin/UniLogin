@@ -20,8 +20,8 @@ export class MineableFactory {
     return ['Pending', 'Success', 'Error'].includes(status.state);
   }
 
-  protected createWaitForTransactionHash(hash: string) {
-    return async () => {
+  protected createWaitForTransactionHash(hash: string): () => Promise<MineableStatus> {
+    return () => {
       const predicate = (status: MineableStatus) => !this.hasTransactionHash(status);
       return this.waitForStatus(hash, predicate);
     };
@@ -36,8 +36,8 @@ export class MineableFactory {
     };
   }
 
-  private async waitForStatus(hash: string, predicate: (status: MineableStatus) => boolean): Promise<MineableStatus> {
-    const getStatus = async () => this.getStatus(hash);
+  private waitForStatus(hash: string, predicate: (status: MineableStatus) => boolean): Promise<MineableStatus> {
+    const getStatus = () => this.getStatus(hash);
     return retry(getStatus, predicate, this.timeout, this.tick);
   }
 }

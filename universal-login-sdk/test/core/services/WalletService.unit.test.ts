@@ -65,7 +65,7 @@ describe('UNIT: WalletService', () => {
       ensName: 'justyna.mylogin.eth',
       gasPrice: TEST_GAS_PRICE,
       gasToken: ETHER_NATIVE_TOKEN.address,
-      deploy: async () => deployingWallet,
+      deploy: sinon.stub().resolves(deployingWallet),
       waitForBalance: (async () => {}) as any,
       setSupportedToken: (() => {}) as any,
     } as any;
@@ -156,7 +156,7 @@ describe('UNIT: WalletService', () => {
     expect(() => walletService.setFutureWallet(futureWallet, 'name.mylogin.eth')).to.throw('Wallet cannot be overridden');
   });
 
-  it('should load from storage', async () => {
+  it('should load from storage', () => {
     walletService.loadFromStorage();
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include(applicationWallet);

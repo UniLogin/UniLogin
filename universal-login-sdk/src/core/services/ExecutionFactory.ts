@@ -26,8 +26,8 @@ export class ExecutionFactory extends MineableFactory {
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
     ensureNotFalsy(result.status.messageHash, MissingMessageHash);
     const {messageHash, totalCollected, required} = result.status;
-    const waitToBeSuccess = totalCollected >= required ? this.createWaitToBeSuccess(messageHash) : async () => result.status;
-    const waitForTransactionHash = totalCollected >= required ? this.createWaitForTransactionHash(messageHash) : async () => result.status;
+    const waitToBeSuccess = totalCollected >= required ? this.createWaitToBeSuccess(messageHash) : () => result.status;
+    const waitForTransactionHash = totalCollected >= required ? this.createWaitForTransactionHash(messageHash) : () => result.status;
     return {
       messageStatus: result.status,
       waitToBeSuccess,
