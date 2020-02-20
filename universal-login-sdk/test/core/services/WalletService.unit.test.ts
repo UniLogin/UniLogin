@@ -31,6 +31,7 @@ describe('UNIT: WalletService', () => {
       getWalletContractAddress: sinon.stub().withArgs(name).returns(TEST_CONTRACT_ADDRESS),
       keyExist,
       provider: Wallet.createRandom(),
+      walletContractService: {keyExist},
       relayerApi: {
         getDeploymentStatus: sinon.stub().resolves({transactionHash: TEST_TRANSACTION_HASH, state: 'Success'}),
       },

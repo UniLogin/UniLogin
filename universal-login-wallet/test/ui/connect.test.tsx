@@ -12,6 +12,7 @@ import App from '../../src/ui/react/App';
 import {providers, Wallet} from 'ethers';
 import {AppPage} from '../pages/AppPage';
 import Relayer from '@unilogin/relayer';
+import {DeployedWallet} from '@unilogin/sdk';
 
 chai.use(require('chai-string'));
 
@@ -45,7 +46,8 @@ describe('UI: Connection flow', () => {
     appPage.connection().clickConnectWithAnotherDevice();
     await appPage.connection().waitForEmojiView();
     const publicKey = (new Wallet(services.walletService.getConnectingWallet().privateKey)).address;
-    await services.sdk.addKey(contractAddress, publicKey, privateKey, {gasPrice, gasLimit, gasToken});
+    const deployedWallet = new DeployedWallet(contractAddress, '', privateKey, services.sdk);
+    await deployedWallet.addKey(publicKey, {gasPrice, gasLimit, gasToken});
     await waitExpect(() => expect(services.walletPresenter.getName()).to.eq(name));
     await appPage.login().waitForCongratulations();
     await appPage.login().goToHomeView();
