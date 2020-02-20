@@ -63,15 +63,15 @@ describe('INT: SDK', () => {
 
   describe('Execute signed message', () => {
     it('Should execute signed message', async () => {
-      const expectedBalance = (await otherWallet.getBalance()).add(utils.parseEther('0.5'));
-      const {waitToBeSuccess} = await sdk.execute({...message, to: otherWallet.address}, privateKey);
+      const expectedBalance = (await provider.getBalance(message.to!)).add(utils.parseEther('0.5'));
+      const {waitToBeSuccess} = await deployedWallet.execute(message);
       const {transactionHash} = await waitToBeSuccess();
       expect(transactionHash).to.match(/^[0x|0-9|a-f|A-F]{66}/);
-      expect(await otherWallet.getBalance()).to.eq(expectedBalance);
+      expect(await provider.getBalance(message.to!)).to.eq(expectedBalance);
     });
 
     it('Should return transaction hash and proper state', async () => {
-      const {waitToBeSuccess} = await sdk.execute(message, privateKey);
+      const {waitToBeSuccess} = await deployedWallet.execute(message);
       const {transactionHash, state} = await waitToBeSuccess();
       expect(transactionHash).to.be.properHex(64);
       expect(state).to.eq('Success');
@@ -81,31 +81,33 @@ describe('INT: SDK', () => {
       const mockToken = await deployContract(wallet, mockContracts.MockToken);
       await mockToken.transfer(walletContract.address, 1);
       message = {...message, gasToken: mockToken.address};
-      await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith('Not enough tokens');
+      await expect(deployedWallet.execute(message)).to.be.eventually.rejectedWith('Not enough tokens');
     });
 
     it('when not enough ether', async () => {
       const amountToTransfer = (await otherWallet.getBalance()).add(utils.parseEther('0.5'));
-      await expect(sdk.execute({...message, to: otherWallet.address, value: amountToTransfer}, privateKey)).rejectedWith('Not enough tokens');
+      await expect(deployedWallet.execute({...message, to: otherWallet.address, value: amountToTransfer})).rejectedWith('Not enough tokens');
     });
 
     it('when not enough gas', async () => {
       const baseGas = 88720;
       const notEnoughGasLimit = 100;
       message = {...message, gasLimit: baseGas + notEnoughGasLimit};
-      await expect(sdk.execute(message, privateKey)).to.be.eventually.rejectedWith(`Insufficient Gas. gasLimit should be greater than ${GAS_BASE}`);
+      await expect(deployedWallet.execute(message)).to.be.eventually.rejectedWith(`Insufficient Gas. gasLimit should be greater than ${GAS_BASE}`);
     });
 
     it('Throws when the gas limit is above the relayers maxGasLimit', async () => {
       const {sdk: secondSdk} = await loadFixture(basicSDK);
       message.gasLimit = secondSdk.getRelayerConfig().maxGasLimit + 1;
-      await expect(secondSdk.execute(message, privateKey)).to.be.eventually
+      const secondDeployedWallet = new DeployedWallet(contractAddress, '', privateKey, secondSdk);
+      await expect(secondDeployedWallet.execute(message)).to.be.eventually
         .rejectedWith('Invalid gas limit. 500001 provided, when relayer\'s max gas limit is 500000');
     });
 
     it('Passes when the gas limit is equal to the relayers maxGasLimit', async () => {
       const {sdk: secondSdk} = await loadFixture(basicSDK);
-      const {waitToBeSuccess} = await secondSdk.execute(message, privateKey);
+      const secondDeployedWallet = new DeployedWallet(contractAddress, '', privateKey, secondSdk);
+      const {waitToBeSuccess} = await secondDeployedWallet.execute(message);
       await expect(waitToBeSuccess()).to.be.eventually.fulfilled;
     });
   });
@@ -181,7 +183,7 @@ describe('INT: SDK', () => {
     await deployedWallet.addKey(otherWallet.address, TEST_EXECUTION_OPTIONS);
     await deployedWallet.setRequiredSignatures(2, TEST_EXECUTION_OPTIONS);
     const msg = {...message, to: otherWallet.address, nonce: await walletContract.nonce()};
-    const {messageStatus, waitForTransactionHash} = await sdk.execute(msg, privateKey);
+    const {messageStatus, waitForTransactionHash} = await deployedWallet.execute(msg);
     const status = await sdk.getMessageStatus(messageStatus.messageHash);
     expect(status.collectedSignatures.length).to.eq(1);
     await waitForTransactionHash();

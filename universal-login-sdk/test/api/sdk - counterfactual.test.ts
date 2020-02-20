@@ -46,7 +46,7 @@ describe('INT: SDK counterfactual deployment', () => {
   });
 
   it('counterfactual deployment roundtrip', async () => {
-    const {deploy, contractAddress, waitForBalance, privateKey} = (await sdk.createFutureWallet(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address));
+    const {deploy, contractAddress, waitForBalance} = (await sdk.createFutureWallet(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address));
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     await waitForBalance();
     const {waitToBeSuccess} = await deploy();
@@ -54,7 +54,7 @@ describe('INT: SDK counterfactual deployment', () => {
     expect(deployedWallet.contractAddress).to.eq(contractAddress);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(gnosisSafe.Proxy)}`);
     const message = {...emptyMessage, from: contractAddress, to: TEST_ACCOUNT_ADDRESS, value: utils.parseEther('1'), gasLimit: DEFAULT_GAS_LIMIT};
-    await expect(sdk.execute(message, privateKey)).to.be.fulfilled;
+    await expect(deployedWallet.execute(message)).to.be.fulfilled;
     await expect(deploy()).to.be.rejected;
   });
 
