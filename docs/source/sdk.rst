@@ -331,7 +331,7 @@ addKey
 
   Parameters:
     - **publicKey** : string - a public key to manage the contract
-    - **executionOptions : object - an optional parameter that includes details of transactions for example gasLimit or gasPrice
+    - **executionOptions** : object - an optional parameter that includes details of transactions for example gasLimit or gasPrice
   Returns:
     `promise` that resolves to the :ref:`Execution<execution>`
 
@@ -358,7 +358,7 @@ addKeys
 
   Parameters:
     - **publicKeys** : array of strings - public keys to add
-    - **executionOptions : object - an optional parameter that includes details of transactions for example gasLimit or gasPrice
+    - **executionOptions** : object - an optional parameter that includes details of transactions for example gasLimit or gasPrice
   Returns:
     `promise` that resolves to the :ref:`Execution<execution>`
 
