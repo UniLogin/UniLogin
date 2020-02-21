@@ -8,6 +8,7 @@ import {InvalidGasLimit} from '../../core/utils/errors';
 import {ensureSufficientGas} from '../../core/utils/validation';
 import UniversalLoginSDK from '../sdk';
 import {Execution} from '../../core/services/ExecutionFactory';
+import {propertyFromSubscription} from '../../core/utils/propertyFromSubscription';
 
 export class DeployedWallet extends AbstractWallet {
   constructor(
@@ -126,6 +127,8 @@ export class DeployedWallet extends AbstractWallet {
   subscribeAuthorisations(callback: Function) {
     return this.sdk.subscribeAuthorisations(this.contractAddress, this.privateKey, callback);
   }
+
+  readonly authorizations = propertyFromSubscription(this.subscribeAuthorisations.bind(this), []);
 
   subscribeToBalances(callback: OnBalanceChange) {
     return this.sdk.subscribeToBalances(this.contractAddress, callback);
