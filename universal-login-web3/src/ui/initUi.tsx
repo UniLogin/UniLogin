@@ -1,12 +1,14 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {ULWeb3Root, ULWeb3RootProps} from './react/ULWeb3Root';
-import {ThemeProvider} from '@unilogin/react';
+import {isPrivateMode, ThemeProvider} from '@unilogin/react';
 import './styles/index.css';
 import {IWeb3PickerComponentProps, Web3PickerComponent} from './react/Web3PickerComponent';
 
 export function initUi(props: ULWeb3RootProps) {
   const reactRootElement = createReactRoot();
+  isPrivateMode().then((isPrivate: boolean) => !!isPrivate && alert('Warning! Please do not use incognito mode. You can lose all your funds.'));
+
   render(
     <ThemeProvider theme="unilogin">
       <ULWeb3Root {...props} />

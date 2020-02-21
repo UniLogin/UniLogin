@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 import {setBetaNotice} from '@unilogin/sdk';
-import {ErrorBoundary, useAsync, ThemeProvider} from '@unilogin/react';
+import {ErrorBoundary, isPrivateMode, useAsync, ThemeProvider} from '@unilogin/react';
 import App from './ui/react/App';
 import {createServices, ServiceContext} from './ui/createServices';
 import getConfig from './config/getConfig';
@@ -10,29 +10,32 @@ import './ui/styles/main.sass';
 import Logo from './ui/assets/logo.svg';
 
 const AppBootstrapper = () => {
-  const [services, err] = useAsync(async () => {
+  const [params, err] = useAsync(async () => {
     const config = getConfig();
-
     const services = createServices(config);
     await services.start();
 
     services.walletService.loadFromStorage();
     setBetaNotice(services.sdk);
 
-    return services;
+    const isIncognito = await isPrivateMode();
+    return {services, isIncognito};
   }, []);
 
   if (err) {
     throw err;
   }
 
-  if (!services) {
+  if (!params) {
     return (
       <div id="preloader">
         <img src={Logo} className="preloaderImg" />
       </div>
     );
   }
+  const {services, isIncognito} = params;
+
+  isIncognito && alert('Warning! Please do not use incognito mode. You can lose all your funds.');
 
   return (
     <ServiceContext.Provider value={services}>
