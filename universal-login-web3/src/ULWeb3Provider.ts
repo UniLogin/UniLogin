@@ -40,7 +40,6 @@ export class ULWeb3Provider implements Provider {
   private readonly sdk: UniversalLoginSDK;
   private readonly walletService: WalletService;
   private readonly uiController: UIController;
-  private unsubscribeNotifications: Nullable<Function> = null;
 
   readonly isLoggedIn: Property<boolean>;
   readonly isUiVisible: Property<boolean>;
@@ -196,7 +195,6 @@ export class ULWeb3Provider implements Provider {
   }
 
   finalizeAndStop() {
-    this.unsubscribeNotifications?.();
     return this.sdk.finalizeAndStop();
   }
 }

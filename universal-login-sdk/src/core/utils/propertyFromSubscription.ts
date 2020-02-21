@@ -13,16 +13,5 @@ function unpromiseCallback(callback: MaybePromise<Callback>): Callback {
   if (!(callback instanceof Promise)) {
     return callback;
   }
-  let called = false;
-  let cb: Callback | undefined = undefined;
-  setTimeout(async () => {
-    cb = await callback;
-    if (called) {
-      cb?.();
-    }
-  });
-  return () => {
-    called = true;
-    cb?.();
-  };
+  return () => setTimeout(async () => (await callback)());
 }
