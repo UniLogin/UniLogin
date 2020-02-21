@@ -38,7 +38,7 @@ describe('INT: TokenDetailsService', () => {
 
   it('token not deployed', async () => {
     const notDeployedtokenAddress = '0x000000000000000000000000000000000000DEAD';
-    expect(tokenDetailsService.getSymbol(notDeployedtokenAddress))
+    await expect(tokenDetailsService.getSymbol(notDeployedtokenAddress))
       .to.be.eventually.rejectedWith('contract not deployed');
   });
 

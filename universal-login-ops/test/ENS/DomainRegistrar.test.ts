@@ -12,7 +12,7 @@ chai.use(sinonChai);
 
 const nullConsole = () => {};
 
-describe('ENS register', async () => {
+describe('ENS register', () => {
   let wallet: Wallet;
   let ensAddress: string;
   let ensRegistrars: string[];
@@ -26,7 +26,7 @@ describe('ENS register', async () => {
     ({wallet, ensAddress, ensRegistrars, publicResolver} = await loadFixture(basicENS));
   });
 
-  describe('DomainRegistrar', async () => {
+  describe('DomainRegistrar', () => {
     let domainRegistrar: DomainRegistrar;
     const tld = 'eth';
 
@@ -64,7 +64,7 @@ describe('ENS register', async () => {
       expect(await domainRegistrar.ens.resolver(node)).to.eq(publicResolverAddress);
     });
 
-    describe('start works', async () => {
+    describe('start works', () => {
       it('should register new domain', async () => {
         const label = 'my-domain';
         const tld = 'eth';

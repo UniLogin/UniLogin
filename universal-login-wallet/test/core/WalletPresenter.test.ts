@@ -4,7 +4,7 @@ import {WalletService} from '@unilogin/sdk';
 import WalletPresenter from '../../src/core/presenters/WalletPresenter';
 import {Wallet} from 'ethers';
 
-describe('WalletFormatter', async () => {
+describe('WalletFormatter', () => {
   let walletService: WalletService;
   let walletPresenter: WalletPresenter;
   const applicationWallet = {

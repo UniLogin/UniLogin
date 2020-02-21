@@ -14,18 +14,18 @@ for (const config of [{
   Type: QueueMemoryStore,
 }]
 ) {
-  describe(`INT: IQueueStore: ${config.Type.name}`, async () => {
+  describe(`INT: IQueueStore: ${config.Type.name}`, () => {
     let executionQueue: IExecutionQueue;
     let signedMessage: SignedMessage;
     let messageHash: string;
     const knex = getKnexConfig();
 
-    before(async () => {
+    before(() => {
       signedMessage = getTestSignedMessage();
       messageHash = calculateMessageHash(signedMessage);
     });
 
-    beforeEach(async () => {
+    beforeEach(() => {
       let args: any;
       if (config.Type.name.includes('SQL')) {
         args = knex;

@@ -32,7 +32,7 @@ describe('INT: Events', () => {
 
   before(async () => {
     ({sdk, relayer, mockToken, privateKey, contractAddress, wallet, provider} = await loadFixture(basicSDK));
-    sdk.start();
+    await sdk.start();
     unsubscribe = await sdk.subscribeAuthorisations(contractAddress, privateKey, connectionCallback);
   });
 

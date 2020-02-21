@@ -6,7 +6,7 @@ import deployWalletContractOnDev from '../../src/dev/deployWalletContractOnDev';
 
 chai.use(solidity);
 
-describe('Counterfactual factory contract', async () => {
+describe('Counterfactual factory contract', () => {
   let provider: providers.Provider;
   let wallet: Wallet;
   let walletContractAddress: string;
