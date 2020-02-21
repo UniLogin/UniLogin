@@ -29,11 +29,12 @@ describe('INT: SDK', () => {
   let message: PartialRequired<Message, 'from'>;
   let walletContract: Contract;
   let deployedWallet: DeployedWallet;
+  let ensName: string;
 
   beforeEach(async () => {
-    ({wallet, provider, otherWallet, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
+    ({wallet, provider, otherWallet, sdk, privateKey, contractAddress, walletContract, relayer, ensName} = await loadFixture(basicSDK));
     message = {...transferMessage, from: contractAddress, gasToken: ETHER_NATIVE_TOKEN.address, data: '0x'};
-    deployedWallet = new DeployedWallet(contractAddress, otherWallet.address, privateKey, sdk);
+    deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
   });
 
   afterEach(async () => {
@@ -180,9 +181,10 @@ describe('INT: SDK', () => {
     await deployedWallet.addKey(otherWallet.address, TEST_EXECUTION_OPTIONS);
     await deployedWallet.setRequiredSignatures(2, TEST_EXECUTION_OPTIONS);
     const msg = {...message, to: otherWallet.address, nonce: await walletContract.nonce()};
-    const {messageStatus} = await sdk.execute(msg, privateKey);
+    const {messageStatus, waitForTransactionHash} = await sdk.execute(msg, privateKey);
     const status = await sdk.getMessageStatus(messageStatus.messageHash);
     expect(status.collectedSignatures.length).to.eq(1);
+    await waitForTransactionHash();
   });
 
   after(async () => {
