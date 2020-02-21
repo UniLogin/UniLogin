@@ -164,15 +164,42 @@ denyRequest
 
       const publicKey = await sdk.denyRequest('0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA', '0xb19Ec9bdC6733Bf0c825FCB6E6Da95518DB80D13');
 
+Creating a deployed wallet
+--------------------------
+
+**new DeployedWallet(contractAddress, name, privateKey, sdk)**
+
+  creates the DeployedWallet object
+
+  Parameters:
+    - **contractAddress** : string - an address of a contract to remove a request
+    - **name** : string - a name for deployed wallet
+    - **privateKey** : string - a private key to sign a request
+    - **sdk** : object - a UniversalLoginSDK object
+  Returns:
+    DeployedWallet instance
+
+    Example:
+    ::
+
+      import {DeployedWallet} from '../../src';
+
+      const ({wallet, provider, otherWallet, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
+      const message = {...transferMessage, from: contractAddress, gasToken: ETHER_NATIVE_TOKEN.address, data: '0x'};
+      const deployedWallet = new DeployedWallet(contractAddress, name, privateKey, sdk);
+
+
+      const {waitToBeSuccess} = await deployedWallet.execute(message);
+
 Transaction execution
 ---------------------
 
-.. _sdk_execute:
+.. _deployed_wallet:
 
 execute
 ^^^^^^^
 
-**sdk.execute(message, privateKey)**
+**deployedWallet.execute(message)**
 
   executes any message.
 
@@ -186,7 +213,6 @@ execute
       * gasToken : string - token address to refund
       * gasPrice : number - price of gas to refund
       * gasLimit : number - limit of gas to refund
-    - **privateKey** : string - a private key to be used to sign the transaction and has a permission to execute the message
   Returns:
     `promise` that resolves to the ``Execution``
 
@@ -210,9 +236,8 @@ execute
         gasLimit: 1000000
       };
 
-      await sdk.execute(
+      await deployedWallet.execute(
         message,
-        '0x5c8b9227cd5065c7e3f6b73826b8b42e198c4497f6688e3085d5ab3a6d520e74'
       );
 
 
@@ -267,49 +292,40 @@ Managing a wallet contract
 addKey
 ^^^^^^
 
-**sdk.addKey(contractAddress, publicKey, privateKey, transactionDetails, keysPurpose)**
+**deployedWallet.addKey(publicKey, executionOptions)**
 
   adds a key to manage a wallet contract.
 
   Parameters:
-    - **contractAddress** : string - an address of a contract that requests to add a new key
     - **publicKey** : string - a public key to manage the contract
-    - **privateKey** : string - a private key that has a permission to add new keys
-    - **transactionDetails** : object - refund options
-    - **keysPurpose** (optional) : number - key purpose: MANAGEMENT_KEY - ``1``, ACTION_KEY - ``2``, set to MANAGAMENT_KEY by default
+    - **executionOptions : object - an optional parameter that includes details of transactions for example gasLimit or gasPrice
   Returns:
     `promise` that resolves to the :ref:`Execution<execution>`
 
   Example:
     ::
 
-      const transactionDetails = {
+      const executionOptions = {
         gasToken: '0x850437540FE07d02045f88cAe122Bc66B1BdE957',
         gasPrice: 1000000,
         gasLimit: 150000
       };
-      await sdk.addKey(
-        '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+      await deployedWallet.addKey(
         '0x96E8B90685AFD981453803f1aE2f05f8Ebc3cfD0',
-        '0x5c8b9227cd5065c7e3f6b73826b8b42e198c4497f6688e3085d5ab3a6d520e74',
-        transactionDetails,
-        ACTION_KEY
+        executionOptions,
       );
 
 
 addKeys
 ^^^^^^^
 
-**sdk.addKeys(contractAddress, publicKeys, privateKey, transactionDetails, keysPurpose)**
+**deployedWallet.addKey(publicKeys, executionOptions)**
 
   adds multiple keys to manage a contract.
 
   Parameters:
-    - **contractAddress** : string - an address of a contract that requests to add keys
     - **publicKeys** : array of strings - public keys to add
-    - **privateKey** : string - a private key that has a permission to add new keys
-    - **transactionDetails** : object - refund options
-    - **keysPurpose** (optional) : number - key purpose: MANAGEMENT - ``1``, ACTION - ``2``, set to MANAGAMENT_KEY by default
+    - **executionOptions : object - an optional parameter that includes details of transactions for example gasLimit or gasPrice
   Returns:
     `promise` that resolves to the :ref:`Execution<execution>`
 
@@ -320,47 +336,40 @@ addKeys
         '0x96E8B90685AFD981453803f1aE2f05f8Ebc3cfD0',
         '0xb19Ec9bdC6733Bf0c825FCB6E6Da95518DB80D13'
       ];
-      const transactionDetails = {
+      const executionOptions = {
         gasToken: '0x850437540FE07d02045f88cAe122Bc66B1BdE957',
         gasPrice: 1000000,
         gasLimit: 150000
       };
-      await sdk.addKeys(
-        '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+      await deployedWallet.addKeys(
         publicKeys,
-        '0x5c8b9227cd5065c7e3f6b73826b8b42e198c4497f6688e3085d5ab3a6d520e74',
-        transactionDetails,
-        ACTION_KEY
+        executionOptions,
       );
 
 removeKey
 ^^^^^^^^^
 
-**sdk.removeKey(contractAddress, publicKey, privateKey, transactionDetails)**
+**deployedWallet.removeKey(publicKey, executionOptions)**
 
   removes a key from a contract.
 
   Parameters:
-    - **contractAddress** : string - an address of a contract that we want to remove a key from the contract
     - **publicKey** : string - a public key to remove
-    - **privateKey** : string - a private key with a permission of removing keys
-    - **transactionDetails** : object - an optional parameter that includes details of transactions for example gasLimit or gasPrice
+    - **executionOptions** : object - an optional parameter that includes details of transactions for example gasLimit or gasPrice
   Returns:
     `promise` that resolves to the :ref:`Execution<execution>`
 
   Example
     ::
 
-      const transactionDetails = {
+      const executionOptions = {
         gasToken: '0x9f2990f93694B496F5EAc5822a45f9c642aaDB73',
         gasPrice: 1000000,
         gasLimit: 150000
       };
-      await sdk.removeKey(
-        '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+      await deployedWallet.removeKey(
         '0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A',
-        '0x5c8b9227cd5065c7e3f6b73826b8b42e198c4497f6688e3085d5ab3a6d520e74',
-        transactionDetails
+        executionOptions
       );
 
 **getWalletContractAddress(ensName)**

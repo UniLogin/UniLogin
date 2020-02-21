@@ -40,7 +40,7 @@ describe('INT: WalletEventsObserverFactory', () => {
       );
       await factory.start();
       ({proxyWallet, keyPair} = await setupWalletContract(deployer));
-      deployedWallet = (sdk as any).createDeployedWallet(proxyWallet.address, keyPair.privateKey);
+      deployedWallet = new DeployedWallet(proxyWallet.address, '', keyPair.privateKey, sdk);
       filter = {
         contractAddress: deployedWallet.contractAddress,
         key: publicKey,
