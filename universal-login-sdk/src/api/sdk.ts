@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Message, Notification, PartialRequired, PublicRelayerConfig, resolveName, SdkExecutionOptions, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus} from '@unilogin/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus} from '@unilogin/commons';
 import {BlockchainService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -7,7 +7,7 @@ import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/obser
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
 import {OnTokenPricesChange, PriceObserver} from '../core/observers/PriceObserver';
-import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';
+import {ExecutionFactory} from '../core/services/ExecutionFactory';
 import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
 import {GasModeService} from '../core/services/GasModeService';
 import {MessageConverter} from '../core/services/MessageConverter';
@@ -16,7 +16,6 @@ import {InvalidContract, InvalidENSRecord, InvalidEvent, MissingConfiguration} f
 import {ENSService} from '../integration/ethereum/ENSService';
 import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {RelayerApi} from '../integration/http/RelayerApi';
-import {deprecateSDKMethod} from './deprecate';
 import {FutureWalletFactory} from './FutureWalletFactory';
 import {DeployedWallet} from './wallet/DeployedWallet';
 import {FutureWallet} from './wallet/FutureWallet';
