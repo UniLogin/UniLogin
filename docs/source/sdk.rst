@@ -230,12 +230,7 @@ Creating a deployed wallet
 
       import {DeployedWallet} from '@unilogin/sdk';
 
-      const ({wallet, provider, otherWallet, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
-      const message = {...transferMessage, from: contractAddress, gasToken: ETHER_NATIVE_TOKEN.address, data: '0x'};
-      const deployedWallet = new DeployedWallet(contractAddress, name, privateKey, sdk);
-
-
-      const {waitToBeSuccess} = await deployedWallet.execute(message);
+      const deployedWallet = new DeployedWallet('0x2828282882215356332', 'name.mylogin.eth', '0x1183823828282356343143', sdk);
 
 Transaction execution
 ---------------------
@@ -262,6 +257,13 @@ execute
       * gasLimit : number - limit of gas to refund
   Returns:
     `promise` that resolves to the ``Execution``
+
+    Example:
+    ::
+
+      const message = {...transferMessage, from: contractAddress, gasToken: ETHER_NATIVE_TOKEN.address, data: '0x'};
+      const {waitToBeSuccess} = await deployedWallet.execute(message);
+
 
 .. _execution:
 
