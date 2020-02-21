@@ -1,6 +1,6 @@
 import {Web3PickerProvider} from '../Web3PickerProvider';
 import {setupStrategies} from '../api/setupStrategies';
-import {combine, flat, map, Property, State} from 'reactive-properties';
+import {combine, flatMap, Property, State} from 'reactive-properties';
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {IframeInitializerBase} from './IframeInitializerBase';
 import {Provider} from 'web3/providers';
@@ -23,16 +23,14 @@ export class PickerIframeInitializer extends IframeInitializerBase {
     return combine([
       this.provider.isVisible,
       this.provider.currentProvider.pipe(
-        map(provider => provider instanceof ULWeb3Provider ? provider.isUiVisible : new State(false)),
-        flat,
+        flatMap(provider => provider instanceof ULWeb3Provider ? provider.isUiVisible : new State(false)),
       ),
     ], (a, b) => a || b);
   }
 
   protected getHasNotifications(): Property<boolean> {
     return this.provider.currentProvider.pipe(
-      map(provider => provider instanceof ULWeb3Provider ? provider.hasNotifications : new State(false)),
-      flat,
+      flatMap(provider => provider instanceof ULWeb3Provider ? provider.hasNotifications : new State(false)),
     );
   }
 }
