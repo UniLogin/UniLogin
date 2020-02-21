@@ -17,7 +17,6 @@ import {ENSService} from '../integration/ethereum/ENSService';
 import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {FutureWalletFactory} from './FutureWalletFactory';
-import {DeployedWallet} from './wallet/DeployedWallet';
 import {FutureWallet} from './wallet/FutureWallet';
 import {WalletEventType, WalletEventFilter, WalletEventCallback} from '../core/models/events';
 import WalletEventsObserverFactory from '../core/observers/WalletEventsObserverFactory';
@@ -79,10 +78,6 @@ class UniversalLoginSDK {
     const beta2Service = new Beta2Service(this.provider);
     const gnosisSafeService = new GnosisSafeService(this.provider);
     this.walletContractService = new WalletContractService(this.blockchainService, beta2Service, gnosisSafeService);
-  }
-
-  private createDeployedWallet(walletContractAddress: string, privateKey = '') {
-    return new DeployedWallet(walletContractAddress, '', privateKey, this);
   }
 
   getNotice() {
