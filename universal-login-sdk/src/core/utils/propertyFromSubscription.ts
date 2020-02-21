@@ -1,6 +1,6 @@
 import {Callback, Property, State, withEffect} from 'reactive-properties';
 
-type MaybePromise<T> = T | Promise<T>
+type MaybePromise<T> = T | Promise<T>;
 
 export function propertyFromSubscription<T>(subscribe: (cb: (value: T) => void) => MaybePromise<Callback>, initialValue: T): Property<T> {
   const state = new State(initialValue);
