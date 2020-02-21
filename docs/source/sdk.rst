@@ -164,6 +164,52 @@ denyRequest
 
       const publicKey = await sdk.denyRequest('0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA', '0xb19Ec9bdC6733Bf0c825FCB6E6Da95518DB80D13');
 
+
+SdkSigner
+^^^^^^^^^
+
+::
+
+  // gasToken should be configured when creating SDK instance in order to use the signer
+  const signer = new SdkSigner(sdk, contractAddress, privateKey);
+
+  const token = new Contract(contractAddress, contractInterface, signer)
+  await contract.transfer(someOtherAddress, utils.parseEther('123'))
+
+Note: This is an experimental feature, expect breaking changes.
+
+
+
+**getWalletContractAddress(ensName)**
+
+  gets a wallet contract address by an ENS name
+
+  Parameters:
+    - **ensName** : string - an ENS name
+
+  Returns:
+    `promise` that resolves to ``address`` if the ENS name is registered or ``null`` if the ENS name is available
+
+  Example:
+    ::
+
+      const contractAddress = await sdk.getWalletContractAddress('justyna.my-super-domain.test');
+
+**walletContractExist(ensName)**
+
+  checks if an ENS name is registered.
+
+  Parameters:
+    - **ensName** : string - an ENS name
+
+  Returns:
+    `promise` that resolves to ``true`` if the ENS name is registered or ``false`` if the ENS name is available
+
+  Example:
+    ::
+
+      const walletContractExist = await sdk.walletContractExist('justyna.my-super-domain.test');
+
 Creating a deployed wallet
 --------------------------
 
@@ -182,7 +228,7 @@ Creating a deployed wallet
     Example:
     ::
 
-      import {DeployedWallet} from '../../src';
+      import {DeployedWallet} from '@unilogin/sdk';
 
       const ({wallet, provider, otherWallet, sdk, privateKey, contractAddress, walletContract, relayer} = await loadFixture(basicSDK));
       const message = {...transferMessage, from: contractAddress, gasToken: ETHER_NATIVE_TOKEN.address, data: '0x'};
@@ -195,6 +241,7 @@ Transaction execution
 ---------------------
 
 .. _deployed_wallet:
+
 
 execute
 ^^^^^^^
@@ -272,22 +319,8 @@ messageStatus
 
 .. _signer:
 
-SdkSigner
-^^^^^^^^^
-
-::
-
-  // gasToken should be configured when creating SDK instance in order to use the signer
-  const signer = new SdkSigner(sdk, contractAddress, privateKey);
-
-  const token = new Contract(contractAddress, contractInterface, signer)
-  await contract.transfer(someOtherAddress, utils.parseEther('123'))
-
-Note: This is an experimental feature, expect breaking changes.
-
 Managing a wallet contract
 --------------------------
-
 
 addKey
 ^^^^^^
@@ -371,36 +404,6 @@ removeKey
         '0xbA03ea3517ddcD75e38a65EDEB4dD4ae17D52A1A',
         executionOptions
       );
-
-**getWalletContractAddress(ensName)**
-
-  gets a wallet contract address by an ENS name
-
-  Parameters:
-    - **ensName** : string - an ENS name
-
-  Returns:
-    `promise` that resolves to ``address`` if the ENS name is registered or ``null`` if the ENS name is available
-
-  Example:
-    ::
-
-      const contractAddress = await sdk.getWalletContractAddress('justyna.my-super-domain.test');
-
-**walletContractExist(ensName)**
-
-  checks if an ENS name is registered.
-
-  Parameters:
-    - **ensName** : string - an ENS name
-
-  Returns:
-    `promise` that resolves to ``true`` if the ENS name is registered or ``false`` if the ENS name is available
-
-  Example:
-    ::
-
-      const walletContractExist = await sdk.walletContractExist('justyna.my-super-domain.test');
 
 Events
 ------
@@ -508,4 +511,3 @@ Authorisations
         id: 1,
         walletContractAddress: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
         key: ''}]
-
