@@ -1,6 +1,6 @@
 import {Provider} from 'web3/providers';
 import {Config, getConfigForNetwork, Network} from './config';
-import UniversalLoginSDK, {WalletService, setBetaNotice} from '@unilogin/sdk';
+import UniversalLoginSDK, {WalletService, setBetaNotice, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
 import {providers, utils, constants} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
@@ -55,10 +55,10 @@ export class ULWeb3Provider implements Provider {
     storageService = new StorageService(),
   }: ULWeb3ProviderOptions) {
     this.provider = provider;
-    const sdkConfig = {
-      storageService: new StorageService(),
-      applicationInfo,
-    };
+    const sdkConfig: Partial<SdkConfig> = {storageService};
+    if (applicationInfo) {
+      sdkConfig.applicationInfo = applicationInfo;
+    }
     this.sdk = new UniversalLoginSDK(
       relayerUrl,
       new providers.Web3Provider(this.provider as any),
