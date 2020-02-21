@@ -55,10 +55,14 @@ export class ULWeb3Provider implements Provider {
     storageService = new StorageService(),
   }: ULWeb3ProviderOptions) {
     this.provider = provider;
+    const sdkConfig = {
+      storageService: new StorageService(),
+      applicationInfo,
+    };
     this.sdk = new UniversalLoginSDK(
       relayerUrl,
       new providers.Web3Provider(this.provider as any),
-      applicationInfo && {applicationInfo},
+      sdkConfig,
     );
     this.walletService = new WalletService(this.sdk, walletFromBrain, storageService);
 
