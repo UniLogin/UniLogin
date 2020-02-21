@@ -7,7 +7,7 @@ import {IWeb3PickerComponentProps, Web3PickerComponent} from './react/Web3Picker
 
 export function initUi(props: ULWeb3RootProps) {
   const reactRootElement = createReactRoot();
-  isPrivateMode().then((isPrivate: boolean) => !!isPrivate && alert('Warning! Please not use incognito mode.'));
+  isPrivateMode().then((isPrivate: boolean) => !!isPrivate && alert('Warning! Please do not use incognito mode. You can lose all your funds.'));
 
   render(
     <ThemeProvider theme="unilogin">
