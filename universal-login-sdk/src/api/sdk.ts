@@ -26,7 +26,6 @@ import {BlockNumberState} from '../core/states/BlockNumberState';
 import {WalletContractService} from '../integration/ethereum/WalletContractService';
 import {Beta2Service} from '../integration/ethereum/Beta2Service';
 import {GnosisSafeService} from '../integration/ethereum/GnosisSafeService';
-import {isPrivateMode} from '../core/utils/isPrivateMode';
 
 class UniversalLoginSDK {
   readonly provider: providers.Provider;
@@ -254,9 +253,6 @@ class UniversalLoginSDK {
   }
 
   async start() {
-    if (await isPrivateMode()) {
-      alert('Warning! Please not use incognito mode.');
-    }
     await Promise.all([
       this.fetchRelayerConfig(),
       this.startBlockchainServices(),

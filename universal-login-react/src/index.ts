@@ -41,3 +41,4 @@ export {WaitingForTransaction, WaitingForTransactionProps, WaitingForDeployment,
 export {WaitingForOnRampProvider, WaitingForOnRampProviderProps} from './ui/TopUp/Fiat/WaitingForOnRampProvider';
 export {ThemeProvider, ThemeContext} from './ui/themes/Theme';
 export {calculateTransactionFee} from './core/utils/calculateTransactionFee';
+export {isPrivateMode} from './ui/utils/isPrivateMode';
