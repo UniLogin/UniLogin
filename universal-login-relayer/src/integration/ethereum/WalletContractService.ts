@@ -1,16 +1,19 @@
 import {Beta2Service} from './Beta2Service';
 import {BlockchainService} from '@unilogin/contracts';
-import {SignedMessage, RelayerRequest} from '@unilogin/commons';
+import {SignedMessage, RelayerRequest, WalletVersion} from '@unilogin/commons';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GnosisSafeService} from './GnosisSafeService';
 
 export class WalletContractService {
+  private walletVersions: Record<string, WalletVersion | undefined> = {};
+
   constructor(private blockchainSerivce: BlockchainService, private beta2Service: Beta2Service, private gnosisSafeService: GnosisSafeService) {
 
   }
 
   private async getWalletService(walletAddress: string): Promise<IWalletContractService> {
-    const walletVersion = await this.blockchainSerivce.fetchWalletVersion(walletAddress);
+    const walletVersion = await this.getWalletVersion(walletAddress);
+
     switch (walletVersion) {
       case 'beta1':
       case 'beta2':
@@ -19,6 +22,16 @@ export class WalletContractService {
         return this.gnosisSafeService;
       default:
         throw TypeError(`Invalid walletVersion: ${walletVersion}`);
+    }
+  }
+
+  private async getWalletVersion(walletAddress: string) {
+    if (this.walletVersions[walletAddress] !== undefined) {
+      return this.walletVersions[walletAddress];
+    } else {
+      const walletVersion = await this.blockchainSerivce.fetchWalletVersion(walletAddress);
+      this.walletVersions[walletAddress] = walletVersion;
+      return walletVersion;
     }
   }
 
