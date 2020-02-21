@@ -1,17 +1,16 @@
 import {Provider} from 'web3/providers';
 import {Config, getConfigForNetwork, Network} from './config';
-import UniversalLoginSDK, {WalletService, setBetaNotice} from '@unilogin/sdk';
+import UniversalLoginSDK, {setBetaNotice, WalletService} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
-import {providers, utils, constants} from 'ethers';
+import {constants, providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
-import {ensure, Message, walletFromBrain, ApplicationInfo, DEFAULT_GAS_LIMIT, Nullable} from '@unilogin/commons';
+import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain} from '@unilogin/commons';
 import {waitForTrue} from './ui/utils/utils';
-import {initUi} from './ui/initUi';
+import {getOrCreateUlButton, initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
 import {StorageService} from '@unilogin/react';
 import {flatMap, map, Property, State} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
-import {getOrCreateUlButton} from './ui/initUi';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
