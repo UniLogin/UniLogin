@@ -1,13 +1,13 @@
 import {Beta2Service} from './Beta2Service';
 import {BlockchainService} from '@unilogin/contracts';
-import {SignedMessage, RelayerRequest, WalletVersion} from '@unilogin/commons';
+import {SignedMessage, RelayerRequest, WalletVersion, isProperAddress, ensure} from '@unilogin/commons';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GnosisSafeService} from './GnosisSafeService';
 
 export class WalletContractService {
   private walletVersions: Record<string, WalletVersion | undefined> = {};
 
-  constructor(private blockchainSerivce: BlockchainService, private beta2Service: Beta2Service, private gnosisSafeService: GnosisSafeService) {
+  constructor(private blockchainService: BlockchainService, private beta2Service: Beta2Service, private gnosisSafeService: GnosisSafeService) {
 
   }
 
@@ -29,10 +29,15 @@ export class WalletContractService {
     if (this.walletVersions[walletAddress] !== undefined) {
       return this.walletVersions[walletAddress];
     } else {
-      const walletVersion = await this.blockchainSerivce.fetchWalletVersion(walletAddress);
+      ensure(walletAddress !== undefined && isProperAddress(walletAddress), Error, 'Invalid address provided')
+      const walletVersion = await this.blockchainService.fetchWalletVersion(walletAddress);
       this.walletVersions[walletAddress] = walletVersion;
       return walletVersion;
     }
+  }
+
+  async clearCatch(){
+    this.walletVersions = {};
   }
 
   async keyExist(walletAddress: string, key: string) {
