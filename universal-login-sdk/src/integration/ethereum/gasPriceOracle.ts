@@ -1,15 +1,7 @@
 import {utils} from 'ethers';
 import {handleApiResponse} from '@unilogin/commons';
 import {fetch} from '../http/fetch';
-
-export type GasPriceOption = 'fast' | 'cheap';
-
-export type GasPriceEstimation = {
-  gasPrice: utils.BigNumber;
-  timeEstimation: string;
-};
-
-export type GasPriceSuggestion = Record<GasPriceOption, GasPriceEstimation>;
+import {GasPriceSuggestion} from '../../core/models/GasPriceSuggestion';
 
 export class GasPriceOracle {
   private async estimateGasPrices() {
