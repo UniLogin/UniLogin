@@ -3,6 +3,7 @@ import {GasMode, TokensPrices, ObservedCurrency, ensureNotFalsy, safeMultiply} f
 import {TokensDetailsStore} from './TokensDetailsStore';
 import {GasPriceOracle} from '../../integration/ethereum/gasPriceOracle';
 import {PriceObserver} from '../observers/PriceObserver';
+import {GasPriceEstimation} from '../models/GasPriceSuggestion';
 
 export class GasModeService {
   constructor(
@@ -17,11 +18,12 @@ export class GasModeService {
     return multiplier;
   }
 
-  private createMode(name: string, gasPrice: utils.BigNumber, tokensPrices: TokensPrices): GasMode {
+  private createMode(name: string, {gasPrice, timeEstimation}: GasPriceEstimation, tokensPrices: TokensPrices): GasMode {
     const usdAmount = this.getCurrencyAmount(gasPrice, 'USD', tokensPrices);
     return {
       name,
       usdAmount,
+      timeEstimation,
       gasOptions: this.tokensStore.tokensDetails.map((tokenDetails) => {
         return ({
           token: tokenDetails,
@@ -41,8 +43,8 @@ export class GasModeService {
     const prices = await this.priceObserver.getCurrentPrices();
     return {
       modes: [
-        this.createMode('cheap', gasPrices.cheap.gasPrice, prices),
-        this.createMode('fast', gasPrices.fast.gasPrice, prices),
+        this.createMode('cheap', gasPrices.cheap, prices),
+        this.createMode('fast', gasPrices.fast, prices),
       ],
       prices,
     };

@@ -40,6 +40,7 @@ describe('UNIT: GasModeService', () => {
     {
       name: 'cheap',
       usdAmount: '0.0000367702',
+      timeEstimation: '114',
       gasOptions: [{
         gasPrice: utils.bigNumberify('29894200000000'),
         token: TEST_TOKEN_DETAILS[0],
@@ -56,6 +57,7 @@ describe('UNIT: GasModeService', () => {
     {
       name: 'fast',
       usdAmount: '0.00004412424',
+      timeEstimation: '30',
       gasOptions: [{
         gasPrice: utils.bigNumberify('35873040000000'),
         token: TEST_TOKEN_DETAILS[0],
