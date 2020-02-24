@@ -41,8 +41,8 @@ export class GasModeService {
     const prices = await this.priceObserver.getCurrentPrices();
     return {
       modes: [
-        this.createMode('cheap', gasPrices.cheap, prices),
-        this.createMode('fast', gasPrices.fast, prices),
+        this.createMode('cheap', gasPrices.cheap.gasPrice, prices),
+        this.createMode('fast', gasPrices.fast.gasPrice, prices),
       ],
       prices,
     };

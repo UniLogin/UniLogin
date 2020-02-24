@@ -11,8 +11,14 @@ describe('UNIT: GasModeService', () => {
   const tokensDetailsStore: any = {tokensDetails: TEST_TOKEN_DETAILS};
 
   const gasPrices = {
-    fast: utils.bigNumberify('24000000000'),
-    cheap: utils.bigNumberify('20000000000'),
+    cheap: {
+      gasPrice: utils.bigNumberify('20000000000'),
+      timeEstimation: '114',
+    },
+    fast: {
+      gasPrice: utils.bigNumberify('24000000000'),
+      timeEstimation: '30',
+    },
   };
   const gasPriceOracle: any = {getGasPrices: sinon.stub().resolves(gasPrices)};
 
@@ -43,7 +49,7 @@ describe('UNIT: GasModeService', () => {
         token: TEST_TOKEN_DETAILS[1],
       },
       {
-        gasPrice: gasPrices.cheap,
+        gasPrice: gasPrices.cheap.gasPrice,
         token: TEST_TOKEN_DETAILS[2],
       }],
     },
@@ -59,7 +65,7 @@ describe('UNIT: GasModeService', () => {
         token: TEST_TOKEN_DETAILS[1],
       },
       {
-        gasPrice: gasPrices.fast,
+        gasPrice: gasPrices.fast.gasPrice,
         token: TEST_TOKEN_DETAILS[2],
       }],
     },
@@ -69,14 +75,14 @@ describe('UNIT: GasModeService', () => {
     const modes = await gasModeService.getModes();
     expect(gasPriceOracle.getGasPrices).calledOnce;
 
-    expect(getCurrencyAmountSpy.getCall(0)).calledWith(gasPrices.cheap, 'USD');
-    expect(getCurrencyAmountSpy.getCall(1)).calledWith(gasPrices.cheap, TEST_TOKEN_DETAILS[0].symbol);
-    expect(getCurrencyAmountSpy.getCall(2)).calledWith(gasPrices.cheap, TEST_TOKEN_DETAILS[1].symbol);
-    expect(getCurrencyAmountSpy.getCall(3)).calledWith(gasPrices.cheap, TEST_TOKEN_DETAILS[2].symbol);
-    expect(getCurrencyAmountSpy.getCall(4)).calledWith(gasPrices.fast, 'USD');
-    expect(getCurrencyAmountSpy.getCall(5)).calledWith(gasPrices.fast, TEST_TOKEN_DETAILS[0].symbol);
-    expect(getCurrencyAmountSpy.getCall(6)).calledWith(gasPrices.fast, TEST_TOKEN_DETAILS[1].symbol);
-    expect(getCurrencyAmountSpy.getCall(7)).calledWith(gasPrices.fast, TEST_TOKEN_DETAILS[2].symbol);
+    expect(getCurrencyAmountSpy.getCall(0)).calledWith(gasPrices.cheap.gasPrice, 'USD');
+    expect(getCurrencyAmountSpy.getCall(1)).calledWith(gasPrices.cheap.gasPrice, TEST_TOKEN_DETAILS[0].symbol);
+    expect(getCurrencyAmountSpy.getCall(2)).calledWith(gasPrices.cheap.gasPrice, TEST_TOKEN_DETAILS[1].symbol);
+    expect(getCurrencyAmountSpy.getCall(3)).calledWith(gasPrices.cheap.gasPrice, TEST_TOKEN_DETAILS[2].symbol);
+    expect(getCurrencyAmountSpy.getCall(4)).calledWith(gasPrices.fast.gasPrice, 'USD');
+    expect(getCurrencyAmountSpy.getCall(5)).calledWith(gasPrices.fast.gasPrice, TEST_TOKEN_DETAILS[0].symbol);
+    expect(getCurrencyAmountSpy.getCall(6)).calledWith(gasPrices.fast.gasPrice, TEST_TOKEN_DETAILS[1].symbol);
+    expect(getCurrencyAmountSpy.getCall(7)).calledWith(gasPrices.fast.gasPrice, TEST_TOKEN_DETAILS[2].symbol);
     expect(getCurrencyAmountSpy.callCount).to.eq(8);
 
     expect(modes).to.deep.eq(expectedModes);

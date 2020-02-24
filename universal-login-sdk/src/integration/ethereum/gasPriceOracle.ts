@@ -1,18 +1,42 @@
-import {utils, providers} from 'ethers';
+import {utils} from 'ethers';
+import {handleApiResponse} from '@unilogin/commons';
+import {fetch} from '../http/fetch';
 
 export type GasPriceOption = 'fast' | 'cheap';
 
-export type GasPriceSuggestion = Record<GasPriceOption, utils.BigNumber>;
+export type GasPriceOptionEstimate = {
+  gasPrice: utils.BigNumber;
+  timeEstimation: string;
+};
+
+export type GasPriceSuggestion = Record<GasPriceOption, GasPriceOptionEstimate>;
 
 export class GasPriceOracle {
-  constructor(private provider: providers.Provider) {
+  private async estimateGasPrices() {
+    const response = await fetch('https://ethgasstation.info/json/ethgasAPI.json', {method: 'GET'});
+    return handleApiResponse(response);
+  }
+
+  private convertMinutesToSec(minutes: number): string {
+    return (minutes * 60).toString();
+  }
+
+  private convert10xGweiToWei(gwei10x: number): utils.BigNumber {
+    return utils.parseUnits((gwei10x / 10).toString(), 'gwei');
   }
 
   async getGasPrices(): Promise<GasPriceSuggestion> {
-    const basicGasPrice = await this.provider.getGasPrice();
+    const gasPriceEstimations = await this.estimateGasPrices();
+    const {average, avgWait, fast, fastWait} = gasPriceEstimations;
     return {
-      cheap: basicGasPrice,
-      fast: basicGasPrice.mul(6).div(5),
+      cheap: {
+        gasPrice: this.convert10xGweiToWei(average),
+        timeEstimation: this.convertMinutesToSec(avgWait),
+      },
+      fast: {
+        gasPrice: this.convert10xGweiToWei(fast),
+        timeEstimation: this.convertMinutesToSec(fastWait),
+      },
     };
   }
 }
