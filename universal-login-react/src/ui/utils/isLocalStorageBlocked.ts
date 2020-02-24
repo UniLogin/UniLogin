@@ -1,5 +1,5 @@
 export function isLocalStorageBlocked() {
-  if ('localStorage' in window) {
+  if (!('localStorage' in window)) {
     return true;
   }
   try {
