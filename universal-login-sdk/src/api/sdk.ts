@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Message, Notification, PartialRequired, PublicRelayerConfig, resolveName, SdkExecutionOptions, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus} from '@unilogin/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus} from '@unilogin/commons';
 import {BlockchainService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -7,7 +7,7 @@ import {AggregateBalanceObserver, OnAggregatedBalanceChange} from '../core/obser
 import AuthorisationsObserver from '../core/observers/AuthorisationsObserver';
 import {BalanceObserver, OnBalanceChange} from '../core/observers/BalanceObserver';
 import {OnTokenPricesChange, PriceObserver} from '../core/observers/PriceObserver';
-import {Execution, ExecutionFactory} from '../core/services/ExecutionFactory';
+import {ExecutionFactory} from '../core/services/ExecutionFactory';
 import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
 import {GasModeService} from '../core/services/GasModeService';
 import {MessageConverter} from '../core/services/MessageConverter';
@@ -16,9 +16,7 @@ import {InvalidContract, InvalidENSRecord, InvalidEvent, MissingConfiguration} f
 import {ENSService} from '../integration/ethereum/ENSService';
 import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {RelayerApi} from '../integration/http/RelayerApi';
-import {deprecateSDKMethod} from './deprecate';
 import {FutureWalletFactory} from './FutureWalletFactory';
-import {DeployedWallet} from './wallet/DeployedWallet';
 import {FutureWallet} from './wallet/FutureWallet';
 import {WalletEventType, WalletEventFilter, WalletEventCallback} from '../core/models/events';
 import WalletEventsObserverFactory from '../core/observers/WalletEventsObserverFactory';
@@ -82,10 +80,6 @@ class UniversalLoginSDK {
     this.walletContractService = new WalletContractService(this.blockchainService, beta2Service, gnosisSafeService);
   }
 
-  private createDeployedWallet(walletContractAddress: string, privateKey = '') {
-    return new DeployedWallet(walletContractAddress, '', privateKey, this);
-  }
-
   getNotice() {
     return this.sdkConfig.notice;
   }
@@ -102,21 +96,6 @@ class UniversalLoginSDK {
 
   createFutureWallet(ensName: string, gasPrice: string, gasToken: string): Promise<FutureWallet> {
     return this.getFutureWalletFactory().createNew(ensName, gasPrice, gasToken);
-  }
-
-  addKey(to: string, publicKey: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
-    deprecateSDKMethod('addKey');
-    return this.createDeployedWallet(to, privateKey).addKey(publicKey, executionOptions);
-  }
-
-  addKeys(to: string, publicKeys: string[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
-    deprecateSDKMethod('addKeys');
-    return this.createDeployedWallet(to, privateKey).addKeys(publicKeys, executionOptions);
-  }
-
-  removeKey(to: string, key: string, privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
-    deprecateSDKMethod('removeKey');
-    return this.createDeployedWallet(to, privateKey).removeKey(key, executionOptions);
   }
 
   getMessageStatus(messageHash: string): Promise<MessageStatus> {
@@ -162,20 +141,6 @@ class UniversalLoginSDK {
       this.blockchainService,
       this,
     );
-  }
-
-  execute(message: PartialRequired<Message, 'from'>, privateKey: string): Promise<Execution> {
-    return this.createDeployedWallet(message.from, privateKey).execute(message);
-  }
-
-  protected selfExecute(to: string, method: string, args: any[], privateKey: string, executionOptions: SdkExecutionOptions): Promise<Execution> {
-    deprecateSDKMethod('selfExecute');
-    return this.createDeployedWallet(to, privateKey).selfExecute(method, args, executionOptions);
-  }
-
-  keyExist(walletContractAddress: string, key: string): Promise<boolean> {
-    deprecateSDKMethod('keyExist');
-    return this.createDeployedWallet(walletContractAddress).keyExist(key);
   }
 
   async getWalletContractAddress(ensName: string): Promise<string> {

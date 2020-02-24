@@ -99,6 +99,10 @@ export class ULIFrameProvider {
     this.bridge.send(msg, cb);
   }
 
+  async sendAsync(msg: any, cb: (error: any, response: any) => void) {
+    await this.send(msg, cb);
+  }
+
   setDashboardVisibility(visible: boolean) {
     this.send({method: 'ul_set_dashboard_visibility', params: [visible]}, () => {});
   }
