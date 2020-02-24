@@ -31,23 +31,23 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
   ensureNotNullish(transaction.value, Error, 'Missing parameter of Transaction: value');
   ensureNotFalsy(transaction.gasLimit, Error, 'Missing parameter of Transaction: gasLimit');
   const [modesAndPrices] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
-  const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount'>>({name: '', usdAmount: '0'});
+  const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount' | 'timeEstimation'>>({name: '', usdAmount: '0', timeEstimation: ''});
 
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
   const onModeChanged = (name: string) => {
     const gasTokenAddress = gasOption.token.address;
-    const {usdAmount, gasOptions} = findGasMode(modesAndPrices?.modes!, name);
+    const {usdAmount, gasOptions, timeEstimation} = findGasMode(modesAndPrices?.modes!, name);
 
-    setMode({name, usdAmount});
+    setMode({name, usdAmount, timeEstimation});
     setGasOption(findGasOption(gasOptions, gasTokenAddress));
   };
 
   useEffect(() => {
     if (modesAndPrices) {
-      const {name, usdAmount} = modesAndPrices.modes[FAST_GAS_MODE_INDEX];
+      const {name, usdAmount, timeEstimation} = modesAndPrices.modes[FAST_GAS_MODE_INDEX];
       const gasOption = findGasOption(modesAndPrices.modes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
-      setMode({name, usdAmount});
+      setMode({name, usdAmount, timeEstimation});
       setGasOption(gasOption);
     }
   }, [modesAndPrices]);

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {GasMode} from '@unilogin/commons';
+import moment from 'moment';
 
 export interface TransactionSpeedSelectionProps {
   selectedValue: string;
@@ -14,13 +15,13 @@ export interface TransactionSpeedProps extends TransactionSpeedSelectionProps {
 export const TransactionSpeed = ({gasModes, selectedValue, onChange}: TransactionSpeedProps) => {
   return (
     <Row>
-      {gasModes.map(({name, usdAmount}) => (
+      {gasModes.map(({name, usdAmount, timeEstimation}) => (
         <RadioButton
           key={name}
           value={name}
           selectedValue={selectedValue}
           onChange={onChange}
-          time="1 day"
+          time={moment.duration(Number(timeEstimation), 'seconds').humanize()}
         />
       ))}
     </Row>
