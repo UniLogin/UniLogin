@@ -128,10 +128,9 @@ export class WalletService {
   async recover(name: string, passphrase: string) {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const wallet = await this.walletFromPassphrase(name, passphrase);
-    const deployedWallet = new DeployedWallet(contractAddress, name, '', this.sdk);
+    const deployedWallet = new DeployedWallet(contractAddress, name, wallet.privateKey, this.sdk);
     ensure(await deployedWallet.keyExist(wallet.address), InvalidPassphrase);
-    const applicationWallet: ApplicationWallet = {contractAddress, name, privateKey: wallet.privateKey};
-    this.setWallet(applicationWallet);
+    this.setWallet(deployedWallet.asApplicationWallet);
   }
 
   async initializeConnection(name: string): Promise<number[]> {
