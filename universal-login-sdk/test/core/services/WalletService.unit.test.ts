@@ -29,7 +29,6 @@ describe('UNIT: WalletService', () => {
 
     sdk = {
       getWalletContractAddress: sinon.stub().withArgs(name).returns(TEST_CONTRACT_ADDRESS),
-      keyExist,
       provider: Wallet.createRandom(),
       walletContractService: {keyExist},
       relayerApi: {
