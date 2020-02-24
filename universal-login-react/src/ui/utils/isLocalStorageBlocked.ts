@@ -3,7 +3,7 @@ export function isLocalStorageBlocked() {
     if (!('localStorage' in window)) {
       return true;
     }
-    if(window.localStorage === undefined) {
+    if (window.localStorage === undefined) {
       return true;
     }
     localStorage.setItem('localStorageTest', 'foo');

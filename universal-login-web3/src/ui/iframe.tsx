@@ -24,4 +24,3 @@ async function main() {
 }
 
 main();
-
