@@ -4,12 +4,12 @@ import {fetch} from '../http/fetch';
 
 export type GasPriceOption = 'fast' | 'cheap';
 
-export type GasPriceOptionEstimate = {
+export type GasPriceEstimation = {
   gasPrice: utils.BigNumber;
   timeEstimation: string;
 };
 
-export type GasPriceSuggestion = Record<GasPriceOption, GasPriceOptionEstimate>;
+export type GasPriceSuggestion = Record<GasPriceOption, GasPriceEstimation>;
 
 export class GasPriceOracle {
   private async estimateGasPrices() {
