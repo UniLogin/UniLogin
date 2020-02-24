@@ -25,7 +25,7 @@ export class WalletContractService {
     }
   }
 
-  private async getWalletVersion(walletAddress: string) {
+  async getWalletVersion(walletAddress: string) {
     if (this.walletVersions[walletAddress] !== undefined) {
       return this.walletVersions[walletAddress];
     } else {

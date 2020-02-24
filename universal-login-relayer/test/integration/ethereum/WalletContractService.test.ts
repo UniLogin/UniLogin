@@ -38,6 +38,16 @@ describe('INT: WalletContractService', () => {
     signedMessage = messageToSignedMessage(message, wallet.privateKey, 'istanbul', 'beta2');
   });
 
+  describe('cache', () => {
+    it('empty address', async() => {
+      expect(await walletContractService.getWalletVersion(''));
+    });
+
+    it('', async() => {
+
+    });
+  });
+
   describe('beta2', () => {
     it('returns false if key doesn`t exists', async () => {
       expect(await walletContractService.keyExist(proxyContract.address, TEST_ACCOUNT_ADDRESS)).to.be.false;
