@@ -31,7 +31,7 @@ describe('E2E: SdkSigner', () => {
     const signer = new SdkSigner(deployedWallet);
 
     const contract = mockToken.connect(signer);
-    const balance = await contract.balanceOf(signer.contractAddress);
+    const balance = await contract.balanceOf(contractAddress);
 
     expect(balance).to.deep.eq(utils.parseEther('1'));
   });
@@ -42,7 +42,7 @@ describe('E2E: SdkSigner', () => {
     const signer = new SdkSigner(deployedWallet);
     const contract = mockToken.connect(signer);
     await contract.transfer(otherWallet.address, utils.parseEther('0.5'), {gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
-    const balance = await contract.balanceOf(signer.contractAddress);
+    const balance = await contract.balanceOf(contractAddress);
 
     expect(balance).to.eq(utils.parseEther('0.5'));
   });

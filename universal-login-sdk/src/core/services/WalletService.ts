@@ -128,7 +128,7 @@ export class WalletService {
   async recover(name: string, passphrase: string) {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const wallet = await this.walletFromPassphrase(name, passphrase);
-    const deployedWallet = new DeployedWallet(contractAddress, name, '', this.sdk);
+    const deployedWallet = this.getDeployedWallet();
     ensure(await deployedWallet.keyExist(wallet.address), InvalidPassphrase);
     const applicationWallet: ApplicationWallet = {contractAddress, name, privateKey: wallet.privateKey};
     this.setWallet(applicationWallet);
@@ -152,7 +152,7 @@ export class WalletService {
       key: connectingWallet.publicKey,
     };
     const addKeyEvent = await this.sdk.walletContractService.getEventNameFor(connectingWallet.contractAddress, 'KeyAdded');
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const setWallet = this.setWallet.bind(this);
       const unsubscribe = this.sdk.subscribe(addKeyEvent, filter, () => {
         setWallet(connectingWallet);

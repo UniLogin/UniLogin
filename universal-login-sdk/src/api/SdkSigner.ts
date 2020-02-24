@@ -6,13 +6,11 @@ import {DeployedWallet} from './wallet/DeployedWallet';
 export class SdkSigner extends ethers.Signer {
   private wallet: Wallet;
   provider: providers.Provider;
-  contractAddress: string;
 
   constructor(
     private deployedWallet: DeployedWallet,
   ) {
     super();
-    this.contractAddress = deployedWallet.contractAddress;
     this.provider = deployedWallet.sdk.provider;
     this.wallet = new Wallet(this.deployedWallet.privateKey, this.provider);
   }
@@ -27,7 +25,7 @@ export class SdkSigner extends ethers.Signer {
 
   async sendTransaction(transaction: providers.TransactionRequest) {
     const message: any = {
-      from: this.contractAddress,
+      from: this.deployedWallet.contractAddress,
     };
     if (transaction.to !== undefined) {
       message.to = await transaction.to;
