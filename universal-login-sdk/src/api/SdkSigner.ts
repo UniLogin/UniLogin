@@ -1,23 +1,21 @@
-import UniversalLoginSDK from './sdk';
 import {ethers, Wallet, utils, providers} from 'ethers';
 import {ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
 import {TransactionHashNotFound} from '../core/utils/errors';
+import {DeployedWallet} from './wallet/DeployedWallet';
 
 export class SdkSigner extends ethers.Signer {
   private wallet: Wallet;
   provider: providers.Provider;
 
   constructor(
-    private sdk: UniversalLoginSDK,
-    public contractAddress: string,
-    privateKey: string,
+    private deployedWallet: DeployedWallet,
   ) {
     super();
-    this.provider = sdk.provider;
-    this.wallet = new Wallet(privateKey, this.provider);
+    this.provider = deployedWallet.sdk.provider;
+    this.wallet = new Wallet(this.deployedWallet.privateKey, this.provider);
   }
 
-  async getAddress(): Promise<string> {
+  async getAddress() {
     return this.wallet.address;
   }
 
@@ -27,7 +25,7 @@ export class SdkSigner extends ethers.Signer {
 
   async sendTransaction(transaction: providers.TransactionRequest) {
     const message: any = {
-      from: this.contractAddress,
+      from: this.deployedWallet.contractAddress,
     };
     if (transaction.to !== undefined) {
       message.to = await transaction.to;
@@ -44,7 +42,7 @@ export class SdkSigner extends ethers.Signer {
     if (transaction.value !== undefined) {
       message.value = await transaction.value;
     }
-    const execution = await this.sdk.execute({gasLimit: DEFAULT_GAS_LIMIT, ...message}, this.wallet.privateKey);
+    const execution = await this.deployedWallet.execute({gasLimit: DEFAULT_GAS_LIMIT, ...message});
     const {transactionHash} = await execution.waitToBeSuccess();
     ensureNotFalsy(transactionHash, TransactionHashNotFound);
     return this.provider.getTransaction(transactionHash!);

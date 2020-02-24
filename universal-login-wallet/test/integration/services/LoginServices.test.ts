@@ -12,6 +12,7 @@ import {waitExpect} from '@unilogin/commons/testutils';
 import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
 import {setupSdk, createAndSetWallet} from '@unilogin/sdk/testutils';
 import Relayer from '@unilogin/relayer';
+import {DeployedWallet} from '@unilogin/sdk';
 
 describe('Login', () => {
   let walletService: WalletService;
@@ -63,11 +64,8 @@ describe('Login', () => {
       const newPublicKey = utils.computeAddress((walletServiceForConnect.state as any).wallet.privateKey);
       const expectedSecurityCode = await generateCode(newPublicKey);
       expect(unsubscribe).to.not.be.null;
-      const {waitToBeSuccess} = await sdk.addKey(
-        contractAddress,
-        newPublicKey,
-        privateKey,
-        {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
+      const deployedWallet = new DeployedWallet(contractAddress, '', privateKey, sdk);
+      const {waitToBeSuccess} = await deployedWallet.addKey(newPublicKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
       await waitToBeSuccess();
       await waitExpect(() => expect(!!callback.firstCall).to.be.true);
       expect(securityCode).to.deep.eq(expectedSecurityCode);
