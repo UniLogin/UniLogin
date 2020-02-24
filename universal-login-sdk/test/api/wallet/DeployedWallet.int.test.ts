@@ -3,12 +3,12 @@ import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import {createFixtureLoader, solidity} from 'ethereum-waffle';
 import {Contract, utils, providers, Wallet} from 'ethers';
+import {mockContracts} from '@unilogin/contracts/testutils';
 import basicSDK, {transferMessage} from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import UniversalLoginSDK, {DeployedWallet} from '../../../src';
 import {waitForSuccess} from '../../helpers/waitForSuccess';
-import {mockContracts} from '@unilogin/contracts/dist/esm/test';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -35,9 +35,8 @@ describe('INT: DeployedWallet', () => {
   const publicKey2 = createKeyPair().publicKey;
 
   beforeEach(async () => {
-    // wallet, provider, otherWallet, walletContract,
-    const {contractAddress, sdk, privateKey, ...rest} = await loadFixture(basicSDK) as any;
-    ({relayer, mockToken, ensName} = rest);
+    const {...rest} = await loadFixture(basicSDK) as any;
+    ({wallet, sdk, provider, otherWallet, relayer, walletContract, contractAddress, privateKey, mockToken, ensName} = rest);
     deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
     message = {...transferMessage, from: contractAddress, gasToken: ETHER_NATIVE_TOKEN.address, data: '0x'};
   });
@@ -110,7 +109,7 @@ describe('INT: DeployedWallet', () => {
     await waitForTransactionHash();
   });
 
-  describe('Execute signed message', async () =>{
+  describe('Execute signed message', async () => {
     it('Should execute signed message', async () => {
       const expectedBalance = (await provider.getBalance(message.to!)).add(utils.parseEther('0.5'));
       const {waitToBeSuccess} = await deployedWallet.execute(message);
