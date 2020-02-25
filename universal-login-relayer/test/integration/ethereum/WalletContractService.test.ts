@@ -44,7 +44,7 @@ describe('INT: WalletContractService', () => {
     fetchWalletVersionSpy = sinon.spy((walletContractService as any).blockchainService, 'fetchWalletVersion');
   });
 
-  describe.only('version cache', () => {
+  describe('version cache', () => {
     it('undefined address', async () => {
       await expect(walletContractService.getWalletVersion(undefined as any)).to.be.rejectedWith('Invalid address provided');
     });
