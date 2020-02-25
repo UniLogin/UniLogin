@@ -23,4 +23,12 @@ describe('UNIT: parseQuery', () => {
       picker: 'false',
     });
   });
+
+  it('correctly parses empty arguments', () => {
+    const search = '?foo=&bar=false';
+    expect(parseQuery(search)).deep.eq({
+      foo: '',
+      bar: 'false',
+    });
+  });
 });

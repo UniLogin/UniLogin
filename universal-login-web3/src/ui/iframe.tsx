@@ -4,6 +4,7 @@ import {asApplicationInfo} from '@unilogin/commons';
 import {parseQuery} from './utils/parseQuery';
 import {cast} from '@restless/sanitizers';
 import {isLocalStorageBlocked, isPrivateMode} from '@unilogin/react';
+import {asNetwork} from '../config';
 
 const parsedQuery = parseQuery(window.location.search);
 const applicationInfo = cast(JSON.parse(parsedQuery.applicationInfo), asApplicationInfo);
@@ -18,7 +19,7 @@ async function main() {
 
   const iframeInitializer = parsedQuery.picker === 'true'
     ? new PickerIframeInitializer(applicationInfo)
-    : new ProviderOnlyIframeInitializer();
+    : new ProviderOnlyIframeInitializer(cast(parsedQuery.network, asNetwork));
 
   await iframeInitializer.start();
 }
