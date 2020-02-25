@@ -4,13 +4,14 @@ import UniversalLoginSDK, {WalletService, setBetaNotice, SdkConfig} from '@unilo
 import {UIController} from './services/UIController';
 import {constants, providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
-import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain} from '@unilogin/commons';
+import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage} from '@unilogin/commons';
 import {waitForTrue} from './ui/utils/utils';
 import {getOrCreateUlButton, initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
 import {StorageService} from '@unilogin/react';
 import {flatMap, map, Property, State} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
+import {asBoolean, asString, cast} from '@restless/sanitizers';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
@@ -92,48 +93,58 @@ export class ULWeb3Provider implements Provider {
       await this.initOnboarding();
     }
 
-    switch (payload.method) {
-      case 'eth_sendTransaction':
-      case 'eth_accounts':
-      case 'eth_sign':
-      case 'personal_sign':
-      case 'ul_set_dashboard_visibility':
-      case 'eth_requestAccounts':
-        try {
-          const result = await this.handle(payload.method, payload.params);
-          callback(null, {
-            id: payload.id,
-            jsonrpc: '2.0',
-            result,
-          });
-        } catch (err) {
-          this.uiController.showError(err.message);
-          callback(err);
-        }
-        break;
-      default:
-        return this.provider.send(payload, callback);
+    try {
+      const result = await this.handle(payload);
+      callback(null, {
+        id: payload.id,
+        jsonrpc: '2.0',
+        result,
+      });
+    } catch (err) {
+      this.uiController.showError(err.message);
+      callback(err);
     }
   }
 
-  async handle(method: string, params: any[]): Promise<any> {
+  private async handle(payload: JsonRPCRequest): Promise<any> {
+    const method: string = payload.method;
+    const params: unknown[] = payload.params;
     switch (method) {
       case 'eth_sendTransaction':
-        const tx = params[0];
+        const tx = cast(params[0], asPartialMessage);
         return this.sendTransaction(tx);
       case 'eth_accounts':
       case 'eth_requestAccounts':
         return this.getAccounts();
-      case 'eth_sign':
-        return this.sign(params[0], params[1]);
-      case 'personal_sign':
-        return this.sign(params[1], params[0]);
+      case 'eth_sign': {
+        const address = cast(params[0], asString);
+        const message = cast(params[1], asString);
+        return this.sign(address, message);
+      }
+      case 'personal_sign': {
+        const address = cast(params[1], asString);
+        const message = cast(params[0], asString);
+        return this.sign(address, message);
+      }
       case 'ul_set_dashboard_visibility':
-        this.uiController.setDashboardVisibility(!!params[0]);
+        const isVisible = cast(params[0], asBoolean);
+        this.uiController.setDashboardVisibility(isVisible);
         break;
       default:
-        throw new Error(`Method not supported: ${method}`);
+        return this.sendUpstream(payload);
     }
+  }
+
+  private sendUpstream(payload: JsonRPCRequest): Promise<unknown> {
+    return new Promise((resolve, reject) => {
+      this.provider.send(payload, ((err: Error | null, result: JsonRPCResponse) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result.result);
+        }
+      }) as any);
+    });
   }
 
   getAccounts() {
