@@ -108,12 +108,20 @@ export class ULIFrameProvider {
     });
   }
 
-  static createPicker(upstream: Provider, config = DEFAULT_CONFIG) {
-    return new ULIFrameProvider({
-      enablePicker: true,
-      upstream,
-      ...config,
-    });
+  static createPicker(upstream: Provider | Network, config = DEFAULT_CONFIG) {
+    if(typeof upstream === 'string') {
+      return new ULIFrameProvider({
+        enablePicker: true,
+        network: upstream,
+        ...config,
+      });
+    } else {
+      return new ULIFrameProvider({
+        enablePicker: true,
+        upstream,
+        ...config,
+      });
+    }
   }
 
   async send(msg: any, cb: (error: any, response: any) => void) {

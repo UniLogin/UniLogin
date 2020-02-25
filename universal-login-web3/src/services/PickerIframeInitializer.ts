@@ -5,14 +5,19 @@ import {ULWeb3Provider} from '../ULWeb3Provider';
 import {IframeInitializerBase} from './IframeInitializerBase';
 import {Provider} from 'web3/providers';
 import {ApplicationInfo} from '@unilogin/commons';
+import {getConfigForNetwork, Network} from '../config';
 
 export class PickerIframeInitializer extends IframeInitializerBase {
   private readonly provider: Web3PickerProvider;
 
-  constructor(applicationInfo: ApplicationInfo) {
+  constructor(applicationInfo: ApplicationInfo, network?: Network) {
     super();
     const web3ProviderFactories = setupStrategies(this.bridge, ['UniLogin', 'Metamask'], {applicationInfo});
-    this.provider = new Web3PickerProvider(web3ProviderFactories, this.bridge);
+    this.provider = new Web3PickerProvider(web3ProviderFactories, this.getUpstream(network));
+  }
+
+  private getUpstream(network: Network | undefined) {
+    return network ? getConfigForNetwork(network).provider : this.bridge;
   }
 
   protected getProvider(): Provider {
