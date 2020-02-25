@@ -87,6 +87,37 @@ Creating an SDK
 
 .. _sdk_create_contract:
 
+**getWalletContractAddress(ensName)**
+
+  gets a wallet contract address by an ENS name
+
+  Parameters:
+    - **ensName** : string - an ENS name
+
+  Returns:
+    `promise` that resolves to ``address`` if the ENS name is registered or ``null`` if the ENS name is available
+
+  Example:
+    ::
+
+      const contractAddress = await sdk.getWalletContractAddress('justyna.my-super-domain.test');
+
+**walletContractExist(ensName)**
+
+  checks if an ENS name is registered.
+
+  Parameters:
+    - **ensName** : string - an ENS name
+
+  Returns:
+    `promise` that resolves to ``true`` if the ENS name is registered or ``false`` if the ENS name is available
+
+  Example:
+    ::
+
+      const walletContractExist = await sdk.walletContractExist('justyna.my-super-domain.test');
+
+
 Creating a wallet contract
 --------------------------
 
