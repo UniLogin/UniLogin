@@ -21,7 +21,7 @@ describe('INT: WalletContractService', () => {
   let master: Contract;
   let wallet: Wallet;
   let signedMessage: SignedMessage;
-  let fetchWalletVersionSpy: sinon.SinonSpyStatic;
+  let fetchWalletVersionSpy: sinon.SinonSpy;
 
   before(async () => {
     const provider = createMockProvider();
@@ -41,7 +41,7 @@ describe('INT: WalletContractService', () => {
       refundReceiver: TEST_ACCOUNT_ADDRESS,
     };
     signedMessage = messageToSignedMessage(message, wallet.privateKey, 'istanbul', 'beta2');
-    fetchWalletVersionSpy = sinon.spy((walletContractService as any).blockchainService, 'fetchWalletVersion')
+    fetchWalletVersionSpy = sinon.spy((walletContractService as any).blockchainService, 'fetchWalletVersion');
   });
 
   describe.only('version cache', () => {
@@ -54,26 +54,24 @@ describe('INT: WalletContractService', () => {
     });
 
     it('clear cache', async() => {
+      await walletContractService.getWalletVersion(proxyContract.address);
       await walletContractService.clearCatch();
       expect((walletContractService as any).walletVersions).to.deep.eq({});
     });
 
     it('address with empty cache', async() => {
-      walletContractService.clearCatch();
       const version = await walletContractService.getWalletVersion(proxyContract.address);
       expect(version).to.eq('beta2');
       expect(fetchWalletVersionSpy).to.be.calledOnce;
     });
 
     it('adding cache after calling address with empty cache', async() => {
-      walletContractService.clearCatch();
       await walletContractService.getWalletVersion(proxyContract.address);
       expect((walletContractService as any).walletVersions).to.deep.eq({[proxyContract.address]: 'beta2'});
       expect(fetchWalletVersionSpy).to.be.calledOnce;
     });
 
     it('address with cache', async() => {
-      walletContractService.clearCatch();
       await walletContractService.getWalletVersion(proxyContract.address);
       expect((walletContractService as any).walletVersions).to.deep.eq({[proxyContract.address]: 'beta2'});
       await walletContractService.getWalletVersion(proxyContract.address);
@@ -241,5 +239,10 @@ describe('INT: WalletContractService', () => {
     it('isValidMessageHash returns true if provided messageHash is not 0x0000000000000000000000000000000000', async () => {
       expect(await walletContractService.isValidMessageHash(proxyContract.address, '0x1234', {} as any)).to.be.true;
     });
+  });
+
+  afterEach(() => {
+    fetchWalletVersionSpy.resetHistory();
+    walletContractService.clearCatch();
   });
 });
