@@ -5,13 +5,13 @@ import {GasPriceSuggestion} from '../../core/models/GasPriceSuggestion';
 import {asObject, asNumber, cast} from '@restless/sanitizers';
 
 export class GasPriceOracle {
-  private async estimateGasPrices() {
+  private async fetchGasPrices() {
     const response = await fetch('https://ethgasstation.info/json/ethgasAPI.json', {method: 'GET'});
     return cast(await handleApiResponse(response), asApiResponse);
   }
 
   async getGasPrices(): Promise<GasPriceSuggestion> {
-    const {average, avgWait, fast, fastWait} = await this.estimateGasPrices();
+    const {average, avgWait, fast, fastWait} = await this.fetchGasPrices();
     return {
       cheap: {
         gasPrice: convert10xGweiToWei(average),

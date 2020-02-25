@@ -9,7 +9,7 @@ describe('UNIT: GasPriceOracle', () => {
 
   beforeEach(() => {
     gasPriceOracle = new GasPriceOracle();
-    sinon.replace(gasPriceOracle as any, 'estimateGasPrices', estimateGasPrices);
+    sinon.replace(gasPriceOracle as any, 'fetchGasPrices', estimateGasPrices);
   });
 
   afterEach(() => {
