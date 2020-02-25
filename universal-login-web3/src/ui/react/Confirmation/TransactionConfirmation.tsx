@@ -25,7 +25,7 @@ export interface ConfirmationTransactionProps {
   onConfirmationResponse: (response: ConfirmationResponse) => void;
   walletService: WalletService;
   transaction: Partial<Message>;
-  onError?: (errorMessage?: string) => void;
+  onError?: (errorMessage: string) => void;
 }
 
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction, onError}: ConfirmationTransactionProps) => {
