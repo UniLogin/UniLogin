@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {utils} from 'ethers';
-import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, ensureNotFalsy} from '@unilogin/commons';
+import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, ensureNotFalsy, ensureNotNullish} from '@unilogin/commons';
 import {ModalWrapper, useAsync, Spinner} from '@unilogin/react';
 import {WalletService} from '@unilogin/sdk';
 import {Title} from '../common/Text/Title';
@@ -28,7 +28,7 @@ export interface ConfirmationTransactionProps {
 }
 
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction}: ConfirmationTransactionProps) => {
-  ensureNotFalsy(transaction.value, Error, 'Missing parameter of Transaction: value');
+  ensureNotNullish(transaction.value, Error, 'Missing parameter of Transaction: value');
   ensureNotFalsy(transaction.gasLimit, Error, 'Missing parameter of Transaction: gasLimit');
   const [modesAndPrices] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
   const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount'>>({name: '', usdAmount: '0'});
