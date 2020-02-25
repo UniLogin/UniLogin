@@ -1,25 +1,63 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {GasPriceOracle} from '../../../src/integration/ethereum/gasPriceOracle';
-import {utils} from 'ethers';
+import {utils, ethers} from 'ethers';
 
 describe('UNIT: GasPriceOracle', () => {
-  const testGasPrices = [
-    {basicGasPrice: utils.bigNumberify('20000000000'), fastExpected: utils.bigNumberify('24000000000')},
-    {basicGasPrice: utils.bigNumberify('0'), fastExpected: utils.bigNumberify('0')},
-    {basicGasPrice: utils.bigNumberify('12000000001'), fastExpected: utils.bigNumberify('0x035a4e9001')},
-  ];
-  for (const {basicGasPrice, fastExpected} of testGasPrices) {
-    const getGasPrice = sinon.stub().resolves(basicGasPrice);
-    const provider = {getGasPrice};
+  const estimateGasPrices = sinon.stub();
+  let gasPriceOracle: GasPriceOracle;
 
-    const gasPriceOracle = new GasPriceOracle(provider as any);
+  beforeEach(() => {
+    gasPriceOracle = new GasPriceOracle();
+    sinon.replace(gasPriceOracle as any, 'fetchGasPrices', estimateGasPrices);
+  });
 
-    it(`have properly result for returned basic gas price: ${basicGasPrice}`, async () => {
-      expect(await gasPriceOracle.getGasPrices()).to.deep.eq({
-        cheap: basicGasPrice,
-        fast: fastExpected,
-      });
+  afterEach(() => {
+    estimateGasPrices.reset();
+  });
+
+  it('have properly result for returned average: 0,  fast: 0', async () => {
+    const gasPriceEstimate = {average: 0, fast: 0, avgWait: 0, fastWait: 0};
+    estimateGasPrices.resolves(gasPriceEstimate);
+    expect(await gasPriceOracle.getGasPrices()).to.deep.eq({
+      cheap: {
+        gasPrice: ethers.constants.Zero,
+        timeEstimation: 0,
+      },
+      fast: {
+        gasPrice: ethers.constants.Zero,
+        timeEstimation: 0,
+      },
     });
-  }
+  });
+
+  it('have properly result for returned average: 1.2,  fast: 2.4', async () => {
+    const gasPriceEstimate = {average: 1.2, fast: 2.4, avgWait: 2.2, fastWait: 0.2};
+    estimateGasPrices.resolves(gasPriceEstimate);
+    expect(await gasPriceOracle.getGasPrices()).to.deep.eq({
+      cheap: {
+        gasPrice: utils.parseUnits('0.12', 'gwei'),
+        timeEstimation: 132,
+      },
+      fast: {
+        gasPrice: utils.parseUnits('0.24', 'gwei'),
+        timeEstimation: 12,
+      },
+    });
+  });
+
+  it('have properly result for returned average: 20,  fast: 24', async () => {
+    const gasPriceEstimate = {average: 20, fast: 24, avgWait: 1.9, fastWait: 0.5};
+    estimateGasPrices.resolves(gasPriceEstimate);
+    expect(await gasPriceOracle.getGasPrices()).to.deep.eq({
+      cheap: {
+        gasPrice: utils.parseUnits('2', 'gwei'),
+        timeEstimation: 114,
+      },
+      fast: {
+        gasPrice: utils.parseUnits('2.4', 'gwei'),
+        timeEstimation: 30,
+      },
+    });
+  });
 });
