@@ -9,26 +9,22 @@ export class GasPriceOracle {
     return handleApiResponse(response);
   }
 
-  private convertMinutesToSec(minutes: number): string {
-    return (minutes * 60).toString();
-  }
-
-  private convert10xGweiToWei(gwei10x: number): utils.BigNumber {
-    return utils.parseUnits((gwei10x / 10).toString(), 'gwei');
-  }
-
   async getGasPrices(): Promise<GasPriceSuggestion> {
     const gasPriceEstimations = await this.estimateGasPrices();
     const {average, avgWait, fast, fastWait} = gasPriceEstimations;
     return {
       cheap: {
-        gasPrice: this.convert10xGweiToWei(average),
-        timeEstimation: this.convertMinutesToSec(avgWait),
+        gasPrice: convert10xGweiToWei(average),
+        timeEstimation: convertMinutesToSec(avgWait),
       },
       fast: {
-        gasPrice: this.convert10xGweiToWei(fast),
-        timeEstimation: this.convertMinutesToSec(fastWait),
+        gasPrice: convert10xGweiToWei(fast),
+        timeEstimation: convertMinutesToSec(fastWait),
       },
     };
   }
 }
+
+const convertMinutesToSec = (minutes: number): string => (minutes * 60).toString();
+
+const convert10xGweiToWei = (gwei10x: number): utils.BigNumber => utils.parseUnits((gwei10x / 10).toString(), 'gwei');
