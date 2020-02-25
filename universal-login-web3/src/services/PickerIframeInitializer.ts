@@ -1,5 +1,5 @@
 import {Web3PickerProvider} from '../Web3PickerProvider';
-import {setupStrategies} from '../api/setupStrategies';
+import {setupStrategies} from './setupStrategies';
 import {combine, flatMap, Property, State} from 'reactive-properties';
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {IframeInitializerBase} from './IframeInitializerBase';

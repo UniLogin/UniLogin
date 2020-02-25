@@ -1,5 +1,4 @@
 import {Web3ProviderFactory} from '../models/Web3ProviderFactory';
-import {Strategy} from './UniLogin';
 import {getConfigForNetwork, Network} from '../config';
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {ApplicationInfo} from '@unilogin/commons';
@@ -29,6 +28,8 @@ export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverr
     return ulProvider;
   },
 });
+
+export type Strategy = 'UniLogin' | 'Metamask' | Web3ProviderFactory;
 
 export const setupStrategies = (provider: Provider, strategies: Strategy[], overrides?: SetupUniLoginOverrides) => {
   return strategies.map(strategy => {

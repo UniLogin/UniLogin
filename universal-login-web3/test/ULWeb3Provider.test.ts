@@ -9,7 +9,7 @@ import {RelayerUnderTest} from '@unilogin/relayer';
 import {createWallet} from '@unilogin/sdk/testutils';
 import {ULWeb3RootProps} from '../src/ui/react/ULWeb3Root';
 import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWeb3';
-import {ULWeb3Provider} from '../src';
+import {ULWeb3Provider} from '../src/ULWeb3Provider';
 
 chai.use(chaiAsPromised);
 
