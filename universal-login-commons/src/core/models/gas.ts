@@ -10,7 +10,7 @@ export interface GasOption {
 export interface GasMode {
   name: string;
   usdAmount: utils.BigNumberish;
-  timeEstimation: string;
+  timeEstimation: number;
   gasOptions: GasOption[];
 }
 

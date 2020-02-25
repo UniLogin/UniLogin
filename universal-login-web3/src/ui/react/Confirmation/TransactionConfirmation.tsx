@@ -31,7 +31,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
   ensureNotNullish(transaction.value, Error, 'Missing parameter of Transaction: value');
   ensureNotFalsy(transaction.gasLimit, Error, 'Missing parameter of Transaction: gasLimit');
   const [modesAndPrices] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
-  const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount' | 'timeEstimation'>>({name: '', usdAmount: '0', timeEstimation: ''});
+  const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount' | 'timeEstimation'>>({name: '', usdAmount: '0', timeEstimation: 0});
 
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 

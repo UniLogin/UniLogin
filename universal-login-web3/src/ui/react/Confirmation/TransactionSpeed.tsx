@@ -15,13 +15,13 @@ export interface TransactionSpeedProps extends TransactionSpeedSelectionProps {
 export const TransactionSpeed = ({gasModes, selectedValue, onChange}: TransactionSpeedProps) => {
   return (
     <Row>
-      {gasModes.map(({name, usdAmount, timeEstimation}) => (
+      {gasModes.map(({name, timeEstimation}) => (
         <RadioButton
           key={name}
           value={name}
           selectedValue={selectedValue}
           onChange={onChange}
-          time={moment.duration(Number(timeEstimation), 'seconds').humanize()}
+          time={moment.duration(timeEstimation, 'seconds').humanize()}
         />
       ))}
     </Row>

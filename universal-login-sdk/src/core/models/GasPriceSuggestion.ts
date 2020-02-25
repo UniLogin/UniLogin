@@ -4,7 +4,7 @@ export type GasPriceOption = 'fast' | 'cheap';
 
 export type GasPriceEstimation = {
   gasPrice: utils.BigNumber;
-  timeEstimation: string;
+  timeEstimation: number;
 };
 
 export type GasPriceSuggestion = Record<GasPriceOption, GasPriceEstimation>;

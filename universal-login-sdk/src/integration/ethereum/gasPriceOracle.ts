@@ -25,6 +25,6 @@ export class GasPriceOracle {
   }
 }
 
-const convertMinutesToSec = (minutes: number): string => (minutes * 60).toString();
+const convertMinutesToSec = (minutes: number): number => minutes * 60;
 
 const convert10xGweiToWei = (gwei10x: number): utils.BigNumber => utils.parseUnits((gwei10x / 10).toString(), 'gwei');

@@ -22,11 +22,11 @@ describe('UNIT: GasPriceOracle', () => {
     expect(await gasPriceOracle.getGasPrices()).to.deep.eq({
       cheap: {
         gasPrice: ethers.constants.Zero,
-        timeEstimation: '0',
+        timeEstimation: 0,
       },
       fast: {
         gasPrice: ethers.constants.Zero,
-        timeEstimation: '0',
+        timeEstimation: 0,
       },
     });
   });
@@ -37,11 +37,11 @@ describe('UNIT: GasPriceOracle', () => {
     expect(await gasPriceOracle.getGasPrices()).to.deep.eq({
       cheap: {
         gasPrice: utils.parseUnits('0.12', 'gwei'),
-        timeEstimation: '132',
+        timeEstimation: 132,
       },
       fast: {
         gasPrice: utils.parseUnits('0.24', 'gwei'),
-        timeEstimation: '12',
+        timeEstimation: 12,
       },
     });
   });
@@ -52,11 +52,11 @@ describe('UNIT: GasPriceOracle', () => {
     expect(await gasPriceOracle.getGasPrices()).to.deep.eq({
       cheap: {
         gasPrice: utils.parseUnits('2', 'gwei'),
-        timeEstimation: '114',
+        timeEstimation: 114,
       },
       fast: {
         gasPrice: utils.parseUnits('2.4', 'gwei'),
-        timeEstimation: '30',
+        timeEstimation: 30,
       },
     });
   });
