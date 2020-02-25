@@ -1,7 +1,7 @@
 import {BlockchainService} from '@unilogin/contracts';
 import {WalletEventCallback, WalletEventFilter, WalletEventType} from '../models/events';
 import {WalletEventsObserver} from './WalletEventsObserver';
-import {ensureNotNull, Nullable} from '@unilogin/commons';
+import {ensureNotNullish, Nullable} from '@unilogin/commons';
 import {InvalidObserverState, MissingParameter} from '../utils/errors';
 import {Callback} from 'reactive-properties/dist/Property';
 import {BlockNumberState} from '../states/BlockNumberState';
@@ -34,7 +34,7 @@ class WalletEventsObserverFactory {
   }
 
   async fetchEvents() {
-    ensureNotNull(this.currentBlock.get(), InvalidObserverState);
+    ensureNotNullish(this.currentBlock.get(), InvalidObserverState);
     if (Object.keys(this.observers).length === 0) {
       return;
     }
@@ -44,8 +44,8 @@ class WalletEventsObserverFactory {
   async fetchEventsOfTypes(types: WalletEventType[]) {
     const currentBlockNumber = this.currentBlock.get();
     const storageBlockNumber = this.blockNumberStorage.get();
-    ensureNotNull(currentBlockNumber, InvalidObserverState);
-    ensureNotNull(storageBlockNumber, MissingParameter, 'storageBlockNumber');
+    ensureNotNullish(currentBlockNumber, InvalidObserverState);
+    ensureNotNullish(storageBlockNumber, MissingParameter, 'storageBlockNumber');
     if (currentBlockNumber === storageBlockNumber) {
       return;
     }
@@ -64,7 +64,7 @@ class WalletEventsObserverFactory {
   }
 
   stop() {
-    ensureNotNull(this.unsubscribe, InvalidObserverState);
+    ensureNotNullish(this.unsubscribe, InvalidObserverState);
     this.unsubscribe();
     this.unsubscribe = null;
   }
