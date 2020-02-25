@@ -1,4 +1,6 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, signString, createKeyPair, CURRENT_NETWORK_VERSION, SignedMessage, calculateMessageHash} from '@unilogin/commons';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
 import {messageToSignedMessage, calculateGnosisStringHash, calculateMessageHash as calculateMessageHashGnosis, signStringMessage, GnosisSafeInterface, calculateMessageSignature} from '@unilogin/contracts';
@@ -11,12 +13,15 @@ import {getTestSignedMessage} from '../../testconfig/message';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 import {INVALID_MSG_HASH} from '../../../src/integration/ethereum/GnosisSafeService';
 
+chai.use(sinonChai);
+
 describe('INT: WalletContractService', () => {
   let walletContractService: WalletContractService;
   let proxyContract: Contract;
   let master: Contract;
   let wallet: Wallet;
   let signedMessage: SignedMessage;
+  let fetchWalletVersionSpy: sinon.SinonSpy;
 
   before(async () => {
     const provider = createMockProvider();
@@ -36,6 +41,37 @@ describe('INT: WalletContractService', () => {
       refundReceiver: TEST_ACCOUNT_ADDRESS,
     };
     signedMessage = messageToSignedMessage(message, wallet.privateKey, 'istanbul', 'beta2');
+    fetchWalletVersionSpy = sinon.spy((walletContractService as any).blockchainService, 'fetchWalletVersion');
+  });
+
+  describe('version cache', () => {
+    it('throws an error if address is undefined', async () => {
+      await expect(walletContractService.getWalletVersion(undefined as any)).to.be.rejectedWith('Invalid address provided');
+    });
+
+    it('throws an error if address is empty', async () => {
+      await expect(walletContractService.getWalletVersion('')).to.be.rejectedWith('Invalid address provided');
+    });
+
+    it('returns proper wallet version and saves it to the cache', async () => {
+      const version = await walletContractService.getWalletVersion(proxyContract.address);
+      expect(version).to.eq('beta2');
+      expect((walletContractService as any).walletVersions).to.deep.eq({[proxyContract.address]: 'beta2'});
+      expect(await walletContractService.getWalletVersion(proxyContract.address)).to.be.eq('beta2');
+      expect(fetchWalletVersionSpy).to.be.calledOnce;
+    });
+
+    it('restores wallet version from cache', async () => {
+      await walletContractService.getWalletVersion(proxyContract.address);
+      expect((walletContractService as any).walletVersions).to.deep.eq({[proxyContract.address]: 'beta2'});
+      await walletContractService.getWalletVersion(proxyContract.address);
+      expect(fetchWalletVersionSpy).to.be.calledOnce;
+    });
+
+    it('throws an error if a random address provided', async () => {
+      const address = Wallet.createRandom().address;
+      await expect(walletContractService.getWalletVersion(address)).to.be.rejectedWith('Unsupported proxy version');
+    });
   });
 
   describe('beta2', () => {
@@ -193,5 +229,10 @@ describe('INT: WalletContractService', () => {
     it('isValidMessageHash returns true if provided messageHash is not 0x0000000000000000000000000000000000', async () => {
       expect(await walletContractService.isValidMessageHash(proxyContract.address, '0x1234', {} as any)).to.be.true;
     });
+  });
+
+  afterEach(() => {
+    fetchWalletVersionSpy.resetHistory();
+    (walletContractService as any).walletVersions = {};
   });
 });
