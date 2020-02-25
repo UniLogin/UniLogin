@@ -24,6 +24,9 @@ export class Web3PickerProvider implements Provider {
       if (!isAccountDependantRpc(payload.method)) {
         return this.readProvider.send(payload, callback);
       }
+      if (payload.method === 'eth_accounts') {
+        callback(null, {jsonrpc: '2.0', id: payload.id, result: []});
+      }
       if (this.isVisible.get()) {
         return;
       }
