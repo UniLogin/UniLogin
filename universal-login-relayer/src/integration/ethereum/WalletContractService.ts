@@ -29,14 +29,14 @@ export class WalletContractService {
     if (this.walletVersions[walletAddress] !== undefined) {
       return this.walletVersions[walletAddress];
     } else {
-      ensure(walletAddress !== undefined && isProperAddress(walletAddress), Error, 'Invalid address provided')
+      ensure(walletAddress !== undefined && isProperAddress(walletAddress), Error, 'Invalid address provided');
       const walletVersion = await this.blockchainService.fetchWalletVersion(walletAddress);
       this.walletVersions[walletAddress] = walletVersion;
       return walletVersion;
     }
   }
 
-  async clearCatch(){
+  async clearCatch() {
     this.walletVersions = {};
   }
 
