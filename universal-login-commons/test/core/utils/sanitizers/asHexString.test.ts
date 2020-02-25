@@ -1,6 +1,6 @@
 import {cast} from '@restless/sanitizers';
 import {asHexString} from '../../../../src';
-import {expect} from "chai";
+import {expect} from 'chai';
 
 describe('asHexString', () => {
   it('Works for proper hash', () => {

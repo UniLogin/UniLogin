@@ -1,6 +1,6 @@
 import {cast} from '@restless/sanitizers';
 import {asApplicationInfo} from '../../../../src';
-import {expect} from "chai";
+import {expect} from 'chai';
 
 describe('asApplicationInfo', () => {
   it('works for proper applicationInfo', () => {

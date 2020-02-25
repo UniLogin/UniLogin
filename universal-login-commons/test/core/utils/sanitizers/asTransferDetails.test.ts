@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {cast} from '@restless/sanitizers';
 import {asTransferDetails} from '../../../../src';
-import {expect} from "chai";
+import {expect} from 'chai';
 
 it('asTransferDetails', () => {
   const expectedTransferDetails = {

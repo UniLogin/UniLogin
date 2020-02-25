@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {cast} from '@restless/sanitizers';
 import {asBigNumber} from '../../../../src/core/utils/sanitizers/asBigNumber';
-import {expect} from "chai";
+import {expect} from 'chai';
 
 describe('asBigNumber', () => {
   it('input to cast as BigNumber', () => {

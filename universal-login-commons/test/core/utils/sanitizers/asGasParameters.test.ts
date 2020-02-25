@@ -2,7 +2,7 @@ import {utils} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from '../../../../src';
 import {cast} from '@restless/sanitizers';
 import {asGasParameters} from '../../../../src/core/utils/sanitizers/asGasParameters';
-import {expect} from "chai";
+import {expect} from 'chai';
 
 it('asGasParameters', () => {
   const expectedGasParameters = {
