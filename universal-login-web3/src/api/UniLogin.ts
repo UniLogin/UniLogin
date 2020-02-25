@@ -1,15 +1,20 @@
-import Web3 from 'web3';
 import {Web3PickerProvider} from '../Web3PickerProvider';
 import {Web3ProviderFactory} from '../models/Web3ProviderFactory';
 import {setupStrategies} from './setupStrategies';
 import {getApplicationInfoFromDocument} from '../ui/utils/applicationInfo';
 import {ApplicationInfo} from '@unilogin/commons';
 import {ULWeb3Provider} from '../ULWeb3Provider';
+import {Provider} from 'web3/providers';
 
 export type Strategy = 'UniLogin' | 'Metamask' | Web3ProviderFactory;
 
+export interface Web3Like {
+  currentProvider: Provider;
+  setProvider(provider: Provider): void;
+}
+
 export class UniLogin {
-  static setupWeb3Picker(web3: Web3, strategies: Strategy[], givenApplicationInfo?: Partial<ApplicationInfo>) {
+  static setupWeb3Picker(web3: Web3Like, strategies: Strategy[], givenApplicationInfo?: Partial<ApplicationInfo>) {
     const provider = web3.currentProvider;
     const applicationInfo = {...getApplicationInfoFromDocument(), ...givenApplicationInfo};
     const web3ProviderFactories = setupStrategies(web3.currentProvider, strategies, {applicationInfo});
@@ -18,7 +23,7 @@ export class UniLogin {
     return web3PickerProvider;
   }
 
-  static showUniButton(web3: Web3, overrideStyles?: Record<string, string>) {
+  static showUniButton(web3: Web3Like, overrideStyles?: Record<string, string>) {
     const currentProvider = web3.currentProvider;
     if (!(currentProvider instanceof Web3PickerProvider)) {
       return;
@@ -28,7 +33,7 @@ export class UniLogin {
     }
   }
 
-  static isUniLogin(web3: Web3) {
+  static isUniLogin(web3: Web3Like) {
     const currentProvider = web3.currentProvider;
     if (!(currentProvider instanceof Web3PickerProvider)) {
       return false;
