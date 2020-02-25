@@ -87,6 +87,37 @@ Creating an SDK
 
 .. _sdk_create_contract:
 
+**getWalletContractAddress(ensName)**
+
+  gets a wallet contract address by an ENS name
+
+  Parameters:
+    - **ensName** : string - an ENS name
+
+  Returns:
+    `promise` that resolves to ``address`` if the ENS name is registered or ``null`` if the ENS name is available
+
+  Example:
+    ::
+
+      const contractAddress = await sdk.getWalletContractAddress('justyna.my-super-domain.test');
+
+**walletContractExist(ensName)**
+
+  checks if an ENS name is registered.
+
+  Parameters:
+    - **ensName** : string - an ENS name
+
+  Returns:
+    `promise` that resolves to ``true`` if the ENS name is registered or ``false`` if the ENS name is available
+
+  Example:
+    ::
+
+      const walletContractExist = await sdk.walletContractExist('justyna.my-super-domain.test');
+
+
 Creating a wallet contract
 --------------------------
 
@@ -163,52 +194,6 @@ denyRequest
     ::
 
       const publicKey = await sdk.denyRequest('0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA', '0xb19Ec9bdC6733Bf0c825FCB6E6Da95518DB80D13');
-
-
-SdkSigner
-^^^^^^^^^
-
-::
-
-  // gasToken should be configured when creating SDK instance in order to use the signer
-  const signer = new SdkSigner(deployedWallet);
-
-  const token = new Contract(contractAddress, contractInterface, signer)
-  await contract.transfer(someOtherAddress, utils.parseEther('123'))
-
-Note: This is an experimental feature, expect breaking changes.
-
-
-
-**getWalletContractAddress(ensName)**
-
-  gets a wallet contract address by an ENS name
-
-  Parameters:
-    - **ensName** : string - an ENS name
-
-  Returns:
-    `promise` that resolves to ``address`` if the ENS name is registered or ``null`` if the ENS name is available
-
-  Example:
-    ::
-
-      const contractAddress = await sdk.getWalletContractAddress('justyna.my-super-domain.test');
-
-**walletContractExist(ensName)**
-
-  checks if an ENS name is registered.
-
-  Parameters:
-    - **ensName** : string - an ENS name
-
-  Returns:
-    `promise` that resolves to ``true`` if the ENS name is registered or ``false`` if the ENS name is available
-
-  Example:
-    ::
-
-      const walletContractExist = await sdk.walletContractExist('justyna.my-super-domain.test');
 
 Creating a deployed wallet
 --------------------------
