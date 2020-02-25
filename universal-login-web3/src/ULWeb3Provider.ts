@@ -92,31 +92,21 @@ export class ULWeb3Provider implements Provider {
       await this.initOnboarding();
     }
 
-    switch (payload.method) {
-      case 'eth_sendTransaction':
-      case 'eth_accounts':
-      case 'eth_sign':
-      case 'personal_sign':
-      case 'ul_set_dashboard_visibility':
-      case 'eth_requestAccounts':
-        try {
-          const result = await this.handle(payload.method, payload.params);
-          callback(null, {
-            id: payload.id,
-            jsonrpc: '2.0',
-            result,
-          });
-        } catch (err) {
-          this.uiController.showError(err.message);
-          callback(err);
-        }
-        break;
-      default:
-        return this.provider.send(payload, callback);
+    try {
+      const result = await this.handle(payload);
+      callback(null, {
+        id: payload.id,
+        jsonrpc: '2.0',
+        result,
+      });
+    } catch (err) {
+      this.uiController.showError(err.message);
+      callback(err);
     }
   }
 
-  async handle(method: string, params: any[]): Promise<any> {
+  private async handle(payload: JsonRPCRequest): Promise<any> {
+    const { method, params } = payload;
     switch (method) {
       case 'eth_sendTransaction':
         const tx = params[0];
@@ -132,8 +122,20 @@ export class ULWeb3Provider implements Provider {
         this.uiController.setDashboardVisibility(!!params[0]);
         break;
       default:
-        throw new Error(`Method not supported: ${method}`);
+        return this.sendUpstream(payload)
     }
+  }
+
+  private sendUpstream(payload: JsonRPCRequest): Promise<unknown> {
+    return new Promise((resolve, reject) => {
+      this.provider.send(payload, ((err: Error | null, result: JsonRPCResponse) => {
+        if(err) {
+          reject(err)
+        } else {
+          resolve(result.result)
+        }
+      }) as any)
+    })
   }
 
   getAccounts() {
