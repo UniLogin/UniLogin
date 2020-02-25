@@ -45,40 +45,30 @@ describe('INT: WalletContractService', () => {
   });
 
   describe('version cache', () => {
-    it('undefined address', async () => {
+    it('throws an error if address is undefined', async () => {
       await expect(walletContractService.getWalletVersion(undefined as any)).to.be.rejectedWith('Invalid address provided');
     });
 
-    it('empty address', async () => {
+    it('throws an error if address is empty', async () => {
       await expect(walletContractService.getWalletVersion('')).to.be.rejectedWith('Invalid address provided');
     });
 
-    it('clear cache', async () => {
-      await walletContractService.getWalletVersion(proxyContract.address);
-      await walletContractService.clearCatch();
-      expect((walletContractService as any).walletVersions).to.deep.eq({});
-    });
-
-    it('address with empty cache', async () => {
+    it('returns proper wallet version and saves it to the cache', async () => {
       const version = await walletContractService.getWalletVersion(proxyContract.address);
       expect(version).to.eq('beta2');
-      expect(fetchWalletVersionSpy).to.be.calledOnce;
-    });
-
-    it('adding cache after calling address with empty cache', async () => {
-      await walletContractService.getWalletVersion(proxyContract.address);
       expect((walletContractService as any).walletVersions).to.deep.eq({[proxyContract.address]: 'beta2'});
+      expect(await walletContractService.getWalletVersion(proxyContract.address)).to.be.eq('beta2');
       expect(fetchWalletVersionSpy).to.be.calledOnce;
     });
 
-    it('address with cache', async () => {
+    it('restores wallet version from cache', async () => {
       await walletContractService.getWalletVersion(proxyContract.address);
       expect((walletContractService as any).walletVersions).to.deep.eq({[proxyContract.address]: 'beta2'});
       await walletContractService.getWalletVersion(proxyContract.address);
       expect(fetchWalletVersionSpy).to.be.calledOnce;
     });
 
-    it('random address', async () => {
+    it('throws an error if a random address provided', async () => {
       const address = Wallet.createRandom().address;
       await expect(walletContractService.getWalletVersion(address)).to.be.rejectedWith('Unsupported proxy version');
     });
@@ -243,6 +233,6 @@ describe('INT: WalletContractService', () => {
 
   afterEach(() => {
     fetchWalletVersionSpy.resetHistory();
-    walletContractService.clearCatch();
+    (walletContractService as any).walletVersions = {};
   });
 });

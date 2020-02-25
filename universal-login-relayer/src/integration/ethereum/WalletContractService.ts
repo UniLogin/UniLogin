@@ -13,7 +13,6 @@ export class WalletContractService {
 
   private async getWalletService(walletAddress: string): Promise<IWalletContractService> {
     const walletVersion = await this.getWalletVersion(walletAddress);
-
     switch (walletVersion) {
       case 'beta1':
       case 'beta2':
@@ -34,10 +33,6 @@ export class WalletContractService {
       this.walletVersions[walletAddress] = walletVersion;
       return walletVersion;
     }
-  }
-
-  async clearCatch() {
-    this.walletVersions = {};
   }
 
   async keyExist(walletAddress: string, key: string) {
