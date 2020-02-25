@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {utils} from 'ethers';
 import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, ensureNotFalsy, ensureNotNullish} from '@unilogin/commons';
-import {ModalWrapper, useAsync, Spinner} from '@unilogin/react';
+import {ModalWrapper, useAsync, Spinner, ErrorMessage} from '@unilogin/react';
 import {WalletService} from '@unilogin/sdk';
 import {Title} from '../common/Text/Title';
 import {Text} from '../common/Text/Text';
@@ -25,12 +25,13 @@ export interface ConfirmationTransactionProps {
   onConfirmationResponse: (response: ConfirmationResponse) => void;
   walletService: WalletService;
   transaction: Partial<Message>;
+  onError?: (errorMessage?: string) => void;
 }
 
-export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction}: ConfirmationTransactionProps) => {
+export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction, onError}: ConfirmationTransactionProps) => {
   ensureNotNullish(transaction.value, Error, 'Missing parameter of Transaction: value');
   ensureNotFalsy(transaction.gasLimit, Error, 'Missing parameter of Transaction: gasLimit');
-  const [modesAndPrices] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
+  const [modesAndPrices, error] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
   const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount' | 'timeEstimation'>>({name: '', usdAmount: '0', timeEstimation: 0});
 
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
@@ -52,55 +53,65 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
     }
   }, [modesAndPrices]);
 
-  return modesAndPrices ? (
-    <>
-      <GlobalStyle />
-      <ModalWrapper message={message}>
-        <Box>
-          <BoxHeader>
-            <UniLoginLogo />
-            <CloseButton onClick={() => onConfirmationResponse({isConfirmed: false})} />
-          </BoxHeader>
-          <BoxContent>
-            <Title className="confirmation-title">{title}</Title>
-            <TransactionData>
-              <Row>
-                <DataLabel>Send to:</DataLabel>
-                <Address>{transaction.to}</Address>
-              </Row>
-              <Row>
-                <DataLabel>Value:</DataLabel>
-                <ValueRow>
-                  <Highlighted>
-                    <Value>{utils.formatEther(transaction.value)} ETH</Value>
-                  </Highlighted>
-                  <Value>{walletService.sdk.gasModeService.getCurrencyAmount(utils.bigNumberify(transaction.value), 'USD', modesAndPrices.prices)} USD</Value>
-                </ValueRow>
-              </Row>
-              <Row>
-                <DataLabel>Speed:</DataLabel>
-                <TransactionSpeed gasModes={modesAndPrices.modes} selectedValue={mode.name} onChange={onModeChanged} />
-              </Row>
-              <Row>
-                <DataLabel>Fee:</DataLabel>
-                <TransactionFee mode={mode} gasLimit={transaction.gasLimit} gasOption={gasOption}/>
-              </Row>
-            </TransactionData>
-          </BoxContent>
-          <BoxFooter>
-            <ButtonSecondary onClick={() => onConfirmationResponse({isConfirmed: false})}>Back</ButtonSecondary>
-            <ButtonPrimary onClick={() => onConfirmationResponse({
-              isConfirmed: true,
-              gasParameters: {
-                gasPrice: gasOption.gasPrice,
-                gasToken: gasOption.token.address,
-              },
-            })}>Confirm</ButtonPrimary>
-          </BoxFooter>
-        </Box>
-      </ModalWrapper>
-    </>
-  ) : <Spinner />;
+  if (error) {
+    if (onError) {
+      onError(error.message);
+    } else {
+      console.error(error.message);
+    }
+  }
+
+  if (!modesAndPrices) {
+    return <Spinner />;
+  }
+
+  return <>
+    <GlobalStyle />
+    <ModalWrapper message={message}>
+      <Box>
+        <BoxHeader>
+          <UniLoginLogo />
+          <CloseButton onClick={() => onConfirmationResponse({isConfirmed: false})} />
+        </BoxHeader>
+        <BoxContent>
+          <Title className="confirmation-title">{title}</Title>
+          <TransactionData>
+            <Row>
+              <DataLabel>Send to:</DataLabel>
+              <Address>{transaction.to}</Address>
+            </Row>
+            <Row>
+              <DataLabel>Value:</DataLabel>
+              <ValueRow>
+                <Highlighted>
+                  <Value>{utils.formatEther(transaction.value)} ETH</Value>
+                </Highlighted>
+                <Value>{walletService.sdk.gasModeService.getCurrencyAmount(utils.bigNumberify(transaction.value), 'USD', modesAndPrices.prices)} USD</Value>
+              </ValueRow>
+            </Row>
+            <Row>
+              <DataLabel>Speed:</DataLabel>
+              <TransactionSpeed gasModes={modesAndPrices.modes} selectedValue={mode.name} onChange={onModeChanged} />
+            </Row>
+            <Row>
+              <DataLabel>Fee:</DataLabel>
+              <TransactionFee mode={mode} gasLimit={transaction.gasLimit} gasOption={gasOption} />
+            </Row>
+          </TransactionData>
+        </BoxContent>
+        <BoxFooter>
+          <ButtonSecondary onClick={() => onConfirmationResponse({isConfirmed: false})}>Back</ButtonSecondary>
+          <ButtonPrimary onClick={() => onConfirmationResponse({
+            isConfirmed: true,
+            gasParameters: {
+              gasPrice: gasOption.gasPrice,
+              gasToken: gasOption.token.address,
+            },
+          })}>Confirm</ButtonPrimary>
+        </BoxFooter>
+      </Box>
+    </ModalWrapper>
+  </>;
 };
 
 const TransactionData = styled.div`
