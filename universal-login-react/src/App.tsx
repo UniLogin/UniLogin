@@ -225,7 +225,7 @@ export const App = () => {
               <Route
                 exact path="/errorMessage"
                 render={() => <ErrorMessage/>}
-              ></Route>
+              />
               <Route component={() => (<p>not found</p>)} />
             </Switch>
           </div>
