@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {ensure, ensureNotEmpty, ensureNotFalsy, ensureNotNull, Nullable} from '../../../../src';
+import {ensure, ensureNotEmpty, ensureNotFalsy, ensureNotNullish, Nullable} from '../../../../src';
 
 describe('ensure', () => {
   describe('ensure', () => {
@@ -26,28 +26,28 @@ describe('ensure', () => {
     });
   });
 
-  describe('ensureNotNull', () => {
+  describe('ensureNotNullish', () => {
     it('null inlined', () => {
-      expect(() => ensureNotNull(null, Error, 'null')).to.throw(Error, 'null');
+      expect(() => ensureNotNullish(null, Error, 'null')).to.throw(Error, 'null');
     });
 
     it('null value', () => {
       const value: Nullable<number> = null;
-      expect(() => ensureNotNull(value, Error, 'null')).to.throw(Error, 'null');
+      expect(() => ensureNotNullish(value, Error, 'null')).to.throw(Error, 'null');
     });
 
     it('non-null value', () => {
       const value: Nullable<number> = 5;
-      expect(() => ensureNotNull(value, Error, 'null')).to.not.throw(Error);
+      expect(() => ensureNotNullish(value, Error, 'null')).to.not.throw(Error);
     });
 
     it('falsy value', () => {
       const value: Nullable<number> = 0;
-      expect(() => ensureNotNull(value, Error, 'null')).to.not.throw(Error);
+      expect(() => ensureNotNullish(value, Error, 'null')).to.not.throw(Error);
     });
 
     it('undefined', () => {
-      expect(() => ensureNotNull(undefined, Error, 'undefined')).to.not.throw(Error);
+      expect(() => ensureNotNullish(undefined, Error, 'undefined')).to.throw(Error);
     });
   });
 

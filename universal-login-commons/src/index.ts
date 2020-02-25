@@ -43,7 +43,7 @@ export {deepMerge} from './core/utils/deepMerge';
 export {CATEGORIES, getBaseEmojiCode, getColoredEmojiCode, getEmojiColor, getEmojiNumber, getEmojiSet} from './core/utils/emoji';
 export {getEmojiCodePoint} from './core/utils/emojiCodePoint';
 export {isValidEnsName, parseDomain} from './core/utils/ens';
-export {ensure, ensureNotEmpty, ensureNotFalsy, ensureNotNull} from './core/utils/errors/ensure';
+export {ensure, ensureNotEmpty, ensureNotFalsy, ensureNotNullish} from './core/utils/errors/ensure';
 export {InvalidContract, NotEnoughTokens, PaymentError, ValidationError} from './core/utils/errors/errors';
 export {onCritical} from './core/utils/errors/onCritical';
 export {findGasMode, findGasOption, getGasPriceFor, FAST_GAS_MODE_INDEX} from './core/utils/gasPriceMode';
