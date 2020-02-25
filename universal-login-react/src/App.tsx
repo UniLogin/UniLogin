@@ -27,10 +27,9 @@ export const App = () => {
   const {sdk} = useServices();
   const [relayerConfig] = useAsync(async () => {
     await sdk.fetchRelayerConfig();
+    setBetaNotice(sdk);
     return sdk.getRelayerConfig();
   }, []);
-
-  setBetaNotice(sdk);
 
   const [walletService] = useState(() => new WalletService(sdk));
 
