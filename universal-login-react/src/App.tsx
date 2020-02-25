@@ -22,6 +22,7 @@ import {TopUp} from './ui/TopUp/TopUp';
 import {WaitingForTransaction} from './ui/commons/WaitingForTransaction';
 import {ThemesPlayground} from './ui/Playground/ThemesPlayground';
 import {ThemeProvider} from './ui/themes/Theme';
+import {ErrorMessage} from './ui/commons/ErrorMessage';
 
 export const App = () => {
   const {sdk} = useServices();
@@ -221,6 +222,10 @@ export const App = () => {
                   }
                 }}>
               </Route>
+              <Route
+                exact path="/errorMessage"
+                render={() => <ErrorMessage/>}
+              ></Route>
               <Route component={() => (<p>not found</p>)} />
             </Switch>
           </div>
