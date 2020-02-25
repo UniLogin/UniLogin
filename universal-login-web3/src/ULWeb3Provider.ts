@@ -131,20 +131,20 @@ export class ULWeb3Provider implements Provider {
         this.uiController.setDashboardVisibility(isVisible);
         break;
       default:
-        return this.sendUpstream(payload)
+        return this.sendUpstream(payload);
     }
   }
 
   private sendUpstream(payload: JsonRPCRequest): Promise<unknown> {
     return new Promise((resolve, reject) => {
       this.provider.send(payload, ((err: Error | null, result: JsonRPCResponse) => {
-        if(err) {
-          reject(err)
+        if (err) {
+          reject(err);
         } else {
-          resolve(result.result)
+          resolve(result.result);
         }
-      }) as any)
-    })
+      }) as any);
+    });
   }
 
   getAccounts() {
