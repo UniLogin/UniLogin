@@ -1,6 +1,6 @@
 {
   "name": "@unilogin/react",
-  "version": "0.5.11",
+  "version": "0.5.12",
   "main": "dist/cjs/src/index.js",
   "types": "dist/esm/src/index.d.ts",
   "module": "dist/esm/src/index.js",
@@ -21,8 +21,8 @@
   "dependencies": {
     "@ramp-network/ramp-instant-sdk": "^1.7.0",
     "@restless/sanitizers": "^0.2.3",
-    "@unilogin/commons": "0.5.11",
-    "@unilogin/sdk": "0.5.11",
+    "@unilogin/commons": "0.5.12",
+    "@unilogin/sdk": "0.5.12",
     "dotenv": "^8.1.0",
     "ethers": "^4.0.39",
     "lodash.range": "^3.2.0",
@@ -53,7 +53,7 @@
     "@types/react-router-dom": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
-    "@unilogin/relayer": "0.5.11",
+    "@unilogin/relayer": "0.5.12",
     "canvas": "^2.5.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
