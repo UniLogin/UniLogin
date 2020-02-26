@@ -43,3 +43,4 @@ export {ThemeProvider, ThemeContext} from './ui/themes/Theme';
 export {calculateTransactionFee} from './core/utils/calculateTransactionFee';
 export {isPrivateMode} from './ui/utils/isPrivateMode';
 export {isLocalStorageBlocked} from './ui/utils/isLocalStorageBlocked';
+export {alertPrivateSettings} from './ui/utils/alertPrivateSettings';

@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 import {setBetaNotice} from '@unilogin/sdk';
-import {ErrorBoundary, isPrivateMode, useAsync, ThemeProvider} from '@unilogin/react';
+import {ErrorBoundary, isPrivateMode, useAsync, ThemeProvider, isLocalStorageBlocked, alertPrivateSettings} from '@unilogin/react';
 import App from './ui/react/App';
 import {createServices, ServiceContext} from './ui/createServices';
 import getConfig from './config/getConfig';
@@ -35,7 +35,7 @@ const AppBootstrapper = () => {
   }
   const {services, isIncognito} = params;
 
-  isIncognito && alert('Warning! Please do not use incognito mode. You can lose all your funds.');
+  alertPrivateSettings(isIncognito, isLocalStorageBlocked());
 
   return (
     <ServiceContext.Provider value={services}>
