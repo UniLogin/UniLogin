@@ -1070,10 +1070,10 @@
     path-browserify "^1.0.0"
     url "^0.11.0"
 
-"@restless/ethereum@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@restless/ethereum/-/ethereum-0.2.1.tgz#7bd7204b09e5ab3689ee768c610bc7e78dd25747"
-  integrity sha512-2EsRRJZWfzduaDkPJyGWFS7+TKrpBz/Nj109c+6o1FqjTFa5pCD2qTB1vk11hpRbfI1AY4T+DDuvYAUqXRP1eg==
+"@restless/ethereum@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@restless/ethereum/-/ethereum-0.2.2.tgz#eb86f641fd9ceae0ca1c043516d054cad1c74c72"
+  integrity sha512-3njOyT46TvqDImlneI/M3Kn0Bfn1h83QIEoCbNFjT/q0e5Zf94RvAnfFwsDgiAMPnJvA+3wevuWQm/6Dl0Cr+Q==
   dependencies:
     "@restless/sanitizers" "^0.2.0"
     ethers "^4.0.0"
@@ -1092,10 +1092,10 @@
   resolved "https://registry.yarnpkg.com/@restless/sanitizers/-/sanitizers-0.2.2.tgz#bb54d54f92168a839d66daa621359a470cf2f3a0"
   integrity sha512-Cv7NWOChJa3QIRYzjbMQkemLqrkKxH4FHnNTaUL5sDFzHQDSsz2fQ1LBp3t+VDdfn7CmNJNs9XwJ92TsJZKtrA==
 
-"@restless/sanitizers@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@restless/sanitizers/-/sanitizers-0.2.3.tgz#e73412397c94c94da55c5a3dbf35eaecd6dfe257"
-  integrity sha512-RoBmMXFJ43m/slRz543TZjbTgGHXnpi23iviU4oZ+3W78d1y/IaVSk7lJ0+CcgeA54OGsHPnPSkPv4hOEQUH3A==
+"@restless/sanitizers@^0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@restless/sanitizers/-/sanitizers-0.2.4.tgz#726ea5607f1bf7e327df266e180b2702e3ffe587"
+  integrity sha512-BqEF+7YEPSvmM8xp5R1uM5hpf87wzVdzSK7rr323bjxM6JBQcBE2w1i6KXpYq2GEJ2Z9BIFSAbRs7jGAtgeJxw==
 
 "@rollup/plugin-commonjs@^11.0.2":
   version "11.0.2"

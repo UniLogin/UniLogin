@@ -28,7 +28,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@restless/sanitizers": "^0.2.3",
+    "@restless/sanitizers": "^0.2.4",
     "reactive-properties": "^0.1.10"
   }
 }

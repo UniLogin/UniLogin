@@ -1,7 +1,6 @@
+import {asEnum} from '@restless/sanitizers';
 import {Provider} from 'web3/providers';
 import {HttpProvider} from './services/HttpProvider';
-import {asEnum} from '@unilogin/commons';
-
 export type Network
   = '1' | 'mainnet'
   | '3' | 'ropsten'
