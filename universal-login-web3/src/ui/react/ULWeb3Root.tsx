@@ -33,7 +33,7 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
     case 'SIGN_CONFIRMATION':
       return <SignConfirmation message={message} {...modal.props} />;
     case 'TRANSACTION_CONFIRMATION':
-      return <TransactionConfirmation message={message} walletService={walletService} {...modal.props} />;
+      return <TransactionConfirmation message={message} walletService={walletService} onError={errorMessage => uiController.showError(errorMessage)} {...modal.props} />;
     case 'WAIT_FOR_TRANSACTION':
       return <WaitForTransactionModal
         transactionHash={modal.props.transactionHash}

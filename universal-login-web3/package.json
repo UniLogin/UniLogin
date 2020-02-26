@@ -13,6 +13,7 @@
     "@unilogin/relayer": "0.5.11",
     "@unilogin/sdk": "0.5.11",
     "ethers": "^4.0.39",
+    "moment": "^2.24.0",
     "reactive-properties": "^0.1.10",
     "styled-components": "^5.0.0",
     "url": "^0.11.0",
