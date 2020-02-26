@@ -50,7 +50,7 @@ export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps)
             {balance ? <p className="assets-balance"> {balance} {symbol}</p> : <Spinner/>}
             <div className="assets-balance-converted">
               <p className="assets-price-tilde">{getTildeGivenAmount(usdAmount)}</p>
-              <p className="assets-price">{formatCurrency(usdAmount)}</p>
+              {balance ? <p className="assets-price">{formatCurrency(usdAmount)}</p> : ''}
             </div>
 
           </div>
