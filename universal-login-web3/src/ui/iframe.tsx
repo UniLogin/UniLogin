@@ -12,18 +12,22 @@ const applicationInfo = cast(JSON.parse(parsedQuery.applicationInfo), asApplicat
 const network = parsedQuery.network ? cast(parsedQuery.network, asNetwork) : undefined;
 
 async function main() {
-  if (await isPrivateMode()) {
-    alert('Warning! Please do not use incognito mode. You can lose all your funds.');
-  }
-  if (isLocalStorageBlocked()) {
-    alert('Warning! Your browser is blocking access to the local storage. Please disable the protection and reload the page for UniLogin to work properly.');
-  }
+  await checkPrivateSetting();
 
   const iframeInitializer = isPicker
     ? new PickerIframeInitializer(applicationInfo, network)
     : new ProviderOnlyIframeInitializer(network ?? raise(new TypeError()));
 
   await iframeInitializer.start();
+}
+
+async function checkPrivateSetting() {
+  const isPrivateModeWarning = await isPrivateMode() && 'Please do not use incognito mode. You can lose all your funds. ';
+  const isLocalStorageBlockedWarning = isLocalStorageBlocked() && 'Your browser is blocking access to the local storage. Please disable the protection and reload the page for UniLogin to work properly. '
+
+  if (isPrivateModeWarning || isLocalStorageBlockedWarning) {
+    alert(`Warning! ${isPrivateModeWarning}${isLocalStorageBlockedWarning}`);
+  }
 }
 
 main();
