@@ -1,4 +1,5 @@
-import {GAS_BASE, GAS_FIXED, Message, ensure} from '@unilogin/commons';
+import {GAS_BASE, GAS_FIXED, Message} from '@unilogin/commons';
+import {waitExpect} from '@unilogin/commons/testutils';
 import {beta2} from '@unilogin/contracts';
 import {encodeFunction, mockContracts} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
@@ -16,7 +17,6 @@ import {Provider} from 'ethers/providers';
 import AuthorisationStore from '../../../../../src/integration/sql/services/AuthorisationStore';
 import {DevicesStore} from '../../../../../src/integration/sql/services/DevicesStore';
 import ExecutionWorker from '../../../../../src/core/services/execution/ExecutionWorker';
-import {waitExpect} from '@unilogin/commons/dist/esm/test';
 
 describe('INT: MessageHandler', async () => {
   let messageHandler: MessageHandler;
@@ -25,7 +25,7 @@ describe('INT: MessageHandler', async () => {
   let devicesStore: DevicesStore;
   let wallet: Wallet;
   let walletContract: Contract;
-  let msg: any;
+  let msg: Message;
   let otherWallet: Wallet;
   let executionWorker: ExecutionWorker;
   const config = getConfig('test');
@@ -69,10 +69,8 @@ describe('INT: MessageHandler', async () => {
       await executionWorker.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       const msgStatus = await messageHandler.getStatus(messageHash);
-      const state = msgStatus?.state;
-      const transactionHash = msgStatus?.transactionHash;
-      expect(transactionHash).to.not.be.null;
-      expect(state).to.eq('Success');
+      expect(msgStatus?.transactionHash).to.not.be.null;
+      expect(msgStatus?.state).to.eq('Success');
     });
   });
 
@@ -83,7 +81,7 @@ describe('INT: MessageHandler', async () => {
 
       await messageHandler.handleMessage(signedMessage);
       await executionWorker.stopLater();
-      expect(await walletContract.keyExist(otherWallet.address)).to.be.true
+      expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
 
     describe('Collaboration with Authorisation Service', async () => {
