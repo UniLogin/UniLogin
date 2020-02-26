@@ -1,10 +1,18 @@
 import React, {useState} from 'react';
-import {UniLogin} from '../../../api/UniLogin';
 import Web3 from 'web3';
+import {getApplicationInfoFromDocument} from '../../utils/applicationInfo';
+import {setupStrategies} from '../../../services/setupStrategies';
+import {Web3PickerProvider} from '../../../Web3PickerProvider';
 
 export const Web3PickerPlayground = () => {
-  const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:18545'));
-  const [web3Strategy] = useState(UniLogin.setupWeb3Picker(web3, ['UniLogin', 'Metamask']));
+  const [web3Strategy] = useState(() => {
+    const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:18545'));
+    const applicationInfo = getApplicationInfoFromDocument();
+    const web3ProviderFactories = setupStrategies(web3.currentProvider, ['UniLogin', 'Metamask'], {applicationInfo});
+    const web3PickerProvider = new Web3PickerProvider(web3ProviderFactories, web3.currentProvider);
+    web3.setProvider(web3PickerProvider);
+    return web3PickerProvider;
+  });
   const [providerName, setSetProviderName] = useState<string>(web3Strategy.providerName);
 
   const onClick = async () => {

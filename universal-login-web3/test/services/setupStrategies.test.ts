@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {MemoryStorageService} from '@unilogin/sdk';
-import {setupStrategies} from '../../src/api/setupStrategies';
+import {setupStrategies} from '../../src/services/setupStrategies';
 import {Web3ProviderFactory} from '../../src/models/Web3ProviderFactory';
 import UniLoginLogo from '../../src/ui/assets/U.svg';
 import MetamaskLogo from '../../src/ui/assets/MetaMaskLogoTitle.svg';

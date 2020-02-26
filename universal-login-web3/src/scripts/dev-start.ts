@@ -3,7 +3,7 @@ import Relayer from '@unilogin/relayer';
 
 function runWebServer(vars: any) {
   const env = {...process.env, ...vars};
-  spawnProcess('web', 'yarn', ['start'], {env});
+  spawnProcess('web', 'yarn', ['start:playground'], {env});
 }
 
 async function start() {
