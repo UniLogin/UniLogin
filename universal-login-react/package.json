@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@ramp-network/ramp-instant-sdk": "^1.7.0",
-    "@restless/sanitizers": "^0.2.3",
+    "@restless/sanitizers": "^0.2.4",
     "@unilogin/commons": "0.5.12",
     "@unilogin/sdk": "0.5.12",
     "dotenv": "^8.1.0",

@@ -65,7 +65,6 @@ export {asDeploymentHash, asHexString} from './core/utils/sanitizers/asHexString
 export {asTransferDetails} from './core/utils/sanitizers/asTransferDetails';
 export {asPartialMessage} from './core/utils/sanitizers/asPartialMessage';
 export {asPartialObject} from './core/utils/sanitizers/asPartialObject';
-export {asEnum} from './core/utils/sanitizers/asEnum';
 export {addCodesToNotifications, filterKeyWithCodeByPrefix, filterNotificationByCodePrefix, generateCode, generateCodeWithFakes, isCodeSufficientButInvalid, isProperCodeNumber, isProperSecurityCode, isProperSecurityCodeWithFakes, isValidCode, SECURITY_CODE_LENGTH} from './core/utils/securityCodes';
 export {executionComparator, sign, signHexString, signString, sortSignatureKeyPairsByKey} from './core/utils/signatures';
 export {stringToEnumKey} from './core/utils/stringToEnumKey';
