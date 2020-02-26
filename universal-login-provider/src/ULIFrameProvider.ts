@@ -103,7 +103,7 @@ export class ULIFrameProvider {
   static create(network: Network, config = DEFAULT_CONFIG) {
     return new ULIFrameProvider({
       enablePicker: false,
-      network,
+      network: network.toString() as Network,
       ...config,
     });
   }
@@ -112,7 +112,7 @@ export class ULIFrameProvider {
     if (typeof upstream === 'string') {
       return new ULIFrameProvider({
         enablePicker: true,
-        network: upstream,
+        network: upstream.toString() as Network,
         ...config,
       });
     } else {
@@ -125,7 +125,7 @@ export class ULIFrameProvider {
   }
 
   async send(msg: any, cb: (error: any, response: any) => void) {
-    await this.isReady.pipe(waitFor(Boolean));
+    await this.waitUntilReady();
     this.bridge.send(msg, cb);
   }
 
@@ -143,6 +143,10 @@ export class ULIFrameProvider {
 
   closeDashboard() {
     this.setDashboardVisibility(false);
+  }
+
+  waitUntilReady() {
+    return this.isReady.pipe(waitFor(Boolean));
   }
 
   private boundOpenDashboard = this.openDashboard.bind(this);
