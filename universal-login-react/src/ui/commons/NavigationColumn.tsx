@@ -21,6 +21,7 @@ export const NavigationColumn = () => (
       <li><Link to="/waiting">Waiting for ramp</Link></li>
       <li><Link to="/waitForTransaction">Waiting for transaction</Link></li>
       <li><Link to="/themes">Themes</Link></li>
+      <li><Link to="/errorMessage">Error Message</Link></li>
     </ul>
   </div>
 );
