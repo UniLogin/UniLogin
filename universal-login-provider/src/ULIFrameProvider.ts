@@ -1,5 +1,5 @@
 import {RpcBridge} from './RpcBridge';
-import {DEFAULT_CONFIG} from './config';
+import {DEFAULT_CONFIG, ProviderConfig} from './config';
 import {createIFrame} from './createIframe';
 import {State, waitFor} from 'reactive-properties';
 import {getApplicationInfoFromDocument} from './applicationInfo';
@@ -7,6 +7,19 @@ import {buildIframeUrl} from './buildIframeUrl';
 
 export interface Provider {
   send: (msg: any, cb: (err: any, response: any) => void) => void;
+}
+
+export type Network
+  = '1' | 'mainnet'
+  | '3' | 'ropsten'
+  | '4' | 'rinkeby'
+  | '42' | 'kovan'
+  | '8545' | 'ganache';
+
+export interface ExtendedConfig extends ProviderConfig {
+  enablePicker: boolean;
+  upstream?: Provider;
+  network?: Network;
 }
 
 export class ULIFrameProvider {
@@ -18,13 +31,10 @@ export class ULIFrameProvider {
   readonly isUniLogin = true;
 
   constructor(
-    private readonly upstream: Provider,
-    private readonly config = DEFAULT_CONFIG,
-    enablePicker = false,
+    private readonly config: ExtendedConfig,
   ) {
     const applicationInfo = getApplicationInfoFromDocument();
-    const iframeUrl = buildIframeUrl(config.backendUrl, applicationInfo, enablePicker);
-    this.iframe = createIFrame(iframeUrl);
+    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, applicationInfo, config.enablePicker, config.network));
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
       this.handleRpc.bind(this),
@@ -75,10 +85,14 @@ export class ULIFrameProvider {
   }
 
   private sendUpstream(msg: any, cb: (error: any, response: any) => void) {
-    if ((this.upstream as any).sendAsync) {
-      (this.upstream as any).sendAsync(msg, cb);
+    const upstream = this.config.upstream;
+    if (!upstream) {
+      throw new TypeError();
+    }
+    if ((upstream as any).sendAsync) {
+      (upstream as any).sendAsync(msg, cb);
     } else {
-      this.upstream.send(msg, cb);
+      upstream.send(msg, cb);
     }
   }
 
@@ -86,12 +100,28 @@ export class ULIFrameProvider {
     this.iframe.style.display = visible ? 'unset' : 'none';
   }
 
-  static create(upstream: Provider, config = DEFAULT_CONFIG) {
-    return new ULIFrameProvider(upstream, config);
+  static create(network: Network, config = DEFAULT_CONFIG) {
+    return new ULIFrameProvider({
+      enablePicker: false,
+      network,
+      ...config,
+    });
   }
 
-  static createPicker(upstream: Provider, config = DEFAULT_CONFIG) {
-    return new ULIFrameProvider(upstream, config, true);
+  static createPicker(upstream: Provider | Network, config = DEFAULT_CONFIG) {
+    if (typeof upstream === 'string') {
+      return new ULIFrameProvider({
+        enablePicker: true,
+        network: upstream,
+        ...config,
+      });
+    } else {
+      return new ULIFrameProvider({
+        enablePicker: true,
+        upstream,
+        ...config,
+      });
+    }
   }
 
   async send(msg: any, cb: (error: any, response: any) => void) {
