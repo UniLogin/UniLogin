@@ -1,5 +1,6 @@
 import {Provider} from 'web3/providers';
 import {HttpProvider} from './services/HttpProvider';
+import {asEnum} from '@unilogin/commons';
 
 export type Network
   = '1' | 'mainnet'
@@ -7,6 +8,8 @@ export type Network
   | '4' | 'rinkeby'
   | '42' | 'kovan'
   | '8545' | 'ganache';
+
+export const asNetwork = asEnum<Network>(['1', 'mainnet', '3', 'ropsten', '4', 'rinkeby', '42', 'kovan', '8545', 'ganache'], 'Network');
 
 export interface Config {
   provider: Provider;

@@ -16,12 +16,12 @@
     "universal-login-*"
   ],
   "dependencies": {
-    "wsrun": "^2.2.1"
+    "wsrun": "^5.2.0"
   },
   "scripts": {
-    "build": "yarn wsrun build --stages --fast-exit",
-    "test": "yarn wsrun test --serial --fast-exit",
-    "lint": "yarn wsrun lint --stages",
+    "build": "yarn wsrun --stages --fast-exit build",
+    "test": "yarn wsrun --serial --fast-exit test",
+    "lint": "yarn wsrun --stages lint",
     "ci": "yarn && yarn clean && yarn build && yarn lint && yarn test",
     "clean": "yarn wsrun clean",
     "bump:version": "yarn lerna version --no-push --exact",

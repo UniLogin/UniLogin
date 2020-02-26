@@ -7,7 +7,7 @@
         <button onclick="web3.currentProvider.openDashboard()">Show dashboard</button>
         <script src="dist/umd/index.js"></script>
         <script>
-            window.web3 = new Web3(ULIFrameProvider.createPicker(window.ethereum))
+            window.web3 = new Web3(ULIFrameProvider.createPicker(window.ethereum || 'kovan'))
         </script>
     </body>
 </html>
