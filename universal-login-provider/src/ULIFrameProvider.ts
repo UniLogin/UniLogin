@@ -109,7 +109,7 @@ export class ULIFrameProvider {
   }
 
   static createPicker(upstream: Provider | Network, config = DEFAULT_CONFIG) {
-    if(typeof upstream === 'string') {
+    if (typeof upstream === 'string') {
       return new ULIFrameProvider({
         enablePicker: true,
         network: upstream,
