@@ -12,8 +12,9 @@ export class PickerIframeInitializer extends IframeInitializerBase {
 
   constructor(applicationInfo: ApplicationInfo, network?: Network) {
     super();
-    const web3ProviderFactories = setupStrategies(this.bridge, ['UniLogin', 'Metamask'], {applicationInfo});
-    this.provider = new Web3PickerProvider(web3ProviderFactories, this.getUpstream(network));
+    const upstream = this.getUpstream(network);
+    const web3ProviderFactories = setupStrategies(upstream, ['UniLogin', 'Metamask'], {applicationInfo});
+    this.provider = new Web3PickerProvider(web3ProviderFactories, upstream);
   }
 
   private getUpstream(network: Network | undefined) {

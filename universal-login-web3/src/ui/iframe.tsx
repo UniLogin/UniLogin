@@ -10,6 +10,7 @@ const parsedQuery = parseQuery(window.location.search);
 const isPicker = cast(parsedQuery.picker, asBoolean);
 const applicationInfo = cast(JSON.parse(parsedQuery.applicationInfo), asApplicationInfo);
 const network = parsedQuery.network ? cast(parsedQuery.network, asNetwork) : undefined;
+console.log(isPicker, applicationInfo, network)
 
 async function main() {
   if (await isPrivateMode()) {
