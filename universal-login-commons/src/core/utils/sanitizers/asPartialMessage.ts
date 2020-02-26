@@ -1,6 +1,6 @@
 import {asAnyOf, asArray, asExactly, asNumber, asString, Sanitizer} from '@restless/sanitizers';
+import {asBigNumber} from '@restless/ethereum';
 import {Message, OperationType} from '../../..';
-import {asBigNumber} from './asBigNumber';
 import {asPartialObject} from './asPartialObject';
 
 export const asOperationType: Sanitizer<OperationType> = asAnyOf([
