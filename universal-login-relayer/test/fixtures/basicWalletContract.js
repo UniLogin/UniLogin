@@ -26,6 +26,7 @@ export const addKeyMessage = {
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
+  operationType: OperationType.call,
 };
 
 const removeKeyMessageDataField = encodeFunction(beta2.WalletContract, 'removeKey', ['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
