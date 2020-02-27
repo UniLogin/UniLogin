@@ -26,6 +26,7 @@ async function main() {
         <IncognitoModeWarningScreen onProceed={resolve}/>
       </ThemeProvider>
       , document.getElementById('root')));
+    endpoint.setIframeVisibility(false);
   }
 
   if (isLocalStorageBlocked()) {
