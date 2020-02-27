@@ -1,7 +1,8 @@
 import {expect} from 'chai';
-import {utils} from 'ethers';
+import {utils, Wallet, Contract} from 'ethers';
+import {Provider} from 'ethers/providers';
 import {deployContract} from 'ethereum-waffle';
-import {calculateMessageHash, GAS_BASE, GAS_FIXED} from '@unilogin/commons';
+import {calculateMessageHash, GAS_BASE, GAS_FIXED, Message} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {executeSetRequiredSignatures, mockContracts} from '@unilogin/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../../fixtures/basicWalletContract';
@@ -10,16 +11,18 @@ import {getConfig} from '../../../../../src';
 import {getKnexConfig} from '../../../../testhelpers/knex';
 import {clearDatabase} from '../../../../../src/http/relayers/RelayerUnderTest';
 import {getTestSignedMessage} from '../../../../testconfig/message';
+import MessageHandler from '../../../../../src/core/services/execution/messages/MessageHandler';
+import ExecutionWorker from '../../../../../src/core/services/execution/ExecutionWorker';
 
 describe('INT: MultiSignatureExecute', async () => {
-  let messageHandler;
-  let provider;
-  let wallet;
-  let walletContract;
-  let msg;
-  let otherWallet;
-  let actionKey;
-  let executionWorker;
+  let messageHandler: MessageHandler;
+  let provider: Provider;
+  let wallet: Wallet;
+  let walletContract: Contract;
+  let msg: Message;
+  let otherWallet: Wallet;
+  let actionKey: string;
+  let executionWorker: ExecutionWorker;
   const config = getConfig('test');
   const knex = getKnexConfig();
 
@@ -46,7 +49,7 @@ describe('INT: MultiSignatureExecute', async () => {
     const {messageHash} = await messageHandler.handleMessage(signedMessage1);
     await executionWorker.stopLater();
     const messageEntry = await messageHandler.getStatus(messageHash);
-    expect(messageEntry.error).to.eq('Error: Not enough tokens');
+    expect(messageEntry?.error).to.eq('Error: Not enough tokens');
   });
 
   it('Error when not enough gas', async () => {
@@ -71,9 +74,9 @@ describe('INT: MultiSignatureExecute', async () => {
       const {messageHash} = await messageHandler.handleMessage(signedMessage1);
       await executionWorker.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
-      const {state, transactionHash} = await messageHandler.getStatus(messageHash);
-      expect(transactionHash).to.not.be.null;
-      expect(state).to.eq('Success');
+      const messageStatus = await messageHandler.getStatus(messageHash);
+      expect(messageStatus?.transactionHash).to.not.be.null;
+      expect(messageStatus?.state).to.eq('Success');
     });
   });
 
@@ -100,8 +103,8 @@ describe('INT: MultiSignatureExecute', async () => {
         await messageHandler.handleMessage(signedMessage0);
         await messageHandler.handleMessage(signedMessage1);
         const status = await messageHandler.getStatus(messageHash);
-        expect(status.required).to.eq(2);
-        expect(status.totalCollected).to.eq(status.required);
+        expect(status?.required).to.eq(2);
+        expect(status?.totalCollected).to.eq(status?.required);
         await executionWorker.stopLater();
       });
 

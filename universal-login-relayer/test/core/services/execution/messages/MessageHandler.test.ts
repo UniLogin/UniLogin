@@ -1,10 +1,10 @@
-import {GAS_BASE, GAS_FIXED} from '@unilogin/commons';
+import {GAS_BASE, GAS_FIXED, Message} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {beta2} from '@unilogin/contracts';
 import {encodeFunction, mockContracts} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {deployContract} from 'ethereum-waffle';
-import {utils} from 'ethers';
+import {utils, Wallet, Contract} from 'ethers';
 import {getConfig} from '../../../../../src';
 import {clearDatabase} from '../../../../../src/http/relayers/RelayerUnderTest';
 import defaultDeviceInfo from '../../../../testconfig/defaults';
@@ -12,17 +12,22 @@ import {getTestSignedMessage} from '../../../../testconfig/message';
 import {addKeyMessage, removeKeyMessage, transferMessage} from '../../../../fixtures/basicWalletContract';
 import {getKnexConfig} from '../../../../testhelpers/knex';
 import setupMessageService from '../../../../testhelpers/setupMessageService';
+import MessageHandler from '../../../../../src/core/services/execution/messages/MessageHandler';
+import {Provider} from 'ethers/providers';
+import AuthorisationStore from '../../../../../src/integration/sql/services/AuthorisationStore';
+import {DevicesStore} from '../../../../../src/integration/sql/services/DevicesStore';
+import ExecutionWorker from '../../../../../src/core/services/execution/ExecutionWorker';
 
 describe('INT: MessageHandler', async () => {
-  let messageHandler;
-  let provider;
-  let authorisationStore;
-  let devicesStore;
-  let wallet;
-  let walletContract;
-  let msg;
-  let otherWallet;
-  let executionWorker;
+  let messageHandler: MessageHandler;
+  let provider: Provider;
+  let authorisationStore: AuthorisationStore;
+  let devicesStore: DevicesStore;
+  let wallet: Wallet;
+  let walletContract: Contract;
+  let msg: Message;
+  let otherWallet: Wallet;
+  let executionWorker: ExecutionWorker;
   const config = getConfig('test');
   const knex = getKnexConfig();
 
@@ -45,7 +50,7 @@ describe('INT: MessageHandler', async () => {
     const {messageHash} = await messageHandler.handleMessage(signedMessage);
     await executionWorker.stopLater();
     const messageEntry = await messageHandler.getStatus(messageHash);
-    expect(messageEntry.error).to.eq('Error: Not enough tokens');
+    expect(messageEntry?.error).to.eq('Error: Not enough tokens');
   });
 
   it('Error when not enough gas', async () => {
@@ -62,10 +67,10 @@ describe('INT: MessageHandler', async () => {
       const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
       const {messageHash} = await messageHandler.handleMessage(signedMessage);
       await executionWorker.stopLater();
-      await waitExpect(async () => expect(await provider.getBalance(msg.to)).to.eq(expectedBalance));
-      const {state, transactionHash} = await messageHandler.getStatus(messageHash);
-      expect(transactionHash).to.not.be.null;
-      expect(state).to.eq('Success');
+      expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
+      const msgStatus = await messageHandler.getStatus(messageHash);
+      expect(msgStatus?.transactionHash).to.not.be.null;
+      expect(msgStatus?.state).to.eq('Success');
     });
   });
 
@@ -76,7 +81,7 @@ describe('INT: MessageHandler', async () => {
 
       await messageHandler.handleMessage(signedMessage);
       await executionWorker.stopLater();
-      await waitExpect(async () => expect(await walletContract.keyExist(otherWallet.address)).to.be.true);
+      expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
 
     describe('Collaboration with Authorisation Service', async () => {
@@ -95,7 +100,7 @@ describe('INT: MessageHandler', async () => {
   });
 
   describe('Add Keys', async () => {
-    it('execute add key', async () => {
+    it('execute add keys', async () => {
       const keys = [otherWallet.address];
       const data = encodeFunction(beta2.WalletContract, 'addKeys', [keys]);
       msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), data, refundReceiver: wallet.address};
@@ -123,7 +128,7 @@ describe('INT: MessageHandler', async () => {
 
       await messageHandler.handleMessage(signedMessage);
       await executionWorker.stopLater();
-      expect(await devicesStore.get(walletContract.address, otherWallet.address)).to.deep.eq([]);
+      expect(await devicesStore.get(walletContract.address)).to.deep.eq([]);
       expect(await walletContract.keyExist(otherWallet.address)).to.eq(false);
     });
   });
