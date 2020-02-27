@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {EMPTY_DATA, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '@unilogin/commons';
+import {EMPTY_DATA, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, OperationType} from '@unilogin/commons';
 import {encodeFunction} from '@unilogin/contracts/testutils';
 import {beta2} from '@unilogin/contracts';
 
@@ -14,6 +14,7 @@ export const transferMessage = {
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
+  operationType: OperationType.call,
 };
 
 const addKeyMessageDataField = encodeFunction(beta2.WalletContract, 'addKey', ['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);
@@ -25,6 +26,7 @@ export const addKeyMessage = {
   gasPrice,
   gasLimit,
   gasToken: '0x0000000000000000000000000000000000000000',
+  operationType: OperationType.call,
 };
 
 const removeKeyMessageDataField = encodeFunction(beta2.WalletContract, 'removeKey', ['0x63FC2aD3d021a4D7e64323529a55a9442C444dA0']);

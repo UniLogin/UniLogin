@@ -1,26 +1,27 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {utils} from 'ethers';
+import {utils, Wallet, Contract} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE} from '@unilogin/commons';
+import {DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE, KeyPair} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {startRelayerWithRefund} from '../testhelpers/http';
 import {getGnosisTestSignedMessage} from '../testconfig/message';
 import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
+import Relayer from '../../src';
 chai.use(chaiHttp);
 
 describe('E2E: Relayer - WalletContract routes', async () => {
-  let relayer;
-  let otherWallet;
-  let contract;
-  let deployer;
-  let ensAddress;
-  let mockToken;
-  let walletContract;
-  let factoryContract;
-  let keyPair;
+  let relayer: Relayer;
+  let otherWallet: Wallet;
+  let contract: Contract;
+  let deployer: Wallet;
+  let ensAddress: string;
+  let mockToken: Contract;
+  let walletContract: Contract;
+  let factoryContract: Contract;
+  let keyPair: KeyPair;
   const relayerPort = '33511';
-  let ensRegistrar;
+  let ensRegistrar: Contract;
 
   before(async () => {
     ({relayer, deployer, otherWallet, mockToken, ensAddress, walletContract, factoryContract, ensRegistrar} = await startRelayerWithRefund(relayerPort));
@@ -44,13 +45,13 @@ describe('E2E: Relayer - WalletContract routes', async () => {
     const balanceBefore = await otherWallet.getBalance();
     const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
     const stringifiedMessage = stringifySignedMessageFields(signedMessage);
-    const {status, body} = await chai.request(relayer.server)
+    const {status, body} = await chai.request((relayer as any).server)
       .post('/wallet/execution')
       .send(stringifiedMessage);
     expect(status).to.eq(201);
     await waitExpect(async () => expect(await otherWallet.getBalance()).to.eq(balanceBefore.add(msg.value)), 3000);
     const checkStatusId = async () => {
-      const statusById = await chai.request(relayer.server)
+      const statusById = await chai.request((relayer as any).server)
         .get(`/wallet/execution/status/${body.transaction}`);
       expect(statusById.body.transactionHash).to.not.be.null;
     };
@@ -72,7 +73,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
     };
     const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
     const stringifiedMessage = stringifySignedMessageFields(signedMessage);
-    const {status, body} = await chai.request(relayer.server)
+    const {status, body} = await chai.request((relayer as any).server)
       .post('/wallet/execution')
       .send(stringifiedMessage);
     expect(status).to.eq(400);
@@ -94,7 +95,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       from: '0xd9822CF2a4C3AccD2AF175A5dF0376D46Dcb848d',
       signature: '0x24e58b6f9cb3f7816110df9116562d6052982ee799fc7004153fb20d2cda21a434d71b8fe6669978c9dd803dfed465e563da0f68b5d45bf35ecc089d79a18eae1c',
     };
-    const {status, body} = await chai.request(relayer.server)
+    const {status, body} = await chai.request((relayer as any).server)
       .post('/wallet/execution')
       .send(message);
     expect(status).to.eq(400);
@@ -102,6 +103,6 @@ describe('E2E: Relayer - WalletContract routes', async () => {
   });
 
   after(async () => {
-    await relayer.stop();
+    await (relayer as any).stop();
   });
 });

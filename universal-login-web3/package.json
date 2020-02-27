@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@restless/sanitizers": "^0.2.3",
+    "@restless/sanitizers": "^0.2.4",
     "@unilogin/commons": "0.5.12",
     "@unilogin/contracts": "0.5.12",
     "@unilogin/react": "0.5.12",
