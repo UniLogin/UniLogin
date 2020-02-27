@@ -1,7 +1,7 @@
 import Assertion = Chai.Assertion;
 import {sleep} from '../../src';
 
-export async function waitExpect(callback: () => void | Promise<void> | Assertion, timeout = 1000, tick = 5) {
+export async function waitExpect(callback: () => void | Promise<void> | Assertion | Promise<Assertion>, timeout = 1000, tick = 5) {
   let elapsed = 0;
   let lastError;
   while (elapsed < timeout) {

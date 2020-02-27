@@ -16,7 +16,7 @@ export const switchENSNameInInitializeArgs = (initializeArgs: string[], label: s
 export const getExecutionArgs = (msg: UnsignedMessage) =>
   [msg.to, msg.value, msg.data, msg.gasPrice, msg.gasToken, msg.safeTxGas, msg.baseGas];
 
-export const encodeFunction = (ContractJSON: any, functionName: string, args: string[] = []) =>
+export const encodeFunction = (ContractJSON: any, functionName: string, args: string[] | string[][] = []) =>
   new Interface(ContractJSON.interface).functions[`${functionName}`].encode(args);
 
 export const setupUpdateMessage = async (proxyAsWalletContract: Contract, newWalletAddress: string) => {
