@@ -7,8 +7,9 @@ import {isLocalStorageBlocked, isPrivateMode, ThemeProvider} from '@unilogin/rea
 import {asNetwork} from '../config';
 import {render} from 'react-dom';
 import React from 'react';
-import {LocalStorageBlockedWarningScreen} from './react/LocalStorageBlockedWarningScreen';
+import {LocalStorageBlockedWarningScreen} from './react/warning/LocalStorageBlockedWarningScreen';
 import {IframeBridgeEndpoint} from '../services/IframeBridgeEndpoint';
+import {IncognitoModeWarningScreen} from './react/warning/IncognitoModeWarningScreen';
 
 async function main() {
   const parsedQuery = parseQuery(window.location.search);
@@ -19,8 +20,14 @@ async function main() {
   const endpoint = new IframeBridgeEndpoint();
 
   if (await isPrivateMode()) {
-    alert('Warning! Please do not use incognito mode. You can lose all your funds.');
+    endpoint.setIframeVisibility(true);
+    await new Promise(resolve => render(
+      <ThemeProvider theme="unilogin">
+        <IncognitoModeWarningScreen onProceed={resolve}/>
+      </ThemeProvider>
+      , document.getElementById('root')));
   }
+
   if (isLocalStorageBlocked()) {
     endpoint.setIframeVisibility(true);
     render(
