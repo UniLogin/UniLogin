@@ -8,7 +8,7 @@ import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, as
 import {waitForTrue} from './ui/utils/utils';
 import {getOrCreateUlButton, initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
-import {StorageService} from '@unilogin/react';
+import {isLocalStorageBlocked, isPrivateMode, StorageService} from '@unilogin/react';
 import {flatMap, map, Property, State} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
 import {asBoolean, asString, cast} from '@restless/sanitizers';
@@ -83,6 +83,10 @@ export class ULWeb3Provider implements Provider {
   }
 
   async init() {
+    if (isLocalStorageBlocked()) {
+      this.uiController.showLocalStorageWarning();
+      return;
+    }
     await this.sdk.start();
     setBetaNotice(this.sdk);
     this.walletService.loadFromStorage();
@@ -190,6 +194,12 @@ export class ULWeb3Provider implements Provider {
   }
 
   async initOnboarding() {
+    if (this.uiController.activeModal.get().kind === 'WARNING_LOCAL_STORAGE') {
+      return;
+    }
+    if (await isPrivateMode()) {
+      await this.uiController.showIncognitoWarning();
+    }
     this.uiController.requireWallet();
 
     await waitForTrue(this.isLoggedIn);

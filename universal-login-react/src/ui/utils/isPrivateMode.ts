@@ -23,13 +23,17 @@ function detectFirefox(resolve: (response: boolean) => void): boolean {
 }
 
 function detectChromeOpera(resolve: (response: boolean) => void): boolean {
-  const isChromeOpera = /(?=.*(opera|chrome)).*/i.test(navigator.userAgent) && navigator.storage?.estimate;
+  const isChromeOpera = /(?=.*(opera|chrome)).*/i.test(navigator.userAgent);
   if (isChromeOpera) {
-    navigator.storage.estimate().then(({quota = 0}) => {
-      quota < 120000000 ? resolve(true) : resolve(false);
-    });
+    if (!navigator.storage?.estimate) {
+      resolve(true);
+    } else {
+      navigator.storage.estimate().then(({quota = 0}) => {
+        quota < 120000000 ? resolve(true) : resolve(false);
+      });
+    }
   }
-  return !!isChromeOpera;
+  return isChromeOpera;
 }
 
 function detectSafari(resolve: (response: boolean) => void): boolean {

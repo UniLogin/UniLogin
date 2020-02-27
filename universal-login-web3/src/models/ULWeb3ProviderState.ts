@@ -29,4 +29,9 @@ export type ULWeb3ProviderState = {
   props: {
     errorMessage?: string;
   };
+} | {
+  kind: 'WARNING_LOCAL_STORAGE';
+} | {
+  kind: 'WARNING_INCOGNITO';
+  onProceed: () => void;
 };
