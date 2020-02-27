@@ -7,7 +7,7 @@ import {Container, Description, Footer, Heading, WarningIcon} from './common';
 import {bem} from '../bem';
 
 export interface IncognitoModeWarningScreen {
-  onProceed: () => void
+  onProceed: () => void;
 }
 
 export const IncognitoModeWarningScreen = ({onProceed}: IncognitoModeWarningScreen) => {
@@ -17,7 +17,7 @@ export const IncognitoModeWarningScreen = ({onProceed}: IncognitoModeWarningScre
       <Container>
         <WarningIcon src={warning}/>
         <CompanyLogo className="u-warning-screen__company-logo"/>
-        <Heading>You're in incognito mode</Heading>
+        <Heading>You&apos;re in incognito mode</Heading>
         <Description>
           You are browsing this page in incognito mode.
           This means that you will lose all your funds once you leave the page.

@@ -12,7 +12,7 @@ export const LocalStorageBlockedWarningScreen = () => (
       <CompanyLogo className="u-warning-screen__company-logo"/>
       <Heading>Local storage is blocked</Heading>
       <Description>
-        Your browser isn't letting us save your private key.
+        Your browser isn&apos;t letting us save your private key.
         This means that you will lose all your funds once you leave the page.
         Most likely this is caused by privacy settings in your browser.
         Please disable the protection and refresh the page.
@@ -28,4 +28,3 @@ export const LocalStorageBlockedWarningScreen = () => (
     </Container>
   </ModalWrapper>
 );
-

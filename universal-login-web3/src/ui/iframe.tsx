@@ -34,7 +34,7 @@ async function main() {
       <ThemeProvider theme="unilogin">
         <LocalStorageBlockedWarningScreen/>
       </ThemeProvider>
-    , document.getElementById('root'));
+      , document.getElementById('root'));
     return;
   }
 

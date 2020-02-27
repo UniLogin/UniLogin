@@ -3,7 +3,6 @@ import {setupStrategies} from './setupStrategies';
 import {combine, flatMap, Property, State} from 'reactive-properties';
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {IframeInitializerBase} from './IframeInitializerBase';
-import {Provider} from 'web3/providers';
 import {ApplicationInfo} from '@unilogin/commons';
 import {getConfigForNetwork, Network} from '../config';
 import {IframeBridgeEndpoint} from './IframeBridgeEndpoint';

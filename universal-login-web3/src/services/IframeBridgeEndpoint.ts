@@ -3,7 +3,7 @@ import {Provider} from 'web3/providers';
 
 export class IframeBridgeEndpoint {
   private handler?: Provider;
-  public readonly bridge: RpcBridge;
+  readonly bridge: RpcBridge;
 
   constructor() {
     this.bridge = new RpcBridge(
@@ -25,15 +25,15 @@ export class IframeBridgeEndpoint {
     this.handler = handler;
   }
 
-  public setNotificationIndicator(hasNotifications: boolean) {
+  setNotificationIndicator(hasNotifications: boolean) {
     this.bridge.send({method: 'ul_set_notification_indicator', params: [hasNotifications]}, () => {});
   }
 
-  public setIframeVisibility(isVisible: boolean) {
+  setIframeVisibility(isVisible: boolean) {
     this.bridge.send({method: 'ul_set_iframe_visibility', params: [isVisible]}, () => {});
   }
 
-  public sendReadySignal() {
+  sendReadySignal() {
     this.bridge.send({method: 'ul_ready'}, () => {});
   }
 }
