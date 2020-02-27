@@ -1,11 +1,10 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {startRelayerWithRefund} from '../testhelpers/http';
-import {createKeyPair, TEST_APPLICATION_INFO, RelayerRequest} from '@unilogin/commons';
+import {createKeyPair, TEST_APPLICATION_INFO, RelayerRequest, KeyPair} from '@unilogin/commons';
 import {signStringMessage, calculateGnosisStringHash} from '@unilogin/contracts';
 import {deployGnosisSafeProxy} from '../testhelpers/createGnosisSafeContract';
 import {utils, Wallet, Contract} from 'ethers';
-import {KeyPair} from '@unilogin/commons/src/core/models/keyPair';
 import Relayer from '../../src';
 
 chai.use(chaiHttp);
