@@ -6,23 +6,21 @@ import {IframeInitializerBase} from './IframeInitializerBase';
 import {Provider} from 'web3/providers';
 import {ApplicationInfo} from '@unilogin/commons';
 import {getConfigForNetwork, Network} from '../config';
+import {IframeBridgeEndpoint} from './IframeBridgeEndpoint';
 
 export class PickerIframeInitializer extends IframeInitializerBase {
   private readonly provider: Web3PickerProvider;
 
-  constructor(applicationInfo: ApplicationInfo, network?: Network) {
-    super();
+  constructor(endpoint: IframeBridgeEndpoint, applicationInfo: ApplicationInfo, network?: Network) {
+    super(endpoint);
     const upstream = this.getUpstream(network);
     const web3ProviderFactories = setupStrategies(upstream, ['UniLogin', 'Metamask'], {applicationInfo});
     this.provider = new Web3PickerProvider(web3ProviderFactories, upstream);
+    endpoint.setHandler(this.provider);
   }
 
   private getUpstream(network: Network | undefined) {
-    return network ? getConfigForNetwork(network).provider : this.bridge;
-  }
-
-  protected getProvider(): Provider {
-    return this.provider;
+    return network ? getConfigForNetwork(network).provider : this.endpoint.bridge;
   }
 
   protected getIsUiVisible(): Property<boolean> {

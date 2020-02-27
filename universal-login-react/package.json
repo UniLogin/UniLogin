@@ -21,8 +21,10 @@
   "dependencies": {
     "@ramp-network/ramp-instant-sdk": "^1.7.0",
     "@restless/sanitizers": "^0.2.4",
+    "@types/classnames": "^2.2.9",
     "@unilogin/commons": "0.5.12",
     "@unilogin/sdk": "0.5.12",
+    "classnames": "^2.2.6",
     "dotenv": "^8.1.0",
     "ethers": "^4.0.39",
     "lodash.range": "^3.2.0",
