@@ -8,7 +8,6 @@ import {BrowserChecker} from '@unilogin/react';
 
 const mockedBrowserChecker = {
   isLocalStorageBlocked: () => false,
-  isPrivateMode: () => new Promise(resolve => resolve(false)),
 } as BrowserChecker;
 
 function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider, ULWeb3RootProps] {
