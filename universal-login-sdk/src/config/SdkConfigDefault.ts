@@ -24,4 +24,5 @@ export const SdkConfigDefault: SdkConfig = {
   mineableFactoryTick: 1000,
   mineableFactoryTimeout: 600000,
   storageService: new MemoryStorageService(),
+  notifySdkApiKey: '9d968152-8306-4ea7-be11-57819274882e',
 };
