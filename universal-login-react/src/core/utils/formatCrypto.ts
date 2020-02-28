@@ -1,3 +1,6 @@
+import {utils} from 'ethers';
+
 export const formatCrypto = (crypto: string, places: number) => {
-  return parseFloat(crypto).toFixed(places);
-}
+  const base = utils.bigNumberify(10).pow(places);
+  return utils.formatEther(utils.bigNumberify(crypto).div(base).mul(base));
+};
