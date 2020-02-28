@@ -4,6 +4,7 @@ import {setupStrategies} from '../../src/services/setupStrategies';
 import {Web3ProviderFactory} from '../../src/models/Web3ProviderFactory';
 import UniLoginLogo from '../../src/ui/assets/U.svg';
 import MetamaskLogo from '../../src/ui/assets/MetaMaskLogoTitle.svg';
+import {BrowserChecker} from '../../src/services/BrowserChecker';
 
 describe('UNIT: setupStrategies', () => {
   const mockProvider = {send: (_: any, cb: any) => cb(null, {result: '1'})};
@@ -14,7 +15,7 @@ describe('UNIT: setupStrategies', () => {
       logo: 'https://kickback.events/favicon.ico',
       type: 'laptop',
     };
-    const result = setupStrategies(mockProvider, ['UniLogin'], {applicationInfo, storageService: new MemoryStorageService()});
+    const result = setupStrategies(mockProvider, ['UniLogin'], {applicationInfo, storageService: new MemoryStorageService(), browserChecker: {isLocalStorageBlocked: () => false} as BrowserChecker});
     expect(result[0].name).to.eq('UniLogin');
     expect(result[0].icon).to.eq(UniLoginLogo);
     expect(result[0].create).to.not.be.null;

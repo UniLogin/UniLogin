@@ -140,7 +140,7 @@ describe('ULWeb3Provider', () => {
     it('shows the UI and returns a promise that resolves once the wallet is created', async () => {
       const promise = ulProvider.initOnboarding();
 
-      expect(services.uiController.activeModal.get()).to.deep.eq({kind: 'ONBOARDING'});
+      await waitExpect(() => expect(services.uiController.activeModal.get()).to.deep.eq({kind: 'ONBOARDING'}));
 
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
       services.walletService.setWallet(deployedWallet.asApplicationWallet);

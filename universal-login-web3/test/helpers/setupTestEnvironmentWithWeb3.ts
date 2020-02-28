@@ -4,6 +4,12 @@ import {Provider} from 'web3/providers';
 import {MemoryStorageService} from '@unilogin/sdk';
 import {ULWeb3RootProps} from '../../src/ui/react/ULWeb3Root';
 import {ULWeb3Provider} from '../../src/ULWeb3Provider';
+import {BrowserChecker} from '../../src/services/BrowserChecker';
+
+const mockedBrowserChecker = {
+  isLocalStorageBlocked: () => false,
+  isPrivateMode: () => new Promise(resolve => resolve(false)),
+} as BrowserChecker;
 
 function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider, ULWeb3RootProps] {
   let services: ULWeb3RootProps;
@@ -15,8 +21,8 @@ function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider
       services = props;
     },
     storageService: new MemoryStorageService(),
+    browserChecker: mockedBrowserChecker,
   });
-
   return [ulProvider, services!];
 }
 

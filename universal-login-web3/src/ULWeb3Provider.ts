@@ -8,11 +8,11 @@ import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, as
 import {waitForTrue} from './ui/utils/utils';
 import {getOrCreateUlButton, initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
-import {isLocalStorageBlocked, isPrivateMode, StorageService} from '@unilogin/react';
+import {StorageService} from '@unilogin/react';
 import {flatMap, map, Property, State} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
 import {asBoolean, asString, cast} from '@restless/sanitizers';
-import {isRunningInNode} from './utils/isRunningInNode';
+import {BrowserChecker} from './services/BrowserChecker';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
@@ -21,6 +21,7 @@ export interface ULWeb3ProviderOptions {
   applicationInfo?: ApplicationInfo;
   uiInitializer?: (services: ULWeb3RootProps) => void;
   storageService?: StorageService;
+  browserChecker?: BrowserChecker;
 }
 
 export class ULWeb3Provider implements Provider {
@@ -41,6 +42,7 @@ export class ULWeb3Provider implements Provider {
   private readonly sdk: UniversalLoginSDK;
   private readonly walletService: WalletService;
   private readonly uiController: UIController;
+  private readonly browserChecker: BrowserChecker;
 
   readonly isLoggedIn: Property<boolean>;
   readonly isUiVisible: Property<boolean>;
@@ -53,6 +55,7 @@ export class ULWeb3Provider implements Provider {
     applicationInfo,
     uiInitializer = initUi,
     storageService = new StorageService(),
+    browserChecker = new BrowserChecker(window),
   }: ULWeb3ProviderOptions) {
     this.provider = provider;
     const sdkConfig: Partial<SdkConfig> = {storageService};
@@ -64,6 +67,7 @@ export class ULWeb3Provider implements Provider {
       new providers.Web3Provider(this.provider as any),
       sdkConfig,
     );
+    this.browserChecker = browserChecker;
     this.walletService = new WalletService(this.sdk, walletFromBrain, storageService);
 
     this.uiController = new UIController(this.walletService);
@@ -84,7 +88,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async init() {
-    if (!isRunningInNode() && isLocalStorageBlocked()) {
+    if (this.browserChecker.isLocalStorageBlocked()) {
       this.uiController.showLocalStorageWarning();
       return;
     }
@@ -198,7 +202,7 @@ export class ULWeb3Provider implements Provider {
     if (this.uiController.activeModal.get().kind === 'WARNING_LOCAL_STORAGE') {
       return;
     }
-    if (!isRunningInNode() && await isPrivateMode()) {
+    if (await this.browserChecker.isPrivateMode()) {
       await this.uiController.showIncognitoWarning();
     }
     this.uiController.requireWallet();
