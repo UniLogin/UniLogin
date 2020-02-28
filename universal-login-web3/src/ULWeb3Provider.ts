@@ -170,7 +170,9 @@ export class ULWeb3Provider implements Provider {
     if (!succeeded.transactionHash) {
       throw new Error('Expected tx hash to not be null');
     }
-    this.uiController.showWaitForTransaction(succeeded.transactionHash);
+    if (this.uiController.activeModal.get().kind === 'WAIT_FOR_TRANSACTION') {
+      this.uiController.showWaitForTransaction(succeeded.transactionHash);
+    }
     await execution.waitToBeSuccess();
     this.uiController.hideModal();
     return succeeded.transactionHash;
