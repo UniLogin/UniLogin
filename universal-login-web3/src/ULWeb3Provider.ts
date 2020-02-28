@@ -12,6 +12,7 @@ import {isLocalStorageBlocked, isPrivateMode, StorageService} from '@unilogin/re
 import {flatMap, map, Property, State} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
 import {asBoolean, asString, cast} from '@restless/sanitizers';
+import {isRunningInNode} from './utils/isRunningInNode';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
@@ -83,7 +84,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async init() {
-    if (isLocalStorageBlocked()) {
+    if (!isRunningInNode() && isLocalStorageBlocked()) {
       this.uiController.showLocalStorageWarning();
       return;
     }
@@ -197,7 +198,7 @@ export class ULWeb3Provider implements Provider {
     if (this.uiController.activeModal.get().kind === 'WARNING_LOCAL_STORAGE') {
       return;
     }
-    if (await isPrivateMode()) {
+    if (!isRunningInNode() && await isPrivateMode()) {
       await this.uiController.showIncognitoWarning();
     }
     this.uiController.requireWallet();
