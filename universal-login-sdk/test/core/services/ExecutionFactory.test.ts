@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import sinon, {SinonStub} from 'sinon';
 import {utils} from 'ethers';
-import {TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION} from '@unilogin/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_TRANSACTION_HASH, calculateMessageHash, SignedMessage, MessageStatus, TEST_PRIVATE_KEY, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION, MineableStatus} from '@unilogin/commons';
 import {messageToSignedMessage} from '@unilogin/contracts';
 import {emptyMessage} from '@unilogin/contracts/testutils';
 import {ExecutionFactory} from '../../../src/core/services/ExecutionFactory';
@@ -12,8 +12,8 @@ describe('UNIT: ExecutionFactory', () => {
   let relayerApi: RelayerApi;
   let signedMessage: SignedMessage;
   let defaultStatus: MessageStatus;
-  let status: MessageStatus;
-  const getStatus: SinonStub = sinon.stub().returns({status: {}});
+  let status: MineableStatus;
+  const getStatus: SinonStub = sinon.stub();
   const execute: SinonStub = sinon.stub();
 
   before(() => {
@@ -35,6 +35,7 @@ describe('UNIT: ExecutionFactory', () => {
 
   beforeEach(() => {
     status = {...defaultStatus};
+    getStatus.returns({status: {}})
     getStatus.onCall(1).returns(status);
     execute.returns({status: {...defaultStatus}});
   });
@@ -58,14 +59,17 @@ describe('UNIT: ExecutionFactory', () => {
     });
 
     it('message with no enough signatures', async () => {
+      (executionFactory as any).timeout = 30;
       status.state = 'AwaitSignature';
-      // status.required = 2;
+      getStatus.returns(status);
       delete status.transactionHash;
 
       execute.returns({status});
       const execution = await executionFactory.createExecution(signedMessage);
-      expect(await execution.waitToBeSuccess()).to.deep.eq(status);
-      expect(getStatus.callCount).be.eq(0);
+      await expect(execution.waitToBeSuccess()).to.be.rejectedWith('Timeout exceeded');
+      console.log("after deep eq to status");
+      expect(getStatus.callCount).be.at.least(1);
+      (executionFactory as any).timeout = 200;
     });
   });
 
@@ -122,6 +126,6 @@ describe('UNIT: ExecutionFactory', () => {
   });
 
   afterEach(() => {
-    getStatus.resetHistory();
+    getStatus.reset();
   });
 });
