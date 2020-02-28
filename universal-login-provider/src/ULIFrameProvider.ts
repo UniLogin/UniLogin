@@ -166,17 +166,18 @@ export class ULIFrameProvider {
       width: '60px',
       height: '60px',
       marginRight: '15px',
+      padding: '0',
     });
 
     element.innerHTML = `
-      <img src="${this.config.logoUrl}" alt="U" >
+      <img style="width: 100%; height: 100%;" src="${this.config.logoUrl}" alt="U" >
       <div id="${this.config.ulButtonId}-notifications"></div>
     `;
     Object.assign(this.getNotificationsIndicator()!.style, {
       display: this.hasNotifications ? 'block' : 'none',
       position: 'absolute',
       top: '0px',
-      right: '0px',
+      right: '-11px',
       width: '15px',
       height: '15px',
       background: '#0FB989',
