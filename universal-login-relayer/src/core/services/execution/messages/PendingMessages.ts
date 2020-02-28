@@ -26,14 +26,15 @@ export default class PendingMessages {
     }
     await this.addSignatureToPendingMessage(messageHash, message);
     const status = await this.getStatus(messageHash);
-    if (this.isEnoughSignatures(status)) {
-      await this.onReadyToExecute(messageHash, status);
+    const [isEnough] = await this.isEnoughSignatures(status, message.from);
+    if (isEnough) {
+      await this.onReadyToExecute(messageHash, status, message.from);
     }
     return status;
   }
 
-  private async onReadyToExecute(messageHash: string, status: MessageStatus) {
-    this.ensureCorrectExecution(status);
+  private async onReadyToExecute(messageHash: string, status: MessageStatus, contractAddress: string) {
+    await this.ensureCorrectExecution(status, contractAddress);
     await this.messageRepository.setState(messageHash, 'Queued');
     return this.executionQueue.addMessage(messageHash);
   }
@@ -52,14 +53,16 @@ export default class PendingMessages {
     return this.statusService.getStatus(messageHash);
   }
 
-  ensureCorrectExecution(messageStatus: MessageStatus) {
-    const {required, transactionHash, totalCollected} = messageStatus;
+  async ensureCorrectExecution(messageStatus: MessageStatus, contractAddress: string) {
+    const {transactionHash, totalCollected} = messageStatus;
     ensure(!transactionHash, DuplicatedExecution);
-    ensure(this.isEnoughSignatures(messageStatus), NotEnoughSignatures, required, totalCollected);
+    const [isEnoiug, required] = await this.isEnoughSignatures(messageStatus, contractAddress);
+    ensure(isEnoiug, NotEnoughSignatures, required, totalCollected);
   }
 
-  isEnoughSignatures(messageStatus: MessageStatus): boolean {
-    const {totalCollected, required} = messageStatus;
-    return totalCollected >= required;
+  async isEnoughSignatures(messageStatus: MessageStatus, contractAddress: string): Promise<[boolean, number]> {
+    const {totalCollected} = messageStatus;
+    const required = (await this.walletContractService.getRequiredSignatures(contractAddress)).toNumber();
+    return [totalCollected >= required, required];
   }
 }

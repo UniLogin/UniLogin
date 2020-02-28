@@ -103,8 +103,7 @@ describe('INT: MultiSignatureExecute', async () => {
         await messageHandler.handleMessage(signedMessage0);
         await messageHandler.handleMessage(signedMessage1);
         const status = await messageHandler.getStatus(messageHash);
-        expect(status?.required).to.eq(2);
-        expect(status?.totalCollected).to.eq(status?.required);
+        expect(status?.totalCollected).to.eq(2);
         await executionWorker.stopLater();
       });
 

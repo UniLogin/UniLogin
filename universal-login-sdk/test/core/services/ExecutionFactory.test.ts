@@ -21,7 +21,6 @@ describe('UNIT: ExecutionFactory', () => {
     const messageHash = calculateMessageHash(signedMessage);
     defaultStatus = {
       transactionHash: TEST_TRANSACTION_HASH,
-      required: 1,
       totalCollected: 1,
       state: 'AwaitSignature',
       messageHash,
@@ -52,7 +51,6 @@ describe('UNIT: ExecutionFactory', () => {
     it('error', async () => {
       status.state = 'Error';
       status.error = 'Error: waitToBeMined';
-
       const execution = await executionFactory.createExecution(signedMessage);
       expect(execution.messageStatus).to.deep.eq(defaultStatus);
       await expect(execution.waitToBeSuccess()).to.be.rejectedWith('Error: waitToBeMined');
@@ -61,7 +59,7 @@ describe('UNIT: ExecutionFactory', () => {
 
     it('message with no enough signatures', async () => {
       status.state = 'AwaitSignature';
-      status.required = 2;
+      // status.required = 2;
       delete status.transactionHash;
 
       execute.returns({status});
