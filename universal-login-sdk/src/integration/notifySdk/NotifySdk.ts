@@ -1,6 +1,7 @@
 import blocknativeSdk from 'bnc-sdk';
-import WebSocket from 'ws';
 import {API, Emitter, TransactionData} from 'bnc-sdk/dist/types/src/interfaces';
+
+const WebSocket = typeof window !== 'undefined' && window.WebSocket ? window.WebSocket : require('ws')
 
 export class NotifySdk {
   private readonly api: API;
