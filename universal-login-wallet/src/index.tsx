@@ -10,28 +10,27 @@ import './ui/styles/main.sass';
 import Logo from './ui/assets/logo.svg';
 
 const AppBootstrapper = () => {
-  const [params, err] = useAsync(async () => {
+  const [services, err] = useAsync(async () => {
     const config = getConfig();
     const services = createServices(config);
     await services.start();
 
     services.walletService.loadFromStorage();
     setBetaNotice(services.sdk);
-    return {services};
+    return services;
   }, []);
 
   if (err) {
     throw err;
   }
 
-  if (!params) {
+  if (!services) {
     return (
       <div id="preloader">
         <img src={Logo} className="preloaderImg" />
       </div>
     );
   }
-  const {services} = params;
 
   return (
     <ServiceContext.Provider value={services}>
