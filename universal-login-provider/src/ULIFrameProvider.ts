@@ -173,7 +173,7 @@ export class ULIFrameProvider {
       display: this.hasNotifications ? 'block' : 'none',
       position: 'absolute',
       top: '0px',
-      right: '0px',
+      right: '-11px',
       width: '15px',
       height: '15px',
       background: '#0FB989',
