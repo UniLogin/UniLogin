@@ -1,3 +1,7 @@
 export function isRunningInNode() {
-  return (typeof process !== 'undefined') && ((process as any).release.name === 'node');
+  try {
+    return (typeof process !== 'undefined') && ((process as any).release.name === 'node');
+  } catch {
+    return false;
+  }
 }
