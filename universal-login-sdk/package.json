@@ -9,12 +9,14 @@
     "@restless/sanitizers": "^0.2.4",
     "@unilogin/commons": "0.5.12",
     "@unilogin/contracts": "0.5.12",
+    "bnc-sdk": "^1.0.3",
     "cryptocompare": "^1.0.0",
     "deep-equal": "^1.0.1",
     "ethers": "^4.0.39",
     "lodash.clonedeep": "^4.5.0",
     "openzeppelin-solidity": "^2.3.0",
-    "reactive-properties": "^0.1.10"
+    "reactive-properties": "^0.1.10",
+    "ws": "^7.2.1"
   },
   "scripts": {
     "prebuild": "yarn clean",
@@ -32,6 +34,7 @@
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/mocha": "^5.2.5",
     "@types/node-fetch": "^2.5.0",
+    "@types/ws": "^7.2.2",
     "@typescript-eslint/eslint-plugin": "^2.3.1",
     "@typescript-eslint/parser": "^2.3.1",
     "@unilogin/relayer": "0.5.12",
