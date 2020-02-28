@@ -165,6 +165,7 @@ export class ULIFrameProvider {
       position: 'relative',
       width: '60px',
       height: '60px',
+      marginRight: '15px',
     });
 
     element.innerHTML = `
