@@ -6,7 +6,6 @@ import {TransactionConfirmation} from './Confirmation/TransactionConfirmation';
 import {WaitForTransactionModal} from './WaitingForTransactionModal';
 import {SignConfirmation} from './Confirmation/SignConfirmation';
 import {LocalStorageBlockedWarningScreen} from './warning/LocalStorageBlockedWarningScreen';
-import {IncognitoModeWarningScreen} from './warning/IncognitoModeWarningScreen';
 
 export interface ULWeb3RootProps {
   sdk: UniversalLoginSDK;
@@ -50,8 +49,6 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
       </ModalWrapper>;
     case 'WARNING_LOCAL_STORAGE':
       return <LocalStorageBlockedWarningScreen/>;
-    case 'WARNING_INCOGNITO':
-      return <IncognitoModeWarningScreen onProceed={modal.onProceed}/>;
     default:
       throw Error(`Invalid user interface state: ${modal}`);
   }

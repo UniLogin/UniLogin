@@ -77,10 +77,6 @@ export class UIController {
     this.activeModal.set({kind: 'WARNING_LOCAL_STORAGE'});
   }
 
-  showIncognitoWarning() {
-    return new Promise(resolve => this.activeModal.set({kind: 'WARNING_INCOGNITO', onProceed: resolve}));
-  }
-
   setDashboardVisibility(visible: boolean) {
     this.dashboardVisible.set(visible);
   }
