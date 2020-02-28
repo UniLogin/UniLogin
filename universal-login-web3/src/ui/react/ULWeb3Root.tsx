@@ -38,6 +38,7 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
       return <WaitForTransactionModal
         transactionHash={modal.props.transactionHash}
         relayerConfig={sdk.getRelayerConfig()}
+        onClose={() => uiController.hideModal()}
       />;
     case 'ERROR':
       return <ModalWrapper
