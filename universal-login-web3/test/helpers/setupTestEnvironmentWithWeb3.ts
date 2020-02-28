@@ -4,7 +4,7 @@ import {Provider} from 'web3/providers';
 import {MemoryStorageService} from '@unilogin/sdk';
 import {ULWeb3RootProps} from '../../src/ui/react/ULWeb3Root';
 import {ULWeb3Provider} from '../../src/ULWeb3Provider';
-import {BrowserChecker} from '../../src/services/BrowserChecker';
+import {BrowserChecker} from '@unilogin/react';
 
 const mockedBrowserChecker = {
   isLocalStorageBlocked: () => false,

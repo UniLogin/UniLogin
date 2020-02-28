@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 import {setBetaNotice} from '@unilogin/sdk';
-import {ErrorBoundary, isPrivateMode, useAsync, ThemeProvider} from '@unilogin/react';
+import {ErrorBoundary, useAsync, ThemeProvider, BrowserChecker} from '@unilogin/react';
 import App from './ui/react/App';
 import {createServices, ServiceContext} from './ui/createServices';
 import getConfig from './config/getConfig';
@@ -17,9 +17,7 @@ const AppBootstrapper = () => {
 
     services.walletService.loadFromStorage();
     setBetaNotice(services.sdk);
-
-    const isIncognito = await isPrivateMode();
-    return {services, isIncognito};
+    return {services};
   }, []);
 
   if (err) {
@@ -33,9 +31,7 @@ const AppBootstrapper = () => {
       </div>
     );
   }
-  const {services, isIncognito} = params;
-
-  isIncognito && alert('Warning! Please do not use incognito mode. You can lose all your funds.');
+  const {services} = params;
 
   return (
     <ServiceContext.Provider value={services}>

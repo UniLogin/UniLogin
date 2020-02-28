@@ -2,12 +2,11 @@ import {Web3ProviderFactory} from '../models/Web3ProviderFactory';
 import {getConfigForNetwork, Network} from '../config';
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {ApplicationInfo} from '@unilogin/commons';
-import {StorageService} from '@unilogin/react';
+import {StorageService, BrowserChecker} from '@unilogin/react';
 import UniLoginLogo from '../ui/assets/U.svg';
 import MetamaskLogo from '../ui/assets/MetaMaskLogoTitle.svg';
 import {Provider} from 'web3/providers';
 import {getNetworkId} from '../utils/getNetworkId';
-import {BrowserChecker} from './BrowserChecker';
 
 export interface SetupUniLoginOverrides {
   applicationInfo?: ApplicationInfo;

@@ -8,11 +8,10 @@ import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, as
 import {waitForTrue} from './ui/utils/utils';
 import {getOrCreateUlButton, initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
-import {StorageService} from '@unilogin/react';
+import {StorageService, BrowserChecker} from '@unilogin/react';
 import {flatMap, map, Property, State} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
 import {asBoolean, asString, cast} from '@restless/sanitizers';
-import {BrowserChecker} from './services/BrowserChecker';
 
 export interface ULWeb3ProviderOptions {
   provider: Provider;
@@ -55,7 +54,7 @@ export class ULWeb3Provider implements Provider {
     applicationInfo,
     uiInitializer = initUi,
     storageService = new StorageService(),
-    browserChecker = new BrowserChecker(window),
+    browserChecker = new BrowserChecker(),
   }: ULWeb3ProviderOptions) {
     this.provider = provider;
     const sdkConfig: Partial<SdkConfig> = {storageService};
@@ -201,9 +200,6 @@ export class ULWeb3Provider implements Provider {
   async initOnboarding() {
     if (this.uiController.activeModal.get().kind === 'WARNING_LOCAL_STORAGE') {
       return;
-    }
-    if (await this.browserChecker.isPrivateMode()) {
-      await this.uiController.showIncognitoWarning();
     }
     this.uiController.requireWallet();
 
