@@ -73,6 +73,10 @@ export class UIController {
     this.activeModal.set({kind: 'ONBOARDING'});
   }
 
+  showLocalStorageWarning() {
+    this.activeModal.set({kind: 'WARNING_LOCAL_STORAGE'});
+  }
+
   setDashboardVisibility(visible: boolean) {
     this.dashboardVisible.set(visible);
   }

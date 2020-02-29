@@ -109,6 +109,9 @@ export class ULIFrameProvider {
   }
 
   static createPicker(upstream: Provider | Network, config = DEFAULT_CONFIG) {
+    if (upstream === undefined) {
+      throw new Error('Either a provider or a network name must be passed as a first argument');
+    }
     if (typeof upstream === 'string') {
       return new ULIFrameProvider({
         enablePicker: true,
@@ -162,6 +165,7 @@ export class ULIFrameProvider {
       position: 'relative',
       width: '60px',
       height: '60px',
+      marginRight: '15px',
       padding: '0',
     });
 

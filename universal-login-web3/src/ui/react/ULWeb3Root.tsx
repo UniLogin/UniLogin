@@ -5,6 +5,7 @@ import {UIController} from '../../services/UIController';
 import {TransactionConfirmation} from './Confirmation/TransactionConfirmation';
 import {WaitForTransactionModal} from './WaitingForTransactionModal';
 import {SignConfirmation} from './Confirmation/SignConfirmation';
+import {LocalStorageBlockedWarningScreen} from './warning/LocalStorageBlockedWarningScreen';
 
 export interface ULWeb3RootProps {
   sdk: UniversalLoginSDK;
@@ -47,6 +48,8 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
       >
         <ErrorMessage message={modal.props.errorMessage}/>
       </ModalWrapper>;
+    case 'WARNING_LOCAL_STORAGE':
+      return <LocalStorageBlockedWarningScreen/>;
     default:
       throw Error(`Invalid user interface state: ${modal}`);
   }

@@ -3,13 +3,15 @@ import {Property} from 'reactive-properties';
 import {IframeInitializerBase} from './IframeInitializerBase';
 import {Provider} from 'web3/providers';
 import {Network} from '../config';
+import {IframeBridgeEndpoint} from './IframeBridgeEndpoint';
 
 export class ProviderOnlyIframeInitializer extends IframeInitializerBase {
   private readonly provider: ULWeb3Provider;
 
-  constructor(network: Network) {
-    super();
+  constructor(endpoint: IframeBridgeEndpoint, network: Network) {
+    super(endpoint);
     this.provider = ULWeb3Provider.getDefaultProvider(network);
+    endpoint.setHandler(this.provider);
   }
 
   async start() {
