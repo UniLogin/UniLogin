@@ -1,35 +1,23 @@
-import React from 'react';
-import {ETHER_NATIVE_TOKEN, CurrencyValue} from '@unilogin/commons'
-import {WalletService, TopUpTransactionObserver} from '@unilogin/sdk';
-import {useEffect, useState} from 'react';
+import React, {useState} from 'react';
+import {FutureWallet} from '@unilogin/sdk';
 import {useProperty} from '../..';
-import {State} from 'reactive-properties';
 import {withPrefix} from 'bem-components-react';
 import '../styles/base/incomingTransactionsView.sass';
-import receiveIcon from '../assets/icons/receive.svg'
-import externalLink from '../assets/icons/externalLink.svg'
+import receiveIcon from '../assets/icons/receive.svg';
+import externalLink from '../assets/icons/externalLink.svg';
 import {getEtherscanUrl} from '../../core/utils/getEtherscanUrl';
+
 const bem = withPrefix('u')
 
 export interface IncomingTransactionsViewProps {
-  walletService: WalletService
+  futureWallet: FutureWallet
 }
 
-export const IncomingTransactionsView = ({walletService}: IncomingTransactionsViewProps) => {
-  // const state = useProperty(walletService.stateProperty);
-  // const [observer, setObserver] = useState<TopUpTransactionObserver | undefined>(undefined);
-  // useEffect(() => {
-  //   if (state.kind === 'Future') {
-  //     setObserver(state.wallet.createTopUpObserver());
-  //   }
-  // }, [state.kind === 'Future' ? state.wallet : undefined]);
-  // const transactions = useProperty(observer?.transactions ?? new State([]));
-  const transactions = [{
-    value: CurrencyValue.fromDecimals('0.5', ETHER_NATIVE_TOKEN.address),
-    transactionHash: '0x60235a2885fe9dfcf4bdae787f6af44c4092872eb4fe23b28e9e46fe856ae3a9'
-  }]
+export const IncomingTransactionsView = ({futureWallet}: IncomingTransactionsViewProps) => {
+  const [observer] = useState(() => futureWallet.createTopUpObserver());
+  const transactions = useProperty(observer.transactions);
 
-  const relayerConfig = walletService.sdk.getRelayerConfig()
+  const relayerConfig = futureWallet.sdk.getRelayerConfig();
 
   return (
     <List>

@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {QRCode} from 'react-qr-svg';
 import {WalletService} from '@unilogin/sdk';
-import {useThemeName, classForComponent} from '../utils/classFor';
+import {classForComponent, useThemeName} from '../utils/classFor';
 import {Label} from '../commons/Form/Label';
 import {InputCopy} from '../commons/Form/InputCopy';
 import {InfoText} from '../commons/Text/InfoText';
@@ -65,7 +65,9 @@ export const TopUpWithCrypto = ({walletService}: TopUpWithCryptoProps) => {
             ? <DeploymentWithCryptoInfo minimalAmount={walletService.getRequiredDeploymentBalance()}/>
             : <TopUpCryptoInfo/>
           }
-          <IncomingTransactionsView walletService={walletService}/>
+          {walletService.isKind('Future') &&
+            <IncomingTransactionsView futureWallet={walletService.getFutureWallet()}/>
+          }
         </div>
       </div>
     </div>

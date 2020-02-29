@@ -20,7 +20,7 @@ export class FutureWallet implements SerializableFutureWallet {
 
   constructor(
     serializableFutureWallet: SerializableFutureWallet,
-    private sdk: UniversalLoginSDK,
+    readonly sdk: UniversalLoginSDK,
     private ensService: ENSService,
     private relayerAddress: string,
   ) {
