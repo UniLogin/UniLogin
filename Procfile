@@ -1,1 +1,1 @@
-web: cd universal-login-relayer && yarn relayer:start
+web: yarn && yan build && cd universal-login-web3/dist/html
