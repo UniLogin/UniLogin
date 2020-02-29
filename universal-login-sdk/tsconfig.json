@@ -3,13 +3,23 @@
   "compilerOptions": {
     "allowJs": false,
     "outDir": "dist",
+    "composite": true,
     "lib": [
       "esnext",
       "dom"
     ]
   },
+  "references": [
+    {
+      "path": "../universal-login-commons"
+    }
+  ],
   "include": [
     "src",
     "test"
+  ],
+  "exclude": [
+    "./dist",
+    "../universal-login-commons/dist"
   ]
 }

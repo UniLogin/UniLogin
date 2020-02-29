@@ -21,6 +21,7 @@
     "build": "yarn build:cjs && yarn build:esm",
     "build:cjs": "tsc --outDir dist/cjs --declaration false --declarationMap false",
     "build:esm": "tsc --outDir dist/esm --module ES6",
+    "build:watch": "tsc --build",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only -t 15000 'test/**/*.ts'",
     "clean": "rimraf dist"

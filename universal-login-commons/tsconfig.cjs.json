@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "outDir": "dist/cjs",
+    "module": "commonjs",
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "esModuleInterop": true
+  },
+  "include": [
+    "src",
+    "test"
+  ]
+}
