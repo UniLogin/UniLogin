@@ -1,7 +1,7 @@
 import blocknativeSdk from 'bnc-sdk';
 import {API, Emitter, TransactionData} from 'bnc-sdk/dist/types/src/interfaces';
 
-const WebSocket = typeof window !== 'undefined' && window.WebSocket ? window.WebSocket : require('ws')
+const WebSocket = typeof window !== 'undefined' && window.WebSocket ? window.WebSocket : require('ws');
 
 export class NotifySdk {
   private readonly api: API;
@@ -33,14 +33,14 @@ export class TransactionObserver {
   }
 
   onSent(callback: (event: TransactionData) => void) {
-    this.emitter.on('txSent', callback as any)
+    this.emitter.on('txSent', callback as any);
   }
 
   onPool(callback: (event: TransactionData) => void) {
-    this.emitter.on('txPool', callback as any)
+    this.emitter.on('txPool', callback as any);
   }
 
   onConfirmed(callback: (event: TransactionData) => void) {
-    this.emitter.on('txConfirmed', callback as any)
+    this.emitter.on('txConfirmed', callback as any);
   }
 }

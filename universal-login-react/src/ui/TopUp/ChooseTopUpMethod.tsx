@@ -14,7 +14,6 @@ import {ChooseTopUpMethodHeader} from './ChooseTopUpMethodHeader';
 import {ModalProgressBar} from '../commons/ModalProgressBar';
 import {classForComponent} from '../utils/classFor';
 import {CompanyLogo} from '../commons/CompanyLogo';
-import {IncomingTransactionsView} from './IncomingTransactionsView';
 
 export interface ChooseTopUpMethodProps {
   walletService: WalletService;

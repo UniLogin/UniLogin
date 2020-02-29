@@ -4,8 +4,8 @@ import {State} from 'reactive-properties';
 import {TransactionData} from 'bnc-sdk/dist/types/src/interfaces';
 
 export interface TopUpTransaction {
-  transactionHash: string
-  value: CurrencyValue
+  transactionHash: string;
+  value: CurrencyValue;
 }
 
 export class TopUpTransactionObserver {
@@ -18,7 +18,6 @@ export class TopUpTransactionObserver {
     transactionObserver.onPool(data => this.handleEvent(data));
     transactionObserver.onSent(data => this.handleEvent(data));
     transactionObserver.onConfirmed(data => this.handleEvent(data));
-
   }
 
   private handleEvent(data: TransactionData) {

@@ -90,3 +90,4 @@ export {multiplyBy150Percent} from './core/utils/multiplyBy150Percent';
 export {isClassName} from './react/isClassName';
 export {raise} from './core/utils/raise';
 export {CurrencyValue} from './core/models/CurrencyValue';
+export {Network, asNetwork} from './core/models/Network';

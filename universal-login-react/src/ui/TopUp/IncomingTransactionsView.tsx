@@ -7,10 +7,10 @@ import receiveIcon from '../assets/icons/receive.svg';
 import externalLink from '../assets/icons/externalLink.svg';
 import {getEtherscanUrl} from '../../core/utils/getEtherscanUrl';
 
-const bem = withPrefix('u')
+const bem = withPrefix('u');
 
 export interface IncomingTransactionsViewProps {
-  futureWallet: FutureWallet
+  futureWallet: FutureWallet;
 }
 
 export const IncomingTransactionsView = ({futureWallet}: IncomingTransactionsViewProps) => {
@@ -22,7 +22,7 @@ export const IncomingTransactionsView = ({futureWallet}: IncomingTransactionsVie
   return (
     <List>
       {transactions.map(tx => (
-        <Row>
+        <Row key={tx.transactionHash}>
           <ReceiveIcon src={receiveIcon}/>
           <IncomingText>Incoming</IncomingText>
           <Value>{tx.value.toDecimals()} ETH</Value>
@@ -40,10 +40,10 @@ export const IncomingTransactionsView = ({futureWallet}: IncomingTransactionsVie
   );
 };
 
-const List = bem.ul('incoming-transactions-view')
-const Row = bem.li('incoming-transactions-view__row')
-const ReceiveIcon = bem.img('incoming-transactions-view__receive-icon')
-const IncomingText = bem.span('incoming-transactions-view__incoming-text')
-const Value = bem.span('incoming-transactions-view__value')
-const ExternalLinkIcon = bem.img('incoming-transactions-view__external-link-icon')
-const EthersanLink = bem.a('incoming-transactions-view__ethersan-link')
+const List = bem.ul('incoming-transactions-view');
+const Row = bem.li('incoming-transactions-view__row');
+const ReceiveIcon = bem.img('incoming-transactions-view__receive-icon');
+const IncomingText = bem.span('incoming-transactions-view__incoming-text');
+const Value = bem.span('incoming-transactions-view__value');
+const ExternalLinkIcon = bem.img('incoming-transactions-view__external-link-icon');
+const EthersanLink = bem.a('incoming-transactions-view__ethersan-link');

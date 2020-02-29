@@ -63,6 +63,6 @@ export class FutureWallet implements SerializableFutureWallet {
       utils.bigNumberify(this.gasPrice).mul(DEPLOY_GAS_LIMIT)));
 
   createTopUpObserver() {
-    return new TopUpTransactionObserver(this.sdk.getNotifySdk(), this.contractAddress)
+    return new TopUpTransactionObserver(this.sdk.getNotifySdk(), this.contractAddress);
   }
 }
