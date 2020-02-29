@@ -5,6 +5,7 @@ import {useThemeName, classForComponent} from '../utils/classFor';
 import {Label} from '../commons/Form/Label';
 import {InputCopy} from '../commons/Form/InputCopy';
 import {InfoText} from '../commons/Text/InfoText';
+import {IncomingTransactionsView} from './IncomingTransactionsView';
 
 interface TopUpWithCryptoProps {
   walletService: WalletService;
@@ -64,6 +65,7 @@ export const TopUpWithCrypto = ({walletService}: TopUpWithCryptoProps) => {
             ? <DeploymentWithCryptoInfo minimalAmount={walletService.getRequiredDeploymentBalance()}/>
             : <TopUpCryptoInfo/>
           }
+          <IncomingTransactionsView walletService={walletService}/>
         </div>
       </div>
     </div>

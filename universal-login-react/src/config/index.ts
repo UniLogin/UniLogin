@@ -4,9 +4,9 @@ require('dotenv').config();
 import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 const developmentConfig: Config = {
-  domains: ['mylogin.eth', 'poppularapp.eth', 'universal-id.eth'],
-  relayerUrl: 'http://localhost:3311',
-  jsonRpcUrl: 'http://localhost:18545',
+  domains: ['poppularapp.test'],
+  relayerUrl: 'https://relayer-kovan.herokuapp.com',
+  jsonRpcUrl: 'https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
   tokens: [ETHER_NATIVE_TOKEN.address, process.env.SAI_TOKEN_ADDRESS!, process.env.DAI_TOKEN_ADDRESS!],
   saiTokenAddress: process.env.SAI_TOKEN_ADDRESS,
   ipGeolocationApi: {
