@@ -100,7 +100,7 @@ export const App = () => {
                   <Onboarding
                     sdk={sdk}
                     walletService={walletService}
-                    domains={['poppularapp.test']}
+                    domains={['mylogin.eth', 'universal-id.eth', 'poppularapp.eth']}
                     tryEnablingMetamask={tryEnablingMetamask}
                     onConnect={() => console.log('connected')}
                     onCreate={() => history.push('/onboarding/success')}
