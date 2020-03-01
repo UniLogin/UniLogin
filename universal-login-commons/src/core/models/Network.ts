@@ -9,26 +9,26 @@ export type Network
 
 export const Network = {
   toNumericId(network: Network): number {
-    switch(network) {
+    switch (network) {
       case '1':
       case 'mainnet':
-        return 1
+        return 1;
       case '3':
       case 'ropsten':
-        return 3
+        return 3;
       case '4':
       case 'rinkeby':
-        return 4
+        return 4;
       case '42':
       case 'kovan':
-        return 42
+        return 42;
       case '8545':
       case 'ganache':
-        return 8545
+        return 8545;
       default:
-        throw new TypeError(`INvalid network: ${network}`)
+        throw new TypeError(`INvalid network: ${network}`);
     }
-  }
-}
+  },
+};
 
 export const asNetwork = asEnum<Network>(['1', 'mainnet', '3', 'ropsten', '4', 'rinkeby', '42', 'kovan', '8545', 'ganache'], 'Network');
