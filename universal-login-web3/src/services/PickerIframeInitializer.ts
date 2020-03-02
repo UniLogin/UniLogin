@@ -3,8 +3,8 @@ import {setupStrategies} from './setupStrategies';
 import {combine, flatMap, Property, State} from 'reactive-properties';
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {IframeInitializerBase} from './IframeInitializerBase';
-import {ApplicationInfo} from '@unilogin/commons';
-import {getConfigForNetwork, Network} from '../config';
+import {ApplicationInfo, Network} from '@unilogin/commons';
+import {getConfigForNetwork} from '../config';
 import {IframeBridgeEndpoint} from './IframeBridgeEndpoint';
 
 export class PickerIframeInitializer extends IframeInitializerBase {
