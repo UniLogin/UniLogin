@@ -1,0 +1,100 @@
+@import '../helpers/breakpoints'
+
+.unilogin-component-connection
+
+  .unilogin-component-connection-wrapper
+    padding: 80px 30px 30px
+
+  .unilogin-component-connection-title
+    margin: 0 auto 40px
+    font-weight: 600
+    font-size: 20px
+    line-height: 30px
+    text-align: center
+
+  .unilogin-component-connection-content
+    max-width: 800px
+    width: 100%
+    margin: 0 auto
+
+  .unilogin-component-connection-row-wrapper
+    padding-left: 25px
+    overflow-x: auto
+
+  .unilogin-component-connection-row
+    display: flex
+    min-width: 740px
+    margin-bottom: 20px
+    padding-right: 25px
+
+  .unilogin-component-connection-method
+    min-height: 370px
+    display: flex
+    flex-direction: column
+    justify-content: flex-end
+    width: 50%
+    padding: 30px 30px 40px
+    text-align: center
+
+  .unilogin-component-connection-method + .unilogin-component-connection-method
+    margin-left: 30px
+
+  .unilogin-component-connection-method-img
+    display: block
+    width: 87px
+    height: 98px
+    margin: 0 auto 40px
+
+  .unilogin-component-connection-method-title
+    margin: 0 0 5px
+    font-weight: 500
+    font-size: 18px
+    line-height: 27px
+    text-align: center
+
+  .unilogin-component-connection-method-text
+    margin: 0 0 40px
+    font-size: 14px
+    line-height: 24px
+    text-align: center
+
+  .unilogin-component-connection-method-link
+    color: #FFFFFF
+    height: 40px
+    width: 235px
+    margin: 0 auto
+
+  .unilogin-component-connection-method-link span
+    font-weight: 500
+    font-size: 14px
+    line-height: 17px
+    text-align: center
+
+  .unilogin-component-connection-cancel-button
+    display: block
+    width: 235px
+    height: 40px
+    margin: 0 auto
+    font-weight: 500
+    font-size: 14px
+    line-height: 17px
+    text-align: center
+
+  .unilogin-component-scroll-progress-dots-container
+    margin: 20px auto
+    max-width: 80px
+    justify-content: center
+    display: none
+
+    +media(s)
+      display: flex
+
+  .unilogin-component-scroll-progress-dot
+    content: ''
+    display: inline-block
+    margin-left: 5px
+    margin-right: 5px
+    width: 11px
+    height: 11px
+    border-radius: 50%
+    border: 1px solid transparent
