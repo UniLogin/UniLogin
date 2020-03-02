@@ -15,14 +15,14 @@
     "declarationMap": true,
     "target": "es5",
     "moduleResolution": "node"
-  }
-//  "exclude": [
-//    "**/build",
-//    "**/dist",
-//    "@unilogin/commons/src**",
-//    "@unilogin/relayer/src**",
-//    "@unilogin/sdk/src**",
-//    "@unilogin/react/src**",
-//    "@unilogin/ops/src**"
-//  ]
+  },
+  "exclude": [
+    "**/build",
+    "**/dist",
+    "@unilogin/commons/src**",
+    "@unilogin/relayer/src**",
+    "@unilogin/sdk/src**",
+    "@unilogin/react/src**",
+    "@unilogin/ops/src**"
+  ]
 }
