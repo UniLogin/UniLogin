@@ -6,6 +6,7 @@ import {ConnectWithPassphrase} from './ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectWithEmoji';
 import {Switch, Route} from 'react-router-dom';
 import {useHistory} from 'react-router';
+import {ConnectionFlowWrapper} from './ConnectionFlowWrapper';
 
 export type ConnectModal = 'chooseMethod' | 'emoji' | 'recover';
 
@@ -30,12 +31,14 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, sdk, w
 
   return <Switch>
     <Route exact path={join(basePath, 'chooseMethod')}>
-      <ChooseConnectionMethod
-        onConnectWithDeviceClick={onConnectWithDeviceClick}
-        onConnectWithPassphraseClick={() => history.push(join(basePath, 'recover'), {ensName: name})}
-        onCancel={onCancel}
-        className={className}
-      />
+      <ConnectionFlowWrapper progress={4} steps={5}>
+        <ChooseConnectionMethod
+          onConnectWithDeviceClick={onConnectWithDeviceClick}
+          onConnectWithPassphraseClick={() => history.push(join(basePath, 'recover'), {ensName: name})}
+          onCancel={onCancel}
+          className={className}
+        />
+      </ConnectionFlowWrapper>
     </Route>
     <Route exact path={join(basePath, 'recover')}>
       <ConnectWithPassphrase
