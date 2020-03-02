@@ -13,4 +13,5 @@ export interface SdkConfig {
   mineableFactoryTick: number;
   mineableFactoryTimeout: number;
   storageService: IStorageService;
+  notifySdkApiKey: string;
 }
