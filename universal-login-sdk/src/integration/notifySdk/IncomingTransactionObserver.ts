@@ -1,9 +1,9 @@
-import {NotifySdk} from './NotifySdk';
 import {CurrencyValue, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {State} from 'reactive-properties';
 import {TransactionData} from 'bnc-sdk/dist/types/src/interfaces';
 import {utils} from 'ethers';
 import {BigNumberish} from 'ethers/utils';
+import {INotifySdk} from './interfaces';
 
 export interface IncomingTransaction {
   transactionHash: string;
@@ -12,7 +12,7 @@ export interface IncomingTransaction {
 
 export class IncomingTransactionObserver {
   constructor(
-    notifySdk: NotifySdk,
+    notifySdk: INotifySdk,
     private readonly address: string,
   ) {
     this.transactions = new State([]);

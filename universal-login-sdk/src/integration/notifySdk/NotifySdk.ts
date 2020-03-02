@@ -1,16 +1,27 @@
 import blocknativeSdk from 'bnc-sdk';
 import {API} from 'bnc-sdk/dist/types/src/interfaces';
 import {TransactionObserver} from './TransactionObserver';
+import {INotifySdk} from './interfaces';
+import {MockNotifySdk} from './MockNotifySdk';
+import {Network} from '@unilogin/commons';
 
 const WebSocket = typeof window !== 'undefined' && window.WebSocket ? window.WebSocket : require('ws');
 
-export class NotifySdk {
+export class NotifySdk implements INotifySdk {
+  static createForNetwork(dappId: string, network: Network): INotifySdk {
+    if (network === 'test') {
+      return new MockNotifySdk();
+    } else {
+      return new NotifySdk(dappId, network);
+    }
+  }
+
   private readonly api: API;
 
-  constructor(dappId: string, networkId: number) {
+  constructor(dappId: string, network: Network) {
     this.api = blocknativeSdk({
       dappId,
-      networkId,
+      networkId: Network.toNumericId(network),
       ws: WebSocket,
     });
   }

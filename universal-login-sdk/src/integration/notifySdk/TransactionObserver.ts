@@ -1,6 +1,7 @@
 import {Emitter, TransactionData} from 'bnc-sdk/dist/types/src/interfaces';
+import {ITransactionObserver} from './interfaces';
 
-export class TransactionObserver {
+export class TransactionObserver implements ITransactionObserver {
   constructor(
     private readonly emitter: Emitter,
   ) { }
