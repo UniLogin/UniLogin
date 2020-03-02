@@ -2,7 +2,7 @@ import {ULWeb3Provider} from '../ULWeb3Provider';
 import {Property} from 'reactive-properties';
 import {IframeInitializerBase} from './IframeInitializerBase';
 import {Provider} from 'web3/providers';
-import {Network} from '../config';
+import {Network} from '@unilogin/commons';
 import {IframeBridgeEndpoint} from './IframeBridgeEndpoint';
 
 export class ProviderOnlyIframeInitializer extends IframeInitializerBase {
