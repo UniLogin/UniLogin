@@ -7,7 +7,7 @@ import UniversalLoginSDK from '../sdk';
 import {utils} from 'ethers';
 import {setupInitData} from '../../core/utils/setupInitData';
 import {ENSService} from '../../integration/ethereum/ENSService';
-import {TopUpTransactionObserver} from '../../integration/notifySdk/TopUpTransactionObserver';
+import {IncomingTransactionObserver} from '../../integration/notifySdk/IncomingTransactionObserver';
 
 export class FutureWallet implements SerializableFutureWallet {
   contractAddress: string;
@@ -62,7 +62,7 @@ export class FutureWallet implements SerializableFutureWallet {
     multiplyBy150Percent(
       utils.bigNumberify(this.gasPrice).mul(DEPLOY_GAS_LIMIT)));
 
-  createTopUpObserver() {
-    return new TopUpTransactionObserver(this.sdk.getNotifySdk(), this.contractAddress);
+  createIncomingTransactionObserver() {
+    return new IncomingTransactionObserver(this.sdk.getNotifySdk(), this.contractAddress);
   }
 }

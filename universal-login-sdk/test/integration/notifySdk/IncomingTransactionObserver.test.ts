@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {tryExtractTopUpTransaction} from '../../../src/integration/notifySdk/TopUpTransactionObserver';
+import {tryExtractIncomingTransaction} from '../../../src/integration/notifySdk/IncomingTransactionObserver';
 import {CurrencyValue, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 describe('UNIT: tryExtractTopUpTransaction', () => {
   it('ETH transfer', () => {
-    expect(tryExtractTopUpTransaction({
+    expect(tryExtractIncomingTransaction({
       monitorVersion: '0.46.5',
       status: 'pending',
       monitorId: 'PARITY_42_A_PROD',
@@ -37,7 +37,7 @@ describe('UNIT: tryExtractTopUpTransaction', () => {
   });
 
   it('filters out ETH transfers with 0 value', () => {
-    expect(tryExtractTopUpTransaction({
+    expect(tryExtractIncomingTransaction({
       monitorVersion: '0.46.5',
       status: 'confirmed',
       timePending: '1970',
@@ -70,7 +70,7 @@ describe('UNIT: tryExtractTopUpTransaction', () => {
   });
 
   it('filters out ETH transfers to different recipient', () => {
-    expect(tryExtractTopUpTransaction({
+    expect(tryExtractIncomingTransaction({
       monitorVersion: '0.46.5',
       status: 'pending',
       monitorId: 'PARITY_42_A_PROD',
@@ -100,7 +100,7 @@ describe('UNIT: tryExtractTopUpTransaction', () => {
   });
 
   it('ERC20 token transfer', () => {
-    expect(tryExtractTopUpTransaction({
+    expect(tryExtractIncomingTransaction({
       monitorVersion: '0.46.5',
       status: 'confirmed',
       timePending: '576',
@@ -145,7 +145,7 @@ describe('UNIT: tryExtractTopUpTransaction', () => {
   });
 
   it('filters out ERC20 token transfers with 0 value', () => {
-    expect(tryExtractTopUpTransaction({
+    expect(tryExtractIncomingTransaction({
       monitorVersion: '0.46.5',
       status: 'confirmed',
       timePending: '576',
@@ -187,7 +187,7 @@ describe('UNIT: tryExtractTopUpTransaction', () => {
   });
 
   it('filters out ERC20 token transfer to different recipient', () => {
-    expect(tryExtractTopUpTransaction({
+    expect(tryExtractIncomingTransaction({
       monitorVersion: '0.46.5',
       status: 'confirmed',
       timePending: '576',

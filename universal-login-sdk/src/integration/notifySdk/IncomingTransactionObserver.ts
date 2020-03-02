@@ -5,12 +5,12 @@ import {TransactionData} from 'bnc-sdk/dist/types/src/interfaces';
 import {utils} from 'ethers';
 import {BigNumberish} from 'ethers/utils';
 
-export interface TopUpTransaction {
+export interface IncomingTransaction {
   transactionHash: string;
   value: CurrencyValue;
 }
 
-export class TopUpTransactionObserver {
+export class IncomingTransactionObserver {
   constructor(
     notifySdk: NotifySdk,
     private readonly address: string,
@@ -23,22 +23,22 @@ export class TopUpTransactionObserver {
   }
 
   private handleEvent(data: TransactionData) {
-    const transaction = tryExtractTopUpTransaction(data, this.address);
+    const transaction = tryExtractIncomingTransaction(data, this.address);
     if (transaction) {
       this.addTransaction(transaction);
     }
   }
 
-  private addTransaction(transaction: TopUpTransaction) {
+  private addTransaction(transaction: IncomingTransaction) {
     if (this.transactions.get().every(tx => tx.transactionHash !== transaction.transactionHash)) {
       this.transactions.set([...this.transactions.get(), transaction]);
     }
   }
 
-  readonly transactions: State<TopUpTransaction[]>;
+  readonly transactions: State<IncomingTransaction[]>;
 }
 
-export function tryExtractTopUpTransaction(data: TransactionData, receiver: string): TopUpTransaction | undefined {
+export function tryExtractIncomingTransaction(data: TransactionData, receiver: string): IncomingTransaction | undefined {
   if (
     isEthTransferTo(receiver, data) &&
     data.value &&

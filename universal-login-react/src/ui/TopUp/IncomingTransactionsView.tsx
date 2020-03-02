@@ -12,7 +12,7 @@ export interface IncomingTransactionsViewProps {
 }
 
 export const IncomingTransactionsView = ({futureWallet}: IncomingTransactionsViewProps) => {
-  const [observer] = useState(() => futureWallet.createTopUpObserver());
+  const [observer] = useState(() => futureWallet.createIncomingTransactionObserver());
   const transactions = useProperty(observer.transactions);
 
   const relayerConfig = futureWallet.sdk.getRelayerConfig();
