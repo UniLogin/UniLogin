@@ -25,7 +25,11 @@ export const IncomingTransactionsView = ({futureWallet}: IncomingTransactionsVie
         <Row key={tx.transactionHash}>
           <ReceiveIcon src={receiveIcon}/>
           <IncomingText>Incoming</IncomingText>
-          <Value>{tx.value.toDecimals()} ETH</Value>
+          <Value>
+            {tx.value.toDecimals()}
+            {' '}
+            {futureWallet.sdk.tokensDetailsStore.getTokenByAddress(tx.value.address).symbol}
+          </Value>
           <ExternalLinkIcon src={externalLink}/>
           <EthersanLink
             href={getEtherscanUrl(relayerConfig.chainSpec.name, tx.transactionHash)}
