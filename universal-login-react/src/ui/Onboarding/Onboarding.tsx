@@ -9,7 +9,6 @@ import {Route, MemoryRouter} from 'react-router-dom';
 import {Switch} from 'react-router';
 import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocation';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
-import {classForComponent} from '../utils/classFor';
 import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
 
 export interface OnboardingProps {
@@ -70,7 +69,7 @@ export const Onboarding = (props: OnboardingProps) => {
             <Route
               path="/connectFlow"
               render={({history, location}) =>
-                <ModalWrapper message='This is a test environment running on Ropsten network' modalClassName={classForComponent('connection-modal-default-theme')} hideModal={() => history.push('/selector')}>
+                <ModalWrapper message={props.sdk.getNotice()} hideModal={() => history.push('/selector')}>
                   <ConnectionFlow
                     basePath="/connectFlow"
                     onCancel={() => history.push('/selector')}
