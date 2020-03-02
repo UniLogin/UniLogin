@@ -18,10 +18,9 @@
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "yarn build:cjs && yarn build:esm",
-    "build:cjs": "tsc --outDir dist/cjs --declaration false --declarationMap false",
-    "build:esm": "tsc --outDir dist/esm --module ES6",
-    "build:watch": "tsc --build",
+    "build": "yarn build:esm && yarn build:cjs",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc --build",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only -t 15000 'test/**/*.ts'",
     "clean": "rimraf dist"

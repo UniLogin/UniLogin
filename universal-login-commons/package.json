@@ -8,9 +8,9 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "yarn build:cjs && yarn build:esm",
+    "build": "yarn build:esm && yarn build:cjs",
     "build:cjs": "tsc -p ./tsconfig.cjs.json",
-    "build:esm": "tsc",
+    "build:esm": "tsc --build",
     "clean": "rimraf dist",
     "test": "mocha -r ts-node/register/transpile-only -t 10000 'test/**/*.ts'",
     "lint": "eslint '{src,test}/**/*.ts'"
