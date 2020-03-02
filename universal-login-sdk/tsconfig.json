@@ -1,13 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "allowJs": false,
-    "outDir": "dist",
+    "outDir": "dist/esm",
     "composite": true,
-    "lib": [
-      "esnext",
-      "dom"
-    ]
   },
   "references": [
     {

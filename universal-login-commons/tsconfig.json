@@ -1,17 +1,9 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "allowJs": false,
     "outDir": "dist/esm",
     "module": "ES6",
     "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "esModuleInterop": true
   },
   "include": [
     "./src/**/*",
