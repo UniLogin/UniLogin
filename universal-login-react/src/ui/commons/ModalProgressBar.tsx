@@ -4,6 +4,7 @@ import {getModalProgressWidth} from '../../core/utils/getModalProgressWidth';
 import {MAX_PROGRESS_BAR_WIDTH} from '../../core/constants/maxProgressBarWidth';
 import '../styles/base/modalProgressBar.sass';
 import '../styles/themes/UniLogin/components/modal/modalProgressBarThemeUniLogin.sass';
+import '../styles/themes/Legacy/components/modal/modalProgressBarThemeLegacy.sass';
 import '../styles/themes/Jarvis/components/modal/modalProgressBarThemeJarvis.sass';
 
 interface ModalProgressBarProps {
