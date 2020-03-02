@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
 import {FutureWallet} from '@unilogin/sdk';
 import {useProperty} from '../..';
-import {withPrefix} from 'bem-components-react';
 import '../styles/base/incomingTransactionsView.sass';
 import receiveIcon from '../assets/icons/receive.svg';
 import externalLink from '../assets/icons/externalLink.svg';
 import {getEtherscanUrl} from '../../core/utils/getEtherscanUrl';
-
-const bem = withPrefix('u');
+import {bem} from '../utils/bem';
 
 export interface IncomingTransactionsViewProps {
   futureWallet: FutureWallet;
