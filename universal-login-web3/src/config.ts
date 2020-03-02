@@ -1,14 +1,6 @@
-import {asEnum} from '@restless/sanitizers';
 import {Provider} from 'web3/providers';
 import {HttpProvider} from './services/HttpProvider';
-export type Network
-  = '1' | 'mainnet'
-  | '3' | 'ropsten'
-  | '4' | 'rinkeby'
-  | '42' | 'kovan'
-  | '8545' | 'ganache';
-
-export const asNetwork = asEnum<Network>(['1', 'mainnet', '3', 'ropsten', '4', 'rinkeby', '42', 'kovan', '8545', 'ganache'], 'Network');
+import {Network} from '@unilogin/commons';
 
 export interface Config {
   provider: Provider;
