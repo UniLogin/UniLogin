@@ -12,7 +12,7 @@ interface ModalProgressBarProps {
 }
 
 export const ModalProgressBar = ({steps = 0, progress = 0}: ModalProgressBarProps) => {
-  let barWidth = getModalProgressWidth(progress, steps) / MAX_PROGRESS_BAR_WIDTH * 100
+  const barWidth = getModalProgressWidth(progress, steps) / MAX_PROGRESS_BAR_WIDTH * 100;
   return (
     <div className={useClassFor('modal-progress-bar')}>
       <div style={{width: `${barWidth}%`}} className={classForComponent('modal-progress-bar-current')}></div>

@@ -3,7 +3,6 @@ import {CompanyLogo} from '../commons/CompanyLogo';
 import {ModalProgressBar} from '../commons/ModalProgressBar';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/connectionFlowWrapper.sass';
-import {ModalText} from '../commons/Modal/ModalText';
 
 interface ConnectionFlowWrapperProps {
   children: ReactNode;
