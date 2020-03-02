@@ -70,7 +70,7 @@ export const Onboarding = (props: OnboardingProps) => {
             <Route
               path="/connectFlow"
               render={({history, location}) =>
-                <ModalWrapper modalClassName={classForComponent('connection-modal-default-theme')} hideModal={() => history.push('/selector')}>
+                <ModalWrapper message='This is a test environment running on Ropsten network' modalClassName={classForComponent('connection-modal-default-theme')} hideModal={() => history.push('/selector')}>
                   <ConnectionFlow
                     basePath="/connectFlow"
                     onCancel={() => history.push('/selector')}
