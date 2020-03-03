@@ -7,11 +7,9 @@
   "module": "dist/esm/src/index.js",
   "license": "MIT",
   "scripts": {
-    "prebuild": "yarn clean",
     "build": "yarn build:esm && yarn build:cjs",
-    "build:cjs": "tsc --build ./tsconfig.cjs.json",
     "build:esm": "tsc --build",
-    "clean": "rimraf dist",
+    "build:cjs": "tsc --build ./tsconfig.cjs.json",
     "test": "cross-env TS_NODE_PROJECT=tsconfig.cjs.json mocha -r ts-node/register/transpile-only -t 10000 'test/**/*.ts'",
     "lint": "eslint '{src,test}/**/*.ts'"
   },

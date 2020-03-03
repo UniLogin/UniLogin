@@ -19,13 +19,11 @@
     "ws": "^7.2.1"
   },
   "scripts": {
-    "prebuild": "yarn clean",
     "build": "yarn build:esm && yarn build:cjs",
-    "build:cjs": "tsc --build tsconfig.cjs.json",
     "build:esm": "tsc --build",
-    "lint": "eslint '{src,test}/**/*.{ts,js}'",
+    "build:cjs": "tsc --build tsconfig.cjs.json",
     "test": "cross-env NODE_ENV=test TS_NODE_PROJECT=tsconfig.cjs.json mocha -r ts-node/register/transpile-only -t 15000 'test/**/*.ts'",
-    "clean": "rimraf dist"
+    "lint": "eslint '{src,test}/**/*.{ts,js}'"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
