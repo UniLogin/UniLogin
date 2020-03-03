@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import Spinner from '../commons/Spinner';
 import {WalletService} from '@unilogin/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import {useThemeClassFor} from '../utils/classFor';
 import './../styles/connectPassphrase.sass';
 import './../styles/connectPassphraseDefault.sass';
+import './../styles/themes/UniLogin/connectWithPassphraseThemeUniLogin.sass';
 
 interface ConnectWithPassphraseProps {
   name: string;
@@ -30,7 +32,7 @@ export const ConnectWithPassphrase = ({onRecover, name, walletService, className
   };
 
   return (
-    <div className="universal-login-passphrase">
+    <div className={`${useThemeClassFor()} universal-login-passphrase`}>
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="connect-passphrase">
           <h1 className="connect-passphrase-title">Connect with passphrase</h1>
