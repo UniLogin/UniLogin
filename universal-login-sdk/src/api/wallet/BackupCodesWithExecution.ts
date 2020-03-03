@@ -1,4 +1,4 @@
-import {MessageStatus} from '@unilogin/commons';
+import {MineableStatus} from '@unilogin/commons';
 import {Execution} from '../../core/services/ExecutionFactory';
 
 export class BackupCodesWithExecution {
@@ -10,5 +10,5 @@ export class BackupCodesWithExecution {
     return this.codes;
   };
 
-  waitForTransactionHash = (): Promise<MessageStatus> => this.execution.waitForTransactionHash();
+  waitForTransactionHash = (): Promise<MineableStatus> => this.execution.waitForTransactionHash();
 }

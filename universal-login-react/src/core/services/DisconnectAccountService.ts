@@ -1,6 +1,7 @@
 import {WalletService} from '@unilogin/sdk';
-import {DEFAULT_GAS_PRICE} from '@unilogin/commons';
+import {DEFAULT_GAS_PRICE, ensureNotFalsy} from '@unilogin/commons';
 import {DISCONNECT} from '../constants/verifyFields';
+import {MissingParameter} from '../../core/utils/errors';
 
 interface ErrorsType {
   usernameError: boolean;
@@ -35,6 +36,7 @@ export const disconnectAccount = async (
     const execution = await walletService.removeWallet({gasPrice: DEFAULT_GAS_PRICE});
     if (execution) {
       const {transactionHash} = await execution.waitForTransactionHash();
+      ensureNotFalsy(transactionHash, MissingParameter, 'transaction hash');
       onDisconnectProgress(transactionHash);
       await execution.waitToBeSuccess();
     }
