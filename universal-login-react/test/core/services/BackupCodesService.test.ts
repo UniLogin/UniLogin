@@ -36,7 +36,7 @@ describe('UNIT: BackupCodesService', () => {
       await backupCodesService.generate(undefined);
       expect(backupCodesService.state.get()).to.deep.eq({
         kind: 'Failure',
-        error: 'Missing gas parameters',
+        error: 'Missing parameter: gas parameters',
       });
     });
 

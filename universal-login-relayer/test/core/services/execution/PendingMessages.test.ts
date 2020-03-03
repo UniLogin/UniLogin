@@ -1,4 +1,4 @@
-import {calculateMessageHash, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION, SignedMessage, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH, UnsignedMessage, sign} from '@unilogin/commons';
+import {calculateMessageHash, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION, SignedMessage, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH, UnsignedMessage} from '@unilogin/commons';
 import {messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@unilogin/contracts';
 import {emptyMessage, executeSetRequiredSignatures} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';

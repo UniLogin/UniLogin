@@ -35,7 +35,7 @@ describe('UNIT: ExecutionFactory', () => {
 
   beforeEach(() => {
     status = {...defaultStatus};
-    getStatus.returns({status: {}})
+    getStatus.returns({status: {}});
     getStatus.onCall(1).returns(status);
     execute.returns({status: {...defaultStatus}});
   });
@@ -67,7 +67,6 @@ describe('UNIT: ExecutionFactory', () => {
       execute.returns({status});
       const execution = await executionFactory.createExecution(signedMessage);
       await expect(execution.waitToBeSuccess()).to.be.rejectedWith('Timeout exceeded');
-      console.log("after deep eq to status");
       expect(getStatus.callCount).be.at.least(1);
       (executionFactory as any).timeout = 200;
     });
