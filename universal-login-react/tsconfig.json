@@ -8,8 +8,6 @@
       "../node_modules/@types",
       "shims"
     ],
-    "allowJs": false,
-    "downlevelIteration": true
   },
   "include": [
     "src",

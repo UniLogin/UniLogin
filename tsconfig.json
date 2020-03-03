@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "allowJs": true,
+    "allowJs": false,
     "esModuleInterop": true,
     "lib": [
       "esnext",
@@ -8,6 +8,7 @@
     ],
     "module": "commonjs",
     "resolveJsonModule": true,
+    "downlevelIteration": true,
     "skipLibCheck": true,
     "strict": true,
     "declaration": true,

@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist/cjs",
+    "module": "commonjs",
+  },
+  "references": [
+    {
+      "path": "../universal-login-commons/tsconfig.cjs.json"
+    }
+  ]
+}

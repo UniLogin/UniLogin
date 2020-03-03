@@ -1,15 +1,20 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "allowJs": false,
-    "outDir": "dist",
-    "lib": [
-      "esnext",
-      "dom"
-    ]
+    "outDir": "dist/esm",
+    "composite": true,
   },
+  "references": [
+    {
+      "path": "../universal-login-commons"
+    }
+  ],
   "include": [
     "src",
     "test"
+  ],
+  "exclude": [
+    "./dist",
+    "../universal-login-commons/dist"
   ]
 }
