@@ -6,7 +6,7 @@ import {UnexpectedWalletState} from '../ui/utils/errors';
 import {ConfirmationResponse} from '../models/ConfirmationResponse';
 
 export class UIController {
-  activeModal = new State<ULWeb3ProviderState>({kind: 'IDLE'});
+  activeModal = new State<ULWeb3ProviderState>({kind: 'WAIT_FOR_APP'});
   dashboardVisible = new State<boolean>(false);
 
   isUiVisible: Property<boolean>;
@@ -79,5 +79,15 @@ export class UIController {
 
   setDashboardVisibility(visible: boolean) {
     this.dashboardVisible.set(visible);
+  }
+
+  appInitialization() {
+    this.activeModal.set({kind: 'WAIT_FOR_APP'});
+  }
+
+  finishAppInitialization() {
+    if (this.activeModal.get().kind === 'WAIT_FOR_APP') {
+      this.hideModal();
+    }
   }
 }

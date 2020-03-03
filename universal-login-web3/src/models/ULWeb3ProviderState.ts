@@ -4,6 +4,8 @@ import {Message} from '@unilogin/commons';
 export type ULWeb3ProviderState = {
   kind: 'IDLE';
 } | {
+  kind: 'WAIT_FOR_APP';
+} | {
   kind: 'ONBOARDING';
 } | {
   kind: 'TRANSACTION_CONFIRMATION';
