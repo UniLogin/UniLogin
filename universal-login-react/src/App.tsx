@@ -188,12 +188,12 @@ export const App = () => {
               </Route>
               <Route
                 path="/waitForTransactionWithHash"
-                render={({location}) => {
+                render={({location, history}) => {
                   if (!relayerConfig) {
                     return <Spinner />;
                   } else {
                     return (
-                      <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
+                      <ModalWrapper hideModal={() => history.push('/waitForTransaction')} message="This is a test environment running on Ropsten network">
                         <WaitingForTransaction
                           action="Waiting for transfer"
                           relayerConfig={relayerConfig}
@@ -206,12 +206,12 @@ export const App = () => {
               </Route>
               <Route
                 path="/waitForTransactionWithoutHash"
-                render={({location}) => {
+                render={({location,  history}) => {
                   if (!relayerConfig) {
                     return <Spinner />;
                   } else {
                     return (
-                      <ModalWrapper hideModal={() => console.log('hide modal')} message="This is a test environment running on Ropsten network">
+                      <ModalWrapper hideModal={() => history.push('/waitForTransaction')} message="This is a test environment running on Ropsten network">
                         <WaitingForTransaction
                           action="Waiting for transfer"
                           relayerConfig={relayerConfig}
