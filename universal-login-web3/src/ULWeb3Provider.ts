@@ -87,7 +87,6 @@ export class ULWeb3Provider implements Provider {
   }
 
   async init() {
-    this.uiController.appInitialization();
     if (this.browserChecker.isLocalStorageBlocked()) {
       this.uiController.showLocalStorageWarning();
       return;
