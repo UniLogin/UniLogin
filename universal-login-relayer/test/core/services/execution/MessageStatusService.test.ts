@@ -31,7 +31,6 @@ describe('UNIT: MessageStatusService', async () => {
     expect(await messageStatusService.getStatus(messageHash)).to.deep.eq({
       collectedSignatures: [],
       totalCollected: 0,
-      required: 1,
       state: 'AwaitSignature',
       messageHash,
     });
@@ -42,7 +41,6 @@ describe('UNIT: MessageStatusService', async () => {
     expect(await messageStatusService.getStatus(messageHash)).to.deep.eq({
       collectedSignatures: [message.signature],
       totalCollected: 1,
-      required: 1,
       state: 'AwaitSignature',
       messageHash,
     });

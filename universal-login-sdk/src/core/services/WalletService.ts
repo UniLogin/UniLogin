@@ -47,6 +47,11 @@ export class WalletService {
     return this.state.wallet;
   }
 
+  getFutureWallet() {
+    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
+    return this.state.wallet;
+  }
+
   private getDeployingWallet(): DeployingWallet {
     ensure(this.state.kind === 'Deploying', InvalidWalletState, 'Deploying', this.state.kind);
     return this.state.wallet;

@@ -19,3 +19,4 @@ export {encodeERC20Transfer} from './core/utils/encodeTransferToMessage';
 export {InvalidWalletState} from './core/utils/errors';
 export {setBetaNotice} from './core/utils/setBetaNotice';
 export {getEtherPriceInCurrency} from './integration/http/cryptocompare';
+export {IncomingTransactionObserver} from './integration/notifySdk/IncomingTransactionObserver';

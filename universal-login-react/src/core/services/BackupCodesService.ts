@@ -1,6 +1,7 @@
 import {DeployedWallet} from '@unilogin/sdk';
-import {ensureNotFalsy, GasParameters} from '@unilogin/commons';
+import {ensureNotFalsy, GasParameters, ensure} from '@unilogin/commons';
 import {State} from 'reactive-properties';
+import {MissingParameter} from '../../core/utils/errors';
 
 export type BackupCodesGenerationState = {
   kind: 'Initial';
@@ -25,9 +26,10 @@ export class BackupCodesService {
   async generate(gasParameters: GasParameters | undefined) {
     try {
       this.state.set({kind: 'InProgress'});
-      ensureNotFalsy(gasParameters, Error, 'Missing gas parameters');
+      ensureNotFalsy(gasParameters, MissingParameter, 'gas parameters');
       const {waitToBeSuccess, waitForTransactionHash} = await this.deployedWallet.generateBackupCodes(gasParameters);
       const {transactionHash} = await waitForTransactionHash();
+      ensure(transactionHash !== null, Error, 'transaction hash can\'t be null');
       this.state.set({kind: 'InProgress', transactionHash});
       const codes = await waitToBeSuccess();
       this.state.set({kind: 'Generated', codes});

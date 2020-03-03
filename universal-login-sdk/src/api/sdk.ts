@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus} from '@unilogin/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, asNetwork} from '@unilogin/commons';
 import {BlockchainService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -24,6 +24,9 @@ import {BlockNumberState} from '../core/states/BlockNumberState';
 import {WalletContractService} from '../integration/ethereum/WalletContractService';
 import {Beta2Service} from '../integration/ethereum/Beta2Service';
 import {GnosisSafeService} from '../integration/ethereum/GnosisSafeService';
+import {NotifySdk} from '../integration/notifySdk/NotifySdk';
+import {cast} from '@restless/sanitizers';
+import {INotifySdk} from '../integration/notifySdk/interfaces';
 
 class UniversalLoginSDK {
   readonly provider: providers.Provider;
@@ -49,6 +52,7 @@ class UniversalLoginSDK {
   aggregateBalanceObserver?: AggregateBalanceObserver;
   futureWalletFactory?: FutureWalletFactory;
   relayerConfig?: PublicRelayerConfig;
+  notifySdk?: INotifySdk;
 
   constructor(
     relayerUrl: string,
@@ -215,6 +219,17 @@ class UniversalLoginSDK {
 
   getGasModes(): Promise<GasMode[]> {
     return this.gasModeService.getModes();
+  }
+
+  getNotifySdk(): INotifySdk {
+    if (!this.notifySdk) {
+      const relayerConfig = this.getRelayerConfig();
+      this.notifySdk = NotifySdk.createForNetwork(
+        this.sdkConfig.notifySdkApiKey,
+        cast(relayerConfig.chainSpec.name, asNetwork),
+      );
+    }
+    return this.notifySdk!;
   }
 
   async start() {
