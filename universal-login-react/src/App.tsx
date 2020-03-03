@@ -23,6 +23,7 @@ import {WaitingForTransaction} from './ui/commons/WaitingForTransaction';
 import {ThemesPlayground} from './ui/Playground/ThemesPlayground';
 import {ThemeProvider} from './ui/themes/Theme';
 import {ErrorMessage} from './ui/commons/ErrorMessage';
+import {WaitingForApp} from './ui/commons/WaitingForApp';
 
 export const App = () => {
   const {sdk} = useServices();
@@ -181,14 +182,14 @@ export const App = () => {
               </Route>
               <Route exact path="/waitForTransaction">
                 <div>
-                  <ThemesPlayground/>
+                  <ThemesPlayground />
                   <Link to="/waitForTransactionWithHash">With hash</Link><br />
                   <Link to="/waitForTransactionWithoutHash">Without hash</Link>
                 </div>
               </Route>
               <Route
                 path="/waitForTransactionWithHash"
-                render={({location, history}) => {
+                render={({history}) => {
                   if (!relayerConfig) {
                     return <Spinner />;
                   } else {
@@ -206,7 +207,7 @@ export const App = () => {
               </Route>
               <Route
                 path="/waitForTransactionWithoutHash"
-                render={({location,  history}) => {
+                render={({history}) => {
                   if (!relayerConfig) {
                     return <Spinner />;
                   } else {
@@ -223,8 +224,16 @@ export const App = () => {
                 }}>
               </Route>
               <Route
+                path="/waitForApp"
+                render={({history}) => (
+                  <ModalWrapper hideModal={() => history.push('/')}>
+                    <WaitingForApp />
+                  </ModalWrapper>
+                )}>
+              </Route>
+              <Route
                 exact path="/errorMessage"
-                render={() => <ErrorMessage/>}
+                render={() => <ErrorMessage />}
               />
               <Route component={() => (<p>not found</p>)} />
             </Switch>
