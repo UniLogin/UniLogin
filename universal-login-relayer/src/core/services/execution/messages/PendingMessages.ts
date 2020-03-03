@@ -57,8 +57,8 @@ export default class PendingMessages {
   async ensureCorrectExecution(messageStatus: MessageStatus, required: number) {
     const {transactionHash, totalCollected} = messageStatus;
     ensure(!transactionHash, DuplicatedExecution);
-    const isEnoiug = this.isEnoughSignatures(messageStatus, required);
-    ensure(isEnoiug, NotEnoughSignatures, required, totalCollected);
+    const isEnough = this.isEnoughSignatures(messageStatus, required);
+    ensure(isEnough, NotEnoughSignatures, required, totalCollected);
   }
 
   isEnoughSignatures(messageStatus: MessageStatus, required: number): boolean {

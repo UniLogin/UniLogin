@@ -68,7 +68,6 @@ describe('UNIT: ExecutionFactory', () => {
       const execution = await executionFactory.createExecution(signedMessage);
       await expect(execution.waitToBeSuccess()).to.be.rejectedWith('Timeout exceeded');
       expect(getStatus.callCount).be.at.least(1);
-      (executionFactory as any).timeout = 200;
     });
   });
 
