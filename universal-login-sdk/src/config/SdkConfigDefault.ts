@@ -21,7 +21,7 @@ export const SdkConfigDefault: SdkConfig = {
   authorizationsObserverTick: 1000,
   balanceObserverTick: 1000 * 3,
   priceObserverTick: 1000 * 60 * 5,
-  mineableFactoryTick: 1000,
+  mineableFactoryTick: 500,
   mineableFactoryTimeout: 600000,
   storageService: new MemoryStorageService(),
   notifySdkApiKey: '9d968152-8306-4ea7-be11-57819274882e',
