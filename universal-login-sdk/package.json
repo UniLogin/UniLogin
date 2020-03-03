@@ -19,7 +19,7 @@
   "scripts": {
     "prebuild": "yarn clean",
     "build": "yarn build:esm && yarn build:cjs",
-    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:cjs": "tsc --build tsconfig.cjs.json",
     "build:esm": "tsc --build",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
     "test": "cross-env NODE_ENV=test TS_NODE_PROJECT=tsconfig.cjs.json mocha -r ts-node/register/transpile-only -t 15000 'test/**/*.ts'",
@@ -47,6 +47,7 @@
     "rimraf": "^2.6.3",
     "sinon": "^6.3.1",
     "sinon-chai": "^3.2.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "ts-node": "^8.6.2"
   }
 }
