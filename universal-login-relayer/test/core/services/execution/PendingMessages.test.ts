@@ -14,6 +14,7 @@ import MessageSQLRepository from '../../../../src/integration/sql/services/Messa
 import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletContractWithMockToken';
 import {getKnexConfig} from '../../../testhelpers/knex';
 import {setupWalletContractService} from '../../../testhelpers/setupWalletContractService';
+import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages: PendingMessages;
@@ -27,12 +28,13 @@ describe('INT: PendingMessages', () => {
   const knex = getKnexConfig();
   let spy: SinonSpy;
   let messageHash: string;
+  let walletContractService: WalletContractService;
 
   beforeEach(async () => {
     ({wallet, walletContract, actionKey} = await loadFixture(basicWalletContractWithMockToken));
     messageRepository = new MessageSQLRepository(knex);
     spy = sinon.fake.returns({hash: '0x0000000000000000000000000000000000000000000000000000000000000000'});
-    const walletContractService = setupWalletContractService(wallet.provider);
+    walletContractService = setupWalletContractService(wallet.provider);
     statusService = new MessageStatusService(messageRepository, walletContractService);
     pendingMessages = new PendingMessages(messageRepository, {addMessage: spy} as any, statusService, walletContractService);
     unsignedMessage = messageToUnsignedMessage({...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS}, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION);
@@ -62,7 +64,8 @@ describe('INT: PendingMessages', () => {
     const signedMessage2 = unsignedMessageToSignedMessage(unsignedMessage, actionKey);
     await pendingMessages.add(signedMessage);
     const status = await pendingMessages.getStatus(messageHash);
-    const [isEnoughSignetures] = await pendingMessages.isEnoughSignatures(status, signedMessage.from);
+    const required = await (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
+    const isEnoughSignetures = await pendingMessages.isEnoughSignatures(status, required);
     expect(isEnoughSignetures).to.eq(false);
     expect(spy.calledOnce).to.be.false;
     await pendingMessages.add(signedMessage2);
@@ -107,14 +110,16 @@ describe('INT: PendingMessages', () => {
       await pendingMessages.add(signedMessage);
       await messageRepository.markAsPending(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
       const status = await pendingMessages.getStatus(messageHash);
-      await expect(pendingMessages.ensureCorrectExecution(status, signedMessage.from))
+      const required = await (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
+      await expect(pendingMessages.ensureCorrectExecution(status, required))
         .to.be.rejectedWith('Execution request already processed');
     });
 
     it('should throw error when pending signedMessage has not enough signatures', async () => {
       await pendingMessages.add(signedMessage);
       const status = await pendingMessages.getStatus(messageHash);
-      await expect(pendingMessages.ensureCorrectExecution(status, signedMessage.from))
+      const required = await (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
+      await expect(pendingMessages.ensureCorrectExecution(status, required))
         .to.be.rejectedWith('Not enough signatures, required 2, got only 1');
     });
   });

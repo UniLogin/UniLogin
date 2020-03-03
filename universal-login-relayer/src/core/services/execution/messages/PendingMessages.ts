@@ -26,15 +26,16 @@ export default class PendingMessages {
     }
     await this.addSignatureToPendingMessage(messageHash, message);
     const status = await this.getStatus(messageHash);
-    const [isEnough] = await this.isEnoughSignatures(status, message.from);
+    const required = (await this.walletContractService.getRequiredSignatures(message.from)).toNumber();
+    const isEnough = await this.isEnoughSignatures(status, required);
     if (isEnough) {
-      await this.onReadyToExecute(messageHash, status, message.from);
+      await this.onReadyToExecute(messageHash, status, required);
     }
     return status;
   }
 
-  private async onReadyToExecute(messageHash: string, status: MessageStatus, contractAddress: string) {
-    await this.ensureCorrectExecution(status, contractAddress);
+  private async onReadyToExecute(messageHash: string, status: MessageStatus, required: number) {
+    await this.ensureCorrectExecution(status, required);
     await this.messageRepository.setState(messageHash, 'Queued');
     return this.executionQueue.addMessage(messageHash);
   }
@@ -53,16 +54,15 @@ export default class PendingMessages {
     return this.statusService.getStatus(messageHash);
   }
 
-  async ensureCorrectExecution(messageStatus: MessageStatus, contractAddress: string) {
+  async ensureCorrectExecution(messageStatus: MessageStatus, required: number) {
     const {transactionHash, totalCollected} = messageStatus;
     ensure(!transactionHash, DuplicatedExecution);
-    const [isEnoiug, required] = await this.isEnoughSignatures(messageStatus, contractAddress);
+    const isEnoiug = this.isEnoughSignatures(messageStatus, required);
     ensure(isEnoiug, NotEnoughSignatures, required, totalCollected);
   }
 
-  async isEnoughSignatures(messageStatus: MessageStatus, contractAddress: string): Promise<[boolean, number]> {
+  isEnoughSignatures(messageStatus: MessageStatus, required: number): boolean {
     const {totalCollected} = messageStatus;
-    const required = (await this.walletContractService.getRequiredSignatures(contractAddress)).toNumber();
-    return [totalCollected >= required, required];
+    return totalCollected >= required;
   }
 }
