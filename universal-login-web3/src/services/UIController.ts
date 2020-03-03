@@ -70,7 +70,9 @@ export class UIController {
 
   requireWallet() {
     ensure(this.walletService.state.kind !== 'Deployed', UnexpectedWalletState, 'Deployed');
-    this.activeModal.set({kind: 'ONBOARDING'});
+    if (this.activeModal.get().kind !== 'WAIT_FOR_APP') {
+      this.activeModal.set({kind: 'ONBOARDING'});
+    }
   }
 
   showLocalStorageWarning() {
@@ -86,8 +88,6 @@ export class UIController {
   }
 
   finishAppInitialization() {
-    if (this.activeModal.get().kind === 'WAIT_FOR_APP') {
-      this.hideModal();
-    }
+    this.hideModal();
   }
 }
