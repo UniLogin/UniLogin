@@ -18,7 +18,7 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
   const modal = useProperty(uiController.activeModal);
   const message = sdk.getNotice();
 
-  if (useProperty(uiController.isLoading)) {
+  if (useProperty(uiController.isLoading) && modal.kind !== 'WARNING_LOCAL_STORAGE') {
     return <ModalWrapper><AppPreloader /></ModalWrapper>;
   }
   switch (modal.kind) {
