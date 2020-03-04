@@ -93,23 +93,27 @@ export class ULIFrameProvider {
     this.iframe.style.display = visible ? 'unset' : 'none';
   }
 
-  static getInstance(upstream: Provider | Network, config = DEFAULT_CONFIG, enablePicker: boolean): ULIFrameProvider {
+  static getInstance(extendedConfig: ExtendedConfig): ULIFrameProvider {
     if (!ULIFrameProvider.instance) {
-      ULIFrameProvider.instance = new ULIFrameProvider({
-        enablePicker,
-        ...normalizeUpstream(upstream),
-        ...config,
-      });
+      ULIFrameProvider.instance = new ULIFrameProvider(extendedConfig);
     }
     return ULIFrameProvider.instance;
   }
 
   static create(network: Network, config = DEFAULT_CONFIG) {
-    return ULIFrameProvider.getInstance(network, config, false);
+    return ULIFrameProvider.getInstance({
+      enablePicker: false,
+      network: network.toString() as Network,
+      ...config,
+    });
   }
 
   static createPicker(upstream: Provider | Network, config = DEFAULT_CONFIG) {
-    return ULIFrameProvider.getInstance(upstream, config, true);
+    return ULIFrameProvider.getInstance({
+      enablePicker: true,
+      ...normalizeUpstream(upstream),
+      ...config,
+    });
   }
 
   async send(msg: any, cb: (error: any, response: any) => void) {
