@@ -94,6 +94,7 @@ export class ULWeb3Provider implements Provider {
     await this.sdk.start();
     setBetaNotice(this.sdk);
     this.walletService.loadFromStorage();
+    this.uiController.finishAppInitialization();
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {

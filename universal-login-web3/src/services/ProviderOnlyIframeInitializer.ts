@@ -15,8 +15,8 @@ export class ProviderOnlyIframeInitializer extends IframeInitializerBase {
   }
 
   async start() {
-    await this.provider.init();
     await super.start();
+    await this.provider.init();
   }
 
   protected getProvider(): Provider {
