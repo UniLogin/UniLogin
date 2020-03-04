@@ -4,8 +4,10 @@ export interface ProviderConfig {
   ulButtonId: string;
 }
 
+const IS_DEV = false;
+
 export const DEFAULT_CONFIG: ProviderConfig = {
-  backendUrl: 'https://universal-provider-backend.netlify.com',
+  backendUrl: IS_DEV ? 'http://localhost:8080' : 'https://universal-provider-backend.netlify.com',
   logoUrl: 'https://universalloginsdk.readthedocs.io/en/latest/_images/logo.png',
   ulButtonId: 'unilogin-button',
 };

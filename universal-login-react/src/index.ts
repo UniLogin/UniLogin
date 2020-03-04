@@ -39,7 +39,7 @@ export {ConnectionFlow} from './ui/ConnectionFlow';
 export {ExplorerLink} from './ui/commons/ExplorerLink';
 export {WaitingForTransaction, WaitingForTransactionProps, WaitingForDeployment, DEPLOYMENT_DESCRIPTION} from './ui/commons/WaitingForTransaction';
 export {WaitingForOnRampProvider, WaitingForOnRampProviderProps} from './ui/TopUp/Fiat/WaitingForOnRampProvider';
-export {WaitingForApp} from './ui/commons/WaitingForApp';
+export {AppPreloader} from './ui/commons/AppPreloader';
 export {ThemeProvider, ThemeContext} from './ui/themes/Theme';
 export {calculateTransactionFee} from './core/utils/calculateTransactionFee';
 export {CompanyLogo} from './ui/commons/CompanyLogo';

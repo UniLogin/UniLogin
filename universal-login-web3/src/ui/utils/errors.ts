@@ -30,3 +30,5 @@ export class UnexpectedWalletState extends ValidationFailed {
     Object.setPrototypeOf(this, UnexpectedWalletState.prototype);
   }
 }
+
+export const isRandomInfuraError = (errorMessage?: string) => errorMessage === 'invalid reponse - 0';
