@@ -82,13 +82,15 @@ class UniversalLoginSDK {
     const beta2Service = new Beta2Service(this.provider);
     const gnosisSafeService = new GnosisSafeService(this.provider);
     this.walletContractService = new WalletContractService(this.blockchainService, beta2Service, gnosisSafeService);
-    this.relayerConfig = new Lazy(async () => {
-      const config = await this.relayerApi.getConfig();
-      if (!Network.equals(cast(config.chainSpec.name, asNetwork), this.sdkConfig.network)) {
-        throw new Error(`Relayer is configured to a different network. Expected: ${this.sdkConfig.network}, got: ${config.chainSpec.name}`);
-      }
-      return config;
-    });
+    this.relayerConfig = new Lazy(() => this.loadRelayerConfigFromApi());
+  }
+
+  private async loadRelayerConfigFromApi() {
+    const config = await this.relayerApi.getConfig();
+    if (!Network.equals(cast(config.chainSpec.name, asNetwork), this.sdkConfig.network)) {
+      throw new Error(`Relayer is configured to a different network. Expected: ${this.sdkConfig.network}, got: ${config.chainSpec.name}`);
+    }
+    return config;
   }
 
   getNotice() {
