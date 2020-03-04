@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, asNetwork} from '@unilogin/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, asNetwork, Lazy} from '@unilogin/commons';
 import {BlockchainService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -48,10 +48,10 @@ class UniversalLoginSDK {
   readonly messageConverter: MessageConverter;
   readonly walletEventsObserverFactory: WalletEventsObserverFactory;
   readonly walletContractService: WalletContractService;
+  readonly relayerConfig: Lazy<PublicRelayerConfig>;
   balanceObserver?: BalanceObserver;
   aggregateBalanceObserver?: AggregateBalanceObserver;
   futureWalletFactory?: FutureWalletFactory;
-  relayerConfig?: PublicRelayerConfig;
   notifySdk?: INotifySdk;
 
   constructor(
@@ -82,6 +82,7 @@ class UniversalLoginSDK {
     const beta2Service = new Beta2Service(this.provider);
     const gnosisSafeService = new GnosisSafeService(this.provider);
     this.walletContractService = new WalletContractService(this.blockchainService, beta2Service, gnosisSafeService);
+    this.relayerConfig = new Lazy(async () => (await this.relayerApi.getConfig()).config);
   }
 
   getNotice() {
@@ -107,14 +108,11 @@ class UniversalLoginSDK {
   }
 
   getRelayerConfig(): PublicRelayerConfig {
-    ensureNotFalsy(this.relayerConfig, Error, 'Relayer configuration not yet loaded');
-    return this.relayerConfig;
+    return this.relayerConfig.get();
   }
 
   async fetchRelayerConfig() {
-    if (!this.relayerConfig) {
-      this.relayerConfig = (await this.relayerApi.getConfig()).config;
-    }
+    return this.relayerConfig.load();
   }
 
   async fetchBalanceObserver(contractAddress: string) {
