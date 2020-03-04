@@ -12,7 +12,7 @@ export const Box = styled.div`
     min-height: calc(100vh - 41px);
     display: flex;
     flex-direction: column;
-    padding: 8px 16px 16px;
+    padding: 16px 16px 16px;
     border-radius: 0;
   }
 `;
