@@ -71,7 +71,7 @@ export class ULWeb3Provider implements Provider {
 
     this.uiController = new UIController(this.walletService);
 
-    this.isLoggedIn = this.walletService.isAuthorized;
+    this.isLoggedIn = this.walletService.walletDeployed;
     this.isUiVisible = this.uiController.isUiVisible;
     this.hasNotifications = this.walletService.stateProperty.pipe(
       flatMap(state => state.kind === 'Deployed' ? state.wallet.authorizations : new State([])),
