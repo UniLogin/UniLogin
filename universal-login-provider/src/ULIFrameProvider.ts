@@ -93,7 +93,7 @@ export class ULIFrameProvider {
     this.iframe.style.display = visible ? 'unset' : 'none';
   }
 
-  static getInstance(extendedConfig: ExtendedConfig): ULIFrameProvider {
+  private static getInstance(extendedConfig: ExtendedConfig): ULIFrameProvider {
     if (!ULIFrameProvider.instance) {
       ULIFrameProvider.instance = new ULIFrameProvider(extendedConfig);
     }
