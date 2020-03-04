@@ -111,7 +111,7 @@ class UniversalLoginSDK {
     return this.relayerConfig.get();
   }
 
-  async fetchRelayerConfig() {
+  fetchRelayerConfig(): Promise<PublicRelayerConfig> {
     return this.relayerConfig.load();
   }
 
