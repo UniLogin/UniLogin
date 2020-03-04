@@ -2,10 +2,12 @@
     <head>
         <title>Universal Login Provider demo</title>
         <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         <button id="unilogin-button"></button>
         <button onclick="web3.currentProvider.openDashboard()">Show dashboard</button>
+        <button onclick="web3.eth.sign('String', '0x112234455c3a32fd11230c42e7bccd4a84e02010')">Sign something</button>
         <script src="dist/umd/index.js"></script>
         <script>
             window.web3 = new Web3(ULIFrameProvider.createPicker(window.ethereum || 'kovan'))
