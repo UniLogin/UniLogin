@@ -23,7 +23,7 @@ export default Object.freeze({
   },
 
   production: {
-    network: cast(process.env.NETWORK, asNetwork),
+    network: process.env.NETWORK as Network,
     domains: [process.env.ENS_DOMAIN_1!],
     relayerUrl: process.env.RELAYER_URL!,
     jsonRpcUrl: process.env.JSON_RPC_URL!,
