@@ -2,10 +2,20 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "jsx": "react",
-    "outDir": "dist",
+    "composite": true,
   },
+  "references": [
+    {
+      "path": "../universal-login-commons"
+    },
+    {
+      "path": "../universal-login-sdk"
+    },
+    {
+      "path": "../universal-login-react"
+    }
+  ],
   "include": [
-    "shims",
     "src",
     "test"
   ]

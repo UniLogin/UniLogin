@@ -1,4 +1,4 @@
-import {BrowserWeb3Provider} from '../src/models/BrowserWeb3Provider';
+import {BrowserWeb3Provider} from '../models/BrowserWeb3Provider';
 import {Provider} from 'web3/providers';
 
 declare global {

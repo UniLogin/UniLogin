@@ -16,8 +16,11 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'ts-loader',
         exclude: /node_modules/,
+        loader: 'ts-loader',
+        options: {
+          projectReferences: true,
+        },
       },
       {enforce: 'pre', test: /\.js$/, loader: 'source-map-loader'},
       {

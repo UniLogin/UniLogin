@@ -1,14 +1,18 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "dist/esm",
     "jsx": "react",
-    "typeRoots": [
-      "node_modules/@types",
-      "../node_modules/@types",
-      "shims"
-    ],
+    "composite": true
   },
+  "references": [
+    {
+      "path": "../universal-login-commons"
+    },
+    {
+      "path": "../universal-login-sdk"
+    }
+  ],
   "include": [
     "src",
     "test"

@@ -2,11 +2,18 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "dist/cjs",
-    "module": "commonjs",
+    "module": "commonjs"
   },
   "references": [
     {
       "path": "../universal-login-commons/tsconfig.cjs.json"
+    },
+    {
+      "path": "../universal-login-sdk/tsconfig.cjs.json"
     }
+  ],
+  "include": [
+    "src",
+    "test"
   ]
 }
