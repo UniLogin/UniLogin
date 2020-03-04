@@ -3,11 +3,6 @@
   "compilerOptions": {
     "outDir": "dist",
     "jsx": "react",
-    "allowJs": false,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
     "typeRoots": [
       "node_modules/@types",
       "../node_modules/@types",

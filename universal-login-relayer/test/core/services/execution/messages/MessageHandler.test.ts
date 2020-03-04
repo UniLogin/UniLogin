@@ -45,7 +45,6 @@ describe('INT: MessageHandler', async () => {
   it('Error when not enough tokens', async () => {
     const mockToken = await deployContract(wallet, mockContracts.MockToken);
     await mockToken.transfer(walletContract.address, 1);
-
     const signedMessage = getTestSignedMessage({...msg, gasToken: mockToken.address}, wallet.privateKey);
     const {messageHash} = await messageHandler.handleMessage(signedMessage);
     await executionWorker.stopLater();

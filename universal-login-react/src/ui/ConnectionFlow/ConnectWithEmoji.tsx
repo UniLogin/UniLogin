@@ -7,6 +7,8 @@ import './../styles/emoji.sass';
 import './../styles/emojiDefaults.sass';
 import Spinner from '../commons/Spinner';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
+import {useThemeClassFor} from '../utils/classFor';
+import '../styles/themes/UniLogin/connectWithEmojiThemeUniLogin.sass';
 
 interface ConnectWithEmojiProps {
   sdk: UniversalLoginSDK;
@@ -42,7 +44,7 @@ export const ConnectWithEmoji = ({sdk, onCancel, onConnect, walletService, class
   };
 
   return (
-    <div className="universal-login-emojis">
+    <div className={`${useThemeClassFor()} universal-login-emojis`}>
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="connect-emoji">
           <h1 className="connect-emoji-title">Connect to your account</h1>

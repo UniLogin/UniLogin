@@ -51,7 +51,6 @@ export type MessageStatus = {
   transactionHash?: string;
   collectedSignatures: string[];
   totalCollected: number;
-  required: number;
   state: MessageState;
 };
 

@@ -99,6 +99,7 @@ export class RelayerUnderTest extends Relayer {
 
   async stop() {
     await clearDatabase(this.database);
+    (this.walletContractService as any).walletVersions = {};
     await super.stopLater();
   }
 }

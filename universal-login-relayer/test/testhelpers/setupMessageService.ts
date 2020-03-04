@@ -35,7 +35,7 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const deploymentRepository = new SQLRepository<Deployment>(knex, 'deployments');
   const devicesStore = new DevicesStore(knex);
   const executionQueue = new QueueSQLStore(knex);
-  const beta2Service = new Beta2Service(wallet);
+  const beta2Service = new Beta2Service(wallet.provider);
   const blockchainService = new BlockchainService(provider);
   const gasComputation = new GasComputation(blockchainService);
   const messageHandlerValidator = new MessageHandlerValidator(config.maxGasLimit, gasComputation, wallet.address);

@@ -1,11 +1,11 @@
-import {MessageStatus, SignedMessage, stringifySignedMessageFields, ensureNotFalsy} from '@unilogin/commons';
+import {MessageStatus, SignedMessage, stringifySignedMessageFields, ensureNotFalsy, MineableStatus} from '@unilogin/commons';
 import {RelayerApi} from '../../integration/http/RelayerApi';
 import {MissingMessageHash} from '../utils/errors';
 import {MineableFactory} from './MineableFactory';
 
 export interface Execution {
-  waitForTransactionHash: () => Promise<MessageStatus>;
-  waitToBeSuccess: () => Promise<MessageStatus>;
+  waitForTransactionHash: () => Promise<MineableStatus>;
+  waitToBeSuccess: () => Promise<MineableStatus>;
   messageStatus: MessageStatus;
 }
 
@@ -25,13 +25,11 @@ export class ExecutionFactory extends MineableFactory {
   async createExecution(signedMessage: SignedMessage): Promise<Execution> {
     const result = await this.relayerApi.execute(stringifySignedMessageFields(signedMessage));
     ensureNotFalsy(result.status.messageHash, MissingMessageHash);
-    const {messageHash, totalCollected, required} = result.status;
-    const waitToBeSuccess = totalCollected >= required ? this.createWaitToBeSuccess(messageHash) : () => result.status;
-    const waitForTransactionHash = totalCollected >= required ? this.createWaitForTransactionHash(messageHash) : () => result.status;
+    const {messageHash} = result.status;
     return {
       messageStatus: result.status,
-      waitToBeSuccess,
-      waitForTransactionHash,
+      waitToBeSuccess: this.createWaitToBeSuccess(messageHash),
+      waitForTransactionHash: this.createWaitForTransactionHash(messageHash),
     };
   }
 }

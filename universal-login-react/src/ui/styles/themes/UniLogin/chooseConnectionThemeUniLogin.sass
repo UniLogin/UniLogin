@@ -1,0 +1,173 @@
+.unilogin-theme-unilogin.unilogin-component-connection
+  font-family: 'Lato', sans-serif
+  min-height: 61rem
+  display: flex
+  flex-direction: column
+  flex: 1
+
+  @media only screen and (max-width: 600px)
+    min-height: unset
+
+  .unilogin-component-connection-title
+    color: #0F0C4A
+    margin-bottom: 10rem
+    font-size: 2.4rem
+    font-weight: 300
+
+    @media only screen and (max-width: 700px)
+      margin-bottom: 2rem
+
+  .unilogin-component-connection-row
+    margin-top: .1rem
+    margin-bottom: 14.7rem
+    min-width: unset
+
+    @media only screen and (max-width: 700px)
+      flex-direction: column
+      align-items: center
+      margin-bottom: 2rem
+      padding-right: unset
+
+  .unilogin-component-connection-row-wrapper
+
+    @media only screen and (max-width: 600px)
+      overflow-x: unset
+      margin: auto 0
+
+
+  .unilogin-component-connection-wrapper
+    padding: 4rem 3rem 0
+    display: flex
+    flex-direction: column
+    flex: 1
+
+    @media only screen and (max-width: 700px)
+      padding: 3rem 3rem 0
+      padding-left: 0
+
+  .unilogin-component-connection-content
+    display: flex
+    flex-direction: column
+    flex: 1
+
+  .unilogin-component-connection-method
+    position: relative
+    border: 1px solid rgba(188, 229, 241, 0.45)
+    border-radius: .8rem
+    transition: box-shadow .8s
+    padding: 30px 30px 0
+    padding-top: 13.3rem
+    min-height: unset
+
+    &:hover
+      box-shadow: 0px 10px 40px rgba(0, 131, 188, 0.12)
+      border: none
+
+    @media only screen and (max-width: 700px)
+      width: 100%
+
+    @media only screen and (max-width: 600px)
+      padding: 5.8rem 10px 0
+
+  .unilogin-component-connection-method-title
+    color: #0F0C4A
+
+    @media only screen and (max-width: 600px)
+      font-size: 1.6rem
+
+  .unilogin-component-connection-method-text
+    color: #A4A8B4
+    max-width: 20.1rem
+    margin: 0 auto 40px
+
+    @media only screen and (max-width: 600px)
+      font-size: 1.1rem
+      margin-bottom: 2rem
+      max-width: 25rem
+
+  .unilogin-component-connection-method::before, .unilogin-component-connection-method::after
+    content: ''
+    position: absolute
+    left: 50%
+    transform: translateX(-50%)
+
+  .unilogin-component-passwordless-method::before
+    top: -2.5rem
+    width: 24rem
+    height: 24rem
+    background: url('../../../assets/themes/UniLogin/background/icon-green-glow.svg')
+    background-size: contain
+
+    @media only screen and (max-width: 600px)
+      top: -4.5rem
+      width: 18rem
+      height: 18rem
+
+  .unilogin-component-passwordless-method::after
+    top: 6.4rem
+    width: 3.5rem
+    height: 3.5rem
+    background: url('../../../assets/themes/UniLogin/icons/passwordless.svg') center no-repeat
+    background-size: contain
+
+    @media only screen and (max-width: 600px)
+      top: 1.7rem
+
+  .unilogin-component-passphrase-method::before
+    top: -2.5rem
+    width: 24rem
+    height: 24rem
+    background: url('../../../assets/themes/UniLogin/background/icon-purple-glow.svg')
+    background-size: contain
+
+    @media only screen and (max-width: 600px)
+      top: -3.5rem
+      width: 18rem
+      height: 18rem
+
+  .unilogin-component-passphrase-method::after
+    top: 6.4rem
+    width: 4rem
+    height: 4rem
+    background: url('../../../assets/themes/UniLogin/icons/passphrase.svg') center no-repeat
+    background-size: contain
+
+    @media only screen and (max-width: 600px)
+      top: 1.7rem
+
+  .unilogin-component-connection-method + .unilogin-component-connection-method
+    margin-left: 7rem
+
+    @media only screen and (max-width: 700px)
+      margin-left: 0
+      margin-top: 2rem
+
+  .unilogin-component-connection-method-link
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    border-radius: 3px
+    background: none
+    border: none
+    cursor: pointer
+
+    & > span
+      display: none
+
+
+  .unilogin-component-connection-cancel-button
+    display: none
+
+  .unilogin-component-scroll-progress-dot
+    background: #0FB989
+
+.unilogin-theme-unilogin .unilogin-component-modal
+  display: flex
+  flex-direction: column
+
+  .unilogin-component-connection-flow-wrapper
+    display: flex
+    flex-direction: column
+    flex: 1

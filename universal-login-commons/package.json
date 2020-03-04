@@ -8,11 +8,11 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "yarn clean",
-    "build": "yarn build:cjs && yarn build:esm",
-    "build:cjs": "tsc --outDir dist/cjs --declaration false --declarationMap false",
-    "build:esm": "tsc --outDir dist/esm --module ES6",
+    "build": "yarn build:esm && yarn build:cjs",
+    "build:cjs": "tsc --build ./tsconfig.cjs.json",
+    "build:esm": "tsc --build",
     "clean": "rimraf dist",
-    "test": "mocha -r ts-node/register/transpile-only -t 10000 'test/**/*.ts'",
+    "test": "cross-env TS_NODE_PROJECT=tsconfig.cjs.json mocha -r ts-node/register/transpile-only -t 10000 'test/**/*.ts'",
     "lint": "eslint '{src,test}/**/*.ts'"
   },
   "devDependencies": {
