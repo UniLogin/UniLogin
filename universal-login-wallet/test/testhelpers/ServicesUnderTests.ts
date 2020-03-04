@@ -6,7 +6,7 @@ import {SdkConfig, MemoryStorageService} from '@unilogin/sdk';
 export const createPreconfiguredServices = async (provider: providers.Provider, relayer: any, tokens: string[]) => {
   const domains = relayer.config.ensRegistrars;
   const config = {
-    network: 'test' as Network,
+    network: 'ganache' as Network,
     jsonRpcUrl: testJsonRpcUrl,
     relayerUrl: relayer.url(),
     domains,

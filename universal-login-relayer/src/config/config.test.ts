@@ -6,7 +6,7 @@ export const config: Config = Object.freeze({
   port: 'GENERATED',
   privateKey: 'GENERATED',
   chainSpec: {
-    name: 'test',
+    name: 'ganache',
     ensAddress: 'GENERATED',
     chainId: 0,
   },

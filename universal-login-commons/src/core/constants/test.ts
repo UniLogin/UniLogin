@@ -107,7 +107,7 @@ export const TEST_GAS_MODES = [{
 }];
 
 export const TEST_SDK_CONFIG = {
-  network: 'test' as Network,
+  network: 'ganache' as Network,
   authorizationsObserverTick: 3,
   balanceObserverTick: 3,
   priceObserverTick: 3,
