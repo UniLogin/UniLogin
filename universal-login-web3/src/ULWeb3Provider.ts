@@ -212,8 +212,7 @@ export class ULWeb3Provider implements Provider {
 
   private async deployIfNoWalletDeployed() {
     if (!this.walletService.walletDeployed.get()) {
-      this.uiController.requireWallet();
-      await waitForTrue(this.walletService.walletDeployed);
+      await this.initOnboarding();
     }
   }
 
