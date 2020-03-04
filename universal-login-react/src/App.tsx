@@ -52,18 +52,6 @@ export const App = () => {
     setSupportedToken: (() => {}) as any,
   } as any;
 
-  async function tryEnablingMetamask() {
-    const ethereum = (window as any).ethereum;
-    if (ethereum) {
-      try {
-        await ethereum.enable();
-
-        return ethereum.selectedAddress;
-      } catch (error) {
-      }
-    }
-  }
-
   return (
     <BrowserRouter>
       <ThemeProvider>
@@ -102,7 +90,6 @@ export const App = () => {
                     sdk={sdk}
                     walletService={walletService}
                     domains={['mylogin.eth', 'universal-id.eth', 'poppularapp.eth']}
-                    tryEnablingMetamask={tryEnablingMetamask}
                     onConnect={() => console.log('connected')}
                     onCreate={() => history.push('/onboarding/success')}
                     hideModal={() => history.push('/')}
