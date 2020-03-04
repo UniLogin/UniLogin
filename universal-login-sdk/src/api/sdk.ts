@@ -48,7 +48,7 @@ class UniversalLoginSDK {
   readonly messageConverter: MessageConverter;
   readonly walletEventsObserverFactory: WalletEventsObserverFactory;
   readonly walletContractService: WalletContractService;
-  readonly relayerConfig: Lazy<PublicRelayerConfig>;
+  private readonly relayerConfig: Lazy<PublicRelayerConfig>;
   balanceObserver?: BalanceObserver;
   aggregateBalanceObserver?: AggregateBalanceObserver;
   futureWalletFactory?: FutureWalletFactory;
