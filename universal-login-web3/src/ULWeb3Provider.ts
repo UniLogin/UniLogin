@@ -98,8 +98,8 @@ export class ULWeb3Provider implements Provider {
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    if (this.walletService.state.kind !== 'Deployed') {
-      await this.initOnboarding();
+    if (isAccountDependantRpc(payload.method)) {
+      await this.deployIfNoWalletDeployed();
     }
 
     try {
@@ -225,3 +225,11 @@ export class ULWeb3Provider implements Provider {
     return this.sdk.finalizeAndStop();
   }
 }
+
+const isAccountDependantRpc = (method: string) => [
+  'eth_sendTransaction',
+  'eth_sendRawTransaction',
+  'eth_sign',
+  'personal_sign',
+  'eth_requestAccounts',
+].includes(method);

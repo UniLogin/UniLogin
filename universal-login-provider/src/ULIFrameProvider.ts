@@ -117,7 +117,7 @@ export class ULIFrameProvider {
   }
 
   async send(msg: any, cb: (error: any, response: any) => void) {
-    await this.waitUntilReady();
+    if (waitMethods.includes(msg.method)) await this.waitUntilReady();
     this.bridge.send(msg, cb);
   }
 
@@ -177,3 +177,11 @@ export class ULIFrameProvider {
     element.addEventListener('click', this.boundOpenDashboard);
   }
 }
+
+const waitMethods = [
+  'eth_sendTransaction',
+  'eth_sendRawTransaction',
+  'eth_sign',
+  'personal_sign',
+  'eth_requestAccounts',
+];

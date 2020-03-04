@@ -4,7 +4,7 @@ import {IframeBridgeEndpoint} from './IframeBridgeEndpoint';
 export abstract class IframeInitializerBase {
   constructor(
     protected readonly endpoint: IframeBridgeEndpoint,
-  ) { }
+  ) {}
 
   protected abstract getIsUiVisible(): Property<boolean>;
 
@@ -18,7 +18,9 @@ export abstract class IframeInitializerBase {
     this.getHasNotifications().pipe(forEach(
       hasNotifications => this.endpoint.setNotificationIndicator(hasNotifications),
     ));
+  }
 
+  ready() {
     this.endpoint.sendReadySignal();
   }
 }
