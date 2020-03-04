@@ -91,3 +91,4 @@ export {isClassName} from './react/isClassName';
 export {raise} from './core/utils/raise';
 export {CurrencyValue} from './core/models/CurrencyValue';
 export {Network, asNetwork} from './core/models/Network';
+export {Lazy} from './core/utils/Lazy';
