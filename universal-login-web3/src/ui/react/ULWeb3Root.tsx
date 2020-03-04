@@ -18,6 +18,9 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
   const modal = useProperty(uiController.activeModal);
   const message = sdk.getNotice();
 
+  if (uiController.isLoading.get()) {
+    return <ModalWrapper><WaitingForApp /></ModalWrapper>;
+  }
   switch (modal.kind) {
     case 'IDLE':
       return <ManualDashboard
@@ -25,8 +28,6 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
         isVisible={uiController.dashboardVisible}
         onClose={() => uiController.setDashboardVisibility(false)}
       />;
-    case 'WAIT_FOR_APP':
-      return <ModalWrapper><WaitingForApp /></ModalWrapper>;
     case 'ONBOARDING':
       return <Onboarding
         sdk={sdk}
