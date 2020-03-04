@@ -7,7 +7,7 @@ export class RelayerApi {
     this.http = http(fetch)(relayerUrl);
   }
 
-  getConfig(): Promise<{config: PublicRelayerConfig}> {
+  getConfig(): Promise<PublicRelayerConfig> {
     return this.http('GET', '/config');
   }
 
