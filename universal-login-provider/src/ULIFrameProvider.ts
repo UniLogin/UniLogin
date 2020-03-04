@@ -19,6 +19,7 @@ export class ULIFrameProvider {
   private bridge: RpcBridge;
   private isReady = new State(false);
   private hasNotifications = false;
+  private static instance?: ULIFrameProvider;
 
   readonly isUniLogin = true;
 
@@ -92,20 +93,23 @@ export class ULIFrameProvider {
     this.iframe.style.display = visible ? 'unset' : 'none';
   }
 
+  static getInstance(upstream: Provider | Network, config = DEFAULT_CONFIG, enablePicker: boolean): ULIFrameProvider {
+    if (!ULIFrameProvider.instance) {
+      ULIFrameProvider.instance = new ULIFrameProvider({
+        enablePicker,
+        ...normalizeUpstream(upstream),
+        ...config,
+      });
+    }
+    return ULIFrameProvider.instance;
+  }
+
   static create(network: Network, config = DEFAULT_CONFIG) {
-    return new ULIFrameProvider({
-      enablePicker: false,
-      network: network.toString() as Network,
-      ...config,
-    });
+    return ULIFrameProvider.getInstance(network, config, false);
   }
 
   static createPicker(upstream: Provider | Network, config = DEFAULT_CONFIG) {
-    return new ULIFrameProvider({
-      enablePicker: true,
-      ...normalizeUpstream(upstream),
-      ...config,
-    });
+    return ULIFrameProvider.getInstance(upstream, config, true);
   }
 
   async send(msg: any, cb: (error: any, response: any) => void) {
