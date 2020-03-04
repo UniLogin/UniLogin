@@ -210,6 +210,10 @@ const LoginButton = styled(ButtonPrimary)`
   font-size: 1.4rem;
   margin-bottom: calc(4rem + 2.6rem);
   flex-grow: 1;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+
 
   @media only screen and (max-width: 600px) {
     margin-top: auto;
