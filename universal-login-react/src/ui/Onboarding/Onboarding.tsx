@@ -19,7 +19,6 @@ export interface OnboardingProps {
   domains: string[];
   className?: string;
   modalClassName?: string;
-  tryEnablingMetamask?: () => Promise<string | undefined>;
   hideModal?: () => void;
 }
 
@@ -50,7 +49,6 @@ export const Onboarding = (props: OnboardingProps) => {
                       }}
                       onConnectClick={(ensName) => history.push('/connectFlow/chooseMethod', {ensName})}
                       domains={props.domains}
-                      tryEnablingMetamask={props.tryEnablingMetamask}
                       actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
                     />
                   </div>

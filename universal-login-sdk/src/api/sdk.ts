@@ -157,8 +157,8 @@ class UniversalLoginSDK {
     return !!(walletContractAddress && await this.blockchainService.getCode(walletContractAddress));
   }
 
-  resolveName(ensName: string): Promise<Nullable<string>> {
-    const {chainSpec} = this.getRelayerConfig();
+  async resolveName(ensName: string): Promise<Nullable<string>> {
+    const {chainSpec} = await this.fetchRelayerConfig();
     return resolveName(this.provider, chainSpec.ensAddress, ensName);
   }
 
