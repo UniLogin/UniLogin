@@ -18,7 +18,7 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
   const modal = useProperty(uiController.activeModal);
   const message = sdk.getNotice();
 
-  if (uiController.isLoading.get()) {
+  if (useProperty(uiController.isLoading)) {
     return <ModalWrapper><WaitingForApp /></ModalWrapper>;
   }
   switch (modal.kind) {
