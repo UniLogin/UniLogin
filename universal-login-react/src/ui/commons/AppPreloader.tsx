@@ -6,11 +6,11 @@ import '../styles/themes/Legacy/waitingForTransactionThemeLegacy.sass';
 import '../styles/themes/Jarvis/waitingForTransactionThemeJarvis.sass';
 import '../styles/themes/UniLogin/waitingForTransactionThemeUniLogin.sass';
 
-export const WaitingForApp = ({description, className}: WaitingForProps) => (
+export const AppPreloader = ({description, className}: WaitingForProps) => (
 
   <div className={useClassFor('waitingfortransaction')}>
     <WaitingFor
-      action="Loading..."
+      action="AppPreloader..."
       className={className}
       description={description}
     />
