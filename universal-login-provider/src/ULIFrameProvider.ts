@@ -5,17 +5,8 @@ import {State, waitFor} from 'reactive-properties';
 import {getApplicationInfoFromDocument} from './applicationInfo';
 import {buildIframeUrl} from './buildIframeUrl';
 import {normalizeUpstream} from './normalizeUpstream';
-
-export interface Provider {
-  send: (msg: any, cb: (err: any, response: any) => void) => void;
-}
-
-export type Network
-  = '1' | 'mainnet'
-  | '3' | 'ropsten'
-  | '4' | 'rinkeby'
-  | '42' | 'kovan'
-  | '8545' | 'ganache';
+import {Network} from './modals/network';
+import {Provider} from './modals/provider';
 
 export interface ExtendedConfig extends ProviderConfig {
   enablePicker: boolean;
@@ -104,7 +95,7 @@ export class ULIFrameProvider {
   static create(network: Network, config = DEFAULT_CONFIG) {
     return new ULIFrameProvider({
       enablePicker: false,
-      ...normalizeUpstream(network),
+      network: network.toString() as Network,
       ...config,
     });
   }
