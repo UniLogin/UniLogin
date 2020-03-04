@@ -1,12 +1,13 @@
 import React from 'react';
 import {providers} from 'ethers';
-import {walletFromBrain, DeepPartial} from '@unilogin/commons';
+import {walletFromBrain, DeepPartial, Network} from '@unilogin/commons';
 import UniversalLoginSDK, {SdkConfig, WalletService} from '@unilogin/sdk';
 import {StorageService} from '@unilogin/react';
 import UserDropdownService from '../app/UserDropdownService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
 
 export interface Config {
+  network: Network;
   domains: string[];
   relayerUrl: string;
   jsonRpcUrl: string;
@@ -24,6 +25,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
   const storageService = overrides.storageService || new StorageService();
   const sdkConfig = {
     ...overrides.sdkConfig,
+    network: config.network,
     applicationInfo: {
       applicationName: 'Jarvis',
       logo: 'https://beta.jarvis.network/logo.ico',

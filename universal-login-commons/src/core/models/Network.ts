@@ -32,6 +32,9 @@ export const Network = {
         throw new TypeError(`Invalid network: ${network}`);
     }
   },
+  equals(left: Network, right: Network) {
+    return Network.toNumericId(left) === Network.toNumericId(right);
+  },
 };
 
 export const asNetwork = asEnum<Network>(['1', 'mainnet', '3', 'ropsten', '4', 'rinkeby', '42', 'kovan', '8545', 'ganache', 'test'], 'Network');

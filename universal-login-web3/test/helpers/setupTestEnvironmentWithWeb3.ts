@@ -13,6 +13,7 @@ const mockedBrowserChecker = {
 function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider, ULWeb3RootProps] {
   let services: ULWeb3RootProps;
   const ulProvider = new ULWeb3Provider({
+    network: 'ganache',
     provider,
     relayerUrl,
     ensDomains: ['mylogin.eth'],

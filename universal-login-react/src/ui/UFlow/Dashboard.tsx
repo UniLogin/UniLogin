@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {MemoryRouter} from 'react-router';
-import {DeployedWallet, setBetaNotice, WalletService} from '@unilogin/sdk';
+import {DeployedWallet, WalletService} from '@unilogin/sdk';
 import logoIcon from '../assets/icons/U.svg';
 import {useProperty} from '../..';
 import {DashboardModal} from './DashboardModal';
@@ -55,15 +55,12 @@ export const Dashboard = (props: DashboardProps) => {
 
 function initializeWalletService(walletService?: WalletService, deployedWallet?: DeployedWallet) {
   if (walletService) {
-    setBetaNotice(walletService.sdk);
     return walletService;
   }
 
   if (!deployedWallet) {
     throw new TypeError('Either WalletService or DeployedWallet must be provided');
   }
-
-  setBetaNotice(deployedWallet.sdk);
 
   const newWalletService = new WalletService(deployedWallet.sdk);
   newWalletService.setWallet(deployedWallet.asApplicationWallet);

@@ -4,6 +4,7 @@ import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 export default Object.freeze({
 
   development: {
+    network: 'ganache',
     domains: ['mylogin.eth'],
     relayerUrl: 'http://localhost:3311',
     jsonRpcUrl: 'http://localhost:18545',
@@ -12,6 +13,7 @@ export default Object.freeze({
   },
 
   test: {
+    network: 'ganache',
     domains: ['mylogin.eth'],
     relayerUrl: 'http://localhost:3311',
     jsonRpcUrl: 'http://localhost:18545',
@@ -20,6 +22,7 @@ export default Object.freeze({
   },
 
   production: {
+    network: process.env.NETWORK,
     domains: [process.env.ENS_DOMAIN_1!],
     relayerUrl: process.env.RELAYER_URL!,
     jsonRpcUrl: process.env.JSON_RPC_URL!,

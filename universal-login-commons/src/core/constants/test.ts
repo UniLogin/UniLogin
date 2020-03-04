@@ -1,5 +1,6 @@
 import {utils, constants} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from './constants';
+import {Network} from '../models/Network';
 
 export const TEST_ACCOUNT_ADDRESS = '0x0000000000000000000000000000000000000001';
 
@@ -106,6 +107,7 @@ export const TEST_GAS_MODES = [{
 }];
 
 export const TEST_SDK_CONFIG = {
+  network: 'ganache' as Network,
   authorizationsObserverTick: 3,
   balanceObserverTick: 3,
   priceObserverTick: 3,
