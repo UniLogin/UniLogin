@@ -10,7 +10,7 @@ export const AppPreloader = ({description, className}: WaitingForProps) => (
 
   <div className={useClassFor('waitingfortransaction')}>
     <WaitingFor
-      action="AppPreloader..."
+      action="Loading..."
       className={className}
       description={description}
     />
