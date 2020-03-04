@@ -13,7 +13,7 @@ export default Object.freeze({
   },
 
   test: {
-    network: 'ganache' as Network,
+    network: 'test' as Network,
     domains: ['mylogin.eth'],
     relayerUrl: 'http://localhost:3311',
     jsonRpcUrl: 'http://localhost:18545',
