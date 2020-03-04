@@ -23,7 +23,7 @@ import {WaitingForTransaction} from './ui/commons/WaitingForTransaction';
 import {ThemesPlayground} from './ui/Playground/ThemesPlayground';
 import {ThemeProvider} from './ui/themes/Theme';
 import {ErrorMessage} from './ui/commons/ErrorMessage';
-import {WaitingForApp} from './ui/commons/WaitingForApp';
+import {AppPreloader} from './ui/commons/AppPreloader';
 
 export const App = () => {
   const {sdk} = useServices();
@@ -227,7 +227,7 @@ export const App = () => {
                 path="/waitForApp"
                 render={({history}) => (
                   <ModalWrapper hideModal={() => history.push('/')}>
-                    <WaitingForApp />
+                    <AppPreloader />
                   </ModalWrapper>
                 )}>
               </Route>

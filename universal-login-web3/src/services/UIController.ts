@@ -6,8 +6,9 @@ import {UnexpectedWalletState, isRandomInfuraError} from '../ui/utils/errors';
 import {ConfirmationResponse} from '../models/ConfirmationResponse';
 
 export class UIController {
-  activeModal = new State<ULWeb3ProviderState>({kind: 'WAIT_FOR_APP'});
+  activeModal = new State<ULWeb3ProviderState>({kind: 'IDLE'});
   dashboardVisible = new State<boolean>(false);
+  isLoading = new State<boolean>(true);
 
   isUiVisible: Property<boolean>;
 
@@ -73,9 +74,7 @@ export class UIController {
 
   requireWallet() {
     ensure(this.walletService.state.kind !== 'Deployed', UnexpectedWalletState, 'Deployed');
-    if (this.activeModal.get().kind !== 'WAIT_FOR_APP') {
-      this.activeModal.set({kind: 'ONBOARDING'});
-    }
+    this.activeModal.set({kind: 'ONBOARDING'});
   }
 
   showLocalStorageWarning() {
@@ -86,11 +85,7 @@ export class UIController {
     this.dashboardVisible.set(visible);
   }
 
-  appInitialization() {
-    this.activeModal.set({kind: 'WAIT_FOR_APP'});
-  }
-
   finishAppInitialization() {
-    this.hideModal();
+    this.isLoading.set(false);
   }
 }

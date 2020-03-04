@@ -1,6 +1,6 @@
 import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
-import {ErrorMessage, ModalWrapper, Onboarding, useProperty, ManualDashboard, WaitingForApp} from '@unilogin/react';
+import {ErrorMessage, ModalWrapper, Onboarding, useProperty, ManualDashboard, AppPreloader} from '@unilogin/react';
 import {UIController} from '../../services/UIController';
 import {TransactionConfirmation} from './Confirmation/TransactionConfirmation';
 import {WaitForTransactionModal} from './WaitingForTransactionModal';
@@ -18,6 +18,9 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
   const modal = useProperty(uiController.activeModal);
   const message = sdk.getNotice();
 
+  if (useProperty(uiController.isLoading)) {
+    return <ModalWrapper><AppPreloader /></ModalWrapper>;
+  }
   switch (modal.kind) {
     case 'IDLE':
       return <ManualDashboard
@@ -25,8 +28,6 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
         isVisible={uiController.dashboardVisible}
         onClose={() => uiController.setDashboardVisibility(false)}
       />;
-    case 'WAIT_FOR_APP':
-      return <ModalWrapper><WaitingForApp /></ModalWrapper>;
     case 'ONBOARDING':
       return <Onboarding
         sdk={sdk}
