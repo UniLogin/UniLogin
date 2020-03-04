@@ -2,7 +2,7 @@ import {State, Property, combine} from 'reactive-properties';
 import {WalletService} from '@unilogin/sdk';
 import {ULWeb3ProviderState} from '../models/ULWeb3ProviderState';
 import {ensure, Message} from '@unilogin/commons';
-import {UnexpectedWalletState} from '../ui/utils/errors';
+import {UnexpectedWalletState, isRandomInfuraError} from '../ui/utils/errors';
 import {ConfirmationResponse} from '../models/ConfirmationResponse';
 
 export class UIController {
@@ -65,6 +65,9 @@ export class UIController {
   }
 
   showError(errorMessage?: string) {
+    if (isRandomInfuraError(errorMessage)) {
+      return;
+    }
     this.activeModal.set({kind: 'ERROR', props: {errorMessage}});
   }
 
