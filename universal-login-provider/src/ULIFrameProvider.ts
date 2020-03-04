@@ -19,6 +19,7 @@ export class ULIFrameProvider {
   private bridge: RpcBridge;
   private isReady = new State(false);
   private hasNotifications = false;
+  private static instance?: ULIFrameProvider;
 
   readonly isUniLogin = true;
 
@@ -92,8 +93,15 @@ export class ULIFrameProvider {
     this.iframe.style.display = visible ? 'unset' : 'none';
   }
 
+  private static getInstance(extendedConfig: ExtendedConfig): ULIFrameProvider {
+    if (!ULIFrameProvider.instance) {
+      ULIFrameProvider.instance = new ULIFrameProvider(extendedConfig);
+    }
+    return ULIFrameProvider.instance;
+  }
+
   static create(network: Network, config = DEFAULT_CONFIG) {
-    return new ULIFrameProvider({
+    return ULIFrameProvider.getInstance({
       enablePicker: false,
       network: network.toString() as Network,
       ...config,
@@ -101,7 +109,7 @@ export class ULIFrameProvider {
   }
 
   static createPicker(upstream: Provider | Network, config = DEFAULT_CONFIG) {
-    return new ULIFrameProvider({
+    return ULIFrameProvider.getInstance({
       enablePicker: true,
       ...normalizeUpstream(upstream),
       ...config,
