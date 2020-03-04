@@ -1,6 +1,6 @@
 import React from 'react';
 import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
-import {ErrorMessage, ModalWrapper, Onboarding, useProperty, ManualDashboard, WaitingForApp} from '@unilogin/react';
+import {ErrorMessage, ModalWrapper, Onboarding, useProperty, ManualDashboard} from '@unilogin/react';
 import {UIController} from '../../services/UIController';
 import {TransactionConfirmation} from './Confirmation/TransactionConfirmation';
 import {WaitForTransactionModal} from './WaitingForTransactionModal';
@@ -25,8 +25,6 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
         isVisible={uiController.dashboardVisible}
         onClose={() => uiController.setDashboardVisibility(false)}
       />;
-    case 'WAIT_FOR_APP':
-      return <ModalWrapper><WaitingForApp /></ModalWrapper>;
     case 'ONBOARDING':
       return <Onboarding
         sdk={sdk}
@@ -48,10 +46,10 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
         message={message}
         hideModal={() => uiController.hideModal()}
       >
-        <ErrorMessage message={modal.props.errorMessage} />
+        <ErrorMessage message={modal.props.errorMessage}/>
       </ModalWrapper>;
     case 'WARNING_LOCAL_STORAGE':
-      return <LocalStorageBlockedWarningScreen />;
+      return <LocalStorageBlockedWarningScreen/>;
     default:
       throw Error(`Invalid user interface state: ${modal}`);
   }
