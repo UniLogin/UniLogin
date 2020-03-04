@@ -29,4 +29,12 @@ export const CloseButton = styled.button`
     height: 11px;
     background-color: #7D7C9C;
   }
+
+  @media only screen and (max-width: 600px) {
+    transform: scale(1.4);
+  }
+
+  @media only screen and (max-width: 380px) {
+    transform: scale(1);
+  }
 `;
