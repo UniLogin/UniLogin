@@ -9,7 +9,7 @@ const WebSocket = typeof window !== 'undefined' && window.WebSocket ? window.Web
 
 export class NotifySdk implements INotifySdk {
   static createForNetwork(dappId: string, network: Network): INotifySdk {
-    if (network === 'test') {
+    if (network === 'ganache') {
       return new MockNotifySdk();
     } else {
       return new NotifySdk(dappId, network);
