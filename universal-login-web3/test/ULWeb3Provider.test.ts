@@ -78,7 +78,7 @@ describe('ULWeb3Provider', () => {
       const initOnboardingSpy = sinon.spy(() => null);
       sinon.replace(ulProvider, 'initOnboarding', initOnboardingSpy);
       expect(await web3.eth.getAccounts()).to.deep.eq([]);
-      expect(initOnboardingSpy.calledOnce).to.be.true;
+      expect(initOnboardingSpy.called).to.be.false;
       sinon.restore();
     });
 
