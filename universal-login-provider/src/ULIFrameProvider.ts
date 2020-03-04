@@ -4,6 +4,7 @@ import {createIFrame} from './createIframe';
 import {State, waitFor} from 'reactive-properties';
 import {getApplicationInfoFromDocument} from './applicationInfo';
 import {buildIframeUrl} from './buildIframeUrl';
+import {normalizeUpstream} from './normalizeUpstream';
 
 export interface Provider {
   send: (msg: any, cb: (err: any, response: any) => void) => void;
@@ -103,28 +104,17 @@ export class ULIFrameProvider {
   static create(network: Network, config = DEFAULT_CONFIG) {
     return new ULIFrameProvider({
       enablePicker: false,
-      network: network.toString() as Network,
+      ...normalizeUpstream(network),
       ...config,
     });
   }
 
   static createPicker(upstream: Provider | Network, config = DEFAULT_CONFIG) {
-    if (upstream === undefined) {
-      throw new Error('Either a provider or a network name must be passed as a first argument');
-    }
-    if (typeof upstream === 'string') {
-      return new ULIFrameProvider({
-        enablePicker: true,
-        network: upstream.toString() as Network,
-        ...config,
-      });
-    } else {
-      return new ULIFrameProvider({
-        enablePicker: true,
-        upstream,
-        ...config,
-      });
-    }
+    return new ULIFrameProvider({
+      enablePicker: true,
+      ...normalizeUpstream(upstream),
+      ...config,
+    });
   }
 
   async send(msg: any, cb: (error: any, response: any) => void) {
