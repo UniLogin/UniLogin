@@ -4,17 +4,9 @@ import {createIFrame} from './createIframe';
 import {State, waitFor} from 'reactive-properties';
 import {getApplicationInfoFromDocument} from './applicationInfo';
 import {buildIframeUrl} from './buildIframeUrl';
-
-export interface Provider {
-  send: (msg: any, cb: (err: any, response: any) => void) => void;
-}
-
-export type Network
-  = '1' | 'mainnet'
-  | '3' | 'ropsten'
-  | '4' | 'rinkeby'
-  | '42' | 'kovan'
-  | '8545' | 'ganache';
+import {normalizeUpstream} from './normalizeUpstream';
+import {Network} from './modals/network';
+import {Provider} from './modals/provider';
 
 export interface ExtendedConfig extends ProviderConfig {
   enablePicker: boolean;
@@ -109,22 +101,11 @@ export class ULIFrameProvider {
   }
 
   static createPicker(upstream: Provider | Network, config = DEFAULT_CONFIG) {
-    if (upstream === undefined) {
-      throw new Error('Either a provider or a network name must be passed as a first argument');
-    }
-    if (typeof upstream === 'string') {
-      return new ULIFrameProvider({
-        enablePicker: true,
-        network: upstream.toString() as Network,
-        ...config,
-      });
-    } else {
-      return new ULIFrameProvider({
-        enablePicker: true,
-        upstream,
-        ...config,
-      });
-    }
+    return new ULIFrameProvider({
+      enablePicker: true,
+      ...normalizeUpstream(upstream),
+      ...config,
+    });
   }
 
   async send(msg: any, cb: (error: any, response: any) => void) {
