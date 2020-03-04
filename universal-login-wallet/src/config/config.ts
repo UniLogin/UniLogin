@@ -1,6 +1,5 @@
 require('dotenv').config();
-import {ETHER_NATIVE_TOKEN, Network, asNetwork} from '@unilogin/commons';
-import {cast} from '@restless/sanitizers';
+import {ETHER_NATIVE_TOKEN, Network} from '@unilogin/commons';
 
 export default Object.freeze({
 
