@@ -10,7 +10,7 @@ export const WaitingForApp = ({description, className}: WaitingForProps) => (
 
   <div className={useClassFor('waitingfortransaction')}>
     <WaitingFor
-      action="Configure UniLogin application"
+      action="Loading UniLogin application"
       className={className}
       description={description}
     />
