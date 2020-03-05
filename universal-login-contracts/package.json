@@ -21,7 +21,7 @@
     "lint": "yarn lint:js && yarn lint:sol",
     "lint:js": "eslint '{src,test}/**/*.{js,ts}'",
     "lint:sol": "solium -d contracts",
-    "clean": "rimraf build dist"
+    "clean": "rimraf dist"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
