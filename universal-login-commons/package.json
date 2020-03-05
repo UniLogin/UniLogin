@@ -1,6 +1,6 @@
 {
   "name": "@unilogin/commons",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "description": "Unviersal Login Common source code",
   "main": "dist/cjs/src/index.js",
   "types": "dist/esm/src/index.d.ts",
