@@ -98,7 +98,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    if (accountRequiredMethods.includes(payload.method)) {
+    if (methodsRequiringAccount.includes(payload.method)) {
       await this.deployIfNoWalletDeployed();
     }
 
@@ -226,7 +226,7 @@ export class ULWeb3Provider implements Provider {
   }
 }
 
-const accountRequiredMethods = [
+const methodsRequiringAccount = [
   'eth_sendTransaction',
   'eth_sendRawTransaction',
   'eth_sign',
