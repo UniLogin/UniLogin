@@ -30,7 +30,6 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
       />;
     case 'ONBOARDING':
       return <Onboarding
-        sdk={sdk}
         walletService={walletService}
         domains={domains}
       />;
