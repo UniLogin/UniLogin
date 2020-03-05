@@ -103,7 +103,6 @@ export class ULWeb3Provider implements Provider {
       return;
     }
     await this.sdk.start();
-    this.walletService.loadFromStorage();
     this.uiController.finishAppInitialization();
   }
 
