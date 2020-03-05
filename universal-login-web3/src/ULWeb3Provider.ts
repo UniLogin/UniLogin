@@ -98,7 +98,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    if (isAccountDependantRpc(payload.method)) {
+    if (accountRequiredMethods.includes(payload.method)) {
       await this.deployIfNoWalletDeployed();
     }
 
@@ -226,10 +226,10 @@ export class ULWeb3Provider implements Provider {
   }
 }
 
-const isAccountDependantRpc = (method: string) => [
+const accountRequiredMethods = [
   'eth_sendTransaction',
   'eth_sendRawTransaction',
   'eth_sign',
   'personal_sign',
   'eth_requestAccounts',
-].includes(method);
+];
