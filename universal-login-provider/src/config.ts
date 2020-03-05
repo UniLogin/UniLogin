@@ -4,7 +4,7 @@ export interface ProviderConfig {
   ulButtonId: string;
 }
 
-const IS_DEV = false;
+const IS_DEV = true;
 
 export const DEFAULT_CONFIG: ProviderConfig = {
   backendUrl: IS_DEV ? 'http://localhost:8080' : 'https://universal-provider-backend.netlify.com',

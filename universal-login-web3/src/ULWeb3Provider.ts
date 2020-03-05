@@ -86,15 +86,14 @@ export class ULWeb3Provider implements Provider {
     });
   }
 
-  async init() {
+  init() {
     if (this.browserChecker.isLocalStorageBlocked()) {
       this.uiController.showLocalStorageWarning();
       return;
     }
-    await this.sdk.start();
-    setBetaNotice(this.sdk);
     this.walletService.loadFromStorage();
     this.uiController.finishAppInitialization();
+    setTimeout(() => this.sdk.start());
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
