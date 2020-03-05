@@ -3,6 +3,7 @@ import {SdkConfig} from './SdkConfig';
 import {MemoryStorageService} from '../core/services/MemoryStorageService';
 
 export const SdkConfigDefault: SdkConfig = {
+  network: 'mainnet',
   applicationInfo: {
     applicationName: 'Unknown application',
     logo: 'none',

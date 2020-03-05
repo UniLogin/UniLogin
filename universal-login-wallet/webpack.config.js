@@ -59,6 +59,7 @@ module.exports = {
     }),
     new Dotenv(),
     new webpack.DefinePlugin({
+      'process.env.NETWORK': JSON.stringify(process.env.NETWORK),
       'process.env.DAI_TOKEN_ADDRESS': JSON.stringify(process.env.DAI_TOKEN_ADDRESS),
       'process.env.SAI_TOKEN_ADDRESS': JSON.stringify(process.env.SAI_TOKEN_ADDRESS),
       'process.env.RELAYER_URL': JSON.stringify(process.env.RELAYER_URL),

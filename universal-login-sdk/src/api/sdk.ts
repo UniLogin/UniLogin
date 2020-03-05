@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, asNetwork, Lazy} from '@unilogin/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy} from '@unilogin/commons';
 import {BlockchainService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -82,15 +82,19 @@ class UniversalLoginSDK {
     const beta2Service = new Beta2Service(this.provider);
     const gnosisSafeService = new GnosisSafeService(this.provider);
     this.walletContractService = new WalletContractService(this.blockchainService, beta2Service, gnosisSafeService);
-    this.relayerConfig = new Lazy(() => this.relayerApi.getConfig());
+    this.relayerConfig = new Lazy(() => this.loadRelayerConfigFromApi());
+  }
+
+  private async loadRelayerConfigFromApi() {
+    const config = await this.relayerApi.getConfig();
+    if (!Network.equals(cast(config.chainSpec.name, asNetwork), this.sdkConfig.network)) {
+      throw new Error(`Relayer is configured to a different network. Expected: ${this.sdkConfig.network}, got: ${config.chainSpec.name}`);
+    }
+    return config;
   }
 
   getNotice() {
-    return this.sdkConfig.notice;
-  }
-
-  setNotice(notice: string) {
-    this.sdkConfig.notice = notice;
+    return `This is beta version running on ${this.sdkConfig.network}`;
   }
 
   getFutureWalletFactory() {

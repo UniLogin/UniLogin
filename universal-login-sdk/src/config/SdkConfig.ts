@@ -1,7 +1,8 @@
-import {ObservedCurrency, ApplicationInfo} from '@unilogin/commons';
+import {ObservedCurrency, ApplicationInfo, Network} from '@unilogin/commons';
 import {IStorageService} from '../core/models/IStorageService';
 
 export interface SdkConfig {
+  network: Network;
   applicationInfo: ApplicationInfo;
   observedTokensAddresses: string[];
   saiTokenAddress?: string;
