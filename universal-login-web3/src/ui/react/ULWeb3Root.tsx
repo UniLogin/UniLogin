@@ -17,11 +17,20 @@ export interface ULWeb3RootProps {
 export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3RootProps) => {
   const modal = useProperty(uiController.activeModal);
   const message = sdk.getNotice();
+  const isLoading = useProperty(uiController.isLoading);
 
-  if (
-    useProperty(uiController.isLoading) &&
-    !['ONBOARDING', 'WARNING_LOCAL_STORAGE'].includes(modal.kind)
-  ) {
+  switch (modal.kind) {
+    case 'ONBOARDING':
+      return <Onboarding
+        sdk={sdk}
+        walletService={walletService}
+        domains={domains}
+      />;
+    case 'WARNING_LOCAL_STORAGE':
+      return <LocalStorageBlockedWarningScreen />;
+  }
+
+  if (isLoading) {
     return <ModalWrapper><AppPreloader /></ModalWrapper>;
   }
 
@@ -31,12 +40,6 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
         walletService={walletService}
         isVisible={uiController.dashboardVisible}
         onClose={() => uiController.setDashboardVisibility(false)}
-      />;
-    case 'ONBOARDING':
-      return <Onboarding
-        sdk={sdk}
-        walletService={walletService}
-        domains={domains}
       />;
     case 'SIGN_CONFIRMATION':
       return <SignConfirmation message={message} {...modal.props} />;
@@ -55,8 +58,6 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
       >
         <ErrorMessage message={modal.props.errorMessage} />
       </ModalWrapper>;
-    case 'WARNING_LOCAL_STORAGE':
-      return <LocalStorageBlockedWarningScreen />;
     default:
       throw Error(`Invalid user interface state: ${modal}`);
   }
