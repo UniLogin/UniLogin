@@ -1,15 +1,15 @@
 {
   "name": "@unilogin/web3",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "private": true,
   "license": "MIT",
   "dependencies": {
     "@restless/sanitizers": "^0.2.4",
-    "@unilogin/commons": "0.5.13",
-    "@unilogin/contracts": "0.5.13",
-    "@unilogin/react": "0.5.13",
-    "@unilogin/relayer": "0.5.13",
-    "@unilogin/sdk": "0.5.13",
+    "@unilogin/commons": "0.5.14",
+    "@unilogin/contracts": "0.5.14",
+    "@unilogin/react": "0.5.14",
+    "@unilogin/relayer": "0.5.14",
+    "@unilogin/sdk": "0.5.14",
     "bem-components-react": "^0.1.2",
     "ethers": "^4.0.39",
     "moment": "^2.24.0",
@@ -26,9 +26,7 @@
     "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only -r ./test/testconfig -t 10000 'test/**/*.ts'",
     "build": "webpack --mode production",
-    "start": "webpack-dev-server --mode development",
-    "start:playground": "webpack-dev-server --config webpack.playground.config.js --mode development",
-    "start:example": "ts-node src/scripts/dev-start.ts"
+    "start": "webpack-dev-server --mode development"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",

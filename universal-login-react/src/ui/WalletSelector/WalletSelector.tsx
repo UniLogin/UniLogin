@@ -11,6 +11,7 @@ import './../styles/base/walletSelector.sass';
 import './../styles/themes/Legacy/walletSelectorThemeLegacy.sass';
 import './../styles/themes/Jarvis/walletSelectorThemeJarvis.sass';
 import './../styles/themes/UniLogin/walletSelectorThemeUniLogin.sass';
+import {useThemeClassFor} from '../utils/classFor';
 
 export interface WalletSelectorProps {
   onCreateClick?(ensName: string): Promise<void> | void;
@@ -31,7 +32,7 @@ export const WalletSelector = ({
   placeholder = 'type a name',
   className,
 }: WalletSelectorProps) => (
-  <div className="universal-login">
+  <div className={`${useThemeClassFor()} universal-login`}>
     <div className={getStyleForTopLevelComponent(className)}>
       <EnsNamePicker
         onCreateClick={onCreateClick}

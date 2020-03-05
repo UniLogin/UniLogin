@@ -1,7 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
-import {setBetaNotice} from '@unilogin/sdk';
 import {ErrorBoundary, useAsync, ThemeProvider} from '@unilogin/react';
 import App from './ui/react/App';
 import {createServices, ServiceContext} from './ui/createServices';
@@ -16,7 +15,6 @@ const AppBootstrapper = () => {
     await services.start();
 
     services.walletService.loadFromStorage();
-    setBetaNotice(services.sdk);
     return services;
   }, []);
 

@@ -1,15 +1,15 @@
 {
   "name": "@unilogin/sdk",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "main": "dist/cjs/src/index.js",
   "types": "dist/esm/src/index.d.ts",
   "module": "dist/esm/src/index.js",
   "license": "MIT",
   "dependencies": {
     "@restless/sanitizers": "^0.2.4",
+    "@unilogin/commons": "0.5.14",
+    "@unilogin/contracts": "0.5.14",
     "bnc-sdk": "^1.0.3",
-    "@unilogin/commons": "0.5.13",
-    "@unilogin/contracts": "0.5.13",
     "cryptocompare": "^1.0.0",
     "deep-equal": "^1.0.1",
     "ethers": "^4.0.39",
@@ -37,7 +37,7 @@
     "@types/ws": "^7.2.2",
     "@typescript-eslint/eslint-plugin": "^2.3.1",
     "@typescript-eslint/parser": "^2.3.1",
-    "@unilogin/relayer": "0.5.13",
+    "@unilogin/relayer": "0.5.14",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-http": "^4.3.0",
@@ -50,7 +50,7 @@
     "rimraf": "^2.6.3",
     "sinon": "^6.3.1",
     "sinon-chai": "^3.2.0",
-    "typescript": "^3.7.5",
-    "ts-node": "^8.6.2"
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
   }
 }

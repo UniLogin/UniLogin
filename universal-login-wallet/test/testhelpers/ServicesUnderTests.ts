@@ -1,11 +1,12 @@
 import {createServices} from '../../src/ui/createServices';
 import {providers} from 'ethers';
-import {testJsonRpcUrl, TEST_SDK_CONFIG} from '@unilogin/commons';
+import {testJsonRpcUrl, TEST_SDK_CONFIG, Network} from '@unilogin/commons';
 import {SdkConfig, MemoryStorageService} from '@unilogin/sdk';
 
 export const createPreconfiguredServices = async (provider: providers.Provider, relayer: any, tokens: string[]) => {
   const domains = relayer.config.ensRegistrars;
   const config = {
+    network: 'ganache' as Network,
     jsonRpcUrl: testJsonRpcUrl,
     relayerUrl: relayer.url(),
     domains,

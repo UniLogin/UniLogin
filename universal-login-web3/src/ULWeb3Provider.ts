@@ -1,6 +1,6 @@
 import {Provider} from 'web3/providers';
 import {Config, getConfigForNetwork} from './config';
-import UniversalLoginSDK, {WalletService, setBetaNotice, SdkConfig} from '@unilogin/sdk';
+import UniversalLoginSDK, {WalletService, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
 import {constants, providers, utils} from 'ethers';
 import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
@@ -14,6 +14,7 @@ import {renderLogoButton} from './ui/logoButton';
 import {asBoolean, asString, cast} from '@restless/sanitizers';
 
 export interface ULWeb3ProviderOptions {
+  network: Network;
   provider: Provider;
   relayerUrl: string;
   ensDomains: string[];
@@ -28,6 +29,7 @@ export class ULWeb3Provider implements Provider {
     const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
 
     return new ULWeb3Provider({
+      network: config.network,
       provider: config.provider,
       relayerUrl: config.relayerUrl,
       ensDomains: config.ensDomains,
@@ -48,6 +50,7 @@ export class ULWeb3Provider implements Provider {
   readonly hasNotifications: Property<boolean>;
 
   constructor({
+    network,
     provider,
     relayerUrl,
     ensDomains,
@@ -57,7 +60,10 @@ export class ULWeb3Provider implements Provider {
     browserChecker = new BrowserChecker(),
   }: ULWeb3ProviderOptions) {
     this.provider = provider;
-    const sdkConfig: Partial<SdkConfig> = {storageService};
+    const sdkConfig: Partial<SdkConfig> = {
+      network,
+      storageService,
+    };
     if (applicationInfo) {
       sdkConfig.applicationInfo = applicationInfo;
     }
@@ -84,15 +90,19 @@ export class ULWeb3Provider implements Provider {
       walletService: this.walletService,
       uiController: this.uiController,
     });
+
+    if (this.browserChecker.isLocalStorageBlocked()) {
+      this.uiController.showLocalStorageWarning();
+    } else {
+      this.walletService.loadFromStorage();
+    }
   }
 
   async init() {
     if (this.browserChecker.isLocalStorageBlocked()) {
-      this.uiController.showLocalStorageWarning();
       return;
     }
     await this.sdk.start();
-    setBetaNotice(this.sdk);
     this.walletService.loadFromStorage();
     this.uiController.finishAppInitialization();
   }
@@ -226,7 +236,8 @@ export class ULWeb3Provider implements Provider {
   }
 }
 
-const methodsRequiringAccount = [
+export const methodsRequiringAccount = [
+  'ul_set_dashboard_visibility',
   'eth_sendTransaction',
   'eth_sendRawTransaction',
   'eth_sign',
