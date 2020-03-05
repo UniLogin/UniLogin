@@ -226,7 +226,8 @@ export class ULWeb3Provider implements Provider {
   }
 }
 
-const methodsRequiringAccount = [
+export const methodsRequiringAccount = [
+  'ul_set_dashboard_visibility',
   'eth_sendTransaction',
   'eth_sendRawTransaction',
   'eth_sign',

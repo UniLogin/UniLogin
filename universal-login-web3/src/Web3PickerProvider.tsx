@@ -5,7 +5,7 @@ import {ensureNotFalsy} from '@unilogin/commons';
 import {InvalidProvider} from './ui/utils/errors';
 import {initPickerUi} from './ui/initUi';
 import {waitForFalse} from './ui/utils/utils';
-import {ULWeb3Provider} from './ULWeb3Provider';
+import {ULWeb3Provider, methodsRequiringAccount} from './ULWeb3Provider';
 
 export class Web3PickerProvider implements Provider {
   readonly currentProvider = new State<Provider | undefined>(undefined);
@@ -22,7 +22,7 @@ export class Web3PickerProvider implements Provider {
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
     if (!this.currentProvider.get()) {
-      if (!isAccountDependantRpc(payload.method)) {
+      if (!methodsRequiringAccount.includes(payload.method)) {
         return this.readProvider.send(payload, callback);
       }
       if (payload.method === 'eth_accounts') {
@@ -71,13 +71,3 @@ export class Web3PickerProvider implements Provider {
     return !!this.currentProvider.get();
   }
 }
-
-const isAccountDependantRpc = (method: string) => [
-  'eth_sendTransaction',
-  'eth_sendRawTransaction',
-  'eth_accounts',
-  'eth_sign',
-  'personal_sign',
-  'ul_set_dashboard_visibility',
-  'eth_requestAccounts',
-].includes(method);
