@@ -117,7 +117,7 @@ export class ULIFrameProvider {
   }
 
   async send(msg: any, cb: (error: any, response: any) => void) {
-    if (methodsRequiredInitialization.includes(msg.method)) await this.waitUntilReady();
+    if (initializationRequiredMethods.includes(msg.method)) await this.waitUntilReady();
     this.bridge.send(msg, cb);
   }
 
@@ -178,7 +178,7 @@ export class ULIFrameProvider {
   }
 }
 
-const methodsRequiredInitialization = [
+const initializationRequiredMethods = [
   'eth_sendTransaction',
   'eth_sendRawTransaction',
   'eth_sign',
