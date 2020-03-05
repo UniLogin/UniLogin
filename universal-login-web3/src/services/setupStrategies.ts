@@ -20,14 +20,12 @@ export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverr
   create: async () => {
     const networkVersion = await getNetworkId(provider) as Network;
     const uniLoginConfig = getConfigForNetwork(networkVersion);
-    const ulProvider = new ULWeb3Provider({
+    return new ULWeb3Provider({
       ...uniLoginConfig,
       applicationInfo: overrides?.applicationInfo,
       storageService: overrides?.storageService,
       browserChecker: overrides?.browserChecker,
     });
-    await ulProvider.init();
-    return ulProvider;
   },
 });
 
