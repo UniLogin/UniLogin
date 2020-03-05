@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {ensure, generateCode} from '@unilogin/commons';
-import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {EmojiPanel} from '../WalletSelector/EmojiPanel';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/emoji.sass';
@@ -11,14 +11,13 @@ import {useThemeClassFor} from '../utils/classFor';
 import '../styles/themes/UniLogin/connectWithEmojiThemeUniLogin.sass';
 
 interface ConnectWithEmojiProps {
-  sdk: UniversalLoginSDK;
   walletService: WalletService;
   onCancel: () => void;
   onConnect: () => void;
   className?: string;
 }
 
-export const ConnectWithEmoji = ({sdk, onCancel, onConnect, walletService, className}: ConnectWithEmojiProps) => {
+export const ConnectWithEmoji = ({onCancel, onConnect, walletService, className}: ConnectWithEmojiProps) => {
   const [securityCodes, setSecurityCodes] = useState<number[] | undefined>(undefined);
   useAsyncEffect(async () => {
     if (walletService.state.kind === 'Connecting') {
@@ -30,17 +29,13 @@ export const ConnectWithEmoji = ({sdk, onCancel, onConnect, walletService, class
 
   const onCancelClick = async () => {
     const {contractAddress, privateKey} = walletService.getConnectingWallet();
-    await cancelRequest(contractAddress, privateKey);
-    await walletService.cancelWaitForConnection();
-    onCancel();
-  };
-
-  const cancelRequest = async (contractAddress: string, privateKey: string) => {
     try {
-      await sdk.cancelRequest(contractAddress, privateKey);
+      await walletService.sdk.cancelRequest(contractAddress, privateKey);
     } catch (error) {
       ensure(error.response === 0, Error, 'Invalid cancel request');
     }
+    await walletService.cancelWaitForConnection();
+    onCancel();
   };
 
   return (

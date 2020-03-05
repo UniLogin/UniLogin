@@ -1,6 +1,6 @@
 import {join} from 'path';
 import React from 'react';
-import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {ChooseConnectionMethod} from './ChooseConnectionMethod';
 import {ConnectWithPassphrase} from './ConnectWithPassphrase';
 import {ConnectWithEmoji} from './ConnectWithEmoji';
@@ -11,16 +11,15 @@ import {ConnectionFlowWrapper} from './ConnectionFlowWrapper';
 export type ConnectModal = 'chooseMethod' | 'emoji' | 'recover';
 
 export interface ConnectionFlowProps {
+  walletService: WalletService;
   basePath: string;
   name: string;
   onCancel: () => void;
   onSuccess: () => void;
-  sdk: UniversalLoginSDK;
-  walletService: WalletService;
   className?: string;
 }
 
-export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, sdk, walletService, className}: ConnectionFlowProps) => {
+export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, walletService, className}: ConnectionFlowProps) => {
   const history = useHistory();
 
   const onConnectWithDeviceClick = () => {
@@ -51,7 +50,6 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, sdk, w
     </Route>
     <Route exact path={join(basePath, 'emoji')}>
       <ConnectWithEmoji
-        sdk={sdk}
         walletService={walletService}
         onConnect={onSuccess}
         onCancel={onCancel}

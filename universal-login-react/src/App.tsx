@@ -86,7 +86,6 @@ export const App = () => {
                 path="/onboarding"
                 render={({history}) =>
                   <Onboarding
-                    sdk={sdk}
                     walletService={walletService}
                     domains={['mylogin.eth', 'universal-id.eth', 'poppularapp.eth']}
                     onConnect={() => console.log('connected')}

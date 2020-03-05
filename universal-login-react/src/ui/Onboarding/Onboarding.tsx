@@ -1,5 +1,5 @@
 import React from 'react';
-import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import {ApplicationWallet, WalletSuggestionAction} from '@unilogin/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
@@ -12,14 +12,13 @@ import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
 
 export interface OnboardingProps {
-  sdk: UniversalLoginSDK;
   walletService: WalletService;
+  domains: string[];
   onConnect?: () => void;
   onCreate?: (arg: ApplicationWallet) => void;
-  domains: string[];
+  hideModal?: () => void;
   className?: string;
   modalClassName?: string;
-  hideModal?: () => void;
 }
 
 export const Onboarding = (props: OnboardingProps) => {
@@ -37,12 +36,12 @@ export const Onboarding = (props: OnboardingProps) => {
               render={({history}) =>
                 <OnboardingStepsWrapper
                   hideModal={props.hideModal}
-                  message={props.sdk.getNotice()}
+                  message={props.walletService.sdk.getNotice()}
                   steps={5}
                   progress={1}>
                   <div className="perspective">
                     <WalletSelector
-                      sdk={props.sdk}
+                      sdk={props.walletService.sdk}
                       onCreateClick={async (ensName) => {
                         await props.walletService.createFutureWallet(ensName);
                         history.push('/create');
@@ -57,22 +56,20 @@ export const Onboarding = (props: OnboardingProps) => {
             <Route
               exact
               path="/create"
-              render={({history}) =>
-                <OnboardingSteps
-                  sdk={props.sdk}
-                  walletService={props.walletService}
-                  onCreate={props.onCreate}
-                />}
-            />
+            >
+              <OnboardingSteps
+                walletService={props.walletService}
+                onCreate={props.onCreate}
+              />
+            </Route>
             <Route
               path="/connectFlow"
               render={({history, location}) =>
-                <ModalWrapper message={props.sdk.getNotice()} hideModal={() => history.push('/selector')}>
+                <ModalWrapper message={props.walletService.sdk.getNotice()} hideModal={() => history.push('/selector')}>
                   <ConnectionFlow
                     basePath="/connectFlow"
                     onCancel={() => history.push('/selector')}
                     name={location.state.ensName}
-                    sdk={props.sdk}
                     walletService={props.walletService}
                     onSuccess={onSuccess}
                   />

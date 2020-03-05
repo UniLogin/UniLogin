@@ -1,19 +1,18 @@
 import {useProperty} from '../..';
 import React from 'react';
-import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {ApplicationWallet} from '@unilogin/commons';
 import {useHistory} from 'react-router';
 import {OnboardingTopUp} from './OnboardingTopUp';
 import {OnboardingWaitForDeployment} from './OnboardingWaitForDeployment';
 
 interface OnboardingStepsProps {
-  sdk: UniversalLoginSDK;
   walletService: WalletService;
   onCreate?: (arg: ApplicationWallet) => void;
   className?: string;
 }
 
-export function OnboardingSteps({sdk, walletService, className, onCreate}: OnboardingStepsProps) {
+export function OnboardingSteps({walletService, className, onCreate}: OnboardingStepsProps) {
   const walletState = useProperty(walletService.stateProperty);
   const history = useHistory();
 
@@ -35,7 +34,7 @@ export function OnboardingSteps({sdk, walletService, className, onCreate}: Onboa
         <OnboardingWaitForDeployment
           walletService={walletService}
           onSuccess={onCreate}
-          relayerConfig={sdk.getRelayerConfig()}
+          relayerConfig={walletService.sdk.getRelayerConfig()}
           transactionHash={walletState.transactionHash}
         />
       );
