@@ -82,7 +82,7 @@ class UniversalLoginSDK {
     const beta2Service = new Beta2Service(this.provider);
     const gnosisSafeService = new GnosisSafeService(this.provider);
     this.walletContractService = new WalletContractService(this.blockchainService, beta2Service, gnosisSafeService);
-    this.relayerConfig = new Lazy(async () => (await this.relayerApi.getConfig()).config);
+    this.relayerConfig = new Lazy(() => this.relayerApi.getConfig());
   }
 
   getNotice() {

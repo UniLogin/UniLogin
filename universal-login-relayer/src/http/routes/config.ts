@@ -24,7 +24,7 @@ export function getPublicConfig(config: Config): PublicRelayerConfig {
 export const network = (config: PublicRelayerConfig) => async (req: Request, res: Response) => {
   res.status(200)
     .type('json')
-    .send(JSON.stringify({config}));
+    .send(JSON.stringify(config));
 };
 
 export default (config: PublicRelayerConfig) => {
