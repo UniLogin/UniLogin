@@ -68,7 +68,6 @@ export class ULWeb3Provider implements Provider {
     );
     this.browserChecker = browserChecker;
     this.walletService = new WalletService(this.sdk, walletFromBrain, storageService);
-    this.walletService.loadFromStorage();
 
     this.uiController = new UIController(this.walletService);
 
@@ -85,11 +84,16 @@ export class ULWeb3Provider implements Provider {
       walletService: this.walletService,
       uiController: this.uiController,
     });
+
+    if (this.browserChecker.isLocalStorageBlocked()) {
+      this.uiController.showLocalStorageWarning();
+    } else {
+      this.walletService.loadFromStorage();
+    }
   }
 
   async init() {
     if (this.browserChecker.isLocalStorageBlocked()) {
-      this.uiController.showLocalStorageWarning();
       return;
     }
     await this.sdk.start();
