@@ -6,7 +6,7 @@ import UniLoginLogo from '../../src/ui/assets/U.svg';
 import MetamaskLogo from '../../src/ui/assets/MetaMaskLogoTitle.svg';
 
 describe('UNIT: setupStrategies', () => {
-  const mockProvider = {send: (_: any, cb: any) => cb(null, {result: '1'})};
+  const mockProvider = {send: (_: any, cb: any) => cb(null, {result: '8545'})};
 
   it('return UniLogin strategy for UniLogin', async () => {
     const applicationInfo = {
@@ -20,7 +20,6 @@ describe('UNIT: setupStrategies', () => {
     expect(result[0].create).to.not.be.null;
     const ulWeb3Provider = await result[0].create();
     expect((ulWeb3Provider as any).sdk.sdkConfig.applicationInfo).to.deep.eq(applicationInfo);
-    await (ulWeb3Provider as any).finalizeAndStop();
   });
 
   it('return Metamask strategy for Metamask', () => {

@@ -26,7 +26,6 @@ export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverr
       storageService: overrides?.storageService,
       browserChecker: overrides?.browserChecker,
     });
-    await ulProvider.init();
     return ulProvider;
   },
 });

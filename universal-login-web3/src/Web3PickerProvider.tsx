@@ -5,6 +5,7 @@ import {ensureNotFalsy} from '@unilogin/commons';
 import {InvalidProvider} from './ui/utils/errors';
 import {initPickerUi} from './ui/initUi';
 import {waitForFalse} from './ui/utils/utils';
+import {ULWeb3Provider} from './ULWeb3Provider';
 
 export class Web3PickerProvider implements Provider {
   readonly currentProvider = new State<Provider | undefined>(undefined);
@@ -42,9 +43,13 @@ export class Web3PickerProvider implements Provider {
   async setProvider(providerName: string) {
     const factory = this.factories.find((factory) => factory.name === providerName);
     ensureNotFalsy(factory, InvalidProvider, providerName);
-    this.currentProvider.set(await factory.create());
+    const provider = await factory.create();
+    this.currentProvider.set(provider);
     this.providerName = providerName;
     this.isVisible.set(false);
+    if (factory.name === 'UniLogin') {
+      await (provider as ULWeb3Provider).init();
+    }
   }
 
   private lazyCreateReactRoot() {
