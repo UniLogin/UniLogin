@@ -84,16 +84,20 @@ export class ULWeb3Provider implements Provider {
       walletService: this.walletService,
       uiController: this.uiController,
     });
+
+    if (this.browserChecker.isLocalStorageBlocked()) {
+      this.uiController.showLocalStorageWarning();
+    } else {
+      this.walletService.loadFromStorage();
+    }
   }
 
   async init() {
     if (this.browserChecker.isLocalStorageBlocked()) {
-      this.uiController.showLocalStorageWarning();
       return;
     }
     await this.sdk.start();
     setBetaNotice(this.sdk);
-    this.walletService.loadFromStorage();
     this.uiController.finishAppInitialization();
   }
 
@@ -226,7 +230,8 @@ export class ULWeb3Provider implements Provider {
   }
 }
 
-const methodsRequiringAccount = [
+export const methodsRequiringAccount = [
+  'ul_set_dashboard_visibility',
   'eth_sendTransaction',
   'eth_sendRawTransaction',
   'eth_sign',
