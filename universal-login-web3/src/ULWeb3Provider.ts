@@ -68,6 +68,7 @@ export class ULWeb3Provider implements Provider {
     );
     this.browserChecker = browserChecker;
     this.walletService = new WalletService(this.sdk, walletFromBrain, storageService);
+    this.walletService.loadFromStorage();
 
     this.uiController = new UIController(this.walletService);
 
@@ -93,7 +94,6 @@ export class ULWeb3Provider implements Provider {
     }
     await this.sdk.start();
     setBetaNotice(this.sdk);
-    this.walletService.loadFromStorage();
     this.uiController.finishAppInitialization();
   }
 

@@ -22,7 +22,7 @@ export class Web3PickerProvider implements Provider {
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
     if (!this.currentProvider.get()) {
-      if (!methodsRequiringAccount.includes(payload.method)) {
+      if (!methodsRequiringUlProvider.includes(payload.method)) {
         return this.readProvider.send(payload, callback);
       }
       if (payload.method === 'eth_accounts') {
@@ -71,3 +71,8 @@ export class Web3PickerProvider implements Provider {
     return !!this.currentProvider.get();
   }
 }
+
+const methodsRequiringUlProvider = [
+  ...methodsRequiringAccount,
+  'eth_accounts',
+];
