@@ -6,7 +6,7 @@ import {useHistory} from 'react-router';
 import {Switch, Route} from 'react-router-dom';
 
 export const ConnectAccount = () => {
-  const {sdk, walletService} = useServices();
+  const {walletService} = useServices();
   const history = useHistory();
   const [name, setName] = useState<string | undefined>(undefined);
   return <div className="main-bg">
@@ -19,7 +19,6 @@ export const ConnectAccount = () => {
           <ConnectionFlow
             basePath="/connect/"
             name={name!}
-            sdk={sdk}
             walletService={walletService}
             onCancel={() => history.push('/connect/selector')}
             onSuccess={() => history.push('/connectionSuccess')}
