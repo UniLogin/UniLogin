@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {Contract, Wallet, providers, utils} from 'ethers';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
+import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {mineBlock} from '@unilogin/contracts/testutils';
 import basicSDK from '../fixtures/basicSDK';
@@ -41,7 +41,7 @@ describe('INT: Events', () => {
 
   it('create, request connection, addKey roundtrip', async () => {
     const keyCallback = sinon.spy();
-    const newKeySDK = new UniversalLoginSDK(relayer.url(), provider);
+    const newKeySDK = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
     await newKeySDK.start();
     const {privateKey: newPrivateKey} = await newKeySDK.connect(contractAddress);
     const publicKeyToAdd = utils.computeAddress(newPrivateKey);
