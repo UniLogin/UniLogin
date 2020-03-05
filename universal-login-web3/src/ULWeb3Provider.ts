@@ -71,7 +71,7 @@ export class ULWeb3Provider implements Provider {
 
     this.uiController = new UIController(this.walletService);
 
-    this.isLoggedIn = this.walletService.walletDeployed;
+    this.isLoggedIn = this.walletService.isAuthorized;
     this.isUiVisible = this.uiController.isUiVisible;
     this.hasNotifications = this.walletService.stateProperty.pipe(
       flatMap(state => state.kind === 'Deployed' ? state.wallet.authorizations : new State([])),
@@ -98,8 +98,8 @@ export class ULWeb3Provider implements Provider {
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    if (methodsRequiringAccount.includes(payload.method)) {
-      await this.deployIfNoWalletDeployed();
+    if (this.walletService.state.kind !== 'Deployed') {
+      await this.initOnboarding();
     }
 
     try {
@@ -212,7 +212,8 @@ export class ULWeb3Provider implements Provider {
 
   private async deployIfNoWalletDeployed() {
     if (!this.walletService.walletDeployed.get()) {
-      await this.initOnboarding();
+      this.uiController.requireWallet();
+      await waitForTrue(this.walletService.walletDeployed);
     }
   }
 
@@ -225,11 +226,3 @@ export class ULWeb3Provider implements Provider {
     return this.sdk.finalizeAndStop();
   }
 }
-
-const methodsRequiringAccount = [
-  'eth_sendTransaction',
-  'eth_sendRawTransaction',
-  'eth_sign',
-  'personal_sign',
-  'eth_requestAccounts',
-];

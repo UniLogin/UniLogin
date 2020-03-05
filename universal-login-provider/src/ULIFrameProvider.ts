@@ -117,7 +117,7 @@ export class ULIFrameProvider {
   }
 
   async send(msg: any, cb: (error: any, response: any) => void) {
-    if (methodsRequiringInitialization.includes(msg.method)) await this.waitUntilReady();
+    await this.waitUntilReady();
     this.bridge.send(msg, cb);
   }
 
@@ -177,11 +177,3 @@ export class ULIFrameProvider {
     element.addEventListener('click', this.boundOpenDashboard);
   }
 }
-
-const methodsRequiringInitialization = [
-  'eth_sendTransaction',
-  'eth_sendRawTransaction',
-  'eth_sign',
-  'personal_sign',
-  'eth_requestAccounts',
-];

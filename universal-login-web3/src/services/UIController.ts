@@ -16,8 +16,8 @@ export class UIController {
     private walletService: WalletService,
   ) {
     this.isUiVisible = combine(
-      [this.activeModal, this.dashboardVisible, this.isLoading],
-      (state, dashboardVisible, isLoading) => state.kind !== 'IDLE' || dashboardVisible || isLoading,
+      [this.activeModal, this.dashboardVisible],
+      (state, dashboardVisible) => state.kind !== 'IDLE' || dashboardVisible,
     );
   }
 

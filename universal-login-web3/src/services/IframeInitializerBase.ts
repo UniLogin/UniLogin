@@ -18,9 +18,6 @@ export abstract class IframeInitializerBase {
     this.getHasNotifications().pipe(forEach(
       hasNotifications => this.endpoint.setNotificationIndicator(hasNotifications),
     ));
-  }
-
-  ready() {
     this.endpoint.sendReadySignal();
   }
 }
