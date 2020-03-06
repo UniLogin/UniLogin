@@ -33,4 +33,4 @@ export const ManualDashboard = ({walletService, isVisible, onClose, className}: 
       </MemoryRouter>
     </div>
   );
-}
+};
