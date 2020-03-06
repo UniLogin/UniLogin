@@ -37,9 +37,6 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: Choose
         topUpMethod={topUpMethod}
         setTopUpMethod={setTopUpMethod}
       />
-      {topUpMethod === 'crypto' && <TopUpWithCrypto
-        walletService={walletService}
-      />}
       {topUpMethod === 'fiat' && <TopUpWithFiat
         walletService={walletService}
         topUpProviderSupportService={topUpProviderSupportService}
@@ -48,6 +45,9 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: Choose
         paymentMethod={paymentMethod}
         onPaymentMethodChange={setPaymentMethod}
         logoColor={logoColor}
+      />}
+      {topUpMethod === 'crypto' && <TopUpWithCrypto
+        walletService={walletService}
       />}
       {topUpMethod &&
         <FooterSection>
