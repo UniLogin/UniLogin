@@ -161,6 +161,7 @@ const ProviderList = styled.div<IProviderListProps>`
 
 const ModalBox = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   min-width: 50rem;
   min-height: 30rem;

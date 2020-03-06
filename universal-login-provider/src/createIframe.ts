@@ -2,8 +2,8 @@ export function createIFrame(url: string) {
   const iframe = document.createElement('iframe');
   Object.assign(iframe.style, {
     position: 'fixed',
-    width: '100vw',
-    height: '100vh',
+    width: '100%',
+    height: '100%',
     left: '0',
     top: '0',
     background: 'none transparent',
