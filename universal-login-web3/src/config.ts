@@ -17,7 +17,7 @@ export function getConfigForNetwork(network: Network): Config {
         network: 'mainnet',
         provider: new HttpProvider('https://mainnet.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d'),
         relayerUrl: 'https://relayer-mainnet.herokuapp.com',
-        ensDomains: ['unitest.eth'],
+        ensDomains: ['unibeta.eth'],
       };
     case '3':
     case 'ropsten':
@@ -25,7 +25,7 @@ export function getConfigForNetwork(network: Network): Config {
         network: 'ropsten',
         provider: new HttpProvider('https://ropsten.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d'),
         relayerUrl: 'https://relayer-ropsten.herokuapp.com',
-        ensDomains: ['poppularapp.test'],
+        ensDomains: ['unilogin.test'],
       };
     case '4':
     case 'rinkeby':
@@ -33,7 +33,7 @@ export function getConfigForNetwork(network: Network): Config {
         network: 'rinkeby',
         provider: new HttpProvider('https://rinkeby.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d'),
         relayerUrl: 'https://relayer-rinkeby.herokuapp.com',
-        ensDomains: ['poppularapp.test'],
+        ensDomains: ['unilogin.test'],
       };
     case '42':
     case 'kovan':
@@ -41,7 +41,7 @@ export function getConfigForNetwork(network: Network): Config {
         network: 'kovan',
         provider: new HttpProvider('https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d'),
         relayerUrl: 'https://relayer-kovan.herokuapp.com',
-        ensDomains: ['poppularapp.test'],
+        ensDomains: ['unilogin.test'],
       };
     case '8545':
     case 'ganache':
