@@ -203,8 +203,8 @@ In your project, create the UniversalLoginSDK
   import ethers from 'ethers';
 
 
-  const relayerUrl = 'https://relayer.universallogin.io';
-  const jsonRpcUrl = 'https://ropsten.infura.io';
+  const relayerUrl = 'https://relayer-mainnet.universallogin.io';
+  const jsonRpcUrl = 'https://mainnet.infura.io';
 
   const universalLoginSDK = new UniversalLoginSDK(relayerUrl, jsonRpcUrl);
 
@@ -343,7 +343,7 @@ Parameters:
 
   ::
 
-    universal-login register:eth:domain cool-domain --ensAddress 0x314159265dd8dbb310642f98f50c066173c1259b --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://mainnet.infura.io' --gasPrice 11000000000
+    universal-login register:eth:domain cool-domain --ensAddress 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://mainnet.infura.io' --gasPrice 11000000000
 
   Result:
 
@@ -369,7 +369,7 @@ To register an **.test** ENS domain type in the console:
 
 Parameters:
   - **my-domain** - a domain to register
-  - **publicResolverAddress** : string - the address of a public resolver. For the Ropsten test network a working public resolver address is ``0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A`` and for the Rinkeby test network a public resolver address is ``0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc``.
+  - **publicResolverAddress** : string - the address of a public resolver. For the Mainnet a working public resolver address is ``0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41``.
   - **ensAddress** : string - the address of an ENS contract (`list of ENS addresses<https://docs.ens.domains/ens-deployments>`_ on public networks)
   - **privateKey** : string - private key to execute registrations. `Note:` You need to have ether on it to pay for contracts deployment.
   - **nodeUrl** : string - JSON-RPC URL of an Ethereum node
@@ -378,7 +378,7 @@ Parameters:
 
   ::
 
-    universal-login register:test:domain cool-domain 0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A --ensAddress 0x112234455c3a32fd11230c42e7bccd4a84e02010 --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://ropsten.infura.io'
+    universal-login register:test:domain cool-domain 0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A --ensAddress 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e --privateKey 'YOUR_PRIVATE_KEY' --nodeUrl 'https://ropsten.infura.io'
 
   Result:
 
@@ -418,10 +418,10 @@ To register your own ENS domain programmatically, you should use DomainRegistrar
       import {providers, Wallet} from 'ethers';
 
       const ensInfo = {
-        ensAddress: '0x112234455c3a32fd11230c42e7bccd4a84e02010',
-        publicResolverAddress: '0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A'
+        ensAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
+        publicResolverAddress: '0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41'
       };
-      const provider = new providers.JsonRpcProvider('https://ropsten.infura.io');
+      const provider = new providers.JsonRpcProvider('https://mainnet.infura.io');
       const wallet = new Wallet('YOUR_PRIVATE_KEY', provider);
 
       const registrar = new DomainRegistrar(ensInfo, wallet);
@@ -443,6 +443,6 @@ To register your own ENS domain programmatically, you should use DomainRegistrar
     ::
 
         DOMAIN='extra-domain.test'
-        PUBLIC_RESOLVER_ADDRESS='0x4C641FB9BAd9b60EF180c31F56051cE826d21A9A'
+        PUBLIC_RESOLVER_ADDRESS='0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41'
         REGISTRAR_ADDRESS='0xEe0b357352C7Ba455EFD0E20d192bC44F1Bf8d22'
 
