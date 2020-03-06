@@ -1,7 +1,6 @@
 {
   "name": "@unilogin/web3",
   "version": "0.5.14",
-  "private": true,
   "license": "MIT",
   "dependencies": {
     "@restless/sanitizers": "^0.2.4",
