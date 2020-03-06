@@ -16,7 +16,11 @@ export interface ManualDashboardProps {
 }
 
 export const ManualDashboard = ({walletService, isVisible, onClose, className}: ManualDashboardProps) => {
-  useAsyncEffect(async () => walletService.getDeployedWallet().subscribeDisconnected(() => walletService.disconnect()), []);
+  useAsyncEffect(async () => {
+    if (walletService.walletDeployed.get()) {
+      return walletService.getDeployedWallet().subscribeDisconnected(() => walletService.disconnect());
+    }
+  }, [walletService.walletDeployed.get()]);
 
   return (
     <div className={getStyleForTopLevelComponent(className)}>
