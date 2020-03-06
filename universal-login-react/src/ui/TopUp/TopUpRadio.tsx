@@ -51,7 +51,7 @@ export const TopUpRadioFiat = (props: Omit<TopUpRadioProps, 'children'>) => (
       <img className={classForComponent('top-up-method-icon')} src={cardIcon} alt="card" />
       <img className={classForComponent('top-up-method-icon')} src={bankIcon} alt="Dai" />
     </div>
-    <p className={classForComponent('top-up-method-title')}>Fiat</p>
-    <p className={classForComponent('top-up-method-text')}>Buy using credit card or bank account</p>
+    <p className={classForComponent('top-up-method-title')}>Card or Bank</p>
+    <p className={classForComponent('top-up-method-text')}>Top-up with your bank account or credit/debit card</p>
   </TopUpRadio>
 );
