@@ -23,19 +23,19 @@ export const ChooseTopUpMethodHeader = ({topUpMethod, setTopUpMethod}: ChooseTop
       <ModalTitle>Choose a top-up method</ModalTitle>
       {isTextVisible && <ModalText>To create your account please choose a top-up method to fund your account.</ModalText>}
       <div className={classForComponent('top-up-methods')}>
-        <TopUpRadioCrypto
-          id="topup-btn-crypto"
-          onClick={() => onMethodClick('crypto')}
-          checked={topUpMethod === 'crypto'}
-          name="top-up-method"
-          className={`${classForComponent('top-up-method')} ${topUpMethod === 'crypto' ? 'active' : ''}`}
-        />
         <TopUpRadioFiat
           id="topup-btn-fiat"
           onClick={() => onMethodClick('fiat')}
           checked={topUpMethod === 'fiat'}
           name="top-up-method"
           className={`${classForComponent('top-up-method')} ${topUpMethod === 'fiat' ? 'active' : ''}`}
+        />
+        <TopUpRadioCrypto
+          id="topup-btn-crypto"
+          onClick={() => onMethodClick('crypto')}
+          checked={topUpMethod === 'crypto'}
+          name="top-up-method"
+          className={`${classForComponent('top-up-method')} ${topUpMethod === 'crypto' ? 'active' : ''}`}
         />
       </div>
     </div>
