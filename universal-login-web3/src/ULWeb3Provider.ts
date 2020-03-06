@@ -99,6 +99,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   async init() {
+    this.uiController.initializeApp();
     if (this.browserChecker.isLocalStorageBlocked()) {
       return;
     }
@@ -147,6 +148,12 @@ export class ULWeb3Provider implements Provider {
       case 'ul_set_dashboard_visibility':
         const isVisible = cast(params[0], asBoolean);
         this.uiController.setDashboardVisibility(isVisible);
+        break;
+      case 'ul_connect':
+        await this.init();
+        break;
+      case 'ul_disconnect':
+        await this.finalizeAndStop();
         break;
       default:
         return this.sendUpstream(payload);
@@ -236,6 +243,7 @@ export class ULWeb3Provider implements Provider {
 }
 
 export const methodsRequiringAccount = [
+  'ul_connect',
   'ul_set_dashboard_visibility',
   'eth_sendTransaction',
   'eth_sendRawTransaction',

@@ -85,6 +85,10 @@ export class UIController {
     this.dashboardVisible.set(visible);
   }
 
+  initializeApp() {
+    this.isLoading.set(true);
+  }
+
   finishAppInitialization() {
     this.isLoading.set(false);
   }
