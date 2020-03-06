@@ -47,12 +47,14 @@ export const SignConfirmation = ({onConfirmationResponse, title, message, signMe
 const CentralizedText = styled(Text)`
   margin-top: 45px;
   text-align: center;
+  font-size: 16px;
 
   @media(max-width: 600px) {
     margin-top: 24px;
   }
+
 `;
 
 const SignFooter = styled(BoxFooter)`
-  margin-bottom: 6.5rem;
+  margin-bottom: auto;
 `;

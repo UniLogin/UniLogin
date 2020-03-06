@@ -34,7 +34,7 @@ export const CloseButton = styled.button`
     transform: scale(1.4);
   }
 
-  @media only screen and (max-width: 380px) {
+  @media only screen and (max-width: 350px) {
     transform: scale(1);
   }
 `;

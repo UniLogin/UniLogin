@@ -19,7 +19,7 @@ const BaseButton = styled.button`
     max-height: unset;
   }
 
-  @media only screen and (max-width: 380px) {
+  @media only screen and (max-width: 350px) {
     padding: 11.5px 24px;
     max-height: 40px;
   }

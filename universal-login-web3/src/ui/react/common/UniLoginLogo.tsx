@@ -43,7 +43,7 @@ const Logo = styled.img`
     height: 4rem;
   }
 
-  @media only screen and (max-width: 380px) {
+  @media only screen and (max-width: 350px) {
     width: unset;
     height: unset;
   }
