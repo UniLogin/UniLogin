@@ -35,7 +35,9 @@ export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setPro
             <ProviderSelect selectedProvider={selectedProvider} name={name} icon={icon} key={name} onClick={() => setSelectedProvider(name)}/>,
           )}
         </ProviderList>
-        <LoginButton onClick={() => setProvider(selectedProvider)}>Login</LoginButton>
+        <Footer>
+          <LoginButton onClick={() => setProvider(selectedProvider)}>Login</LoginButton>
+        </Footer>
       </ModalBox>
     </ModalWrapper>
     : null;
@@ -47,10 +49,7 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     max-width: 770px;
     width: 100%;
-    min-height: initial;
-    min-height: unset;
     padding: 0 0 41px;
-    max-height: 100%;
     padding: unset;
     overflow-y: auto;
     @import url('https://fonts.googleapis.com/css?family=Lato:300,400&display=swap');
@@ -162,6 +161,7 @@ const ProviderList = styled.div<IProviderListProps>`
 
 const ModalBox = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   min-width: 50rem;
   min-height: 30rem;
@@ -172,6 +172,7 @@ const ModalBox = styled.div`
   position: relative;
   padding-bottom: 3.2px;
   background-color: #fff;
+  overflow-y: auto;
 
   @media only screen and (max-width: 600px) {
     min-width: unset;
@@ -201,18 +202,23 @@ const ModalBox = styled.div`
     width: 100%;
     padding-top: 0;
   }
+`;
 
-
+const Footer = styled.div`
+  margin-top: auto;
 `;
 
 const LoginButton = styled(ButtonPrimary)`
   width: 100%;
   font-size: 1.4rem;
-  margin-bottom: calc(4rem + 2.6rem);
+  margin-bottom: 4rem;
   flex-grow: 1;
+  text-align: center;
+  display: flex;
+  justify-content: center;
 
   @media only screen and (max-width: 600px) {
-    margin-top: auto;
     margin-bottom: 1.6rem;
+    min-height: 40px;
   }
 `;

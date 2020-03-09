@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 const BaseButton = styled.button`
-  display: block;
+  display: flex;
+  align-items: center;
   max-height: 40px;
   padding: 11.5px 24px;
   border-radius: 4px;
@@ -11,6 +12,17 @@ const BaseButton = styled.button`
   box-sizing: border-box;
   border: none;
   cursor: pointer;
+  text-align: center;
+
+  @media only screen and (max-width: 600px) {
+    padding: 14.5px 50px;
+    max-height: unset;
+  }
+
+  @media only screen and (max-width: 350px) {
+    padding: 11.5px 24px;
+    max-height: 40px;
+  }
 `;
 
 export const ButtonPrimary = styled(BaseButton)`

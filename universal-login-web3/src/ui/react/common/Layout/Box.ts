@@ -9,10 +9,10 @@ export const Box = styled.div`
   padding: 8px;
 
   @media(max-width: 600px) {
-    min-height: calc(100vh - 41px);
+    flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 8px 16px 16px;
+    padding: 16px 16px 16px;
     border-radius: 0;
   }
 `;
