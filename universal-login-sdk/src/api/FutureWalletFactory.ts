@@ -3,7 +3,7 @@ import {
   PublicRelayerConfig,
   createKeyPair,
 } from '@unilogin/commons';
-import {BlockchainService, computeGnosisCounterfactualAddress} from '@unilogin/contracts';
+import {computeGnosisCounterfactualAddress} from '@unilogin/contracts';
 import {ENSService} from '../integration/ethereum/ENSService';
 import UniversalLoginSDK from './sdk';
 import {FutureWallet} from './wallet/FutureWallet';
@@ -20,7 +20,6 @@ export class FutureWalletFactory {
   constructor(
     private config: FutureFactoryConfig,
     private ensService: ENSService,
-    private blockchainService: BlockchainService,
     private sdk: UniversalLoginSDK,
   ) {
   }
