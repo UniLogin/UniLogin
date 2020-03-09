@@ -17,7 +17,7 @@ export function getConfigForNetwork(network: Network): Config {
         network: 'mainnet',
         provider: new HttpProvider('https://mainnet.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d'),
         relayerUrl: 'https://relayer-mainnet.herokuapp.com',
-        ensDomains: ['unibeta.eth'],
+        ensDomains: ['unibeta.eth', 'unitest.eth'],
       };
     case '3':
     case 'ropsten':

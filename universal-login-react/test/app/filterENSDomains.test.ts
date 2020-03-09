@@ -3,7 +3,7 @@ import {filterENSDomains, filterENSNames} from '../../src/app/filterENSDomains';
 
 describe('filterENSDomains', () => {
   it('returns only valild domains if deprecated domain is present', () => {
-    const deprecatedDomain = 'unilogin.eth';
+    const deprecatedDomain = 'unitest.eth';
     const validDomain = 'uniuni.eth';
     expect(filterENSDomains([deprecatedDomain, validDomain])).to.deep.eq([validDomain]);
   });
@@ -20,7 +20,7 @@ describe('filterENSNames', () => {
   it('returns ENS names only with valid ends', () => {
     const validName1 = 'jus.uniuni.eth';
     const validName2 = 'jus.unibeta.eth';
-    const deprecatedName = 'jus.unilogin.eth';
+    const deprecatedName = 'jus.unitest.eth';
     expect(filterENSNames([validName1, validName2, deprecatedName])).to.deep.eq([validName1, validName2]);
   });
 });
