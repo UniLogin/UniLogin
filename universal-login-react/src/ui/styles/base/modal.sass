@@ -1,6 +1,8 @@
 @import ../helpers/breakpoints
 
 .unilogin-component-modal-wrapper
+  display: flex
+  flex-direction: column
   position: fixed
   top: 50%
   left: 50%
@@ -13,12 +15,19 @@
 
   +media(s)
     padding: 0
+    min-height: 100%
 
 .unilogin-component-modal
   position: relative
   overflow: hidden
   background: #fff
   border-radius: 8px
+  flex-direction: column
+
+  +media(s)
+    border-radius: unset
+    display: flex
+    flex: 1
 
 .unilogin-component-modal-overlay
   position: fixed
@@ -28,6 +37,10 @@
   bottom: 0
   background: rgba(0, 0, 0, 0.6)
   z-index: 9999
+
+  +media(s)
+    z-index: 0
+
 
 .unilogin-component-modal-close-btn
   position: absolute

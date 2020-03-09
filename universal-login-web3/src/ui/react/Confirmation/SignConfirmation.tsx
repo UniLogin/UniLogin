@@ -35,10 +35,10 @@ export const SignConfirmation = ({onConfirmationResponse, title, message, signMe
             <CentralizedText>{signMessage}</CentralizedText>
           </Row>
         </BoxContent>
-        <BoxFooter>
+        <SignFooter>
           <ButtonSecondary onClick={() => onConfirmationResponse(false)}>Back</ButtonSecondary>
           <ButtonPrimary onClick={() => onConfirmationResponse(true)}>Sign</ButtonPrimary>
-        </BoxFooter>
+        </SignFooter>
       </Box>
     </ModalWrapper>
   </>
@@ -47,8 +47,14 @@ export const SignConfirmation = ({onConfirmationResponse, title, message, signMe
 const CentralizedText = styled(Text)`
   margin-top: 45px;
   text-align: center;
+  font-size: 16px;
 
   @media(max-width: 600px) {
     margin-top: 24px;
   }
+
+`;
+
+const SignFooter = styled(BoxFooter)`
+  margin-bottom: auto;
 `;
