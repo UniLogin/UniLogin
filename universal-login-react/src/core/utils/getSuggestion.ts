@@ -1,12 +1,13 @@
 import {Suggestion, SuggestionItem} from '../models/Suggestion';
 import {WalletSuggestionAction, Suggestions} from '@unilogin/commons';
+import {filterENSNames} from '../../app/filterENSNames';
 
 export const getSuggestion = (
   suggestions: Suggestions,
   actions: WalletSuggestionAction[],
   source: string,
 ): Suggestion => {
-  const filteredCreations = actions.includes(WalletSuggestionAction.create) ? suggestions.creations : [];
+  const filteredCreations = actions.includes(WalletSuggestionAction.create) ? filterENSNames(suggestions.creations) : [];
   const filteredConnections = actions.includes(WalletSuggestionAction.connect) ? suggestions.connections : [];
 
   if (source.length > 0 && source.length < 3) {
