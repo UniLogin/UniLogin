@@ -4,6 +4,9 @@
   .unilogin-component-top-up-radio-inner
     border: 1px solid rgba(190, 207, 217, 0.6)
 
+    @media only screen and (max-width: 600px)
+      padding: 1rem
+
   .unilogin-component-top-up-radio-inner:hover
     border: none
     box-shadow: 0px 10px 40px rgba(0, 131, 188, 0.12)
@@ -14,6 +17,24 @@
 
   .unilogin-component-top-up-header
     padding-top: 4rem
+
+  .unilogin-component-top-up-methods
+      @media only screen and (max-width: 600px)
+        flex-direction: column
+        margin-top: 1rem
+        width: 100%
+        margin: auto 0
+
+  .unilogin-component-top-up-method
+    @media only screen and (max-width: 600px)
+      height: unset
+      width: 100%
+      margin: 10px 0
+
+  .unilogin-component-top-up-method + .unilogin-component-top-up-method
+    @media only screen and (max-width: 600px)
+      margin-left: 0
+      margin-top: 1rem
 
   .unilogin-component-top-up-method-title
     color: #0F0C4A
@@ -69,6 +90,9 @@
   .unilogin-component-top-up-body-inner
     padding: 0
 
+    @media only screen and (max-width: 600px)
+      padding: 1rem
+
   .unilogin-component-fiat-methods-title
     color: #7D7C9C
     opacity: 0.8
@@ -84,6 +108,8 @@
     .unilogin-component-top-up-radio-inner
       width: 100%
       height: 5rem
+
+
 
   .unilogin-component-pay-btn
     margin-bottom: 2.4rem

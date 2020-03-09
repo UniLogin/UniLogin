@@ -5,12 +5,21 @@
   justify-content: space-between
   align-items: flex-end
   padding: 18px 40px 32px
+  margin-top: auto
 
   +media(s)
     padding: 15px
     flex-direction: column
     justify-content: center
     align-items: center
+
+  .universal-login-gas
+    @media only screen and (max-width: 600px)
+      width: 100%
+
+  .backup-btn.backup-btn-primary.generate-code-btn
+    @media only screen and (max-width: 600px)
+      width: 100%
 
 .unilogin-component-footer-section:empty
   display: none
@@ -26,11 +35,13 @@
   text-align: center
 
 .footer-approve-btn
-  margin-left: 12px
+  @media only screen and (max-width: 600px)
+    width: 100%
 
 .footer-buttons-row
   display: flex
   align-items: center
 
   +media(s)
+    width: 100%
     margin: 30px 0 10px

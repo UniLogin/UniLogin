@@ -8,6 +8,9 @@
     flex-direction: column
     justify-content: space-between
 
+    @media only screen and (max-width: 700px)
+      min-height: unset
+
   .backup::before
     content: ''
     position: absolute
@@ -38,6 +41,10 @@
     border-radius: 3px
     letter-spacing: 0
     font-weight: 500
+
+    @media only screen and (max-width: 600px)
+      width: 270px
+
 
   .backup-loader-wrapper
     max-width: 300px
@@ -86,6 +93,10 @@
     font-size: 14px
     text-align: left
     line-height: normal
+
+  .backup-btn-primary
+    @media only screen and (max-width: 600px)
+      margin-top: 2rem
 
   .backup-create-btn,
   .backup-print-btn

@@ -1,6 +1,13 @@
 @import helpers/breakpoints
 
 .universal-login-transfer
+  display: flex
+  flex-direction: column
+  flex: 1
+
+  .universal-login-default
+    flex: 1
+
   .transfer-modal .transfer-amount-label
     display: block
     margin: 0
@@ -9,12 +16,14 @@
     text-transform: initial
 
   .transfer
-    max-width: 500px
+    min-width: 500px
     margin: 0 auto
     padding-top: 30px
 
     +media(s)
       padding: 50px 15px
+      min-width: unset
+      margin: 0
 
   .transfer-amount-input-content
     position: relative

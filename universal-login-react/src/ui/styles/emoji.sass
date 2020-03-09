@@ -42,6 +42,8 @@
   .emoji-keyboard-button
     height: 100%
     width: 100%
+    display: flex
+    justify-content: center
     border: none
     background: none
     font-size: 25px
@@ -56,9 +58,10 @@
     width: 100%
     height: 100%
 
-  .emojis-fakes-list
-    margin: 40px 0 0
-    padding: 32px 0 0
+  .emojis-fakes-title
+    margin-left: .6rem
+    color: #fff
+    font-size: 1.2rem
 
   .emojis-form-title
     margin: 0 auto 11px
@@ -199,9 +202,6 @@
   .emoji-category-item + .emoji-category-item
     margin-left: 32px
 
-  .emojis-form-reject-wrapper
-    padding: 0 0 60px
-
   .emojis-form-reject
     display: block
     height: 50px
@@ -212,6 +212,9 @@
 
   .approve-device
     padding: 60px 0 0
+
+    @media only screen and (max-width: 600px)
+      padding: 20px 0 0
 
   .approve-device-form
     max-width: 808px
@@ -244,7 +247,6 @@
     margin-left: 12px
 
   .correct-input
-    min-height: 330px
     text-align: center
 
   .correct-input-img
@@ -261,6 +263,9 @@
     font-size: 20px
     line-height: 30px
     text-align: center
+
+    @media only screen and (max-width: 600px)
+      margin: 0
 
   .correct-input-title::before
     content: ''
@@ -280,7 +285,7 @@
     text-align: center
 
   .correct-input-footer
-    margin-top: 160px
+    margin-top: 10px
 
   .connect-emoji
     min-height: 640px
@@ -415,20 +420,20 @@
       padding: 50px 0 0px
 
     .approve-device-text
-      margin: 0 0 35px
+      margin: 0 0 20px
 
     .emoji-input-chosen-invalid
       top: 35%
 
     .emoji-placeholders-container
       max-height: 150px
-      margin-bottom: 60px
+      margin-bottom: 10px
 
 @media only screen and (max-width: 500px)
   .universal-login-emojis
 
     .approve-device
-      padding: 50px 15px 30px
+      padding: 20px 15px 0
 
     .emoji-item
       width: 14.6%
