@@ -1,6 +1,6 @@
 import {Suggestion, SuggestionItem} from '../models/Suggestion';
 import {WalletSuggestionAction, Suggestions} from '@unilogin/commons';
-import {filterENSNames} from '../../app/filterENSDomains';
+import {filterENSNames} from '../../app/filterENSNames';
 
 export const getSuggestion = (
   suggestions: Suggestions,
