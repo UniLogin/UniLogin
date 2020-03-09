@@ -1,7 +1,7 @@
 export {CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION, EMPTY_DATA, ETHER_NATIVE_TOKEN, ONE_SIGNATURE_GAS_COST} from './core/constants/constants';
 export {devJsonRpcUrl, DEV_DEFAULT_PRIVATE_KEY} from './core/constants/dev';
 export {EMPTY_DEVICE_INFO} from './core/constants/device';
-export {IS_STRING_A_NUMBER} from './core/constants/isStringANumber';
+export {isStringANumberRegex} from './core/constants/isStringANumberRegex';
 export {EMOJI_COLORS} from './core/constants/emojiColors';
 export {CONSTANT_EXECUTION_COSTS, DEFAULT_GAS_LIMIT, DEFAULT_GAS_LIMIT_EXECUTION, DEFAULT_GAS_PRICE, DEPLOYMENT_REFUND, EMPTY_GAS_OPTION, GAS_BASE, GAS_FIXED, INITIAL_GAS_PARAMETERS, MINIMAL_DEPLOYMENT_GAS_LIMIT, NON_ZERO_NONCE_COST, SEND_TRANSACTION_GAS_LIMIT, SIGNATURE_CHECK_COST, ZERO_NONCE_COST} from './core/constants/gas';
 export {testJsonRpcUrl, TEST_ACCOUNT_ADDRESS, TEST_APPLICATION_INFO, TEST_CONTRACT_ADDRESS, TEST_DEVICE_INFO, TEST_EXECUTION_OPTIONS, TEST_GAS_LIMIT, TEST_GAS_MODES, TEST_GAS_PRICE, TEST_KEY, TEST_KEY2, TEST_MESSAGE_HASH, TEST_OVERRIDES_FOR_REVERT, TEST_PRIVATE_KEY, TEST_SDK_CONFIG, TEST_SIGNATURE_KEY_PAIRS, TEST_TOKEN_ADDRESS, TEST_TOKEN_DETAILS, TEST_TRANSACTION_HASH} from './core/constants/test';
@@ -87,6 +87,7 @@ export {copy} from './react/copy';
 export {escapePressed} from './react/escapePressed';
 export {getSuggestionId} from './react/getSuggestionId';
 export {isDataForFunctionCall} from './core/utils/isDataForFunctionCall';
+export {isStringANumber} from './core/utils/isStringANumber'
 export {multiplyBy150Percent} from './core/utils/multiplyBy150Percent';
 export {isClassName} from './react/isClassName';
 export {raise} from './core/utils/raise';

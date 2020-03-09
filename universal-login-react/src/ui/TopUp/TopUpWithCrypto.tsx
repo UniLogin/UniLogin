@@ -7,6 +7,7 @@ import {InputCopy} from '../commons/Form/InputCopy';
 import {InfoText} from '../commons/Text/InfoText';
 import {IncomingTransactionsView} from './IncomingTransactionsView';
 import {ThemedComponent} from '../commons/ThemedComponent';
+import {ValueRounder} from '../../app/valueRounder';
 
 interface TopUpWithCryptoProps {
   walletService: WalletService;
@@ -14,7 +15,7 @@ interface TopUpWithCryptoProps {
 
 const DeploymentWithCryptoInfo = ({minimalAmount}: {minimalAmount?: string}) =>
   <>
-    <InfoText>Send at least {minimalAmount || '...'} ETH to this address</InfoText>
+    <InfoText>Send at least {ValueRounder.ceil(minimalAmount!) || '...'} ETH to this address</InfoText>
     <InfoText>This screen will update itself as soon as we detect a mined transaction</InfoText>
   </>;
 

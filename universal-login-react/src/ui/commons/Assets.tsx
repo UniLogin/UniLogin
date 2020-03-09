@@ -8,6 +8,7 @@ import './../styles/assetsListDefaults.sass';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {getIconForToken} from '../../core/utils/getIconForToken';
+import {ValueRounder} from '../../app/valueRounder';
 
 export interface AssetsProps {
   deployedWallet: DeployedWallet;
@@ -31,7 +32,7 @@ export const Assets = ({deployedWallet, className}: AssetsProps) => {
                 sdk={deployedWallet.sdk}
                 name={name}
                 symbol={symbol}
-                balance={utils.formatEther(balance)}
+                balance={ValueRounder.ceil(utils.formatEther(balance))!}
                 icon={getIconForToken(symbol)}
                 className={className}
               />

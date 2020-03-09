@@ -3,6 +3,7 @@ import {utils} from 'ethers';
 import {GasOption, safeMultiply} from '@unilogin/commons';
 import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
+import {ValueRounder} from '../../../app/valueRounder';
 
 interface SelectedGasPriceProps {
   modeName: string;
@@ -20,7 +21,7 @@ export const SelectedGasPrice = ({modeName, gasLimit, gasOption, usdAmount, onCl
           <img src={getIconForToken(gasOption.token.symbol)} alt="" className="transaction-fee-item-icon" />
           <div>
             <p className="transaction-fee-amount-usd">{calculateTransactionFee(usdAmount, gasLimit)} USD</p>
-            <p className="transaction-fee-amount">{safeMultiply(gasOption.gasPrice, gasLimit)} {gasOption.token.symbol}</p>
+            <p className="transaction-fee-amount">{ValueRounder.ceil(safeMultiply(gasOption.gasPrice, gasLimit))} {gasOption.token.symbol}</p>
           </div>
         </div>
       </div>

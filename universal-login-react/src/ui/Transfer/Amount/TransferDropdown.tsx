@@ -4,6 +4,7 @@ import UniversalLoginSDK from '@unilogin/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {useToggler} from '../../hooks/useToggler';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
+import {ValueRounder} from '../../../app/valueRounder';
 
 interface TransferDropdownProps {
   sdk: UniversalLoginSDK;
@@ -34,7 +35,7 @@ export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, se
       className={className}
       tokenDetails={tokenDetails}
       icon={getIconForToken(tokenDetails.symbol)}
-      balance={getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance)}
+      balance={ValueRounder.floor(getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance)!)!}
       onClick={onClick}
     />
   );
