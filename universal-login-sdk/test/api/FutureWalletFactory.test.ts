@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO} from '@unilogin/commons';
-import {BlockchainService, gnosisSafe} from '@unilogin/contracts';
+import {gnosisSafe} from '@unilogin/contracts';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {FutureWalletFactory} from '../../src/api/FutureWalletFactory';
 import {RelayerApi} from '../../src/integration/http/RelayerApi';
@@ -42,12 +42,10 @@ describe('INT: FutureWalletFactory', () => {
         name: '',
       },
     };
-    const blockchainService = new BlockchainService(provider);
     const relayerApi = new RelayerApi(relayerUrl);
     futureWalletFactory = new FutureWalletFactory(
       futureWalletConfig,
       new ENSService(provider, futureWalletConfig.chainSpec.ensAddress, ensRegistrar.address),
-      blockchainService,
       {sdkConfig: {applicationInfo: TEST_APPLICATION_INFO}, provider, relayerApi} as any,
     );
   });
