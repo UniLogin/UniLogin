@@ -28,6 +28,7 @@ export const EmojiPanelWithFakes = ({publicKey, onEmojiClick, className}: EmojiP
   return (
     <div className="universal-login-emojis">
       <div className={getStyleForTopLevelComponent(className)}>
+        <p className='emojis-fakes-title'>Choose icons:</p>
         <ul className="emojis-fakes-list">
           {emojis}
         </ul>
