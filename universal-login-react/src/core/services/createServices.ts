@@ -9,7 +9,12 @@ export interface Overrides {
 
 export const createServices = (config: Config, {provider}: Overrides = {}) => {
   const providerOrProviderUrl = provider || config.jsonRpcUrl;
-  const sdk = new UniversalLoginSDK(config.relayerUrl, providerOrProviderUrl, {applicationInfo: {type: 'laptop'}, observedTokensAddresses: config.tokens, saiTokenAddress: config.saiTokenAddress});
+  const sdk = new UniversalLoginSDK(config.relayerUrl, providerOrProviderUrl, {
+    applicationInfo: {type: 'laptop'},
+    observedTokensAddresses: config.tokens,
+    saiTokenAddress: config.saiTokenAddress,
+    network: 'ganache',
+  });
   sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
   return {
     sdk,
