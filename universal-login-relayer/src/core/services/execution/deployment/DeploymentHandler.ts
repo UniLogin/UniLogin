@@ -9,7 +9,7 @@ class DeploymentHandler {
     private executionQueue: IExecutionQueue,
   ) {}
 
-  async handleDeployment(deployArgs: DeployArgs, deviceInfo: DeviceInfo) {
+  async handleDeployment(contractAddress: string, deployArgs: DeployArgs, deviceInfo: DeviceInfo) {
     const deployment: Deployment = {
       ...deployArgs,
       hash: calculateDeployHash(deployArgs),
