@@ -44,7 +44,6 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
         <WaitingForTransaction
           action='Generating backup code'
           relayerConfig={relayerConfig}
-          className={className}
           transactionHash={state.transactionHash}
         />
       </>);

@@ -31,7 +31,6 @@ export function CreateWaiting({walletState}: CreateWaitingProps) {
           <WaitingForDeployment
             transactionHash={walletState.transactionHash}
             relayerConfig={sdk.getRelayerConfig()}
-            className="jarvis-styles"
             info={DEPLOYMENT_DESCRIPTION}
           />
         </ModalWrapper>
