@@ -9,4 +9,4 @@ export const isValidEnsNameElement = (ensNameElement: string) => {
 };
 
 export const isValidEnsName = (ensName: string) =>
-  !!ensName.match(/^[a-z0-9]*(-*[a-z0-9]+)\.[a-z0-9]*(-*[a-z0-9]+)\.[a-z]*/);
+  !!ensName.match(/^[a-z0-9]([-a-z0-9]+)[a-z0-9]\.[a-z0-9]*(-*[a-z0-9]+)\.[a-z]*/);

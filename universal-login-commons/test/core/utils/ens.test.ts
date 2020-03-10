@@ -57,6 +57,18 @@ describe('UNIT: ENS', () => {
       expect(actalIsValid).to.be.true;
     });
 
+    it('a-c', () => {
+      const ensNameElement = 'a-c';
+      const actalIsValid = isValidEnsNameElement(ensNameElement);
+      expect(actalIsValid).to.be.true;
+    });
+
+    it('ab', () => {
+      const ensNameElement = 'ab';
+      const actalIsValid = isValidEnsNameElement(ensNameElement);
+      expect(actalIsValid).to.be.true;
+    });
+
     it('abc-', () => {
       const ensNameElement = 'abc-';
       const actalIsValid = isValidEnsNameElement(ensNameElement);
@@ -119,11 +131,15 @@ describe('UNIT: ENS', () => {
     itValidatesEnsName('jaaaa1234.mylogin.eth', true);
     itValidatesEnsName('jaaaa1234.myl-ogin.eth', true);
     itValidatesEnsName('j-4.mylogin.eth', true);
+    itValidatesEnsName('j-j-4.mylogin.eth', true);
     itValidatesEnsName('jsjsj-4jsjks.mylogin.eth', true);
     itValidatesEnsName('jaaaa-4.mylogin.eth', true);
     itValidatesEnsName('jaaaa-4.mylogin.pl', true);
     itValidatesEnsName('jaaaa-4.mylogin.ethudud', true);
     itValidatesEnsName('jaaaa-4.mylogin.comcom', true);
+    itValidatesEnsName('jj.mylogin.eth', false);
+    itValidatesEnsName('jj-.mylogin.eth', false);
+    itValidatesEnsName('-jj.mylogin.eth', false);
     itValidatesEnsName('jaaaa123_4.mylogin.eth', false);
     itValidatesEnsName('jaaaa123_&@@.mylogin.eth', false);
     itValidatesEnsName('jaaaa123.wrong__domain.eth', false);
