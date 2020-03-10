@@ -49,7 +49,7 @@ export class FutureWallet implements SerializableFutureWallet {
   deploy = async (): Promise<DeployingWallet> => {
     ensure(isValidEnsName(this.ensName), InvalidAddressOrEnsName, this.ensName);
     const initData = await setupInitData(this.publicKey, this.ensName, this.gasPrice, this.gasToken, this.ensService, this.relayerAddress);
-    const signature = await calculateInitializeSignature(initData, this.privateKey);
+    const signature = calculateInitializeSignature(initData, this.privateKey);
     const {deploymentHash} = await this.sdk.relayerApi.deploy(this.publicKey, this.ensName, this.gasPrice, this.gasToken, signature, this.sdk.sdkConfig.applicationInfo);
     return new DeployingWallet({deploymentHash, contractAddress: this.contractAddress, name: this.ensName, privateKey: this.privateKey}, this.sdk);
   };
