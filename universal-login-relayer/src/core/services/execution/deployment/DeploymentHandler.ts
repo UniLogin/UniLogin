@@ -15,6 +15,7 @@ class DeploymentHandler {
       hash: calculateDeployHash(deployArgs),
       deviceInfo,
       state: 'Queued',
+      contractAddress,
     } as Deployment;
     await this.deploymentRepository.add(deployment.hash, deployment);
     return this.executionQueue.addDeployment(deployment.hash);
