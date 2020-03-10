@@ -18,6 +18,11 @@ export class PickerIframeInitializer extends IframeInitializerBase {
     endpoint.setHandler(this.provider);
   }
 
+  async start() {
+    await super.start();
+    super.ready();
+  }
+
   private getUpstream(network: Network | undefined) {
     return network ? getConfigForNetwork(network).provider : this.endpoint.bridge;
   }
