@@ -10,8 +10,6 @@ import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {IPGeolocationService} from '../../../integration/http/IPGeolocationService';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
 import {classForComponent} from '../../utils/classFor';
-import {Label} from '../../commons/Form/Label';
-import {InfoText} from '../../commons/Text/InfoText';
 import {FooterSection} from '../../commons/FooterSection';
 import {getPayButtonState} from '../../../app/TopUp/getPayButtonState';
 import {PayButton} from '../PayButton';
