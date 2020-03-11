@@ -25,7 +25,6 @@
     "ethers": "^4.0.39",
     "fbemitter": "^2.1.1",
     "react": "^16.8.6",
-    "react-blockies": "^1.4.1",
     "react-dom": "^16.8.6",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
