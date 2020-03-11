@@ -21,7 +21,7 @@
     padding-top: 30px
 
     +media(s)
-      padding: 50px 15px
+      padding: 0 15px
       min-width: unset
       margin: 0
 
@@ -31,6 +31,9 @@
   .transfer-amount-input-wrapper
     margin-bottom: 50px
     height: 50px
+
+    @media only screen and (max-width: 600px)
+      margin-bottom: 15px
 
   .transfer-amount-hint
     padding: 10px
@@ -70,7 +73,7 @@
     margin-bottom: 65px
 
     +media(s)
-      margin-bottom: 70px
+      margin-bottom: 1.5rem
 
   .currency-scrollable-list
     position: absolute
@@ -149,7 +152,7 @@
     margin: 0 auto 105px
 
     +media(s)
-      margin-bottom: 90px
+      margin-bottom: 15px
 
   .transfer-recipient-input-content
     position: relative

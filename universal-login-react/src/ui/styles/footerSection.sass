@@ -34,12 +34,21 @@
   line-height: 17px
   text-align: center
 
+  @media only screen and (max-width: 600px)
+    width: unset
+
+
+.footer-deny-btn
+  background:rgb(255, 108, 108)
+
 .footer-approve-btn
   @media only screen and (max-width: 600px)
     width: 100%
 
 .footer-buttons-row
-  display: flex
+  display: grid
+  grid-template-rows: 1fr
+  grid-template-columns: 1fr 1fr
   align-items: center
 
   +media(s)

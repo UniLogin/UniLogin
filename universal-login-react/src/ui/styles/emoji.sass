@@ -53,6 +53,7 @@
 
   .emojis-placeholders-list
     margin: 0
+    flex-wrap: nowrap
 
   .emoji-keyboard-button
     width: 100%
@@ -280,12 +281,11 @@
 
   .correct-input-confirmation-text
     position: relative
-    top: -30px
     height: 0
     text-align: center
 
   .correct-input-footer
-    margin-top: 10px
+    margin-top: auto
 
   .connect-emoji
     min-height: 640px
@@ -372,6 +372,7 @@
     .emoji-item
       width: 10.5%
       margin: 1%
+      min-width: 48px
 
     .emoji-item:nth-child(1) .emoji-keyboard-color-row,
     .emoji-item:nth-child(8n + 1) .emoji-keyboard-color-row

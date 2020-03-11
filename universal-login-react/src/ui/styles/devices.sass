@@ -2,6 +2,7 @@
 
 .universal-login-devices
   display: flex
+  flex: 1
 
   .universal-login-default
     display: flex
@@ -10,6 +11,7 @@
   .devices
     display: flex
     flex-direction: column
+    align-items: center
     position: relative
     height: 630px
     overflow: scroll
@@ -22,8 +24,10 @@
 
   .devices-inner
     max-width: 770px
+    min-width: 80%
     min-height: 575px
     padding: 40px 15px 0
+    margin-bottom: 1rem
 
     +media(s)
       min-height: initial
@@ -345,4 +349,4 @@
     +media(s)
       font-size: 14px
       line-height: 21px
-      padding-bottom: 20px
+      padding-bottom: 40px

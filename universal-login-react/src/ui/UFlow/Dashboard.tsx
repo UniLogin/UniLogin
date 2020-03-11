@@ -4,9 +4,9 @@ import {DeployedWallet, WalletService} from '@unilogin/sdk';
 import logoIcon from '../assets/icons/U.svg';
 import {useProperty} from '../..';
 import {DashboardModal} from './DashboardModal';
-import './../styles/udashboard.sass';
 import {getWindowConfirmation} from '../../core/utils/getWindowConfirmation';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
+import './../styles/udashboard.sass';
 
 export interface DashboardProps {
   deployedWallet?: DeployedWallet;
