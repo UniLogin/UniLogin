@@ -1,5 +1,4 @@
-import {State} from 'reactive-properties';
-import {Callback} from 'reactive-properties/dist/Property';
+import {State, Callback} from 'reactive-properties';
 
 export abstract class ReferenceCountedState<T> extends State<T> {
   private subscribersCount = 0;

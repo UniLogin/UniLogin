@@ -9,8 +9,8 @@ import {waitExpect} from '@unilogin/commons/testutils';
 import {mineBlock} from '@unilogin/contracts/testutils';
 import basicSDK from '../fixtures/basicSDK';
 import UniversalLoginSDK from '../../src/api/sdk';
-import {Callback} from 'reactive-properties/dist/Property';
 import {DeployedWallet} from '../../src';
+import {Callback} from 'reactive-properties';
 
 chai.use(solidity);
 chai.use(sinonChai);

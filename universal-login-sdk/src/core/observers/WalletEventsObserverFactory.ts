@@ -1,9 +1,9 @@
 import {BlockchainService} from '@unilogin/contracts';
 import {WalletEventCallback, WalletEventFilter, WalletEventType} from '../models/events';
 import {WalletEventsObserver} from './WalletEventsObserver';
+import {Callback} from 'reactive-properties';
 import {ensureNotNullish, Nullable} from '@unilogin/commons';
 import {InvalidObserverState, MissingParameter} from '../utils/errors';
-import {Callback} from 'reactive-properties/dist/Property';
 import {BlockNumberState} from '../states/BlockNumberState';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from '../services/StorageEntry';
