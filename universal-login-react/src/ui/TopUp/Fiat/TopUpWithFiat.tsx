@@ -12,6 +12,9 @@ import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderS
 import {classForComponent} from '../../utils/classFor';
 import {Label} from '../../commons/Form/Label';
 import {InfoText} from '../../commons/Text/InfoText';
+import {FooterSection} from '../../commons/FooterSection';
+import {getPayButtonState} from '../../../app/TopUp/getPayButtonState';
+import {PayButton} from '../PayButton';
 
 export interface TopUpWithFiatProps {
   walletService: WalletService;
@@ -21,9 +24,10 @@ export interface TopUpWithFiatProps {
   paymentMethod?: TopUpProvider;
   onPaymentMethodChange: (value: TopUpProvider | undefined) => void;
   logoColor?: LogoColor;
+  onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
 }
 
-export const TopUpWithFiat = ({walletService, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({walletService, onPayClick, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
 
@@ -94,6 +98,12 @@ export const TopUpWithFiat = ({walletService, logoColor, topUpProviderSupportSer
           </div>
         </div>
       </div>
+      <FooterSection>
+        <PayButton
+          onClick={() => onPayClick(paymentMethod!, amount)}
+          state={getPayButtonState(paymentMethod, topUpProviderSupportService, amount, 'fiat')}
+        />
+      </FooterSection>
     </div>
   );
 };
