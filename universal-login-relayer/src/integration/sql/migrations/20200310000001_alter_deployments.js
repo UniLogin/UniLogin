@@ -6,7 +6,7 @@
 
 exports.up = async (knex) => {
   await knex.schema.table('deployments', (table) => {
-    table.string('contractAddress', 42).notNullable().defaultTo('0x0000000000000000000000000000000000000000');
+    table.string('contractAddress', 42).notNullable().defaultTo('0x0000000000000000000000000000000000000001');
   });
 };
 
