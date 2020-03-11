@@ -22,6 +22,14 @@ describe('UNIT: valueRounder', () => {
     it('round 123.9981 to 123.999', () => {
       expect(ValueRounder.ceil('123.9981')).to.be.eq('123.999');
     });
+
+    it('round 123121211212.99812121 to 123121211212.999', () => {
+      expect(ValueRounder.ceil('123121211212.99812121')).to.be.eq('123121211212.999');
+    });
+
+    it('round 1.9981212111111111111111111111111111 to 1.999', () => {
+      expect(ValueRounder.ceil('1.9981212111111111111111111111111111')).to.be.eq('1.999');
+    });
   });
 
   describe('Floor', () => {
@@ -45,8 +53,12 @@ describe('UNIT: valueRounder', () => {
       expect(ValueRounder.floor('0.1')).to.be.eq('0.1');
     });
 
-    it('round 0 to 0.0', () => {
-      expect(ValueRounder.floor('0')).to.be.eq('0.0');
+    it('round 123121211212.99812121 to 123121211212.999', () => {
+      expect(ValueRounder.floor('123121211212.99812121')).to.be.eq('123121211212.998');
+    });
+
+    it('round 1.9981212111111111111111111111111111 to 1.999', () => {
+      expect(ValueRounder.floor('1.9981212111111111111111111111111111')).to.be.eq('1.998');
     });
   });
 });

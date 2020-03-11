@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {isStringANumber} from '../../../src';
 
-describe("UNIT: isStringANumber", () => {
+describe('UNIT: isStringANumber', () => {
   it('value is \'\'', () => {
     expect(isStringANumber('')).to.be.eq(false);
   });

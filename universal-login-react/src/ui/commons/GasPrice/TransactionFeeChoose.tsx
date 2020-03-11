@@ -5,7 +5,6 @@ import {utils} from 'ethers';
 import {isGasTokenDisabled} from '../../../core/utils/isGasTokenDisabled';
 import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
-import {formatCryptoBalance} from '../../../core/utils/formatCryptoBalance';
 import {ValueRounder} from '../../../app/valueRounder';
 
 interface TransactionFeeProps {
@@ -44,7 +43,7 @@ export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, mo
                 <div className="transaction-fee-details">
                   <div>
                     <p className="transaction-fee-amount-usd">{calculateTransactionFee(usdAmount, gasLimit)} USD</p>
-                    <p className="transaction-fee-amount">{formatCryptoBalance(ValueRounder.ceil(safeMultiply(option.gasPrice, gasLimit))!, 9)} {option.token.symbol}</p>
+                    <p className="transaction-fee-amount">{ValueRounder.ceil(safeMultiply(option.gasPrice, gasLimit))!} {option.token.symbol}</p>
                   </div>
                 </div>
                 {renderBalance(option)}

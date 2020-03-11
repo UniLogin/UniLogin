@@ -5,6 +5,7 @@ import {TransferDropdownItem} from './TransferDropdownItem';
 import {useToggler} from '../../hooks/useToggler';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
 import {ValueRounder} from '../../../app/valueRounder';
+import {ValuePresenter} from '../../../app/valuePresenter';
 
 interface TransferDropdownProps {
   sdk: UniversalLoginSDK;
@@ -35,7 +36,7 @@ export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, se
       className={className}
       tokenDetails={tokenDetails}
       icon={getIconForToken(tokenDetails.symbol)}
-      balance={ValueRounder.floor(getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance)!)!}
+      balance={ValuePresenter.presentRoundedValue((getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance)!), ValueRounder.floor)}
       onClick={onClick}
     />
   );

@@ -87,7 +87,7 @@ export {copy} from './react/copy';
 export {escapePressed} from './react/escapePressed';
 export {getSuggestionId} from './react/getSuggestionId';
 export {isDataForFunctionCall} from './core/utils/isDataForFunctionCall';
-export {isStringANumber} from './core/utils/isStringANumber'
+export {isStringANumber} from './core/utils/isStringANumber';
 export {multiplyBy150Percent} from './core/utils/multiplyBy150Percent';
 export {isClassName} from './react/isClassName';
 export {raise} from './core/utils/raise';
