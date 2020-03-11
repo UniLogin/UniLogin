@@ -3,7 +3,6 @@ import {providers} from 'ethers';
 import {walletFromBrain, DeepPartial, Network} from '@unilogin/commons';
 import UniversalLoginSDK, {SdkConfig, WalletService} from '@unilogin/sdk';
 import {StorageService} from '@unilogin/react';
-import UserDropdownService from '../app/UserDropdownService';
 import WalletPresenter from '../core/presenters/WalletPresenter';
 
 export interface Config {
@@ -41,14 +40,12 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     providerOrProviderUrl,
     sdkConfig,
   );
-  const userDropdownService = new UserDropdownService();
   const walletService = new WalletService(sdk, walletFromBrain, storageService);
   const walletPresenter = new WalletPresenter(walletService);
   sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
   return {
     sdk,
     config,
-    userDropdownService,
     walletService,
     storageService,
     walletPresenter,
