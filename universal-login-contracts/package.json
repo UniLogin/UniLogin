@@ -7,7 +7,7 @@
   "module": "dist/esm/src/index.js",
   "dependencies": {
     "@unilogin/commons": "0.5.17",
-    "ens-builder": "^2.0.0",
+    "ens-builder": "^2.0.2",
     "ethers": "^4.0.39"
   },
   "scripts": {
@@ -29,7 +29,7 @@
     "@types/mocha": "^5.2.5",
     "@typescript-eslint/eslint-plugin": "^2.3.1",
     "@typescript-eslint/parser": "^2.3.1",
-    "chai": "^4.1.2",
+    "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "eslint": "^6.5.0",
     "ethereum-waffle": "^2.1.2",

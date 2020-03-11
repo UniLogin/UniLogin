@@ -27,7 +27,7 @@
     "@unilogin/sdk": "0.5.17",
     "cross-spawn": "^6.0.5",
     "dotenv": "^8.1.0",
-    "ens-builder": "^2.0.1",
+    "ens-builder": "^2.0.2",
     "ethereum-waffle": "^2.1.2",
     "ethers": "^4.0.39",
     "ganache-cli": "^6.4.5",
@@ -35,9 +35,6 @@
     "knex": "^0.20.0",
     "lodash.clonedeep": "^4.5.0",
     "yargs": "^12.0.5"
-  },
-  "resolutions": {
-    "web3": "1.0.0-beta.37"
   },
   "license": "ISC",
   "devDependencies": {
