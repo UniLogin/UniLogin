@@ -3,7 +3,7 @@ import {TopUpRadio} from '../TopUpRadio';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
 import {getOnRampProviderLogo} from './getOnRampProviderLogo';
-import {useThemeName} from './../../utils/classFor';
+import {useThemeName, classForComponent} from './../../utils/classFor';
 
 interface FiatPaymentMethodsProps {
   selectedCountry: string;
@@ -39,13 +39,19 @@ export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMeth
   const safelloLogo = getOnRampProviderLogo('safello', logoColor || getLogoColorByTheme);
   const wyreLogo = getOnRampProviderLogo('wyre', logoColor || getLogoColorByTheme);
   return (
-    <div className="fiat-payment-methods">
-      {supportService.checkRampSupport(selectedCountry) &&
-        <FiatProviderTopUp topUpProvider={TopUpProvider.RAMP} providerLogo={rampLogo} setPaymentMethod={setPaymentMethod} currentPaymentMethod={paymentMethod} />}
-      {supportService.checkSafelloSupport(selectedCountry) &&
-        <FiatProviderTopUp topUpProvider={TopUpProvider.SAFELLO} providerLogo={safelloLogo} setPaymentMethod={setPaymentMethod} currentPaymentMethod={paymentMethod} />}
-      {supportService.checkWyreSupport(selectedCountry) &&
-        <FiatProviderTopUp topUpProvider={TopUpProvider.WYRE} providerLogo={wyreLogo} setPaymentMethod={setPaymentMethod} currentPaymentMethod={paymentMethod} />}
-    </div>
+    <>
+      <p className={`
+        ${classForComponent('top-up-label')}
+        ${classForComponent('fiat-methods-title')}
+      `}>Payment method</p>
+      <div className="fiat-payment-methods">
+        {supportService.checkRampSupport(selectedCountry) &&
+          <FiatProviderTopUp topUpProvider={TopUpProvider.RAMP} providerLogo={rampLogo} setPaymentMethod={setPaymentMethod} currentPaymentMethod={paymentMethod} />}
+        {supportService.checkSafelloSupport(selectedCountry) &&
+          <FiatProviderTopUp topUpProvider={TopUpProvider.SAFELLO} providerLogo={safelloLogo} setPaymentMethod={setPaymentMethod} currentPaymentMethod={paymentMethod} />}
+        {supportService.checkWyreSupport(selectedCountry) &&
+          <FiatProviderTopUp topUpProvider={TopUpProvider.WYRE} providerLogo={wyreLogo} setPaymentMethod={setPaymentMethod} currentPaymentMethod={paymentMethod} />}
+      </div>
+    </>
   );
 };

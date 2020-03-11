@@ -62,36 +62,26 @@ export const TopUpWithFiat = ({walletService, onPayClick, logoColor, amount, onA
     <div className={classForComponent('top-up-body')}>
       <div className={classForComponent('top-up-body-inner')}>
         <div className="fiat fiat-selected">
-          <Label>Country</Label>
           <CountryDropdown
             selectedCountry={country}
             setCountry={changeCountry}
             setCurrency={setCurrency}
           />
-          {!!country && <>
-            <p className={`
-              ${classForComponent('top-up-label')}
-              ${classForComponent('fiat-methods-title')}
-            `}>Payment method</p>
+          {!!country &&
             <FiatPaymentMethods
               selectedCountry={country}
               supportService={topUpProviderSupportService}
               paymentMethod={paymentMethod}
               setPaymentMethod={onPaymentMethodChange}
               logoColor={logoColor}
-            />
-          </>}
+            />}
           {topUpProviderSupportService.isInputAmountUsed(paymentMethod) &&
-            <>
-              <Label>Amount</Label>
-              <AmountInput
-                selectedCurrency={currency}
-                setCurrency={setCurrency}
-                amount={amount}
-                onChange={onAmountChange}
-              />
-              <InfoText>Minimum amount is 30 GBP</InfoText>
-            </>
+            <AmountInput
+              selectedCurrency={currency}
+              setCurrency={setCurrency}
+              amount={amount}
+              onChange={onAmountChange}
+            />
           }
           <div className={classForComponent('fiat-bottom')}>
             {!!country && <FiatFooter paymentMethod={paymentMethod} walletService={walletService} />}
