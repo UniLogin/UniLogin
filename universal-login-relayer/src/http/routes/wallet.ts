@@ -21,10 +21,10 @@ const getMessageStatus = (messageHandler: MessageHandler) =>
   };
 
 const deploymentHandling = (deploymentHandler: DeploymentHandler) =>
-  async (data: {body: DeployArgs & {applicationInfo: ApplicationInfo}}, req: Request) => {
-    const {applicationInfo, ...deployArgs} = data.body;
+  async (data: {body: DeployArgs & {contractAddress: string, applicationInfo: ApplicationInfo}}, req: Request) => {
+    const {contractAddress, applicationInfo, ...deployArgs} = data.body;
     const deviceInfo = getDeviceInfo(req, applicationInfo);
-    const deploymentHash = await deploymentHandler.handleDeployment(deployArgs, deviceInfo);
+    const deploymentHash = await deploymentHandler.handleDeployment(contractAddress, deployArgs, deviceInfo);
     const status = await deploymentHandler.getStatus(deploymentHash);
     return responseOf(status, 201);
   };
@@ -74,6 +74,7 @@ export default (deploymentHandler: DeploymentHandler, messageHandler: MessageHan
         gasToken: asString,
         signature: asString,
         applicationInfo: asApplicationInfo,
+        contractAddress: asString,
       }),
     }),
     deploymentHandling(deploymentHandler),

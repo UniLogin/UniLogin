@@ -9,12 +9,13 @@ class DeploymentHandler {
     private executionQueue: IExecutionQueue,
   ) {}
 
-  async handleDeployment(deployArgs: DeployArgs, deviceInfo: DeviceInfo) {
+  async handleDeployment(contractAddress: string, deployArgs: DeployArgs, deviceInfo: DeviceInfo) {
     const deployment: Deployment = {
       ...deployArgs,
       hash: calculateDeployHash(deployArgs),
       deviceInfo,
       state: 'Queued',
+      contractAddress,
     } as Deployment;
     await this.deploymentRepository.add(deployment.hash, deployment);
     return this.executionQueue.addDeployment(deployment.hash);

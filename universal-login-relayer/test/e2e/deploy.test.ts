@@ -47,6 +47,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         gasToken: ETHER_NATIVE_TOKEN.address,
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
+        contractAddress,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
@@ -91,6 +92,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         gasToken: ETHER_NATIVE_TOKEN.address,
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
+        contractAddress,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
@@ -114,6 +116,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         gasToken: mockToken.address,
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
+        contractAddress,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
@@ -132,6 +135,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         gasToken: ETHER_NATIVE_TOKEN.address,
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
+        contractAddress,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
@@ -154,6 +158,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         gasToken: ETHER_NATIVE_TOKEN.address,
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
+        contractAddress,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
@@ -175,6 +180,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         gasToken: ETHER_NATIVE_TOKEN.address,
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
+        contractAddress,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');

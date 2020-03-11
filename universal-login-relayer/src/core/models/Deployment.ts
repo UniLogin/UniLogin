@@ -6,4 +6,5 @@ export default interface Deployment extends DeployArgs {
   transactionHash: string | null;
   error: string | null;
   state: DeploymentState;
+  contractAddress: string;
 }
