@@ -2,7 +2,6 @@ import React from 'react';
 import {PublicRelayerConfig} from '@unilogin/commons';
 import {ExplorerLink} from './ExplorerLink';
 import {WaitingFor, WaitingForProps} from './WaitingFor';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import {CompanyLogo} from './CompanyLogo';
 import '../styles/base/waitingForTransaction.sass';
@@ -16,11 +15,10 @@ export interface WaitingForTransactionProps extends WaitingForProps {
   info?: string;
 }
 
-const Body = ({action, description, relayerConfig, transactionHash, className, info}: WaitingForTransactionProps) => (
+const Body = ({action, description, relayerConfig, transactionHash, info}: WaitingForTransactionProps) => (
   <div>
     <WaitingFor
       action={action}
-      className={className}
       description={description}
     />
     <div className={classForComponent('waitingfortransaction-modal-pending-section')}>
@@ -38,9 +36,7 @@ const Body = ({action, description, relayerConfig, transactionHash, className, i
 export const WaitingForTransaction = (props: WaitingForTransactionProps) => (
   <div className={useClassFor('waitingfortransaction')}>
     <CompanyLogo />
-    <div className={getStyleForTopLevelComponent(props.className)}>
-      <Body description ={DEPLOYMENT_DESCRIPTION} {...props} />
-    </div>
+    <Body description={DEPLOYMENT_DESCRIPTION} {...props} />
   </div>
 );
 

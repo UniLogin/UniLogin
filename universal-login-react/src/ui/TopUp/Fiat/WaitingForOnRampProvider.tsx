@@ -26,7 +26,7 @@ export const WaitingForOnRampProvider = ({className, onRampProviderName, logoCol
           <div className={classForComponent('waiting-for-ramp')}>
             <div className={classForComponent('waiting-for-ramp-content')}>
               <img src={onRampProviderLogo} className={classForComponent('waiting-for-ramp-img')}/>
-              <WaitingFor action={note} className={className}/>
+              <WaitingFor action={note} />
               <div className={classForComponent('waitingforonramp-pending-img')}></div>
             </div>
           </div>

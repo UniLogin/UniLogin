@@ -51,7 +51,6 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
             transactionHash={location.state?.transactionHash}
             action={'Transferring funds'}
             relayerConfig={walletService.sdk.getRelayerConfig()}
-            className="jarvis-styles"
           />
         }
       />
