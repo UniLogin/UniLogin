@@ -18,7 +18,6 @@ import {PayButton} from '../PayButton';
 
 export interface TopUpWithFiatProps {
   walletService: WalletService;
-  topUpProviderSupportService: TopUpProviderSupportService;
   amount: string;
   onAmountChange: (value: string) => void;
   paymentMethod?: TopUpProvider;
@@ -27,9 +26,10 @@ export interface TopUpWithFiatProps {
   onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
 }
 
-export const TopUpWithFiat = ({walletService, onPayClick, logoColor, topUpProviderSupportService, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({walletService, onPayClick, logoColor, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currency, setCurrency] = useState('ETH');
+  const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
 
   const changeCountry = (newCountry: string) => {
     if (newCountry === country) {

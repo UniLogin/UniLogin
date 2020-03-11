@@ -3,8 +3,6 @@ import {WalletService} from '@unilogin/sdk';
 import {LogoColor, TopUpWithFiat} from './Fiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
-import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
-import {countries} from '../../core/utils/countries';
 import {TopUpMethod} from '../../core/models/TopUpMethod';
 import {ChooseTopUpMethodWrapper} from './ChooseTopUpMethodWrapper';
 import {ChooseTopUpMethodHeader} from './ChooseTopUpMethodHeader';
@@ -20,7 +18,6 @@ export interface ChooseTopUpMethodProps {
 
 export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: ChooseTopUpMethodProps) => {
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
-  const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
 
@@ -36,7 +33,6 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: Choose
       />
       {topUpMethod === 'fiat' && <TopUpWithFiat
         walletService={walletService}
-        topUpProviderSupportService={topUpProviderSupportService}
         amount={amount}
         onAmountChange={setAmount}
         paymentMethod={paymentMethod}
