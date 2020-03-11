@@ -15,7 +15,7 @@
     "ethers": "^4.0.39",
     "lodash.clonedeep": "^4.5.0",
     "openzeppelin-solidity": "^2.3.0",
-    "reactive-properties": "^0.1.10",
+    "reactive-properties": "^0.1.11",
     "ws": "^7.2.1"
   },
   "scripts": {

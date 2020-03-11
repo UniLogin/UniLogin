@@ -13,7 +13,7 @@
     "bem-components-react": "^0.1.2",
     "ethers": "^4.0.39",
     "moment": "^2.24.0",
-    "reactive-properties": "^0.1.10",
+    "reactive-properties": "^0.1.11",
     "styled-components": "^5.0.0",
     "url": "^0.11.0",
     "web3": "^1.2.1"
