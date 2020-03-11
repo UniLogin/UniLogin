@@ -7,7 +7,7 @@
   "module": "dist/esm/src/index.js",
   "dependencies": {
     "@unilogin/commons": "0.5.17",
-    "ens-builder": "^2.0.0",
+    "ens-builder": "^2.0.2",
     "ethers": "^4.0.39"
   },
   "scripts": {

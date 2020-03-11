@@ -5081,18 +5081,6 @@ enhanced-resolve@^4.0.0, enhanced-resolve@^4.1.0:
     memory-fs "^0.4.0"
     tapable "^1.0.0"
 
-ens-builder@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ens-builder/-/ens-builder-2.0.0.tgz#30b26b6a83795694ffaec62a65059ffa7da36ff8"
-  dependencies:
-    ethers "^4.0"
-
-ens-builder@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/ens-builder/-/ens-builder-2.0.1.tgz#bf19f07cfb7a0ea294138f0850f616d3b35d67f0"
-  dependencies:
-    ethers "^4.0"
-
 ens-builder@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/ens-builder/-/ens-builder-2.0.2.tgz#66136e9087df238b42ecd1b1ba438e3c5a13a5ee"

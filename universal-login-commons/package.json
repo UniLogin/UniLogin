@@ -23,7 +23,7 @@
     "@typescript-eslint/parser": "^2.3.1",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "ens-builder": "^2.0.1",
+    "ens-builder": "^2.0.2",
     "eslint": "^6.5.0",
     "ethereum-waffle": "^2.1.2",
     "lodash.range": "^3.2.0",
