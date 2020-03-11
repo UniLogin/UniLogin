@@ -6,12 +6,10 @@ import '../styles/themes/Legacy/waitingForTransactionThemeLegacy.sass';
 import '../styles/themes/Jarvis/waitingForTransactionThemeJarvis.sass';
 import '../styles/themes/UniLogin/waitingForTransactionThemeUniLogin.sass';
 
-export const AppPreloader = ({description, className}: WaitingForProps) => (
-
+export const AppPreloader = ({description}: WaitingForProps) => (
   <div className={useClassFor('waitingfortransaction')}>
     <WaitingFor
       action="Loading..."
-      className={className}
       description={description}
     />
     <div className={classForComponent('waitingfortransaction-modal-pending-section')}>

@@ -55,17 +55,17 @@ export const Devices = ({walletService, onAccountDisconnected, className, basePa
       <Route
         path={join(basePath, 'waitingForRemovingDevice')}
         exact
-        render={({location}) => <WaitingForTransaction action="Removing device" relayerConfig={relayerConfig} className={className} transactionHash={location.state?.transactionHash} />}
+        render={({location}) => <WaitingForTransaction action="Removing device" relayerConfig={relayerConfig} transactionHash={location.state?.transactionHash} />}
       />
       <Route
         path={join(basePath, 'waitingForDeletingAccount')}
         exact
-        render={({location}) => <WaitingForTransaction action="Deleting account" relayerConfig={relayerConfig} className={className} transactionHash={location.state?.transactionHash} />}
+        render={({location}) => <WaitingForTransaction action="Deleting account" relayerConfig={relayerConfig} transactionHash={location.state?.transactionHash} />}
       />
       <Route
         path={join(basePath, 'waitingForConnection')}
         exact
-        render={({location}) => <WaitingForTransaction action="Connecting device" relayerConfig={relayerConfig} className={className} transactionHash={location.state?.transactionHash} />}
+        render={({location}) => <WaitingForTransaction action="Connecting device" relayerConfig={relayerConfig} transactionHash={location.state?.transactionHash} />}
       />
     </Switch>
   );
