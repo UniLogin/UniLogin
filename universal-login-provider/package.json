@@ -1,6 +1,6 @@
 {
   "name": "@unilogin/provider",
-  "version": "0.5.16",
+  "version": "0.5.17",
   "main": "dist/cjs/index.js",
   "types": "dist/esm/index.d.ts",
   "module": "dist/esm/index.js",
