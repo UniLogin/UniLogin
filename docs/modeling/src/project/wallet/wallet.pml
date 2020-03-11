@@ -68,11 +68,6 @@ package Core {
     class ModalService {
       subscribe(callback)
     }
-
-      class UserDropdownService {
-      setDropdownVisibility(dropdownType)
-      subscribe()
-    }
   }
 
   package commons {
