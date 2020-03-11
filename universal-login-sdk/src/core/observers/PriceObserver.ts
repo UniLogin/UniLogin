@@ -3,7 +3,7 @@ import ObserverRunner from './ObserverRunner';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
 import {getPrices} from '../../integration/http/cryptocompare';
 const deepEqual = require('deep-equal');
-const cloneDeep = require('lodash.clonedeep');
+import cloneDeep from 'lodash.clonedeep';
 
 export type OnTokenPricesChange = (data: TokensPrices) => void;
 

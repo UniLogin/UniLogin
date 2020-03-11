@@ -11211,10 +11211,10 @@ react@^16.8.6:
     prop-types "^15.6.2"
     scheduler "^0.13.6"
 
-reactive-properties@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/reactive-properties/-/reactive-properties-0.1.10.tgz#acaf18f7e1ef1ad5858514f1016faed5549894de"
-  integrity sha512-b6kLPVZLub4XudGD/gLVAs+A1hAXqUwl1P/+j4dzL8y6Wsb9KghgX2Iaul35zh6DO6z0DgAYNC9W7i6IG/T3yg==
+reactive-properties@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/reactive-properties/-/reactive-properties-0.1.11.tgz#d8678fa5a66b964c1a520ec92a3137842b8f9d52"
+  integrity sha512-NhOEcAlNSq94ml3WdLroKdndeUo4Idj4PSEieqfaLL5BXZU4BFo+TsOY6yiasR9EVUw27mfW2sYBYhwSUNMrLw==
 
 read-cmd-shim@^1.0.1:
   version "1.0.1"

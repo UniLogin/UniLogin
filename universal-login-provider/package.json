@@ -29,6 +29,6 @@
   },
   "dependencies": {
     "@restless/sanitizers": "^0.2.4",
-    "reactive-properties": "^0.1.10"
+    "reactive-properties": "^0.1.11"
   }
 }
