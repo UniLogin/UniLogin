@@ -9,18 +9,18 @@ import {ChooseTopUpMethodHeader} from './ChooseTopUpMethodHeader';
 import {ModalProgressBar} from '../commons/ModalProgressBar';
 import {classForComponent} from '../utils/classFor';
 import {CompanyLogo} from '../commons/CompanyLogo';
+import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 
 export interface ChooseTopUpMethodProps {
   walletService: WalletService;
   onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
   logoColor?: LogoColor;
+  setTopUpMethod: (any: any) => void;
+  topUpMethod: TopUpMethod;
+  setModal?: (any: any) => void;
 }
 
-export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: ChooseTopUpMethodProps) => {
-  const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
-  const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
-
+export const ChooseTopUpMethod = ({walletService, topUpMethod, setTopUpMethod, setModal}: ChooseTopUpMethodProps) => {
   return (
     <ChooseTopUpMethodWrapper topUpMethod={topUpMethod}>
       <CompanyLogo />
@@ -31,18 +31,6 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: Choose
         topUpMethod={topUpMethod}
         setTopUpMethod={setTopUpMethod}
       />
-      {topUpMethod === 'fiat' && <TopUpWithFiat
-        walletService={walletService}
-        amount={amount}
-        onAmountChange={setAmount}
-        paymentMethod={paymentMethod}
-        onPaymentMethodChange={setPaymentMethod}
-        logoColor={logoColor}
-        onPayClick={onPayClick}
-      />}
-      {topUpMethod === 'crypto' && <TopUpWithCrypto
-        walletService={walletService}
-      />}
     </ChooseTopUpMethodWrapper>
   );
 };

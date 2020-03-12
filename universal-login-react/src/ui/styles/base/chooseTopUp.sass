@@ -2,7 +2,6 @@
   display: flex
   flex-direction: column
   width: 970px
-  min-height: 615px
   max-width: 100%
   padding: 0
   background: #fff
@@ -26,9 +25,11 @@
     padding: 20px
     flex-grow: 1
     transition: flex-grow 0.2s linear
+    min-height: 615px
 
   &.method-selected .unilogin-component-top-up-header
     flex-grow: initial
+    min-height: 0px
 
   .unilogin-component-top-up-method-title
     margin: 0

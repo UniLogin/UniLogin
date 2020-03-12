@@ -7,7 +7,7 @@ import {Wyre} from './OnRamp/Wyre';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 import {ModalWrapper} from '../Modals/ModalWrapper';
-import {LogoColor} from './Fiat';
+import {LogoColor, TopUpWithFiat} from './Fiat';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import Spinner from '../commons/Spinner';
@@ -18,6 +18,9 @@ import './../styles/themes/Legacy/chooseTopUpThemeLegacy.sass';
 import './../styles/themes/Jarvis/chooseTopUpThemeJarvis.sass';
 import './../styles/themes/UniLogin/chooseTopUpThemeUniLogin.sass';
 import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
+import {ThemedComponent} from '../commons/ThemedComponent';
+import {TopUpMethod} from '../../core/models/TopUpMethod';
+import {TopUpWithCrypto} from './TopUpWithCrypto';
 
 export interface TopUpProps {
   walletService: WalletService;
@@ -31,11 +34,15 @@ export interface TopUpProps {
 export const TopUp = ({walletService, startModal, modalClassName, hideModal, isModal, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
-
+  // const [amount, setAmount] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
   const relayerConfig = walletService.sdk.getRelayerConfig();
   const contractAddress = walletService.getContractAddress();
+  const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
+
 
   const onPayClick = (provider: TopUpProvider, amount: string) => {
+    setTopUpMethod(undefined);
     setModal(toTopUpComponentType(provider));
     setAmount(amount);
   };
@@ -44,12 +51,62 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
     <ChooseTopUpMethod
       walletService={walletService}
       onPayClick={onPayClick}
+      setModal={setModal}
       logoColor={logoColor}
+      topUpMethod={topUpMethod}
+      setTopUpMethod={setTopUpMethod}
     />
   );
 
   if (!relayerConfig) {
     return <Spinner />;
+  } else if (topUpMethod === 'fiat') {
+    return (
+      <>
+        <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>
+          <ChooseTopUpMethod
+            walletService={walletService}
+            onPayClick={onPayClick}
+            setModal={setModal}
+            logoColor={logoColor}
+            topUpMethod={topUpMethod}
+            setTopUpMethod={setTopUpMethod}
+          />
+          <ThemedComponent name="top-up">
+            <div className='unilogin-component-top-up'>
+              <TopUpWithFiat
+                walletService={walletService}
+                amount={amount}
+                onAmountChange={setAmount}
+                paymentMethod={paymentMethod}
+                onPaymentMethodChange={setPaymentMethod}
+                logoColor={logoColor}
+                onPayClick={onPayClick}
+              />
+            </div>
+          </ThemedComponent>
+        </ModalWrapper>
+      </>);
+  } else if (topUpMethod === 'crypto') {
+    return (<>
+      <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>
+        <ChooseTopUpMethod
+          walletService={walletService}
+          onPayClick={onPayClick}
+          setModal={setModal}
+          logoColor={logoColor}
+          topUpMethod={topUpMethod}
+          setTopUpMethod={setTopUpMethod}
+        />
+        <ThemedComponent name="top-up">
+          <div className='unilogin-component-top-up'>
+            <TopUpWithCrypto
+              walletService={walletService}
+            />
+          </div>
+        </ThemedComponent>
+      </ModalWrapper>
+    </>);
   } else if (modal === TopUpComponentType.choose) {
     if (isModal) {
       return <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>{getTopUpMethodChooser()}</ModalWrapper>;
@@ -94,6 +151,9 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
       />
     );
   } else {
+    console.log('?????', modal)
+    console.log('TopUpComponentType.fiat ', TopUpComponentType.fiat)
+    console.log('eq?', TopUpComponentType.choose)
     throw new Error(`Unsupported type: ${modal}`);
   }
 };

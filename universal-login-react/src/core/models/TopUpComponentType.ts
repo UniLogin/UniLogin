@@ -3,5 +3,7 @@ export enum TopUpComponentType {
   'safello',
   'ramp',
   'wyre',
-  'waitForRamp'
+  'waitForRamp',
+  'fiat',
+  'crypto',
 }
