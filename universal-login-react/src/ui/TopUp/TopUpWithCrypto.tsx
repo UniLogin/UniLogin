@@ -33,41 +33,43 @@ export const TopUpWithCrypto = ({walletService}: TopUpWithCryptoProps) => {
   }, []);
 
   return (
-    <div className={classForComponent('top-up-body')}>
-      <div className={classForComponent('top-up-body-inner')}>
-        <div className={`crypto ${cryptoClass}`}>
-          <Label htmlFor="input-address">Send to</Label>
-          <div className={classForComponent('top-up-row')}>
-            <InputCopy
-              id="contract-address"
-              defaultValue={contractAddress}
-              readOnly
-            />
-            <button
-              onClick={() => setIsQrCodeVisible(!isQrCodeVisible)}
-              className={classForComponent('top-up-qr-toggler')}
-            />
-          </div>
-
-          {(isQrCodeVisible || theme === 'default' || theme === 'jarvis') &&
-            <div className={classForComponent('qr-code-wrapper')}>
-              <QRCode
-                level="M"
-                bgColor="#ffffff"
-                fgColor="#120839"
-                width={128}
-                height={128}
-                value={contractAddress}
+    <div className={classForComponent('top-up-body-crypto')}>
+      <div className={classForComponent('top-up-body')}>
+        <div className={classForComponent('top-up-body-inner')}>
+          <div className={`crypto ${cryptoClass}`}>
+            <Label htmlFor="input-address">Send to</Label>
+            <div className={classForComponent('top-up-row')}>
+              <InputCopy
+                id="contract-address"
+                defaultValue={contractAddress}
+                readOnly
+              />
+              <button
+                onClick={() => setIsQrCodeVisible(!isQrCodeVisible)}
+                className={classForComponent('top-up-qr-toggler')}
               />
             </div>
-          }
-          {walletService.isKind('Future')
-            ? <DeploymentWithCryptoInfo minimalAmount={walletService.getRequiredDeploymentBalance()}/>
-            : <TopUpCryptoInfo/>
-          }
-          {walletService.isKind('Future') &&
-            <IncomingTransactionsView futureWallet={walletService.getFutureWallet()}/>
-          }
+
+            {(isQrCodeVisible || theme === 'default' || theme === 'jarvis') &&
+              <div className={classForComponent('qr-code-wrapper')}>
+                <QRCode
+                  level="M"
+                  bgColor="#ffffff"
+                  fgColor="#120839"
+                  width={128}
+                  height={128}
+                  value={contractAddress}
+                />
+              </div>
+            }
+            {walletService.isKind('Future')
+              ? <DeploymentWithCryptoInfo minimalAmount={walletService.getRequiredDeploymentBalance()}/>
+              : <TopUpCryptoInfo/>
+            }
+            {walletService.isKind('Future') &&
+              <IncomingTransactionsView futureWallet={walletService.getFutureWallet()}/>
+            }
+          </div>
         </div>
       </div>
     </div>

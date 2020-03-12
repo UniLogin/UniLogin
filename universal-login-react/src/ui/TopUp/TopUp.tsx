@@ -34,12 +34,10 @@ export interface TopUpProps {
 export const TopUp = ({walletService, startModal, modalClassName, hideModal, isModal, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
-  // const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
   const relayerConfig = walletService.sdk.getRelayerConfig();
   const contractAddress = walletService.getContractAddress();
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
-
 
   const onPayClick = (provider: TopUpProvider, amount: string) => {
     setTopUpMethod(undefined);
@@ -49,10 +47,6 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
 
   const getTopUpMethodChooser = () => (
     <ChooseTopUpMethod
-      walletService={walletService}
-      onPayClick={onPayClick}
-      setModal={setModal}
-      logoColor={logoColor}
       topUpMethod={topUpMethod}
       setTopUpMethod={setTopUpMethod}
     />
@@ -64,14 +58,7 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
     return (
       <>
         <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>
-          <ChooseTopUpMethod
-            walletService={walletService}
-            onPayClick={onPayClick}
-            setModal={setModal}
-            logoColor={logoColor}
-            topUpMethod={topUpMethod}
-            setTopUpMethod={setTopUpMethod}
-          />
+          {getTopUpMethodChooser()}
           <ThemedComponent name="top-up">
             <div className='unilogin-component-top-up'>
               <TopUpWithFiat
@@ -90,14 +77,7 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
   } else if (topUpMethod === 'crypto') {
     return (<>
       <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>
-        <ChooseTopUpMethod
-          walletService={walletService}
-          onPayClick={onPayClick}
-          setModal={setModal}
-          logoColor={logoColor}
-          topUpMethod={topUpMethod}
-          setTopUpMethod={setTopUpMethod}
-        />
+        {getTopUpMethodChooser()}
         <ThemedComponent name="top-up">
           <div className='unilogin-component-top-up'>
             <TopUpWithCrypto
@@ -151,9 +131,6 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
       />
     );
   } else {
-    console.log('?????', modal)
-    console.log('TopUpComponentType.fiat ', TopUpComponentType.fiat)
-    console.log('eq?', TopUpComponentType.choose)
     throw new Error(`Unsupported type: ${modal}`);
   }
 };
