@@ -6,6 +6,7 @@ import {classForComponent} from '../../utils/classFor';
 import '../../styles/base/components/countrySelect.sass';
 import '../../styles/themes/UniLogin/components/countrySelectThemeUniLogin.sass';
 import '../../styles/themes/Jarvis/components/countrySelectThemeJarvis.sass';
+import {Label} from '../../commons/Form/Label';
 
 export interface CountrySelectProps {
   selectedCountry?: string;
@@ -57,10 +58,13 @@ export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: Coun
   };
 
   return (
-    <ThemedComponent name="country-select">
-      {countrySelectionButton()}
-      {countrySelectionList()}
-    </ThemedComponent>
+    <>
+      <Label>Country</Label>
+      <ThemedComponent name="country-select">
+        {countrySelectionButton()}
+        {countrySelectionList()}
+      </ThemedComponent>
+    </>
   );
 };
 

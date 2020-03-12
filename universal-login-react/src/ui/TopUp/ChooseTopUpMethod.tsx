@@ -3,12 +3,7 @@ import {WalletService} from '@unilogin/sdk';
 import {LogoColor, TopUpWithFiat} from './Fiat';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
-import {FooterSection} from '../commons/FooterSection';
-import {TopUpProviderSupportService} from '../../core/services/TopUpProviderSupportService';
-import {countries} from '../../core/utils/countries';
-import {PayButton} from './PayButton';
 import {TopUpMethod} from '../../core/models/TopUpMethod';
-import {getPayButtonState} from '../../app/TopUp/getPayButtonState';
 import {ChooseTopUpMethodWrapper} from './ChooseTopUpMethodWrapper';
 import {ChooseTopUpMethodHeader} from './ChooseTopUpMethodHeader';
 import {ModalProgressBar} from '../commons/ModalProgressBar';
@@ -23,7 +18,6 @@ export interface ChooseTopUpMethodProps {
 
 export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: ChooseTopUpMethodProps) => {
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
-  const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
 
@@ -39,24 +33,16 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: Choose
       />
       {topUpMethod === 'fiat' && <TopUpWithFiat
         walletService={walletService}
-        topUpProviderSupportService={topUpProviderSupportService}
         amount={amount}
         onAmountChange={setAmount}
         paymentMethod={paymentMethod}
         onPaymentMethodChange={setPaymentMethod}
         logoColor={logoColor}
+        onPayClick={onPayClick}
       />}
       {topUpMethod === 'crypto' && <TopUpWithCrypto
         walletService={walletService}
       />}
-      {topUpMethod &&
-        <FooterSection>
-          <PayButton
-            onClick={() => onPayClick(paymentMethod!, amount)}
-            state={getPayButtonState(paymentMethod, topUpProviderSupportService, amount, topUpMethod)}
-          />
-        </FooterSection>
-      }
     </ChooseTopUpMethodWrapper>
   );
 };
