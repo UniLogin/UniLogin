@@ -7,7 +7,7 @@ import {Wyre} from './OnRamp/Wyre';
 import {TopUpComponentType} from '../../core/models/TopUpComponentType';
 import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 import {ModalWrapper} from '../Modals/ModalWrapper';
-import {LogoColor} from './Fiat';
+import {LogoColor, TopUpWithFiat} from './Fiat';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {toTopUpComponentType} from '../../core/utils/toTopUpComponentType';
 import Spinner from '../commons/Spinner';
@@ -18,6 +18,9 @@ import './../styles/themes/Legacy/chooseTopUpThemeLegacy.sass';
 import './../styles/themes/Jarvis/chooseTopUpThemeJarvis.sass';
 import './../styles/themes/UniLogin/chooseTopUpThemeUniLogin.sass';
 import {WaitingForOnRampProvider} from './Fiat/WaitingForOnRampProvider';
+import {ThemedComponent} from '../commons/ThemedComponent';
+import {TopUpMethod} from '../../core/models/TopUpMethod';
+import {TopUpWithCrypto} from './TopUpWithCrypto';
 
 export interface TopUpProps {
   walletService: WalletService;
@@ -31,69 +34,99 @@ export interface TopUpProps {
 export const TopUp = ({walletService, startModal, modalClassName, hideModal, isModal, logoColor}: TopUpProps) => {
   const [modal, setModal] = useState<TopUpComponentType>(startModal || TopUpComponentType.choose);
   const [amount, setAmount] = useState('');
-
+  const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
   const relayerConfig = walletService.sdk.getRelayerConfig();
   const contractAddress = walletService.getContractAddress();
+  const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
 
   const onPayClick = (provider: TopUpProvider, amount: string) => {
+    setTopUpMethod(undefined);
     setModal(toTopUpComponentType(provider));
     setAmount(amount);
   };
 
   const getTopUpMethodChooser = () => (
     <ChooseTopUpMethod
-      walletService={walletService}
-      onPayClick={onPayClick}
-      logoColor={logoColor}
+      topUpMethod={topUpMethod}
+      setTopUpMethod={setTopUpMethod}
     />
   );
 
-  if (!relayerConfig) {
-    return <Spinner />;
-  } else if (modal === TopUpComponentType.choose) {
-    if (isModal) {
-      return <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>{getTopUpMethodChooser()}</ModalWrapper>;
-    }
-    return getTopUpMethodChooser();
-  } else if (modal === TopUpComponentType.safello) {
-    return (
-      <ModalWrapper modalClassName={modalClassName} hideModal={() => setModal(TopUpComponentType.choose)}>
+  const renderTopUpContent = () => {
+    if (!relayerConfig) {
+      return <Spinner />;
+    } else if (topUpMethod === 'fiat') {
+      return (
+        <>
+          {getTopUpMethodChooser()}
+          <ThemedComponent name="top-up">
+            <TopUpWithFiat
+              walletService={walletService}
+              amount={amount}
+              onAmountChange={setAmount}
+              paymentMethod={paymentMethod}
+              onPaymentMethodChange={setPaymentMethod}
+              logoColor={logoColor}
+              onPayClick={onPayClick}
+            />
+          </ThemedComponent>
+        </>);
+    } else if (topUpMethod === 'crypto') {
+      return (<>
+        {getTopUpMethodChooser()}
+        <ThemedComponent name="top-up">
+          <TopUpWithCrypto
+            walletService={walletService}
+          />
+        </ThemedComponent>
+      </>);
+    } else if (modal === TopUpComponentType.choose) {
+      return getTopUpMethodChooser();
+    } else if (modal === TopUpComponentType.safello) {
+      return (
         <Safello
           localizationConfig={{} as any}
           safelloConfig={relayerConfig.onRampProviders.safello}
           contractAddress={contractAddress}
           crypto="eth"
         />
-      </ModalWrapper>
-    );
-  } else if (modal === TopUpComponentType.ramp) {
-    return (
-      <Ramp
-        address={contractAddress}
-        amount={stringToEther(amount)}
-        currency={'ETH'}
-        config={relayerConfig.onRampProviders.ramp}
-        onSuccess={() => setModal(TopUpComponentType.waitForRamp)}
-        onCancel={() => setModal(TopUpComponentType.choose)}
-      />
-    );
-  } else if (modal === TopUpComponentType.wyre) {
-    return (
-      <Wyre
-        address={contractAddress}
-        currency={'ETH'}
-        config={relayerConfig.onRampProviders.wyre}
-      />
-    );
-  } else if (modal === TopUpComponentType.waitForRamp) {
-    return (
-      <WaitingForOnRampProvider
-        className={modalClassName}
-        onRampProviderName={'ramp'}
-        logoColor={logoColor}
-      />
-    );
-  } else {
-    throw new Error(`Unsupported type: ${modal}`);
+      );
+    } else if (modal === TopUpComponentType.ramp) {
+      return (
+        <Ramp
+          address={contractAddress}
+          amount={stringToEther(amount)}
+          currency={'ETH'}
+          config={relayerConfig.onRampProviders.ramp}
+          onSuccess={() => setModal(TopUpComponentType.waitForRamp)}
+          onCancel={() => setModal(TopUpComponentType.choose)}
+        />
+      );
+    } else if (modal === TopUpComponentType.wyre) {
+      return (
+        <Wyre
+          address={contractAddress}
+          currency={'ETH'}
+          config={relayerConfig.onRampProviders.wyre}
+        />
+      );
+    } else if (modal === TopUpComponentType.waitForRamp) {
+      return (
+        <WaitingForOnRampProvider
+          className={modalClassName}
+          onRampProviderName={'ramp'}
+          logoColor={logoColor}
+        />
+      );
+    } else {
+      throw new Error(`Unsupported type: ${modal}`);
+    }
+  };
+
+  if (isModal) {
+    return <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>
+      {renderTopUpContent()}
+    </ModalWrapper>;
   }
+  return renderTopUpContent();
 };

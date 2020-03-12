@@ -1,8 +1,4 @@
-import React, {useState} from 'react';
-import {WalletService} from '@unilogin/sdk';
-import {LogoColor, TopUpWithFiat} from './Fiat';
-import {TopUpWithCrypto} from './TopUpWithCrypto';
-import {TopUpProvider} from '../../core/models/TopUpProvider';
+import React from 'react';
 import {TopUpMethod} from '../../core/models/TopUpMethod';
 import {ChooseTopUpMethodWrapper} from './ChooseTopUpMethodWrapper';
 import {ChooseTopUpMethodHeader} from './ChooseTopUpMethodHeader';
@@ -11,16 +7,11 @@ import {classForComponent} from '../utils/classFor';
 import {CompanyLogo} from '../commons/CompanyLogo';
 
 export interface ChooseTopUpMethodProps {
-  walletService: WalletService;
-  onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
-  logoColor?: LogoColor;
+  setTopUpMethod: (any: any) => void;
+  topUpMethod: TopUpMethod;
 }
 
-export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: ChooseTopUpMethodProps) => {
-  const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
-  const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
-
+export const ChooseTopUpMethod = ({topUpMethod, setTopUpMethod}: ChooseTopUpMethodProps) => {
   return (
     <ChooseTopUpMethodWrapper topUpMethod={topUpMethod}>
       <CompanyLogo />
@@ -31,18 +22,6 @@ export const ChooseTopUpMethod = ({walletService, onPayClick, logoColor}: Choose
         topUpMethod={topUpMethod}
         setTopUpMethod={setTopUpMethod}
       />
-      {topUpMethod === 'fiat' && <TopUpWithFiat
-        walletService={walletService}
-        amount={amount}
-        onAmountChange={setAmount}
-        paymentMethod={paymentMethod}
-        onPaymentMethodChange={setPaymentMethod}
-        logoColor={logoColor}
-        onPayClick={onPayClick}
-      />}
-      {topUpMethod === 'crypto' && <TopUpWithCrypto
-        walletService={walletService}
-      />}
     </ChooseTopUpMethodWrapper>
   );
 };
