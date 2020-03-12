@@ -1,11 +1,9 @@
 import React from 'react';
-import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@unilogin/commons';
+import {TokenDetails, TokenDetailsWithBalance, getBalanceOf, ValueRounder, ValuePresenter} from '@unilogin/commons';
 import UniversalLoginSDK from '@unilogin/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {useToggler} from '../../hooks/useToggler';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
-import {ValueRounder} from '../../../app/valueRounder';
-import {ValuePresenter} from '../../../app/valuePresenter';
 
 interface TransferDropdownProps {
   sdk: UniversalLoginSDK;

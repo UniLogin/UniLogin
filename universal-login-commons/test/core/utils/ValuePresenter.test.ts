@@ -1,6 +1,5 @@
 import {expect} from 'chai';
-import {ValueRounder} from '../../src/app/valueRounder';
-import {ValuePresenter} from '../../src/app/valuePresenter';
+import {ValueRounder, ValuePresenter} from '../../../src';
 
 describe('UNIT: valuePresenter', () => {
   it('Empty string', () => {

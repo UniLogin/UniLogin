@@ -1,5 +1,4 @@
-import {ValueRounder} from '../../app/valueRounder';
-import {ValuePresenter} from '../../app/valuePresenter';
+import {ValueRounder, ValuePresenter} from '@unilogin/commons';
 
 export const formatCurrency = (value: string, currency = 'USD'): string => {
   const maximumFractionDigits = 2;

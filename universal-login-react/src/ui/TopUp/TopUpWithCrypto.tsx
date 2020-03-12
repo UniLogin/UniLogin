@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {QRCode} from 'react-qr-svg';
+import {ValueRounder} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
 import {classForComponent, useThemeName} from '../utils/classFor';
 import {Label} from '../commons/Form/Label';
@@ -7,7 +8,6 @@ import {InputCopy} from '../commons/Form/InputCopy';
 import {InfoText} from '../commons/Text/InfoText';
 import {IncomingTransactionsView} from './IncomingTransactionsView';
 import {ThemedComponent} from '../commons/ThemedComponent';
-import {ValueRounder} from '../../app/valueRounder';
 
 interface TopUpWithCryptoProps {
   walletService: WalletService;

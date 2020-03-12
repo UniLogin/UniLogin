@@ -1,11 +1,10 @@
 import React from 'react';
 import {RadioButton} from './RadioButton';
-import {GasMode, GasOption, getBalanceOf, TokenDetailsWithBalance, safeMultiply} from '@unilogin/commons';
+import {GasMode, GasOption, getBalanceOf, TokenDetailsWithBalance, safeMultiply, ValueRounder} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {isGasTokenDisabled} from '../../../core/utils/isGasTokenDisabled';
 import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
-import {ValueRounder} from '../../../app/valueRounder';
 
 interface TransactionFeeProps {
   gasModes: GasMode[];

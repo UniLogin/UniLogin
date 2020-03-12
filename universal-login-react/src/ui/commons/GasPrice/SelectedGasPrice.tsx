@@ -1,9 +1,8 @@
 import React from 'react';
 import {utils} from 'ethers';
-import {GasOption, safeMultiply} from '@unilogin/commons';
+import {GasOption, safeMultiply, ValueRounder} from '@unilogin/commons';
 import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
-import {ValueRounder} from '../../../app/valueRounder';
 
 interface SelectedGasPriceProps {
   modeName: string;

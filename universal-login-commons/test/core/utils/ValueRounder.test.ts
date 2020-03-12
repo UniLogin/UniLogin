@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {ValueRounder} from '../../src/app/valueRounder';
+import {ValueRounder} from '../../../src';
 
 describe('UNIT: valueRounder', () => {
   describe('Ceil', () => {
