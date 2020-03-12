@@ -1,6 +1,5 @@
-import {Provider} from 'web3/providers';
+import {Provider, JsonRPCRequest} from 'web3/providers';
 import {providers} from 'ethers';
-import {JsonRPCRequest} from '../models/rpc';
 
 export class HttpProvider implements Provider {
   private readonly provider: providers.JsonRpcProvider;

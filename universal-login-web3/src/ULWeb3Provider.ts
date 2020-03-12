@@ -1,9 +1,8 @@
-import {Provider} from 'web3/providers';
+import {Provider, JsonRPCRequest, Callback, JsonRPCResponse} from 'web3/providers';
 import {Config, getConfigForNetwork} from './config';
 import UniversalLoginSDK, {WalletService, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
 import {constants, providers, utils} from 'ethers';
-import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
 import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network} from '@unilogin/commons';
 import {waitForTrue} from './ui/utils/utils';
 import {getOrCreateUlButton, initUi} from './ui/initUi';
