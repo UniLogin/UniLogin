@@ -52,12 +52,12 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
     />
   );
 
-  if (!relayerConfig) {
-    return <Spinner />;
-  } else if (topUpMethod === 'fiat') {
-    return (
-      <>
-        <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>
+  const renderTopUpContent = () => {
+    if (!relayerConfig) {
+      return <Spinner />;
+    } else if (topUpMethod === 'fiat') {
+      return (
+        <>
           {getTopUpMethodChooser()}
           <ThemedComponent name="top-up">
             <div className='unilogin-component-top-up'>
@@ -72,11 +72,9 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
               />
             </div>
           </ThemedComponent>
-        </ModalWrapper>
-      </>);
-  } else if (topUpMethod === 'crypto') {
-    return (<>
-      <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>
+        </>);
+    } else if (topUpMethod === 'crypto') {
+      return (<>
         {getTopUpMethodChooser()}
         <ThemedComponent name="top-up">
           <div className='unilogin-component-top-up'>
@@ -85,52 +83,54 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
             />
           </div>
         </ThemedComponent>
-      </ModalWrapper>
-    </>);
-  } else if (modal === TopUpComponentType.choose) {
-    if (isModal) {
-      return <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>{getTopUpMethodChooser()}</ModalWrapper>;
-    }
-    return getTopUpMethodChooser();
-  } else if (modal === TopUpComponentType.safello) {
-    return (
-      <ModalWrapper modalClassName={modalClassName} hideModal={() => setModal(TopUpComponentType.choose)}>
+      </>);
+    } else if (modal === TopUpComponentType.choose) {
+      return getTopUpMethodChooser();
+    } else if (modal === TopUpComponentType.safello) {
+      return (
         <Safello
           localizationConfig={{} as any}
           safelloConfig={relayerConfig.onRampProviders.safello}
           contractAddress={contractAddress}
           crypto="eth"
         />
-      </ModalWrapper>
-    );
-  } else if (modal === TopUpComponentType.ramp) {
-    return (
-      <Ramp
-        address={contractAddress}
-        amount={stringToEther(amount)}
-        currency={'ETH'}
-        config={relayerConfig.onRampProviders.ramp}
-        onSuccess={() => setModal(TopUpComponentType.waitForRamp)}
-        onCancel={() => setModal(TopUpComponentType.choose)}
-      />
-    );
-  } else if (modal === TopUpComponentType.wyre) {
-    return (
-      <Wyre
-        address={contractAddress}
-        currency={'ETH'}
-        config={relayerConfig.onRampProviders.wyre}
-      />
-    );
-  } else if (modal === TopUpComponentType.waitForRamp) {
-    return (
-      <WaitingForOnRampProvider
-        className={modalClassName}
-        onRampProviderName={'ramp'}
-        logoColor={logoColor}
-      />
-    );
-  } else {
-    throw new Error(`Unsupported type: ${modal}`);
+      );
+    } else if (modal === TopUpComponentType.ramp) {
+      return (
+        <Ramp
+          address={contractAddress}
+          amount={stringToEther(amount)}
+          currency={'ETH'}
+          config={relayerConfig.onRampProviders.ramp}
+          onSuccess={() => setModal(TopUpComponentType.waitForRamp)}
+          onCancel={() => setModal(TopUpComponentType.choose)}
+        />
+      );
+    } else if (modal === TopUpComponentType.wyre) {
+      return (
+        <Wyre
+          address={contractAddress}
+          currency={'ETH'}
+          config={relayerConfig.onRampProviders.wyre}
+        />
+      );
+    } else if (modal === TopUpComponentType.waitForRamp) {
+      return (
+        <WaitingForOnRampProvider
+          className={modalClassName}
+          onRampProviderName={'ramp'}
+          logoColor={logoColor}
+        />
+      );
+    } else {
+      throw new Error(`Unsupported type: ${modal}`);
+    }
+  };
+
+  if (isModal) {
+    return <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>
+      {renderTopUpContent()}
+    </ModalWrapper>;
   }
+  return renderTopUpContent();
 };
