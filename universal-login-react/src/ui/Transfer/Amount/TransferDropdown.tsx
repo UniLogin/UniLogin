@@ -1,5 +1,5 @@
 import React from 'react';
-import {TokenDetails, TokenDetailsWithBalance, getBalanceOf, ValueRounder, ValuePresenter} from '@unilogin/commons';
+import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@unilogin/commons';
 import UniversalLoginSDK from '@unilogin/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {useToggler} from '../../hooks/useToggler';
@@ -34,7 +34,7 @@ export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, se
       className={className}
       tokenDetails={tokenDetails}
       icon={getIconForToken(tokenDetails.symbol)}
-      balance={ValuePresenter.presentRoundedValue((getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance)!), ValueRounder.floor)}
+      balance={getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance)}
       onClick={onClick}
     />
   );

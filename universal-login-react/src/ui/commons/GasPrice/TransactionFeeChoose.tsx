@@ -20,7 +20,7 @@ export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, mo
   const renderBalance = (option: GasOption) => tokensDetailsWithBalance ? (
     <div className="transaction-fee-balance">
       <p className="transaction-fee-balance-text">Your balance</p>
-      <p className="transaction-fee-balance-amount">{ValueRounder.ceil(getBalanceOf(option.token.symbol, tokensDetailsWithBalance)!)} {option.token.symbol}</p>
+      <p className="transaction-fee-balance-amount">{getBalanceOf(option.token.symbol, tokensDetailsWithBalance)} {option.token.symbol}</p>
     </div>
   ) : null;
 
@@ -42,7 +42,7 @@ export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, mo
                 <div className="transaction-fee-details">
                   <div>
                     <p className="transaction-fee-amount-usd">{calculateTransactionFee(usdAmount, gasLimit)} USD</p>
-                    <p className="transaction-fee-amount">{ValueRounder.ceil(safeMultiply(option.gasPrice, gasLimit))!} {option.token.symbol}</p>
+                    <p className="transaction-fee-amount">{ValueRounder.floor(safeMultiply(option.gasPrice, gasLimit))!} {option.token.symbol}</p>
                   </div>
                 </div>
                 {renderBalance(option)}

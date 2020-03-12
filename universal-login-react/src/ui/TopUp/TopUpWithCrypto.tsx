@@ -15,7 +15,7 @@ interface TopUpWithCryptoProps {
 
 const DeploymentWithCryptoInfo = ({minimalAmount}: {minimalAmount?: string}) =>
   <>
-    <InfoText>Send at least {ValueRounder.ceil(minimalAmount!) || '...'} ETH to this address</InfoText>
+    <InfoText>Send at least {minimalAmount ? ValueRounder.ceil(minimalAmount) : '...'} ETH to this address</InfoText>
     <InfoText>This screen will update itself as soon as we detect a mined transaction</InfoText>
   </>;
 

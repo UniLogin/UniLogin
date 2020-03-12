@@ -87,7 +87,7 @@ export {copy} from './react/copy';
 export {escapePressed} from './react/escapePressed';
 export {getSuggestionId} from './react/getSuggestionId';
 export {isDataForFunctionCall} from './core/utils/isDataForFunctionCall';
-export {isNumber as isStringANumber} from './core/utils/isNumber';
+export {isNumber} from './core/utils/isNumber';
 export {ValueRounder} from './core/utils/ValueRounder';
 export {ValuePresenter} from './core/utils/ValuePresenter';
 export {multiplyBy150Percent} from './core/utils/multiplyBy150Percent';
