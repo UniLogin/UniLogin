@@ -21,17 +21,15 @@ export const WaitingForOnRampProvider = ({className, onRampProviderName, logoCol
   const note = `Waiting for ${onRampProviderName} to send you money`;
   return (
     <div className={useClassFor('waiting-for-ramp')}>
-      <ModalWrapper>
-        <div className={getStyleForTopLevelComponent(className)}>
-          <div className={classForComponent('waiting-for-ramp')}>
-            <div className={classForComponent('waiting-for-ramp-content')}>
-              <img src={onRampProviderLogo} className={classForComponent('waiting-for-ramp-img')}/>
-              <WaitingFor action={note} />
-              <div className={classForComponent('waitingforonramp-pending-img')}></div>
-            </div>
+      <div className={getStyleForTopLevelComponent(className)}>
+        <div className={classForComponent('waiting-for-ramp')}>
+          <div className={classForComponent('waiting-for-ramp-content')}>
+            <img src={onRampProviderLogo} className={classForComponent('waiting-for-ramp-img')}/>
+            <WaitingFor action={note} />
+            <div className={classForComponent('waitingforonramp-pending-img')}></div>
           </div>
         </div>
-      </ModalWrapper>
+      </div>
     </div>
   );
 };
