@@ -7,7 +7,6 @@ import '../../styles/themes/Legacy/waitingForOnRampProviderThemeLegacy.sass';
 import '../../styles/themes/UniLogin/waitingForOnRampProviderThemeUniLogin.sass';
 import '../../styles/themes/Jarvis/waitingForOnRampProviderThemeJarvis.sass';
 import {classForComponent, useClassFor, useThemeName} from '../../utils/classFor';
-import {ModalWrapper} from '../../Modals/ModalWrapper';
 
 export interface WaitingForOnRampProviderProps {
   onRampProviderName: OnRampProviderName;

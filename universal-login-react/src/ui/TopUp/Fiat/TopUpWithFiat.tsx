@@ -1,97 +1,84 @@
 import React, {useState} from 'react';
 import {WalletService} from '@unilogin/sdk';
-import {CountryDropdown} from './CountryDropdown';
-import {AmountInput} from './AmountInput';
-import {FiatFooter} from './FiatFooter';
-import {FiatPaymentMethods, LogoColor} from './FiatPaymentMethods';
-import {useAsyncEffect} from '../../../ui/hooks/useAsyncEffect';
-import {countries} from '../../../core/utils/countries';
+import {LogoColor} from './FiatPaymentMethods';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
-import {IPGeolocationService} from '../../../integration/http/IPGeolocationService';
-import {TopUpProviderSupportService} from '../../../core/services/TopUpProviderSupportService';
-import {classForComponent} from '../../utils/classFor';
-import {FooterSection} from '../../commons/FooterSection';
-import {getPayButtonState} from '../../../app/TopUp/getPayButtonState';
-import {PayButton} from '../PayButton';
+import {TopUpDetails} from './TopUpDetails';
+import {Ramp} from '../OnRamp/Ramp';
+import {stringToEther} from '@unilogin/commons';
+import {ThemedComponent} from '../../commons/ThemedComponent';
+import {Wyre} from '../OnRamp/Wyre';
+import {Safello} from '../OnRamp/Safello';
+import {WaitingForOnRampProvider} from './WaitingForOnRampProvider';
+import Spinner from '../../commons/Spinner';
 
 export interface TopUpWithFiatProps {
   walletService: WalletService;
-  amount: string;
-  onAmountChange: (value: string) => void;
-  paymentMethod?: TopUpProvider;
-  onPaymentMethodChange: (value: TopUpProvider | undefined) => void;
   logoColor?: LogoColor;
-  onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
+  modalClassName?: string;
 }
+type TopUpWithFiatModal = 'none' | 'wait' | TopUpProvider;
 
-export const TopUpWithFiat = ({walletService, onPayClick, logoColor, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
-  const [country, setCountry] = useState<string | undefined>(undefined);
-  const [currency, setCurrency] = useState('ETH');
-  const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
+export const TopUpWithFiat = ({walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
+  const [modal, setModal] = useState<TopUpWithFiatModal>('none');
+  const [amount, setAmount] = useState('');
+  const contractAddress = walletService.getContractAddress();
+  const relayerConfig = walletService.sdk.getRelayerConfig();
+  const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
 
-  const changeCountry = (newCountry: string) => {
-    if (newCountry === country) {
-      return;
-    }
-    const providers = topUpProviderSupportService.getProviders(newCountry);
-    if (providers.length === 1) {
-      onPaymentMethodChange(providers[0]);
-    } else {
-      onPaymentMethodChange(undefined);
-    }
-    setCountry(newCountry);
+  const onPayClick = (provider: TopUpProvider) => {
+    setModal(provider);
   };
 
-  async function recognizeUserCountry() {
-    const {ipGeolocationApi} = walletService.sdk.getRelayerConfig();
-    const ipGeolocationService = new IPGeolocationService(ipGeolocationApi.baseUrl, ipGeolocationApi.accessKey);
-    const userCountryCode = await ipGeolocationService.getCountryCode().catch(console.error);
+  if (!relayerConfig) {
+    return <Spinner />;
+  };
 
-    const userCountry = countries.find(({code}) => code === userCountryCode);
-    if (country === undefined && userCountry) {
-      changeCountry(userCountry.name);
-    }
-    return () => {};
-  }
-
-  useAsyncEffect(recognizeUserCountry, []);
-
-  return (
-    <div className={classForComponent('top-up-body')}>
-      <div className={classForComponent('top-up-body-inner')}>
-        <div className="fiat fiat-selected">
-          <CountryDropdown
-            selectedCountry={country}
-            setCountry={changeCountry}
-            setCurrency={setCurrency}
-          />
-          {!!country &&
-            <FiatPaymentMethods
-              selectedCountry={country}
-              supportService={topUpProviderSupportService}
-              paymentMethod={paymentMethod}
-              setPaymentMethod={onPaymentMethodChange}
-              logoColor={logoColor}
-            />}
-          {topUpProviderSupportService.isInputAmountUsed(paymentMethod) &&
-            <AmountInput
-              selectedCurrency={currency}
-              setCurrency={setCurrency}
+  switch (modal) {
+    case 'none':
+      return (
+        <>
+          <ThemedComponent name="top-up">
+            <TopUpDetails
+              walletService={walletService}
               amount={amount}
-              onChange={onAmountChange}
+              onAmountChange={setAmount}
+              paymentMethod={paymentMethod}
+              onPaymentMethodChange={setPaymentMethod}
+              logoColor={logoColor}
+              onPayClick={onPayClick}
             />
-          }
-          <div className={classForComponent('fiat-bottom')}>
-            {!!country && <FiatFooter paymentMethod={paymentMethod} walletService={walletService} />}
-          </div>
-        </div>
-      </div>
-      <FooterSection>
-        <PayButton
-          onClick={() => onPayClick(paymentMethod!, amount)}
-          state={getPayButtonState(paymentMethod, topUpProviderSupportService, amount, 'fiat')}
-        />
-      </FooterSection>
-    </div>
-  );
+          </ThemedComponent>
+        </>
+      );
+    case TopUpProvider.RAMP:
+      return <Ramp
+        address={contractAddress}
+        amount={stringToEther(amount)}
+        currency={'ETH'}
+        config={relayerConfig.onRampProviders.ramp}
+        onSuccess={() => setModal('wait')}
+        onCancel={() => setModal('none')}
+      />;
+    case TopUpProvider.WYRE:
+      return <Wyre
+        address={contractAddress}
+        currency={'ETH'}
+        config={relayerConfig.onRampProviders.wyre}
+      />;
+    case TopUpProvider.SAFELLO:
+      return <Safello
+        localizationConfig={{} as any}
+        safelloConfig={relayerConfig.onRampProviders.safello}
+        contractAddress={contractAddress}
+        crypto="eth"
+      />;
+    case 'wait':
+      return <WaitingForOnRampProvider
+        onRampProviderName={'ramp'}
+        className={modalClassName}
+        logoColor={logoColor}
+      />;
+    default:
+      throw Error(`Invalid modal ${modal}`);
+  }
 };
