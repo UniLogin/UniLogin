@@ -60,28 +60,24 @@ export const TopUp = ({walletService, startModal, modalClassName, hideModal, isM
         <>
           {getTopUpMethodChooser()}
           <ThemedComponent name="top-up">
-            <div className='unilogin-component-top-up'>
-              <TopUpWithFiat
-                walletService={walletService}
-                amount={amount}
-                onAmountChange={setAmount}
-                paymentMethod={paymentMethod}
-                onPaymentMethodChange={setPaymentMethod}
-                logoColor={logoColor}
-                onPayClick={onPayClick}
-              />
-            </div>
+            <TopUpWithFiat
+              walletService={walletService}
+              amount={amount}
+              onAmountChange={setAmount}
+              paymentMethod={paymentMethod}
+              onPaymentMethodChange={setPaymentMethod}
+              logoColor={logoColor}
+              onPayClick={onPayClick}
+            />
           </ThemedComponent>
         </>);
     } else if (topUpMethod === 'crypto') {
       return (<>
         {getTopUpMethodChooser()}
         <ThemedComponent name="top-up">
-          <div className='unilogin-component-top-up'>
-            <TopUpWithCrypto
-              walletService={walletService}
-            />
-          </div>
+          <TopUpWithCrypto
+            walletService={walletService}
+          />
         </ThemedComponent>
       </>);
     } else if (modal === TopUpComponentType.choose) {
