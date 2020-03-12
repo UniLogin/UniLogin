@@ -38,6 +38,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   readonly isUniLogin = true;
+  private initialized = false;
 
   private readonly provider: Provider;
   private readonly sdk: UniversalLoginSDK;
@@ -104,13 +105,13 @@ export class ULWeb3Provider implements Provider {
       return;
     }
     await this.sdk.start();
+    this.initialized = true;
     this.uiController.finishAppInitialization();
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    if (methodsRequiringAccount.includes(payload.method)) {
-      await this.deployIfNoWalletDeployed();
-    }
+    if (!this.initialized) await this.init();
+    if (methodsRequiringAccount.includes(payload.method)) await this.deployIfNoWalletDeployed();
 
     try {
       const result = await this.handle(payload);
@@ -148,9 +149,6 @@ export class ULWeb3Provider implements Provider {
       case 'ul_set_dashboard_visibility':
         const isVisible = cast(params[0], asBoolean);
         this.uiController.setDashboardVisibility(isVisible);
-        break;
-      case 'ul_connect':
-        await this.init();
         break;
       case 'ul_disconnect':
         await this.finalizeAndStop();
@@ -238,12 +236,12 @@ export class ULWeb3Provider implements Provider {
   }
 
   finalizeAndStop() {
+    this.initialized = false;
     return this.sdk.finalizeAndStop();
   }
 }
 
 export const methodsRequiringAccount = [
-  'ul_connect',
   'ul_set_dashboard_visibility',
   'eth_sendTransaction',
   'eth_sendRawTransaction',
