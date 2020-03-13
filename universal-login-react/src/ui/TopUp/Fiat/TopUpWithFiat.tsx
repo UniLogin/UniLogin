@@ -24,11 +24,13 @@ type TopUpWithFiatModal = 'none' | 'wait' | TopUpProvider;
 export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
   const [modal, setModal] = useState<TopUpWithFiatModal>('none');
   const [amount, setAmount] = useState('');
+  const [currency, setCurrency] = useState<string>('ETH');
   const contractAddress = walletService.getContractAddress();
   const relayerConfig = walletService.sdk.getRelayerConfig();
   const [paymentMethod, setPaymentMethod] = useState<TopUpProvider | undefined>(undefined);
 
-  const onPayClick = (provider: TopUpProvider) => {
+  const onPayClick = (provider: TopUpProvider, currency: string) => {
+    setCurrency(currency);
     setModal(provider);
   };
 
@@ -61,7 +63,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
       return <Ramp
         address={contractAddress}
         amount={stringToEther(amount)}
-        currency={'ETH'}
+        currency={currency}
         config={relayerConfig.onRampProviders.ramp}
         onSuccess={() => setModal('wait')}
         onCancel={() => setModal('none')}
@@ -87,7 +89,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
           hideModal={hideModal}
         />
         : <WaitingForOnRampProvider
-          onRampProviderName={TopUpProvider.RAMP}
+          onRampProviderName={paymentMethod!}
           className={modalClassName}
           logoColor={logoColor}
         />;
