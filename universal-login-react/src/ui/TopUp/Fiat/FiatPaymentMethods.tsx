@@ -35,9 +35,9 @@ const FiatProviderTopUp = ({topUpProvider, providerLogo, setPaymentMethod, curre
 
 export const FiatPaymentMethods = ({selectedCountry, supportService, paymentMethod, setPaymentMethod, logoColor}: FiatPaymentMethodsProps) => {
   const getLogoColorByTheme = (useThemeName() === 'default') ? 'white' : 'black';
-  const rampLogo = getOnRampProviderLogo('ramp', logoColor || getLogoColorByTheme);
-  const safelloLogo = getOnRampProviderLogo('safello', logoColor || getLogoColorByTheme);
-  const wyreLogo = getOnRampProviderLogo('wyre', logoColor || getLogoColorByTheme);
+  const rampLogo = getOnRampProviderLogo(TopUpProvider.RAMP, logoColor || getLogoColorByTheme);
+  const safelloLogo = getOnRampProviderLogo(TopUpProvider.SAFELLO, logoColor || getLogoColorByTheme);
+  const wyreLogo = getOnRampProviderLogo(TopUpProvider.WYRE, logoColor || getLogoColorByTheme);
   return (
     <>
       <p className={`

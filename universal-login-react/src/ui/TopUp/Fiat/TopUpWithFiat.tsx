@@ -74,7 +74,7 @@ export const TopUpWithFiat = ({walletService, modalClassName, logoColor}: TopUpW
       />;
     case 'wait':
       return <WaitingForOnRampProvider
-        onRampProviderName={'ramp'}
+        onRampProviderName={TopUpProvider.RAMP}
         className={modalClassName}
         logoColor={logoColor}
       />;

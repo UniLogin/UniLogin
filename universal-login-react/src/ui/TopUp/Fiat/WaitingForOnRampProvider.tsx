@@ -1,5 +1,5 @@
 import React from 'react';
-import {OnRampProviderName, getOnRampProviderLogo} from './getOnRampProviderLogo';
+import {getOnRampProviderLogo} from './getOnRampProviderLogo';
 import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {WaitingFor} from '../../commons/WaitingFor';
 import '../../styles/base/waitingForOnRampProvider.sass';
@@ -7,9 +7,10 @@ import '../../styles/themes/Legacy/waitingForOnRampProviderThemeLegacy.sass';
 import '../../styles/themes/UniLogin/waitingForOnRampProviderThemeUniLogin.sass';
 import '../../styles/themes/Jarvis/waitingForOnRampProviderThemeJarvis.sass';
 import {classForComponent, useClassFor, useThemeName} from '../../utils/classFor';
+import {TopUpProvider} from '../../../core/models/TopUpProvider';
 
 export interface WaitingForOnRampProviderProps {
-  onRampProviderName: OnRampProviderName;
+  onRampProviderName: TopUpProvider;
   className?: string;
   logoColor?: string;
 }

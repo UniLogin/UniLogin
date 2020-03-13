@@ -4,22 +4,21 @@ import RampLogoWhite from './../../assets/topUp/ramp-white.png';
 import RampLogo from './../../assets/logos/ramp.png';
 import WyreLogoWhite from './../../assets/topUp/wyre-white.svg';
 import WyreLogo from './../../assets/logos/wyre@2x.png';
+import {TopUpProvider} from '../../../core/models/TopUpProvider';
 
-export type OnRampProviderName = 'ramp' | 'safello' | 'wyre';
-
-const logosBlack: Record<OnRampProviderName, string> = {
-  ramp: RampLogo,
-  safello: SafelloLogo,
-  wyre: WyreLogo,
+const logosBlack: Record<TopUpProvider, string> = {
+  RAMP: RampLogo,
+  SAFELLO: SafelloLogo,
+  WYRE: WyreLogo,
 };
 
-const logosWhite: Record<OnRampProviderName, string> = {
-  ramp: RampLogoWhite,
-  safello: SafelloLogoWhite,
-  wyre: WyreLogoWhite,
+const logosWhite: Record<TopUpProvider, string> = {
+  RAMP: RampLogoWhite,
+  SAFELLO: SafelloLogoWhite,
+  WYRE: WyreLogoWhite,
 };
 
-export const getOnRampProviderLogo = (providerName: OnRampProviderName, color?: string) => {
+export const getOnRampProviderLogo = (providerName: TopUpProvider, color?: string) => {
   switch (color) {
     case 'white': return logosWhite[providerName];
     default: return logosBlack[providerName];

@@ -24,6 +24,7 @@ import {ThemesPlayground} from './ui/Playground/ThemesPlayground';
 import {ThemeProvider} from './ui/themes/Theme';
 import {ErrorMessage} from './ui/commons/ErrorMessage';
 import {AppPreloader} from './ui/commons/AppPreloader';
+import {TopUpProvider} from './core/models/TopUpProvider';
 
 export const App = () => {
   const {sdk} = useServices();
@@ -163,7 +164,7 @@ export const App = () => {
               <Route exact path="/settings" render={() => <Settings deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)} />} />
               <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />
               <Route exact path="/waiting">
-                <WaitingForOnRampProvider onRampProviderName={'ramp'} />
+                <WaitingForOnRampProvider onRampProviderName={TopUpProvider.RAMP} />
               </Route>
               <Route exact path="/waitForTransaction">
                 <div>
