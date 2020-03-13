@@ -47,6 +47,7 @@ describe('UI: Creation flow', () => {
 
   after(async () => {
     appWrapper.unmount();
+    await services.sdk.finalizeAndStop();
     await relayer.stop();
   });
 });

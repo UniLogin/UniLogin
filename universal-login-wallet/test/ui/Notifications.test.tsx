@@ -22,7 +22,6 @@ describe('UI: Notifications', () => {
     await relayer.start();
     ({mockTokenContract} = await createFixtureLoader(relayer.provider as providers.Web3Provider)(deployMockToken));
     ({appWrapper, appPage, services} = await setupUI(relayer, mockTokenContract.address));
-    await services.sdk.start();
   });
 
   it('Should get notification when new device connect and confirm request', async () => {

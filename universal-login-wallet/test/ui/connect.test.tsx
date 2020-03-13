@@ -33,8 +33,6 @@ describe('UI: Connection flow', () => {
     const [wallet] = getWallets(createMockProvider());
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [gasToken]);
-    await services.sdk.tokensDetailsStore.fetchTokensDetails();
-    await services.sdk.start();
     ({privateKey, contractAddress} = await createWallet(name, services.sdk, wallet));
     appWrapper = mountWithContext(<App/>, services, ['/wallet']);
   });
@@ -66,8 +64,8 @@ describe('UI: Connection flow', () => {
   });
 
   afterEach(async () => {
-    await services.sdk.finalizeAndStop();
     appWrapper.unmount();
+    await services.sdk.finalizeAndStop();
     await relayer.stop();
   });
 });

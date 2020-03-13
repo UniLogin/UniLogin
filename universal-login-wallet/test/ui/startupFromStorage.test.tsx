@@ -27,8 +27,6 @@ describe('UI: Startup from stored wallet state', () => {
     const [wallet] = getWallets(createMockProvider());
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
-    await services.sdk.tokensDetailsStore.fetchTokensDetails();
-    await services.sdk.start();
     ({privateKey, contractAddress} = await createWallet(name, services.sdk, wallet));
   });
 
@@ -62,8 +60,8 @@ describe('UI: Startup from stored wallet state', () => {
   });
 
   afterEach(async () => {
-    await services.sdk.finalizeAndStop();
     appWrapper.unmount();
+    await services.sdk.finalizeAndStop();
     await relayer.stop();
   });
 });

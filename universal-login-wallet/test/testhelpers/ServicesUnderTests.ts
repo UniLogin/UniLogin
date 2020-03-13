@@ -33,7 +33,6 @@ export const createPreconfiguredServices = async (provider: providers.Provider, 
       DAI: {USD: 1, DAI: 1, SAI: 1, ETH: 1},
     });
   };
-  await services.sdk.tokensDetailsStore.fetchTokensDetails();
-  await services.sdk.fetchRelayerConfig();
+  await services.sdk.start();
   return services;
 };
