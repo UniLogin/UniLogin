@@ -122,6 +122,7 @@ describe('UI: Transfer', () => {
 
   afterEach(async () => {
     appWrapper.unmount();
+    await services.sdk.finalizeAndStop();
     await relayer.stop();
   });
 });

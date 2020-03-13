@@ -13,7 +13,6 @@ export const setupUI = async (relayer: Relayer, tokenAddress?: string) => {
   const [wallet] = getWallets(relayer.provider);
   const tokens = tokenAddress ? [tokenAddress, ETHER_NATIVE_TOKEN.address] : [ETHER_NATIVE_TOKEN.address];
   const services = await createPreconfiguredServices(relayer.provider, relayer, tokens);
-  await services.sdk.tokensDetailsStore.fetchTokensDetails();
   const {contractAddress} = await createAndSetWallet(name, services.walletService, wallet, services.sdk);
   const appWrapper = mountWithContext(<App/>, services, ['/wallet']);
   const appPage = new AppPage(appWrapper);
