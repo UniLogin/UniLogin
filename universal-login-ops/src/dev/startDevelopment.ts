@@ -73,8 +73,8 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
         rampUrl: 'https://ri-widget-staging.firebaseapp.com/',
       },
       wyre: {
-        wyreUrl: 'https://pay.sendwyre.com/purchase',
-        paymentMethod: 'apple-pay',
+        wyreUrl: 'https://pay.testwyre.com/purchase',
+        paymentMethod: 'debit-card',
       },
     },
     database: databaseConfig,
