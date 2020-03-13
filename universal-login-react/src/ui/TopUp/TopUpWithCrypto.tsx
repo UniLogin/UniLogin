@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {QRCode} from 'react-qr-svg';
+import {ValueRounder} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
 import {classForComponent, useThemeName} from '../utils/classFor';
 import {Label} from '../commons/Form/Label';
@@ -14,7 +15,7 @@ interface TopUpWithCryptoProps {
 
 const DeploymentWithCryptoInfo = ({minimalAmount}: {minimalAmount?: string}) =>
   <>
-    <InfoText>Send at least {minimalAmount || '...'} ETH to this address</InfoText>
+    <InfoText>Send at least {minimalAmount ? ValueRounder.ceil(minimalAmount) : '...'} ETH to this address</InfoText>
     <InfoText>This screen will update itself as soon as we detect a mined transaction</InfoText>
   </>;
 

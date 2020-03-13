@@ -1,10 +1,8 @@
 import {utils} from 'ethers';
-import {TransferDetails, SEND_TRANSACTION_GAS_LIMIT} from '@unilogin/commons';
+import {TransferDetails, SEND_TRANSACTION_GAS_LIMIT, isStringANumberRegex} from '@unilogin/commons';
 import {Validator, TransferErrors} from './Validator';
 
 const {formatEther} = utils;
-
-const isNumber = /^[0-9]+(\.[0-9]+)?$/;
 
 export class AmountValidator implements Validator<TransferDetails> {
   constructor(private readonly balance: string) {
@@ -16,7 +14,7 @@ export class AmountValidator implements Validator<TransferDetails> {
       errors['amount'].push('Empty amount');
       return;
     }
-    if (!amount.match(isNumber)) {
+    if (!amount.match(isStringANumberRegex)) {
       errors['amount'].push(`Amount ${amount} is not a valid number`);
       return;
     }

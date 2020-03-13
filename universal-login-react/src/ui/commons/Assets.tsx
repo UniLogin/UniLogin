@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {utils} from 'ethers';
 import {DeployedWallet} from '@unilogin/sdk';
-import {TokenDetailsWithBalance} from '@unilogin/commons';
+import {TokenDetailsWithBalance, ValueRounder} from '@unilogin/commons';
 import {Asset} from './Asset';
 import './../styles/assetsList.sass';
 import './../styles/assetsListDefaults.sass';
@@ -31,7 +31,7 @@ export const Assets = ({deployedWallet, className}: AssetsProps) => {
                 sdk={deployedWallet.sdk}
                 name={name}
                 symbol={symbol}
-                balance={utils.formatEther(balance)}
+                balance={ValueRounder.ceil(utils.formatEther(balance))!}
                 icon={getIconForToken(symbol)}
                 className={className}
               />
