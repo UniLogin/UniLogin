@@ -3,7 +3,7 @@ import {Config, getConfigForNetwork} from './config';
 import UniversalLoginSDK, {WalletService, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
 import {constants, providers, utils} from 'ethers';
-import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network} from '@unilogin/commons';
+import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network, InitializationHandler} from '@unilogin/commons';
 import {waitForTrue} from './ui/utils/utils';
 import {getOrCreateUlButton, initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
@@ -37,8 +37,8 @@ export class ULWeb3Provider implements Provider {
   }
 
   readonly isUniLogin = true;
-  private initialized = false;
 
+  private readonly initHandler = new InitializationHandler(() => this._init(), () => this._finalizeAndStop());
   private readonly provider: Provider;
   private readonly sdk: UniversalLoginSDK;
   private readonly walletService: WalletService;
@@ -92,7 +92,11 @@ export class ULWeb3Provider implements Provider {
     });
   }
 
-  async init() {
+  init() {
+    return this.initHandler.initialize();
+  }
+
+  private async _init() {
     this.uiController.initializeApp();
     if (this.browserChecker.isLocalStorageBlocked()) {
       this.uiController.showLocalStorageWarning();
@@ -100,12 +104,11 @@ export class ULWeb3Provider implements Provider {
     }
     await this.sdk.start();
     this.walletService.loadFromStorage();
-    this.initialized = true;
     this.uiController.finishAppInitialization();
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    if (!this.initialized) await this.init();
+    await this.init();
     if (methodsRequiringAccount.includes(payload.method)) await this.deployIfNoWalletDeployed();
 
     try {
@@ -231,7 +234,10 @@ export class ULWeb3Provider implements Provider {
   }
 
   finalizeAndStop() {
-    this.initialized = false;
+    return this.initHandler.finalize();
+  }
+
+  private _finalizeAndStop() {
     return this.sdk.finalizeAndStop();
   }
 }
