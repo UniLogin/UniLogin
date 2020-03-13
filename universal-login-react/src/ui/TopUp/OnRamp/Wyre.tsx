@@ -36,4 +36,5 @@ export const getWyreUrl = (address: string, currency: string, redirectUrl: strin
   `${config.wyreUrl}` +
   `?destCurrency=${currency}` +
   `&dest=${address}` +
+  `&paymentMethod=${config.paymentMethod}` +
   `&redirectUrl=${encodeURIComponent(redirectUrl)}`;
