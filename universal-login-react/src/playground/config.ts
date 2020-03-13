@@ -22,6 +22,22 @@ const developmentConfig: Config = {
     baseUrl: 'https://api.ipdata.co',
     accessKey: 'c7fd60a156452310712a66ca266558553470f80bf84674ae7e34e9ee',
   },
+  network: 'ganache',
 };
 
-export default developmentConfig;
+const kovanConfig: Config = {
+  domains: ['mylogin.eth', 'poppularapp.eth', 'universal-id.eth'],
+  relayerUrl: 'https://relayer-kovan.herokuapp.com',
+  jsonRpcUrl: 'https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
+  tokens: [ETHER_NATIVE_TOKEN.address, process.env.SAI_TOKEN_ADDRESS!, process.env.DAI_TOKEN_ADDRESS!],
+  saiTokenAddress: process.env.SAI_TOKEN_ADDRESS,
+  ipGeolocationApi: {
+    baseUrl: 'https://api.ipdata.co',
+    accessKey: 'c7fd60a156452310712a66ca266558553470f80bf84674ae7e34e9ee',
+  },
+  network: 'kovan',
+};
+
+const USE_KOVAN_CONFIG = true
+
+export default USE_KOVAN_CONFIG ? kovanConfig : developmentConfig;
