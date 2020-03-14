@@ -111,13 +111,13 @@ describe('UNIT: InitializationHandler', () => {
     const initialize = () => {
       initializeStart();
       return new Promise(resolve => setTimeout(() => resolve(initializeFinish()), 5));
-    }
+    };
     const finalizeStart = sinon.spy();
     const finalizeFinish = sinon.spy();
     const finalize = () => {
       finalizeStart();
       return new Promise(resolve => setTimeout(() => resolve(finalizeFinish()), 1));
-    }
+    };
     let initializationHandler: InitializationHandler<unknown, unknown>;
 
     beforeEach(() => {
@@ -135,7 +135,7 @@ describe('UNIT: InitializationHandler', () => {
 
     it('initialize finish before finalize starts without awaits', async () => {
       const initializePromise = initializationHandler.initialize();
-      expect(() => initializationHandler.finalize()).throws('Cannot finalize during initializing')
+      expect(() => initializationHandler.finalize()).throws('Cannot finalize during initializing');
       await initializePromise;
       expect(initializeStart).to.be.calledOnce;
       expect(initializeFinish).to.be.calledOnce;
