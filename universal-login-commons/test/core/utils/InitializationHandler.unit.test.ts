@@ -1,9 +1,6 @@
-import chai, {expect} from 'chai';
+import {expect} from 'chai';
 import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 import {InitializationHandler} from '../../../src/core/utils/InitializationHandler';
-
-chai.use(sinonChai);
 
 describe('UNIT: InitializationHandler', () => {
   describe('sync', () => {
@@ -77,15 +74,15 @@ describe('UNIT: InitializationHandler', () => {
     });
 
     it('initialize -> finalize', async () => {
-      initializationHandler.initialize();
+      await initializationHandler.initialize();
       await initializationHandler.finalize();
       expect(initialize).to.be.calledOnce;
       expect(finalize).to.be.calledOnce;
     });
 
     it('finalize -> initialize -> finalize', async () => {
-      initializationHandler.finalize();
-      initializationHandler.initialize();
+      await initializationHandler.finalize();
+      await initializationHandler.initialize();
       await initializationHandler.finalize();
       expect(initialize).to.be.calledOnce;
       expect(finalize).to.be.calledOnce;
@@ -94,13 +91,57 @@ describe('UNIT: InitializationHandler', () => {
     it('initialize -> finalize -> initialize', async () => {
       initializationHandler.initialize();
       initializationHandler.initialize();
-      initializationHandler.initialize();
-      initializationHandler.finalize();
+      await initializationHandler.initialize();
+      await initializationHandler.finalize();
       initializationHandler.initialize();
       initializationHandler.initialize();
       await initializationHandler.initialize();
       expect(initialize).to.be.calledTwice;
       expect(finalize).to.be.calledOnce;
+    });
+
+    afterEach(() => {
+      sinon.resetHistory();
+    });
+  });
+
+  describe('duration of promises', () => {
+    const initializeStart = sinon.spy();
+    const initializeFinish = sinon.spy();
+    const initialize = () => {
+      initializeStart();
+      return new Promise(resolve => setTimeout(() => resolve(initializeFinish()), 5));
+    }
+    const finalizeStart = sinon.spy();
+    const finalizeFinish = sinon.spy();
+    const finalize = () => {
+      finalizeStart();
+      return new Promise(resolve => setTimeout(() => resolve(finalizeFinish()), 1));
+    }
+    let initializationHandler: InitializationHandler<unknown, unknown>;
+
+    beforeEach(() => {
+      initializationHandler = new InitializationHandler(() => initialize(), () => finalize());
+    });
+
+    it('initialize finish before finalize starts with awaits', async () => {
+      await initializationHandler.initialize();
+      await initializationHandler.finalize();
+      expect(initializeStart).to.be.calledOnce;
+      expect(initializeFinish).to.be.calledImmediatelyAfter(initializeStart);
+      expect(finalizeStart).to.be.calledImmediatelyAfter(initializeFinish);
+      expect(finalizeFinish).to.be.calledImmediatelyAfter(finalizeStart);
+    });
+
+    it('initialize finish before finalize starts without awaits', async () => {
+      const initializePromise = initializationHandler.initialize();
+      expect(() => initializationHandler.finalize()).throws('Cannot finalize during initializing')
+      await initializePromise;
+      expect(initializeStart).to.be.calledOnce;
+      expect(initializeFinish).to.be.calledOnce;
+      expect(initializeFinish).to.be.calledImmediatelyAfter(initializeStart);
+      expect(finalizeStart).to.be.not.called;
+      expect(finalizeFinish).to.be.not.called;
     });
 
     afterEach(() => {
