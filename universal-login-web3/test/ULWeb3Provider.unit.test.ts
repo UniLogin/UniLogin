@@ -51,7 +51,8 @@ describe('UNIT: ULWeb3Provider', () => {
     });
 
     afterEach(() => {
-      sinon.resetHistory();
+      initSpy.resetHistory();
+      stopSpy.resetHistory();
     });
   });
 });
