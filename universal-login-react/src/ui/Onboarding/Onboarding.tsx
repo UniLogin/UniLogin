@@ -37,7 +37,7 @@ export const Onboarding = (props: OnboardingProps) => {
                 <OnboardingStepsWrapper
                   hideModal={props.hideModal}
                   message={props.walletService.sdk.getNotice()}
-                  steps={5}
+                  steps={3}
                   progress={1}>
                   <div className="perspective">
                     <WalletSelector
