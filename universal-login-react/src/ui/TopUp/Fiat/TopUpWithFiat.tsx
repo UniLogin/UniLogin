@@ -19,7 +19,7 @@ export interface TopUpWithFiatProps {
   setHeaderVisible: (isVisible: boolean) => void;
   hideModal?: () => void;
 }
-type TopUpWithFiatModal = 'none' | 'wait' | TopUpProvider;
+type TopUpWithFiatModal = 'none' | 'wait-for-ramp' | 'wait-for-wyre' | TopUpProvider;
 
 export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
   const [modal, setModal] = useState<TopUpWithFiatModal>('none');
@@ -65,7 +65,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
         amount={stringToWei(amount)}
         currency={currency}
         config={relayerConfig.onRampProviders.ramp}
-        onSuccess={() => setModal('wait')}
+        onSuccess={() => setModal('wait-for-ramp')}
         onCancel={() => setModal('none')}
       />;
     case TopUpProvider.WYRE:
@@ -73,6 +73,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
         address={contractAddress}
         currency={'ETH'}
         config={relayerConfig.onRampProviders.wyre}
+        onCompleted={() => setModal('wait-for-wyre')}
       />;
     case TopUpProvider.SAFELLO:
       return <Safello
