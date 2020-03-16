@@ -14,10 +14,10 @@ export const Wyre = ({address, currency, config, onCompleted}: WyreProps) => {
 
   function onLoad(e: SyntheticEvent<HTMLIFrameElement>) {
     try {
-      const location = e.currentTarget.contentDocument?.location
-      if(!location) return
+      const iframeLocation = e.currentTarget.contentDocument?.location;
+      if (!iframeLocation) return;
 
-      onCompleted?.()
+      onCompleted?.();
     } catch {}
   }
 

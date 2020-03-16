@@ -38,6 +38,6 @@ const kovanConfig: Config = {
   network: 'kovan',
 };
 
-const USE_KOVAN_CONFIG = false
+const USE_KOVAN_CONFIG = false;
 
 export default USE_KOVAN_CONFIG ? kovanConfig : developmentConfig;
