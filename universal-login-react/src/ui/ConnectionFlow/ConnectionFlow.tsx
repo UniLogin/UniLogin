@@ -30,7 +30,7 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, wallet
 
   return <Switch>
     <Route exact path={join(basePath, 'chooseMethod')}>
-      <ConnectionFlowWrapper progress={4} steps={5}>
+      <ConnectionFlowWrapper progress={2} steps={3}>
         <ChooseConnectionMethod
           onConnectWithDeviceClick={onConnectWithDeviceClick}
           onConnectWithPassphraseClick={() => history.push(join(basePath, 'recover'), {ensName: name})}
