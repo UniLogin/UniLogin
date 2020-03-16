@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {WalletService} from '@unilogin/sdk';
 import {LogoColor} from './FiatPaymentMethods';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
@@ -15,7 +15,7 @@ export interface TopUpWithFiatProps {
   walletService: WalletService;
   logoColor?: LogoColor;
   modalClassName?: string;
-  setHeaderVisible: (arg: boolean) => void;
+  setHeaderVisible: (isVisible: boolean) => void;
 }
 type TopUpWithFiatModal = 'none' | 'wait' | TopUpProvider;
 
@@ -29,6 +29,10 @@ export const TopUpWithFiat = ({setHeaderVisible, walletService, modalClassName, 
   const onPayClick = (provider: TopUpProvider) => {
     setModal(provider);
   };
+
+  useEffect(() => {
+    setHeaderVisible(modal === 'none');
+  }, [modal]);
 
   if (!relayerConfig) {
     return <Spinner />;
@@ -52,7 +56,6 @@ export const TopUpWithFiat = ({setHeaderVisible, walletService, modalClassName, 
         </>
       );
     case TopUpProvider.RAMP:
-      setHeaderVisible(false);
       return <Ramp
         address={contractAddress}
         amount={stringToEther(amount)}
@@ -62,14 +65,12 @@ export const TopUpWithFiat = ({setHeaderVisible, walletService, modalClassName, 
         onCancel={() => setModal('none')}
       />;
     case TopUpProvider.WYRE:
-      setHeaderVisible(false);
       return <Wyre
         address={contractAddress}
         currency={'ETH'}
         config={relayerConfig.onRampProviders.wyre}
       />;
     case TopUpProvider.SAFELLO:
-      setHeaderVisible(false);
       return <Safello
         localizationConfig={{} as any}
         safelloConfig={relayerConfig.onRampProviders.safello}
@@ -77,7 +78,6 @@ export const TopUpWithFiat = ({setHeaderVisible, walletService, modalClassName, 
         crypto="eth"
       />;
     case 'wait':
-      setHeaderVisible(false);
       return <WaitingForOnRampProvider
         onRampProviderName={TopUpProvider.RAMP}
         className={modalClassName}
