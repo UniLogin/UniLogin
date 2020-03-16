@@ -1,5 +1,4 @@
-import {Callback, JsonRPCRequest, JsonRPCResponse} from './rpc';
-import {Provider} from 'web3/providers';
+import {Provider, JsonRPCRequest, Callback, JsonRPCResponse} from 'web3/providers';
 
 export interface BrowserWeb3Provider extends Provider {
   enable: () => Promise<void>;

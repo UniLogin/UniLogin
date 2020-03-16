@@ -1,10 +1,9 @@
-import {Provider} from 'web3/providers';
+import {Provider, JsonRPCRequest, Callback, JsonRPCResponse} from 'web3/providers';
 import {Config, getConfigForNetwork} from './config';
 import UniversalLoginSDK, {WalletService, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
 import {constants, providers, utils} from 'ethers';
-import {Callback, JsonRPCRequest, JsonRPCResponse} from './models/rpc';
-import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network} from '@unilogin/commons';
+import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network, InitializationHandler} from '@unilogin/commons';
 import {waitForTrue} from './ui/utils/utils';
 import {getOrCreateUlButton, initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
@@ -39,6 +38,7 @@ export class ULWeb3Provider implements Provider {
 
   readonly isUniLogin = true;
 
+  private readonly initHandler = new InitializationHandler(() => this._init(), () => this._finalizeAndStop());
   private readonly provider: Provider;
   private readonly sdk: UniversalLoginSDK;
   private readonly walletService: WalletService;
@@ -90,27 +90,26 @@ export class ULWeb3Provider implements Provider {
       walletService: this.walletService,
       uiController: this.uiController,
     });
-
-    if (this.browserChecker.isLocalStorageBlocked()) {
-      this.uiController.showLocalStorageWarning();
-    } else {
-      this.walletService.loadFromStorage();
-    }
   }
 
-  async init() {
+  init() {
+    return this.initHandler.initialize();
+  }
+
+  private async _init() {
     this.uiController.initializeApp();
     if (this.browserChecker.isLocalStorageBlocked()) {
+      this.uiController.showLocalStorageWarning();
       return;
     }
     await this.sdk.start();
+    this.walletService.loadFromStorage();
     this.uiController.finishAppInitialization();
   }
 
   async send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>) {
-    if (methodsRequiringAccount.includes(payload.method)) {
-      await this.deployIfNoWalletDeployed();
-    }
+    await this.init();
+    if (methodsRequiringAccount.includes(payload.method)) await this.deployIfNoWalletDeployed();
 
     try {
       const result = await this.handle(payload);
@@ -148,9 +147,6 @@ export class ULWeb3Provider implements Provider {
       case 'ul_set_dashboard_visibility':
         const isVisible = cast(params[0], asBoolean);
         this.uiController.setDashboardVisibility(isVisible);
-        break;
-      case 'ul_connect':
-        await this.init();
         break;
       case 'ul_disconnect':
         await this.finalizeAndStop();
@@ -238,12 +234,16 @@ export class ULWeb3Provider implements Provider {
   }
 
   finalizeAndStop() {
+    return this.initHandler.finalize();
+  }
+
+  private _finalizeAndStop() {
+    this.walletService.finalize();
     return this.sdk.finalizeAndStop();
   }
 }
 
 export const methodsRequiringAccount = [
-  'ul_connect',
   'ul_set_dashboard_visibility',
   'eth_sendTransaction',
   'eth_sendRawTransaction',
