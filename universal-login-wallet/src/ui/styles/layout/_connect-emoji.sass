@@ -5,13 +5,17 @@
   align-items: center
   justify-content: center
 
+#notifications
+  flex: 1
 
 .universal-login-emojis
   display: flex
   justify-content: center
-  flex: 1
+  width: 100%
 
   #emojis
+    display: flex
+    flex-direction: column
     flex: 1
 
   .approve-device
@@ -29,6 +33,13 @@
 
   .approve-device-form
     padding-bottom: 40px
+    display: flex
+    flex-direction: column
+    flex: 1
+
+    @media only screen and (max-width: 767px)
+      margin: unset
+      margin: 0 12px
 
   .approve-device-title
     font-weight: 700
@@ -112,9 +123,10 @@
 
   .emojis-fakes-list
     max-width: 808px
-    margin: 80px auto 0
-    padding-top: 35px
+    margin: 0 auto 0
+    padding-top: 32px
     border-top: 1px solid #eaedfd
+    width: 100%
 
   .emoji-keyboard
     padding: 0 30px
@@ -122,6 +134,7 @@
   .connect-emoji
     padding: 0
     background: #FAFBFD
+    width: 100%
 
   .connect-emoji-content
     padding: 25px
@@ -198,6 +211,9 @@
   line-height: 24px
   text-align: center
   color: #31405E
+
+  @media only screen and (max-width: 600)
+    margin: 0 auto 54px
 
 .correct-input-confirmation-text
   margin-top: 1.5rem
