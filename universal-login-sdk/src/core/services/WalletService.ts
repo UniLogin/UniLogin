@@ -5,7 +5,7 @@ import {DeployingWallet} from '../../api/wallet/DeployingWallet';
 import {InvalidWalletState, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
 import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';
-import {map, State} from 'reactive-properties';
+import {map, State, Property} from 'reactive-properties';
 import {WalletState} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {WalletSerializer} from './WalletSerializer';
@@ -19,7 +19,8 @@ export class WalletService {
   private readonly walletSerializer: WalletSerializer;
   private readonly walletStorage: WalletStorage;
 
-  stateProperty = new State<WalletState>({kind: 'None'});
+  private readonly _stateProperty = new State<WalletState>({kind: 'None'});
+  readonly stateProperty: Property<WalletState> = this._stateProperty;
 
   walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed'));
   isAuthorized = this.walletDeployed;
@@ -30,7 +31,7 @@ export class WalletService {
 
   private setState(state: WalletState) {
     this.saveToStorage(state);
-    this.stateProperty.set(state);
+    this._stateProperty.set(state);
   }
 
   constructor(
@@ -119,7 +120,7 @@ export class WalletService {
 
   setConnecting(wallet: ConnectingWallet) {
     ensure(this.state.kind === 'None', WalletOverridden);
-    this.stateProperty.set({kind: 'Connecting', wallet});
+    this._stateProperty.set({kind: 'Connecting', wallet});
   }
 
   setWallet(wallet: ApplicationWallet) {
@@ -223,7 +224,11 @@ export class WalletService {
   loadFromStorage() {
     ensure(this.state.kind === 'None', WalletOverridden);
     const state = this.walletStorage.load();
-    this.stateProperty.set(this.walletSerializer.deserialize(state));
+    this._stateProperty.set(this.walletSerializer.deserialize(state));
+  }
+
+  finalize() {
+    this._stateProperty.set({kind: 'None'});
   }
 
   getRequiredDeploymentBalance() {

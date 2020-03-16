@@ -238,7 +238,7 @@ export class ULWeb3Provider implements Provider {
   }
 
   private _finalizeAndStop() {
-    this.walletService.stateProperty.set({kind: 'None'});
+    this.walletService.finalize();
     return this.sdk.finalizeAndStop();
   }
 }
