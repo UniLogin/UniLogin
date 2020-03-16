@@ -75,7 +75,7 @@ export {deployContract, deployContractAndWait, DEPLOY_GAS_LIMIT, getDeployData} 
 export {withENS} from './integration/ethereum/ens';
 export {fetchHardforkVersion} from './integration/ethereum/fetchHardforkVersion';
 export {resolveName} from './integration/ethereum/resolveName';
-export {stringToEther} from './integration/ethereum/stringToEther';
+export {stringToWei} from './integration/ethereum/stringToWei';
 export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
 export {defaultDeployOptions, getDeployTransaction} from './integration/ethereum/transaction';
 export {SufficientBalanceValidator} from './integration/ethereum/validators/SufficientBalanceValidator';

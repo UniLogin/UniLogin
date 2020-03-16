@@ -4,7 +4,7 @@ import {LogoColor} from './FiatPaymentMethods';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {TopUpDetails} from './TopUpDetails';
 import {Ramp} from '../OnRamp/Ramp';
-import {stringToEther} from '@unilogin/commons';
+import {stringToWei} from '@unilogin/commons';
 import {ThemedComponent} from '../../commons/ThemedComponent';
 import {Wyre} from '../OnRamp/Wyre';
 import {Safello} from '../OnRamp/Safello';
@@ -62,7 +62,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
     case TopUpProvider.RAMP:
       return <Ramp
         address={contractAddress}
-        amount={stringToEther(amount)}
+        amount={stringToWei(amount)}
         currency={currency}
         config={relayerConfig.onRampProviders.ramp}
         onSuccess={() => setModal('wait')}
