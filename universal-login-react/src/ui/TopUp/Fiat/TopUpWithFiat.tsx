@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {WalletService} from '@unilogin/sdk';
 import {LogoColor} from './FiatPaymentMethods';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
@@ -15,10 +15,11 @@ export interface TopUpWithFiatProps {
   walletService: WalletService;
   logoColor?: LogoColor;
   modalClassName?: string;
+  setHeaderVisible: (isVisible: boolean) => void;
 }
 type TopUpWithFiatModal = 'none' | 'wait' | TopUpProvider;
 
-export const TopUpWithFiat = ({walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({setHeaderVisible, walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
   const [modal, setModal] = useState<TopUpWithFiatModal>('none');
   const [amount, setAmount] = useState('');
   const contractAddress = walletService.getContractAddress();
@@ -28,6 +29,10 @@ export const TopUpWithFiat = ({walletService, modalClassName, logoColor}: TopUpW
   const onPayClick = (provider: TopUpProvider) => {
     setModal(provider);
   };
+
+  useEffect(() => {
+    setHeaderVisible(modal === 'none');
+  }, [modal]);
 
   if (!relayerConfig) {
     return <Spinner />;

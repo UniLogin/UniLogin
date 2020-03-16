@@ -22,17 +22,19 @@ export interface TopUpProps {
 
 export const TopUp = ({walletService, modalClassName, hideModal, isModal, logoColor}: TopUpProps) => {
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
+  const [headerVisible, setHeaderVisible] = useState<boolean>(true);
 
   const renderTopUpContent = () => (<>
-    <ChooseTopUpMethod
+    {headerVisible && <ChooseTopUpMethod
       topUpMethod={topUpMethod}
       setTopUpMethod={setTopUpMethod}
-    />
+    />}
     {topUpMethod === 'fiat' &&
       <TopUpWithFiat
         walletService={walletService}
         logoColor={logoColor}
         modalClassName={modalClassName}
+        setHeaderVisible={setHeaderVisible}
       />}
     {topUpMethod === 'crypto' &&
       <TopUpWithCrypto
