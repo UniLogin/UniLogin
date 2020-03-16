@@ -10,6 +10,7 @@ import {Wyre} from '../OnRamp/Wyre';
 import {Safello} from '../OnRamp/Safello';
 import {WaitingForOnRampProvider} from './WaitingForOnRampProvider';
 import Spinner from '../../commons/Spinner';
+import {OnRampSuccessInfo} from './OnRampSuccessInfo';
 
 export interface TopUpWithFiatProps {
   walletService: WalletService;
@@ -78,11 +79,16 @@ export const TopUpWithFiat = ({setHeaderVisible, walletService, modalClassName, 
         crypto="eth"
       />;
     case 'wait':
-      return <WaitingForOnRampProvider
-        onRampProviderName={TopUpProvider.RAMP}
-        className={modalClassName}
-        logoColor={logoColor}
-      />;
+      return walletService.isKind('Deployed')
+        ? <OnRampSuccessInfo
+          onRampProvider={paymentMethod!}
+          amount={amount}
+        />
+        : <WaitingForOnRampProvider
+          onRampProviderName={TopUpProvider.RAMP}
+          className={modalClassName}
+          logoColor={logoColor}
+        />;
     default:
       throw Error(`Invalid modal ${modal}`);
   }
