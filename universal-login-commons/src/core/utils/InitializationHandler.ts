@@ -2,16 +2,16 @@ type State<T, B> = {
   kind: 'None';
 } | {
   kind: 'Initializing';
-  value: Promise<T>;
+  promise: Promise<T>;
 } | {
   kind: 'Initialized';
-  value: Promise<T>;
+  value: T;
 } | {
   kind: 'Finalizing';
-  value: Promise<B>;
+  promise: Promise<B>;
 } | {
   kind: 'Finalized';
-  value: Promise<B>;
+  value: B;
 };
 
 export class InitializationHandler<T, B> {
@@ -23,34 +23,39 @@ export class InitializationHandler<T, B> {
   ) {}
 
   async initialize(): Promise<T> {
-    if (this.state.kind === 'Finalizing') {
-      throw Error('Cannot initialize during finalizing');
+    switch (this.state.kind) {
+      case 'Finalizing':
+        throw Error('Cannot initialize during finalizing');
+      case 'Initializing':
+        return this.state.promise;
+      case 'Initialized':
+        return this.state.value;
+      case 'None':
+      case 'Finalized':
+        const promise = this._initialize();
+        this.state = {kind: 'Initializing', promise};
+        const value = await promise;
+        this.state = {kind: 'Initialized', value};
+        return value;
     }
-    if (this.state.kind === 'Finalized' || this.state.kind === 'None') {
-      const value = this._initialize();
-      this.state = {
-        kind: 'Initializing',
-        value,
-      };
-      await value;
-      this.state = {kind: 'Initialized', value};
-    }
-    return this.state.value;
   }
 
   async finalize(): Promise<B | undefined> {
-    if (this.state.kind === 'None') {
-      return;
+    switch (this.state.kind) {
+      case 'None':
+        return;
+      case 'Initializing':
+        throw Error('Cannot finalize during initializing');
+      case 'Finalizing':
+        return this.state.promise;
+      case 'Finalized':
+        return this.state.value;
+      case 'Initialized':
+        const promise = this._finalize();
+        this.state = {kind: 'Finalizing', promise};
+        const value = await promise;
+        this.state = {kind: 'Finalized', value};
+        return value;
     }
-    if (this.state.kind === 'Initializing') {
-      throw Error('Cannot finalize during initializing');
-    }
-    if (this.state.kind === 'Initialized') {
-      const value = this._finalize();
-      this.state = {kind: 'Finalizing', value};
-      await value;
-      this.state = {kind: 'Finalized', value};
-    }
-    return this.state.value;
   }
-}
+};
