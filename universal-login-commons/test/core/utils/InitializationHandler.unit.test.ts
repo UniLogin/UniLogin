@@ -3,56 +3,7 @@ import sinon from 'sinon';
 import {InitializationHandler} from '../../../src/core/utils/InitializationHandler';
 
 describe('UNIT: InitializationHandler', () => {
-  describe('sync', () => {
-    const initialize = sinon.stub();
-    const finalize = sinon.stub();
-    let initializationHandler: InitializationHandler<void, void>;
-
-    beforeEach(() => {
-      initializationHandler = new InitializationHandler(() => initialize(), () => finalize());
-    });
-
-    it('call initialize', () => {
-      initializationHandler.initialize();
-      expect(initialize).to.be.calledOnce;
-    });
-
-    it('call initialize x3', () => {
-      initializationHandler.initialize();
-      initializationHandler.initialize();
-      initializationHandler.initialize();
-      expect(initialize).to.be.calledOnce;
-    });
-
-    it('initialize -> finalize', () => {
-      initializationHandler.initialize();
-      initializationHandler.finalize();
-      expect(initialize).to.be.calledOnce;
-      expect(finalize).to.be.calledOnce;
-    });
-
-    it('finalize -> initialize -> finalize', () => {
-      initializationHandler.finalize();
-      initializationHandler.initialize();
-      initializationHandler.finalize();
-      expect(initialize).to.be.calledOnce;
-      expect(finalize).to.be.calledOnce;
-    });
-
-    it('initialize -> finalize -> initialize', () => {
-      initializationHandler.initialize();
-      initializationHandler.finalize();
-      initializationHandler.initialize();
-      expect(initialize).to.be.calledTwice;
-      expect(finalize).to.be.calledOnce;
-    });
-
-    afterEach(() => {
-      sinon.resetHistory();
-    });
-  });
-
-  describe('async', () => {
+  describe('behavior of callbacks', () => {
     const initialize = sinon.stub().resolves();
     const finalize = sinon.stub().resolves();
     let initializationHandler: InitializationHandler<Promise<void>, Promise<void>>;
@@ -135,7 +86,7 @@ describe('UNIT: InitializationHandler', () => {
 
     it('initialize finish before finalize starts without awaits', async () => {
       const initializePromise = initializationHandler.initialize();
-      expect(() => initializationHandler.finalize()).throws('Cannot finalize during initializing');
+      await expect(initializationHandler.finalize()).rejectedWith('Cannot finalize during initializing');
       await initializePromise;
       expect(initializeStart).to.be.calledOnce;
       expect(initializeFinish).to.be.calledOnce;
