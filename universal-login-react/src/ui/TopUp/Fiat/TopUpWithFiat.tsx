@@ -17,10 +17,11 @@ export interface TopUpWithFiatProps {
   logoColor?: LogoColor;
   modalClassName?: string;
   setHeaderVisible: (isVisible: boolean) => void;
+  hideModal?: () => void;
 }
 type TopUpWithFiatModal = 'none' | 'wait' | TopUpProvider;
 
-export const TopUpWithFiat = ({setHeaderVisible, walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
   const [modal, setModal] = useState<TopUpWithFiatModal>('none');
   const [amount, setAmount] = useState('');
   const contractAddress = walletService.getContractAddress();
@@ -83,6 +84,7 @@ export const TopUpWithFiat = ({setHeaderVisible, walletService, modalClassName, 
         ? <OnRampSuccessInfo
           onRampProvider={paymentMethod!}
           amount={amount}
+          hideModal={hideModal}
         />
         : <WaitingForOnRampProvider
           onRampProviderName={TopUpProvider.RAMP}
