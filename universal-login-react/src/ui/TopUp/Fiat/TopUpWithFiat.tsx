@@ -15,10 +15,11 @@ export interface TopUpWithFiatProps {
   walletService: WalletService;
   logoColor?: LogoColor;
   modalClassName?: string;
+  setHeaderVisible: (arg: boolean) => void;
 }
 type TopUpWithFiatModal = 'none' | 'wait' | TopUpProvider;
 
-export const TopUpWithFiat = ({walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({setHeaderVisible, walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
   const [modal, setModal] = useState<TopUpWithFiatModal>('none');
   const [amount, setAmount] = useState('');
   const contractAddress = walletService.getContractAddress();
@@ -51,6 +52,7 @@ export const TopUpWithFiat = ({walletService, modalClassName, logoColor}: TopUpW
         </>
       );
     case TopUpProvider.RAMP:
+      setHeaderVisible(false);
       return <Ramp
         address={contractAddress}
         amount={stringToEther(amount)}
@@ -60,12 +62,14 @@ export const TopUpWithFiat = ({walletService, modalClassName, logoColor}: TopUpW
         onCancel={() => setModal('none')}
       />;
     case TopUpProvider.WYRE:
+      setHeaderVisible(false);
       return <Wyre
         address={contractAddress}
         currency={'ETH'}
         config={relayerConfig.onRampProviders.wyre}
       />;
     case TopUpProvider.SAFELLO:
+      setHeaderVisible(false);
       return <Safello
         localizationConfig={{} as any}
         safelloConfig={relayerConfig.onRampProviders.safello}
@@ -73,6 +77,7 @@ export const TopUpWithFiat = ({walletService, modalClassName, logoColor}: TopUpW
         crypto="eth"
       />;
     case 'wait':
+      setHeaderVisible(false);
       return <WaitingForOnRampProvider
         onRampProviderName={TopUpProvider.RAMP}
         className={modalClassName}
