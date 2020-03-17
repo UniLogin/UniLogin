@@ -15,21 +15,21 @@ export interface IWalletContractServiceStrategy {
 }
 
 export class WalletContractService {
-  private walletVersion?: WalletVersion;
+  private memoizedWalletVersions: Record<string, WalletVersion> = {};
 
   constructor(private blockchainService: BlockchainService, private beta2Service: IWalletContractServiceStrategy, private gnosisSafeService: GnosisSafeService) {
   }
 
   async getWalletService(walletAddress: string): Promise<IWalletContractServiceStrategy> {
-    this.walletVersion = this.walletVersion || await this.blockchainService.fetchWalletVersion(walletAddress);
-    switch (this.walletVersion) {
+    this.memoizedWalletVersions[walletAddress] = this.memoizedWalletVersions[walletAddress] || await this.blockchainService.fetchWalletVersion(walletAddress);
+    switch (this.memoizedWalletVersions[walletAddress]) {
       case 'beta1':
       case 'beta2':
         return this.beta2Service;
       case 'beta3':
         return this.gnosisSafeService;
       default:
-        throw TypeError(`Invalid walletVersion: ${this.walletVersion}`);
+        throw TypeError(`Invalid walletVersion: ${this.memoizedWalletVersions[walletAddress]}`);
     }
   }
 

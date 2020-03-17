@@ -11,14 +11,21 @@ import {GnosisSafeService} from '../../../src/integration/ethereum/GnosisSafeSer
 describe('INT: WalletContractService', () => {
   const provider = createMockProvider();
   const [wallet] = getWallets(provider);
-  let walletService: WalletContractService;
+  const walletService = new WalletContractService(
+    new BlockchainService(provider),
+    new Beta2Service(provider),
+    new GnosisSafeService(provider),
+  );
   let proxyWallet: Contract;
   let keyPair: KeyPair;
 
   describe('beta2', () => {
     before(async () => {
-      walletService = new WalletContractService(new BlockchainService(provider), new Beta2Service(provider), new GnosisSafeService(provider));
       ({proxyWallet, keyPair} = await setupWalletContract(wallet));
+    });
+
+    it('getWalletService', async () => {
+      expect(await walletService.getWalletService(proxyWallet.address) instanceof Beta2Service).to.be.true;
     });
 
     it('last nonce returns proper number', async () => {
@@ -50,13 +57,12 @@ describe('INT: WalletContractService', () => {
   });
 
   describe('beta3', () => {
-    let gnosisSafeService: GnosisSafeService;
-
     before(async () => {
-      const blockchainService = new BlockchainService(provider);
-      gnosisSafeService = new GnosisSafeService(provider);
-      walletService = new WalletContractService(blockchainService, new Beta2Service(provider), gnosisSafeService);
       ({proxy: proxyWallet, keyPair} = await setupGnosisSafeContract(wallet));
+    });
+
+    it('getWalletService', async () => {
+      expect(await walletService.getWalletService(proxyWallet.address) instanceof GnosisSafeService).to.be.true;
     });
 
     it('last nonce returns proper number', async () => {
