@@ -45,8 +45,10 @@ export class DeployedWallet extends AbstractWallet {
     return this.removeKey(ownKey, executionOptions);
   }
 
-  denyRequests(): Promise<void> {
-    return this.sdk.denyRequests(this.contractAddress, this.privateKey);
+  async denyRequests() {
+    const authorisationRequest = {contractAddress: this.contractAddress};
+    await this.sdk.walletContractService.signRelayerRequest(this.privateKey, authorisationRequest);
+    await this.sdk.relayerApi.denyConnection(authorisationRequest);
   }
 
   setRequiredSignatures(requiredSignatures: number, executionOptions: ExecutionOptions): Promise<Execution> {

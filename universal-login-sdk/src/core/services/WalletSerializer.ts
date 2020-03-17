@@ -65,7 +65,7 @@ export class WalletSerializer {
       case 'Connecting':
         return {
           kind: 'Connecting',
-          wallet: new ConnectingWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey),
+          wallet: new ConnectingWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey, this.sdk),
         };
       case 'Deployed':
         return {
