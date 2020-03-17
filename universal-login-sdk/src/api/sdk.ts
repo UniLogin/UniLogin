@@ -174,12 +174,6 @@ class UniversalLoginSDK {
     };
   }
 
-  async denyRequests(contractAddress: string, privateKey: string) {
-    const authorisationRequest = {contractAddress};
-    await this.walletContractService.signRelayerRequest(privateKey, authorisationRequest);
-    await this.relayerApi.denyConnection(authorisationRequest);
-  }
-
   subscribe(eventType: WalletEventType, filter: WalletEventFilter, callback: WalletEventCallback) {
     ensure(['KeyAdded', 'KeyRemoved', 'AddedOwner', 'RemovedOwner'].includes(eventType), InvalidEvent, eventType);
     return this.walletEventsObserverFactory.subscribe(eventType, filter, callback);
