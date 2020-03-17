@@ -49,12 +49,12 @@ const mainnetConfig: Config = {
     accessKey: 'c7fd60a156452310712a66ca266558553470f80bf84674ae7e34e9ee',
   },
   network: 'mainnet',
-}
+};
 
 const configs = {
   ganache: developmentConfig,
   kovan: kovanConfig,
-  mainnet: mainnetConfig
-}
+  mainnet: mainnetConfig,
+};
 
 export default configs.ganache;
