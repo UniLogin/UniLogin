@@ -74,7 +74,6 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
       },
       wyre: {
         wyreUrl: 'https://pay.testwyre.com/purchase',
-        paymentMethod: 'debit-card',
       },
     },
     database: databaseConfig,

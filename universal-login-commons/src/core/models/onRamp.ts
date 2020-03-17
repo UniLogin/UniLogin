@@ -17,5 +17,4 @@ export interface RampConfig {
 
 export interface WyreConfig {
   wyreUrl: string;
-  paymentMethod: string;
 }
