@@ -142,7 +142,7 @@ export class WalletService {
   async initializeConnection(name: string): Promise<number[]> {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const {privateKey, securityCode} = await this.sdk.connect(contractAddress);
-    const connectingWallet: ConnectingWallet = new ConnectingWallet(contractAddress, name, privateKey);
+    const connectingWallet: ConnectingWallet = new ConnectingWallet(contractAddress, name, privateKey, this.sdk);
     this.setConnecting(connectingWallet);
     this.setState({kind: 'Connecting', wallet: connectingWallet});
     return securityCode;
@@ -178,7 +178,7 @@ export class WalletService {
   async connect(name: string, callback: Procedure) {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const {privateKey, securityCode} = await this.sdk.connect(contractAddress);
-    const connectingWallet: ConnectingWallet = new ConnectingWallet(contractAddress, name, privateKey);
+    const connectingWallet: ConnectingWallet = new ConnectingWallet(contractAddress, name, privateKey, this.sdk);
     this.setConnecting(connectingWallet);
     this.setState({kind: 'Connecting', wallet: connectingWallet});
 

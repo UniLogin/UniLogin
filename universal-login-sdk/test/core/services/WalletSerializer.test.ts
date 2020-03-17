@@ -53,7 +53,7 @@ describe('UNIT: WalletSerializer', () => {
     mockSDK,
   );
 
-  const TEST_CONNECTING_WALLET = new ConnectingWallet(TEST_CONTRACT_ADDRESS, 'name.mylogin.eth', TEST_PRIVATE_KEY);
+  const TEST_CONNECTING_WALLET = new ConnectingWallet(TEST_CONTRACT_ADDRESS, 'name.mylogin.eth', TEST_PRIVATE_KEY, {} as any);
 
   describe('serialize', () => {
     const walletSerializer = new WalletSerializer({} as any);
