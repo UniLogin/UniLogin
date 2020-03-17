@@ -126,10 +126,18 @@ export class ULIFrameProvider {
   }
 
   enable(): Promise<string[]> {
-    return new Promise(resolve =>
+    return new Promise((resolve, reject) =>
       this.send(
         {id: 1, jsonRpc: '2.0', method: 'eth_requestAccounts'},
-        (_, jsonRpcResponse) => resolve(jsonRpcResponse.result),
+        (error, jsonRpcResponse) => {
+          if (error) {
+            reject(error);
+          } else if (jsonRpcResponse.error) {
+            reject(jsonRpcResponse.error);
+          } else {
+            resolve(jsonRpcResponse.result);
+          }
+        },
       ));
   }
 
