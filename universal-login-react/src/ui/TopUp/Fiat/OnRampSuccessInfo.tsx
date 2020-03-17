@@ -6,15 +6,16 @@ import {CloseButton} from '../../commons/Buttons/CloseButton';
 type OnRampSuccessInfoProps = {
   onRampProvider: TopUpProvider;
   amount: string;
+  currency: string;
   hideModal?: () => void;
 };
 
-export const OnRampSuccessInfo = ({onRampProvider, amount, hideModal}: OnRampSuccessInfoProps) =>
+export const OnRampSuccessInfo = ({onRampProvider, amount, hideModal, currency}: OnRampSuccessInfoProps) =>
   <div className={classForComponent('on-ramp-success-info')}>
     {hideModal && <CloseButton onClick={hideModal} />}
     {onRampProvider} has received your request.
     <br/>
-    {amount} ETH is going to be on your account soon.
+    {amount} {currency} is going to be on your account soon.
     <br/>
       You may close this window now.
   </div>;
