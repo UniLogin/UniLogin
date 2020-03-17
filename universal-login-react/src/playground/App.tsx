@@ -24,7 +24,7 @@ import {ThemeProvider} from '../ui/themes/Theme';
 import {ErrorMessage} from '../ui/commons/ErrorMessage';
 import {AppPreloader} from '../ui/commons/AppPreloader';
 import {TopUpProvider} from '../core/models/TopUpProvider';
-import config from './config'
+import config from './config';
 
 export const App = () => {
   const [sdk] = useState(() => {
@@ -37,7 +37,7 @@ export const App = () => {
     sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
     sdk.start();
     return sdk;
-  })
+  });
   const [relayerConfig] = useAsync(() => sdk.fetchRelayerConfig(), []);
   const [walletService] = useState(() => new WalletService(sdk));
 
