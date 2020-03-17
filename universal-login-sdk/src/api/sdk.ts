@@ -151,7 +151,7 @@ class UniversalLoginSDK {
   async getWalletContractAddress(ensName: string): Promise<string> {
     const walletContractAddress = await this.resolveName(ensName);
     ensureNotFalsy(walletContractAddress, InvalidENSRecord, ensName);
-    ensureNotFalsy(await this.blockchainService.getCode(walletContractAddress), InvalidENSRecord, ensName);
+    ensure(await this.blockchainService.getCode(walletContractAddress) !== '0x', InvalidENSRecord, ensName);
     return walletContractAddress;
   }
 

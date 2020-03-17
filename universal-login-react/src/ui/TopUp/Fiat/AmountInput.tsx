@@ -14,7 +14,7 @@ export interface AmountInputProps {
 
 export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: AmountInputProps) => {
   const [expanded, setExpanded] = useState(false);
-  const currenciesList = ['ETH'];
+  const currenciesList = ['ETH', 'DAI'];
   const disabled = currenciesList.length < 2;
 
   const onCurrencyItemClick = (currency: string) => {
