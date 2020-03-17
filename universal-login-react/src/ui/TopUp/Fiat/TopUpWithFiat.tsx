@@ -10,16 +10,18 @@ import {Wyre} from '../OnRamp/Wyre';
 import {Safello} from '../OnRamp/Safello';
 import {WaitingForOnRampProvider} from './WaitingForOnRampProvider';
 import Spinner from '../../commons/Spinner';
+import {OnRampSuccessInfo} from './OnRampSuccessInfo';
 
 export interface TopUpWithFiatProps {
   walletService: WalletService;
   logoColor?: LogoColor;
   modalClassName?: string;
   setHeaderVisible: (isVisible: boolean) => void;
+  hideModal?: () => void;
 }
 type TopUpWithFiatModal = 'none' | 'wait' | TopUpProvider;
 
-export const TopUpWithFiat = ({setHeaderVisible, walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
   const [modal, setModal] = useState<TopUpWithFiatModal>('none');
   const [amount, setAmount] = useState('');
   const contractAddress = walletService.getContractAddress();
@@ -78,11 +80,17 @@ export const TopUpWithFiat = ({setHeaderVisible, walletService, modalClassName, 
         crypto="eth"
       />;
     case 'wait':
-      return <WaitingForOnRampProvider
-        onRampProviderName={TopUpProvider.RAMP}
-        className={modalClassName}
-        logoColor={logoColor}
-      />;
+      return walletService.isKind('Deployed')
+        ? <OnRampSuccessInfo
+          onRampProvider={paymentMethod!}
+          amount={amount}
+          hideModal={hideModal}
+        />
+        : <WaitingForOnRampProvider
+          onRampProviderName={TopUpProvider.RAMP}
+          className={modalClassName}
+          logoColor={logoColor}
+        />;
     default:
       throw Error(`Invalid modal ${modal}`);
   }
