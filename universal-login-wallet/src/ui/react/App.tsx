@@ -13,6 +13,7 @@ import {CreateTopUp} from './CreateAccount/CreateTopUp';
 import {CreateAccount} from './CreateAccount/CreateAccount';
 import {ConnectionSuccess, CreationSuccess} from './Modals/ModalTxnSuccess';
 import {CreateWaiting} from './CreateAccount/CreateWaiting';
+import {Wallet} from './Wallet';
 
 const App = () => {
   const {walletService} = useServices();
@@ -30,6 +31,7 @@ const App = () => {
       <WalletRoute exact walletState={walletState} path="/selectDeployName" component={CreateAccount} />
       <WalletRoute walletState={walletState} path="/connect" component={ConnectAccount} />
       <WalletRoute walletState={walletState} path="/wallet" component={HomeScreen} />
+      <WalletRoute walletState={walletState} path="/debugStorage" component={Wallet} />
       <WalletRoute walletState={walletState} component={NotFound} />
     </Switch>
   );
