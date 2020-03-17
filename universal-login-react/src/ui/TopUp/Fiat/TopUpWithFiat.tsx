@@ -86,6 +86,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
         ? <OnRampSuccessInfo
           onRampProvider={paymentMethod!}
           amount={amount}
+          currency={currency}
           hideModal={hideModal}
         />
         : <WaitingForOnRampProvider
