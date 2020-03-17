@@ -125,6 +125,14 @@ export class ULIFrameProvider {
     await this.send(msg, cb);
   }
 
+  enable(): Promise<string[]> {
+    return new Promise(resolve =>
+      this.send(
+        {id: 1, jsonRpc: '2.0', method: 'eth_requestAccounts'},
+        (_, jsonRpcResponse) => resolve(jsonRpcResponse.result),
+      ));
+  }
+
   setDashboardVisibility(visible: boolean) {
     this.send({method: 'ul_set_dashboard_visibility', params: [visible]}, () => {});
   }
