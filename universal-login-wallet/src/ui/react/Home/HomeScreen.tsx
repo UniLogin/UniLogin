@@ -1,7 +1,7 @@
 import {join} from 'path';
 import React from 'react';
 import {Route, Switch, useHistory} from 'react-router';
-import {Funds, Devices, BackupCodes, Notice, TopUp, useAsyncEffect} from '@unilogin/react';
+import {Funds, Devices, BackupCodes, Notice, TopUp, useAsyncEffect, useThemeClassFor} from '@unilogin/react';
 import {Header} from './Header';
 import {useServices} from '../../hooks';
 import ModalTransfer from '../Modals/Transfer/ModalTransfer';
@@ -19,7 +19,7 @@ const HomeScreen = () => {
 
   return (
     <>
-      <div className="dashboard">
+      <div className={`dashboard ${useThemeClassFor()}`}>
         <Header />
         <div className="dashboard-content">
           <div className="dashboard-content-box">
