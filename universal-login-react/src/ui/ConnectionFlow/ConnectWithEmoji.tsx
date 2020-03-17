@@ -28,9 +28,9 @@ export const ConnectWithEmoji = ({onCancel, onConnect, walletService, className}
   }, []);
 
   const onCancelClick = async () => {
-    const {contractAddress, privateKey} = walletService.getConnectingWallet();
+    const connectingWallet = walletService.getConnectingWallet();
     try {
-      await walletService.sdk.cancelRequest(contractAddress, privateKey);
+      await connectingWallet.cancelRequest();
     } catch (error) {
       ensure(error.response === 0, Error, 'Invalid cancel request');
     }

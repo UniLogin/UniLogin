@@ -13,4 +13,10 @@ export class ConnectingWallet extends AbstractWallet {
   }
 
   unsubscribe: Nullable<Procedure> = null;
+
+  async cancelRequest() {
+    const authorisationRequest = {contractAddress: this.contractAddress};
+    await this.sdk.walletContractService.signRelayerRequest(this.privateKey, authorisationRequest);
+    return this.sdk.relayerApi.cancelConnection(authorisationRequest);
+  }
 }
