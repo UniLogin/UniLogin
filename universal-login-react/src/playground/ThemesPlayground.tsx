@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
-import {useClassFor} from '../utils/classFor';
-import {ThemedComponent} from '../commons/ThemedComponent';
-import {ThemeContext} from '../themes/Theme';
+import {useClassFor} from '../ui/utils/classFor';
+import {ThemedComponent} from '../ui/commons/ThemedComponent';
+import {ThemeContext} from '../ui/themes/Theme';
 
 const themes = ['default', 'jarvis', 'unilogin'];
 
