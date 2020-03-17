@@ -1,38 +1,44 @@
 import React, {useState} from 'react';
 import {BrowserRouter, Route, Switch, Link} from 'react-router-dom';
-import {NavigationColumn} from './ui/commons/NavigationColumn';
-import {WalletSelector} from './ui/WalletSelector/WalletSelector';
-import {EmojiForm} from './ui/Notifications/EmojiForm';
+import {NavigationColumn} from '../ui/commons/NavigationColumn';
+import {WalletSelector} from '../ui/WalletSelector/WalletSelector';
+import {EmojiForm} from '../ui/Notifications/EmojiForm';
 import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH} from '@unilogin/commons';
-import {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
-import {Settings} from './ui/Settings/Settings';
-import {Onboarding} from './ui/Onboarding/Onboarding';
-import {useServices} from './core/services/useServices';
-import {LogoButton} from './ui/UFlow/LogoButton';
-import {CreateRandomInstance} from './ui/commons/CreateRandomInstance';
-import './ui/styles/playground.css';
-import {DeployedWallet, DeployingWallet} from '@unilogin/sdk';
-import {Spinner} from './ui/commons/Spinner';
-import {useAsync} from './ui/hooks/useAsync';
+import {EmojiPanel} from '../ui/WalletSelector/EmojiPanel';
+import {Settings} from '../ui/Settings/Settings';
+import {Onboarding} from '../ui/Onboarding/Onboarding';
+import {LogoButton} from '../ui/UFlow/LogoButton';
+import {CreateRandomInstance} from './CreateRandomInstance';
+import '../ui/styles/playground.css';
+import UniversalLoginSDK, {DeployedWallet, DeployingWallet} from '@unilogin/sdk';
+import {Spinner} from '../ui/commons/Spinner';
+import {useAsync} from '../ui/hooks/useAsync';
 import {WalletService} from '@unilogin/sdk';
-import {mockNotifications, CONNECTION_REAL_ADDRESS} from './ui/PlaygroundUtils/mockNotifications';
-import {ModalWrapper} from './ui/Modals/ModalWrapper';
-import {WaitingForOnRampProvider} from './ui/TopUp/Fiat/WaitingForOnRampProvider';
-import {TopUp} from './ui/TopUp/TopUp';
-import {WaitingForTransaction} from './ui/commons/WaitingForTransaction';
-import {ThemesPlayground} from './ui/Playground/ThemesPlayground';
-import {ThemeProvider} from './ui/themes/Theme';
-import {ErrorMessage} from './ui/commons/ErrorMessage';
-import {AppPreloader} from './ui/commons/AppPreloader';
-import {TopUpProvider} from './core/models/TopUpProvider';
+import {mockNotifications, CONNECTION_REAL_ADDRESS} from '../ui/PlaygroundUtils/mockNotifications';
+import {ModalWrapper} from '../ui/Modals/ModalWrapper';
+import {WaitingForOnRampProvider} from '../ui/TopUp/Fiat/WaitingForOnRampProvider';
+import {TopUp} from '../ui/TopUp/TopUp';
+import {WaitingForTransaction} from '../ui/commons/WaitingForTransaction';
+import {ThemesPlayground} from './ThemesPlayground';
+import {ThemeProvider} from '../ui/themes/Theme';
+import {ErrorMessage} from '../ui/commons/ErrorMessage';
+import {AppPreloader} from '../ui/commons/AppPreloader';
+import {TopUpProvider} from '../core/models/TopUpProvider';
+import config from './config'
 
 export const App = () => {
-  const {sdk} = useServices();
-  const [relayerConfig] = useAsync(async () => {
-    await sdk.fetchRelayerConfig();
-    return sdk.getRelayerConfig();
-  }, []);
-
+  const [sdk] = useState(() => {
+    const sdk = new UniversalLoginSDK(config.relayerUrl, config.jsonRpcUrl, {
+      applicationInfo: {type: 'laptop'},
+      observedTokensAddresses: config.tokens,
+      saiTokenAddress: config.saiTokenAddress,
+      network: 'ganache',
+    });
+    sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
+    sdk.start();
+    return sdk;
+  })
+  const [relayerConfig] = useAsync(() => sdk.fetchRelayerConfig(), []);
   const [walletService] = useState(() => new WalletService(sdk));
 
   const name = 'test.mylogin.eth';
