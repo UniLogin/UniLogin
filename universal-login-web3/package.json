@@ -29,8 +29,8 @@
     "start": "webpack-dev-server --mode development"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/chai-as-promised": "^7.1.0",
+    "@types/chai": "^4.2.11",
+    "@types/chai-as-promised": "^7.1.2",
     "@types/deep-equal": "^1.0.1",
     "@types/mocha": "^5.2.5",
     "@types/react": "^16.9.2",

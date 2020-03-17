@@ -40,8 +40,8 @@
     "node": "^10.13.0 || ^11.10.1"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/chai-as-promised": "^7.1.0",
+    "@types/chai": "^4.2.11",
+    "@types/chai-as-promised": "^7.1.2",
     "@types/chai-http": "^3.0.5",
     "@types/chai-string": "^1.4.1",
     "@types/cors": "^2.8.4",
