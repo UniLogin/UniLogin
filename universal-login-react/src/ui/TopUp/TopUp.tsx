@@ -35,6 +35,7 @@ export const TopUp = ({walletService, modalClassName, hideModal, isModal, logoCo
         logoColor={logoColor}
         modalClassName={modalClassName}
         setHeaderVisible={setHeaderVisible}
+        hideModal={hideModal}
       />}
     {topUpMethod === 'crypto' &&
       <TopUpWithCrypto
