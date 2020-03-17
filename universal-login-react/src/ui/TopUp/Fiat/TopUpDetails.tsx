@@ -21,7 +21,7 @@ export interface TopUpWithFiatProps {
   paymentMethod?: TopUpProvider;
   onPaymentMethodChange: (value: TopUpProvider | undefined) => void;
   logoColor?: LogoColor;
-  onPayClick: (topUpProvider: TopUpProvider, amount: string) => void;
+  onPayClick: (topUpProvider: TopUpProvider, currency: string) => void;
 }
 
 export const TopUpDetails = ({walletService, onPayClick, logoColor, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
@@ -88,7 +88,7 @@ export const TopUpDetails = ({walletService, onPayClick, logoColor, amount, onAm
       </div>
       <FooterSection>
         <PayButton
-          onClick={() => onPayClick(paymentMethod!, amount)}
+          onClick={() => onPayClick(paymentMethod!, currency)}
           state={getPayButtonState(paymentMethod, topUpProviderSupportService, amount, 'fiat')}
         />
       </FooterSection>
