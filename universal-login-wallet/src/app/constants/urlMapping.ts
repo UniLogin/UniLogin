@@ -11,17 +11,21 @@ export const urlMapping: Record<string, string[]> = {
   ],
   Future: [
     '/create/topUp',
+    '/debugStorage',
   ],
   Deploying: [
     '/create/waiting',
+    '/debugStorage',
   ],
   Deployed: [
     '/wallet',
     '/create/waiting',
     '/connectionSuccess',
     '/creationSuccess',
+    '/debugStorage',
   ],
   Connecting: [
     '/connect/emoji',
+    '/debugStorage',
   ],
 };
