@@ -1,4 +1,4 @@
-import {IPGeolocationApiConfig} from '@unilogin/commons';
+import {IPGeolocationApiConfig, Network} from '@unilogin/commons';
 
 export interface Config {
   domains: string[];
@@ -7,6 +7,7 @@ export interface Config {
   tokens: string[];
   saiTokenAddress?: string;
   ipGeolocationApi: IPGeolocationApiConfig;
+  network: Network;
 }
 
 require('dotenv').config();
