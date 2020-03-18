@@ -207,7 +207,7 @@ export class ULWeb3Provider implements Provider {
     await this.deployIfNoWalletDeployed();
 
     const wallet = this.walletService.getDeployedWallet();
-    ensure(wallet.contractAddress !== address, Error, `Address ${address} is not available to sign`);
+    ensure(wallet.contractAddress.toLowerCase() === address.toLowerCase(), Error, `Address ${address} is not available to sign`);
 
     return wallet.signMessage(utils.arrayify(message));
   }
