@@ -17,8 +17,8 @@ const filter = {
 };
 
 describe('UNIT: WalletEventsObserverFactory', () => {
-  let onKeyAdd: ReturnType<typeof sinon.spy>;
-  let onKeyRemove: ReturnType<typeof sinon.spy>;
+  let onKeyAdd: sinon.SinonSpy;
+  let onKeyRemove: sinon.SinonSpy;
   let factory: WalletEventsObserverFactory;
   let blockchainService: BlockchainService;
   let blockNumberState: BlockNumberState;
@@ -97,7 +97,7 @@ describe('UNIT: WalletEventsObserverFactory', () => {
   });
 
   describe('subscribe', () => {
-    let onKeyAdd2: ReturnType<typeof sinon.spy>;
+    let onKeyAdd2: sinon.SinonSpy;
 
     beforeEach(() => {
       onKeyAdd2 = sinon.spy();

@@ -14,7 +14,7 @@ class TestState extends ReferenceCountedState<number> {
 
 describe('UNIT: ReferenceCountedState', () => {
   let state: ReferenceCountedState<number>;
-  let callback: ReturnType<typeof sinon.spy>;
+  let callback: sinon.SinonSpy;
 
   beforeEach(() => {
     state = new TestState();

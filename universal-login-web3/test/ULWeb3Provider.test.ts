@@ -75,8 +75,8 @@ describe('ULWeb3Provider', () => {
 
   describe('get accounts', () => {
     it('initialize onboarding when wallet does not exist', async () => {
-      const initOnboardingSpy = sinon.spy(() => null);
-      sinon.replace(ulProvider, 'initOnboarding', initOnboardingSpy as any);
+      const initOnboardingSpy = sinon.spy(() => Promise.resolve());
+      sinon.replace(ulProvider, 'initOnboarding', initOnboardingSpy);
       expect(await web3.eth.getAccounts()).to.deep.eq([]);
       expect(initOnboardingSpy.called).to.be.false;
       sinon.restore();
