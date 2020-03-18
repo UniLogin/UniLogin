@@ -47,7 +47,6 @@ export class PriceObserver extends ObserverRunner {
   }
 
   getCurrentPrices(): Promise<TokensPrices> {
-    const observedTokensSymbols = this.tokensDetailsStore.tokensDetails.map((token) => token.symbol);
-    return getPrices(observedTokensSymbols, this.observedCurrencies);
+    return getPrices(this.tokensDetailsStore.tokensDetails, this.observedCurrencies);
   }
 }

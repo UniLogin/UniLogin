@@ -1,19 +1,36 @@
-import {ObservedCurrency, TokensPrices} from '@unilogin/commons';
-import {Sanitizer, asObject, asNumber, cast} from '@restless/sanitizers';
+import {ObservedCurrency, TokensPrices, http as _http, TokenDetails, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 const cryptocompare = require('cryptocompare');
+import {fetch} from './fetch';
 
-export async function getPrices(fromTokens: string[], toTokens: ObservedCurrency[]): Promise<TokensPrices> {
-  const result = await cryptocompare.priceMulti(fromTokens, toTokens);
-  const asTokenPrices = asRecord(fromTokens, asRecord(toTokens, asNumber));
-  return cast(result, asTokenPrices);
-}
+interface TokenDetailsWithCoingeckoId extends TokenDetails {
+  coingeckoId: string;
+};
 
-function asRecord<K extends keyof any, V>(keys: K[], valueSanitizer: Sanitizer<V>): Sanitizer<Record<K, V>> {
-  const schema: Record<K, Sanitizer<V>> = {} as any;
-  for (const key of keys) {
-    schema[key] = valueSanitizer;
+const fetchTokenInfo = (tokenDetails: TokenDetailsWithCoingeckoId) => {
+  const http = _http(fetch)('https://api.coingecko.com/api/v3');
+  return http('GET', `/coins/${tokenDetails.coingeckoId}`);
+};
+
+const getCoingeckoId = (tokenName: string) => {
+  if (tokenName === ETHER_NATIVE_TOKEN.name) {
+    return 'ethereum';
+  } else if (tokenName === 'Dai Stablecoin') {
+    return 'dai';
   }
-  return asObject(schema);
+  return tokenName.split(' ').join('-').toLowerCase();
+};
+
+export async function getPrices(fromTokens: TokenDetails[], toTokens: ObservedCurrency[]): Promise<TokensPrices> {
+  const prices = {} as TokensPrices;
+  const tokenDetailsWithCoingeckoId = fromTokens.map(token => ({...token, coingeckoId: getCoingeckoId(token.name)}));
+  for (let i = 0; i < fromTokens.length; i++) {
+    const tokenInfo = await fetchTokenInfo(tokenDetailsWithCoingeckoId[i]);
+    prices[tokenDetailsWithCoingeckoId[i].symbol] = {} as any;
+    toTokens.map(token => {
+      prices[tokenDetailsWithCoingeckoId[i].symbol][token] = tokenInfo.market_data.current_price[token.toLowerCase()];
+    });
+  };
+  return prices;
 }
 
 export const getEtherPriceInCurrency = async (currency: 'USD' | 'EUR' | 'GBP'): Promise<string> => {
