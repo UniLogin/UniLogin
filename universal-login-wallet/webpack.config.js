@@ -61,7 +61,6 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NETWORK': JSON.stringify(process.env.NETWORK),
       'process.env.DAI_TOKEN_ADDRESS': JSON.stringify(process.env.DAI_TOKEN_ADDRESS),
-      'process.env.SAI_TOKEN_ADDRESS': JSON.stringify(process.env.SAI_TOKEN_ADDRESS),
       'process.env.RELAYER_URL': JSON.stringify(process.env.RELAYER_URL),
       'process.env.ENS_DOMAIN_1': JSON.stringify(process.env.ENS_DOMAIN_1),
       'process.env.ENS_DOMAIN_2': JSON.stringify(process.env.ENS_DOMAIN_2),

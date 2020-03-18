@@ -11,7 +11,6 @@ export interface Config {
   relayerUrl: string;
   jsonRpcUrl: string;
   tokens: string[];
-  saiTokenAddress?: string;
 }
 
 export interface Overrides {
@@ -31,7 +30,6 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     },
     paymentOptions: {},
     observedTokensAddresses: config.tokens,
-    saiTokenAddress: config.saiTokenAddress,
     storageService,
   };
   const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;

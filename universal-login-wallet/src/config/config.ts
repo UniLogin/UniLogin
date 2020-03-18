@@ -8,8 +8,7 @@ export default Object.freeze({
     domains: ['mylogin.eth'],
     relayerUrl: 'http://localhost:3311',
     jsonRpcUrl: 'http://localhost:18545',
-    tokens: [ETHER_NATIVE_TOKEN.address, process.env.DAI_TOKEN_ADDRESS!, process.env.SAI_TOKEN_ADDRESS!],
-    saiTokenAddress: process.env.SAI_TOKEN_ADDRESS!,
+    tokens: [ETHER_NATIVE_TOKEN.address, process.env.DAI_TOKEN_ADDRESS!],
   },
 
   test: {
@@ -17,8 +16,7 @@ export default Object.freeze({
     domains: ['mylogin.eth'],
     relayerUrl: 'http://localhost:3311',
     jsonRpcUrl: 'http://localhost:18545',
-    tokens: [ETHER_NATIVE_TOKEN.address, process.env.DAI_TOKEN_ADDRESS!, process.env.SAI_TOKEN_ADDRESS!],
-    saiTokenAddress: process.env.SAI_TOKEN_ADDRESS!,
+    tokens: [ETHER_NATIVE_TOKEN.address, process.env.DAI_TOKEN_ADDRESS!],
   },
 
   production: {
@@ -26,7 +24,6 @@ export default Object.freeze({
     domains: [process.env.ENS_DOMAIN_1!, process.env.ENS_DOMAIN_2!],
     relayerUrl: process.env.RELAYER_URL!,
     jsonRpcUrl: process.env.JSON_RPC_URL!,
-    tokens: [ETHER_NATIVE_TOKEN.address, process.env.DAI_TOKEN_ADDRESS!, process.env.SAI_TOKEN_ADDRESS!],
-    saiTokenAddress: process.env.SAI_TOKEN_ADDRESS!,
+    tokens: [ETHER_NATIVE_TOKEN.address, process.env.DAI_TOKEN_ADDRESS!],
   },
 });
