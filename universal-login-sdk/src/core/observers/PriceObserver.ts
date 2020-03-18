@@ -1,7 +1,7 @@
 import {ObservedCurrency, TokensPrices} from '@unilogin/commons';
 import ObserverRunner from './ObserverRunner';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
-import {getPrices} from '../../integration/http/cryptocompare';
+import {getPrices} from '../../integration/http/tokensPrices';
 const deepEqual = require('deep-equal');
 import cloneDeep from 'lodash.clonedeep';
 

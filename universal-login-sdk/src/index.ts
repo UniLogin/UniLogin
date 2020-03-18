@@ -17,5 +17,5 @@ export {MemoryStorageService} from './core/services/MemoryStorageService';
 export {bigNumberMax} from './core/utils/bigNumberMax';
 export {encodeERC20Transfer} from './core/utils/encodeTransferToMessage';
 export {InvalidWalletState} from './core/utils/errors';
-export {getEtherPriceInCurrency} from './integration/http/cryptocompare';
+export {getEtherPriceInCurrency} from './integration/http/tokensPrices';
 export {IncomingTransactionObserver} from './integration/notifySdk/IncomingTransactionObserver';
