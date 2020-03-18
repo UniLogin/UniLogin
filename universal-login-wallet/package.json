@@ -13,7 +13,9 @@
     "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "clean": "rimraf dist",
     "start:dev": "ts-node scripts/dev-start.ts",
-    "start:production": "webpack-dev-server --mode production"
+    "start:production": "webpack-dev-server --mode production",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@restless/sanitizers": "^0.2.4",
