@@ -1,6 +1,6 @@
 {
   "name": "@unilogin/wallet",
-  "version": "0.5.17",
+  "version": "0.5.18",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@restless/sanitizers": "^0.2.4",
-    "@unilogin/commons": "0.5.17",
-    "@unilogin/react": "0.5.17",
-    "@unilogin/sdk": "0.5.17",
+    "@unilogin/commons": "0.5.18",
+    "@unilogin/react": "0.5.18",
+    "@unilogin/sdk": "0.5.18",
     "create-react-context": "^0.2.3",
     "dotenv": "^8.1.0",
     "ethers": "^4.0.39",
@@ -47,7 +47,7 @@
     "@types/sinon-chai": "^3.2.2",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
-    "@unilogin/relayer": "0.5.17",
+    "@unilogin/relayer": "0.5.18",
     "canvas": "^2.5.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
