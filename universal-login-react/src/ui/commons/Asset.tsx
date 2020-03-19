@@ -22,7 +22,9 @@ export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps)
 
   useEffect(() => {
     const unsubscribe = sdk.subscribeToPrices((tokensPrices: TokensPrices) => {
+      console.log('symbol', symbol)
       const tokenPrice = tokensPrices[symbol] === undefined ? 0 : tokensPrices[symbol]['USD'];
+      console.log('tokenPrice', tokenPrice)
       setUsdPrice(tokenPrice.toString());
     });
     return unsubscribe;

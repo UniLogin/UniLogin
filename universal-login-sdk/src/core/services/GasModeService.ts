@@ -5,6 +5,8 @@ import {GasPriceOracle} from '../../integration/ethereum/gasPriceOracle';
 import {PriceObserver} from '../observers/PriceObserver';
 import {GasPriceEstimation} from '../models/GasPriceSuggestion';
 
+const GAS_TOKENS = ['ETH', 'DAI'];
+
 export class GasModeService {
   constructor(
     private tokensStore: TokensDetailsStore,
@@ -18,7 +20,7 @@ export class GasModeService {
       name,
       usdAmount,
       timeEstimation,
-      gasOptions: this.tokensStore.tokensDetails.map((tokenDetails) => {
+      gasOptions: this.tokensStore.tokensDetails.filter(tokenDetails => GAS_TOKENS.includes(tokenDetails.symbol)).map((tokenDetails) => {
         return ({
           token: tokenDetails,
           gasPrice: this.getGasPriceInToken(tokenDetails.symbol, tokensPrices, gasPrice),
