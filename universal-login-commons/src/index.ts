@@ -97,3 +97,4 @@ export {CurrencyValue} from './core/models/CurrencyValue';
 export {Network, asNetwork} from './core/models/Network';
 export {Lazy} from './core/utils/Lazy';
 export {InitializationHandler} from './core/utils/InitializationHandler';
+export {addressEquals} from './core/utils/addressEquals';

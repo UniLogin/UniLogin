@@ -3,7 +3,7 @@ import {Config, getConfigForNetwork} from './config';
 import UniversalLoginSDK, {WalletService, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
 import {constants, providers, utils} from 'ethers';
-import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network, InitializationHandler} from '@unilogin/commons';
+import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network, InitializationHandler, addressEquals} from '@unilogin/commons';
 import {waitForTrue} from './ui/utils/utils';
 import {getOrCreateUlButton, initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
@@ -207,7 +207,7 @@ export class ULWeb3Provider implements Provider {
     await this.deployIfNoWalletDeployed();
 
     const wallet = this.walletService.getDeployedWallet();
-    ensure(wallet.contractAddress.toLowerCase() === address.toLowerCase(), Error, `Address ${address} is not available to sign`);
+    ensure(addressEquals(wallet.contractAddress, address), Error, `Address ${address} is not available to sign`);
 
     return wallet.signMessage(utils.arrayify(message));
   }
