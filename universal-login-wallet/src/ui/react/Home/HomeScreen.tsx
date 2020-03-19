@@ -19,48 +19,50 @@ const HomeScreen = () => {
 
   return (
     <>
-      <div className={`dashboard ${useThemeClassFor()}`}>
+      <div className="dashboard">
         <Header />
         <div className="dashboard-content">
           <div className="dashboard-content-box">
             <Notice message={notice} />
-            <p className="dashboard-ens-name">{walletPresenter.getName()}</p>
-            <Switch>
-              <Route path={basePath} exact>
-                <Funds
-                  deployedWallet={deployedWallet}
-                  onTopUpClick={() => history.push(join(basePath, 'topUp'))}
-                  onSendClick={() => history.push(join(basePath, 'transfer'))}
-                  onDeviceMessageClick={() => history.push(join(basePath, 'devices', 'approveDevice'))}
-                  className="jarvis-styles"
+            <div className={useThemeClassFor()}>
+              <p className="dashboard-ens-name">{walletPresenter.getName()}</p>
+              <Switch>
+                <Route path={basePath} exact>
+                  <Funds
+                    deployedWallet={deployedWallet}
+                    onTopUpClick={() => history.push(join(basePath, 'topUp'))}
+                    onSendClick={() => history.push(join(basePath, 'transfer'))}
+                    onDeviceMessageClick={() => history.push(join(basePath, 'devices', 'approveDevice'))}
+                    className="jarvis-styles"
+                  />
+                </Route>
+                <Route path={join(basePath, 'devices')}>
+                  <Devices
+                    walletService={walletService}
+                    onAccountDisconnected={() => history.push('/welcome')}
+                    basePath={join(basePath, 'devices')}
+                    className="jarvis-styles"
+                  />
+                </Route>
+                <Route path={join(basePath, 'backup')}>
+                  <BackupCodes
+                    deployedWallet={deployedWallet}
+                    className="jarvis-backup"
+                  />
+                </Route>
+                <Route path={join(basePath, 'topUp')}>
+                  <TopUp
+                    walletService={walletService}
+                    logoColor="black"
+                    hideModal={() => history.push('/wallet')}
+                  />
+                </Route>
+                <Route
+                  path={join(basePath, 'transfer')}
+                  render={() => <ModalTransfer basePath={join(basePath, 'transfer')} />}
                 />
-              </Route>
-              <Route path={join(basePath, 'devices')}>
-                <Devices
-                  walletService={walletService}
-                  onAccountDisconnected={() => history.push('/welcome')}
-                  basePath={join(basePath, 'devices')}
-                  className="jarvis-styles"
-                />
-              </Route>
-              <Route path={join(basePath, 'backup')}>
-                <BackupCodes
-                  deployedWallet={deployedWallet}
-                  className="jarvis-backup"
-                />
-              </Route>
-              <Route path={join(basePath, 'topUp')}>
-                <TopUp
-                  walletService={walletService}
-                  logoColor="black"
-                  hideModal={() => history.push('/wallet')}
-                />
-              </Route>
-              <Route
-                path={join(basePath, 'transfer')}
-                render={() => <ModalTransfer basePath={join(basePath, 'transfer')} />}
-              />
-            </Switch>
+              </Switch>
+            </div>
           </div>
         </div>
       </div>
