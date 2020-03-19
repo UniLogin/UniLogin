@@ -44,7 +44,7 @@ export const TopUp = ({walletService, modalClassName, hideModal, isModal, logoCo
   </>);
 
   if (isModal) {
-    return <ModalWrapper message={walletService.sdk.getNotice()} modalClassName="top-up-modal" hideModal={hideModal}>
+    return <ModalWrapper message={walletService.sdk.getNotice()} hideModal={hideModal}>
       {renderTopUpContent()}
     </ModalWrapper>;
   }
