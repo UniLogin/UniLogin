@@ -1,12 +1,23 @@
 @import helpers/breakpoints
 
 .universal-login-devices
+  display: flex
+  flex: 1
+
+  .universal-login-default
+    display: flex
+    flex: 1
 
   .devices
+    display: flex
+    flex-direction: column
+    align-items: center
     position: relative
     height: 630px
+    width: 100%
     overflow: scroll
     padding: 0 0 30px
+    flex: 1
 
     +media(s)
       padding: 0
@@ -14,13 +25,14 @@
 
   .devices-inner
     max-width: 770px
+    min-width: 80%
     min-height: 575px
     padding: 40px 15px 0
-    margin: 0 auto
+    margin-bottom: 1rem
 
     +media(s)
       min-height: initial
-      padding-bottom: 80px
+      padding-bottom: 30px
 
   .connected-devices-header
     display: flex
@@ -239,6 +251,10 @@
     letter-spacing: 0
     line-height: normal
     text-align: left
+    margin-right: 20px
+
+    @media only screen and (max-width: 600px)
+      font-size: 14px
 
   .connected-devices-details
     margin: 0
@@ -324,15 +340,18 @@
     border-left: 5px solid rgba(252,75,97,0.30)
 
   .disconnect-account-link
-    padding: 0 50px
+    margin-left: 80px
     font-weight: 600
     font-size: 12px
     border: none
     background: none
     cursor: pointer
+    margin-left: auto
+    padding-right: 2rem
+    color: #FF345C
+    margin-top: auto
 
     +media(s)
-      transform: translateX(50%)
       font-size: 14px
       line-height: 21px
-      padding-bottom: 20px
+      padding-bottom: 40px

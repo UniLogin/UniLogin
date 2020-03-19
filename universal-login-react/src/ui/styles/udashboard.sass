@@ -8,6 +8,25 @@
     display: flex
     flex-direction: column
 
+  .universal-login-default
+    display: flex
+    flex: 1
+
+  .assets
+    min-width: 522px
+    margin: 0 auto
+
+    @media only screen and (max-width: 600px)
+      min-width: 100%
+
+  .universal-login-funds .funds-btn
+    @media only screen and (max-width: 600px)
+      width: unset
+      padding: 0 3rem
+
+    @media only screen and (max-width: 600px)
+      padding: 0 2.5rem
+
 .udashboard-logo-btn
   display: inline-block
   background: none
@@ -164,9 +183,28 @@
 .udashboard-content .universal-login-funds,
 .udashboard-content .universal-login-devices,
 .udashboard-content .universal-login-backup
+  width: 100%
   +media(s)
-    padding: 32px 15px 60px
+    padding: 0 15px 25px
     overflow-y: auto
+
+.backup
+  flex: 1
+
+.udashboard-content .universal-login-devices,
+  flex: 1
+
+.universal-login-backup .backup-subtitle
+  padding: 0 1.5rem
+
+.udashboard-content .universal-login-backup
+  display: flex
+  padding: 0
+  flex: 1
+
+.udashboard-content .universal-login-devices,
+  +media(s)
+    padding: 0
 
 .udashboard-progress
   max-width: 500px
@@ -180,8 +218,31 @@
   text-align: center
   font-size: 20px
 
+.universal-login-emojis
+  display: flex
+  justify-content: center
+
+  .jarvis-styles
+    width: 100%
+
+.approve-device
+  display: flex
+  flex-direction: column
+  flex: 1
+
+.emojis
+  display: flex
+  flex-direction: column
+  flex: 1
+
 .udashboard-content .universal-login-topup .universal-login-default .top-up
   background: none
+
+.universal-login-default
+  width: 100%
+  display: flex
+  flex-direction: column
+  flex: 1
 
 .new-notifications::after
   content: ''
@@ -232,11 +293,9 @@
   background: #262053
   background: rgba(38, 32, 83, 0.82)
   box-shadow: 0px -3px 10px rgba(0, 0, 0, 0.197662)
+  box-sizing: initial
 
   +media(s)
-    position: absolute
-    bottom: 0
-    left: 0
     width: 100%
     display: flex
     justify-content: space-around
