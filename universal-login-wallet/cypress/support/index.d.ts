@@ -2,7 +2,12 @@
 
 declare namespace Cypress {
   interface Chainable {
-    initApplication(): Chainable<Element>;
-    ensureCorrectLocation(url: string): Chainable<Element>;
+    initApplication(): void;
+    ensureCorrectLocation(url: string): void;
+    approveTerms(): void;
+    pickUsername(name: string): void;
+    selectTopUpWithCrypto(): void;
+    topUpAccount(): void;
+    goToDashboard(): void;
   }
 }
