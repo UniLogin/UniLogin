@@ -1,8 +1,11 @@
 .dashboard
   position: relative
-  min-height: 100vh
+  height: 100%
 
-.dashboard-main
+  @media only screen and (max-width: 600px)
+    height: 100%
+
+.dashboard-maine
   position: relative
   width: 100%
 
@@ -10,12 +13,14 @@
   display: flex
   align-items: center
   justify-content: center
-  min-height: calc(100vh - 70px)
+  height: 100%
   padding: 25px 30px 25px
+  overflow: auto
 
   +media(s, 168px)
     display: block
     padding: 0
+    height: calc(100% - 56px)
 
 .dashboard-content-box
   display: flex
@@ -29,7 +34,8 @@
   z-index: 10
 
   +media(s, 168px)
-    min-height: 100vh
+    height: 100%
+    min-height: unset
 
 .dashboard-ens-name
   display: none
@@ -87,8 +93,3 @@
 .universal-login-transfer > .jarvis-styles
   @media only screen and (max-width: 770px)
     height: 100%
-    padding-bottom: 56px
-
-.universal-login-backup > .jarvis-backup
-  @media only screen and (max-width: 770px)
-    padding-bottom: 56px
