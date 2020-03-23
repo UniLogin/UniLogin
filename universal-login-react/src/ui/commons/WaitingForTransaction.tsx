@@ -49,4 +49,4 @@ export const WaitingForDeployment = (props: WaitingForTransactionProps) => (
   />
 );
 
-export const DEPLOYMENT_DESCRIPTION = 'We have created a transaction and wait until the Ethereum blockchain validates it.';
+export const DEPLOYMENT_DESCRIPTION = 'We have created a transaction. Please wait until the Ethereum validates it..';
