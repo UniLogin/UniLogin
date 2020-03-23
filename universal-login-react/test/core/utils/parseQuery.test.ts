@@ -1,7 +1,13 @@
 import {expect} from 'chai';
-import {parseQuery} from '../../src/ui/utils/parseQuery';
+import {parseQuery} from '../../../src/core/utils/parseQuery';
 
 describe('UNIT: parseQuery', () => {
+  it('parses queries without ? in front', () => {
+    expect(parseQuery('foo=bar')).to.deep.eq({
+      foo: 'bar',
+    });
+  });
+
   it('correctly parse encoded search', () => {
     let search = '?applicationInfo={%22applicationName%22:%22UniLogin%22,%22logo%22:%22http://host:123//favicon.png%22,%22type%22:%22laptop%22}&picker=false';
     expect(parseQuery(search)).deep.eq({
@@ -29,6 +35,13 @@ describe('UNIT: parseQuery', () => {
     expect(parseQuery(search)).deep.eq({
       foo: '',
       bar: 'false',
+    });
+  });
+
+  it('parses values with special characters', () => {
+    expect(parseQuery('?foo=a%3Db%3Fc%26d&bar=a%3Db%3Fc%26d')).to.deep.eq({
+      foo: 'a=b?c&d',
+      bar: 'a=b?c&d',
     });
   });
 });

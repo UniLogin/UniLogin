@@ -1,7 +1,7 @@
 import {ProviderOnlyIframeInitializer} from '../services/ProviderOnlyIframeInitializer';
 import {PickerIframeInitializer} from '../services/PickerIframeInitializer';
 import {asApplicationInfo, raise, asNetwork} from '@unilogin/commons';
-import {parseQuery} from './utils/parseQuery';
+import {parseQuery} from '@unilogin/react';
 import {asBoolean, cast} from '@restless/sanitizers';
 import {IframeBridgeEndpoint} from '../services/IframeBridgeEndpoint';
 
