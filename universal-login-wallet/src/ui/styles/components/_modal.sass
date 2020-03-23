@@ -8,15 +8,18 @@
   background: #FFFFFF
 
 .unilogin-component-modal-wrapper
-  position: fixed
-  top: 50%
-  left: 50%
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
   max-height: 100%
   max-width: 100%
-  transform: translate(-50%, -50%)
   padding: 15px
   overflow-y: auto
   z-index: 99999
+  width: 100%
+  height: 100%
+  padding: unset
 
   +media(s, 168px)
     padding: 0
@@ -28,6 +31,7 @@
   color: #ffffff
   background: #FAFBFD
   box-shadow: 0 3px 17px 0 rgba(79,55,168,0.09)
+  overflow: unset
 
   +media(s, 168px)
     min-height: 100vh

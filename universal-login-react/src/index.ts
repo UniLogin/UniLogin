@@ -44,3 +44,4 @@ export {ThemeProvider, ThemeContext} from './ui/themes/Theme';
 export {calculateTransactionFee} from './core/utils/calculateTransactionFee';
 export {CompanyLogo} from './ui/commons/CompanyLogo';
 export {BrowserChecker} from './app/BrowserChecker';
+export {useThemeClassFor} from './ui/utils/classFor';

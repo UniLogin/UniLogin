@@ -43,7 +43,6 @@ export const config: Config = Object.freeze({
     },
     wyre: {
       wyreUrl: 'https://pay.sendwyre.com/purchase',
-      paymentMethod: 'apple-pay',
     },
   },
   database: {
