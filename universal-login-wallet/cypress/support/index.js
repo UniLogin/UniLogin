@@ -1,2 +1,2 @@
 import './commands';
-import './LoginApp/commands';
+import './loginAppCommands';

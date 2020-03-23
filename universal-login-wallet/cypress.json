@@ -1,5 +1,4 @@
 {
   "fixturesFolder": false,
-  "pluginsFile": "cypress/plugins/index.js",
   "baseUrl": "http://0.0.0.0:8080"
 }
