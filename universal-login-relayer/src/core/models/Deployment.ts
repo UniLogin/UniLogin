@@ -7,4 +7,5 @@ export default interface Deployment extends DeployArgs {
   error: string | null;
   state: DeploymentState;
   contractAddress: string;
+  createdAt: Date;
 }
