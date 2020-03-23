@@ -36,7 +36,7 @@ const Body = ({action, description, relayerConfig, transactionHash, info}: Waiti
 export const WaitingForTransaction = (props: WaitingForTransactionProps) => (
   <div className={useClassFor('waitingfortransaction')}>
     <CompanyLogo />
-    <Body description={DEPLOYMENT_DESCRIPTION} {...props} />
+    <Body description={TRANSACTION_DESCRIPTION} {...props} />
   </div>
 );
 
@@ -50,3 +50,4 @@ export const WaitingForDeployment = (props: WaitingForTransactionProps) => (
 );
 
 export const DEPLOYMENT_DESCRIPTION = 'It takes time to register your username and deploy your wallet. In order to do so, we need to create a transaction and wait until the Ethereum blockchain validates it.';
+export const TRANSACTION_DESCRIPTION = 'We have created a transaction. Please wait until the Ethereum validates it.';
