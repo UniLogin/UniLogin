@@ -47,6 +47,7 @@ const GlobalStyle = createGlobalStyle`
   .universal-login-default .unilogin-component-modal-wrapper {
     display: flex;
     flex-direction: column;
+    margin: 0 auto;
     max-width: 770px;
     width: 100%;
     padding: 0 0 41px;

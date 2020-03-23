@@ -1,6 +1,14 @@
 .unilogin-theme-jarvis
+  iframe
+    height: 100vh
+    width: 100vw
+    position: fixed
+    left: 0
+    top: 0
+
   .unilogin-component-modal-wrapper
     min-width: 770px
+    flex: 1
 
     @media only screen and (max-width: 770px)
       min-width: 100%
@@ -8,6 +16,10 @@
   .unilogin-component-modal
     border-radius: 0
     background: #fff
+    margin: auto
 
   .unilogin-component-modal-overlay
     display: none
+
+  .universal-login-default
+    height: 100%

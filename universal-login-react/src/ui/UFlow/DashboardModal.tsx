@@ -10,6 +10,7 @@ import {SubDialogWrapper} from './DialogWrappers/SubDialogWrapper';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
 import {Transfer} from '../Transfer/Transfer';
+import {useThemeClassFor} from '../utils/classFor';
 
 export interface DashboardModalProps {
   walletService: WalletService;
@@ -38,7 +39,7 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
   };
 
   return (
-    <div className="udashboard">
+    <div className={`udashboard ${useThemeClassFor()}`}>
       <Switch>
         <Route
           path="/dashboard/funds"
