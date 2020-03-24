@@ -19,7 +19,6 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   let keyPair: KeyPair;
   let ensAddress: string;
   let contractAddress: string;
-  let createdAt: string;
   let initCode: string;
   const relayerPort = '33511';
   const relayerUrl = `http://localhost:${relayerPort}`;
@@ -49,7 +48,6 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
         contractAddress,
-        createdAt,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
@@ -95,7 +93,6 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
         contractAddress,
-        createdAt,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
@@ -120,7 +117,6 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
         contractAddress,
-        createdAt,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
@@ -140,7 +136,6 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
         contractAddress,
-        createdAt,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
@@ -164,7 +159,6 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
         contractAddress,
-        createdAt,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');
@@ -187,7 +181,6 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
         contractAddress,
-        createdAt,
       });
     expect(result.status).to.eq(201);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Error');

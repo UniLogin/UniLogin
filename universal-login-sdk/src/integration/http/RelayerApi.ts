@@ -64,7 +64,6 @@ export class RelayerApi {
       signature,
       applicationInfo,
       contractAddress,
-      createdAt: Date.now(),
     });
   }
 

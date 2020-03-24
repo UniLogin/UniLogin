@@ -6,12 +6,12 @@
 
 exports.up = async (knex) => {
   await knex.schema.alterTable('deployments', (table) => {
-    table.timestamp('createdAt').notNullable().defaultTo(knex.fn.now());
+    table.timestamp('created_at').notNullable().defaultTo('2015-07-30');
   });
 };
 
 exports.down = async (knex) => {
   await knex.schema.alterTable('deployments', (table) => {
-    table.dropColumn('createdAt');
+    table.dropColumn('created_at');
   });
 };
