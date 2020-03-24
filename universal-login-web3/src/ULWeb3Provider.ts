@@ -187,16 +187,16 @@ export class ULWeb3Provider implements Provider {
     await this.deployIfNoWalletDeployed();
     const execution = await this.walletService.getDeployedWallet().execute(transactionWithGasParameters);
 
-    const succeeded = await execution.waitForTransactionHash();
-    if (!succeeded.transactionHash) {
+    const {transactionHash} = await execution.waitForTransactionHash();
+    if (!transactionHash) {
       throw new Error('Expected tx hash to not be null');
     }
     if (this.uiController.activeModal.get().kind === 'WAIT_FOR_TRANSACTION') {
-      this.uiController.showWaitForTransaction(succeeded.transactionHash);
+      this.uiController.showWaitForTransaction(transactionHash);
     }
     await execution.waitToBeSuccess();
     this.uiController.hideModal();
-    return succeeded.transactionHash;
+    return transactionHash;
   }
 
   async sign(address: string, message: string) {
