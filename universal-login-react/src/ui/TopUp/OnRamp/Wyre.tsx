@@ -1,14 +1,18 @@
 import React, {SyntheticEvent} from 'react';
 import {WyreConfig} from '@unilogin/commons';
+import {parseQuery} from '../../../core/utils/parseQuery';
+import {cast, asString, asNumber, asObject} from '@restless/sanitizers';
 
 interface WyreProps {
   address: string;
   currency: string;
   config: WyreConfig;
-  onCompleted?: () => void;
+  onCompleted?: (wyreSuccessParams?: WyreSuccessParams) => void;
+  onClose?: () => void;
+  onError?: () => void;
 }
 
-export const Wyre = ({address, currency, config, onCompleted}: WyreProps) => {
+export const Wyre = ({address, currency, config, onCompleted, onClose, onError}: WyreProps) => {
   const currentLocation = window.location.href;
   const url = getWyreUrl(address, currency, currentLocation, config);
 
@@ -16,17 +20,26 @@ export const Wyre = ({address, currency, config, onCompleted}: WyreProps) => {
     try {
       const iframeLocation = e.currentTarget.contentDocument?.location;
       if (!iframeLocation) return;
-
-      onCompleted?.();
+      onRedirect(iframeLocation.search);
     } catch {}
+  }
+
+  function onRedirect(search: string) {
+    if (search === '') {
+      onClose?.();
+      return;
+    }
+    try {
+      const params = cast(parseQuery(search), asWyreSuccessParams);
+      onCompleted?.(params);
+    } catch {
+      onError?.();
+    }
   }
 
   return (
     <iframe
       src={url}
-      style={{
-        height: '100vh',
-      }}
       onLoad={onLoad}
     />
   );
@@ -36,4 +49,23 @@ export const getWyreUrl = (address: string, currency: string, redirectUrl: strin
   `${config.wyreUrl}` +
   `?destCurrency=${currency}` +
   `&dest=${address}` +
-  `&redirectUrl=${encodeURIComponent(redirectUrl)}`;
+  `&redirectUrl=${encodeURIComponent(redirectUrl)}` +
+  `&failureRedirectUrl=${encodeURIComponent(redirectUrl)}`;
+
+export interface WyreSuccessParams {
+  accountId: string;
+  blockchainNetworkTx: string;
+  dest: string;
+  destAmount: number;
+  orderId: string;
+  transferId: string;
+}
+
+const asWyreSuccessParams = asObject<WyreSuccessParams>({
+  accountId: asString,
+  blockchainNetworkTx: asString,
+  dest: asString,
+  destAmount: asNumber,
+  orderId: asString,
+  transferId: asString,
+});
