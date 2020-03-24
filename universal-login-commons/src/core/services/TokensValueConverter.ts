@@ -1,7 +1,7 @@
 import {utils} from 'ethers';
 import {ObservedCurrency, TokensPrices, CurrencyToValue} from '../models/CurrencyData';
 import {TokenDetailsWithBalance} from '../models/TokenData';
-import {safeMultiply} from '../utils/safeMultiply';
+import {safeMultiplyAndFormatEther} from '../utils/safeMultiply';
 
 export class TokensValueConverter {
   constructor(private observedCurrencies: ObservedCurrency[]) {}
@@ -21,7 +21,7 @@ export class TokensValueConverter {
   getTokenTotalWorth(balance: utils.BigNumber, tokenPrices: CurrencyToValue) {
     const tokenValues = {} as CurrencyToValue;
     for (const symbol in tokenPrices) {
-      tokenValues[symbol as ObservedCurrency] = Number(safeMultiply(balance, tokenPrices[symbol as ObservedCurrency]));
+      tokenValues[symbol as ObservedCurrency] = Number(safeMultiplyAndFormatEther(balance, tokenPrices[symbol as ObservedCurrency]));
     }
     return tokenValues;
   }

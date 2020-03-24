@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {GasMode, TokensPrices, ObservedCurrency, ensureNotFalsy, safeMultiply} from '@unilogin/commons';
+import {GasMode, TokensPrices, ObservedCurrency, ensureNotFalsy, safeMultiplyAndFormatEther} from '@unilogin/commons';
 import {TokensDetailsStore} from './TokensDetailsStore';
 import {GasPriceOracle} from '../../integration/ethereum/gasPriceOracle';
 import {PriceObserver} from '../observers/PriceObserver';
@@ -35,7 +35,7 @@ export class GasModeService {
 
   getCurrencyAmount(gasPrice: utils.BigNumber, symbol: string, tokensPrices: TokensPrices) {
     const multiplier = this.getTokenPriceInversed(tokensPrices, symbol);
-    return safeMultiply(gasPrice, multiplier);
+    return safeMultiplyAndFormatEther(gasPrice, multiplier);
   }
 
   async getModesWithPrices() {

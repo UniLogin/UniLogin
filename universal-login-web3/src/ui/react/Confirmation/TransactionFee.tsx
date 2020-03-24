@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {BigNumberish} from 'ethers/utils';
-import {GasMode, GasOption, safeMultiply} from '@unilogin/commons';
+import {GasMode, GasOption, safeMultiplyAndFormatEther} from '@unilogin/commons';
 import {calculateTransactionFee} from '@unilogin/react';
 import ethereumIcon from '../../assets/ethereum.svg';
 import {Text} from '../common/Text/Text';
@@ -17,7 +17,7 @@ export const TransactionFee = ({mode, gasLimit, gasOption}: TransactionFeeProps)
     <Logo src={ethereumIcon} alt="ethereum logo"/>
     <FeeRow>
       <div>
-        <FeeAmount>{safeMultiply(gasOption.gasPrice, gasLimit)} {gasOption.token.symbol}</FeeAmount>
+        <FeeAmount>{safeMultiplyAndFormatEther(gasOption.gasPrice, gasLimit)} {gasOption.token.symbol}</FeeAmount>
         <FeeText>= {calculateTransactionFee(mode.usdAmount, gasLimit)} USD</FeeText>
       </div>
       <div>

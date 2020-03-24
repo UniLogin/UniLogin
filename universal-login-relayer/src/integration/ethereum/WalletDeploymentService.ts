@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {ensure, RequiredBalanceChecker, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT, DeviceInfo, SupportedToken, safeMultiply, MINIMAL_DEPLOYMENT_GAS_LIMIT} from '@unilogin/commons';
+import {ensure, RequiredBalanceChecker, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT, DeviceInfo, SupportedToken, safeMultiplyAndFormatEther, MINIMAL_DEPLOYMENT_GAS_LIMIT} from '@unilogin/commons';
 import {computeGnosisCounterfactualAddress, encodeDataForSetup, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@unilogin/contracts';
 import ENSService from './ensService';
 import {NotEnoughBalance, InvalidSignature, NotEnoughGas} from '../../core/utils/errors';
@@ -33,7 +33,7 @@ export class WalletDeploymentService {
     return encodeDataForSetup(deployment as any);
   }
 
-  private async computeFutureAddress(setupData: string) {
+  private async computeFutureAddress(setupData: multiplyAndFormatEther) {
     return computeGnosisCounterfactualAddress(this.config.factoryAddress, 1, setupData, this.config.walletContractAddress);
   }
 
@@ -49,8 +49,8 @@ export class WalletDeploymentService {
     return transaction;
   }
 
-  getTokensWithMinimalAmount(gasPrice: string) {
+  getTokensWithMinimalAmount(gasPrice: multiplyAndFormatEther) {
     return this.supportedTokens.map((supportedToken) =>
-      ({...supportedToken, minimalAmount: safeMultiply(utils.bigNumberify(MINIMAL_DEPLOYMENT_GAS_LIMIT), gasPrice)}));
+      ({...supportedToken, minimalAmount: safeMultiplyAndFormatEther(utils.bigNumberify(MINIMAL_DEPLOYMENT_GAS_LIMIT), gasPrice)}));
   }
 }
