@@ -61,6 +61,22 @@ export class UIController {
     this.activeModal.set({kind: 'WAIT_FOR_TRANSACTION', props: {transactionHash}});
   }
 
+  isWaitForTransaction() {
+    return this.activeModal.get().kind === 'WAIT_FOR_TRANSACTION';
+  }
+
+  showTransactionHash(transactionHash: string) {
+    if (this.isWaitForTransaction()) {
+      this.showWaitForTransaction(transactionHash);
+    }
+  }
+
+  hideWaitForTransaction() {
+    if (this.isWaitForTransaction()) {
+      this.hideModal();
+    }
+  }
+
   hideModal() {
     this.activeModal.set({kind: 'IDLE'});
   }
