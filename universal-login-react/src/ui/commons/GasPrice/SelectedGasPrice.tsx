@@ -1,6 +1,6 @@
 import React from 'react';
 import {utils} from 'ethers';
-import {GasOption, safeMultiply, ValueRounder} from '@unilogin/commons';
+import {GasOption, safeMultiplyAndFormatEther, ValueRounder} from '@unilogin/commons';
 import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
 
@@ -20,7 +20,7 @@ export const SelectedGasPrice = ({modeName, gasLimit, gasOption, usdAmount, onCl
           <img src={getIconForToken(gasOption.token.symbol)} alt="" className="transaction-fee-item-icon" />
           <div>
             <p className="transaction-fee-amount-usd">{calculateTransactionFee(usdAmount, gasLimit)} USD</p>
-            <p className="transaction-fee-amount">{ValueRounder.ceil(safeMultiply(gasOption.gasPrice, gasLimit))} {gasOption.token.symbol}</p>
+            <p className="transaction-fee-amount">{ValueRounder.ceil(safeMultiplyAndFormatEther(gasOption.gasPrice, gasLimit))} {gasOption.token.symbol}</p>
           </div>
         </div>
       </div>

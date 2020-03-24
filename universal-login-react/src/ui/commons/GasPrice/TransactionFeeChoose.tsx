@@ -1,6 +1,6 @@
 import React from 'react';
 import {RadioButton} from './RadioButton';
-import {GasMode, GasOption, getBalanceOf, TokenDetailsWithBalance, safeMultiply, ValueRounder} from '@unilogin/commons';
+import {GasMode, GasOption, getBalanceOf, TokenDetailsWithBalance, safeMultiplyAndFormatEther, ValueRounder} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {isGasTokenDisabled} from '../../../core/utils/isGasTokenDisabled';
 import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';
@@ -42,7 +42,7 @@ export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, mo
                 <div className="transaction-fee-details">
                   <div>
                     <p className="transaction-fee-amount-usd">{calculateTransactionFee(usdAmount, gasLimit)} USD</p>
-                    <p className="transaction-fee-amount">{ValueRounder.floor(safeMultiply(option.gasPrice, gasLimit))!} {option.token.symbol}</p>
+                    <p className="transaction-fee-amount">{ValueRounder.floor(safeMultiplyAndFormatEther(option.gasPrice, gasLimit))!} {option.token.symbol}</p>
                   </div>
                 </div>
                 {renderBalance(option)}

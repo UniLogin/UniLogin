@@ -1,8 +1,8 @@
 import {utils} from 'ethers';
-import {SAFE_MULTIPLY_UNITS_DENORMALIZE, SAFE_MULTIPLY_UNITS_NORMALIZE} from '../constants/normalization';
+import {SAFE_MULTIPLY_UNITS_NORMALIZE} from '../constants/normalization';
 
-export const safeMultiply = (balance: utils.BigNumber, price: utils.BigNumberish) => {
-  const priceAsBigNumber = utils.parseUnits(price.toString(), SAFE_MULTIPLY_UNITS_DENORMALIZE);
-  const multiplied = priceAsBigNumber.mul(balance);
-  return utils.formatUnits(multiplied, SAFE_MULTIPLY_UNITS_NORMALIZE);
+export const safeMultiplyAndFormatEther = (valueInWei: utils.BigNumber, multiplier: utils.BigNumberish) => {
+  const normalizedMultiplier = utils.parseEther(multiplier.toString());
+  const resultE18 = normalizedMultiplier.mul(valueInWei);
+  return utils.formatUnits(resultE18, SAFE_MULTIPLY_UNITS_NORMALIZE);
 };
