@@ -33,7 +33,7 @@ export class WalletDeploymentService {
     return encodeDataForSetup(deployment as any);
   }
 
-  private async computeFutureAddress(setupData: multiplyAndFormatEther) {
+  private async computeFutureAddress(setupData: string) {
     return computeGnosisCounterfactualAddress(this.config.factoryAddress, 1, setupData, this.config.walletContractAddress);
   }
 
@@ -49,7 +49,7 @@ export class WalletDeploymentService {
     return transaction;
   }
 
-  getTokensWithMinimalAmount(gasPrice: multiplyAndFormatEther) {
+  getTokensWithMinimalAmount(gasPrice: string) {
     return this.supportedTokens.map((supportedToken) =>
       ({...supportedToken, minimalAmount: safeMultiplyAndFormatEther(utils.bigNumberify(MINIMAL_DEPLOYMENT_GAS_LIMIT), gasPrice)}));
   }
