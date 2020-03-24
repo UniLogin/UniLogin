@@ -1,11 +1,8 @@
-import chai, {expect} from 'chai';
-import sinonChai from 'sinon-chai';
+import {expect} from 'chai';
 import sinon from 'sinon';
 import {TokensPrices, TEST_TOKEN_DETAILS} from '@unilogin/commons';
 import {GasModeService} from '../../../src/core/services/GasModeService';
 import {utils} from 'ethers';
-
-chai.use(sinonChai);
 
 describe('UNIT: GasModeService', () => {
   const tokensDetailsStore: any = {tokensDetails: TEST_TOKEN_DETAILS};
@@ -27,14 +24,12 @@ describe('UNIT: GasModeService', () => {
     DAI: {USD: 0.2391, DAI: 1, SAI: 0.1942, ETH: 0.000669026098708},
     SAI: {USD: 0.2391, DAI: 0.1942, SAI: 1, ETH: 0.000669026098708},
   };
+
   const priceObserver: any = {
     getCurrentPrices: sinon.stub().resolves(tokenPrices),
   };
 
   const gasModeService = new GasModeService(tokensDetailsStore, gasPriceOracle, priceObserver);
-
-  const getCurrencyAmountSpy = sinon.spy((gasModeService as any).getCurrencyAmount);
-  (gasModeService as any).getCurrencyAmount = getCurrencyAmountSpy;
 
   const expectedModes = [
     {
