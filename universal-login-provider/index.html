@@ -1,16 +1,24 @@
 <html>
-    <head>
-        <title>Universal Login Provider demo</title>
-        <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-        <button id="unilogin-button"></button>
-        <button onclick="web3.currentProvider.openDashboard()">Show dashboard</button>
-        <button onclick="web3.eth.sign('Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro laborum ea delectus, eum exercitationem nam sint doloribus sequi in aperiam eligendi doloremque dolor totam excepturi at a adipisci ad perferendis?', '0x57DC93d3f7910408263783E9fCfF4fAdb1c44039')">Sign something</button>
-        <script src="dist/umd/index.js"></script>
-        <script>
-            window.web3 = new Web3(ULIFrameProvider.createPicker(window.ethereum || 'kovan'))
-        </script>
-    </body>
+
+<head>
+    <title>Universal Login Provider demo</title>
+    <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <button id="unilogin-button"></button>
+    <button onclick="web3.currentProvider.openDashboard()">Show dashboard</button>
+    <button
+        onclick="web3.eth.sign('Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro laborum ea delectus, eum exercitationem nam sint doloribus sequi in aperiam eligendi doloremque dolor totam excepturi at a adipisci ad perferendis?', '0x57DC93d3f7910408263783E9fCfF4fAdb1c44039')">Sign
+        something</button>
+    <button
+        onclick="web3.eth.getAccounts().then(accounts => {console.log({accounts});web3.eth.sendTransaction({from: accounts[0], to: accounts[0],value: 0}).then(({transactionHash}) => console.log({transactionHash}))})">Send
+        transaction</button>
+    <script src="dist/umd/index.js"></script>
+    <script>
+        window.web3 = new Web3(ULIFrameProvider.createPicker(window.ethereum || 'kovan'))
+    </script>
+</body>
+
 </html>
