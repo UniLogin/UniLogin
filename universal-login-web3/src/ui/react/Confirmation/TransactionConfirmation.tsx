@@ -86,7 +86,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
                 <Highlighted>
                   <Value>{utils.formatEther(transaction.value)} ETH</Value>
                 </Highlighted>
-                <Value>{walletService.sdk.gasModeService.getCurrencyAmount(utils.bigNumberify(transaction.value), 'USD', modesAndPrices.prices)} USD</Value>
+                <Value>{walletService.sdk.gasModeService.getGasPriceInUSD(utils.bigNumberify(transaction.value), modesAndPrices.prices)} USD</Value>
               </ValueRow>
             </Row>
             <Row>

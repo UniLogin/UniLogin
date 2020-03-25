@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {GasMode, TokensPrices, ObservedCurrency, ensureNotFalsy, safeMultiplyAndFormatEther} from '@unilogin/commons';
+import {GasMode, TokensPrices, safeMultiplyAndFormatEther, safeDivide} from '@unilogin/commons';
 import {TokensDetailsStore} from './TokensDetailsStore';
 import {GasPriceOracle} from '../../integration/ethereum/gasPriceOracle';
 import {PriceObserver} from '../observers/PriceObserver';
@@ -12,14 +12,8 @@ export class GasModeService {
     private priceObserver: PriceObserver,
   ) {}
 
-  private getTokenPriceInversed(tokenPrices: TokensPrices, symbol: string) {
-    const multiplier = tokenPrices.ETH[symbol as any as ObservedCurrency];
-    ensureNotFalsy(multiplier, Error, 'Invalid fee token');
-    return multiplier;
-  }
-
   private createMode(name: string, {gasPrice, timeEstimation}: GasPriceEstimation, tokensPrices: TokensPrices): GasMode {
-    const usdAmount = this.getCurrencyAmount(gasPrice, 'USD', tokensPrices);
+    const usdAmount = this.getGasPriceInUSD(gasPrice, tokensPrices);
     return {
       name,
       usdAmount,
@@ -27,15 +21,18 @@ export class GasModeService {
       gasOptions: this.tokensStore.tokensDetails.map((tokenDetails) => {
         return ({
           token: tokenDetails,
-          gasPrice: utils.parseEther(this.getCurrencyAmount(gasPrice, tokenDetails.symbol, tokensPrices)),
+          gasPrice: this.getGasPriceInToken(tokenDetails.symbol, tokensPrices, gasPrice),
         });
       }),
     };
   }
 
-  getCurrencyAmount(gasPrice: utils.BigNumber, symbol: string, tokensPrices: TokensPrices) {
-    const multiplier = this.getTokenPriceInversed(tokensPrices, symbol);
-    return safeMultiplyAndFormatEther(gasPrice, multiplier);
+  getGasPriceInUSD(gasPrice: utils.BigNumber, tokenPrices: TokensPrices) {
+    return safeMultiplyAndFormatEther(gasPrice, tokenPrices.ETH.USD);
+  }
+
+  getGasPriceInToken(tokenSymbol: string, tokenPrices: TokensPrices, gasPriceInETH: utils.BigNumber) {
+    return safeDivide(gasPriceInETH, tokenPrices[tokenSymbol].ETH);
   }
 
   async getModesWithPrices() {

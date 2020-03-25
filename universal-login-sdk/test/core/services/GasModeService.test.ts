@@ -1,11 +1,8 @@
-import chai, {expect} from 'chai';
-import sinonChai from 'sinon-chai';
+import {expect} from 'chai';
 import sinon from 'sinon';
 import {TokensPrices, TEST_TOKEN_DETAILS} from '@unilogin/commons';
 import {GasModeService} from '../../../src/core/services/GasModeService';
 import {utils} from 'ethers';
-
-chai.use(sinonChai);
 
 describe('UNIT: GasModeService', () => {
   const tokensDetailsStore: any = {tokensDetails: TEST_TOKEN_DETAILS};
@@ -24,17 +21,15 @@ describe('UNIT: GasModeService', () => {
 
   const tokenPrices: TokensPrices = {
     ETH: {USD: 1838.51, DAI: 1494.71, SAI: 1494.71, ETH: 1},
-    DAI: {USD: 0.2391, DAI: 1, SAI: 0.1942, ETH: 0.00001427},
-    SAI: {USD: 0.2391, DAI: 0.1942, SAI: 1, ETH: 0.00001427},
+    DAI: {USD: 0.2391, DAI: 1, SAI: 0.1942, ETH: 0.000669026098708},
+    SAI: {USD: 0.2391, DAI: 0.1942, SAI: 1, ETH: 0.000669026098708},
   };
+
   const priceObserver: any = {
     getCurrentPrices: sinon.stub().resolves(tokenPrices),
   };
 
   const gasModeService = new GasModeService(tokensDetailsStore, gasPriceOracle, priceObserver);
-
-  const getCurrencyAmountSpy = sinon.spy((gasModeService as any).getCurrencyAmount);
-  (gasModeService as any).getCurrencyAmount = getCurrencyAmountSpy;
 
   const expectedModes = [
     {
@@ -42,11 +37,11 @@ describe('UNIT: GasModeService', () => {
       usdAmount: '0.0000367702',
       timeEstimation: '114',
       gasOptions: [{
-        gasPrice: utils.bigNumberify('29894200000000'),
+        gasPrice: utils.bigNumberify('29894200000004'),
         token: TEST_TOKEN_DETAILS[0],
       },
       {
-        gasPrice: utils.bigNumberify('29894200000000'),
+        gasPrice: utils.bigNumberify('29894200000004'),
         token: TEST_TOKEN_DETAILS[1],
       },
       {
@@ -59,11 +54,11 @@ describe('UNIT: GasModeService', () => {
       usdAmount: '0.00004412424',
       timeEstimation: '30',
       gasOptions: [{
-        gasPrice: utils.bigNumberify('35873040000000'),
+        gasPrice: utils.bigNumberify('35873040000005'),
         token: TEST_TOKEN_DETAILS[0],
       },
       {
-        gasPrice: utils.bigNumberify('35873040000000'),
+        gasPrice: utils.bigNumberify('35873040000005'),
         token: TEST_TOKEN_DETAILS[1],
       },
       {
@@ -72,23 +67,6 @@ describe('UNIT: GasModeService', () => {
       }],
     },
   ];
-
-  it('getModes', async () => {
-    const modes = await gasModeService.getModes();
-    expect(gasPriceOracle.getGasPrices).calledOnce;
-
-    expect(getCurrencyAmountSpy.getCall(0)).calledWith(gasPrices.cheap.gasPrice, 'USD');
-    expect(getCurrencyAmountSpy.getCall(1)).calledWith(gasPrices.cheap.gasPrice, TEST_TOKEN_DETAILS[0].symbol);
-    expect(getCurrencyAmountSpy.getCall(2)).calledWith(gasPrices.cheap.gasPrice, TEST_TOKEN_DETAILS[1].symbol);
-    expect(getCurrencyAmountSpy.getCall(3)).calledWith(gasPrices.cheap.gasPrice, TEST_TOKEN_DETAILS[2].symbol);
-    expect(getCurrencyAmountSpy.getCall(4)).calledWith(gasPrices.fast.gasPrice, 'USD');
-    expect(getCurrencyAmountSpy.getCall(5)).calledWith(gasPrices.fast.gasPrice, TEST_TOKEN_DETAILS[0].symbol);
-    expect(getCurrencyAmountSpy.getCall(6)).calledWith(gasPrices.fast.gasPrice, TEST_TOKEN_DETAILS[1].symbol);
-    expect(getCurrencyAmountSpy.getCall(7)).calledWith(gasPrices.fast.gasPrice, TEST_TOKEN_DETAILS[2].symbol);
-    expect(getCurrencyAmountSpy.callCount).to.eq(8);
-
-    expect(modes).to.deep.eq(expectedModes);
-  });
 
   it('getModesWithUsedPrices', async () => {
     const {modes, prices} = await gasModeService.getModesWithPrices();
