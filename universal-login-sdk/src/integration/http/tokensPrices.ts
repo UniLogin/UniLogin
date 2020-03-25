@@ -1,40 +1,62 @@
 import {ObservedCurrency, TokensPrices, http as _http, TokenDetails, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 const cryptocompare = require('cryptocompare');
 import {fetch} from './fetch';
+import {Sanitizer, asObject, asNumber, cast} from '@restless/sanitizers';
 
 interface TokenDetailsWithCoingeckoId extends TokenDetails {
   coingeckoId: string;
 };
 
-const fetchTokenInfo = (tokenDetails: TokenDetailsWithCoingeckoId[], currencies: ObservedCurrency[]) => {
+const fetchTokenInfo = async (tokenDetails: TokenDetailsWithCoingeckoId[], currencies: ObservedCurrency[]) => {
   const http = _http(fetch)('https://api.coingecko.com/api/v3');
-  const query = `ids=${tokenDetails.map(token => token.coingeckoId).join(',')}&vs_currencies=${currencies.join(',')}`;
-  console.log(query);
-  return http('GET', `/simple/price?${query}`);
+  const tokens = tokenDetails.map(token => token.coingeckoId);
+  const query = `ids=${tokens.join(',')}&vs_currencies=${currencies.join(',')}`;
+  const result = await http('GET', `/simple/price?${query}`);
+  const asTokenPrices = asRecord(tokens, asRecord(currencies.map(currency => currency.toLowerCase()), asNumber));
+  return cast(result, asTokenPrices);
 };
 
-const getCoingeckoId = (tokenName: string) => {
-  if (tokenName === ETHER_NATIVE_TOKEN.name) {
-    return 'ethereum';
-  } else if (tokenName === 'Dai Stablecoin') {
-    return 'dai';
+const getCoingeckoId = (token: TokenDetails) => {
+  switch (token.symbol) {
+    case ETHER_NATIVE_TOKEN.symbol:
+      return 'ethereum';
+    case 'DAI':
+      return 'dai';
+    case 'SAI':
+      return 'sai';
+    default:
+      return token.name.split(' ').join('-').toLowerCase();
   }
-  return tokenName.split(' ').join('-').toLowerCase();
 };
 
 export async function getPrices(fromTokens: TokenDetails[], toTokens: ObservedCurrency[]): Promise<TokensPrices> {
-  const tokenDetailsWithCoingeckoId = fromTokens.map(token => ({...token, coingeckoId: getCoingeckoId(token.name)}));
+  const tokenDetailsWithCoingeckoId = fromTokens.map(token => ({...token, coingeckoId: getCoingeckoId(token)}));
   const pricesWithCoingeckoId = await fetchTokenInfo(tokenDetailsWithCoingeckoId, ['ETH', 'USD']);
+  return getPricesFromPricesWithCoingeckoId(tokenDetailsWithCoingeckoId, pricesWithCoingeckoId);
+}
+
+const getPricesFromPricesWithCoingeckoId = (tokenDetailsWithCoingeckoId: TokenDetailsWithCoingeckoId[], pricesWithCoingeckoId: TokensPrices) => {
   const prices: TokensPrices = {};
-  tokenDetailsWithCoingeckoId.map(token => {
-    prices[token.symbol] = {} as Record<ObservedCurrency, number>;
-    const keys = Object.keys(pricesWithCoingeckoId[token.coingeckoId]);
-    keys.map(key => {
-      prices[token.symbol] = {...prices[token.symbol], [key.toUpperCase()]: pricesWithCoingeckoId[token.coingeckoId][key]};
-    });
-  });
-  Object.keys(prices).map(key => key.toUpperCase());
+  for (const token of tokenDetailsWithCoingeckoId) {
+    prices[token.symbol] = getPricesForToken(token, pricesWithCoingeckoId);
+  }
   return prices;
+};
+
+const getPricesForToken = (token: TokenDetailsWithCoingeckoId, pricesWithCoingeckoId: TokensPrices) => {
+  const pricesForToken = {} as Record<ObservedCurrency, number>;
+  Object.keys(pricesWithCoingeckoId[token.coingeckoId]).map(key => {
+    pricesForToken[key.toUpperCase() as ObservedCurrency] = (pricesWithCoingeckoId as any)[token.coingeckoId][key];
+  });
+  return pricesForToken;
+};
+
+function asRecord<K extends keyof any, V>(keys: K[], valueSanitizer: Sanitizer<V>): Sanitizer<Record<K, V>> {
+  const schema: Record<K, Sanitizer<V>> = {} as any;
+  for (const key of keys) {
+    schema[key] = valueSanitizer;
+  }
+  return asObject(schema);
 }
 
 export const getEtherPriceInCurrency = async (currency: 'USD' | 'EUR' | 'GBP'): Promise<string> => {
