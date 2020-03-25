@@ -70,8 +70,8 @@ describe('INT: ULWeb3Provider', () => {
       });
 
       it('with closing waitForTransaction modal', async () => {
-        showWaitForTransactionSpy = sinon.spy(() => ulProvider.uiController.hideModal());
-        sinon.replace(ulProvider.uiController, 'showWaitForTransaction', showWaitForTransactionSpy);
+        sinon.replace(ulProvider.uiController, 'showWaitForTransaction', () => ulProvider.uiController.hideModal());
+        showWaitForTransactionSpy = sinon.spy(ulProvider.uiController, 'showWaitForTransaction');
 
         const deployedWallet = await deployWallet();
         const {transactionHash} = await sendTransactionWithWeb3ToRandom();
