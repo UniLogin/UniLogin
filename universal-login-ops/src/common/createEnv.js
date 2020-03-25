@@ -6,6 +6,7 @@ function createEnv({jsonRpcUrl, daiTokenAddress, saiTokenAddress, ensAddress, en
     SAI_TOKEN_ADDRESS: saiTokenAddress,
     RELAYER_URL: 'http://localhost:3311',
     WALLET_MASTER_ADDRESS: walletContractAddress,
+    JRT_TOKEN_ADDRESS: jarvisRewardTokenAddress,
   };
   ensDomains.forEach((domain, index) => {
     env[`ENS_DOMAIN_${index + 1}`] = domain;

@@ -112,6 +112,7 @@ async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrid
   const factoryAddress = await deployGnosisFactory(deployWallet, {nodeUrl: 'dev', privateKey: 'dev'});
   const saiTokenAddress = await deployToken(deployWallet, mockContracts.MockSai);
   const daiTokenAddress = await deployToken(deployWallet, mockContracts.MockDai);
+  const jarvisRewardTokenAddress = await deployToken(deployWallet, mockContracts.MockToken);
   const ensRegistrar = await deployENSRegistrar(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   const contractWhiteList = {
@@ -120,7 +121,7 @@ async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrid
   };
   const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, daiTokenAddress, saiTokenAddress, ensRegistrar.address);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
-  return {jsonRpcUrl, deployWallet, walletContractAddress: address, saiTokenAddress, daiTokenAddress, ensAddress, ensDomains};
+  return {jsonRpcUrl, deployWallet, walletContractAddress: address, saiTokenAddress, daiTokenAddress, ensAddress, ensDomains, jarvisRewardTokenAddress};
 }
 
 export default startDevelopment;
