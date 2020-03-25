@@ -5,7 +5,7 @@ import {GasPriceOracle} from '../../integration/ethereum/gasPriceOracle';
 import {PriceObserver} from '../observers/PriceObserver';
 import {GasPriceEstimation} from '../models/GasPriceSuggestion';
 
-const GAS_TOKENS = ['ETH', 'DAI'];
+const GAS_TOKENS = ['ETH', 'DAI', 'SAI'];
 
 export class GasModeService {
   constructor(
