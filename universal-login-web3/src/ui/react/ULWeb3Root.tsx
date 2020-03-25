@@ -17,6 +17,7 @@ export interface ULWeb3RootProps {
 export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3RootProps) => {
   const modal = useProperty(uiController.activeModal);
   const message = sdk.getNotice();
+  const hideModal = () => uiController.hideModal();
 
   if (useProperty(uiController.isLoading) && modal.kind !== 'WARNING_LOCAL_STORAGE') {
     return <ModalWrapper><AppPreloader /></ModalWrapper>;
@@ -32,6 +33,7 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
       return <Onboarding
         walletService={walletService}
         domains={domains}
+        hideModal={hideModal}
       />;
     case 'SIGN_CONFIRMATION':
       return <SignConfirmation message={message} {...modal.props} />;
@@ -41,12 +43,12 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
       return <WaitForTransactionModal
         transactionHash={modal.props.transactionHash}
         relayerConfig={sdk.getRelayerConfig()}
-        onClose={() => uiController.hideModal()}
+        onClose={hideModal}
       />;
     case 'ERROR':
       return <ModalWrapper
         message={message}
-        hideModal={() => uiController.hideModal()}
+        hideModal={hideModal}
       >
         <ErrorMessage message={modal.props.errorMessage} />
       </ModalWrapper>;
