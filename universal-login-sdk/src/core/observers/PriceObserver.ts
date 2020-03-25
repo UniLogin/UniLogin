@@ -1,7 +1,7 @@
 import {ObservedCurrency, TokensPrices} from '@unilogin/commons';
 import ObserverRunner from './ObserverRunner';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
-import {getPrices} from '../../integration/http/cryptocompare';
+import {getPrices} from '../../integration/http/tokensPrices';
 const deepEqual = require('deep-equal');
 import cloneDeep from 'lodash.clonedeep';
 
@@ -47,7 +47,6 @@ export class PriceObserver extends ObserverRunner {
   }
 
   getCurrentPrices(): Promise<TokensPrices> {
-    const observedTokensSymbols = this.tokensDetailsStore.tokensDetails.map((token) => token.symbol);
-    return getPrices(observedTokensSymbols, this.observedCurrencies);
+    return getPrices(this.tokensDetailsStore.tokensDetails, this.observedCurrencies);
   }
 }

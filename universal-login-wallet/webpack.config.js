@@ -65,6 +65,7 @@ module.exports = {
       'process.env.ENS_DOMAIN_1': JSON.stringify(process.env.ENS_DOMAIN_1),
       'process.env.ENS_DOMAIN_2': JSON.stringify(process.env.ENS_DOMAIN_2),
       'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL),
+      'process.env.JRT_TOKEN_ADDRESS': JSON.stringify(process.env.JRT_TOKEN_ADDRESS),
     }),
     new CopyPlugin([
       {from: './src/ui/assets/jarvis-web-clip.png'},
