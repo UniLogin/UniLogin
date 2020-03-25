@@ -4,7 +4,6 @@ interface CreateEnvProps {
   saiTokenAddress: string;
   ensAddress: string;
   ensDomains: string[];
-  jarvisRewardTokenAddress: string;
   walletContractAddress: string;
 };
 
@@ -22,6 +21,6 @@ const createEnv = ({jsonRpcUrl, daiTokenAddress, saiTokenAddress, ensAddress, en
     env[`ENS_DOMAIN_${index + 1}`] = domain;
   });
   return env;
-}
+};
 
 export default createEnv;
