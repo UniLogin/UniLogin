@@ -9,35 +9,20 @@ import RevolutLogo2x from './../../assets/logos/revolut@2x.jpg';
 import Yoti from './../../assets/logos/yoti.jpg';
 import Yoti2x from './../../assets/logos/yoti@2x.jpg';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
-import {getMinimalAmountForFiatProvider} from '../../../core/utils/getMinimalAmountForFiatProvider';
-import {useAsync} from '../../hooks/useAsync';
 
 interface FiatFooterProps {
   walletService: WalletService;
   paymentMethod?: TopUpProvider;
 }
 
-export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
-  const [minimumAmount] = useAsync(async () => {
-    const requiredDeploymentBalance = walletService.getRequiredDeploymentBalance();
-    if (!paymentMethod) {
-      return requiredDeploymentBalance;
-    }
-    return getMinimalAmountForFiatProvider(paymentMethod, requiredDeploymentBalance);
-  }, [paymentMethod]);
-
+export const FiatFooter = ({paymentMethod}: FiatFooterProps) => {
   switch (paymentMethod) {
     case TopUpProvider.RAMP:
       return (
         <>
           <div className="info-block info-row">
-            <div className="info-row">
-              <p className="info-text info-text-hint">You can pay with any UK bank or Revolut</p>
-              <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
-            </div>
-          </div>
-          <div className="info-block info-row">
-            <p className="info-text info-text-hint">{`Minimum amount is ${minimumAmount}`}</p>
+            <p className="info-text info-text-hint">You can pay with any UK bank or Revolut</p>
+            <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
         </>
       );
