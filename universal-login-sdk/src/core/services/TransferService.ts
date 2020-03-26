@@ -60,6 +60,6 @@ export class TransferService {
   }
 
   subscribeToBalances(callback: OnBalanceChange) {
-    return this.deployedWallet.sdk.subscribeToBalances(this.deployedWallet.contractAddress, callback);
+    return this.deployedWallet.subscribeToBalances(callback);
   }
 }
