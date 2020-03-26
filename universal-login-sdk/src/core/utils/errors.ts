@@ -7,7 +7,6 @@ type ErrorType =
   'InvalidAddressOrEnsName' |
   'InvalidAmount' |
   'InvalidAmountAndRecipient' |
-  'MissingConfiguration' |
   'TransactionHashNotFound' |
   'TokenNotFound' |
   'MissingMessageHash' |
@@ -154,13 +153,6 @@ export class NotFound extends SDKError {
     super(message, errorType);
     this.errorType = errorType;
     Object.setPrototypeOf(this, NotFound.prototype);
-  }
-}
-
-export class MissingConfiguration extends NotFound {
-  constructor() {
-    super('Relayer configuration not yet loaded', 'MissingConfiguration');
-    Object.setPrototypeOf(this, MissingConfiguration.prototype);
   }
 }
 
