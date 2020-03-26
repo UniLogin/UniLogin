@@ -1,7 +1,6 @@
 import React, {ReactNode} from 'react';
 import {Omit, isClassName} from '@unilogin/commons';
 import EthereumIcon from './../assets/icons/ether.svg';
-import daiIcon from './../assets/icons/dai.svg';
 import cardIcon from './../assets/icons/card.svg';
 import bankIcon from './../assets/icons/bank.svg';
 import {classForComponent} from '../utils/classFor';
@@ -38,10 +37,9 @@ export const TopUpRadioCrypto = (props: Omit<TopUpRadioProps, 'children'>) => (
   <TopUpRadio {...props}>
     <div className={classForComponent('top-up-method-icons')}>
       <img className={classForComponent('top-up-method-icon')} src={EthereumIcon} alt="Ethereum" />
-      <img className={classForComponent('top-up-method-icon')} src={daiIcon} alt="Dai" />
     </div>
     <p className={classForComponent('top-up-method-title')}>Crypto</p>
-    <p className={classForComponent('top-up-method-text')}>Free-Deposit ETH or DAI</p>
+    <p className={classForComponent('top-up-method-text')}>Free-Deposit ETH</p>
   </TopUpRadio>
 );
 
