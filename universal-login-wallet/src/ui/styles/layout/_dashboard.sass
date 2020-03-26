@@ -2,7 +2,8 @@
   position: relative
   height: 100%
 
-  @media only screen and (max-width: 600px)
+  @media only screen and (max-width: 770px)
+    background: #fff
     height: 100%
 
 .dashboard-maine
@@ -10,11 +11,10 @@
   width: 100%
 
 .dashboard-content
+  height: calc(100% - 70px)
   display: flex
   align-items: center
   justify-content: center
-  height: 100%
-  padding: 25px 30px 25px
   overflow: auto
 
   +media(s, 168px)
@@ -33,9 +33,18 @@
   box-shadow: 0px 3px 17px rgba(79, 55, 168, 0.088853)
   z-index: 10
 
+  & > .unilogin-theme-jarvis:last-child
+    display: flex
+    flex-direction: column
+    flex: 1
+
+  @media only screen and (max-width: 770px)
+    box-shadow: unset
+
   +media(s, 168px)
     height: 100%
     min-height: unset
+
 
 .dashboard-ens-name
   display: none
@@ -74,7 +83,7 @@
   bottom: 0
   left: 0
   width: 100%
-  height: calc(50vh - 35px)
+  height: calc(50% - 35px)
   background: #fafbfd url('./../assets/dashboardBackground.jpg') center no-repeat
   background-size: cover
 
