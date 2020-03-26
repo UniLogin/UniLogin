@@ -3,7 +3,7 @@ import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet} from 'ethers';
 import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
 import {RelayerClass, Config} from '@unilogin/relayer';
-import {gnosisSafe} from '@unilogin/contracts';
+import {gnosisSafe, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
 import {startDevelopmentRelayer} from './startRelayer';
@@ -32,7 +32,7 @@ const databaseConfig = {
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
-function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, daiTokenAddress: string, saiTokenAddress: string, ensRegistrar: string) {
+function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, daiTokenAddress: string, saiTokenAddress: string, ensRegistrar: string, fallbackHandler: string) {
   const supportedTokens: SupportedToken[] = [{
     address: daiTokenAddress,
   },
@@ -52,6 +52,7 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
       chainId: 0,
     },
     ensRegistrars,
+    fallbackHandlerAddress: fallbackHandler,
     ensRegistrar,
     walletContractAddress,
     contractWhiteList,
@@ -109,6 +110,7 @@ async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrid
   const ensAddress = await deployENS(ensDeployer, ensDomains);
   const {address, walletContractHash} = await deployGnosisSafe(deployWallet);
   const proxyContractHash = getProxyContractHash();
+  const fallbackHandler = await deployDefaultCallbackHandler(deployWallet);
   const factoryAddress = await deployGnosisFactory(deployWallet, {nodeUrl: 'dev', privateKey: 'dev'});
   const saiTokenAddress = await deployToken(deployWallet, mockContracts.MockSai);
   const daiTokenAddress = await deployToken(deployWallet, mockContracts.MockDai);
@@ -118,7 +120,7 @@ async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrid
     wallet: [walletContractHash],
     proxy: [proxyContractHash],
   };
-  const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, daiTokenAddress, saiTokenAddress, ensRegistrar.address);
+  const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, daiTokenAddress, saiTokenAddress, ensRegistrar.address, fallbackHandler.address);
   await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
   return {jsonRpcUrl, deployWallet, walletContractAddress: address, saiTokenAddress, daiTokenAddress, ensAddress, ensDomains};
 }

@@ -6,7 +6,6 @@ import {NotEnoughBalance, InvalidSignature, NotEnoughGas} from '../../core/utils
 import {Config} from '../../config/relayer';
 import {WalletDeployer} from './WalletDeployer';
 import {DevicesService} from '../../core/services/DevicesService';
-import {AddressZero} from 'ethers/constants';
 
 export class WalletDeploymentService {
   private readonly supportedTokens: SupportedToken[] = this.config.supportedTokens;
@@ -25,7 +24,7 @@ export class WalletDeploymentService {
       requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
       deploymentCallAddress: this.config.ensRegistrar,
       deploymentCallData: new utils.Interface(gnosisSafe.ENSRegistrar.interface as any).functions.register.encode(ensArgs),
-      fallbackHandler: AddressZero,
+      fallbackHandler: this.config.fallbackHandlerAddress,
       paymentToken: gasToken,
       payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),
       refundReceiver: this.walletDeployer.wallet.address,

@@ -14,7 +14,7 @@ export type BalanceDetails = {
   contractAddress: string;
 };
 
-type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'chainSpec' | 'walletContractAddress' | 'relayerAddress'>;
+type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'chainSpec' | 'walletContractAddress' | 'relayerAddress' | 'fallbackHandlerAddress'>;
 
 export class FutureWalletFactory {
   constructor(
@@ -25,12 +25,12 @@ export class FutureWalletFactory {
   }
 
   createFrom(wallet: SerializableFutureWallet): FutureWallet {
-    return new FutureWallet(wallet, this.sdk, this.ensService, this.config.relayerAddress);
+    return new FutureWallet(wallet, this.sdk, this.ensService, this.config.relayerAddress, this.config.fallbackHandlerAddress);
   }
 
   async createNew(ensName: string, gasPrice: string, gasToken: string): Promise<FutureWallet> {
     const {privateKey, publicKey} = createKeyPair();
-    const initializeData = await setupInitData(publicKey, ensName, gasPrice, gasToken, this.ensService, this.config.relayerAddress);
+    const initializeData = await setupInitData({publicKey, ensName, gasPrice, gasToken, ensService: this.ensService, relayerAddress: this.config.relayerAddress, fallbackHandler: this.config.fallbackHandlerAddress});
     const contractAddress = computeGnosisCounterfactualAddress(this.config.factoryAddress, 1, initializeData, this.config.walletContractAddress);
     return this.createFrom({privateKey, contractAddress, ensName, gasPrice, gasToken});
   }

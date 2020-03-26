@@ -16,6 +16,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   let walletContract: Contract;
   let factoryContract: Contract;
   let mockToken: Contract;
+  let fallbackHandlerContract: Contract;
   let keyPair: KeyPair;
   let ensAddress: string;
   let contractAddress: string;
@@ -27,10 +28,10 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   let ensRegistrar: Contract;
 
   beforeEach(async () => {
-    ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress, ensRegistrar} = await startRelayerWithRefund(relayerPort));
+    ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress, ensRegistrar, fallbackHandlerContract} = await startRelayerWithRefund(relayerPort));
     keyPair = createKeyPair();
     initCode = getDeployData(beta2.WalletProxy as any, [walletContract.address]);
-    const setupData = await getSetupData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE, deployer.address, relayer.publicConfig.ensRegistrar);
+    const setupData = await getSetupData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE, deployer.address, relayer.publicConfig.ensRegistrar, fallbackHandlerContract.address);
     contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, walletContract.address);
     signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
   });
@@ -101,7 +102,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   });
 
   it('Counterfactual deployment with token payment', async () => {
-    const setupData = await getSetupData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE, deployer.address, relayer.publicConfig.ensRegistrar, mockToken.address);
+    const setupData = await getSetupData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE, deployer.address, relayer.publicConfig.ensRegistrar, fallbackHandlerContract.address, mockToken.address);
     contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, walletContract.address);
     signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
