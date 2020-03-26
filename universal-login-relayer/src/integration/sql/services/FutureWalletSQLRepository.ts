@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {FutureWallet} from '../..';
+import {FutureWallet} from '../../../core/models/FutureWallet'
 
 export class FutureWalletSQLRepository{
   tableName: string;
