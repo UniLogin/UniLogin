@@ -6,8 +6,10 @@
 
 exports.up = async (knex) => {
   await knex.schema.alterTable('messages', (table) => {
-    table.timestamp('created_at').notNullable().defaultTo('2015-07-30');
+    table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
   });
+
+  await knex('messages').update({created_at: '2015-07-30'});
 };
 
 exports.down = async (knex) => {

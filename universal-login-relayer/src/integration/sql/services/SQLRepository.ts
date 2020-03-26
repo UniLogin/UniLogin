@@ -13,7 +13,6 @@ export class SQLRepository<T extends Mineable> implements IRepository<T> {
     await this.knex
       .insert({
         hash,
-        created_at: this.knex.fn.now(),
         ...item,
       })
       .into(this.tableName);
