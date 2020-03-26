@@ -6,7 +6,7 @@ export {messageToUnsignedMessage, messageToSignedMessage, unsignedMessageToSigne
 export * from './interfaces';
 export {BlockchainService} from './integration/BlockchainService';
 
-export {deployGnosisSafe, deployProxyFactory} from './gnosis-safe@1.1.1/deployContracts';
+export {deployGnosisSafe, deployProxyFactory, deployDefaultCallbackHandler} from './gnosis-safe@1.1.1/deployContracts';
 export {encodeDataForSetup, encodeDataForExecTransaction} from './gnosis-safe@1.1.1/encode';
 export {computeGnosisCounterfactualAddress, calculateMessageHash, signStringMessage, calculateGnosisStringHash, calculateMessageSignature, getPreviousOwner, isInvalidOwnerError} from './gnosis-safe@1.1.1/utils';
 export {SENTINEL_OWNERS, DEPLOY_CONTRACT_NONCE, INITIAL_REQUIRED_CONFIRMATIONS} from './gnosis-safe@1.1.1/constants';

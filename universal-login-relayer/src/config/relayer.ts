@@ -8,6 +8,7 @@ export interface Config {
   chainSpec: ChainSpec;
   ensRegistrars: string[];
   ensRegistrar: string;
+  fallbackHandlerAddress: string;
   walletContractAddress: string;
   contractWhiteList: ContractWhiteList;
   factoryAddress: string;
