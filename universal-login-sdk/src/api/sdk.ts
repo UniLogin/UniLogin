@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotEmpty, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy} from '@unilogin/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy} from '@unilogin/commons';
 import {BlockchainService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -12,7 +12,7 @@ import {FeatureFlagsService} from '../core/services/FeatureFlagsService';
 import {GasModeService} from '../core/services/GasModeService';
 import {MessageConverter} from '../core/services/MessageConverter';
 import {TokensDetailsStore} from '../core/services/TokensDetailsStore';
-import {InvalidContract, InvalidENSRecord, InvalidEvent, MissingConfiguration} from '../core/utils/errors';
+import {InvalidContract, InvalidENSRecord, InvalidEvent} from '../core/utils/errors';
 import {ENSService} from '../integration/ethereum/ENSService';
 import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {RelayerApi} from '../integration/http/RelayerApi';
@@ -127,7 +127,6 @@ class UniversalLoginSDK {
       return;
     }
     ensureNotFalsy(contractAddress, InvalidContract);
-    ensureNotEmpty(this.sdkConfig, MissingConfiguration);
 
     await this.tokensDetailsStore.fetchTokensDetails();
     this.balanceObserver = new BalanceObserver(this.balanceChecker, contractAddress, this.tokensDetailsStore, this.sdkConfig.balanceObserverTick);
