@@ -3,7 +3,7 @@ import {Contract, utils, Wallet} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {GnosisSafeInterface} from '../../src/gnosis-safe@1.1.1/interfaces';
 import {encodeDataForSetup, encodeDataForExecTransaction} from '../../src/gnosis-safe@1.1.1/encode';
-import {deployGnosisSafe, deployProxyFactory} from '../../src/gnosis-safe@1.1.1/deployContracts';
+import {deployGnosisSafe, deployProxyFactory, deployDefaultCallbackHandler} from '../../src/gnosis-safe@1.1.1/deployContracts';
 import {computeGnosisCounterfactualAddress, getPreviousOwner} from '../../src/gnosis-safe@1.1.1/utils';
 import {Provider} from 'ethers/providers';
 import {messageToSignedMessage, INITIAL_REQUIRED_CONFIRMATIONS} from '../../src';
@@ -11,13 +11,14 @@ import {messageToSignedMessage, INITIAL_REQUIRED_CONFIRMATIONS} from '../../src'
 export async function setupGnosisSafeContract(wallet: Wallet) {
   const gnosisSafe = await deployGnosisSafe(wallet);
   const proxyFactory = await deployProxyFactory(wallet);
+  const callbackHandler = await deployDefaultCallbackHandler(wallet);
   const keyPair = createKeyPair();
   const deployment = {
     owners: [keyPair.publicKey],
     requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
     deploymentCallAddress: AddressZero,
     deploymentCallData: '0x0',
-    fallbackHandler: AddressZero,
+    fallbackHandler: callbackHandler.address,
     paymentToken: ETHER_NATIVE_TOKEN.address,
     payment: '0',
     refundReceiver: wallet.address,
