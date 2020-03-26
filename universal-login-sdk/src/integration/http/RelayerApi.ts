@@ -70,4 +70,17 @@ export class RelayerApi {
   getDeploymentStatus(deploymentHash: string): Promise<DeploymentStatus> {
     return this.http('GET', `/wallet/deploy/${deploymentHash}`);
   }
+
+  addNewFutureWallet(contractAddress: string, publicKey: string, ensName: string, gasPrice: string, gasToken: string): Promise<void> {
+    return this.http('POST', `/wallet/new_future`, {
+      contractAddress,
+      publicKey,
+      gasPrice,
+      gasToken,
+      ensName,
+
+    }).catch((e: any) => {
+      throw new Error(e.error);
+    });
+  }
 }
