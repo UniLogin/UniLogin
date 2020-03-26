@@ -94,6 +94,9 @@ class UniversalLoginSDK {
   }
 
   getNotice() {
+    if (this.sdkConfig.network === 'mainnet') {
+      return 'This is beta version running on mainnet - do not deposit more than $5 for now';
+    }
     return `This is beta version running on ${this.sdkConfig.network}`;
   }
 
