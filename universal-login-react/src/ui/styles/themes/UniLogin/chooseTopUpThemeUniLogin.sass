@@ -1,8 +1,41 @@
 .unilogin-theme-unilogin.unilogin-component-top-up
   @import url('https://fonts.googleapis.com/css?family=Lato:300,400&display=swap')
   font-family: 'Lato', sans-serif
+  display: flex
+  flex-direction: column
+  flex: 1
+
+  .fiat
+    @media only screen and (max-width: 600px)
+      padding: 0
+
+  .crypto
+    @media only screen and (max-width: 600px)
+      padding: 30px 0
+      padding: 0
+
+  .unilogin-component-top-up-body
+    @media only screen and (max-width: 600px)
+      height: 100%
+      display: flex
+      flex-direction: column
+      width: 100%
+
+  .unilogin-component-top-up-body-crypto
+    @media only screen and (max-width: 600px)
+      display: flex
+      justify-content: center
+      align-items: flex-start
+
   .unilogin-component-top-up-radio-inner
     border: 1px solid rgba(190, 207, 217, 0.6)
+
+    @media only screen and (max-width: 600px)
+      padding: 1rem
+
+    @media only screen and (max-width: 350px)
+      padding: .5rem
+
 
   .unilogin-component-top-up-radio-inner:hover
     border: none
@@ -14,6 +47,27 @@
 
   .unilogin-component-top-up-header
     padding-top: 4rem
+
+    @media only screen and (max-width: 600px)
+      min-height: unset
+
+  .unilogin-component-top-up-methods
+      @media only screen and (max-width: 600px)
+        flex-direction: column
+        margin-top: 1rem
+        width: 100%
+        margin: auto 0
+
+  .unilogin-component-top-up-method
+    @media only screen and (max-width: 600px)
+      height: unset
+      width: 100%
+      margin: 10px 0
+
+  .unilogin-component-top-up-method + .unilogin-component-top-up-method
+    @media only screen and (max-width: 600px)
+      margin-left: 0
+      margin-top: 1rem
 
   .unilogin-component-top-up-method-title
     color: #0F0C4A
@@ -34,9 +88,18 @@
 
   &.method-selected .unilogin-component-top-up-methods
     border-color: #e4f3f6
+    flex-direction: row
+
+  &.method-selected .unilogin-component-top-up-method
+    margin: 0
 
   &.method-selected .unilogin-component-top-up-method-icons
     margin: 0 16px 0 0
+
+  .unilogin-component-top-up-method-icon
+    @media only screen and (max-width: 400px)
+      width: 30px
+      height: 30px
 
   .unilogin-component-top-up-qr-toggler
     background: #F3FCFF url('../../../assets/themes/Default/qr.svg') center no-repeat
@@ -47,6 +110,7 @@
     border: 1px solid #BDE6F2
     box-sizing: border-box
     border-radius: 4px
+    text-overflow: ellipsis
 
   .unilogin-component-amount-input-wrapper
     background: #F3FCFF
@@ -68,7 +132,11 @@
     box-sizing: border-box
 
   .unilogin-component-top-up-body-inner
-    padding: 0
+    @media only screen and (max-width: 600px)
+      padding: unset
+
+    @media only screen and (max-width: 600px)
+      padding: 2rem
 
   .unilogin-component-fiat-methods-title
     color: #7D7C9C
@@ -86,8 +154,14 @@
       width: 100%
       height: 5rem
 
+  .unilogin-component-onboarding-progress-wrapper
+    padding-top: 5.4rem
+
   .unilogin-component-pay-btn
     margin-bottom: 2.4rem
+
+    @media only screen and (max-width: 600px)
+      margin: 0
 
   .unilogin-component-fiat-bottom
     display: none
@@ -95,6 +169,12 @@
   .unilogin-component-top-up-method-title
     font-size: 1.6rem
     font-weight: bold
+
+    @media only screen and (max-width: 600px)
+      font-size: 1.4rem
+
+    @media only screen and (max-width: 350px)
+      font-size: 1.1rem
 
   &.method-selected .unilogin-component-top-up-method-text
     display: none
@@ -104,3 +184,6 @@
 
 .unilogin-theme-unilogin .unilogin-component-top-up.method-selected .unilogin-component-top-up-methods
   padding-top: 3.2rem
+
+.unilogin-theme-unilogin .unilogin-component-top-up.method-selected
+  max-height: 230px
