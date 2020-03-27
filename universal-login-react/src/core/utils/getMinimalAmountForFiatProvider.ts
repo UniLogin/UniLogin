@@ -26,7 +26,7 @@ export const getMinimalAmountForFiatProvider = async (paymentMethod: TopUpProvid
         providerMinimalAmount,
       )));
       const minimumForSafello = 30;
-      const ethersInGBP = ethers*Number(etherPriceInGBP);
+      const ethersInGBP = ethers * Number(etherPriceInGBP);
       const result = ethersInGBP > minimumForSafello ? ethersInGBP : minimumForSafello;
       return ValueRounder.ceil(result.toString(), 2);
     }
