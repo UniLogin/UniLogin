@@ -11,6 +11,7 @@ import Yoti2x from './../../assets/logos/yoti@2x.jpg';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {getMinimalAmount} from '../../../core/utils/getMinimalAmountForFiatProvider';
 import {useAsync} from '../../hooks/useAsync';
+import {InfoText} from '../../commons/Text/InfoText';
 
 interface FiatFooterProps {
   walletService: WalletService;
@@ -27,13 +28,11 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
       return (
         <>
           <div className="info-block info-row">
-            <div className="info-row">
-              <p className="info-text info-text-hint">You can pay with any UK bank or Revolut</p>
-              <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
-            </div>
+            <InfoText>You can pay with any UK bank or Revolut</InfoText>
+            <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
           <div className="info-block info-row">
-            <p className="info-text info-text-hint">Minimum amount is {minimumAmount} ETH</p>
+            <InfoText>Minimum amount is {minimumAmount} ETH</InfoText>
           </div>
         </>
       );
@@ -43,11 +42,11 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
         <>
           <VisaMasterCardInfo />
           <div className="info-block info-row">
-            <p className="info-text info-text-hint">You have to install Yoti mobile app</p>
+            <InfoText>You have to install Yoti mobile app</InfoText>
             <img src={Yoti} srcSet={Yoti2x} className="yoti-logo" alt="Yoti" />
           </div>
           <div className="info-block info-row">
-            <p className="info-text info-text-hint">Minimum amount is {minimumAmount}€</p>
+            <InfoText>Minimum amount is {minimumAmount}€</InfoText>
           </div>
         </>
       );
@@ -56,14 +55,14 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
       return <VisaMasterCardInfo />;
     default:
       return (
-        <p className="info-text info-text-warning">Choose payment method</p>
+        <InfoText>Choose payment method</InfoText>
       );
   }
 };
 
 const VisaMasterCardInfo = () => <div className="info-block info-row">
   <div className="info-row">
-    <p className="info-text info-text-hint">You can pay with Visa or Mastercard</p>
+    <InfoText>You can pay with Visa or Mastercard</InfoText>
     <img src={VisaLogo} srcSet={VisaLogo2x} className="visa-logo" alt="Visa" />
     <img src={MastercardLogo} srcSet={MastercardLogo2x} className="mastercard-logo" alt="Mastercard" />
   </div>

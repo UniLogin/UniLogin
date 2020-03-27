@@ -3,7 +3,6 @@ import {useClassFor, classForComponent} from '../../utils/classFor';
 import './../../styles/base/components/amountSelect.sass';
 import './../../styles/themes/UniLogin/components/amountSelectThemeUniLogin.sass';
 import {Label} from '../../commons/Form/Label';
-import {InfoText} from '../../commons/Text/InfoText';
 import {getMinimalAmountForFiatProvider} from '../../../core/utils/getMinimalAmountForFiatProvider';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {useAsync} from '../../..';
@@ -24,8 +23,6 @@ export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: A
     setExpanded(false);
     setCurrency(currency);
   };
-
-  const [minimumAmount] = useAsync(async () => {return getMinimalAmountForFiatProvider(TopUpProvider.RAMP, '0');}, []);
 
   return (
     <>
