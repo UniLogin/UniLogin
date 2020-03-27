@@ -7,7 +7,6 @@ import {InfoText} from '../../commons/Text/InfoText';
 import {getMinimalAmountForFiatProvider} from '../../../core/utils/getMinimalAmountForFiatProvider';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {useAsync} from '../../..';
-import {ValueRounder} from '@unilogin/commons';
 
 export interface AmountInputProps {
   amount: string;
@@ -26,8 +25,7 @@ export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: A
     setCurrency(currency);
   };
 
-  const [minimalAmountForFiatProvider] = useAsync(async () => {return getMinimalAmountForFiatProvider(TopUpProvider.RAMP, '0');}, []);
-  const minimumAmount = minimalAmountForFiatProvider ? ValueRounder.ceil(minimalAmountForFiatProvider, 2) : undefined;
+  const [minimumAmount] = useAsync(async () => {return getMinimalAmountForFiatProvider(TopUpProvider.RAMP, '0');}, []);
 
   return (
     <>

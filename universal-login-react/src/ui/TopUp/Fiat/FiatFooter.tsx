@@ -9,7 +9,7 @@ import RevolutLogo2x from './../../assets/logos/revolut@2x.jpg';
 import Yoti from './../../assets/logos/yoti.jpg';
 import Yoti2x from './../../assets/logos/yoti@2x.jpg';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
-import {getMinimalAmountForFiatProvider} from '../../../core/utils/getMinimalAmountForFiatProvider';
+import {getMinimalAmount} from '../../../core/utils/getMinimalAmountForFiatProvider';
 import {useAsync} from '../../hooks/useAsync';
 
 interface FiatFooterProps {
@@ -19,15 +19,8 @@ interface FiatFooterProps {
 
 export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
   const [minimumAmount] = useAsync(async () => {
-    let requiredDeploymentBalance = walletService.getRequiredDeploymentBalance();
-    if (requiredDeploymentBalance === undefined) {
-      requiredDeploymentBalance = '1.0';
-    }
-    console.log(requiredDeploymentBalance);
-    if (!paymentMethod) {
-      return requiredDeploymentBalance;
-    }
-    return getMinimalAmountForFiatProvider(paymentMethod, requiredDeploymentBalance);
+    if(paymentMethod)
+      return getMinimalAmount(walletService, paymentMethod);
   }, [paymentMethod]);
 
   switch (paymentMethod) {
@@ -41,7 +34,7 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
             </div>
           </div>
           <div className="info-block info-row">
-            <p className="info-text info-text-hint">{`Minimum amount is ${minimumAmount} ETH`}</p>
+            <p className="info-text info-text-hint">Minimum amount is {minimumAmount} ETH</p>
           </div>
         </>
       );
@@ -55,7 +48,7 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
             <img src={Yoti} srcSet={Yoti2x} className="yoti-logo" alt="Yoti" />
           </div>
           <div className="info-block info-row">
-            <p className="info-text info-text-hint">Minimum amount is 30€</p>
+            <p className="info-text info-text-hint">Minimum amount is {minimumAmount}€</p>
           </div>
         </>
       );
