@@ -19,7 +19,11 @@ interface FiatFooterProps {
 
 export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
   const [minimumAmount] = useAsync(async () => {
-    const requiredDeploymentBalance = walletService.getRequiredDeploymentBalance();
+    let requiredDeploymentBalance = walletService.getRequiredDeploymentBalance();
+    if(requiredDeploymentBalance === undefined){
+      requiredDeploymentBalance = '1.0';
+    }
+    console.log(requiredDeploymentBalance);
     if (!paymentMethod) {
       return requiredDeploymentBalance;
     }
@@ -37,7 +41,7 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
             </div>
           </div>
           <div className="info-block info-row">
-            <p className="info-text info-text-hint">{`Minimum amount is ${minimumAmount}`}</p>
+            <p className="info-text info-text-hint">{`Minimum amount is ${minimumAmount} ETH`}</p>
           </div>
         </>
       );
