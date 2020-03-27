@@ -20,7 +20,7 @@ interface FiatFooterProps {
 export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
   const [minimumAmount] = useAsync(async () => {
     let requiredDeploymentBalance = walletService.getRequiredDeploymentBalance();
-    if(requiredDeploymentBalance === undefined){
+    if (requiredDeploymentBalance === undefined) {
       requiredDeploymentBalance = '1.0';
     }
     console.log(requiredDeploymentBalance);

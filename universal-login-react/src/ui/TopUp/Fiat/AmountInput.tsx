@@ -9,7 +9,6 @@ import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {useAsync} from '../../..';
 import {ValueRounder} from '@unilogin/commons';
 
-
 export interface AmountInputProps {
   amount: string;
   selectedCurrency: string;
@@ -27,7 +26,7 @@ export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: A
     setCurrency(currency);
   };
 
-  const [minimalAmountForFiatProvider] = useAsync(async () => {return getMinimalAmountForFiatProvider(TopUpProvider.RAMP, '0')}, []);
+  const [minimalAmountForFiatProvider] = useAsync(async () => {return getMinimalAmountForFiatProvider(TopUpProvider.RAMP, '0');}, []);
   const minimumAmount = minimalAmountForFiatProvider ? ValueRounder.ceil(minimalAmountForFiatProvider, 2) : undefined;
 
   return (
@@ -61,7 +60,7 @@ export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: A
           }
         </div>
       </div>
-        <InfoText>{`Minimum amount is ${minimumAmount} ETH`}</InfoText>
+      <InfoText>{`Minimum amount is ${minimumAmount} ETH`}</InfoText>
     </>
   );
 };
