@@ -1,6 +1,6 @@
 {
   "name": "@unilogin/ops",
-  "version": "0.5.19",
+  "version": "0.5.20",
   "description": "",
   "main": "dist/cjs/src/index.js",
   "types": "dist/esm/src/index.d.ts",
@@ -21,10 +21,10 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@unilogin/commons": "0.5.19",
-    "@unilogin/contracts": "0.5.19",
-    "@unilogin/relayer": "0.5.19",
-    "@unilogin/sdk": "0.5.19",
+    "@unilogin/commons": "0.5.20",
+    "@unilogin/contracts": "0.5.20",
+    "@unilogin/relayer": "0.5.20",
+    "@unilogin/sdk": "0.5.20",
     "cross-spawn": "^6.0.5",
     "dotenv": "^8.1.0",
     "ens-builder": "^2.0.2",
