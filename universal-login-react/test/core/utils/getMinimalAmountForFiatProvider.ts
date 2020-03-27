@@ -32,16 +32,16 @@ describe('UNIT: getMinimalAmount', () => {
 
   it('returns 2.0 for Ramp and future wallet', async () => {
     const walletService = {
-      getRequiredDeploymentBalance: () => '2'
-    }
+      getRequiredDeploymentBalance: () => '2',
+    };
     const paymentMethod = TopUpProvider.RAMP;
     expect(await getMinimalAmount(walletService as any, paymentMethod)).to.eq('2.0');
   });
 
   it('returns 30.0 for Safello and future wallet', async () => {
     const walletService = {
-      getRequiredDeploymentBalance: () => '2'
-    }
+      getRequiredDeploymentBalance: () => '2',
+    };
     const paymentMethod = TopUpProvider.SAFELLO;
     expect(await getMinimalAmount(walletService as any, paymentMethod)).to.eq('30.0');
   });
@@ -50,9 +50,9 @@ describe('UNIT: getMinimalAmount', () => {
     const walletService = {
       getRequiredDeploymentBalance: () => {
         throw new InvalidWalletState('Future', 'Deployed');
-      }
-    }
-    const paymentMethod =  TopUpProvider.SAFELLO;
+      },
+    };
+    const paymentMethod = TopUpProvider.SAFELLO;
     expect(await getMinimalAmount(walletService as any, paymentMethod)).to.eq('30.0');
   });
 
@@ -60,9 +60,9 @@ describe('UNIT: getMinimalAmount', () => {
     const walletService = {
       getRequiredDeploymentBalance: () => {
         throw new InvalidWalletState('Future', 'Deployed');
-      }
-    }
-    const paymentMethod =  TopUpProvider.RAMP;
+      },
+    };
+    const paymentMethod = TopUpProvider.RAMP;
     expect(await getMinimalAmount(walletService as any, paymentMethod)).to.eq('1.0');
   });
 });

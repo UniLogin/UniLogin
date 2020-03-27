@@ -58,7 +58,6 @@ export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: A
           }
         </div>
       </div>
-      <InfoText>{`Minimum amount is ${minimumAmount} ETH`}</InfoText>
     </>
   );
 };

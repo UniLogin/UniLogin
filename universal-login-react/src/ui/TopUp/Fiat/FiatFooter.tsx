@@ -19,8 +19,7 @@ interface FiatFooterProps {
 
 export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
   const [minimumAmount] = useAsync(async () => {
-    if(paymentMethod)
-      return getMinimalAmount(walletService, paymentMethod);
+    if (paymentMethod) {return getMinimalAmount(walletService, paymentMethod);}
   }, [paymentMethod]);
 
   switch (paymentMethod) {
