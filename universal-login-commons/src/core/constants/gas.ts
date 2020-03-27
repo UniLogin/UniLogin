@@ -4,7 +4,7 @@ import {multiplyBy150Percent} from '../utils/multiplyBy150Percent';
 
 export const DEFAULT_GAS_PRICE = 10000000000;
 
-export const DEFAULT_GAS_LIMIT = 200000;
+export const DEFAULT_GAS_LIMIT = 500000;
 
 export const SEND_TRANSACTION_GAS_LIMIT = utils.bigNumberify(200000);
 
