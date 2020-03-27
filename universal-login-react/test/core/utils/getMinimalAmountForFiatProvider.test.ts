@@ -31,9 +31,14 @@ describe('UNIT: getMinimalAmountForFiatProvider', () => {
       expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount)).to.eq('30');
     });
 
-    it('return value other then minimal amount', async () => {
+    it('return value higher then minimal amount', async () => {
       const bigMinimalAmount = '100';
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount)).not.to.eq('30');
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount)).to.eq('100');
+    });
+
+    it('return value higher then minimal amount with ceiling', async () => {
+      const bigMinimalAmount = '100.011';
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount)).to.eq('100.02');
     });
   });
 });
