@@ -196,8 +196,16 @@ export class ULWeb3Provider implements Provider {
     return transactionHash;
   }
 
+  private getDecodedMessage(message: string) {
+    try {
+      return utils.toUtf8String(message);
+    } catch {
+      return message;
+    }
+  }
+
   async sign(address: string, message: string) {
-    const decodedMessage = utils.toUtf8String(message);
+    const decodedMessage = this.getDecodedMessage(message);
     if (!await this.uiController.signChallenge('Sign message', decodedMessage)) {
       return constants.HashZero;
     }

@@ -9,6 +9,7 @@ import {RelayerUnderTest} from '@unilogin/relayer';
 import {createWallet} from '@unilogin/sdk/testutils';
 import {ULWeb3RootProps} from '../src/ui/react/ULWeb3Root';
 import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWeb3';
+import {TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
 
 chai.use(chaiAsPromised);
 
@@ -170,6 +171,21 @@ describe('INT: ULWeb3Provider', () => {
       const signature = await (web3.eth.personal.sign as any)(message, deployedWallet.contractAddress, '');
 
       const expectedSignature = await deployedWallet.signMessage(utils.toUtf8Bytes(message));
+      expect(signature).to.eq(expectedSignature);
+    });
+
+    it('web3.eth.personal.sign with not utf-8 message', async () => {
+      const message = '0xb72f46d69997b8227e966cf4676220d00a5f6caa4a3cf9a5bb0542f593dd0bc6';
+      const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
+      services.walletService.setWallet(deployedWallet.asApplicationWallet);
+
+      const signature = await new Promise(resolve => ulProvider.send(
+        {method: 'personal_sign', params: [message, deployedWallet.contractAddress, TEST_CONTRACT_ADDRESS]},
+        (_: any, response: any) => resolve(response.result),
+      ));
+
+      expect(ulProvider.uiController.signChallenge).calledOnceWithExactly('Sign message', message);
+      const expectedSignature = await deployedWallet.signMessage(message as any);
       expect(signature).to.eq(expectedSignature);
     });
   });
