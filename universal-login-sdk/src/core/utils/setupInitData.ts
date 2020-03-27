@@ -1,17 +1,26 @@
 import {utils} from 'ethers';
-import {AddressZero} from 'ethers/constants';
 import {DEPLOY_GAS_LIMIT} from '@unilogin/commons';
 import {encodeDataForSetup, INITIAL_REQUIRED_CONFIRMATIONS} from '@unilogin/contracts';
 import {ENSService} from '../../integration/ethereum/ENSService';
 
-export const setupInitData = async (publicKey: string, ensName: string, gasPrice: string, gasToken: string, ensService: ENSService, relayerAddress: string) => {
+type InitDataParameters = {
+  publicKey: string;
+  ensName: string;
+  gasPrice: string;
+  gasToken: string;
+  ensService: ENSService;
+  relayerAddress: string;
+  fallbackHandler: string;
+};
+
+export const setupInitData = async ({publicKey, ensName, gasPrice, gasToken, ensService, relayerAddress, fallbackHandler}: InitDataParameters) => {
   const ensRegistrarData = await ensService.getRegistrarData(ensName);
   const deployment = {
     owners: [publicKey],
     requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
     deploymentCallAddress: ensService.ensRegistrarAddress,
     deploymentCallData: ensRegistrarData,
-    fallbackHandler: AddressZero,
+    fallbackHandler,
     paymentToken: gasToken,
     payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),
     refundReceiver: relayerAddress,

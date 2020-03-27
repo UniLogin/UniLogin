@@ -10,11 +10,10 @@ import {
   waitForContractDeploy,
   DEPLOY_GAS_LIMIT,
 } from '@unilogin/commons';
-import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, deployProxyFactory, deployGnosisSafe, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@unilogin/contracts';
+import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, deployProxyFactory, deployGnosisSafe, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {getFutureAddress} from '@unilogin/contracts/testutils';
 import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
-import {AddressZero} from 'ethers/constants';
 
 export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
@@ -62,10 +61,11 @@ export const startRelayerWithRefund = async (port = '33111') => {
   const [deployer, wallet, otherWallet] = getWallets(provider);
   const walletContract = await deployGnosisSafe(deployer);
   const factoryContract = await deployProxyFactory(deployer);
+  const fallbackHandlerContract = await deployDefaultCallbackHandler(deployer);
   const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
-  const {relayer, mockToken, ensAddress} = await RelayerUnderTest.createPreconfiguredRelayer({port, wallet: deployer, walletContract, factoryContract, ensRegistrar});
+  const {relayer, mockToken, ensAddress} = await RelayerUnderTest.createPreconfiguredRelayer({port, wallet: deployer, walletContract, factoryContract, ensRegistrar, fallbackHandlerContract});
   await relayer.start();
-  return {provider, relayer, mockToken, factoryContract, walletContract, deployer, ensAddress, wallet, otherWallet, ensRegistrar};
+  return {provider, relayer, mockToken, factoryContract, walletContract, deployer, ensAddress, wallet, otherWallet, ensRegistrar, fallbackHandlerContract};
 };
 
 export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPrice, gasToken = ETHER_NATIVE_TOKEN.address) => {
@@ -78,7 +78,7 @@ export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPri
   return encodeInitializeWithENSData([keyPair.publicKey, hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress, gasPrice, gasToken]);
 };
 
-export const getSetupData = async (keyPair, ensName, ensAddress, provider, gasPrice, relayerAddress, ensRegistrarAddress, gasToken = ETHER_NATIVE_TOKEN.address) => {
+export const getSetupData = async (keyPair, ensName, ensAddress, provider, gasPrice, relayerAddress, ensRegistrarAddress, fallbackHandlerAddress, gasToken = ETHER_NATIVE_TOKEN.address) => {
   const [label, domain] = parseDomain(ensName);
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
   const node = utils.namehash(`${label}.${domain}`);
@@ -90,7 +90,7 @@ export const getSetupData = async (keyPair, ensName, ensAddress, provider, gasPr
     requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
     deploymentCallAddress: ensRegistrarAddress,
     deploymentCallData: new utils.Interface(gnosisSafe.ENSRegistrar.interface).functions.register.encode([hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress]),
-    fallbackHandler: AddressZero,
+    fallbackHandler: fallbackHandlerAddress,
     paymentToken: gasToken,
     payment: utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT).toString(),
     refundReceiver: relayerAddress,

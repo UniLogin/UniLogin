@@ -25,8 +25,8 @@ describe('INT: Authorisation Store', async () => {
     [wallet, otherWallet] = getWallets(provider);
     database = getKnexConfig();
     authorisationStore = new AuthorisationStore(database);
-    const {walletService, factoryContract, ensService, ensRegistrar, walletContractAddress} = await setupWalletService(wallet);
-    const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar, walletContractAddress);
+    const {walletService, factoryContract, ensService, ensRegistrar, walletContractAddress, fallbackHandler} = await setupWalletService(wallet);
+    const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar, walletContractAddress, fallbackHandler.address);
     await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
     contractAddress = futureContractAddress;
   });

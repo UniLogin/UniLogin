@@ -27,6 +27,7 @@ export interface PublicRelayerConfig {
   ensRegistrar: string;
   supportedTokens: SupportedToken[];
   factoryAddress: string;
+  fallbackHandlerAddress: string;
   walletContractAddress: string;
   chainSpec: ChainSpec;
   contractWhiteList: ContractWhiteList;

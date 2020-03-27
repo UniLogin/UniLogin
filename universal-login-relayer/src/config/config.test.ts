@@ -12,6 +12,7 @@ export const config: Config = Object.freeze({
   },
   ensRegistrars: ['GENERATED'],
   ensRegistrar: 'GENERATED',
+  fallbackHandlerAddress: 'GENERATED',
   walletContractAddress: 'GENERATED',
   contractWhiteList: {
     proxy: ['GENERATED'],

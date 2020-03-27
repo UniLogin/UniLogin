@@ -9,7 +9,7 @@ import {
   getContractHash,
   withENS,
 } from '@unilogin/commons';
-import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory} from '@unilogin/contracts';
+import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
@@ -28,22 +28,24 @@ type CreateRelayerArgs = {
   walletContract: Contract;
   factoryContract: Contract;
   ensRegistrar: Contract;
+  fallbackHandlerContract: Contract;
 };
 
 export class RelayerUnderTest extends Relayer {
   static async deployBaseContracts(wallet: Wallet) {
     const walletContract = await deployGnosisSafe(wallet);
     const factoryContract = await deployProxyFactory(wallet);
+    const fallbackHandlerContract = await deployDefaultCallbackHandler(wallet);
     const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
-    return {walletContract, factoryContract, ensRegistrar};
+    return {walletContract, factoryContract, ensRegistrar, fallbackHandlerContract};
   }
 
   static async createPreconfigured(wallet: Wallet, port = '33111') {
-    const {walletContract, factoryContract, ensRegistrar} = await RelayerUnderTest.deployBaseContracts(wallet);
-    return this.createPreconfiguredRelayer({port, wallet, walletContract, factoryContract, ensRegistrar});
+    const {walletContract, factoryContract, ensRegistrar, fallbackHandlerContract} = await RelayerUnderTest.deployBaseContracts(wallet);
+    return this.createPreconfiguredRelayer({port, wallet, walletContract, factoryContract, ensRegistrar, fallbackHandlerContract});
   }
 
-  static async createPreconfiguredRelayer({port, wallet, walletContract, factoryContract, ensRegistrar}: CreateRelayerArgs) {
+  static async createPreconfiguredRelayer({port, wallet, walletContract, factoryContract, ensRegistrar, fallbackHandlerContract}: CreateRelayerArgs) {
     const ensBuilder = new ENSBuilder(wallet);
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
@@ -66,6 +68,7 @@ export class RelayerUnderTest extends Relayer {
         ensAddress: ensBuilder.ens.address,
       },
       ensRegistrars: [DOMAIN],
+      fallbackHandlerAddress: fallbackHandlerContract.address,
       ensRegistrar: ensRegistrar.address,
       walletContractAddress: walletContract.address,
       contractWhiteList,
@@ -73,7 +76,7 @@ export class RelayerUnderTest extends Relayer {
       supportedTokens,
     };
     const relayer = RelayerUnderTest.createTestRelayer(overrideConfig, providerWithENS);
-    return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletContract, mockToken, provider: providerWithENS, ensRegistrar};
+    return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletContract, mockToken, provider: providerWithENS, ensRegistrar, fallbackHandlerContract};
   }
 
   static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.Provider) {

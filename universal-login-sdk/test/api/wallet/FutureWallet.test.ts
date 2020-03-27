@@ -26,7 +26,7 @@ describe('UNIT: FutureWallet', () => {
     mockSDK = {
       provider: provider,
     } as any;
-    futureWallet = new FutureWallet(serializableFutureWallet, mockSDK, {} as ENSService, TEST_CONTRACT_ADDRESS);
+    futureWallet = new FutureWallet(serializableFutureWallet, mockSDK, {} as ENSService, TEST_CONTRACT_ADDRESS, AddressZero);
   });
 
   it('waits for Balance', async () => {
