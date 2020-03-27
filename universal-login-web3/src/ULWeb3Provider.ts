@@ -1,4 +1,5 @@
 import {Provider, JsonRPCRequest, Callback, JsonRPCResponse} from 'web3/providers';
+import Web3 from 'web3';
 import {Config, getConfigForNetwork} from './config';
 import UniversalLoginSDK, {WalletService, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
@@ -196,8 +197,16 @@ export class ULWeb3Provider implements Provider {
     return transactionHash;
   }
 
+  private getDecodedMessage(message: string) {
+    try {
+      return utils.toUtf8String(message);
+    } catch {
+      return message;
+    }
+  }
+
   async sign(address: string, message: string) {
-    const decodedMessage = utils.toUtf8String(message);
+    const decodedMessage = this.getDecodedMessage(message);
     if (!await this.uiController.signChallenge('Sign message', decodedMessage)) {
       return constants.HashZero;
     }
