@@ -130,7 +130,7 @@ describe('Message', () => {
       safeTxGas: transferMessage.safeTxGas,
       baseGas: '0',
       gasToken: '0x0000000000000000000000000000000000000000',
-      signature: '0x6da7c3dfa9aaa0f07b7be6f7338de2a5cf6719ee523f40560f79ace402a9008f79cd86bd59709d5947e0228fe596e9188fc508889984aabebe504d6b8a9a5cdd1c',
+      signature: '0x83ddce07499f8487e677f314214f6435cc1f51f60830fcaccb308b26a638ddf50765f277929f8be52b654c7cf50e7ec8d94bff54f7db49d8236e1c41376ac9251b',
     };
 
     const signedMessage = unsignedMessageToSignedMessage({...transferMessage, from: '0x'}, TEST_PRIVATE_KEY);
