@@ -1,5 +1,4 @@
 import {Provider, JsonRPCRequest, Callback, JsonRPCResponse} from 'web3/providers';
-import Web3 from 'web3';
 import {Config, getConfigForNetwork} from './config';
 import UniversalLoginSDK, {WalletService, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
