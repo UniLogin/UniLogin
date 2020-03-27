@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {utils} from 'ethers';
 import {getPriceInEther} from '../../../src/core/utils/getPriceInEther';
 
-describe('getPriceInEther', () => {
+describe('UNIT: getPriceInEther', () => {
   it('no decimal', () => {
     expect(getPriceInEther('1', '2')).to.deep.eq(utils.parseEther('0.5'));
   });

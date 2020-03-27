@@ -4,13 +4,13 @@ import {getMinimalAmountForFiatProvider} from '../../../src/core/utils/getMinima
 import {TopUpProvider} from '../../../src/core/models/TopUpProvider';
 import * as sdk from '@unilogin/sdk';
 
-describe('getMinimalAmountForFiatProvider', () => {
+describe('UNIT: getMinimalAmountForFiatProvider', () => {
+  before(() => {
+    sinon.stub(sdk, 'getEtherPriceInCurrency').returns(new Promise((resolve) => resolve('1')));
+  });
+
   describe('RAMP provider', () => {
     const paymentMethod = TopUpProvider.RAMP;
-
-    before(() => {
-      sinon.stub(sdk, 'getEtherPriceInCurrency').returns(new Promise((resolve) => resolve('1')));
-    });
 
     it('return provider minimal amount', async () => {
       const bigMinimalAmount = '2';
@@ -20,6 +20,20 @@ describe('getMinimalAmountForFiatProvider', () => {
     it('return UniversalLogin minimal amount', async () => {
       const smallMinimalAmount = '0.0001';
       expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount)).to.eq('1.0');
+    });
+  });
+
+  describe('SAFELLO provider', () => {
+    const paymentMethod = TopUpProvider.SAFELLO;
+
+    it('return Safello minimal amount', async () => {
+      const smallMinimalAmount = '1';
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount)).to.eq('30');
+    });
+
+    it('return value other then minimal amount', async () => {
+      const bigMinimalAmount = '100';
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount)).not.to.eq('30');
     });
   });
 });

@@ -51,7 +51,7 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
             <img src={Yoti} srcSet={Yoti2x} className="yoti-logo" alt="Yoti" />
           </div>
           <div className="info-block info-row">
-            <p className="info-text info-text-hint">Minimum amount is 30€</p>
+            <p className="info-text info-text-hint">{`Minimum amount is ${minimumAmount}€`}</p>
           </div>
         </>
       );
