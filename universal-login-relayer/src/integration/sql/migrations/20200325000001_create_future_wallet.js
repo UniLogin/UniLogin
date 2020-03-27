@@ -11,7 +11,7 @@ exports.up = async (knex) => {
     table.string('gasPrice').notNullable();
     table.string('gasToken').notNullable();
     table.string('ensName').notNullable();
-    table.timestamp('created_at').notNullable();
+    table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
   });
 }
 
