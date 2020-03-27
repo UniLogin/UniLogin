@@ -17,7 +17,7 @@ export const getMinimalAmountForFiatProvider = async (paymentMethod: TopUpProvid
       ));
     }
     case 'SAFELLO': {
-      const providerMinimalAmountInFiat = '1';
+      const providerMinimalAmountInFiat = '30';
       const etherPriceInEUR = (await getEtherPriceInCurrency('EUR')).toString();
       const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat, etherPriceInEUR);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
@@ -25,9 +25,7 @@ export const getMinimalAmountForFiatProvider = async (paymentMethod: TopUpProvid
         requiredDeploymentBalanceAsBigNumber,
         providerMinimalAmount,
       )));
-      const minimumForSafello = 30;
-      const ethersInEUR = ethers * Number(etherPriceInEUR);
-      const result = ethersInEUR > minimumForSafello ? ethersInEUR : minimumForSafello;
+      const result = ethers * Number(etherPriceInEUR);
       return ValueRounder.ceil(result.toString(), 2);
     }
     default:
