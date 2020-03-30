@@ -11,7 +11,7 @@ class RelayerRequestSignatureValidator {
     const {contractAddress, signature} = relayerRequest;
     const signer = await this.walletContractService.recoverFromRelayerRequest(relayerRequest);
     const payloadDigest = await this.walletContractService.getRelayerRequestMessage(relayerRequest);
-    const isCorrectAddress = await this.walletContractService.isValidSignature(payloadDigest, contractAddress, signature!);
+    const isCorrectAddress = await this.walletContractService.isValidSignature(payloadDigest, contractAddress, signature);
     ensure(isCorrectAddress === ERC1271.MAGICVALUE, UnauthorisedAddress, signer);
   }
 }
