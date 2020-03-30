@@ -1,4 +1,5 @@
 import React, {ErrorInfo} from 'react';
+import {ErrorMessage} from './ErrorMessage';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -12,9 +13,9 @@ export class ErrorBoundary extends React.Component {
     return {hasError: true};
   }
 
-  componentDidCatch(error: unknown, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({
-      message: (error as any).toString(),
+      message: error.toString(),
     });
     if (process.env.NODE_ENV !== 'test') {
       console.error(error, errorInfo.componentStack);
@@ -23,11 +24,10 @@ export class ErrorBoundary extends React.Component {
 
   render() {
     if ((this.state as ErrorBoundaryState).hasError) {
-      return (
-        <div>
-          {this.state.message}
-        </div>
-      );
+      return <ErrorMessage
+        title={'Something went wrong'}
+        message={this.state.message}
+      />;
     }
 
     return this.props.children;
