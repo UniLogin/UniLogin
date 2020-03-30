@@ -1,12 +1,13 @@
 import {Router, Request} from 'express';
 import MessageHandler from '../../core/services/execution/messages/MessageHandler';
-import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash} from '@unilogin/commons';
+import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash, SerializableFutureWallet} from '@unilogin/commons';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject, asNumber} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
 import {asArrayish, asApplicationInfo} from '../utils/sanitizers';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
+import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
 
 const messageHandling = (messageHandler: MessageHandler) =>
   async (data: {body: SignedMessage}) => {
@@ -35,7 +36,14 @@ const getDeploymentStatus = (deploymentHandler: DeploymentHandler) =>
     return status ? responseOf(status, 200) : responseOf('Not Found', 404);
   };
 
-export default (deploymentHandler: DeploymentHandler, messageHandler: MessageHandler) => {
+const futureWalletHandling = (futureWalletHandler: FutureWalletHandler) =>
+  async (data: {body: SerializableFutureWallet & {publicKey: string}}, req: Request) => {
+    const futureWallet = data.body;
+    const [contractAddress] = await futureWalletHandler.handleFutureWallet(futureWallet);
+    return responseOf({contractAddress}, 201);
+  }
+
+export default (deploymentHandler: DeploymentHandler, messageHandler: MessageHandler, futureWalletHandler: FutureWalletHandler) => {
   const router = Router();
 
   router.post('/execution', asyncHandler(
@@ -85,6 +93,19 @@ export default (deploymentHandler: DeploymentHandler, messageHandler: MessageHan
       deploymentHash: asDeploymentHash,
     }),
     getDeploymentStatus(deploymentHandler),
+  ));
+
+  router.post('/future', asyncHandler(
+    sanitize({
+      body: asObject({
+        contractAddress: asEthAddress,
+        publicKey: asEthAddress,
+        ensName: asString,
+        gasPrice: asString,
+        gasToken: asString,
+      }),
+    }),
+    futureWalletHandling(futureWalletHandler),
   ));
 
   return router;

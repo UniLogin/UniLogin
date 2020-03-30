@@ -39,6 +39,8 @@ import {MessageHandlerValidator} from '../../core/services/validators/MessageHan
 import PendingMessages from '../../core/services/execution/messages/PendingMessages';
 import {WalletContractService} from '../../integration/ethereum/WalletContractService';
 import {GnosisSafeService} from '../../integration/ethereum/GnosisSafeService';
+import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
+import {FutureWalletStore} from '../../integration/sql/services/FutureWalletStore';
 
 const defaultPort = '3311';
 
@@ -112,9 +114,11 @@ class Relayer {
     const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService);
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
+    const futureWalletStore = new FutureWalletStore(this.database);
+    const futureWalletHandler = new FutureWalletHandler(futureWalletStore);
 
     this.app.use(bodyParser.json());
-    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler));
+    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, futureWalletHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(authorisationService));
     this.app.use('/devices', DevicesRouter(devicesService));
