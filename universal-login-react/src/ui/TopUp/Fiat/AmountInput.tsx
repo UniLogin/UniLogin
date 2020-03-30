@@ -3,7 +3,6 @@ import {useClassFor, classForComponent} from '../../utils/classFor';
 import './../../styles/base/components/amountSelect.sass';
 import './../../styles/themes/UniLogin/components/amountSelectThemeUniLogin.sass';
 import {Label} from '../../commons/Form/Label';
-import {InfoText} from '../../commons/Text/InfoText';
 
 export interface AmountInputProps {
   amount: string;
@@ -53,7 +52,6 @@ export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: A
           }
         </div>
       </div>
-      <InfoText>Minimum amount is 30 GBP</InfoText>
     </>
   );
 };

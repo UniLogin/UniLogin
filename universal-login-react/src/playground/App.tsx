@@ -56,6 +56,7 @@ export const App = () => {
     deploy: async () => deployingWallet,
     waitForBalance: (async () => {}) as any,
     setSupportedToken: (() => {}) as any,
+    getMinimalAmount: () => '1',
   } as any;
 
   return (
