@@ -25,8 +25,10 @@ export function CreateTopUp() {
         walletService={walletService}
         isModal
         hideModal={() => {
-          walletService.disconnect();
-          history.push('/selectDeployName');
+          if (confirm('Are you sure you want to leave? You will lose access to this account.')) {
+            walletService.disconnect();
+            history.push('/selectDeployName');
+          }
         }}
         modalClassName="topup-modal-wrapper"
         logoColor="black"
