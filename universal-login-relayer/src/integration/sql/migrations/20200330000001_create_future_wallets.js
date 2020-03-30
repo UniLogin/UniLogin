@@ -7,8 +7,8 @@
 exports.up = async (knex) => {
   await knex.schema.createTable('future_wallets', (table) => {
     table.increments();
-    table.string('contractAddress').notNullable();
-    table.string('publicKey').notNullable();
+    table.string('contractAddress', 42).notNullable();
+    table.string('publicKey', 42).notNullable();
     table.string('ensName').notNullable();
     table.string('gasPrice').notNullable();
     table.string('gasToken').notNullable();

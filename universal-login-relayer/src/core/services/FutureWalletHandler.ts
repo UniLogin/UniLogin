@@ -4,7 +4,7 @@ import {FutureWalletStore} from '../../integration/sql/services/FutureWalletStor
 export class FutureWalletHandler {
   constructor(private futureWalletStore: FutureWalletStore) {}
 
-  handleFutureWallet(futureWallet: StoredFutureWallet) {
+  handle(futureWallet: StoredFutureWallet) {
     return this.futureWalletStore.add(futureWallet);
   }
 }

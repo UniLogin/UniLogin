@@ -37,9 +37,8 @@ const getDeploymentStatus = (deploymentHandler: DeploymentHandler) =>
   };
 
 const futureWalletHandling = (futureWalletHandler: FutureWalletHandler) =>
-  async (data: {body: StoredFutureWallet & {publicKey: string}}) => {
-    const futureWallet = data.body;
-    const [contractAddress] = await futureWalletHandler.handleFutureWallet(futureWallet);
+  async (data: {body: StoredFutureWallet}) => {
+    const [contractAddress] = await futureWalletHandler.handle(data.body);
     return responseOf({contractAddress}, 201);
   };
 

@@ -18,7 +18,7 @@ describe('INT: FutureWalletHandler', () => {
       gasPrice: '1',
       gasToken: ETHER_NATIVE_TOKEN.address,
     };
-    const [contractAddress] = await futureWalletHandler.handleFutureWallet(futureWallet);
+    const [contractAddress] = await futureWalletHandler.handle(futureWallet);
     expect(contractAddress).to.eq(futureWallet.contractAddress);
   });
 
