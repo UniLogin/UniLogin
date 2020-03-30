@@ -30,7 +30,7 @@ export const getMinimalAmount = (walletService: WalletService, paymentMethod: To
   } catch (error) {
     if (error.message === 'Wallet state is Deployed, but expected Future' ||
         error.message === 'this.state.wallet.getMinimalAmount is not a function') {
-        return getMinimalAmountForFiatProvider(paymentMethod, '0');
+      return getMinimalAmountForFiatProvider(paymentMethod, '0');
     }
   }
 };
