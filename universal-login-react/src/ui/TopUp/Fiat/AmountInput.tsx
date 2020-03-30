@@ -3,9 +3,6 @@ import {useClassFor, classForComponent} from '../../utils/classFor';
 import './../../styles/base/components/amountSelect.sass';
 import './../../styles/themes/UniLogin/components/amountSelectThemeUniLogin.sass';
 import {Label} from '../../commons/Form/Label';
-import {getMinimalAmountForFiatProvider} from '../../../core/utils/getMinimalAmountForFiatProvider';
-import {TopUpProvider} from '../../../core/models/TopUpProvider';
-import {useAsync} from '../../..';
 
 export interface AmountInputProps {
   amount: string;

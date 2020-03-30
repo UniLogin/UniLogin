@@ -14,7 +14,7 @@ export const getMinimalAmountForFiatProvider = async (paymentMethod: TopUpProvid
       return ValueRounder.ceil(utils.formatEther(bigNumberMax(
         requiredDeploymentBalanceAsBigNumber,
         providerMinimalAmount,
-      )), 4);
+      )));
     }
     case TopUpProvider.SAFELLO:
       return '30';
