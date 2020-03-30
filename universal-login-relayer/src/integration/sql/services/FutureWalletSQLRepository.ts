@@ -1,7 +1,7 @@
 import Knex from 'knex';
-import {FutureWallet} from '../../../core/models/FutureWallet'
+import {FutureWallet} from '../../../core/models/FutureWallet';
 
-export class FutureWalletSQLRepository{
+export class FutureWalletSQLRepository {
   tableName: string;
   constructor(public knex: Knex) {
     this.tableName = 'future_wallets';
@@ -21,7 +21,7 @@ export class FutureWalletSQLRepository{
   }
 
   async get(contractAddress: string) {
-    return await this.getFutureWallet(contractAddress);
+    return this.getFutureWallet(contractAddress);
   }
 
   private async getFutureWallet(contractAddress: string) {

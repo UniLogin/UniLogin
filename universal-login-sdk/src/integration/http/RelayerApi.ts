@@ -72,7 +72,7 @@ export class RelayerApi {
   }
 
   addNewFutureWallet(contractAddress: string, publicKey: string, ensName: string, gasPrice: string, gasToken: string): Promise<void> {
-    return this.http('POST', `/wallet/new_future`, {
+    return this.http('POST', '/wallet/new_future', {
       contractAddress,
       publicKey,
       gasPrice,
