@@ -31,9 +31,9 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
             <InfoText>You can pay with any UK bank or Revolut</InfoText>
             <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
-          <div className="info-block info-row">
+          {minimumAmount && <div className="info-block info-row">
             <InfoText>Minimum amount is {minimumAmount} ETH</InfoText>
-          </div>
+          </div>}
         </>
       );
 
