@@ -1,4 +1,4 @@
-import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus, Device} from '@unilogin/commons';
+import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus, Device, StoredFutureWallet} from '@unilogin/commons';
 import {fetch} from './fetch';
 
 export class RelayerApi {
@@ -69,5 +69,9 @@ export class RelayerApi {
 
   getDeploymentStatus(deploymentHash: string): Promise<DeploymentStatus> {
     return this.http('GET', `/wallet/deploy/${deploymentHash}`);
+  }
+
+  addFutureWallet(storedFutureWallet: StoredFutureWallet){
+    return this.http('POST', '/wallet/future', storedFutureWallet);
   }
 }

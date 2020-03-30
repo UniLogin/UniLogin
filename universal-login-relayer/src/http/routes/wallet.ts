@@ -1,6 +1,6 @@
 import {Router, Request} from 'express';
 import MessageHandler from '../../core/services/execution/messages/MessageHandler';
-import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash, SerializableFutureWallet} from '@unilogin/commons';
+import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash, StoredFutureWallet} from '@unilogin/commons';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject, asNumber} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
@@ -37,7 +37,7 @@ const getDeploymentStatus = (deploymentHandler: DeploymentHandler) =>
   };
 
 const futureWalletHandling = (futureWalletHandler: FutureWalletHandler) =>
-  async (data: {body: SerializableFutureWallet & {publicKey: string}}, req: Request) => {
+  async (data: {body: StoredFutureWallet & {publicKey: string}}) => {
     const futureWallet = data.body;
     const [contractAddress] = await futureWalletHandler.handleFutureWallet(futureWallet);
     return responseOf({contractAddress}, 201);

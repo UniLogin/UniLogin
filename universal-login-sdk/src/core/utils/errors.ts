@@ -22,7 +22,8 @@ type ErrorType =
   'NoSet' |
   'UnexpectedError' |
   'InvalidGasLimit' |
-  'InvalidObserverState';
+  'InvalidObserverState' |
+  'SavingFutureWalletFailed';
 
 export class SDKError extends Error {
   errorType: ErrorType;
@@ -217,5 +218,12 @@ export class InvalidObserverState extends Overridden {
   constructor() {
     super('Observer not yet started', 'InvalidObserverState');
     Object.setPrototypeOf(this, InvalidObserverState.prototype);
+  }
+}
+
+export class SavingFutureWalletFailed extends SDKError {
+  constructor() {
+    super('Saving future wallet failed', 'SavingFutureWalletFailed');
+    Object.setPrototypeOf(this, SavingFutureWalletFailed.prototype);
   }
 }

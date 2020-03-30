@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {StoredFutureWallet} from '../../../core/services/FutureWalletHandler';
+import {StoredFutureWallet} from '@unilogin/commons';
 
 export class FutureWalletStore {
   constructor(private database: Knex) {}
