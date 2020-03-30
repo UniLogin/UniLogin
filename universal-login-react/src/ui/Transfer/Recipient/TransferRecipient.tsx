@@ -1,4 +1,6 @@
 import React from 'react';
+import {Warning} from '../../commons/Warning';
+import {TRANSFER_WARNING} from '../../../core/constants/transferWarningMessage';
 
 export interface TransferRecipientProps {
   onChange: (recipient: string) => void;
@@ -20,6 +22,7 @@ export const TransferRecipient = ({onChange, errors}: TransferRecipientProps) =>
           />
         </div>
         {errors.length > 0 && <div className="hint transfer-recipient-hint">{errors[0]}</div>}
+        <Warning message={TRANSFER_WARNING} />
       </div>
     </>
   );
