@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {TEST_CONTRACT_ADDRESS, TEST_KEY, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
-import {FutureWalletHandler} from '../../../src/core/services/FutureWalletHandler'
+import {FutureWalletHandler} from '../../../src/core/services/FutureWalletHandler';
 import {FutureWalletStore} from '../../../src/integration/sql/services/FutureWalletStore';
 import getKnexConfig from '../../testhelpers/knex';
 import {clearDatabase} from '../../../src/http/relayers/RelayerUnderTest';

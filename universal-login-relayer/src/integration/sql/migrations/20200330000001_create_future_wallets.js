@@ -14,8 +14,8 @@ exports.up = async (knex) => {
     table.string('gasToken').notNullable();
     table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
   });
-}
+};
 
 exports.down = async (knex) => {
   await knex.schema.dropTable('future_wallets');
-}
+};

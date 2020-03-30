@@ -71,7 +71,7 @@ export class RelayerApi {
     return this.http('GET', `/wallet/deploy/${deploymentHash}`);
   }
 
-  addFutureWallet(storedFutureWallet: StoredFutureWallet){
+  addFutureWallet(storedFutureWallet: StoredFutureWallet) {
     return this.http('POST', '/wallet/future', storedFutureWallet);
   }
 }

@@ -25,12 +25,12 @@ describe('E2E: Relayer - future wallet', () => {
       ensName: 'name.mylogin.eth',
       gasToken: ETHER_NATIVE_TOKEN.address,
       gasPrice: '1',
-    }
+    };
     const result = await chai.request(relayerUrl)
       .post('/wallet/future')
       .send(serializedFutureWallet);
     expect(result.status).to.eq(201);
-    expect(result.body).to.deep.eq({contractAddress: serializedFutureWallet.contractAddress})
+    expect(result.body).to.deep.eq({contractAddress: serializedFutureWallet.contractAddress});
   });
 
   after(() => {

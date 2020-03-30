@@ -39,7 +39,7 @@ export class FutureWalletFactory {
       publicKey,
       ensName,
       gasPrice,
-      gasToken
+      gasToken,
     };
     const result = await this.sdk.relayerApi.addFutureWallet(storedFutureWallet);
     ensure(result.contractAddress === contractAddress, SavingFutureWalletFailed);

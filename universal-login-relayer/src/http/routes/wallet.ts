@@ -41,7 +41,7 @@ const futureWalletHandling = (futureWalletHandler: FutureWalletHandler) =>
     const futureWallet = data.body;
     const [contractAddress] = await futureWalletHandler.handleFutureWallet(futureWallet);
     return responseOf({contractAddress}, 201);
-  }
+  };
 
 export default (deploymentHandler: DeploymentHandler, messageHandler: MessageHandler, futureWalletHandler: FutureWalletHandler) => {
   const router = Router();
