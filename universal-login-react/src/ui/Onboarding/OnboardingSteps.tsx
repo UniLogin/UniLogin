@@ -23,8 +23,10 @@ export function OnboardingSteps({walletService, className, onCreate}: Onboarding
           modalClassName={className}
           walletService={walletService}
           hideModal={async () => {
-            walletService.disconnect();
-            history.push('/selector');
+            if (confirm('Are you sure you want to leave? You will lose access to this account.')) {
+              walletService.disconnect();
+              history.push('/selector');
+            }
           }}
           isModal
         />
