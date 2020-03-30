@@ -5,3 +5,11 @@ export interface SerializableFutureWallet {
   ensName: string;
   gasToken: string;
 }
+
+export interface StoredFutureWallet {
+  contractAddress: string;
+  publicKey: string;
+  ensName: string;
+  gasPrice: string;
+  gasToken: string;
+};

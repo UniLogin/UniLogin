@@ -22,7 +22,7 @@ export {ApplicationInfo, Device, DeviceInfo, Notification} from './core/models/n
 export {LocalizationConfig, RampConfig, SafelloConfig, WyreConfig} from './core/models/onRamp';
 export {ChainSpec, ContractWhiteList, OnRampConfig, PublicRelayerConfig, SupportedToken} from './core/models/relayer';
 export {RelayerRequest} from './core/models/relayerRequest';
-export {SerializableFutureWallet} from './core/models/SerializableFutureWallet';
+export {SerializableFutureWallet, StoredFutureWallet} from './core/models/SerializableFutureWallet';
 export {Suggestions} from './core/models/Suggestions';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
 export {TransactionOverrides, TransferDetails} from './core/models/transactions';
