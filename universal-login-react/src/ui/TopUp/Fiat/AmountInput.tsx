@@ -9,11 +9,15 @@ export interface AmountInputProps {
   selectedCurrency: string;
   setCurrency: (currency: string) => void;
   onChange: (amount: string) => void;
+  isDeployment?: boolean;
 }
 
-export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange}: AmountInputProps) => {
+const REGULAR_CURRENCIES_LIST = ['ETH', 'DAI'];
+const DEPLOYMENT_CURRENCIES_LIST = ['ETH'];
+
+export const AmountInput = ({amount, isDeployment, selectedCurrency, setCurrency, onChange}: AmountInputProps) => {
   const [expanded, setExpanded] = useState(false);
-  const currenciesList = ['ETH', 'DAI'];
+  const currenciesList = isDeployment ? DEPLOYMENT_CURRENCIES_LIST : REGULAR_CURRENCIES_LIST;
   const disabled = currenciesList.length < 2;
 
   const onCurrencyItemClick = (currency: string) => {
