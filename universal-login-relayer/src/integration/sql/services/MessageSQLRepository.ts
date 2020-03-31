@@ -58,8 +58,8 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   async remove(messageHash: string) {
     const messageItem: MessageItem = await this.get(messageHash);
     await this.knex('signature_key_pairs')
-      .delete()
-      .where('messageHash', messageHash);
+      .where('messageHash', messageHash)
+      .del();
     await super.remove(messageHash);
     return messageItem;
   }

@@ -23,6 +23,6 @@ export class DevicesStore {
     return this.database(this.tableName)
       .where({contractAddress})
       .andWhere({publicKey})
-      .delete();
+      .del();
   }
 }
