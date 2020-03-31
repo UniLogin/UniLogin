@@ -40,9 +40,16 @@ export const Devices = ({walletService, onAccountDisconnected, className, basePa
       <Route path={join(basePath, 'connectionSuccess')} exact>
         <ConnectionSuccessNotification basePath={basePath} className={className} />
       </Route>
-      <Route path={join(basePath, 'connectionFailed')} exact>
-        <ErrorMessage className={className} />
-      </Route>
+      <Route
+        path={join(basePath, 'connectionFailed')}
+        exact
+        render={({location}) =>
+          <ErrorMessage
+            className={className}
+            title={'Connecting device failed'}
+            message={location.state?.error}
+          /> }
+      />
       <Route path={join(basePath, 'disconnectAccount')} exact>
         <DisconnectAccount
           walletService={walletService}

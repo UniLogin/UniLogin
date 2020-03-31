@@ -46,7 +46,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
       history.replace(join(devicesBasePath, 'connectionSuccess'));
     } catch (e) {
       console.error(e);
-      history.replace(join(devicesBasePath, 'connectionFailed'));
+      history.replace(join(devicesBasePath, 'connectionFailed'), {error: e.message});
     }
   };
 

@@ -79,6 +79,7 @@ export const TopUpDetails = ({walletService, onPayClick, logoColor, amount, onAm
               setCurrency={setCurrency}
               amount={amount}
               onChange={onAmountChange}
+              isDeployment={!walletService.walletDeployed.get()}
             />
           }
           <div className={classForComponent('fiat-bottom')}>
