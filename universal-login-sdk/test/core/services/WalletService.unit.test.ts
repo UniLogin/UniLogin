@@ -38,6 +38,7 @@ describe('UNIT: WalletService', () => {
         mineableFactoryTick: 10,
         mineableFactoryTimeout: 100,
       },
+      getRelayerConfig: sinon.stub().returns({chainSpec: {name: 'ganache'}}),
     };
 
     walletFromPassphrase.withArgs(name, passphrase).resolves({
@@ -100,23 +101,23 @@ describe('UNIT: WalletService', () => {
     walletService.setWallet(applicationWallet);
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
-    expect(storage.set).to.be.calledWith('wallet', JSON.stringify({kind: 'None'}));
+    expect(storage.set).to.be.calledWith('wallet-ganache', JSON.stringify({kind: 'None'}));
   });
 
   it('connect set state to Deployed', () => {
     walletService.setWallet(applicationWallet);
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include(applicationWallet);
-    expect(storage.set).to.be.calledWith('wallet', JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
+    expect(storage.set).to.be.calledWith('wallet-ganache', JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
   });
 
   it('roundtrip', () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
     walletService.setFutureWallet(futureWallet, 'justyna.mylogin.eth');
-    expect(storage.set).to.be.calledWith('wallet', JSON.stringify({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet}));
+    expect(storage.set).to.be.calledWith('wallet-ganache', JSON.stringify({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet}));
     expect(storage.set).to.be.calledWith(
-      'wallet',
+      'wallet-ganache',
       JSON.stringify({
         kind: 'Future',
         name: 'justyna.mylogin.eth',
@@ -144,7 +145,7 @@ describe('UNIT: WalletService', () => {
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include(applicationWallet);
 
-    expect(storage.set).to.be.calledWith('wallet', JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
+    expect(storage.set).to.be.calledWith('wallet-ganache', JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
   });
 
   it('should throw if future wallet is not set', () => {
@@ -156,8 +157,8 @@ describe('UNIT: WalletService', () => {
     expect(() => walletService.setFutureWallet(futureWallet, 'name.mylogin.eth')).to.throw('Wallet cannot be overridden');
   });
 
-  it('should load from storage', () => {
-    walletService.loadFromStorage();
+  it('should load from storage', async () => {
+    await walletService.loadFromStorage();
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include(applicationWallet);
   });
