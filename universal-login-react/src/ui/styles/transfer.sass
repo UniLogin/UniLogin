@@ -71,6 +71,7 @@
     position: relative
     margin-top: 15px
     margin-bottom: 65px
+    z-index: 100
 
     +media(s)
       margin-bottom: 1.5rem
@@ -83,6 +84,12 @@
     margin: 0 auto
     transform: translateY(100%)
     overflow: auto
+
+  .currency-scrollable-list.one
+    height: 94px
+
+  .currency-scrollable-list.many
+    height: 138px
 
   .currency-accordion-btn::after
     content: ''
