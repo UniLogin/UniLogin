@@ -32,16 +32,16 @@ const AppBootstrapper = () => {
 
   return (
     <ServiceContext.Provider value={services}>
-      <ThemeProvider theme={'jarvis'}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ThemeProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ServiceContext.Provider>
   );
 };
 
 render(
-  <ErrorBoundary>
-    <AppBootstrapper />
-  </ErrorBoundary>, document.getElementById('app'));
+  <ThemeProvider theme={'jarvis'}>
+    <ErrorBoundary>
+      <AppBootstrapper />
+    </ErrorBoundary>
+  </ThemeProvider>, document.getElementById('app'));
