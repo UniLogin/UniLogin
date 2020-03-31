@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@unilogin/commons';
 import UniversalLoginSDK from '@unilogin/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
-import {useTogglerWithSetter} from '../../hooks/useToggler';
+import {useToggler} from '../../hooks/useToggler';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
 import {useOutsideClick} from '../../hooks/useClickOutside';
 
@@ -15,8 +15,8 @@ interface TransferDropdownProps {
 }
 
 export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, setToken, className}: TransferDropdownProps) => {
+  const {visible, toggle} = useToggler();
   const ref = useRef(null);
-  const {visible, toggle} = useTogglerWithSetter();
   useOutsideClick(ref, () => toggle(false));
 
   const onClick = (token: TokenDetails) => {
