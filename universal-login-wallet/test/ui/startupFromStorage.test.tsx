@@ -37,21 +37,21 @@ describe('UI: Startup from stored wallet state', () => {
   });
 
   it('starts when storage is None', async () => {
-    services.storageService.set('wallet', JSON.stringify({kind: 'None'}));
+    services.storageService.set('wallet-ganache', JSON.stringify({kind: 'None'}));
     await services.walletService.loadFromStorage();
     appWrapper = mountWithContext(<App/>, services, ['/wallet']);
     expect(appWrapper.text().includes('Welcome in the Jarvis Network')).to.be.true;
   });
 
   it('starts when storage is Future', async () => {
-    services.storageService.set('wallet', JSON.stringify({kind: 'Future', name, wallet: {contractAddress, privateKey, ensName: name, gasPrice: TEST_GAS_PRICE, gasToken: ETHER_NATIVE_TOKEN.address}}));
+    services.storageService.set('wallet-ganache', JSON.stringify({kind: 'Future', name, wallet: {contractAddress, privateKey, ensName: name, gasPrice: TEST_GAS_PRICE, gasToken: ETHER_NATIVE_TOKEN.address}}));
     await services.walletService.loadFromStorage();
     appWrapper = mountWithContext(<App/>, services, ['/create/topUp']);
     expect(appWrapper.text().includes('Choose a top-up method')).to.be.true;
   });
 
   it('starts when storage is Deployed', async () => {
-    services.storageService.set('wallet', JSON.stringify({kind: 'Deployed', wallet: {name, privateKey, contractAddress}}));
+    services.storageService.set('wallet-ganache', JSON.stringify({kind: 'Deployed', wallet: {name, privateKey, contractAddress}}));
     await services.walletService.loadFromStorage();
     appWrapper = mountWithContext(<App/>, services, ['/wallet']);
     const appPage = new AppPage(appWrapper);
@@ -61,7 +61,7 @@ describe('UI: Startup from stored wallet state', () => {
 
   afterEach(async () => {
     appWrapper.unmount();
-    await services.sdk.finalizeAndStop();
+    await services.stop();
     await relayer.stop();
   });
 });
