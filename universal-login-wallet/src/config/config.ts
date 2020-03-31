@@ -8,15 +8,7 @@ export default Object.freeze({
     domains: ['mylogin.eth'],
     relayerUrl: 'http://localhost:3311',
     jsonRpcUrl: 'http://localhost:18545',
-    tokens: [ETHER_NATIVE_TOKEN.address, process.env.DAI_TOKEN_ADDRESS!, process.env.JRT_TOKEN_ADDRESS!],
-  },
-
-  test: {
-    network: 'ganache' as Network,
-    domains: ['mylogin.eth'],
-    relayerUrl: 'http://localhost:3311',
-    jsonRpcUrl: 'http://localhost:18545',
-    tokens: [ETHER_NATIVE_TOKEN.address, process.env.DAI_TOKEN_ADDRESS!, process.env.JRT_TOKEN_ADDRESS!],
+    tokens: [ETHER_NATIVE_TOKEN.address, '0xd19Fbe8878507D0Aa9f2F6Acf40Ff6C21d6CecE8', '0x9Ad7E60487F3737ed239DAaC172A4a9533Bd9517'],
   },
 
   production: {
