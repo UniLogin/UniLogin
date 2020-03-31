@@ -74,7 +74,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
       return (
         <>
           <ModalWrapper >
-            <AppPreloader description={'Loading Wyre...'}/>
+            <AppPreloader />
           </ModalWrapper>
           <Wyre
             address={contractAddress}
