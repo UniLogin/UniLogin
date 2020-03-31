@@ -11,6 +11,7 @@ import {Safello} from '../OnRamp/Safello';
 import {WaitingForOnRampProvider} from './WaitingForOnRampProvider';
 import Spinner from '../../commons/Spinner';
 import {OnRampSuccessInfo} from './OnRampSuccessInfo';
+import {AppPreloader} from '../../commons/AppPreloader';
 
 export interface TopUpWithFiatProps {
   walletService: WalletService;
@@ -69,16 +70,20 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
         onCancel={() => setModal('none')}
       />;
     case TopUpProvider.WYRE:
-      return <Wyre
-        address={contractAddress}
-        currency={'ETH'}
-        config={relayerConfig.onRampProviders.wyre}
-        onCompleted={() => setModal('wait')}
-        onClose={() => {
-          setModal('none');
-          setPaymentMethod(undefined);
-        }}
-      />;
+      return (
+        <>
+          <AppPreloader description={'Loading Wyre...'}/>
+          <Wyre
+            address={contractAddress}
+            currency={'ETH'}
+            config={relayerConfig.onRampProviders.wyre}
+            onCompleted={() => setModal('wait')}
+            onClose={() => {
+              setModal('none');
+              setPaymentMethod(undefined);
+            }}
+          />
+        </>);
     case TopUpProvider.SAFELLO:
       return <Safello
         localizationConfig={{} as any}
