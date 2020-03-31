@@ -7,6 +7,7 @@ import {Wallet} from 'ethers';
 import {DeployedWallet} from '../../../src/api/wallet/DeployedWallet';
 import {FutureWallet} from '../../../src/api/wallet/FutureWallet';
 import {DeployingWallet} from '../../../src';
+import {TEST_STORAGE_KEY} from '../../helpers/constants';
 
 chai.use(chaiAsPromised);
 
@@ -101,23 +102,23 @@ describe('UNIT: WalletService', () => {
     walletService.setWallet(applicationWallet);
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
-    expect(storage.set).to.be.calledWith('wallet-ganache', JSON.stringify({kind: 'None'}));
+    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'None'}));
   });
 
   it('connect set state to Deployed', () => {
     walletService.setWallet(applicationWallet);
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include(applicationWallet);
-    expect(storage.set).to.be.calledWith('wallet-ganache', JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
+    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
   });
 
   it('roundtrip', () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
     walletService.setFutureWallet(futureWallet, 'justyna.mylogin.eth');
-    expect(storage.set).to.be.calledWith('wallet-ganache', JSON.stringify({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet}));
+    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet}));
     expect(storage.set).to.be.calledWith(
-      'wallet-ganache',
+      TEST_STORAGE_KEY,
       JSON.stringify({
         kind: 'Future',
         name: 'justyna.mylogin.eth',
@@ -145,7 +146,7 @@ describe('UNIT: WalletService', () => {
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include(applicationWallet);
 
-    expect(storage.set).to.be.calledWith('wallet-ganache', JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
+    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
   });
 
   it('should throw if future wallet is not set', () => {

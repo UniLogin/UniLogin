@@ -5,6 +5,7 @@ import {ETHER_NATIVE_TOKEN, ApplicationWallet, SerializableFutureWallet, TEST_GA
 import {IStorageService} from '../../../src/core/models/IStorageService';
 import {WalletStorageService} from '../../../src/core/services/WalletStorageService';
 import {MemoryStorageService} from '../../../src/core/services/MemoryStorageService';
+import {TEST_STORAGE_KEY} from '../../helpers/constants';
 
 describe('WalletStorageService', () => {
   const baseWallet = {
@@ -22,7 +23,6 @@ describe('WalletStorageService', () => {
     name: 'name',
     ...baseWallet,
   };
-  const STORAGE_KEY = 'wallet-ganache';
 
   const setup = () => {
     const storage: IStorageService = {
@@ -38,21 +38,21 @@ describe('WalletStorageService', () => {
     const {storage, service} = setup();
     storage.get = sinon.fake.returns(null);
     expect(service.load()).to.deep.eq({kind: 'None'});
-    expect(storage.get).to.be.calledWith(STORAGE_KEY);
+    expect(storage.get).to.be.calledWith(TEST_STORAGE_KEY);
   });
 
   it('can load deployed state', () => {
     const {storage, service} = setup();
     storage.get = sinon.fake.returns(JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
     expect(service.load()).to.deep.eq({kind: 'Deployed', wallet: applicationWallet});
-    expect(storage.get).to.be.calledWith(STORAGE_KEY);
+    expect(storage.get).to.be.calledWith(TEST_STORAGE_KEY);
   });
 
   it('can load future state', () => {
     const {storage, service} = setup();
     storage.get = sinon.fake.returns(JSON.stringify({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet}));
     expect(service.load()).to.deep.eq({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet});
-    expect(storage.get).to.be.calledWith(STORAGE_KEY);
+    expect(storage.get).to.be.calledWith(TEST_STORAGE_KEY);
   });
 
   it('sanitizes data', () => {
@@ -64,7 +64,7 @@ describe('WalletStorageService', () => {
   it('can save data', () => {
     const {storage, service} = setup();
     service.save({kind: 'Deployed', wallet: applicationWallet});
-    expect(storage.set).to.be.calledWith(STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
+    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
   });
 
   it('can migrate data from previous versions', async () => {
