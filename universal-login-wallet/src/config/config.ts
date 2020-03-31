@@ -16,7 +16,7 @@ export default Object.freeze({
     domains: ['mylogin.eth'],
     relayerUrl: 'http://localhost:33113',
     jsonRpcUrl: 'http://localhost:8545',
-    tokens: [ETHER_NATIVE_TOKEN.address, process.env.DAI_TOKEN_ADDRESS!, process.env.JRT_TOKEN_ADDRESS!],
+    tokens: [ETHER_NATIVE_TOKEN.address],
   },
 
   production: {
