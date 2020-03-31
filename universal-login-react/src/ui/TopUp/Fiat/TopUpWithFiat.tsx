@@ -73,10 +73,10 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
     case TopUpProvider.WYRE:
       return (
         <>
-        <ModalWrapper hideModal={() => history.back()}>
-          <AppPreloader />
-        </ModalWrapper>
-           <Wyre
+          <ModalWrapper >
+            <AppPreloader description={'Loading Wyre...'}/>
+          </ModalWrapper>
+          <Wyre
             address={contractAddress}
             currency={'ETH'}
             config={relayerConfig.onRampProviders.wyre}
