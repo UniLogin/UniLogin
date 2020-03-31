@@ -43,7 +43,7 @@ export class WalletService {
     private readonly walletFromPassphrase: WalletFromBackupCodes = walletFromBrain,
     storageService: IStorageService = new NoopStorageService(),
   ) {
-    this.walletStorage = new WalletStorageService(storageService, sdk.getRelayerConfig().chainSpec.name);
+    this.walletStorage = new WalletStorageService(storageService, sdk.sdkConfig.network);
     this.walletSerializer = new WalletSerializer(sdk);
   }
 
