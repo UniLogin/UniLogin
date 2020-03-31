@@ -56,6 +56,7 @@ describe('INT: DevicesStore', () => {
   afterEach(async () => {
     await clearDatabase(knex);
   });
+
   after(async () => {
     await knex.destroy();
   });
