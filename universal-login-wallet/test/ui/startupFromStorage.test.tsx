@@ -61,7 +61,7 @@ describe('UI: Startup from stored wallet state', () => {
 
   afterEach(async () => {
     appWrapper.unmount();
-    await services.stop();
+    await services.sdk.finalizeAndStop();
     await relayer.stop();
   });
 });

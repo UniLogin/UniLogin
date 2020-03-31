@@ -38,6 +38,7 @@ describe('UNIT: WalletService', () => {
       sdkConfig: {
         mineableFactoryTick: 10,
         mineableFactoryTimeout: 100,
+        network: 'ganache',
       },
       getRelayerConfig: sinon.stub().returns({chainSpec: {name: 'ganache'}}),
     };
