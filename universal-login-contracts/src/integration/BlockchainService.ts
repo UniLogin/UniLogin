@@ -1,5 +1,5 @@
 import {Contract, providers, utils} from 'ethers';
-import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion, PROXY_VERSIONS} from '@unilogin/commons';
+import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion, PROXY_VERSIONS, isContract} from '@unilogin/commons';
 import {interfaces} from '../beta2/contracts';
 import {IProxyInterface} from '../gnosis-safe@1.1.1/interfaces';
 import {computeGnosisCounterfactualAddress} from '../gnosis-safe@1.1.1/utils';
@@ -13,6 +13,10 @@ export class BlockchainService {
 
   getCode(contractAddress: string) {
     return this.provider.getCode(contractAddress);
+  }
+
+  isContract(address: string) {
+    return isContract(this.provider, address);
   }
 
   getBlockNumber() {

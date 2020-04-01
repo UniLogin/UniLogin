@@ -31,14 +31,29 @@ describe('INT: BlockchainService', async () => {
     blockchainService = new BlockchainService(provider);
   });
 
-  it('getCode returns 0x if contract does not existing', async () => {
-    const bytecode = await blockchainService.getCode(TEST_ACCOUNT_ADDRESS);
-    expect(bytecode).to.eq('0x');
+  describe('getCode', () => {
+    it('getCode returns 0x if contract does not exist', async () => {
+      const bytecode = await blockchainService.getCode(TEST_ACCOUNT_ADDRESS);
+      expect(bytecode).to.eq('0x');
+    });
+
+    it('getCode returns bytecode of existing contract', async () => {
+      const {address} = await deployWalletContract(deployer);
+      expect(await blockchainService.getCode(address)).to.eq(expectedBytecode);
+    });
   });
 
-  it('getCode returns bytecode of existing contract', async () => {
-    const {address} = await deployWalletContract(deployer);
-    expect(await blockchainService.getCode(address)).to.eq(expectedBytecode);
+  describe('isContract', () => {
+    it('isContract returns false if contract does not exist', async () => {
+      const isContract = await blockchainService.isContract(TEST_ACCOUNT_ADDRESS);
+      expect(isContract).to.be.false;
+    });
+
+    it('isContract returns true if contract exists', async () => {
+      const {address} = await deployWalletContract(deployer);
+      const isContract = await blockchainService.isContract(address);
+      expect(isContract).to.be.true;
+    });
   });
 
   it('getBlockNumber should return increased block number', async () => {
@@ -58,7 +73,8 @@ describe('INT: BlockchainService', async () => {
       topics:
         ['0x654abba5d3170185ed25c9b41f7d2094db3643986b05e9e9cab37028b800ad7e',
           '0x0000000000000000000000000000000000000000000000000000000000000000'],
-      logIndex: 0};
+      logIndex: 0,
+    };
     const {address} = await deployWalletContract(deployer);
     const logs = await blockchainService.getLogs({address});
     expect(logs).to.have.length(1);
