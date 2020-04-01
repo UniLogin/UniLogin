@@ -4,7 +4,7 @@ import {LogoColor} from './FiatPaymentMethods';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {TopUpDetails} from './TopUpDetails';
 import {Ramp} from '../OnRamp/Ramp';
-import {stringToWei} from '@unilogin/commons';
+import {stringToWei, RampConfig} from '@unilogin/commons';
 import {ThemedComponent} from '../../commons/ThemedComponent';
 import {Wyre} from '../OnRamp/Wyre';
 import {Safello} from '../OnRamp/Safello';
@@ -22,6 +22,9 @@ export interface TopUpWithFiatProps {
   hideModal?: () => void;
 }
 type TopUpWithFiatModal = 'none' | 'wait' | TopUpProvider;
+
+const getRampConfig = (config: RampConfig, rampUrl?: string) =>
+  rampUrl ? {...config, rampUrl} : config;
 
 export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
   const [modal, setModal] = useState<TopUpWithFiatModal>('none');
@@ -66,7 +69,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
         address={contractAddress}
         amount={stringToWei(amount)}
         currency={currency}
-        config={relayerConfig.onRampProviders.ramp}
+        config={getRampConfig(relayerConfig.onRampProviders.ramp, walletService.sdk.sdkConfig.rampUrl)}
         onSuccess={() => setModal('wait')}
         onCancel={() => setModal('none')}
       />;

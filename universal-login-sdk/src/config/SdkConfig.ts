@@ -15,4 +15,5 @@ export interface SdkConfig {
   mineableFactoryTimeout: number;
   storageService: IStorageService;
   notifySdkApiKey: string;
+  rampUrl?: string;
 }
