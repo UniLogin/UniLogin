@@ -1,6 +1,8 @@
 require('dotenv').config();
 import {ETHER_NATIVE_TOKEN, Network} from '@unilogin/commons';
 
+const tokens = process.env.TOKENS?.split(',') || [];
+
 export default Object.freeze({
 
   development: {
@@ -24,7 +26,7 @@ export default Object.freeze({
     domains: [process.env.ENS_DOMAIN_1!, process.env.ENS_DOMAIN_2!],
     relayerUrl: process.env.RELAYER_URL!,
     jsonRpcUrl: process.env.JSON_RPC_URL!,
-    tokens: [ETHER_NATIVE_TOKEN.address, process.env.DAI_TOKEN_ADDRESS!, process.env.JRT_TOKEN_ADDRESS!],
+    tokens: [ETHER_NATIVE_TOKEN.address, ...tokens],
     rampApiKey: process.env.RAMP_API_KEY,
   },
 });
