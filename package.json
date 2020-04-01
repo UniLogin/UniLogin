@@ -16,6 +16,7 @@
     "universal-login-*"
   ],
   "dependencies": {
+    "cypress": "^4.3.0",
     "wsrun": "^5.2.0"
   },
   "scripts": {
