@@ -37,7 +37,7 @@ export {normalizeBigNumber} from './core/utils/bigNumbers';
 export {calculateInitializeSignature, calculateInitializeWithENSSignature, getInitializeSigner} from './core/utils/calculateSignature';
 export {clamp} from './core/utils/clamp';
 export {computeContractAddress, computeCounterfactualAddress} from './core/utils/contracts/computeContractAddress';
-export {getContractHash, getDeployedBytecode, isContract, isContractExist} from './core/utils/contracts/contractHelpers';
+export {getContractHash, getDeployedBytecode, isContract} from './core/utils/contracts/contractHelpers';
 export {convertTenthGweiToWei} from './core/utils/conversion';
 export {debounce} from './core/utils/debounce';
 export {deepMerge} from './core/utils/deepMerge';
