@@ -5,6 +5,7 @@ import {ETHER_NATIVE_TOKEN, ApplicationWallet, SerializableFutureWallet, TEST_GA
 import {IStorageService} from '../../../src/core/models/IStorageService';
 import {WalletStorageService} from '../../../src/core/services/WalletStorageService';
 import {MemoryStorageService} from '../../../src/core/services/MemoryStorageService';
+import {TEST_STORAGE_KEY} from '../../helpers/constants';
 
 describe('WalletStorageService', () => {
   const baseWallet = {
@@ -22,7 +23,6 @@ describe('WalletStorageService', () => {
     name: 'name',
     ...baseWallet,
   };
-  const STORAGE_KEY = 'wallet';
 
   const setup = () => {
     const storage: IStorageService = {
@@ -30,7 +30,7 @@ describe('WalletStorageService', () => {
       set: sinon.fake(),
       remove: sinon.fake(),
     };
-    const service = new WalletStorageService(storage);
+    const service = new WalletStorageService(storage, 'ganache');
     return {storage, service};
   };
 
@@ -38,21 +38,21 @@ describe('WalletStorageService', () => {
     const {storage, service} = setup();
     storage.get = sinon.fake.returns(null);
     expect(service.load()).to.deep.eq({kind: 'None'});
-    expect(storage.get).to.be.calledWith(STORAGE_KEY);
+    expect(storage.get).to.be.calledWith(TEST_STORAGE_KEY);
   });
 
   it('can load deployed state', () => {
     const {storage, service} = setup();
     storage.get = sinon.fake.returns(JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
     expect(service.load()).to.deep.eq({kind: 'Deployed', wallet: applicationWallet});
-    expect(storage.get).to.be.calledWith(STORAGE_KEY);
+    expect(storage.get).to.be.calledWith(TEST_STORAGE_KEY);
   });
 
   it('can load future state', () => {
     const {storage, service} = setup();
     storage.get = sinon.fake.returns(JSON.stringify({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet}));
     expect(service.load()).to.deep.eq({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet});
-    expect(storage.get).to.be.calledWith(STORAGE_KEY);
+    expect(storage.get).to.be.calledWith(TEST_STORAGE_KEY);
   });
 
   it('sanitizes data', () => {
@@ -64,24 +64,33 @@ describe('WalletStorageService', () => {
   it('can save data', () => {
     const {storage, service} = setup();
     service.save({kind: 'Deployed', wallet: applicationWallet});
-    expect(storage.set).to.be.calledWith(STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
+    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
   });
 
-  it('can migrate data from previous versions', () => {
+  it('can migrate data from previous versions', async () => {
     const {storage, service} = setup();
-    let state = JSON.stringify(applicationWallet);
-    storage.get = sinon.fake(() => state);
+    const deployedRinkebyState = {
+      kind: 'Deployed',
+      wallet: {
+        contractAddress: '0xCE824eA5d5a3810563B6e02114C66feFd0CaD13e',
+        name: 'test.unilogin.test',
+        privateKey: '0xe7f0024cb894893c855d5ba516969cb4c40838762c0dd0e5e730bfd4aa27b719',
+      },
+    };
+    let savedState = JSON.stringify(deployedRinkebyState);
+    storage.get = sinon.fake(() => savedState);
     storage.set = sinon.fake((key: string, val: string) => {
-      state = val;
+      savedState = val;
     });
-
-    expect(service.load()).to.deep.eq({kind: 'Deployed', wallet: applicationWallet});
-    expect(storage.set).to.be.calledWith(STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
+    await service.migrate();
+    expect(storage.get).to.be.calledWith('wallet');
+    expect(storage.remove).to.be.calledWith('wallet');
+    expect(storage.set).to.be.calledWith('wallet-rinkeby', savedState);
   });
 
   it('roundtrip', () => {
     const storage = new MemoryStorageService();
-    const service = new WalletStorageService(storage);
+    const service = new WalletStorageService(storage, 'ganache');
 
     expect(service.load()).to.deep.eq({kind: 'None'});
 

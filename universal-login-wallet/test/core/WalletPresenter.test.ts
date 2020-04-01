@@ -4,7 +4,7 @@ import {WalletService} from '@unilogin/sdk';
 import WalletPresenter from '../../src/core/presenters/WalletPresenter';
 import {Wallet} from 'ethers';
 
-describe('WalletFormatter', () => {
+describe('WalletPresenter', () => {
   let walletService: WalletService;
   let walletPresenter: WalletPresenter;
   const applicationWallet = {
@@ -14,7 +14,7 @@ describe('WalletFormatter', () => {
   };
 
   beforeEach(() => {
-    walletService = new WalletService({provider: Wallet.createRandom()} as any);
+    walletService = new WalletService({provider: Wallet.createRandom(), sdkConfig: {network: 'ganache'}} as any);
     walletPresenter = new WalletPresenter(walletService);
   });
 

@@ -1,4 +1,6 @@
-export class StorageService {
+import {IStorageService} from '@unilogin/sdk';
+
+export class StorageService implements IStorageService {
   get(key: string): string | null {
     return localStorage.getItem(key);
   }

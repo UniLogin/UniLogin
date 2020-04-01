@@ -3,7 +3,7 @@ import {providers} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {ReactWrapper} from 'enzyme';
 import chai, {expect} from 'chai';
-import {createWallet, setupSdk} from '@unilogin/sdk/testutils';
+import {createWallet, setupSdk, TEST_STORAGE_KEY} from '@unilogin/sdk/testutils';
 import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 import Relayer from '@unilogin/relayer';
 import {createPreconfiguredServices} from '../testhelpers/ServicesUnderTests';
@@ -31,28 +31,28 @@ describe('UI: Startup from stored wallet state', () => {
   });
 
   it('starts when storage is empty', async () => {
-    services.walletService.loadFromStorage();
+    await services.walletService.loadFromStorage();
     appWrapper = mountWithContext(<App/>, services, ['/wallet']);
     expect(appWrapper.text().includes('Welcome in the Jarvis Network')).to.be.true;
   });
 
   it('starts when storage is None', async () => {
-    services.storageService.set('wallet', JSON.stringify({kind: 'None'}));
-    services.walletService.loadFromStorage();
+    services.storageService.set(TEST_STORAGE_KEY, JSON.stringify({kind: 'None'}));
+    await services.walletService.loadFromStorage();
     appWrapper = mountWithContext(<App/>, services, ['/wallet']);
     expect(appWrapper.text().includes('Welcome in the Jarvis Network')).to.be.true;
   });
 
   it('starts when storage is Future', async () => {
-    services.storageService.set('wallet', JSON.stringify({kind: 'Future', name, wallet: {contractAddress, privateKey, ensName: name, gasPrice: TEST_GAS_PRICE, gasToken: ETHER_NATIVE_TOKEN.address}}));
-    services.walletService.loadFromStorage();
+    services.storageService.set(TEST_STORAGE_KEY, JSON.stringify({kind: 'Future', name, wallet: {contractAddress, privateKey, ensName: name, gasPrice: TEST_GAS_PRICE, gasToken: ETHER_NATIVE_TOKEN.address}}));
+    await services.walletService.loadFromStorage();
     appWrapper = mountWithContext(<App/>, services, ['/create/topUp']);
     expect(appWrapper.text().includes('Choose a top-up method')).to.be.true;
   });
 
   it('starts when storage is Deployed', async () => {
-    services.storageService.set('wallet', JSON.stringify({kind: 'Deployed', wallet: {name, privateKey, contractAddress}}));
-    services.walletService.loadFromStorage();
+    services.storageService.set(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: {name, privateKey, contractAddress}}));
+    await services.walletService.loadFromStorage();
     appWrapper = mountWithContext(<App/>, services, ['/wallet']);
     const appPage = new AppPage(appWrapper);
     await appPage.dashboard().waitForDashboard();

@@ -1,5 +1,7 @@
 import {TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
 
+export const TEST_STORAGE_KEY = 'wallet-ganache';
+
 export const keyAddedEvent = {
   blockNumber: 24,
   address: TEST_CONTRACT_ADDRESS,

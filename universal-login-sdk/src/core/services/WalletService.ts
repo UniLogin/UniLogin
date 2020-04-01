@@ -15,9 +15,13 @@ import {WalletStorageService} from './WalletStorageService';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
+interface WalletStorageWithMigration extends WalletStorage {
+  migrate?: () => Promise<void>;
+}
+
 export class WalletService {
   private readonly walletSerializer: WalletSerializer;
-  private readonly walletStorage: WalletStorage;
+  private readonly walletStorage: WalletStorageWithMigration;
 
   private readonly _stateProperty = new State<WalletState>({kind: 'None'});
   readonly stateProperty: Property<WalletState> = this._stateProperty;
@@ -39,7 +43,7 @@ export class WalletService {
     private readonly walletFromPassphrase: WalletFromBackupCodes = walletFromBrain,
     storageService: IStorageService = new NoopStorageService(),
   ) {
-    this.walletStorage = new WalletStorageService(storageService);
+    this.walletStorage = new WalletStorageService(storageService, sdk.sdkConfig.network);
     this.walletSerializer = new WalletSerializer(sdk);
   }
 
@@ -221,8 +225,9 @@ export class WalletService {
     }
   }
 
-  loadFromStorage() {
+  async loadFromStorage() {
     ensure(this.state.kind === 'None', WalletOverridden);
+    await this.walletStorage.migrate?.();
     const state = this.walletStorage.load();
     this._stateProperty.set(this.walletSerializer.deserialize(state));
   }
