@@ -50,7 +50,7 @@ describe('INT: FutureWalletFactory', () => {
     futureWalletFactory = new FutureWalletFactory(
       futureWalletConfig,
       new ENSService(provider, futureWalletConfig.chainSpec.ensAddress, ensRegistrar.address),
-      {sdkConfig: {applicationInfo: TEST_APPLICATION_INFO}, provider, relayerApi} as any,
+      {config: {applicationInfo: TEST_APPLICATION_INFO}, provider, relayerApi} as any,
     );
   });
 
