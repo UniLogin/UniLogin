@@ -29,11 +29,11 @@ export class WalletStorageService implements WalletStorage {
         kind: asExactly('Deployed'),
         wallet: asApplicationWallet,
       }));
-      for (const key of ['mainnet', 'kovan', 'rinkeby', 'ropsten']) {
-        const blockchainService = new BlockchainService(getProviderByKey(key));
+      for (const network of ['mainnet', 'kovan', 'rinkeby', 'ropsten']) {
+        const blockchainService = new BlockchainService(getProviderForNetwork(network));
         if (await blockchainService.isContract(wallet.contractAddress)) {
           this.storageService.remove(DEPRECATED_STORAGE_KEY);
-          this.storageService.set(`${DEPRECATED_STORAGE_KEY}-${key}`, data);
+          this.storageService.set(`${DEPRECATED_STORAGE_KEY}-${network}`, data);
           return;
         }
       }
@@ -93,7 +93,7 @@ const asSerializedState = asAnyOf([
   }),
 ], 'wallet state');
 
-function getProviderByKey(key: string) {
+function getProviderForNetwork(key: string) {
   const network = key === 'mainnet' ? 'homestead' : key;
   return new providers.InfuraProvider(network);
 };
