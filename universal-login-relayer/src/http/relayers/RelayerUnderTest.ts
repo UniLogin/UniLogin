@@ -108,13 +108,13 @@ export class RelayerUnderTest extends Relayer {
 }
 
 export async function clearDatabase(knex: Knex) {
-  await knex.delete().from('devices');
-  await knex.delete().from('future_wallets');
-  await knex.delete().from('queue_items');
-  await knex.delete().from('signature_key_pairs');
-  await knex.delete().from('messages');
-  await knex.delete().from('authorisations');
-  await knex.delete().from('deployments');
+  await knex('devices').del();
+  await knex('future_wallets').del();
+  await knex('queue_items').del();
+  await knex('signature_key_pairs').del();
+  await knex('messages').del();
+  await knex('authorisations').del();
+  await knex('deployments').del();
 }
 
 export const getContractWhiteList = () => ({

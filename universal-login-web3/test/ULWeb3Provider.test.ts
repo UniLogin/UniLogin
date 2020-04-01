@@ -29,7 +29,6 @@ describe('INT: ULWeb3Provider', () => {
   afterEach(async () => {
     sinon.restore();
     await ulProvider.finalizeAndStop();
-    await relayer.clearDatabase();
     await relayer.stop();
   });
 

@@ -40,8 +40,8 @@ export class SQLRepository<T extends Mineable> implements IRepository<T> {
   async remove(hash: string) {
     const item = await this.get(hash);
     await this.knex(this.tableName)
-      .delete()
-      .where('hash', hash);
+      .where('hash', hash)
+      .del();
     return item;
   }
 

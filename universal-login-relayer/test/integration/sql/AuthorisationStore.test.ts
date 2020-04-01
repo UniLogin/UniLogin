@@ -82,7 +82,7 @@ describe('INT: Authorisation Store', async () => {
   });
 
   afterEach(async () => {
-    await database.delete().from('authorisations');
+    await database('authorisations').del();
     await database.destroy();
   });
 });
