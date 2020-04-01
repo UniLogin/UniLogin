@@ -19,7 +19,7 @@ describe('UNIT: setupStrategies', () => {
     expect(result[0].icon).to.eq(UniLoginLogo);
     expect(result[0].create).to.not.be.null;
     const ulWeb3Provider = await result[0].create();
-    expect((ulWeb3Provider as any).sdk.sdkConfig.applicationInfo).to.deep.eq(applicationInfo);
+    expect((ulWeb3Provider as any).sdk.config.applicationInfo).to.deep.eq(applicationInfo);
   });
 
   it('return Metamask strategy for Metamask', () => {
