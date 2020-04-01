@@ -29,6 +29,27 @@ export const Network = {
         throw new TypeError(`Invalid network: ${network}`);
     }
   },
+  toAlphabetic(network: Network): string {
+    switch (network) {
+      case '1':
+      case 'mainnet':
+        return 'mainnet';
+      case '3':
+      case 'ropsten':
+        return 'ropsten';
+      case '4':
+      case 'rinkeby':
+        return 'rinkeby';
+      case '42':
+      case 'kovan':
+        return 'kovan';
+      case '8545':
+      case 'ganache':
+        return 'ganache';
+      default:
+        throw new TypeError(`Invalid network: ${network}`);
+    }
+  },
   equals(left: Network, right: Network) {
     return Network.toNumericId(left) === Network.toNumericId(right);
   },

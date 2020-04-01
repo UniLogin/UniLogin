@@ -1,10 +1,10 @@
 import {providers} from 'ethers';
 import {asAnyOf, asObject, asString, cast} from '@restless/sanitizers';
-import {ApplicationWallet, asExactly, SerializableFutureWallet} from '@unilogin/commons';
+import {BlockchainService} from '@unilogin/contracts';
+import {ApplicationWallet, asExactly, SerializableFutureWallet, Network} from '@unilogin/commons';
 import {WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';
-import {BlockchainService} from '@unilogin/contracts';
 
 const DEPRECATED_STORAGE_KEY = 'wallet';
 
@@ -12,8 +12,9 @@ export class WalletStorageService implements WalletStorage {
   private storage: StorageEntry<SerializedWalletState>;
   private readonly STORAGE_KEY: string;
 
-  constructor(private storageService: IStorageService, chainName: string) {
-    this.STORAGE_KEY = `${DEPRECATED_STORAGE_KEY}-${chainName}`;
+  constructor(private storageService: IStorageService, chainName: Network) {
+    const alphabeticNetwork = Network.toAlphabetic(chainName);
+    this.STORAGE_KEY = `${DEPRECATED_STORAGE_KEY}-${alphabeticNetwork}`;
     this.storage = new StorageEntry(
       this.STORAGE_KEY,
       asSerializedState,
