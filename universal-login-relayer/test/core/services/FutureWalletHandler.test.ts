@@ -25,4 +25,8 @@ describe('INT: FutureWalletHandler', () => {
   afterEach(async () => {
     await clearDatabase(knex);
   });
+
+  after(async () => {
+    await knex.destroy();
+  });
 });

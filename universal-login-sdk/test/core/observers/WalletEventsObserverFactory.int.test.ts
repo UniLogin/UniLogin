@@ -83,7 +83,6 @@ describe('INT: WalletEventsObserverFactory', () => {
     });
 
     after(async () => {
-      await relayer.clearDatabase();
       await relayer.stop();
       factory.stop();
     });
@@ -143,7 +142,6 @@ describe('INT: WalletEventsObserverFactory', () => {
     });
 
     after(async () => {
-      await relayer.clearDatabase();
       await relayer.stop();
       factory.stop();
     });
