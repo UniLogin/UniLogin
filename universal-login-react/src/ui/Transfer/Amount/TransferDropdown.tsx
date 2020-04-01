@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@unilogin/commons';
 import UniversalLoginSDK from '@unilogin/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {useToggler} from '../../hooks/useToggler';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
+import {useOutsideClick} from '../../hooks/useClickOutside';
 
 interface TransferDropdownProps {
   sdk: UniversalLoginSDK;
@@ -15,6 +16,8 @@ interface TransferDropdownProps {
 
 export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, setToken, className}: TransferDropdownProps) => {
   const {visible, toggle} = useToggler();
+  const ref = useRef(null);
+  useOutsideClick(ref, () => toggle(false));
 
   const onClick = (token: TokenDetails) => {
     toggle();
@@ -40,7 +43,7 @@ export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, se
   );
 
   return (
-    <div className="currency-accordion">
+    <div ref={ref} className="currency-accordion">
       {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol === tokenDetails.symbol, `currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`)}
       {visible &&
         <div className={`currency-scrollable-list ${sdk.tokensDetailsStore.tokensDetails.length <= 2 ? 'one' : 'many'}`}>
