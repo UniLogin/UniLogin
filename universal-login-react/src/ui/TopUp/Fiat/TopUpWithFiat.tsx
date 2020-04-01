@@ -23,8 +23,8 @@ export interface TopUpWithFiatProps {
 }
 type TopUpWithFiatModal = 'none' | 'wait' | TopUpProvider;
 
-const getRampConfig = (config: RampConfig, rampUrl?: string) =>
-  rampUrl ? {...config, rampUrl} : config;
+const getRampConfig = (config: RampConfig, rampApiKey?: string) =>
+  rampApiKey ? {...config, rampApiKey} : config;
 
 export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
   const [modal, setModal] = useState<TopUpWithFiatModal>('none');
@@ -69,7 +69,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
         address={contractAddress}
         amount={stringToWei(amount)}
         currency={currency}
-        config={getRampConfig(relayerConfig.onRampProviders.ramp, walletService.sdk.sdkConfig.rampUrl)}
+        config={getRampConfig(relayerConfig.onRampProviders.ramp, walletService.sdk.sdkConfig.rampApiKey)}
         onSuccess={() => setModal('wait')}
         onCancel={() => setModal('none')}
       />;

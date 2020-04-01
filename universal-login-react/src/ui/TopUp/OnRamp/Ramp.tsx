@@ -26,6 +26,7 @@ export const Ramp = ({address, amount, currency, config, onSuccess, onCancel}: R
       url: config.rampUrl,
       userAddress: address,
       variant: 'auto',
+      hostApiKey: config.rampApiKey,
     }).on(RampInstantEventTypes.PURCHASE_CREATED, () => setPurchaseCreated(true))
       .on(RampInstantEventTypes.WIDGET_CLOSE, onClose);
     ramp.domNodes.overlay.style.zIndex = '99999';
