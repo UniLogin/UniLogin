@@ -4,6 +4,7 @@ import {ApplicationWallet, asExactly, SerializableFutureWallet} from '@unilogin/
 import {WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';
+import {BlockchainService} from '@unilogin/contracts';
 
 const DEPRECATED_STORAGE_KEY = 'wallet';
 
@@ -28,11 +29,9 @@ export class WalletStorageService implements WalletStorage {
         kind: asExactly('Deployed'),
         wallet: asApplicationWallet,
       }));
-      for (const key of ['ropsten', 'rinkeby', 'kovan', 'mainnet']) {
-        const network = key === 'mainnet' ? 'homestead' : key;
-        const provider = new providers.InfuraProvider(network);
-        const code = await provider.getCode(wallet.contractAddress);
-        if (code !== '0x') {
+      for (const key of ['mainnet', 'kovan', 'rinkeby', 'ropsten']) {
+        const blockchainService = new BlockchainService(getProviderByKey(key));
+        if (await blockchainService.isContract(wallet.contractAddress)) {
           this.storageService.remove(DEPRECATED_STORAGE_KEY);
           this.storageService.set(`${DEPRECATED_STORAGE_KEY}-${key}`, data);
           return;
@@ -93,3 +92,8 @@ const asSerializedState = asAnyOf([
     wallet: asApplicationWallet,
   }),
 ], 'wallet state');
+
+function getProviderByKey(key: string) {
+  const network = key === 'mainnet' ? 'homestead' : key;
+  return new providers.InfuraProvider(network);
+};
