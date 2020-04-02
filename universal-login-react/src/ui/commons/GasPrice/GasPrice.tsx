@@ -56,9 +56,11 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
     });
   };
 
+  const [contentVisibility, setContentVisibility] = useState(false);
+
   const onGasOptionSelected = (gasOption: GasOption) => {
     onGasOptionChanged(gasOption);
-    setContentVisibility(visibility => !visibility);
+    setContentVisibility(!contentVisibility);
   };
 
   useEffect(() => {
@@ -70,17 +72,16 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
       onGasOptionChanged(gasOption);
     }
   }, [gasModes]);
-  const [contentVisibility, setContentVisibility] = useState(false);
 
   const ref = useRef(null);
   useOutsideClick(ref, () => {
     if (contentVisibility) {
       setContentVisibility(false);
     }
-  });
+  }, [contentVisibility]);
 
   const renderComponent = (gasModes: GasMode[]) => (
-    <div className="universal-login-gas">
+    <div ref={ref} className="universal-login-gas">
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="gas-price">
           <GasPriceTitle />
@@ -93,7 +94,7 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
               onClick={() => setContentVisibility(!contentVisibility)}
             />
             {contentVisibility &&
-              <div ref={ref} className="gas-price-selector">
+              <div className="gas-price-selector">
                 <GasPriceTitle />
                 <GasPriceSpeedChoose
                   gasModes={gasModes}
