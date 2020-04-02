@@ -35,7 +35,7 @@ describe('UNIT: WalletService', () => {
       relayerApi: {
         getDeploymentStatus: sinon.stub().resolves({transactionHash: TEST_TRANSACTION_HASH, state: 'Success'}),
       },
-      sdkConfig: {
+      config: {
         mineableFactoryTick: 10,
         mineableFactoryTimeout: 100,
         network: 'ganache',
