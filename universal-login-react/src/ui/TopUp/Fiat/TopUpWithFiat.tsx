@@ -69,7 +69,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
         address={contractAddress}
         amount={stringToWei(amount)}
         currency={currency}
-        config={getRampConfig(relayerConfig.onRampProviders.ramp, walletService.sdk.sdkConfig.rampApiKey)}
+        config={getRampConfig(relayerConfig.onRampProviders.ramp, walletService.sdk.config.rampApiKey)}
         onSuccess={() => setModal('wait')}
         onCancel={() => setModal('none')}
       />;
