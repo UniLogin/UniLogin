@@ -25,6 +25,6 @@ export default Object.freeze({
     relayerUrl: process.env.RELAYER_URL!,
     jsonRpcUrl: process.env.JSON_RPC_URL!,
     tokens: [ETHER_NATIVE_TOKEN.address, process.env.DAI_TOKEN_ADDRESS!, process.env.JRT_TOKEN_ADDRESS!],
-    rampUrl: process.env.RAMP_URL,
+    rampApiKey: process.env.RAMP_API_KEY,
   },
 });
