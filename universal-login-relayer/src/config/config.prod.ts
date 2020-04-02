@@ -41,6 +41,7 @@ export const config: Config = Object.freeze({
       appName: 'Universal Login',
       logoUrl: UNIVERSAL_LOGIN_LOGO_URL,
       rampUrl: getEnv('RAMP_URL', ''),
+      rampApiKey: getEnv('RAMP_API_KEY', ''),
     },
     wyre: {
       wyreUrl: 'https://pay.sendwyre.com/purchase',
