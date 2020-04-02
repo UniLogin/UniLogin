@@ -46,6 +46,7 @@ export const ConnectWithPassphrase = ({onRecover, name, walletService, className
                 value={code}
                 onChange={event => setCode(event.target.value.toLowerCase().trim())}
                 type="text"
+                autoCorrect="false"
               />
               {(errorMessage && !isLoading) && <div className="hint">{errorMessage}</div>}
             </div>
