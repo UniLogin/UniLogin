@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {TransferService, TransferErrors, Execution} from '@unilogin/sdk';
-import {TransferDetails, TokenDetails, DEFAULT_GAS_LIMIT, TokenDetailsWithBalance, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {TransferDetails, TokenDetails, TokenDetailsWithBalance, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN, SEND_TRANSACTION_GAS_LIMIT} from '@unilogin/commons';
 import '../styles/transfer.sass';
 import '../styles/transferDefaults.sass';
 import './../styles/themes/Jarvis/footerThemeJarvis.sass';
@@ -66,7 +66,7 @@ export const Transfer = ({transferService, onTransferTriggered, transferClassNam
           <GasPrice
             isDeployed={true}
             deployedWallet={transferService.deployedWallet}
-            gasLimit={DEFAULT_GAS_LIMIT}
+            gasLimit={SEND_TRANSACTION_GAS_LIMIT}
             onGasParametersChanged={(gasParameters: GasParameters) => updateField('gasParameters')(gasParameters)}
             className={transferClassName}
           />
