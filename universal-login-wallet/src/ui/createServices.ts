@@ -11,7 +11,6 @@ export interface Config {
   relayerUrl: string;
   jsonRpcUrl: string;
   tokens: string[];
-  rampUrl?: string;
   rampApiKey?: string;
 }
 
@@ -33,7 +32,6 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     paymentOptions: {},
     observedTokensAddresses: config.tokens,
     storageService,
-    rampUrl: config.rampUrl,
     rampApiKey: config.rampApiKey,
   };
   const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
