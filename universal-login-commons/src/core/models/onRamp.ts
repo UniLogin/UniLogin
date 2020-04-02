@@ -13,6 +13,7 @@ export interface RampConfig {
   appName: string;
   logoUrl: string;
   rampUrl: string;
+  rampApiKey?: string;
 }
 
 export interface WyreConfig {
