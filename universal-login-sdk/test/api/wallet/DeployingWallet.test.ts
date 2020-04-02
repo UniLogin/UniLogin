@@ -37,7 +37,7 @@ describe('UNIT: DeployingWallet', () => {
     relayerApi: {
       getDeploymentStatus: getStatus,
     },
-    sdkConfig: {
+    config: {
       mineableFactoryTick: 10,
       mineableFactoryTimeout: 100,
     },

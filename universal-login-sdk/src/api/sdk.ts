@@ -41,7 +41,7 @@ class UniversalLoginSDK {
   readonly blockchainService: BlockchainService;
   readonly gasPriceOracle: GasPriceOracle;
   readonly gasModeService: GasModeService;
-  readonly sdkConfig: SdkConfig;
+  readonly config: SdkConfig;
   readonly sufficientBalanceValidator: SufficientBalanceValidator;
   readonly factoryAddress?: string;
   readonly featureFlagsService: FeatureFlagsService;
@@ -57,25 +57,25 @@ class UniversalLoginSDK {
   constructor(
     relayerUrl: string,
     providerOrUrl: string | providers.Provider,
-    sdkConfig?: DeepPartial<SdkConfig>,
+    config?: DeepPartial<SdkConfig>,
   ) {
     this.provider = typeof (providerOrUrl) === 'string'
       ? new providers.JsonRpcProvider(providerOrUrl)
       : providerOrUrl;
-    this.sdkConfig = deepMerge(SdkConfigDefault, sdkConfig);
+    this.config = deepMerge(SdkConfigDefault, config);
     this.relayerApi = new RelayerApi(relayerUrl);
-    this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.sdkConfig.authorizationsObserverTick);
-    this.executionFactory = new ExecutionFactory(this.relayerApi, this.sdkConfig.mineableFactoryTick, this.sdkConfig.mineableFactoryTimeout);
+    this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.config.authorizationsObserverTick);
+    this.executionFactory = new ExecutionFactory(this.relayerApi, this.config.mineableFactoryTick, this.config.mineableFactoryTimeout);
     this.blockchainService = new BlockchainService(this.provider);
     const blockNumberState = new BlockNumberState(this.blockchainService);
-    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.blockchainService, blockNumberState, this.sdkConfig.storageService);
+    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.blockchainService, blockNumberState, this.config.storageService);
     this.balanceChecker = new BalanceChecker(this.provider);
     this.sufficientBalanceValidator = new SufficientBalanceValidator(this.provider);
-    this.tokenDetailsService = new TokenDetailsService(this.provider, this.sdkConfig.saiTokenAddress);
-    this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.sdkConfig.observedTokensAddresses);
-    this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.sdkConfig.observedCurrencies, this.sdkConfig.priceObserverTick);
+    this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
+    this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.config.observedTokensAddresses);
+    this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.config.observedCurrencies, this.config.priceObserverTick);
     this.gasPriceOracle = new GasPriceOracle();
-    this.tokensValueConverter = new TokensValueConverter(this.sdkConfig.observedCurrencies);
+    this.tokensValueConverter = new TokensValueConverter(this.config.observedCurrencies);
     this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
     this.featureFlagsService = new FeatureFlagsService();
     this.messageConverter = new MessageConverter(this.blockchainService);
@@ -87,17 +87,17 @@ class UniversalLoginSDK {
 
   private async loadRelayerConfigFromApi() {
     const config = await this.relayerApi.getConfig();
-    if (!Network.equals(cast(config.chainSpec.name, asNetwork), this.sdkConfig.network)) {
-      throw new Error(`Relayer is configured to a different network. Expected: ${this.sdkConfig.network}, got: ${config.chainSpec.name}`);
+    if (!Network.equals(cast(config.chainSpec.name, asNetwork), this.config.network)) {
+      throw new Error(`Relayer is configured to a different network. Expected: ${this.config.network}, got: ${config.chainSpec.name}`);
     }
     return config;
   }
 
   getNotice() {
-    if (this.sdkConfig.network === 'mainnet') {
+    if (this.config.network === 'mainnet') {
       return 'This is beta version running on mainnet - do not deposit more than $5 for now';
     }
-    return `This is beta version running on ${this.sdkConfig.network}`;
+    return `This is beta version running on ${this.config.network}`;
   }
 
   getFutureWalletFactory() {
@@ -129,7 +129,7 @@ class UniversalLoginSDK {
     ensureNotFalsy(contractAddress, InvalidContract);
 
     await this.tokensDetailsStore.fetchTokensDetails();
-    this.balanceObserver = new BalanceObserver(this.balanceChecker, contractAddress, this.tokensDetailsStore, this.sdkConfig.balanceObserverTick);
+    this.balanceObserver = new BalanceObserver(this.balanceChecker, contractAddress, this.tokensDetailsStore, this.config.balanceObserverTick);
   }
 
   async fetchAggregateBalanceObserver(contractAddress: string) {
@@ -169,7 +169,7 @@ class UniversalLoginSDK {
 
   async connect(walletContractAddress: string) {
     const {publicKey, privateKey} = createKeyPair();
-    await this.relayerApi.connect(walletContractAddress, publicKey, this.sdkConfig.applicationInfo);
+    await this.relayerApi.connect(walletContractAddress, publicKey, this.config.applicationInfo);
     return {
       privateKey,
       securityCode: generateCode(publicKey),
@@ -216,7 +216,7 @@ class UniversalLoginSDK {
     if (!this.notifySdk) {
       const relayerConfig = this.getRelayerConfig();
       this.notifySdk = NotifySdk.createForNetwork(
-        this.sdkConfig.notifySdkApiKey,
+        this.config.notifySdkApiKey,
         cast(relayerConfig.chainSpec.name, asNetwork),
       );
     }

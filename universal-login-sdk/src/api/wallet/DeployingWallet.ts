@@ -13,8 +13,8 @@ export class DeployingWallet extends MineableFactory implements SerializedDeploy
     serializedDeployingWallet: SerializedDeployingWallet,
     private sdk: UniversalLoginSDK) {
     super(
-      sdk.sdkConfig.mineableFactoryTick,
-      sdk.sdkConfig.mineableFactoryTimeout,
+      sdk.config.mineableFactoryTick,
+      sdk.config.mineableFactoryTimeout,
       (hash: string) => sdk.relayerApi.getDeploymentStatus(hash),
     );
     this.contractAddress = serializedDeployingWallet.contractAddress;

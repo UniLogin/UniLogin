@@ -14,7 +14,7 @@ describe('WalletPresenter', () => {
   };
 
   beforeEach(() => {
-    walletService = new WalletService({provider: Wallet.createRandom(), sdkConfig: {network: 'ganache'}} as any);
+    walletService = new WalletService({provider: Wallet.createRandom(), config: {network: 'ganache'}} as any);
     walletPresenter = new WalletPresenter(walletService);
   });
 
