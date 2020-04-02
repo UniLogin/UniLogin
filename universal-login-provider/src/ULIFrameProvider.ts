@@ -116,9 +116,28 @@ export class ULIFrameProvider {
     });
   }
 
+  async handleBatchRequests(msg: any[], cb: (error: any, response: any) => void) {
+    try {
+      const response = await Promise.all(
+        msg.map(message =>
+          new Promise((resolve, reject) => this.bridge.send(message,
+            (err, arg) => {
+              err ? reject(err) : resolve(arg);
+            })),
+        ));
+      cb(undefined, response);
+    } catch (e) {
+      cb(e, undefined);
+    }
+  }
+
   async send(msg: any, cb: (error: any, response: any) => void) {
     await this.waitUntilReady();
-    this.bridge.send(msg, cb);
+    if (Array.isArray(msg)) {
+      this.handleBatchRequests(msg, cb);
+    } else {
+      this.bridge.send(msg, cb);
+    }
   }
 
   async sendAsync(msg: any, cb: (error: any, response: any) => void) {
