@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {Country} from '../../../core/models/Country';
 import {countries} from '../../../core/utils/countries';
 import {ThemedComponent} from '../../commons/ThemedComponent';
@@ -7,6 +7,7 @@ import '../../styles/base/components/countrySelect.sass';
 import '../../styles/themes/UniLogin/components/countrySelectThemeUniLogin.sass';
 import '../../styles/themes/Jarvis/components/countrySelectThemeJarvis.sass';
 import {Label} from '../../commons/Form/Label';
+import {useOutsideClick} from '../../hooks/useClickOutside';
 
 export interface CountrySelectProps {
   selectedCountry?: string;
@@ -16,6 +17,12 @@ export interface CountrySelectProps {
 
 export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: CountrySelectProps) => {
   const [expanded, setExpanded] = useState(false);
+  const ref = useRef(null);
+  useOutsideClick(ref, () => {
+    if (expanded) {
+      setExpanded(false);
+    }
+  }, [expanded]);
 
   const onDropdownItemClick = (selectedCountry: string, currency: string) => {
     setExpanded(false);
@@ -58,13 +65,13 @@ export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: Coun
   };
 
   return (
-    <>
+    <div ref={ref}>
       <Label>Country</Label>
       <ThemedComponent name="country-select">
         {countrySelectionButton()}
         {countrySelectionList()}
       </ThemedComponent>
-    </>
+    </div>
   );
 };
 
