@@ -31,9 +31,10 @@ export const SignConfirmation = ({onConfirmationResponse, title, message, signMe
         </BoxHeader>
         <BoxContent>
           <Title className="confirmation-title">{title}</Title>
-          <Row>
+          <MessageWrapper>
+            <Label>message</Label>
             <CentralizedText>{signMessage}</CentralizedText>
-          </Row>
+          </MessageWrapper>
         </BoxContent>
         <SignFooter>
           <ButtonSecondary onClick={() => onConfirmationResponse(false)}>Back</ButtonSecondary>
@@ -44,15 +45,27 @@ export const SignConfirmation = ({onConfirmationResponse, title, message, signMe
   </>
 );
 
-const CentralizedText = styled(Text)`
+const MessageWrapper = styled(Row)`
+  flex-direction: column;
   margin-top: 45px;
+`;
+
+const CentralizedText = styled(Text)`
   text-align: center;
   font-size: 16px;
+  border: 1px solid rgba(190, 207, 217, 0.6);
+  border-radius: 4px;
+  padding: 15px;
 
   @media(max-width: 600px) {
     margin-top: 24px;
   }
 
+`;
+
+const Label = styled.p`
+  color: #7D7C9C;
+  text-transform: uppercase;
 `;
 
 const SignFooter = styled(BoxFooter)`
