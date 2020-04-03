@@ -1,14 +1,16 @@
 .unilogin-theme-jarvis.unilogin-component-notice-wrapper
-  padding: 10px
   height: initial
   background: none
+
+  @media only screen and (max-width: 600px)
+    margin-top: 10px
 
 .unilogin-theme-jarvis.unilogin-component-notice-wrapper::before
   display: none
 
 .unilogin-theme-jarvis .unilogin-component-notice
   width: 100%
-  min-height: 30px
+  height: 100%
   display: flex
   align-items: center
   justify-content: center
@@ -16,9 +18,11 @@
   text-align: center
   font-weight: 700
   font-size: 12px
-  line-height: 14px
+  line-height: 150%
   color: #2EC9F5
   background: rgba(46, 201, 245, 0.2)
+  margin: 10px
+  padding-left: unset
 
 .unilogin-theme-jarvis .unilogin-component-notice::before
   display: none
