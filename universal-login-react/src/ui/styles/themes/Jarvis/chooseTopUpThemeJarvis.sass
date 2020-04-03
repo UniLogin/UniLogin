@@ -3,15 +3,19 @@
 .unilogin-theme-jarvis.unilogin-component-top-up
   display: flex
   flex-direction: column
+  flex: 1
   max-width: 100%
+
+  .method-selected
+    flex: 0
 
   .unilogin-component-top-up-header
     display: flex
     flex-direction: column
     align-items: center
-    padding: 28px
     flex-grow: 1
     transition: flex-grow 0.2s linear
+    padding-top: 15px
 
   &.method-selected .unilogin-component-top-up-header
     flex-grow: initial
@@ -34,6 +38,7 @@
     background: #FFFFFF
     border: 1px solid #E1E1F0
     border-radius: 0
+
 
   .unilogin-component-top-up-radio-inner::after
     content: ''
@@ -61,6 +66,7 @@
   .unilogin-component-country-select
     position: relative
     background: #fff
+    margin-bottom: unset
 
   .unilogin-component-country-select-btn
     padding: 0 0 0 12px
@@ -197,9 +203,15 @@
     padding: 0 20px
     min-height: 327px
 
+  .unilogin-component-top-up-body
+    display: flex
+    flex-direction: column
+    flex: 1
+
   .unilogin-component-top-up-body-inner
     max-width: 570px
     margin: 0 auto
+    width: 100%
 
   .crypto
     opacity: 0
@@ -340,13 +352,14 @@
   .revolut-logo
     width: 13px
     height: 13px
+    margin-left: 5px
 
   .yoti-logo
     width: 13px
     height: 13px
 
   .fiat
-    padding: 25px 0 40px
+    padding: 25px 0 30px
 
   .unilogin-component-amount-input-wrapper
     display: flex
@@ -412,7 +425,7 @@
     z-index: 10
 
   .fiat .unilogin-component-fiat-methods-title
-    margin: 35px auto 0
+    margin: 10px auto 0
     text-align: left
     line-height: normal
     font-weight: 700
@@ -422,7 +435,7 @@
 
   .fiat-payment-methods
     display: flex
-    margin-bottom: 35px
+    margin-bottom: 10px
 
   .fiat-payment-method
     opacity: 0
@@ -442,6 +455,10 @@
 
   .fiat-payment-method + .fiat-payment-method
     margin-left: 24px
+
+  .unilogin-component-modal-title
+    @media only screen and (max-width: 600px)
+      font-size: 20px
 
   .ramp-logo
     width: 70px
@@ -503,7 +520,8 @@
     justify-content: space-between
     align-items: flex-end
     border-top: 1px solid #eaedfd
-    padding: 18px 40px 32px
+    padding: 15px 40px 15px
+    margin-top: auto
 
   .unilogin-component-top-up
     +media(s)
@@ -619,10 +637,6 @@
     +media(s)
       width: 100%
 
-  .unilogin-component-pay-btn
-    +media(s)
-      margin-top: 40px
-
 .unilogin-theme-jarvis.unilogin-component-company-logo
   display: none
 
@@ -633,3 +647,6 @@
 .unilogin-theme-jarvis .unilogin-component-modal-wrapper
   +media(s)
     height: 100%
+
+.unilogin-theme-jarvis.unilogin-component-top-up.method-selected
+  flex: 0
