@@ -124,7 +124,7 @@ export class ULIFrameProvider {
       ));
   }
 
-  async handleBatchRequests(msg: any[], cb: (error: any, response: any) => void) {
+  async handleBatchRequest(msg: any[], cb: (error: any, response: any) => void) {
     try {
       const response = await Promise.all(msg.map(message => this.promisifyJsonRpcRequest(message)));
       cb(undefined, response);
@@ -136,7 +136,7 @@ export class ULIFrameProvider {
   async send(msg: any, cb: (error: any, response: any) => void) {
     await this.waitUntilReady();
     if (Array.isArray(msg)) {
-      this.handleBatchRequests(msg, cb);
+      this.handleBatchRequest(msg, cb);
     } else {
       this.bridge.send(msg, cb);
     }
