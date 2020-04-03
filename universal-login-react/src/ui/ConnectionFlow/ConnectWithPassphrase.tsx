@@ -43,12 +43,13 @@ export const ConnectWithPassphrase = ({onRecover, name, walletService, className
               <input
                 id="passphrase-input"
                 className="connect-passphrase-input"
+                autoCorrect="off"
+                autoCapitalize="off"
+                autoComplete="off"
+                spellCheck={false}
                 value={code}
                 onChange={event => setCode(event.target.value.toLowerCase().trim())}
                 type="text"
-                autoCorrect="false"
-                autoCapitalize="none"
-                spellCheck={false}
               />
               {(errorMessage && !isLoading) && <div className="hint">{errorMessage}</div>}
             </div>
