@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {TransferService, TransferErrors, Execution} from '@unilogin/sdk';
-import {TransferDetails, TokenDetails, TokenDetailsWithBalance, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN, SEND_TRANSACTION_GAS_LIMIT} from '@unilogin/commons';
+import {TransferDetails, TokenDetails, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN, SEND_TRANSACTION_GAS_LIMIT} from '@unilogin/commons';
 import '../styles/transfer.sass';
 import '../styles/transferDefaults.sass';
 import './../styles/themes/Jarvis/footerThemeJarvis.sass';
@@ -10,7 +10,7 @@ import {GasPrice} from '../commons/GasPrice';
 import {TransferAmount} from './Amount/TransferAmount';
 import {TransferRecipient} from './Recipient/TransferRecipient';
 import {TransferDropdown} from './Amount/TransferDropdown';
-import {useAsyncEffect} from '../hooks/useAsyncEffect';
+import {useBalances} from '../hooks/useBalances';
 
 export interface TransferProps {
   transferService: TransferService;
@@ -21,9 +21,7 @@ export interface TransferProps {
 export const Transfer = ({transferService, onTransferTriggered, transferClassName}: TransferProps) => {
   const [transferDetails, setTransferDetails] = useState({transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails);
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
-  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
-
-  useAsyncEffect(() => transferService.subscribeToBalances(setTokenDetailsWithBalance), []);
+  const [tokenDetailsWithBalance] = useBalances(transferService.deployedWallet);
 
   const selectedToken = transferService.getTokenDetails(transferDetails.transferToken);
   const balance = getBalanceOf(selectedToken.symbol, tokenDetailsWithBalance);

@@ -6,6 +6,7 @@ export {useAsync} from './ui/hooks/useAsync';
 export {useAsyncEffect} from './ui/hooks/useAsyncEffect';
 export {useToggler} from './ui/hooks/useToggler';
 export {useProperty} from './ui/hooks/useProperty';
+export {useBalances} from './ui/hooks/useBalances';
 export {WalletSelector} from './ui/WalletSelector/WalletSelector';
 export {ConnectionNotification} from './ui/Notifications/ConnectionNotification';
 export {Settings} from './ui/Settings/Settings';

@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {utils} from 'ethers';
 import {DeployedWallet} from '@unilogin/sdk';
 import {TokenDetailsWithBalance, ValueRounder} from '@unilogin/commons';
 import {Asset} from './Asset';
 import './../styles/assetsList.sass';
 import './../styles/assetsListDefaults.sass';
-import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {getIconForToken} from '../../core/utils/getIconForToken';
+import {useBalances} from '../hooks/useBalances';
 
 export interface AssetsProps {
   deployedWallet: DeployedWallet;
@@ -15,9 +15,7 @@ export interface AssetsProps {
 }
 
 export const Assets = ({deployedWallet, className}: AssetsProps) => {
-  const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
-
-  useAsyncEffect(() => deployedWallet.subscribeToBalances(setTokenDetailsWithBalance), []);
+  const [tokenDetailsWithBalance] = useBalances(deployedWallet);
 
   return (
     <div className="universal-login-assets">
