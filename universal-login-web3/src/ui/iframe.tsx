@@ -14,7 +14,7 @@ async function main() {
   const endpoint = new IframeBridgeEndpoint();
   const iframeInitializer = isPicker
     ? new PickerIframeInitializer(endpoint, applicationInfo, network)
-    : new ProviderOnlyIframeInitializer(endpoint, network ?? raise(new TypeError()));
+    : new ProviderOnlyIframeInitializer(endpoint, network ?? raise(new TypeError()), applicationInfo);
 
   await iframeInitializer.start();
 }
