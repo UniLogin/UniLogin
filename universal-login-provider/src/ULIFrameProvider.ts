@@ -116,15 +116,17 @@ export class ULIFrameProvider {
     });
   }
 
+  async promisifyJsonRpcRequest(jsonRpcMessage: any): Promise<{result: any, error: any}> {
+    return new Promise((resolve, reject) =>
+      this.send(
+        jsonRpcMessage,
+        (error, jsonRpcResponse) => error ? reject(error) : resolve(jsonRpcResponse),
+      ));
+  }
+
   async handleBatchRequests(msg: any[], cb: (error: any, response: any) => void) {
     try {
-      const response = await Promise.all(
-        msg.map(message =>
-          new Promise((resolve, reject) => this.bridge.send(message,
-            (err, arg) => {
-              err ? reject(err) : resolve(arg);
-            })),
-        ));
+      const response = await Promise.all(msg.map(message => this.promisifyJsonRpcRequest(message)));
       cb(undefined, response);
     } catch (e) {
       cb(e, undefined);
@@ -144,20 +146,13 @@ export class ULIFrameProvider {
     await this.send(msg, cb);
   }
 
-  enable(): Promise<string[]> {
-    return new Promise((resolve, reject) =>
-      this.send(
-        {id: 1, jsonRpc: '2.0', method: 'eth_requestAccounts'},
-        (error, jsonRpcResponse) => {
-          if (error) {
-            reject(error);
-          } else if (jsonRpcResponse.error) {
-            reject(jsonRpcResponse.error);
-          } else {
-            resolve(jsonRpcResponse.result);
-          }
-        },
-      ));
+  async enable(): Promise<string[]> {
+    const {result, error} = await this.promisifyJsonRpcRequest({id: 1, jsonRpc: '2.0', method: 'eth_requestAccounts'});
+    if (error) {
+      return Promise.reject(error);
+    } else {
+      return Promise.resolve(result);
+    }
   }
 
   setDashboardVisibility(visible: boolean) {

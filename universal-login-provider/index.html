@@ -16,12 +16,12 @@
         onclick="web3.eth.getAccounts().then(accounts => {console.log({accounts});web3.eth.sendTransaction({from: accounts[0], to: accounts[0],value: 0}).then(({transactionHash}) => console.log({transactionHash}))})">Send
         transaction</button>
     <button
-        onclick="const batch = new web3.BatchRequest();batch.add(web3.eth.getBalance.request('0x0000000000000000000000000000000000000000', 'latest', (err, balance) => console.log('getBalance, executed', {balance}, {err})));batch.add(web3.eth.getBalance.request('0x0000000000000000000000000000000000000000', 'latest', (err, result) => console.log('getBalance2, executed', {result}, {err})));batch.execute();console.log('executed')">
+        onclick="const batch = new web3.BatchRequest();batch.add(web3.eth.getBalance.request('0x0000000000000000000000000000000000000000', 'latest', (err, balance) => console.log('getBalance, executed', {balance}, {err})));batch.add(web3.eth.getBalance.request('0x0000000000000000000000000000000000000000', 'latest', (err, result) => console.log('getBalance2, executed', {result}, {err})));batch.execute();console.log('batch executed')">
         Batch request
     </button>
     <script src="dist/umd/index.js"></script>
     <script>
-        window.web3 = new Web3(ULIFrameProvider.create('kovan'))
+        window.web3 = new Web3(ULIFrameProvider.createPicker(window.ethereum || 'kovan'))
     </script>
 </body>
 
