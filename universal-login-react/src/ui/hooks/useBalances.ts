@@ -3,7 +3,9 @@ import {useState} from 'react';
 import {TokenDetailsWithBalance} from '@unilogin/commons';
 import {useAsyncEffect} from './useAsyncEffect';
 
-export const useBalances = (deployedWallet: DeployedWallet): [TokenDetailsWithBalance[], (symbol: string) => TokenDetailsWithBalance | undefined] => {
+type GetBalanceBySymbol = (symbol: string) => TokenDetailsWithBalance | undefined;
+
+export const useBalances = (deployedWallet: DeployedWallet): [TokenDetailsWithBalance[], GetBalanceBySymbol] => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
   useAsyncEffect(() => deployedWallet.subscribeToBalances(setTokenDetailsWithBalance), []);
   const getBalanceBySymbol = (symbol: string) => tokenDetailsWithBalance.find((token: TokenDetailsWithBalance) => token.symbol === symbol);
