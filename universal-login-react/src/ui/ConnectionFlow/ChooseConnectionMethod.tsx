@@ -11,10 +11,9 @@ interface ChooseConnectionMethodProps {
   onConnectWithDeviceClick: () => void;
   onConnectWithPassphraseClick: () => void;
   onCancel: () => void;
-  className?: string;
 }
 
-export const ChooseConnectionMethod = ({onCancel, onConnectWithDeviceClick, onConnectWithPassphraseClick, className}: ChooseConnectionMethodProps) => {
+export const ChooseConnectionMethod = ({onCancel, onConnectWithDeviceClick, onConnectWithPassphraseClick}: ChooseConnectionMethodProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0.0);
 
