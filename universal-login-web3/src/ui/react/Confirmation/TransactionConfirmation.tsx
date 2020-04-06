@@ -57,12 +57,12 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
     if (onError) {
       onError(error.message);
     } else {
-      console.error(error.message);
+      console.error(error);
     }
   }
 
   if (!modesAndPrices) {
-    return <Spinner />;
+    return <Spinner className="spinner-center" />;
   }
 
   return <>
@@ -95,7 +95,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
             </Row>
             <Row>
               <DataLabel>Fee:</DataLabel>
-              <TransactionFee mode={mode} gasLimit={transaction.gasLimit} gasOption={gasOption} />
+              <TransactionFee mode={mode} gasLimit={transaction.gasLimit} gasOption={gasOption} deployedWallet={walletService.getDeployedWallet()} />
             </Row>
           </TransactionData>
         </BoxContent>
