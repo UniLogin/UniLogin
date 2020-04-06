@@ -180,7 +180,7 @@
       font-size: 1.4rem
 
     @media only screen and (max-width: 350px)
-      font-size: 1.1rem
+      font-size: 1rem
 
   &.method-selected .unilogin-component-top-up-method-text
     display: none
@@ -193,3 +193,16 @@
 
 .unilogin-theme-unilogin .unilogin-component-top-up.method-selected
   max-height: 230px
+
+.unilogin-component-top-up.unilogin-theme-unilogin.method-selected > .unilogin-component-top-up
+  flex: 1
+
+.unilogin-component-top-up.unilogin-theme-unilogin.method-selected
+  flex: unset
+
+  @media only screen and (max-width: 600px)
+    display: block
+
+.unilogin-component-footer-section
+  @media only screen and (max-width: 600px)
+    display: block
