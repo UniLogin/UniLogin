@@ -52,7 +52,6 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, wallet
         walletService={walletService}
         onConnect={onSuccess}
         onCancel={onCancel}
-        className={className}
       />
     </Route>
   </Switch>;

@@ -13,10 +13,9 @@ interface ConnectWithEmojiProps {
   walletService: WalletService;
   onCancel: () => void;
   onConnect: () => void;
-  className?: string;
 }
 
-export const ConnectWithEmoji = ({onCancel, onConnect, walletService, className}: ConnectWithEmojiProps) => {
+export const ConnectWithEmoji = ({onCancel, onConnect, walletService}: ConnectWithEmojiProps) => {
   const [securityCodes, setSecurityCodes] = useState<number[] | undefined>(undefined);
   useAsyncEffect(async () => {
     if (walletService.state.kind === 'Connecting') {
