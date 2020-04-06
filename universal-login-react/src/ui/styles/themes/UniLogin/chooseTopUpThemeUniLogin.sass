@@ -15,10 +15,12 @@
       padding: 0
 
   .unilogin-component-top-up-body
+    display: flex
+    flex-direction: column
+    flex: 1
+
     @media only screen and (max-width: 600px)
       height: 100%
-      display: flex
-      flex-direction: column
       width: 100%
 
   .unilogin-component-top-up-body-crypto
@@ -49,6 +51,9 @@
     padding-top: 4rem
 
     @media only screen and (max-width: 600px)
+      padding-bottom: unset
+
+    @media only screen and (max-width: 600px)
       min-height: unset
 
   .unilogin-component-top-up-methods
@@ -68,6 +73,10 @@
     @media only screen and (max-width: 600px)
       margin-left: 0
       margin-top: 1rem
+
+  .unilogin-component-modal-title
+    @media only screen and (max-width: 600px)
+      margin-bottom: unset
 
   .unilogin-component-top-up-method-title
     color: #0F0C4A
@@ -132,6 +141,7 @@
     box-sizing: border-box
 
   .unilogin-component-top-up-body-inner
+    width: 100%
     @media only screen and (max-width: 600px)
       padding: unset
 
@@ -141,12 +151,14 @@
   .unilogin-component-fiat-methods-title
     color: #7D7C9C
     opacity: 0.8
-    font-size: 1.2rem
+    font-size: 1rem
     font-weight: 400
+    margin-top: 1rem
+    margin-bottom: .6rem
     text-transform: uppercase
 
   .fiat-payment-methods
-    margin-bottom: 2.4rem
+    margin-bottom: 1.4rem
     display: grid
     grid-template-columns: repeat(3, 1fr)
 
@@ -156,9 +168,6 @@
 
   .unilogin-component-onboarding-progress-wrapper
     padding-top: 5.4rem
-
-  .unilogin-component-pay-btn
-    margin-bottom: 2.4rem
 
     @media only screen and (max-width: 600px)
       margin: 0
