@@ -60,12 +60,11 @@ module.exports = {
     new Dotenv(),
     new webpack.DefinePlugin({
       'process.env.NETWORK': JSON.stringify(process.env.NETWORK),
-      'process.env.DAI_TOKEN_ADDRESS': JSON.stringify(process.env.DAI_TOKEN_ADDRESS),
+      'process.env.TOKENS': JSON.stringify(process.env.TOKENS),
       'process.env.RELAYER_URL': JSON.stringify(process.env.RELAYER_URL),
       'process.env.ENS_DOMAIN_1': JSON.stringify(process.env.ENS_DOMAIN_1),
       'process.env.ENS_DOMAIN_2': JSON.stringify(process.env.ENS_DOMAIN_2),
       'process.env.JSON_RPC_URL': JSON.stringify(process.env.JSON_RPC_URL),
-      'process.env.JRT_TOKEN_ADDRESS': JSON.stringify(process.env.JRT_TOKEN_ADDRESS),
       'process.env.RAMP_API_KEY': JSON.stringify(process.env.RAMP_API_KEY),
     }),
     new CopyPlugin([

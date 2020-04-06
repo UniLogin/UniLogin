@@ -17,7 +17,7 @@ const developmentConfig: Config = {
   domains: ['mylogin.eth', 'poppularapp.eth', 'universal-id.eth'],
   relayerUrl: 'http://localhost:3311',
   jsonRpcUrl: 'http://localhost:18545',
-  tokens: [ETHER_NATIVE_TOKEN.address, process.env.SAI_TOKEN_ADDRESS!, process.env.DAI_TOKEN_ADDRESS!],
+  tokens: [ETHER_NATIVE_TOKEN.address, ...process.env.TOKENS!.split(',')],
   saiTokenAddress: process.env.SAI_TOKEN_ADDRESS,
   ipGeolocationApi: {
     baseUrl: 'https://api.ipdata.co',
@@ -30,7 +30,7 @@ const kovanConfig: Config = {
   domains: ['unilogin.test'],
   relayerUrl: 'https://relayer-kovan.herokuapp.com',
   jsonRpcUrl: 'https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
-  tokens: [ETHER_NATIVE_TOKEN.address, process.env.SAI_TOKEN_ADDRESS!, process.env.DAI_TOKEN_ADDRESS!],
+  tokens: [ETHER_NATIVE_TOKEN.address, ...process.env.TOKENS!.split(',')],
   saiTokenAddress: process.env.SAI_TOKEN_ADDRESS,
   ipGeolocationApi: {
     baseUrl: 'https://api.ipdata.co',
@@ -43,7 +43,7 @@ const mainnetConfig: Config = {
   domains: ['unibeta.eth', 'unitest.eth'],
   relayerUrl: 'https://relayer-mainnet.herokuapp.com',
   jsonRpcUrl: 'https://mainnet.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
-  tokens: [ETHER_NATIVE_TOKEN.address, process.env.SAI_TOKEN_ADDRESS!, process.env.DAI_TOKEN_ADDRESS!],
+  tokens: [ETHER_NATIVE_TOKEN.address, ...process.env.TOKENS!.split(',')],
   saiTokenAddress: process.env.SAI_TOKEN_ADDRESS,
   ipGeolocationApi: {
     baseUrl: 'https://api.ipdata.co',
