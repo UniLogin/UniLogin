@@ -16,10 +16,9 @@ export interface ConnectionFlowProps {
   name: string;
   onCancel: () => void;
   onSuccess: () => void;
-  className?: string;
 }
 
-export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, walletService, className}: ConnectionFlowProps) => {
+export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, walletService}: ConnectionFlowProps) => {
   const history = useHistory();
 
   const onConnectWithDeviceClick = () => {
@@ -35,7 +34,6 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, wallet
           onConnectWithDeviceClick={onConnectWithDeviceClick}
           onConnectWithPassphraseClick={() => history.push(join(basePath, 'recover'), {ensName: name})}
           onCancel={onCancel}
-          className={className}
         />
       </ConnectionFlowWrapper>
     </Route>
