@@ -44,7 +44,6 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, wallet
         name={name}
         walletService={walletService}
         onRecover={onSuccess}
-        className={className}
         onCancel={() => history.goBack()}
       />
     </Route>
