@@ -61,7 +61,7 @@ Create ``.env`` file in ``/universal-login-relayer`` directory and fill up .env 
   - **PORT** : number - a relayer endpoint
   - **PRIVATE_KEY** : string - a private key of a relayer wallet
   - **ENS_ADDRESS** : string - an address of an ENS contract
-  - **ENS_DOMAIN** : string - a name of a domain
+  - **ENS_DOMAINS** : string - a list of names of a domain
   - **WALLET_MASTER_ADDRESS** : string - WalletMaster contract address
   - **FACTORY_ADDRESS** : string - Factory contract address
 
@@ -73,9 +73,7 @@ Create ``.env`` file in ``/universal-login-relayer`` directory and fill up .env 
     PORT=3311
     PRIVATE_KEY='YOUR_PRIVATE_KEY'
     ENS_ADDRESS='0x112234455c3a32fd11230c42e7bccd4a84e02010'
-    ENS_DOMAIN_1='poppularapp.test'
-    ENS_DOMAIN_2='my-login.test'
-    ENS_DOMAIN_3='universal-login.test'
+    ENS_DOMAINS=poppularapp.test,unilogin.test
     WALLET_MASTER_ADDRESS='0xfb152D3b3bB7330aA52b2504BF5ed1f376B1C189'
     FACTORY_ADDRESS='0xE316A2134F6c2BE3eeFdAde5518ce3F685af27E7'
 

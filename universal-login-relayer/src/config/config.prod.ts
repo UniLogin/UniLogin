@@ -11,11 +11,7 @@ export const config: Config = Object.freeze({
     ensAddress: getEnv('ENS_ADDRESS', ''),
     chainId: 0,
   }),
-  ensRegistrars: [
-    getEnv('ENS_DOMAIN_1', ''),
-    getEnv('ENS_DOMAIN_2', ''),
-    getEnv('ENS_DOMAIN_3', ''),
-  ],
+  ensRegistrars: getEnv('ENS_DOMAINS', '').split(','),
   ensRegistrar: getEnv('ENS_REGISTRAR', ''),
   fallbackHandlerAddress: getEnv('FALLBACK_HANDLER_ADDRESS', ''),
   walletContractAddress: getEnv('WALLET_MASTER_ADDRESS', ''),
