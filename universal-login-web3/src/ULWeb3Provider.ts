@@ -112,11 +112,12 @@ export class ULWeb3Provider implements Provider {
     if (methodsRequiringAccount.includes(payload.method)) await this.deployIfNoWalletDeployed();
 
     try {
-      const result = await this.handle(payload);
+      const handledPayload = await this.handle(payload);
+      console.log({handledPayload})
       callback(null, {
         id: payload.id,
         jsonrpc: '2.0',
-        result,
+        ...handledPayload,
       });
     } catch (err) {
       this.uiController.showError(err.message);
@@ -133,7 +134,7 @@ export class ULWeb3Provider implements Provider {
         return this.sendTransaction(tx);
       case 'eth_accounts':
       case 'eth_requestAccounts':
-        return this.getAccounts();
+        return {result: this.getAccounts()};
       case 'eth_sign': {
         const address = cast(params[0], asString);
         const message = cast(params[1], asString);
@@ -152,7 +153,7 @@ export class ULWeb3Provider implements Provider {
         await this.finalizeAndStop();
         break;
       default:
-        return this.sendUpstream(payload);
+        return {result: await this.sendUpstream(payload)};
     }
   }
 
@@ -176,11 +177,11 @@ export class ULWeb3Provider implements Provider {
     }
   }
 
-  async sendTransaction(transaction: Partial<Message>): Promise<string> {
+  async sendTransaction(transaction: Partial<Message>): Promise<{result?: string, error?: string}> {
     const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, value: '0', ...transaction};
     const confirmationResponse = await this.uiController.confirmRequest('Confirm transaction', transactionWithDefaults);
     if (!confirmationResponse.isConfirmed) {
-      return constants.HashZero;
+      return {error: 'Unilogin Transaction confirmation: User denied transaction'};
     }
     const transactionWithGasParameters = {...transactionWithDefaults, ...confirmationResponse.gasParameters};
     this.uiController.showWaitForTransaction();
@@ -193,7 +194,7 @@ export class ULWeb3Provider implements Provider {
     }
     this.uiController.showTransactionHash(transactionHash);
     execution.waitToBeSuccess().then(() => this.uiController.hideWaitForTransaction());
-    return transactionHash;
+    return {result: transactionHash};
   }
 
   private getDecodedMessage(message: string) {
@@ -207,14 +208,14 @@ export class ULWeb3Provider implements Provider {
   async sign(address: string, message: string) {
     const decodedMessage = this.getDecodedMessage(message);
     if (!await this.uiController.signChallenge('Sign message', decodedMessage)) {
-      return constants.HashZero;
+      return {error: 'UniLogin message signature: User denied message signature'};
     }
     await this.deployIfNoWalletDeployed();
 
     const wallet = this.walletService.getDeployedWallet();
     ensure(addressEquals(wallet.contractAddress, address), Error, `Address ${address} is not available to sign`);
 
-    return wallet.signMessage(utils.arrayify(message));
+    return {result: await wallet.signMessage(utils.arrayify(message))};
   }
 
   async initOnboarding() {
