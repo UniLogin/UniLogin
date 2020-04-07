@@ -27,3 +27,5 @@
 /universal-login-provider/yarn-error.log
 yarn-error.log
 .cache
+cypress/screenshots
+cypress/videos
