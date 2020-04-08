@@ -9,6 +9,7 @@ import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import './../styles/udashboard.sass';
 import './../styles/themes/UniLogin/udashboardThemeUniLogin.sass';
 import './../styles/themes/Legacy/udashboardThemeLegacy.sass';
+import './../styles/themes/Jarvis/udashboardThemeJarvis.sass';
 
 export interface DashboardProps {
   deployedWallet?: DeployedWallet;
