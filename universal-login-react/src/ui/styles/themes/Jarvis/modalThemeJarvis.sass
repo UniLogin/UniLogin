@@ -6,20 +6,13 @@
     left: 0
     top: 0
 
-  .unilogin-component-modal-wrapper
-    min-width: 770px
-    flex: 1
-
-    @media only screen and (max-width: 770px)
-      min-width: 100%
-      justify-content: flex-start
-
   .unilogin-component-modal
     border-radius: 0
     background: #fff
     margin: auto
 
     @media only screen and (max-width: 770px)
+      min-height: min-content
       display: flex
       flex: 1
 
@@ -36,3 +29,17 @@
 .universal-login
   @media only screen and (max-width: 770px)
     min-height: 100%
+
+.modal-backdrop
+  @media only screen and (max-width: 770px)
+    background-color: unset
+    align-items: unset
+
+
+.unilogin-theme-jarvis.unilogin-component-modal-wrapper
+  min-width: 770px
+  flex: 1
+
+  @media only screen and (max-width: 770px)
+    min-width: 100%
+    justify-content: flex-start

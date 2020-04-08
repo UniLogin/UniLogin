@@ -3,14 +3,24 @@
     display: flex
     flex-direction: column
 
-    @media only screen and (max-width: 768px)
+    @media only screen and (max-width: 770px)
       justify-content: flex-start
 
   .dashboard-content-box
-    @media only screen and (max-width: 768px)
+    min-height: 660px
+
+    @media only screen and (max-width: 770px)
+      flex: 1
       min-height: min-content
 
 
   .unilogin-component-notice-wrapper
       @media only screen and (max-width: 768px)
         margin-top: 0
+
+  .unilogin-component-notice-wrapper
+    display: block
+
+    .unilogin-component-notice
+      width: unset
+      height: unset
