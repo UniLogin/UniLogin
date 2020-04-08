@@ -17,6 +17,10 @@
     transition: flex-grow 0.2s linear
     padding-top: 15px
 
+    & > .unilogin-component-modal-text
+      display: none
+
+
   &.method-selected .unilogin-component-top-up-header
     flex-grow: initial
 
@@ -537,9 +541,6 @@
     +media(s)
       margin-top: 16px
       flex-direction: column
-      position: absolute
-      top: 50%
-      transform: translateY(-50%)
 
   &.method-selected .unilogin-component-top-up-methods
     +media(s)
