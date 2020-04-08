@@ -2,7 +2,7 @@ import {Provider, JsonRPCRequest, Callback, JsonRPCResponse} from 'web3/provider
 import {Config, getConfigForNetwork} from './config';
 import UniversalLoginSDK, {WalletService, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
-import {constants, providers, utils} from 'ethers';
+import {providers, utils} from 'ethers';
 import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network, InitializationHandler, addressEquals} from '@unilogin/commons';
 import {waitForTrue} from './ui/utils/utils';
 import {getOrCreateUlButton, initUi} from './ui/initUi';
@@ -113,7 +113,7 @@ export class ULWeb3Provider implements Provider {
 
     try {
       const handledPayload = await this.handle(payload);
-      console.log({handledPayload})
+      console.log({handledPayload});
       callback(null, {
         id: payload.id,
         jsonrpc: '2.0',
