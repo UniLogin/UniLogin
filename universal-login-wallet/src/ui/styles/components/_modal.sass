@@ -21,6 +21,9 @@
   height: 100%
   padding: unset
 
+  @media only screen and (max-width: 770px)
+    justify-content: flex-start
+
   +media(s, 168px)
     padding: 0
 
@@ -33,8 +36,8 @@
   box-shadow: 0 3px 17px 0 rgba(79,55,168,0.09)
   overflow: unset
 
-  +media(s, 168px)
-    min-height: 100vh
+  @media only screen and (max-width: 770px)
+    min-height: min-content
 
 .modal-body
   max-width: 100%
@@ -279,3 +282,8 @@
 .jarvis-modal
 .universal-login-waiting-for
   width: 100%
+
+.modal-backdrop
+  @media only screen and (max-width: 770px)
+    background-color: unset
+    align-items: unset
