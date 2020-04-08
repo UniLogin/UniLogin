@@ -1,12 +1,24 @@
 .universal-login-disconnect-account
-  .jarvis-styles
+  display: flex
+  flex-direction: column
+  flex: 1
 
+  .jarvis-styles
     .disconnect-account
       position: relative
       padding: 180px 15px 70px
+      display: flex
+      flex-direction: column
+      flex: 1
+
+      @media only screen and (max-width: 770px)
+        padding: 115px 15px 0
 
     .disconnect-account::before
       top: 100px
+
+      @media only screen and (max-width: 770px)
+        top: 30px
 
     .disconnect-account-title
       margin: 0 0 15px
@@ -48,3 +60,21 @@
     .disconnect-account-hint
       color: #FF1D1C
       background: #feeced
+
+    .disconnect-account-buttons > button
+      @media only screen and (max-width: 550px)
+        width: 100%
+
+    .disconnect-account-form
+      min-width: 370px
+
+      @media only screen and (max-width: 770px)
+        margin: 40px auto 40px
+
+      @media only screen and (max-width: 370px)
+        min-width: 100%
+
+    .disconnect-account-buttons
+      @media only screen and (max-width: 770px)
+        margin-top: auto
+        padding-bottom: 20px
