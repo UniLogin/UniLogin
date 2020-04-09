@@ -66,17 +66,16 @@
 .udashboard-header
   display: flex
   align-items: center
-  justify-content: space-between
-  height: 54px
-  padding: 0 50px 0 25px
-  background: #262053
+  padding: 11px 50px 0 10px
 
   +media(s)
-    padding: 15px 50px 0 20px
-    background: none
+    padding: 11px 50px 0
 
 .udashboard-header .udashboard-ens
-  margin-left: auto
+  margin: 0 0 0 auto
+
+  +media(s)
+    margin: 0 auto
 
 .udashboard-header-nav
   display: flex
@@ -88,14 +87,14 @@
     display: none
 
 .udashboard-tab
+  display: flex
+  align-items: center
   height: 100%
-  padding: 0 12px
+  margin: 0 20px
   border: none
   background: none
   cursor: pointer
   outline: none
-  display: flex
-  align-items: center
   text-decoration: none
 
   +media(s)
@@ -111,9 +110,6 @@
 
   +media(s)
     top: 3px
-
-.udashboard-tab:focus
-  background: #353063
 
 .udashboard-tab-text
   position: relative
@@ -145,12 +141,6 @@
     left: 50%
     transform: translate(-50%, 0)
 
-.udashboard-tab-funds .udashboard-tab-text
-  padding-left: 18px
-
-  +media(s)
-    padding-left: 0
-
 .udashboard-tab-funds .udashboard-tab-text::before
   width: 9px
   height: 17px
@@ -162,18 +152,7 @@
     background-size: contain
 
 .udashboard-tab.active
-  background: #353063
-  border-bottom: 2px solid #B9C3F8
-
-  +media(s)
-    background: none
-    border: none
-
-.udashboard-tab + .udashboard-tab
-  margin-left: 30px
-
-  +media(s)
-    margin: 0
+  font-weight: 700
 
 .udashboard-content
   position: relative
@@ -262,11 +241,11 @@
   border-radius: 50%
   border: 1px solid transparent
 
-.udashboard-tab-devices .udashboard-tab-text
-  padding-left: 25px
+.udashboard-tab .udashboard-tab-text::before
+  display: none
 
   +media(s)
-    padding-left: 0
+    display: block
 
 .udashboard-tab-devices .udashboard-tab-text::before
   width: 15px
@@ -277,12 +256,6 @@
   +media(s)
     background: url('../assets/ucomponent/devices-active.svg') center no-repeat
     background-size: contain
-
-.udashboard-tab-backup .udashboard-tab-text
-  padding-left: 20px
-
-  +media(s)
-    padding-left: 0
 
 .udashboard-tab-backup .udashboard-tab-text::before
   width: 11px
@@ -320,11 +293,7 @@
     display: block
 
 .udashboard-ens
-  margin: 0
-  font-weight: 500
   font-size: 12px
-  line-height: 18px
-  color: #B9C3F8
 
   +media(s)
     margin: 0 auto

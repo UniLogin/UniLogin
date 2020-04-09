@@ -64,11 +64,8 @@
     background: #262053
 
     +media(s)
-      padding: 15px 50px 0 20px
+      padding: 15px 50px 0
       background: none
-
-  .udashboard-header .udashboard-ens
-    margin-left: auto
 
   .udashboard-header-nav
     display: flex
@@ -127,6 +124,7 @@
 
   .udashboard-tab-text::before
     content: ''
+    display: block
     position: absolute
     top: 50%
     left: 0
@@ -312,14 +310,10 @@
       display: block
 
   .udashboard-ens
-    margin: 0
     font-weight: 500
     font-size: 12px
     line-height: 18px
     color: #B9C3F8
-
-    +media(s)
-      margin: 0 auto
 
   .udashboard-subheader
     display: flex
@@ -327,9 +321,6 @@
     justify-content: flex-start
     height: 54px
     padding: 0 50px 0 25px
-
-  .udashboard-subheader .udashboard-ens
-    margin: 0 auto
 
 .unilogin-theme-default .udashboard-content
   .universal-login-emojis
