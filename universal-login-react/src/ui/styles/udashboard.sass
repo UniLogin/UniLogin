@@ -34,10 +34,17 @@
   cursor: pointer
   position: relative
 
+.udashboard-modal
+  @media only screen and (max-width: 970px)
+    width: 100%
+
 .udashboard-modal .unilogin-component-modal-wrapper
-  width: 970px
-  max-width: 100%
+  max-width: 970px
+  min-width: 970px
   border-radius: 6px
+
+  @media only screen and (max-width: 970px)
+    min-width: 100%
 
   +media(s)
     position: fixed
