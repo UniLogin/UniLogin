@@ -154,7 +154,7 @@ export class ULWeb3Provider implements Provider {
         await this.finalizeAndStop();
         break;
       case 'net_version':
-        return Network.toNumericId(this.network).toString();
+        return {result: Network.toNumericId(this.network).toString()};
       default:
         return {result: await this.sendUpstream(payload)};
     }
