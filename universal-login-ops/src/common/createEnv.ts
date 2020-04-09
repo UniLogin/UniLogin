@@ -15,10 +15,8 @@ const createEnv = ({jsonRpcUrl, daiTokenAddress, saiTokenAddress, ensAddress, en
     SAI_TOKEN_ADDRESS: saiTokenAddress,
     RELAYER_URL: 'http://localhost:3311',
     WALLET_MASTER_ADDRESS: walletContractAddress,
+    ENS_DOMAINS: ensDomains.join(','),
   };
-  ensDomains.forEach((domain: string, index: number) => {
-    env[`ENS_DOMAIN_${index + 1}`] = domain;
-  });
   return env;
 };
 
