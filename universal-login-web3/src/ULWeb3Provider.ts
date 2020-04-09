@@ -44,6 +44,7 @@ export class ULWeb3Provider implements Provider {
   private readonly walletService: WalletService;
   private readonly uiController: UIController;
   private readonly browserChecker: BrowserChecker;
+  private readonly network: Network;
 
   readonly isLoggedIn: Property<boolean>;
   readonly isUiVisible: Property<boolean>;
@@ -60,6 +61,7 @@ export class ULWeb3Provider implements Provider {
     browserChecker = new BrowserChecker(),
   }: ULWeb3ProviderOptions) {
     this.provider = provider;
+    this.network = network;
     const sdkConfig: Partial<SdkConfig> = {
       network,
       storageService,
@@ -151,6 +153,8 @@ export class ULWeb3Provider implements Provider {
       case 'ul_disconnect':
         await this.finalizeAndStop();
         break;
+      case 'net_version':
+        return Network.toNumericId(this.network).toString();
       default:
         return {result: await this.sendUpstream(payload)};
     }
