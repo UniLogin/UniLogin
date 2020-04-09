@@ -113,7 +113,6 @@ export class ULWeb3Provider implements Provider {
 
     try {
       const handledPayload = await this.handle(payload);
-      console.log({handledPayload});
       callback(null, {
         id: payload.id,
         jsonrpc: '2.0',
