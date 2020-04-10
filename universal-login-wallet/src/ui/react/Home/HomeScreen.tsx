@@ -19,7 +19,7 @@ const HomeScreen = () => {
 
   return (
     <>
-      <div className="dashboard">
+      <div className={`dashboard ${useThemeClassFor()}`}>
         <Header />
         <div className="dashboard-content">
           <div className="dashboard-content-box">
