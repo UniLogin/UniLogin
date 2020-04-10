@@ -1,6 +1,44 @@
 @import helpers/breakpoints
 
-.universal-login-funds
+.unilogin-component-funds
+
+  .balance-wrapper
+    max-width: 570px
+    margin: 24px auto 32px
+    padding: 20px 20px 28px
+    border-radius: 8px
+
+  .balance-text
+    margin: 0 auto 15px
+    font-weight: 500
+    font-size: 10px
+    line-height: 12px
+    text-align: center
+    text-transform: uppercase
+
+    +media(s)
+      margin-bottom: 8px
+
+  .balance-amount
+    margin: 0 auto
+    font-weight: 300
+    font-size: 44px
+    line-height: 53px
+    text-align: center
+
+    +media(s)
+      font-size: 32px
+      line-height: 48px
+
+    +media(s)
+      font-size: 32px
+      line-height: 48px
+
+  .balance-spinner-wrapper
+    height: 117px
+    display: flex
+    align-items: center
+    justify-content: center
 
   .funds
     margin: 0 auto
@@ -11,10 +49,10 @@
     display: flex
     align-items: center
     justify-content: center
-    margin: 25px 0 60px
+    margin: 25px 0 0
 
     +media(s)
-      margin: 25px 0
+      margin: 25px 0 0
 
   .funds-btn
     position: relative
@@ -22,21 +60,18 @@
     align-items: center
     justify-content: center
     height: 45px
-    width: 165px
-    border-radius: 3px
-    font-weight: 500
+    width: 110px
+    border-radius: 4px
+    font-weight: 700
     font-size: 14px
     cursor: pointer
 
   .funds-btn + .funds-btn
-    margin-left: 35px
+    margin-left: 15px
 
   .funds-btn::before
     content: ''
     margin-right: 8px
-
-  .funds-topup
-    border: 1px solid transparent
 
   .funds-topup::before
     width: 17px

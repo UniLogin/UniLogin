@@ -1,38 +1,36 @@
-.universal-login-funds
-  .jarvis-styles
+.unilogin-component-funds
+  .funds
+    padding: 0 10px 40px
 
-    .funds
-      padding: 0 10px 40px
+    +media(s, 168px)
+      padding-top: 10px
 
-      +media(s, 168px)
-        padding-top: 10px
+  .ens-name-row
+    display: none
 
-    .ens-name-row
-      display: none
+  .balance-text
+    margin: 0 0 30px
+    color: #31405E
 
-    .balance-text
-      margin: 0 0 30px
-      color: #31405E
+  .balance-amount
+    color: #31405E
 
-    .balance-amount
-      color: #31405E
+  .funds-topup
+    background-color: #2EC9F5
+    color: #fff
 
-    .funds-topup
-      background-color: #2EC9F5
-      color: #fff
+  .funds-send
+    color: #2EC9F5
+    border-color: #2EC9F5
 
-    .funds-send
-      color: #2EC9F5
-      border-color: #2EC9F5
+  .funds-send::before
+    background: url('./../assets/icons/arrow-send.svg') center no-repeat
+    background-size: contain
 
-    .funds-send::before
-      background: url('./../assets/icons/arrow-send.svg') center no-repeat
-      background-size: contain
+  .balance-spinner-wrapper
+    height: 125px
 
-    .balance-spinner-wrapper
-      height: 125px
-
-    .balance-spinner
-      .spinner-dot
-        background-image: linear-gradient(270deg, #0FB1EF -2.26%, #55FD77 100%)
+  .balance-spinner
+    .spinner-dot
+      background-image: linear-gradient(270deg, #0FB1EF -2.26%, #55FD77 100%)
 
