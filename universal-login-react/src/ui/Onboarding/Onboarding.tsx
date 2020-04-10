@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {WalletService} from '@unilogin/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import {ApplicationWallet, WalletSuggestionAction} from '@unilogin/commons';
@@ -23,6 +23,7 @@ export interface OnboardingProps {
 
 export const Onboarding = (props: OnboardingProps) => {
   const onSuccess = () => props.onConnect?.();
+  const [ensName, setEnsName] = useState('');
 
   return (
     <div className="universal-login">
@@ -43,8 +44,8 @@ export const Onboarding = (props: OnboardingProps) => {
                     <WalletSelector
                       sdk={props.walletService.sdk}
                       onCreateClick={async (ensName) => {
-                        await props.walletService.createFutureWallet(ensName);
-                        history.push('/create');
+                        setEnsName(ensName)
+                        history.push('/chooseToken');
                       }}
                       onConnectClick={(ensName) => history.push('/connectFlow/chooseMethod', {ensName})}
                       domains={props.domains}
@@ -53,6 +54,23 @@ export const Onboarding = (props: OnboardingProps) => {
                   </div>
                 </OnboardingStepsWrapper>}
             />
+            <Route
+              exact
+              path="/chooseToken"
+              render={({history}) =>
+                (<ModalWrapper message={props.walletService.sdk.getNotice()}>
+                  <div className='choose-token-title'>Choose token you want to top up with</div>
+                  <button className={'button-choose-token'} onClick={async () => {
+                    await props.walletService.createFutureWallet(ensName);
+                    history.push('/create');
+                  }}>ETH</button>
+                  <button className={'button-choose-token'} onClick={async () => {
+                    await props.walletService.createFutureWallet(ensName);
+                    history.push('/create');
+                  }}>DAI</button>
+                </ModalWrapper>)}
+            />
+
             <Route
               exact
               path="/create"
