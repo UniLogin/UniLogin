@@ -1,30 +1,28 @@
 @startuml
-title getFutureWallet process
+title DeployWallet process
 
 
 actor user
-actor SDK
-actor Relayer
-actor Blockchain
 
-== Process ==
-
-user -> SDK: await getFutureWallet()
+== Deployment ==
 activate user
-activate SDK
-SDK -> FutureWalletFactory: await getFutureWallet()
-activate FutureWalletFactory
-FutureWalletFactory -> SDK: Promise<FutureWallet>
-deactivate FutureWalletFactory
-SDK -> user: Promise<FutureWallet>: {contractAddress, privateKey, waitForBalance, deploy}
-deactivate SDK
-user -> Blockchain: await waitForBalance()
+user -> WalletService: createFutureWallet(ensName, token)
+activate WalletService
+WalletService -> GasModeService: getGasPrices
+activate GasModeService
+GasModeService -> WalletService: GasPrices
+deactivate GasModeService
+WalletService -> user: gasPriceInToken
+deactivate WalletService
+user -> Blockchain: waitForBalance()
 activate Blockchain
+user -> Blockchain: Funds
 Blockchain -> user: Promise<BalanceDetails>
 deactivate Blockchain
-user -> Relayer: await deploy(ensName)
+user -> Relayer: deploy(Deployment)
 activate Relayer
-Relayer -> user: Promise<string>
+Relayer -> Blockchain: check balance in token
+Relayer -> user: Promise<DeploymentStatus>
 actor Relayer
 actor Blockchain
 deactivate Relayer
