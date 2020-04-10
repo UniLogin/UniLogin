@@ -1,4 +1,4 @@
-.dashboard
+.unilogin-theme-jarvis.dashboard
   position: relative
   height: 100%
 
@@ -16,19 +16,22 @@
 .dashboard-content
   height: calc(100% - 70px)
   display: flex
+  flex-direction: column
   align-items: center
   justify-content: center
   overflow: auto
 
-  +media(s, 168px)
-    display: block
+  @media only screen and (max-width: 770px)
+    justify-content: flex-start
     padding: 0
     height: calc(100% - 56px)
 
 .dashboard-content-box
+  position: relative
   display: flex
   flex-direction: column
   max-width: 970px
+  min-height: 660px
   width: 100%
   background: #FFFFFF
   box-shadow: 0px 3px 17px rgba(79, 55, 168, 0.088853)
@@ -38,12 +41,15 @@
     display: flex
     flex-direction: column
     flex: 1
+    margin-top: 50px
+
+    @media only screen and (max-width: 770px)
+      margin-top: 30px
 
   @media only screen and (max-width: 770px)
     box-shadow: unset
-
-  +media(s, 168px)
-    min-height: unset
+    flex: 1
+    min-height: min-content
 
 .dashboard-ens-name
   display: none
@@ -90,6 +96,8 @@
   +media(s, 168px)
     display: none
 
+
+
 .jarvis-styles
   display: flex
   flex-direction: column
@@ -102,3 +110,14 @@
 .universal-login-transfer > .jarvis-styles
   @media only screen and (max-width: 770px)
     height: 100%
+
+.unilogin-theme-jarvis.dashboard
+  .unilogin-component-notice-wrapper
+    display: block
+    position: absolute
+
+  .unilogin-component-notice
+    width: initial
+
+    @media only screen and (max-width: 768px)
+      margin-top: 0
