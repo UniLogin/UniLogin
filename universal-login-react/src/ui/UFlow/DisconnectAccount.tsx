@@ -2,8 +2,12 @@ import React, {useState} from 'react';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {disconnectAccount, getInputClassName} from '../../core/services/DisconnectAccountService';
 import {WalletService} from '@unilogin/sdk';
+import {useThemeClassFor} from '../utils/classFor';
 import './../styles/disconnectAccount.sass';
 import './../styles/disconnectAccountDefault.sass';
+import './../styles/themes/UniLogin/disconnectAccountThemeUniLogin.sass';
+import './../styles/themes/Legacy/disconnectAccountThemeLegacy.sass';
+import './../styles/themes/Jarvis/disconnectAccountThemeJarvis.sass';
 
 export interface DisconnectAccountProps {
   walletService: WalletService;
@@ -22,7 +26,7 @@ export const DisconnectAccount = ({walletService, onDisconnectProgress, onAccoun
   }
 
   return (
-    <div className="universal-login-disconnect-account">
+    <div className={`universal-login-disconnect-account ${useThemeClassFor()}`}>
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="disconnect-account">
           <h2 className="disconnect-account-title">Are you sure you want to disconnect this device? </h2>
