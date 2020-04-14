@@ -5,6 +5,7 @@ import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevel
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';
 import range from 'lodash.range';
+import {useThemeClassFor} from '../utils/classFor';
 
 interface EmojiPlaceholdersProps {
   enteredCode: number[];
@@ -34,7 +35,7 @@ export const EmojiPlaceholders = ({enteredCode, publicKey, onEmojiClick, classNa
   };
 
   return (
-    <div className="universal-login-emojis">
+    <div className={`${useThemeClassFor()} universal-login-emojis`}>
       <div className={getStyleForTopLevelComponent(className)}>
         <div className="emoji-placeholders-container">
           <ul className="emojis-placeholders-list">

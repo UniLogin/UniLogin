@@ -1,0 +1,51 @@
+@import ../../helpers/breakpoints
+
+.unilogin-component-funds.unilogin-theme-jarvis
+  .funds
+    padding: 0 10px 40px
+
+    +media(s, 168px)
+      padding-top: 10px
+
+  .ens-name-row
+    display: none
+
+  .balance-text
+    margin: 0 0 30px
+    color: #31405E
+    font-weight: 600
+    font-size: 20px
+    text-transform: capitalize
+
+  .balance-amount
+    color: #31405E
+
+  .funds-btn
+    height: 45px
+    width: 165px
+    border-radius: 3px
+    font-weight: 500
+    font-size: 14px
+
+  .funds-btn + .funds-btn
+    margin-left: 30px
+
+  .funds-topup
+    background-color: #2EC9F5
+    color: #fff
+
+  .funds-send
+    color: #2EC9F5
+    border-color: #2EC9F5
+
+  .funds-send::before
+    background: url('./../../../assets/jarvis/arrow-send.svg') center no-repeat
+    background-size: contain
+
+  .balance-spinner-wrapper
+    height: 125px
+
+  .balance-spinner
+    .spinner-dot
+      background-image: linear-gradient(270deg, #0FB1EF -2.26%, #55FD77 100%)
+
