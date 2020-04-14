@@ -1,8 +1,6 @@
 @startuml
-title refund in token process
+title refund in token [Relayer Side]
 
-
-actor user
 
 == create FutureWallet ==
 user -> FutureWalletFactory: createFuture
@@ -21,5 +19,7 @@ BalanceValidator -> DeploymentService: balance === DEPLOYMENT_COST * gasPriceInT
 DeploymentService -> Store: getTokenPriceInEth
 Store -> DeploymentService: tokenPriceInEth
 DeploymentService -> Blockchain: DeployTx (gasPrice = gasPriceInToken/tokenPriceInEth)
+DeploymentService -> Relayer: tx hash
+Relayer -> user: tx hash
 deactivate DeploymentService
 @enduml
