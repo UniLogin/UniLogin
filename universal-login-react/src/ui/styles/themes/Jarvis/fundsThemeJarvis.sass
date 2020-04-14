@@ -1,4 +1,6 @@
-.unilogin-component-funds
+@import ../../helpers/breakpoints
+
+.unilogin-component-funds.unilogin-theme-jarvis
   .funds
     padding: 0 10px 40px
 
@@ -11,9 +13,22 @@
   .balance-text
     margin: 0 0 30px
     color: #31405E
+    font-weight: 600
+    font-size: 20px
+    text-transform: capitalize
 
   .balance-amount
     color: #31405E
+
+  .funds-btn
+    height: 45px
+    width: 165px
+    border-radius: 3px
+    font-weight: 500
+    font-size: 14px
+
+  .funds-btn + .funds-btn
+    margin-left: 30px
 
   .funds-topup
     background-color: #2EC9F5
@@ -24,7 +39,7 @@
     border-color: #2EC9F5
 
   .funds-send::before
-    background: url('./../assets/icons/arrow-send.svg') center no-repeat
+    background: url('./../../../assets/jarvis/arrow-send.svg') center no-repeat
     background-size: contain
 
   .balance-spinner-wrapper

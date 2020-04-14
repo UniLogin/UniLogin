@@ -6,6 +6,7 @@ import {Asset} from './Asset';
 import './../styles/assetsList.sass';
 import './../styles/themes/Legacy/assetsListThemeLegacy.sass';
 import './../styles/themes/UniLogin/assetsListThemeUnilogin.sass';
+import './../styles/themes/Jarvis/assetsListThemeJarvis.sass';
 import {getIconForToken} from '../../core/utils/getIconForToken';
 import {useBalances} from '../hooks/useBalances';
 import {ThemedComponent} from './ThemedComponent';

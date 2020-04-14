@@ -3,7 +3,9 @@ import {TokensPrices} from '@unilogin/commons';
 import UniversalLoginSDK from '@unilogin/sdk';
 import Spinner from './Spinner';
 import './../styles/assetsItem.sass';
-import './../styles/assetsItemDefault.sass';
+import './../styles/themes/UniLogin/assetsItemThemeUnilogin.sass';
+import './../styles/themes/Jarvis/assetsItemThemeJarvis.sass';
+import './../styles/themes/Legacy/assetsItemThemeLegacy.sass';
 import {getTildeGivenAmount, formatCurrency} from '../../core/utils/formatCurrency';
 import {ThemedComponent} from './ThemedComponent';
 
