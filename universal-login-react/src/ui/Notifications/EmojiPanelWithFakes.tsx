@@ -4,6 +4,7 @@ import {generateCodeWithFakes} from '@unilogin/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
 import '../styles/emojiDefaults.sass';
+import {useThemeClassFor} from '../utils/classFor';
 
 interface EmojiPanelWithFakesProps {
   publicKey: string;
@@ -26,7 +27,7 @@ export const EmojiPanelWithFakes = ({publicKey, onEmojiClick, className}: EmojiP
   ));
 
   return (
-    <div className="universal-login-emojis">
+    <div className={`${useThemeClassFor()} universal-login-emojis`}>
       <div className={getStyleForTopLevelComponent(className)}>
         <p className='emojis-fakes-title'>Choose icons:</p>
         <ul className="emojis-fakes-list">
