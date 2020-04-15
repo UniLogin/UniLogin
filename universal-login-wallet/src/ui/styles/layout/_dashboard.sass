@@ -20,8 +20,12 @@
   align-items: center
   justify-content: center
   overflow: auto
+  max-height: calc(100% - 100px)
+  margin-top: 15px
 
   @media only screen and (max-width: 770px)
+    max-height: unset
+    margin-top: unset
     justify-content: flex-start
     padding: 0
     height: calc(100% - 56px)
