@@ -75,10 +75,6 @@ export const Onboarding = (props: OnboardingProps) => {
                   />
                 </ModalWrapper>}
             />
-            <Route
-              path='/waitingForWyre'
-            >
-            </Route>
           </Switch>
         </MemoryRouter>
       </div>
