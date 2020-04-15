@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
+import {ThemedComponent} from '../commons/ThemedComponent';
 
 interface BackupCodesWrapperProps {
   children: ReactNode;
@@ -7,17 +7,14 @@ interface BackupCodesWrapperProps {
 }
 
 export const BackupCodesWrapper = ({children, className}: BackupCodesWrapperProps) => (
-  <div className="universal-login-backup">
-    <div className={getStyleForTopLevelComponent(className)}>
-      <div className="backup">
-        <div>
-          <h2 className="backup-title">Backup code</h2>
-          <p className="backup-subtitle">
-            If you lose all your devices you may not have other ways to recover your account.
-          </p>
-        </div>
-        {children}
-      </div>
+  <ThemedComponent className={className} name="backup">
+    <div>
+      <h2 className="backup-title">Backup code</h2>
+      <p className="backup-subtitle">
+        If you lose all your devices you may not have other ways to recover your account.
+        <strong>Remember to keep your generated recovery code safe.</strong>
+      </p>
     </div>
-  </div>
+    {children}
+  </ThemedComponent>
 );

@@ -1,17 +1,19 @@
 import React, {useState, useEffect, useRef} from 'react';
 import './../../styles/gasPrice.sass';
-import './../../styles/gasPriceDefault.sass';
+import './../../styles/themes/Legacy/gasPriceThemeLegacy.sass';
+import './../../styles/themes/UniLogin/gasPriceThemeUniLogin.sass';
+import './../../styles/themes/Jarvis/gasPriceThemeJarvis.sass';
 import UniversalLoginSDK, {DeployedWallet} from '@unilogin/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../../hooks/useAsync';
 import {GasMode, GasOption, TokenDetailsWithBalance, EMPTY_GAS_OPTION, ensureNotFalsy, OnGasParametersChanged, ETHER_NATIVE_TOKEN, findGasMode, findGasOption, FAST_GAS_MODE_INDEX} from '@unilogin/commons';
-import {getStyleForTopLevelComponent} from '../../../core/utils/getStyleForTopLevelComponent';
 import {useAsyncEffect} from '../../hooks/useAsyncEffect';
 import {GasPriceSpeedChoose} from './GasPriceSpeed';
 import {TransactionFeeChoose} from './TransactionFeeChoose';
 import {SelectedGasPrice} from './SelectedGasPrice';
 import {useOutsideClick} from '../../hooks/useClickOutside';
 import {Spinner} from '../Spinner';
+import {useClassFor} from '../../utils/classFor';
 
 interface GasPriceProps {
   deployedWallet?: DeployedWallet;
@@ -73,7 +75,7 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
     }
   }, [gasModes]);
 
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   useOutsideClick(ref, () => {
     if (contentVisibility) {
       setContentVisibility(false);
@@ -81,50 +83,48 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
   }, [contentVisibility]);
 
   const renderComponent = (gasModes: GasMode[]) => (
-    <div ref={ref} className="universal-login-gas">
-      <div className={getStyleForTopLevelComponent(className)}>
-        <div className="gas-price">
-          <GasPriceTitle />
-          <div className="gas-price-dropdown">
-            <SelectedGasPrice
+    <>
+      <GasPriceTitle />
+      <div className="gas-price-dropdown">
+        <SelectedGasPrice
+          modeName={modeName}
+          gasLimit={gasLimit}
+          usdAmount={usdAmount}
+          gasOption={gasOption}
+          onClick={() => setContentVisibility(!contentVisibility)}
+        />
+        {contentVisibility &&
+          <div className="gas-price-selector">
+            <GasPriceTitle />
+            <GasPriceSpeedChoose
+              gasModes={gasModes}
               modeName={modeName}
+              onModeChanged={onModeChanged}
+            />
+            <TransactionFeeChoose
+              gasModes={gasModes}
+              modeName={modeName}
+              tokenAddress={gasOption.token.address}
               gasLimit={gasLimit}
               usdAmount={usdAmount}
-              gasOption={gasOption}
-              onClick={() => setContentVisibility(!contentVisibility)}
+              tokensDetailsWithBalance={tokenDetailsWithBalance}
+              onGasOptionChanged={onGasOptionSelected}
             />
-            {contentVisibility &&
-              <div className="gas-price-selector">
-                <GasPriceTitle />
-                <GasPriceSpeedChoose
-                  gasModes={gasModes}
-                  modeName={modeName}
-                  onModeChanged={onModeChanged}
-                />
-                <TransactionFeeChoose
-                  gasModes={gasModes}
-                  modeName={modeName}
-                  tokenAddress={gasOption.token.address}
-                  gasLimit={gasLimit}
-                  usdAmount={usdAmount}
-                  tokensDetailsWithBalance={tokenDetailsWithBalance}
-                  onGasOptionChanged={onGasOptionSelected}
-                />
-              </div>
-            }
           </div>
-        </div>
+        }
       </div>
-    </div>
+    </>
   );
   return (
-    gasModes ? renderComponent(gasModes) : <Spinner className="spinner-small" />
+    <div ref={ref} className={useClassFor('gas-price')}>
+      {gasModes ? renderComponent(gasModes) : <Spinner className="spinner-small" />}
+    </div>
   );
 };
 
 const GasPriceTitle = () => (
   <div className="gas-price-top">
-    <p className="gas-price-title">Transaction details</p>
+    <p className="gas-price-title">FEE</p>
     <div className="gas-price-hint">
       <p className="gas-price-tooltip">Choose transaction speed and token</p>
     </div>
