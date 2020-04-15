@@ -1,33 +1,25 @@
 @import helpers/breakpoints
 
-.universal-login-devices
+.unilogin-component-devices
   display: flex
   flex: 1
+  flex-direction: column
+  align-items: center
+  position: relative
+  height: 630px
+  width: 100%
+  overflow: scroll
+  padding: 0 32px 30px
 
-  .universal-login-default
-    display: flex
-    flex: 1
-
-  .devices
-    display: flex
-    flex-direction: column
-    align-items: center
-    position: relative
-    height: 630px
-    width: 100%
-    overflow: scroll
-    padding: 0 0 30px
-    flex: 1
-
-    +media(s)
-      padding: 0
-      height: initial
+  +media(s)
+    padding: 0 15px
+    height: initial
 
   .devices-inner
     max-width: 770px
     min-width: 80%
     min-height: 575px
-    padding: 40px 15px 0
+    padding: 50px 15px 0
     margin-bottom: 1rem
 
     +media(s)
@@ -38,7 +30,7 @@
     display: flex
     align-items: center
     justify-content: space-between
-    margin-bottom: 50px
+    margin-bottom: 24px
 
     +media(s)
       flex-direction: column
@@ -47,9 +39,9 @@
 
   .connected-devices-title
     margin: 0
-    font-weight: 600
-    font-size: 20px
-    line-height: normal
+    font-weight: 500
+    font-size: 16px
+    line-height: 20px
     text-align: left
 
     +media(s)
@@ -199,7 +191,7 @@
     position: relative
     min-width: 45px
     max-width: 45px
-    margin: 0 32px 0 0
+    margin: 0 27px 0 0
 
   .connected-devices-img-wrapper::before
     content: ''
@@ -239,19 +231,17 @@
     filter: grayscale(0.7)
 
   .connected-devices-item + .connected-devices-item
-    margin-top: 23px
+    margin-top: 24px
 
   .connected-devices-item.highlighted
     border: 1px solid
 
   .connected-devices-type
     margin: 0
-    font-weight: 600
-    font-size: 16px
-    letter-spacing: 0
-    line-height: normal
+    font-weight: 500
+    font-size: 14px
+    line-height: 17px
     text-align: left
-    margin-right: 20px
 
     @media only screen and (max-width: 600px)
       font-size: 14px

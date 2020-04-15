@@ -1,23 +1,25 @@
 @import helpers/breakpoints
 
-.universal-login-devices-message
-  .devices-message
-    position: relative
-    width: 100%
-    padding: 20px 30px
+.unilogin-component-devices-message
+  position: relative
+  width: 100%
+  padding: 20px 30px
+  margin-top: 24px
+  border: 1px solid #DDEBF1
+  border-radius: 4px
+  margin-top: 24px
+  padding: 16px 24px
 
-    +media(s)
-      padding: 15px
-      border-radius: 3px
+  +media(s)
+    padding: 15px
+    border-radius: 3px
 
   .devices-message-row
     position: relative
     display: flex
     justify-content: space-between
     align-items: center
-    max-width: 770px
-    margin: 0 auto
-    padding-left: 63px
+    padding-left: 43px
 
     +media(s)
       flex-direction: column
@@ -29,8 +31,8 @@
     top: 50%
     left: 0
     transform: translateY(-50%)
-    width: 36px
-    height: 34px
+    width: 27px
+    height: 32px
     background: url('../assets/icons/new-devices.svg') center no-repeat
 
     +media(s)
@@ -41,24 +43,24 @@
     margin-right: 15px
 
   .devices-message-title
-    margin: 0 0 9px
-    font-weight: 600
+    margin: 0 0 8px
+    font-weight: 500
     font-size: 14px
-    line-height: 21px
+    line-height: 17px
 
   .devices-message-text
     margin: 0
     font-size: 12px
-    letter-spacing: 0
-    line-height: 18px
+    line-height: 140%
 
   .devices-message-button
-    width: 165px
+    width: 102px
     height: 45px
     border-radius: 3px
     font-weight: 500
     font-size: 14px
     text-align: center
+    border-radius: 4px
 
   .devices-message-buttons-row
     display: flex

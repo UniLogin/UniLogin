@@ -13,11 +13,13 @@
     flex: 1
 
 .udashboard-logo-btn
+  position: relative
+  max-width: 57px
+  margin: 0 auto
   display: inline-block
   background: none
   border: none
   cursor: pointer
-  position: relative
 
 .udashboard-modal
   @media only screen and (max-width: 970px)
@@ -85,16 +87,6 @@
   +media(s)
     height: auto
     padding: 0
-
-.udashboard-tab .new-notifications::after
-  top: -4px
-  right: auto
-  left: 9px
-  width: 8px
-  height: 8px
-
-  +media(s)
-    top: 3px
 
 .udashboard-tab-text
   position: relative
@@ -218,13 +210,17 @@
 .new-notifications::after
   content: ''
   position: absolute
-  top: -1px
-  right: -4px
-  width: 11px
-  height: 11px
+  top: -3px
+  right: -5px
+  width: 8px
+  height: 8px
   background: #0FB989
   border-radius: 50%
   border: 1px solid transparent
+
+  +media(s)
+    top: 3px
+    right: 7px
 
 .udashboard-tab .udashboard-tab-text::before
   display: none
