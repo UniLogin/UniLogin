@@ -18,7 +18,7 @@ export const Safello = (props: SafelloProps) => {
       width="500px"
       height="650px"
       sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts allow-popups"
-      style={{border: 'none', maxWidth: '100%', display: 'block', marginLeft: 'auto', marginRight: 'auto'}}
+      style={{top: '50%', transform: 'translateY(-30%)', width: '500px', border: 'none', maxWidth: '100%', display: 'block', marginLeft: 'auto', marginRight: 'auto'}}
     />
   );
 };
