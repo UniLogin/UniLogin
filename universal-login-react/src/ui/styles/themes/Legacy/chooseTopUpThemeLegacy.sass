@@ -7,11 +7,15 @@
     color: #FFFFFF
     text-align: center
 
+    @media only screen and (max-width: 350px)
+      font-size: 1rem
+
   .unilogin-component-top-up-radio-inner
     background: #262053
     box-shadow: 0 2px 4px 0 rgba(17,2,54,0.90)
     border-radius: 6px
     border-color: transparent
+
 
   &.method-selected .unilogin-component-top-up-radio-inner
     box-shadow: none
@@ -137,6 +141,18 @@
     cursor: pointer
     outline: none
 
+  .unilogin-component-top-up-body
+    display: flex
+    flex-direction: column
+    flex: 1
+
+  .unilogin-component-top-up-body-inner
+    min-width: 570px
+
+    @media only screen and (max-width: 570px)
+      min-width: unset
+      width: 100%
+
   .unilogin-component-copy-btn-feedback
     color: #FFFFFF
     background-color: #0FB989
@@ -171,3 +187,13 @@
 .unilogin-theme-default
   .unilogin-component-onboarding-progress-wrapper
     display: none
+
+.unilogin-component-top-up.unilogin-theme-default.method-selected > .unilogin-component-top-up
+  flex: 1
+
+.unilogin-component-top-up.unilogin-theme-default.method-selected
+  flex: unset
+
+.unilogin-component-top-up.unilogin-theme-default
+  display: flex
+  flex: 1

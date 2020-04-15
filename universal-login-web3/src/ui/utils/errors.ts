@@ -31,4 +31,4 @@ export class UnexpectedWalletState extends ValidationFailed {
   }
 }
 
-export const isRandomInfuraError = (errorMessage?: string) => errorMessage === 'invalid reponse - 0';
+export const isRandomInfuraError = (errorMessage?: string) => errorMessage === 'invalid response - 0';

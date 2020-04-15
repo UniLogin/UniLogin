@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {ensure, generateCode} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
 import {EmojiPanel} from '../WalletSelector/EmojiPanel';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import './../styles/emoji.sass';
 import './../styles/emojiDefaults.sass';
 import Spinner from '../commons/Spinner';
@@ -14,10 +13,9 @@ interface ConnectWithEmojiProps {
   walletService: WalletService;
   onCancel: () => void;
   onConnect: () => void;
-  className?: string;
 }
 
-export const ConnectWithEmoji = ({onCancel, onConnect, walletService, className}: ConnectWithEmojiProps) => {
+export const ConnectWithEmoji = ({onCancel, onConnect, walletService}: ConnectWithEmojiProps) => {
   const [securityCodes, setSecurityCodes] = useState<number[] | undefined>(undefined);
   useAsyncEffect(async () => {
     if (walletService.state.kind === 'Connecting') {
@@ -40,19 +38,16 @@ export const ConnectWithEmoji = ({onCancel, onConnect, walletService, className}
 
   return (
     <div className={`${useThemeClassFor()} universal-login-emojis`}>
-      <div className={getStyleForTopLevelComponent(className)}>
-        <div className="connect-emoji">
-          <h1 className="connect-emoji-title">Connect to your account</h1>
-          <div className="connect-emoji-content">
-            <div className="connect-emoji-section">
-              <p className="connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
-              {!securityCodes && <Spinner className="spinner-center" />}
-              {securityCodes && <div className="universal-login-emojis">
-                <EmojiPanel className="jarvis-styles" code={securityCodes} />
-              </div>}
-              <p className="connect-emoji-warning">Do not close this window, until the connection is completed.</p>
-              <button onClick={onCancelClick} className="connect-emoji-btn">Cancel Request</button>
-            </div>
+      <div className="connect-emoji">
+        <h1 className="connect-emoji-title">Connect to your account</h1>
+        <div className="connect-emoji-content">
+          <div className="connect-emoji-section">
+            <p className="connect-emoji-text">Check the notification of another device controlling this account and type the emojis in this order.</p>
+            {securityCodes
+              ? <EmojiPanel code={securityCodes} />
+              : <Spinner className="spinner-center" />}
+            <p className="connect-emoji-warning">Do not close this window, until the connection is completed.</p>
+            <button onClick={onCancelClick} className="connect-emoji-btn">Cancel Request</button>
           </div>
         </div>
       </div>

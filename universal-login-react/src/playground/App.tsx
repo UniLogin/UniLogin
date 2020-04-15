@@ -32,7 +32,7 @@ export const App = () => {
       applicationInfo: {type: 'laptop'},
       observedTokensAddresses: config.tokens,
       saiTokenAddress: config.saiTokenAddress,
-      network: 'ganache',
+      network: config.network,
     });
     sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
     sdk.start();
@@ -95,7 +95,7 @@ export const App = () => {
                 render={({history}) =>
                   <Onboarding
                     walletService={walletService}
-                    domains={['mylogin.eth', 'universal-id.eth', 'poppularapp.eth']}
+                    domains={config.domains}
                     onConnect={() => console.log('connected')}
                     onCreate={() => history.push('/onboarding/success')}
                     hideModal={() => history.push('/')}
@@ -106,7 +106,7 @@ export const App = () => {
                   onCreateClick={() => {console.log('create');}}
                   onConnectClick={() => {console.log('connect');}}
                   sdk={sdk}
-                  domains={['mylogin.eth', 'myapp.eth']}
+                  domains={config.domains}
                 />
               </Route>
               <Route

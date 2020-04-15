@@ -33,8 +33,8 @@
   box-shadow: 0 3px 17px 0 rgba(79,55,168,0.09)
   overflow: unset
 
-  +media(s, 168px)
-    min-height: 100vh
+  @media only screen and (max-width: 770px)
+    width: 100%
 
 .modal-body
   max-width: 100%
@@ -157,22 +157,19 @@
   text-align: center
 
 .jarvis-modal.universal-login
+  @media only screen and (max-width: 770px)
+    width: 100%
 
   .unilogin-component-modal-overlay
     background: none
 
   .unilogin-component-modal-wrapper
-    width: 770px
     padding: 0
 
   .unilogin-component-modal
     +media(s, 168px)
       display: flex
       flex-direction: column
-
-  +media(s)
-    width: 90px
-    height: 100px
 
 .modal-section-title
   font-size: 12px
@@ -203,7 +200,9 @@
 .modal-succes-content
   padding: 50px 75px 30px
 
-  +media(s, 168px)
+  +media(s, 170px)
+    display: flex
+    flex-direction: column
     flex-grow: 1
 
   +media(s)
@@ -262,8 +261,8 @@
   max-width: 500px
   margin: 50px auto 0
 
-  +media(s)
-    margin-top: 80px
+  @media only screen and (max-width: 770px)
+    margin-top: auto
 
 .error-message
   color: #FF1D1C

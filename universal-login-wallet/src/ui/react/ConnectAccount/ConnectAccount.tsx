@@ -22,7 +22,6 @@ export const ConnectAccount = () => {
             walletService={walletService}
             onCancel={() => history.push('/connect/selector')}
             onSuccess={() => history.push('/connectionSuccess')}
-            className="jarvis-styles"
           />
         </Route>
       </Switch>

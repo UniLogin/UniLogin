@@ -1,6 +1,4 @@
 import React from 'react';
-import './../styles/balance.sass';
-import './../styles/balanceDefault.sass';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {formatCurrency} from '../../core/utils/formatCurrency';
 import Spinner from './Spinner';

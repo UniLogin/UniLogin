@@ -19,6 +19,8 @@ input
   border: none
 
 body > div
+  display: flex
+  flex-direction: column
   height: 100%
 
 .container
@@ -40,11 +42,20 @@ body > div
   display: flex
   justify-content: center
   align-items: center
-  min-height: 100vh
+  flex: 1
   padding: 15px
 
-  +media(s, 168px)
+  +media(s, 170px)
+    display: flex
+    flex-direction: column
+    flex: 1
     padding: 0
+
+  & > .box
+    @media only screen and (max-width: 770px)
+      display: flex
+      flex-direction: column
+      flex: 1
 
 .box
   max-width: 800px
@@ -54,6 +65,7 @@ body > div
 
 .box-header
   padding: 22px 25px
+  text-align: center
   background: #ffffff
 
 .box-title
@@ -63,6 +75,11 @@ body > div
 
 .box-content
   background: #fafafa
+
+  @media only screen and (max-width: 770px)
+    display: flex
+    flex-direction: column
+    flex: 1
 
 .box-text
   font-size: 16px
@@ -86,7 +103,7 @@ body > div
 .unilogin-component-info-text::before
   content: ''
   position: absolute
-  top: 3px
+  top: 34px
   left: 0
   width: 18px
   height: 18px

@@ -1,3 +1,330 @@
+@import ../../helpers/breakpoints
+
+.unilogin-component-udashboard .unilogin-theme-default
+  &.udashboard
+    height: 100%
+    font-family: 'Poppins', sans-serif
+
+    +media(s)
+      display: flex
+      flex-direction: column
+
+    .universal-login-default
+      display: flex
+      flex: 1
+
+    .assets
+      min-width: 522px
+      margin: 0 auto
+
+    .universal-login-funds .funds-topup
+      border: 1px solid transparent
+
+      @media only screen and (max-width: 600px)
+        min-width: 100%
+
+    .universal-login-funds .funds-btn
+      @media only screen and (max-width: 600px)
+        width: unset
+        padding: 0 3rem
+
+      @media only screen and (max-width: 600px)
+        padding: 0 2.5rem
+
+  .udashboard-logo-btn
+    display: inline-block
+    background: none
+    border: none
+    cursor: pointer
+    position: relative
+
+  .udashboard-modal .unilogin-component-modal-wrapper
+    width: 970px
+    max-width: 100%
+    border-radius: 6px
+
+    +media(s)
+      position: fixed
+      top: 0
+      left: 0
+      transform: translate(0, 0)
+      width: 100%
+      height: 100%
+      min-height: initial
+      padding: 0
+      border-radius: 0
+
+  .udashboard-modal .unilogin-component-modal
+    background: radial-gradient(720.65px at 50% 0%, #0C0E57 0%, #14052C 100%)
+
+    +media(s)
+      height: 100%
+
+  .udashboard-header
+    justify-content: space-between
+    height: 54px
+    padding: 0 50px 0 25px
+    background: #262053
+
+    +media(s)
+      padding: 15px 50px 0
+      background: none
+
+  .udashboard-header-nav
+    display: flex
+    align-items: center
+    justify-content: flex-start
+    height: 100%
+
+    +media(s)
+      display: none
+
+  .udashboard-tab
+    height: 100%
+    padding: 0 12px
+    border: none
+    background: none
+    cursor: pointer
+    outline: none
+    display: flex
+    align-items: center
+    text-decoration: none
+
+    +media(s)
+      height: auto
+      padding: 0
+
+  .udashboard-tab .new-notifications::after
+    top: -4px
+    right: auto
+    left: 9px
+    width: 8px
+    height: 8px
+
+    +media(s)
+      top: 3px
+
+  .udashboard-tab:focus
+    background: #353063
+
+  .udashboard-tab-text
+    position: relative
+    color: #ABB3E8
+    font-size: 12px
+    letter-spacing: 1px
+    text-align: center
+    text-transform: uppercase
+
+    +media(s)
+      padding: 32px 0 0
+      font-size: 10px
+      line-height: 15px
+      text-align: center
+
+  .udashboard-tab.active .udashboard-tab-text
+    +media(s)
+      color: #0FB989
+
+  .udashboard-tab-text::before
+    content: ''
+    display: block
+    position: absolute
+    top: 50%
+    left: 0
+    transform: translateY(-50%)
+
+    +media(s)
+      top: 8px
+      left: 50%
+      transform: translate(-50%, 0)
+
+  .udashboard-tab-funds .udashboard-tab-text
+    padding-left: 18px
+
+    +media(s)
+      padding-left: 0
+
+  .udashboard-tab-funds .udashboard-tab-text::before
+    width: 9px
+    height: 17px
+    background: url('./../../../assets/icons/dollar.svg') center no-repeat
+
+  .udashboard-tab-funds.active .udashboard-tab-text::before
+    +media(s)
+      background: url('./../../../assets/ucomponent/dollar-active.svg') center no-repeat
+      background-size: contain
+
+  .udashboard-tab.active
+    background: #353063
+    border-bottom: 2px solid #B9C3F8
+
+    +media(s)
+      background: none
+      border: none
+
+  .udashboard-tab + .udashboard-tab
+    margin-left: 30px
+
+    +media(s)
+      margin: 0
+
+  .udashboard-content
+    position: relative
+    display: flex
+    flex-direction: column
+    height: 100%
+    min-height: 635px
+    overflow: scroll
+
+    +media(s)
+      min-height: initial
+      overflow-y: auto
+
+  .udashboard-content .universal-login-funds,
+  .udashboard-content .universal-login-devices,
+  .udashboard-content .universal-login-backup
+    width: 100%
+    +media(s)
+      padding: 0 15px 25px
+      overflow-y: auto
+
+  .backup
+    flex: 1
+
+  .udashboard-content .universal-login-devices,
+    flex: 1
+
+  .universal-login-backup .backup-subtitle
+    padding: 0 1.5rem
+
+  .udashboard-content .universal-login-backup
+    display: flex
+    padding: 0
+    flex: 1
+
+  .udashboard-content .universal-login-devices,
+    +media(s)
+      padding: 0
+
+  .udashboard-progress
+    max-width: 500px
+    padding: 50px 20px 20px
+    margin: 0 auto
+
+  .udashboard-progress-text
+    color: #fff
+    font-weight: 700
+    margin: 0 0 40px
+    text-align: center
+    font-size: 20px
+
+  .universal-login-emojis
+    display: flex
+    justify-content: center
+
+    .jarvis-styles
+      width: 100%
+
+  .approve-device
+    display: flex
+    flex-direction: column
+    flex: 1
+
+  .emojis
+    display: flex
+    flex-direction: column
+    flex: 1
+
+  .udashboard-content .universal-login-topup .universal-login-default .top-up
+    background: none
+
+  .universal-login-default
+    width: 100%
+    display: flex
+    flex-direction: column
+    flex: 1
+
+  .new-notifications::after
+    content: ''
+    position: absolute
+    top: -1px
+    right: -4px
+    width: 11px
+    height: 11px
+    background: #0FB989
+    border-radius: 50%
+    border: 1px solid transparent
+
+  .udashboard-tab-devices .udashboard-tab-text
+    padding-left: 25px
+
+    +media(s)
+      padding-left: 0
+
+  .udashboard-tab-devices .udashboard-tab-text::before
+    width: 15px
+    height: 15px
+    background: url('../../../assets/ucomponent/devices.svg') center no-repeat
+
+  .udashboard-tab-devices.active .udashboard-tab-text::before
+    +media(s)
+      background: url('../../../assets/ucomponent/devices-active.svg') center no-repeat
+      background-size: contain
+
+  .udashboard-tab-backup .udashboard-tab-text
+    padding-left: 20px
+
+    +media(s)
+      padding-left: 0
+
+  .udashboard-tab-backup .udashboard-tab-text::before
+    width: 11px
+    height: 17px
+    background: url('../../../assets/icons/backup.svg') center no-repeat
+
+  .udashboard-tab-backup.active .udashboard-tab-text::before
+    +media(s)
+      background: url('../../../assets/icons/backup-active.svg') center no-repeat
+      background-size: contain
+
+  .udashboard-navbar
+    display: none
+    height: 70px
+    background: #262053
+    background: rgba(38, 32, 83, 0.82)
+    box-shadow: 0px -3px 10px rgba(0, 0, 0, 0.197662)
+    box-sizing: initial
+
+    +media(s)
+      width: 100%
+      display: flex
+      justify-content: space-around
+      align-items: flex-end
+      padding-bottom: 16px
+
+  .udashboard-back-btn
+    border: none
+    width: 13px
+    height: 23px
+    background: url('./../../../assets/icons/angle-back.svg') center no-repeat
+    background-size: contain
+
+    +media(s)
+      display: block
+
+  .udashboard-ens
+    font-weight: 500
+    font-size: 12px
+    line-height: 18px
+    color: #B9C3F8
+
+  .udashboard-subheader
+    display: flex
+    align-items: center
+    justify-content: flex-start
+    height: 54px
+    padding: 0 50px 0 25px
+
 .unilogin-theme-default .udashboard-content
   .universal-login-emojis
     flex: 1

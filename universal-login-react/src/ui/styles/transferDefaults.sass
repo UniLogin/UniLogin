@@ -1,5 +1,14 @@
 .universal-login-transfer
   .universal-login-default
+    .transfer
+      @media only screen and (max-width: 800px)
+        min-width: unset
+        margin: 0 30px
+        margin-bottom: 75px
+
+      @media only screen and (max-width: 600px)
+        padding: 0
+
     .transfer-amount-label
       color: #B9C3F8
 
@@ -55,7 +64,7 @@
       border: none
 
     .currency-accordion-item-list
-      background: rgba(54, 47, 106, .8)
+      background: rgb(54, 47, 106)
 
     .transfer-recipient-text
       color: #ABB3E8
@@ -71,3 +80,9 @@
       border-radius: 2px
       border: none
       color: #FFFFFF
+
+
+.universal-login-transfer
+  .unilogin-component-footer-section
+    .footer-buttons-row
+      grid-template-columns: 1fr

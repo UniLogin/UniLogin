@@ -1,20 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import {BigNumberish} from 'ethers/utils';
-import {GasMode, GasOption, safeMultiplyAndFormatEther} from '@unilogin/commons';
-import {calculateTransactionFee} from '@unilogin/react';
+import {utils} from 'ethers';
+import {GasMode, GasOption, safeMultiplyAndFormatEther, ValueRounder} from '@unilogin/commons';
+import {DeployedWallet} from '@unilogin/sdk';
+import {calculateTransactionFee, useBalances, Spinner} from '@unilogin/react';
 import ethereumIcon from '../../assets/ethereum.svg';
 import {Text} from '../common/Text/Text';
 
 export interface TransactionFeeProps {
   mode: Pick<GasMode, 'name' | 'usdAmount'>;
-  gasLimit: BigNumberish;
+  gasLimit: utils.BigNumberish;
   gasOption: GasOption;
+  deployedWallet: DeployedWallet;
 }
 
-export const TransactionFee = ({mode, gasLimit, gasOption}: TransactionFeeProps) => (
-  <FeeBlock>
-    <Logo src={ethereumIcon} alt="ethereum logo"/>
+export const TransactionFee = ({mode, gasLimit, gasOption, deployedWallet}: TransactionFeeProps) => {
+  const [, getBalanceBySymbol] = useBalances(deployedWallet);
+  const balanceWithDetails = getBalanceBySymbol(gasOption.token.symbol);
+  return (<FeeBlock>
+    <Logo src={ethereumIcon} alt="ethereum logo" />
     <FeeRow>
       <div>
         <FeeAmount>{safeMultiplyAndFormatEther(gasOption.gasPrice, gasLimit)} {gasOption.token.symbol}</FeeAmount>
@@ -22,11 +26,13 @@ export const TransactionFee = ({mode, gasLimit, gasOption}: TransactionFeeProps)
       </div>
       <div>
         <Text>Your balance</Text>
-        <FeeText>0.00736 ETH </FeeText>
+        {balanceWithDetails
+          ? <FeeText>{ValueRounder.ceil(utils.formatEther(balanceWithDetails.balance))} {gasOption.token.symbol} </FeeText>
+          : <Spinner className='spinner-small' />}
       </div>
     </FeeRow>
-  </FeeBlock>
-);
+  </FeeBlock>);
+};
 
 const FeeBlock = styled.div`
   display: flex;
