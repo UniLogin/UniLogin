@@ -3,6 +3,7 @@ import {DeployedWallet} from '@unilogin/sdk';
 import './../../styles/devices.sass';
 import './../../styles/themes/Legacy/devicesThemeLegacy.sass';
 import './../../styles/themes/UniLogin/devicesThemeUniLogin.sass';
+import './../../styles/themes/Jarvis/devicesThemeJarvis.sass';
 import {NewDeviceMessage} from './NewDeviceMessage';
 import {ConnectedDevices} from './ConnectedDevices';
 import {useAsync} from '../../hooks/useAsync';
