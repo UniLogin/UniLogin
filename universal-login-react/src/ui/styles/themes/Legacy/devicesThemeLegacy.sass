@@ -1,0 +1,84 @@
+@import ../../helpers/breakpoints
+
+.unilogin-component-devices.unilogin-theme-legacy
+  .connected-devices-item.highlighted
+    background: #262053
+    border-color: rgba(185,195,248,0.46)
+    border-radius: 3px
+
+  .connected-devices-title
+    color: #FFFFFF
+    font-weight: 600
+    font-size: 20px
+    line-height: normal
+
+  .devices-confirmation-text
+    color: #F7F7F9
+
+  .devices-confirmation-input-wrapper
+    border-color: #4a4b83
+
+  .devices-confirmation-input
+    background: none
+    color: #FFFFFF
+
+  .devices-amount-buttons
+    border-color: #4a4b83
+
+  .devices-amount-decrease-btn
+    border-color: #4a4b83
+
+  .devices-amount-increase-btn::before
+    border-left: 4px solid transparent
+    border-right: 4px solid transparent
+    border-bottom: 4px solid #fff
+
+  .devices-amount-decrease-btn::before
+    border-left: 4px solid transparent
+    border-right: 4px solid transparent
+    border-top: 4px solid #fff
+
+  .devices-amount-increase-btn::before,
+  .devices-amount-decrease-btn::before
+    +media(s)
+      border: none
+
+  .devices-confirmation-edit-button
+    background: #262053
+    color: #FFFFFF
+    border: none
+
+  .devices-confirmation-save-button
+    background: #0FB989
+    color: #FFFFFF
+    border: none
+
+  .connected-devices-type
+    color: #FFFFFF
+    font-weight: 600
+    font-size: 16px
+    line-height: normal
+
+  .connected-devices-details
+    color: #8784a1
+
+  .connected-devices-active
+    color: #0FB989
+
+  .connected-devices-cancel
+    color: #FFFFFF
+    background: none
+    border: none
+
+  .connected-devices-delete
+    background: #FC4B61
+    border-radius: 0 3px 3px 0
+    color: #FFFFFF
+    border: none
+
+  .disconnect-account-link
+    color: #FF345C
+    opacity: 0.6
+
+    +media(s)
+      color: #FF345C

@@ -44,7 +44,7 @@ export default class DashboardPage {
   async clickDevicesButton() {
     await waitForUI(this.wrapper, () => this.wrapper.exists('#devicesButton'));
     this.wrapper.find('#devicesButton').first().simulate('click', {button: 0});
-    await waitForUI(this.wrapper, () => this.wrapper.exists('div.devices'));
+    await waitForUI(this.wrapper, () => this.wrapper.exists('div.unilogin-component-devices'));
   }
 
   async clickManageDevicesButton() {
