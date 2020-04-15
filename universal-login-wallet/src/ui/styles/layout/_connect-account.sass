@@ -12,8 +12,19 @@
   width: 100%
   margin: 25px auto 0
 
+  @media only screen and (max-width: 770px)
+    display: flex
+    flex-direction: column
+    flex: 1
+
+    & > .unilogin-theme-jarvis.universal-login
+      min-height: unset
+
 .connect-account-cancel
   margin-top: 165px
+
+  @media only screen and (max-width: 770px)
+    margin-top: auto
 
 .connect-account-info-text
   max-width: 655px
