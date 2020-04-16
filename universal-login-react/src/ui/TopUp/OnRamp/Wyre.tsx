@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {WyreConfig} from '@unilogin/commons';
 import {WaitingForWyre} from '../../commons/WaitingForWyre';
 
@@ -11,6 +11,7 @@ interface WyreProps {
 }
 
 export const Wyre = ({address, currency, config, onBack, isDeployed}: WyreProps) => {
+
   function openPopUp() {
     const url = getWyreUrl(address, currency, config);
     const width = 470;
@@ -23,19 +24,18 @@ export const Wyre = ({address, currency, config, onBack, isDeployed}: WyreProps)
   }
 
   const wyreWindow = openPopUp();
-  if (isDeployed) {
-    if (wyreWindow) {
-      const timer = setInterval(function () {
+  useEffect(() => {
+    if (isDeployed && wyreWindow) {
+        const timer = setInterval(function () {
         if (wyreWindow.closed) {
-          clearInterval(timer);
           onBack();
         }
       }, 500);
+      return () => clearInterval(timer);
     }
-    return <div></div>;
-  }
+  });
 
-  return <WaitingForWyre onBack={onBack}/>;
+  return isDeployed ? <div></div> : <WaitingForWyre onBack={onBack}/>;
 };
 
 export const getWyreUrl = (address: string, currency: string, config: WyreConfig) =>
