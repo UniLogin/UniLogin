@@ -79,6 +79,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
             currency={'ETH'}
             config={relayerConfig.onRampProviders.wyre}
             onBack={() => setModal('none')}
+            isDeployed={walletService.isKind('Deployed')}
           />
         </>);
     case TopUpProvider.SAFELLO:

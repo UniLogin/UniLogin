@@ -8,17 +8,38 @@ interface WyreProps {
   currency: string;
   config: WyreConfig;
   onBack: () => void;
+  isDeployed: boolean;
 }
 
-export const Wyre = ({address, currency, config, onBack}: WyreProps) => {
-  const url = getWyreUrl(address, currency, config);
-  const params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
-width=470,height=630,left=100,top=100`;
-  window.open(url, 'wyre', params);
+export const Wyre = ({address, currency, config, onBack, isDeployed}: WyreProps) => {
+
+  function openPopUp(){
+    const url = getWyreUrl(address, currency, config);
+    const width = 470;
+    const height = 630;
+    const top = window.outerHeight/2 + window.screenY-(height/2);
+    const left = window.outerWidth/2 + window.screenX-(width/2);
+    const params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+    width=${width},height=${height},left=${left},top=${top}`;
+    return window.open(url, 'wyre', params);
+  }
+
+  const wyreWindow = openPopUp();
+  if(isDeployed){
+    if(wyreWindow){
+      const timer = setInterval(function() {
+        if(wyreWindow.closed) {
+            clearInterval(timer);
+            onBack();
+        }
+      }, 500);
+    }
+    return <div></div>;
+  }
 
   return <ModalWrapper >
-    <WaitingForWyre onBack={onBack}/>
-  </ModalWrapper>;
+  <WaitingForWyre onBack={onBack}/>
+</ModalWrapper>;
 };
 
 export const getWyreUrl = (address: string, currency: string, config: WyreConfig) =>
