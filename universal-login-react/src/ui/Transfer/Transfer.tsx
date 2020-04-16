@@ -11,6 +11,7 @@ import {useBalances} from '../hooks/useBalances';
 import '../styles/transfer.sass';
 import '../styles/transferDefaults.sass';
 import './../styles/themes/Jarvis/footerThemeJarvis.sass';
+
 export interface TransferProps {
   transferService: TransferService;
   onTransferTriggered: (transfer: () => Promise<Execution>) => Promise<void>;
