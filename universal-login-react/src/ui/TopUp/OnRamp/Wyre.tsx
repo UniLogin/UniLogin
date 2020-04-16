@@ -1,6 +1,5 @@
 import React from 'react';
 import {WyreConfig} from '@unilogin/commons';
-import {ModalWrapper} from '../../..';
 import {WaitingForWyre} from '../../commons/WaitingForWyre';
 
 interface WyreProps {
@@ -36,9 +35,7 @@ export const Wyre = ({address, currency, config, onBack, isDeployed}: WyreProps)
     return <div></div>;
   }
 
-  return <ModalWrapper >
-    <WaitingForWyre onBack={onBack}/>
-  </ModalWrapper>;
+  return <WaitingForWyre onBack={onBack}/>;
 };
 
 export const getWyreUrl = (address: string, currency: string, config: WyreConfig) =>
