@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import './../../styles/gasPrice.sass';
+import './../../styles/base/gasPrice.sass';
 import './../../styles/themes/Legacy/gasPriceThemeLegacy.sass';
 import './../../styles/themes/UniLogin/gasPriceThemeUniLogin.sass';
 import './../../styles/themes/Jarvis/gasPriceThemeJarvis.sass';
