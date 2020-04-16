@@ -28,7 +28,7 @@ export const BackupCodesInitial = ({generateBackupCodes, deployedWallet, setGasP
         className="backup-btn backup-btn-primary generate-code-btn"
         onClick={generateBackupCodes}
       >
-        Generate new code
+        Generate
       </button>
     </FooterSection>
   </BackupCodesWrapper>

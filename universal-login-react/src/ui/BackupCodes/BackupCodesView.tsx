@@ -23,11 +23,6 @@ export const BackupCodesView = ({codes, printCodes, walletContract, className}: 
         <div className="backup-codes-buttons">
           <button onClick={printCodes} className="backup-print-btn">Print codes</button>
         </div>
-        <p className="backup-subtitle">
-          <strong>
-            Keep your generated recovery code safe.
-          </strong>
-        </p>
       </div>
     </BackupCodesWrapper>
   );

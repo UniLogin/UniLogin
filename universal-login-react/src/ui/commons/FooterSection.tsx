@@ -1,12 +1,13 @@
 import React, {ReactNode} from 'react';
 import './../styles/footerSection.sass';
-import './../styles/footerSectionDefault.sass';
-import {useClassFor} from '../utils/classFor';
+import './../styles/themes/Legacy/footerThemeLegacy.sass';
+import './../styles/themes/UniLogin/footerThemeUniLogin.sass';
+import {ThemedComponent} from './ThemedComponent';
 
 export interface FooterSectionProps {
   children: ReactNode;
 }
 
 export const FooterSection = ({children}: FooterSectionProps) => (
-  <div className={useClassFor('footer-section')}>{children}</div>
+  <ThemedComponent name="footer-section">{children}</ThemedComponent>
 );

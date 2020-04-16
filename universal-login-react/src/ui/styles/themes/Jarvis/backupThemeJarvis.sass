@@ -1,0 +1,79 @@
+@import ../../helpers/breakpoints
+
+.unilogin-component-backup.unilogin-theme-jarvis
+  height: 100%
+  display: flex
+  flex-direction: column
+  flex: 1
+  padding-top: 120px
+
+  +media(s, 168px)
+    min-height: 100%
+
+  &::before
+    content: ''
+    position: absolute
+    top: 30px
+    left: 50%
+    width: 34px
+    height: 56px
+    transform: translateX(-50%)
+    background: url('../../../assets/jarvis/backup-blue.svg') center no-repeat
+    background-size: contain
+
+  .backup-title
+    font-size: 20px
+    font-weight: 600
+    font-weight: bold
+    text-align: center
+    color: #31405E
+
+  .backup-subtitle
+    max-width: 521px
+    font-size: 16px
+    margin: 0 auto
+    color: #5a667e
+    line-height: 24px
+
+  .generate-code-btn
+    background: linear-gradient(270deg, #0FB1EF -2.26%, #55FD77 100%)
+    border-radius: 2px
+    color: #fff
+
+    +media(s, 168px)
+      margin-top: 30px
+
+  .backup-codes-list
+    max-width: 420px
+
+  .backup-codes-item
+    padding: 20px
+    background: rgba(185, 195, 248, 0.1)
+
+  .backup-codes-item + .backup-codes-item
+    margin-top: 16px
+
+  .backup-code-contract
+    margin-bottom: 5px
+    color: #31405E
+    text-align: left
+
+  .backup-code
+    font-weight: 700
+    font-size: 14px
+    line-height: 17px
+    color: #31405E
+
+  .backup-codes-buttons
+    max-width: initial
+    justify-content: flex-start
+
+  .backup-btn
+    width: 235px
+
+  .backup-print-btn
+    color: #2EC9F5
+
+  .backup-print-btn::before
+    background: url('../../../assets/jarvis/print.svg') center no-repeat
+    background-size: contain

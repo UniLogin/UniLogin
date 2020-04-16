@@ -45,10 +45,7 @@ const HomeScreen = () => {
                   />
                 </Route>
                 <Route path={join(basePath, 'backup')}>
-                  <BackupCodes
-                    deployedWallet={deployedWallet}
-                    className="jarvis-backup"
-                  />
+                  <BackupCodes deployedWallet={deployedWallet}/>
                 </Route>
                 <Route path={join(basePath, 'topUp')}>
                   <TopUp
