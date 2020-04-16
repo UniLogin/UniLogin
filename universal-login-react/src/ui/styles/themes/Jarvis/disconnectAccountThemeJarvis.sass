@@ -1,42 +1,98 @@
-.unilogin-theme-jarvis.universal-login-disconnect-account
+.unilogin-theme-jarvis.unilogin-component-disconnect-account
+  position: relative
+  padding: 130px 15px 70px
+
+  &::before
+    content: ''
+    position: absolute
+    top: 60px
+    left: 50%
+    transform: translateX(-50%)
+    width: 50px
+    height: 45px
+    background: url('./../../../assets/icons/warning.svg') center no-repeat
+    background-size: contain
+
+    @media only screen and (max-width: 770px)
+      top: 30px
+
   @media only screen and (max-width: 770px)
     display: flex
     flex-direction: column
     flex: 1
+    padding: 115px 15px 0
 
-  .jarvis-styles
+  .disconnect-account-title
+    margin: 0 auto 15px
+    padding: 0
+    color: #31405E
+    font-weight: 700
+
+    &::before
+      display: none
+
+  .disconnect-account-subtitle
+    font-size: 16px
+    color: #31405E
+    opacity: 0.8
+
+  .disconnect-account-label
+    font-weight: 500
+    font-size: 12px
+    line-height: 18px
+    color: #989faf
+
+  .disconnect-account-label span
+    color: #31405E
+
+  .disconnect-account-input,
+  .disconnect-account-input-error
+    background: #FFFFFF
+    border: 1px solid #C7C7D4
+    border-radius: 2px
+    color: #31405E
+    height: 34px
+    font-weight: 500
+    font-size: 12px
+
+  .disconnect-account-input-error
+    border: 1px solid #FF0000
+
+  .disconnect-account-cancel
+    color: #2EC9F5
+    border: 1px solid #2EC9F5
+    border-radius: 2px
+
+  .disconnect-account-confirm
+    background: #FF345C
+    border-radius: 2px
+    color: #fff
+
+  .disconnect-account-hint
+    color: #FF1D1C
+    background: #feeced
+
+  .disconnect-account-form
+    max-width: 370px
+    margin: 40px auto
+
     @media only screen and (max-width: 770px)
-      display: flex
-      flex-direction: column
-      flex: 1
+      margin-bottom: 40px auto 10px
 
-    .disconnect-account
-      @media only screen and (max-width: 770px)
-        display: flex
-        flex-direction: column
-        flex: 1
-        padding: 115px 15px 0
+    @media only screen and (max-width: 400px)
+      min-width: 100%
+      margin-bottom: 10px
 
-    .disconnect-account::before
-      @media only screen and (max-width: 770px)
-        top: 30px
+  .disconnect-account-buttons
+    margin-top: auto
 
-    .disconnect-account-form
-      min-width: 370px
+    @media only screen and (max-width: 770px)
+      margin-bottom: 20px
 
-      @media only screen and (max-width: 770px)
-        margin-bottom: 40px auto 10px
+  .disconnect-account-buttons > button
+    width: 235px
+    padding: initial
+    border-radius: 3px
 
-      @media only screen and (max-width: 400px)
-        min-width: 100%
-        margin-bottom: 10px
-
-    .disconnect-account-buttons
-      margin-top: auto
-
-      @media only screen and (max-width: 770px)
-        margin-bottom: 20px
-
-    .disconnect-account-buttons > button
-      @media only screen and (max-width: 550px)
-        width: 100%
+    @media only screen and (max-width: 550px)
+      width: 100%

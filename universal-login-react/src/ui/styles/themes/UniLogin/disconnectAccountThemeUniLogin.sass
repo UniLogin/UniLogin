@@ -1,32 +1,48 @@
-.unilogin-theme-unilogin.universal-login-disconnect-account
+.unilogin-theme-unilogin.unilogin-component-disconnect-account
   @media only screen and (max-width: 600px)
     display: flex
     flex-direction: column
     flex: 1
 
-  .disconnect-account
-    @media only screen and (max-width: 600px)
-      display: flex
-      flex-direction: column
-      flex: 1
-      padding: 100px 15px 15px
+  .disconnect-account-title
+    color: #FFFFFF
 
-  .disconnect-account::before
-    @media only screen and (max-width: 600px)
-      top: 25px
+  .disconnect-account-subtitle
+    color: #7D7C9C
+
+  .disconnect-account-label
+    color: #B9C3F8
+
+  .disconnect-account-label span
+    color: #ffffff
+
+  .disconnect-account-input
+    background: #F3FCFF
+    border: 1px solid #BDE6F2
+    color: #0F0C4A
+
+  .disconnect-account-input-error
+    border-color: #FF0000
+
+  .disconnect-account-cancel
+    border: 1px solid rgba(25, 57, 181, 0.2)
+    background: #fff
+    color: #0F0C4A;
+
+  .disconnect-account-confirm
+    background: linear-gradient(349.94deg, #E44557 0%, #F56C7C 98.34%)
+    color: #FFFFFF
+
+  .disconnect-account-hint
+    color: #fd0000
 
   .disconnect-account-buttons > button
     @media only screen and (max-width: 550px)
       width: 100%
 
   .disconnect-account-form
-    min-width: 370px
-
     @media only screen and (max-width: 600px)
       margin-bottom: 10px
-
-    @media only screen and (max-width: 400px)
-      min-width: 100%
 
   .disconnect-account-buttons
     margin-top: auto
