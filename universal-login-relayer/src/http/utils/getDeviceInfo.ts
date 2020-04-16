@@ -6,6 +6,7 @@ import {DeviceInfo, ApplicationInfo} from '@unilogin/commons';
 
 export const getDeviceInfo = (req: Request, {applicationName, logo, type}: ApplicationInfo): DeviceInfo => {
   const ipAddress: string = req.headers['x-forwarded-for'] as string || req.ip;
+  console.log(req);
   const {platform, os, browser} = req.useragent || {platform: '', os: '', browser: ''};
   const parse2 = new UAParser((req.useragent && req.useragent.source) || '');
   return {
