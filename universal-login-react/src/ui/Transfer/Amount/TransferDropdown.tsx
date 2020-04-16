@@ -5,6 +5,7 @@ import {TransferDropdownItem} from './TransferDropdownItem';
 import {useToggler} from '../../hooks/useToggler';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
 import {useOutsideClick} from '../../hooks/useClickOutside';
+import '../../styles/themes/Jarvis/components/currencyDropdownThemeJarvis.sass';
 
 interface TransferDropdownProps {
   sdk: UniversalLoginSDK;
