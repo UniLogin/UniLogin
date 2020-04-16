@@ -1,6 +1,8 @@
 
 import React from 'react';
 import {LocalizationConfig, SafelloConfig} from '@unilogin/commons';
+import {useClassFor} from '../../utils/classFor';
+import '../../styles/base/iframes/safello.sass';
 
 interface SafelloProps {
   localizationConfig: LocalizationConfig;
@@ -14,11 +16,12 @@ export const Safello = (props: SafelloProps) => {
   const url = getSafelloUrl(localizationConfig, safelloConfig, crypto, contractAddress);
   return (
     <iframe
+      className={`${useClassFor('safello-iframe')}`}
+      id="safello-iframe"
       src={url}
       width="500px"
       height="650px"
       sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts allow-popups"
-      style={{top: '50%', transform: 'translateY(-30%)', width: '500px', border: 'none', maxWidth: '100%', display: 'block', marginLeft: 'auto', marginRight: 'auto'}}
     />
   );
 };
