@@ -1,6 +1,7 @@
 import React from 'react';
-import {useClassFor} from '../utils/classFor';
+import {useClassFor, useThemeClassFor, classForComponent} from '../utils/classFor';
 import {WaitingFor} from './WaitingFor';
+import {ThemedComponent} from './ThemedComponent';
 
 interface WaitingForWyreProps{
   onBack: () => void;
@@ -12,8 +13,10 @@ export const WaitingForWyre = ({onBack}: WaitingForWyreProps) => {
       action = 'Waiting for Wyre transaction'
       description = 'We have opened the Wyre in a new window. If you complete a transaction, this window will update automatically. If you want to change provider, you can click the button and go back to selection'
     />
-    <button onClick={onBack} className="unilogin-component-pay-btn unilogin-theme-unilogin">
-      Go back
-    </button>
+    <div className={useClassFor('footer-section')}>
+      <button onClick={onBack} className={useClassFor('pay-btn')}>
+        Go back
+      </button>
+    </div>
   </div>;
 };
