@@ -14,9 +14,32 @@
     color: #31405E
     opacity: 0.6
 
+  .devices-message-buttons-row
+    max-width: 250px
+
+    @media only screen and (max-width: 600px)
+      width: 100%
+      max-width: unset
+      justify-content: center
+
   .devices-message-button
     width: 165px
     background: #2EC9F5
     border-radius: 2px
     font-weight: 500
     color: #FFFFFF
+
+    @media only screen and (max-width: 600px)
+      max-width: 165px
+      width: 100%
+
+  .devices-message-cancel
+    width: 165px
+    height: 45px
+    border: 1px solid #2EC9F5
+    border-radius: 2px
+    color: #2EC9F5
+
+    @media only screen and (max-width: 600px)
+      max-width: 165px
+      width: 100%
