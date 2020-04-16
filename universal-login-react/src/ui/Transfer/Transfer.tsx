@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
 import {TransferService, TransferErrors, Execution} from '@unilogin/sdk';
 import {TransferDetails, TokenDetails, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN, SEND_TRANSACTION_GAS_LIMIT} from '@unilogin/commons';
-import '../styles/transfer.sass';
-import '../styles/transferDefaults.sass';
-import './../styles/themes/Jarvis/footerThemeJarvis.sass';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
@@ -11,7 +8,9 @@ import {TransferAmount} from './Amount/TransferAmount';
 import {TransferRecipient} from './Recipient/TransferRecipient';
 import {TransferDropdown} from './Amount/TransferDropdown';
 import {useBalances} from '../hooks/useBalances';
-
+import '../styles/transfer.sass';
+import '../styles/transferDefaults.sass';
+import './../styles/themes/Jarvis/footerThemeJarvis.sass';
 export interface TransferProps {
   transferService: TransferService;
   onTransferTriggered: (transfer: () => Promise<Execution>) => Promise<void>;
