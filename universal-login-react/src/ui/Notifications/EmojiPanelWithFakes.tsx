@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {Emoji} from '../commons/Emoji';
 import {generateCodeWithFakes} from '@unilogin/commons';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
-import '../styles/emojiDefaults.sass';
-import {useThemeClassFor} from '../utils/classFor';
+import '../styles/themes/Legacy/emojiThemeLegacy.sass';
+import '../styles/themes/UniLogin/emojiThemeUniLogin.sass';
+import '../styles/themes/Jarvis/emojiThemeJarvis.sass';
+import {ThemedComponent} from '../commons/ThemedComponent';
 
 interface EmojiPanelWithFakesProps {
   publicKey: string;
@@ -27,13 +28,11 @@ export const EmojiPanelWithFakes = ({publicKey, onEmojiClick, className}: EmojiP
   ));
 
   return (
-    <div className={`${useThemeClassFor()} universal-login-emojis`}>
-      <div className={getStyleForTopLevelComponent(className)}>
-        <p className='emojis-fakes-title'>Choose icons:</p>
-        <ul className="emojis-fakes-list">
-          {emojis}
-        </ul>
-      </div>
-    </div>
+    <ThemedComponent name="emoji" className={className}>
+      <p className='emoji-fakes-title'>Choose icons:</p>
+      <ul className="emoji-fakes-list">
+        {emojis}
+      </ul>
+    </ThemedComponent>
   );
 };

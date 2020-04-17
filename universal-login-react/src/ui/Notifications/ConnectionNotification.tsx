@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import {Notification, GasParameters, ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
 import {EmojiForm} from './EmojiForm';
 import {DeployedWallet} from '@unilogin/sdk';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
-import '../styles/emojiDefaults.sass';
+import '../styles/themes/Legacy/emojiThemeLegacy.sass';
+import '../styles/themes/UniLogin/emojiThemeUniLogin.sass';
+import '../styles/themes/Jarvis/emojiThemeJarvis.sass';
 import '../styles/themes/Jarvis/footerThemeJarvis.sass';
 import {useHistory} from 'react-router';
 import {join} from 'path';
@@ -12,6 +13,7 @@ import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import Spinner from '../commons/Spinner';
+import {ThemedComponent} from '../commons/ThemedComponent';
 
 interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;
@@ -51,41 +53,39 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
   };
 
   return notifications.length !== 0 ? (
-    <div id="notifications" className="universal-login-emojis">
-      <div className={getStyleForTopLevelComponent(className)}>
-        <div className="approve-device">
-          {showHeader &&
-            <>
-              <p className="approve-device-title">Confirm connection</p>
-              <p className="approve-device-text">A new device tries to connect to this account. Enter emojis in the correct order to approve it.</p>
-            </>
-          }
-          <EmojiForm
-            hideHeader={() => setShowHeader(false)}
-            className={className}
-            notifications={notifications}
-            onDenyClick={() => deployedWallet.denyRequests()}
-            setPublicKey={setPublicKey}
-          />
-          {publicKey && notifications.length > 0 &&
-            <div className="correct-input-footer">
-              <FooterSection>
-                <GasPrice
-                  isDeployed={true}
-                  deployedWallet={deployedWallet}
-                  gasLimit={DEFAULT_GAS_LIMIT}
-                  onGasParametersChanged={setGasParameters}
-                  className={className}
-                />
-                <div className="footer-buttons-row">
-                  <button onClick={() => deployedWallet.denyRequests()} className="footer-deny-btn">Deny</button>
-                  <button onClick={() => onConnectClick(gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
-                </div>
-              </FooterSection>
-            </div>}
-        </div>
+    <ThemedComponent id="notifications" className={className} name="emoji">
+      <div className="approve-device">
+        {showHeader &&
+          <>
+            <p className="approve-device-title">Confirm connection</p>
+            <p className="approve-device-text">A new device tries to connect to this account. Enter emojis in the correct order to approve it.</p>
+          </>
+        }
+        <EmojiForm
+          hideHeader={() => setShowHeader(false)}
+          className={className}
+          notifications={notifications}
+          onDenyClick={() => deployedWallet.denyRequests()}
+          setPublicKey={setPublicKey}
+        />
+        {publicKey && notifications.length > 0 &&
+          <div className="correct-input-footer">
+            <FooterSection>
+              <GasPrice
+                isDeployed={true}
+                deployedWallet={deployedWallet}
+                gasLimit={DEFAULT_GAS_LIMIT}
+                onGasParametersChanged={setGasParameters}
+                className={className}
+              />
+              <div className="footer-buttons-row">
+                <button onClick={() => deployedWallet.denyRequests()} className="footer-deny-btn">Deny</button>
+                <button onClick={() => onConnectClick(gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
+              </div>
+            </FooterSection>
+          </div>}
       </div>
-    </div>
+    </ThemedComponent>
   )
     : <Spinner className="spinner-center" />;
 };

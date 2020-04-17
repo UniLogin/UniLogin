@@ -3,11 +3,12 @@ import {ensure, generateCode} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
 import {EmojiPanel} from '../WalletSelector/EmojiPanel';
 import './../styles/emoji.sass';
-import './../styles/emojiDefaults.sass';
+import './../styles/themes/Legacy/emojiThemeLegacy.sass';
+import './../styles/themes/UniLogin/emojiThemeUniLogin.sass';
 import Spinner from '../commons/Spinner';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
-import {useThemeClassFor} from '../utils/classFor';
 import '../styles/themes/UniLogin/connectWithEmojiThemeUniLogin.sass';
+import {ThemedComponent} from '../commons/ThemedComponent';
 
 interface ConnectWithEmojiProps {
   walletService: WalletService;
@@ -37,7 +38,7 @@ export const ConnectWithEmoji = ({onCancel, onConnect, walletService}: ConnectWi
   };
 
   return (
-    <div className={`${useThemeClassFor()} universal-login-emojis`}>
+    <ThemedComponent name="emoji">
       <div className="connect-emoji">
         <h1 className="connect-emoji-title">Connect to your account</h1>
         <div className="connect-emoji-content">
@@ -51,6 +52,6 @@ export const ConnectWithEmoji = ({onCancel, onConnect, walletService}: ConnectWi
           </div>
         </div>
       </div>
-    </div>
+    </ThemedComponent>
   );
 };

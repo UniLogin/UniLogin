@@ -14,7 +14,7 @@
   font-family: 'Font Awesome 5 Free'
   font-weight: 900
 
-.universal-login-emojis
+.unilogin-component-emoji
   width: 100%
 
   ul
@@ -31,15 +31,12 @@
     align-items: center
     justify-content: center
     align-items: center
-    height: 68px
-    width: 56px
-    margin: 5px
+    height: 60px
+    width: 50px
+    margin: 4px
     font-size: 25px
     background: #fafbfd
-    border-radius: 10px
-
-  .emoji-item-empty
-    border: 1px solid
+    border-radius: 4px
 
   .emoji-keyboard-button
     height: 100%
@@ -50,11 +47,7 @@
     background: none
     font-size: 25px
 
-  .emoji-placeholders-container
-    max-height: 75px
-    width: 100%
-
-  .emojis-placeholders-list
+  .emoji-placeholders-list
     margin: 0
     flex-wrap: nowrap
 
@@ -62,12 +55,12 @@
     width: 100%
     height: 100%
 
-  .emojis-fakes-title
+  .emoji-fakes-title
     margin-left: .6rem
     color: #fff
     font-size: 1.2rem
 
-  .emojis-form-title
+  .emoji-form-title
     margin: 0 auto 11px
     font-weight: 600
     font-size: 24px
@@ -76,10 +69,12 @@
   .emoji-keyboard-row
     display: flex
     align-items: center
+    justify-content: center
 
-  .emojis-keyboard-batch
-    max-width: 660px
-    margin: 0 auto
+  .emoji-keyboard-batch
+    max-width: 625px
+    padding: 24px 20px
+    margin: 0
 
   .emoji-keyboard-color-row
     position: absolute
@@ -89,7 +84,6 @@
     padding: 7px
     width: 145px
     border-radius: 5px
-    box-shadow: 0 2px 25px 0 rgba(17,2,54,0.90)
     background: #fff
     z-index: 10
 
@@ -107,8 +101,8 @@
 
   .emoji-keyboard-color-item
     background: none
-    width: 30px
-    height: 30px
+    width: 28px
+    height: 28px
     box-shadow: none
     margin: 1.2px
 
@@ -120,34 +114,36 @@
     border-radius: 4px
 
   .emoji-keyboard-arrow-button
-    width: 26px
-    height: 26px
-    background: #362F6A url('./../assets/icons/angle-light.svg') center no-repeat
-    border-radius: 3px
+    width: 24px
+    height: 24px
+    background: #fff url('./../assets/icons/angle-bright.svg') center no-repeat
+    border: 1px solid #DDEBF1
+    border-radius: 4px
     border: none
 
   .emoji-keyboard-arrow-button[disabled]
-    opacity: 0.4
+    opacity: 0.7
     cursor: not-allowed
 
   .emoji-keyboard-prev
     transform: rotate(90deg)
-    margin-right: 30px
+    margin-right: 8px
 
   .emoji-keyboard-next
     transform: rotate(-90deg)
-    margin-left: 30px
+    margin-left: 8px
 
   .emoji-keyboard-color-row
     .emoji-keyboard-color-button
-      width: 30px
-      height: 30px
-      border-radius: 5px
+      width: 28px
+      height: 28px
+      border-radius: 4px
 
   .emoji-category-row
+    position: relative
     flex-wrap: nowrap
     max-width: 530px
-    margin: 50px auto 25px
+    margin: 45px auto -2px
 
   .emoji-category-item
     padding-bottom: 6px
@@ -206,16 +202,15 @@
   .emoji-category-item + .emoji-category-item
     margin-left: 32px
 
-  .emojis-form-reject
+  .emoji-form-reject
     display: block
-    height: 50px
-    width: 370px
-    font-size: 14px
-    max-width: 100%
-    margin: 90px auto 0
+    font-weight: bold
+    margin: 50px auto 0
+    height: 40px
+    width: 150px
 
   .approve-device
-    padding: 60px 0 0
+    padding: 30px 0 0
 
     @media only screen and (max-width: 600px)
       padding: 20px 0 0
@@ -225,14 +220,14 @@
     margin: 0 auto
 
   .approve-device-title
-    margin: 0 0 11px
-    font-weight: 600
+    margin: 0 0 24px
+    font-weight: 300
     font-size: 24px
+    line-height: 29px
     text-align: center
 
   .approve-device-text
-    max-width: 400px
-    margin: 0 auto 50px
+    margin: 0 auto 32px
     text-align: center
     opacity: 0.75
     font-size: 16px
@@ -354,7 +349,10 @@
   text-align: center
 
 @media only screen and (max-width: 768px)
-  .universal-login-emojis
+  .unilogin-component-emoji
+    .emoji-placeholders-list
+      margin: 0 0 30px
+
     .emoji-keyboard
       display: flex
       flex-direction: column-reverse
@@ -367,9 +365,10 @@
       display: none
 
     .emoji-category-row
-      margin: 30px auto 0
+      position: relative
+      margin: 30px auto 10px
 
-    .emojis-form-reject
+    .emoji-form-reject
       margin: 30px auto 0
 
     .emoji-keyboard-arrow-button
@@ -431,14 +430,15 @@
     .emoji-input-chosen-invalid
       top: 35%
 
-    .emoji-placeholders-container
-      max-height: 150px
-      margin-bottom: 10px
-
 @media only screen and (max-width: 500px)
-  .universal-login-emojis
+  .unilogin-component-emoji
+
     .approve-device
       padding: 20px 0 0
+
+    .emoji-keyboard-batch
+      padding: 0
+      border: none
 
     .emoji-item
       width: 14.6%

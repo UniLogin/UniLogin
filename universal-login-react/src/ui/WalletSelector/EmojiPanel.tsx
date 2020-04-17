@@ -1,7 +1,9 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
 import '../styles/emoji.sass';
-import '../styles/emojiDefaults.sass';
+import '../styles/themes/Legacy/emojiThemeLegacy.sass';
+import '../styles/themes/UniLogin/emojiThemeUniLogin.sass';
+import '../styles/themes/Jarvis/emojiThemeJarvis.sass';
 
 interface EmojiPanelProps {
   code: number[];
