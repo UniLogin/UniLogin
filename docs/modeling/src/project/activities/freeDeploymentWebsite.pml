@@ -1,5 +1,5 @@
 @startuml
-title free deployment
+title DEPLOYMENT - free [User Side]
 
 actor User
 

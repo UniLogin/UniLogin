@@ -23,8 +23,9 @@ const getMessageStatus = (messageHandler: MessageHandler) =>
     return responseOf(status);
   };
 
-const deploymentHandling = (deploymentHandler: DeploymentHandler, apiKeyHandler: ApiKeyHandler) =>
-  async (data: {headers: {api_key: string | undefined}, body: DeployArgs & {contractAddress: string, applicationInfo: ApplicationInfo}}, req: Request) => {
+const deploymentHandling = (deploymentHandler: DeploymentHandler) =>
+  async (data: {body: DeployArgs & {contractAddress: string, applicationInfo: ApplicationInfo}}, req: Request) => {
+    console.log(req);
     const {contractAddress, applicationInfo, ...deployArgs} = data.body;
     const deviceInfo = getDeviceInfo(req, applicationInfo);
     const apiKey = data.headers.api_key;

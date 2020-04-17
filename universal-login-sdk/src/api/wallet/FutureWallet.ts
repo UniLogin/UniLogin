@@ -28,7 +28,7 @@ export class FutureWallet implements SerializableFutureWallet {
     this.contractAddress = serializableFutureWallet.contractAddress;
     this.privateKey = serializableFutureWallet.privateKey;
     this.publicKey = utils.computeAddress(this.privateKey);
-    this.gasPrice = serializableFutureWallet.gasPrice;
+    this.gasPrice = '0';
     this.ensName = serializableFutureWallet.ensName;
     this.gasToken = serializableFutureWallet.gasToken;
     this.deploymentReadyObserver = new DeploymentReadyObserver([{address: this.gasToken, minimalAmount: this.getMinimalAmount()}], this.sdk.provider);

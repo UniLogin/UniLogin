@@ -1,5 +1,5 @@
 @startuml
-title free deployment
+title DEPLOYMENT - free [Relayer Side]
 
 
 == free deployment ==
@@ -15,6 +15,16 @@ group gasPrice = 0
   PartnerValidator -> DeploymentHandler: isPartner
   deactivate PartnerValidator
 end
-DeploymentHandler -> DeploymentRepository: addDeployment
+DeploymentHandler -> DeploymentRepository: addDeployment(deployment + partnerId)
 deactivate DeploymentHandler
+
+== store free deployments ==
+Executor -> DeploymentService: deploy
+activate DeploymentService
+DeploymentService -> PendingDeployments: getDeployment
+DeploymentService -> GasPriceOracle: getCurrentGasPrice
+DeploymentService -> Blockchain: sendTx(currentGasPrice)
+DeploymentService -> FreeDeploymentStore: deployment + partnerId + currentGasPrice
+deactivate DeploymentService
+
 @enduml

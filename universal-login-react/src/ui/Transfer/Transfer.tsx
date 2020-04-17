@@ -64,7 +64,7 @@ export const Transfer = ({transferService, onTransferTriggered, transferClassNam
           />
         </div>
         <FooterSection>
-          <GasPrice
+          {false && <GasPrice
             isDeployed={true}
             deployedWallet={transferService.deployedWallet}
             gasLimit={SEND_TRANSACTION_GAS_LIMIT}
