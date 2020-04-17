@@ -39,7 +39,6 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
           <Transfer
             transferService={transferService}
             onTransferTriggered={onTransferTriggered}
-            transferClassName="jarvis-styles"
           />
         </ModalWrapperClosable>
       </Route>
