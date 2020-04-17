@@ -1,56 +1,42 @@
-import React, {SyntheticEvent} from 'react';
+import React from 'react';
 import {WyreConfig} from '@unilogin/commons';
-import {parseQuery} from '../../../core/utils/parseQuery';
-import {cast, asString, asNumber, asObject} from '@restless/sanitizers';
+import {WaitingForWyre} from '../../commons/WaitingForWyre';
+import {getWindowCenterForPopUp} from '../../commons/getWindowCenterForPopUp';
 
 interface WyreProps {
   address: string;
   currency: string;
   config: WyreConfig;
-  onCompleted?: (wyreSuccessParams?: WyreSuccessParams) => void;
-  onClose?: () => void;
-  onError?: () => void;
+  onBack: () => void;
+  isDeployed: boolean;
 }
 
-export const Wyre = ({address, currency, config, onCompleted, onClose, onError}: WyreProps) => {
-  const currentLocation = window.location.href;
-  const url = getWyreUrl(address, currency, currentLocation, config);
-
-  function onLoad(e: SyntheticEvent<HTMLIFrameElement>) {
-    try {
-      const iframeLocation = e.currentTarget.contentDocument?.location;
-      if (!iframeLocation) return;
-      onRedirect(iframeLocation.search);
-    } catch {}
+export const Wyre = ({address, currency, config, onBack, isDeployed}: WyreProps) => {
+  function openPopUp() {
+    const url = getWyreUrl(address, currency, config);
+    const width = 470;
+    const height = 630;
+    const center = getWindowCenterForPopUp(width, height);
+    const params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+    width=${width},height=${height},top=${center.top}, left=${center.left}`;
+    return window.open(url, 'wyre', params);
   }
 
-  function onRedirect(search: string) {
-    if (search === '') {
-      onClose?.();
-      return;
-    }
-    try {
-      const params = cast(parseQuery(search), asWyreSuccessParams);
-      onCompleted?.(params);
-    } catch {
-      onError?.();
-    }
+  openPopUp();
+  if (isDeployed) {
+    onBack();
+    return null;
   }
-
-  return (
-    <iframe
-      src={url}
-      onLoad={onLoad}
-    />
-  );
+  return <WaitingForWyre onBack={onBack}/>;
 };
 
-export const getWyreUrl = (address: string, currency: string, redirectUrl: string, config: WyreConfig) =>
+export const getWyreUrl = (address: string, currency: string, config: WyreConfig) =>
   `${config.wyreUrl}` +
   `?destCurrency=${currency}` +
   `&dest=${address}` +
-  `&redirectUrl=${encodeURIComponent(redirectUrl)}` +
-  `&failureRedirectUrl=${encodeURIComponent(redirectUrl)}`;
+  `&redirectUrl=${''}` +
+  `&failureRedirectUrl=${''}` +
+  `$paymentMethod=${'apple-pay'}`;
 
 export interface WyreSuccessParams {
   accountId: string;
@@ -60,12 +46,3 @@ export interface WyreSuccessParams {
   orderId: string;
   transferId: string;
 }
-
-const asWyreSuccessParams = asObject<WyreSuccessParams>({
-  accountId: asString,
-  blockchainNetworkTx: asString,
-  dest: asString,
-  destAmount: asNumber,
-  orderId: asString,
-  transferId: asString,
-});

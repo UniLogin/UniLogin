@@ -492,24 +492,6 @@
     opacity: 1
     transform: translateY(0)
 
-  .unilogin-component-pay-btn
-    display: block
-    width: 100%
-    max-width: 370px
-    height: 50px
-    background-image: linear-gradient(270deg, #0FB1EF 0%, #55FD77 100%)
-    font-weight: 500
-    font-size: 14px
-    color: #FFFFFF
-    letter-spacing: -0.08px
-    text-align: center
-    border: none
-    cursor: pointer
-  .unilogin-component-pay-btn[disabled]
-    background: #DBDBE4
-    color: #FFFFFF
-    cursor: not-allowed
-
   .unilogin-component-qr-code-wrapper
     border: 1px solid #E1E1F0
     background: #FFFFFF
@@ -656,3 +638,22 @@
 
 .unilogin-theme-jarvis.unilogin-component-top-up.method-selected
   flex: unset
+
+.unilogin-component-pay-btn
+  display: block
+  width: 100%
+  max-width: 370px
+  height: 50px
+  background-image: linear-gradient(270deg, #0FB1EF 0%, #55FD77 100%)
+  border-radius: unset
+  font-weight: 500
+  font-size: 14px
+  color: #FFFFFF
+  letter-spacing: -0.08px
+  text-align: center
+  border: none
+  cursor: pointer
+.unilogin-component-pay-btn[disabled]
+  background: #DBDBE4
+  color: #FFFFFF
+  cursor: not-allowed
