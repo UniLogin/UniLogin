@@ -1,1 +1,1 @@
-export const isGasTokenDisabled = (symbol: string) => symbol === 'DAI' || symbol === 'SAI';
+export const isGasTokenDisabled = (symbol: string) => symbol === 'SAI';

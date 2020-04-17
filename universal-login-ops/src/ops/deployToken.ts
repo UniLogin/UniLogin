@@ -5,6 +5,7 @@ import {CommandOverrides} from '../cli/connectAndExecute';
 
 export default async function deployToken(wallet: Wallet, overrides: CommandOverrides) {
   console.log('Deploying token contract...');
+  console.log(wallet.address);
   const contractAddress = await deployContractAndWait(wallet, mockContracts.Token);
   console.log(`Token address: ${contractAddress}`);
 }

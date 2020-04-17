@@ -23,6 +23,7 @@ const getMessageStatus = (messageHandler: MessageHandler) =>
 
 const deploymentHandling = (deploymentHandler: DeploymentHandler) =>
   async (data: {body: DeployArgs & {contractAddress: string, applicationInfo: ApplicationInfo}}, req: Request) => {
+    console.log(req);
     const {contractAddress, applicationInfo, ...deployArgs} = data.body;
     const deviceInfo = getDeviceInfo(req, applicationInfo);
     const deploymentHash = await deploymentHandler.handleDeployment(contractAddress, deployArgs, deviceInfo);
