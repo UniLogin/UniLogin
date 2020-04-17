@@ -23,7 +23,7 @@ export const Wyre = ({address, currency, config, onBack, isDeployed}: WyreProps)
   }
 
   openPopUp();
-  if(isDeployed){
+  if (isDeployed) {
     onBack();
     return null;
   }
