@@ -21,7 +21,7 @@ export const WaitingFor = ({action, description}: WaitingForProps) => {
       </div>
       <div className={classForComponent('waitingfor-modal-pending-img')} />
       <div className={classForComponent('waitingfor-modal-pending-section')}>
-        <ProgressBar className={classForComponent('waitingfor-pending-bar')} />
+        <ProgressBar/>
       </div>
     </div>
   );
