@@ -61,13 +61,13 @@ export const Transfer = ({transferService, onTransferTriggered, transferClassNam
           />
         </div>
         <FooterSection>
-          <GasPrice
+          {false && <GasPrice
             isDeployed={true}
             deployedWallet={transferService.deployedWallet}
             gasLimit={SEND_TRANSACTION_GAS_LIMIT}
             onGasParametersChanged={(gasParameters: GasParameters) => updateField('gasParameters')(gasParameters)}
             className={transferClassName}
-          />
+          />}
           <div className="footer-buttons-row">
             <button id="send-button" onClick={onTransferClick} className="footer-approve-btn" disabled={!transferDetails.gasParameters}>Send</button>
           </div>
