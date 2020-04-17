@@ -23,7 +23,11 @@ export const Wyre = ({address, currency, config, onBack, isDeployed}: WyreProps)
   }
 
   openPopUp();
-  return isDeployed ? <>{onBack()}</> : <WaitingForWyre onBack={onBack}/>;
+  if(isDeployed){
+    onBack();
+    return null;
+  }
+  return <WaitingForWyre onBack={onBack}/>;
 };
 
 export const getWyreUrl = (address: string, currency: string, config: WyreConfig) =>
