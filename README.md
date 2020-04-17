@@ -23,8 +23,8 @@ Technically Universal Login utilizes four major concepts:
 Packages maintained with this monorepo are listed below.
 
 - [Contracts](https://github.com/UniversalLogin/UniversalLoginSDK/tree/master/universal-login-contracts) - all contracts used in this project
-- [Relayer](https://universalloginsdk.readthedocs.io/en/latest/relayer.html) - node.js server application that allows interacting with blockchain without a wallet
-- [SDK](https://universalloginsdk.readthedocs.io/en/latest/sdk.html) - a JS library, that helps to communicate with relayer
+- Relayer - node.js server application that allows interacting with blockchain without a wallet
+- SDK - a JS library, that helps to communicate with relayer
 - OPS - scripts for development and deployment
 - React - library of React components
 - Web3 - web3 provider connected allowing to use Universal Login without the need for modifying existing applications
