@@ -1,6 +1,7 @@
 import React from 'react';
 import {WyreConfig} from '@unilogin/commons';
 import {WaitingForWyre} from '../../commons/WaitingForWyre';
+import {getWindowCenterForPopUp} from '../../commons/getWindowCenterForPopUp';
 
 interface WyreProps {
   address: string;
@@ -15,10 +16,9 @@ export const Wyre = ({address, currency, config, onBack, isDeployed}: WyreProps)
     const url = getWyreUrl(address, currency, config);
     const width = 470;
     const height = 630;
-    const top = window.outerHeight / 2 + window.screenY - (height / 2);
-    const left = window.outerWidth / 2 + window.screenX - (width / 2);
+    const center = getWindowCenterForPopUp(width, height);
     const params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
-    width=${width},height=${height},left=${left},top=${top}`;
+    width=${width},height=${height},top=${center[0]}, left=${center[1]}`;
     return window.open(url, 'wyre', params);
   }
 
