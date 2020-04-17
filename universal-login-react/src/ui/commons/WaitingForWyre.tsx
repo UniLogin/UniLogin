@@ -1,7 +1,6 @@
 import React from 'react';
-import {useClassFor, useThemeClassFor, classForComponent} from '../utils/classFor';
+import {useClassFor} from '../utils/classFor';
 import {WaitingFor} from './WaitingFor';
-import {ThemedComponent} from './ThemedComponent';
 
 interface WaitingForWyreProps{
   onBack: () => void;
