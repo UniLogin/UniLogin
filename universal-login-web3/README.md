@@ -1,4 +1,7 @@
-# Using Web3 providers
+# Web3
+Web3 is deprecated. Using it is not recommended.
+
+## Using Web3 providers
 The easiest way to interact with Universal Login is via web3 providers, that allow interacting with UniLogin contracts via web3js, ethers.js, or similar libraries.
 
 ## Installation
