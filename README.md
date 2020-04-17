@@ -8,10 +8,6 @@ Universal Login is a tool for storing funds and connecting to Ethereum applicati
 
 This repository is a monorepo including the sdk, relayer, smart contracts and examples. Each public sub-package is independently published to NPM.
 
-## Documentation
-
-Documentation is available at [universalloginsdk.readthedocs.io](https://universalloginsdk.readthedocs.io/en/latest/index.html)
-
 ## Disclaimer
 
 This is a work in progress. Expect breaking changes. The code has not been audited and therefore can not be considered secure.
