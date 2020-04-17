@@ -1,5 +1,5 @@
 # Web3
-Web3 is deprecated. Using it is not recommended.
+Web3 is deprecated. Using it is not recommended. Please, use [@unilogin/provider](../universal-login-provider/README.md) instead.
 
 ## Using Web3 providers
 The easiest way to interact with Universal Login is via web3 providers, that allow interacting with UniLogin contracts via web3js, ethers.js, or similar libraries.
