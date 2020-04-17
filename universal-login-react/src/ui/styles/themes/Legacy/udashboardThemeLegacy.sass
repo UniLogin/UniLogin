@@ -1,6 +1,15 @@
 @import ../../helpers/breakpoints
 
 .unilogin-component-udashboard .unilogin-theme-default
+  .unilogin-component-modal
+    max-height: 700px
+
+    @media only screen and (max-width: 600px)
+      max-height: unset
+
+  .unilogin-component-devices .devices-inner
+    min-height: unset
+
   &.udashboard
     height: 100%
     font-family: 'Poppins', sans-serif
