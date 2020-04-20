@@ -6,7 +6,7 @@ import {encodeInitializeData, deployWalletContract} from '@unilogin/contracts';
 export default async function createWalletContract(wallet: Wallet) {
   const walletContract = await deployWalletContract(wallet);
   const factory = new ContractFactory(
-    beta2.WalletProxy.interface,
+    beta2.WalletProxy.interface as any,
     `0x${beta2.WalletProxy.evm.bytecode.object}`,
     wallet,
   );

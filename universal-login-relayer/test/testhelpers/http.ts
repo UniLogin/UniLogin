@@ -9,13 +9,13 @@ import {
   TEST_GAS_PRICE,
   waitForContractDeploy,
   DEPLOY_GAS_LIMIT,
+  KeyPair,
 } from '@unilogin/commons';
 import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, deployProxyFactory, deployGnosisSafe, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {getFutureAddress} from '@unilogin/contracts/testutils';
 import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
 import {Provider} from 'ethers/providers';
-import {KeyPair} from 'ethers/utils/secp256k1';
 
 export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();

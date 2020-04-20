@@ -1,5 +1,4 @@
 import {deployContract} from 'ethereum-waffle';
-import ENSBuilder from 'ens-builder';
 import {ETHER_NATIVE_TOKEN, deepMerge} from '@unilogin/commons';
 import {deployFactory, beta2} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
@@ -10,7 +9,7 @@ import {Wallet} from 'ethers';
 const defaultDomain = 'mylogin.eth';
 
 async function depolyEns(wallet: Wallet) {
-  const ensBuilder = new ENSBuilder(wallet);
+  const ensBuilder = require('ens-builder');
   const [label, tld] = defaultDomain.split('.');
   return ensBuilder.bootstrapWith(label, tld);
 }
