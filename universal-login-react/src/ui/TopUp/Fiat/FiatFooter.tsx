@@ -52,7 +52,12 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
       );
 
     case TopUpProvider.WYRE:
-      return <VisaMasterCardInfo />;
+      return <>
+        <VisaMasterCardInfo />
+        {minimumAmount && <div className="info-block info-row">
+          <InfoText>Minimum amount is {minimumAmount} ETH</InfoText>
+        </div>}
+      </>;
     default:
       return (
         <InfoText>Choose payment method</InfoText>
