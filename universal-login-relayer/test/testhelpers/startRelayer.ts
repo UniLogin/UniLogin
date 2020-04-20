@@ -1,10 +1,10 @@
+import {Wallet} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, deepMerge} from '@unilogin/commons';
 import {deployFactory, beta2} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {getContractWhiteList} from '../../src/http/relayers/RelayerUnderTest';
 import {getConfig, RelayerClass} from '../../src/index';
-import {Wallet} from 'ethers';
 
 const defaultDomain = 'mylogin.eth';
 

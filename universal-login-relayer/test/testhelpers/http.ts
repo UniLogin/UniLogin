@@ -1,5 +1,6 @@
 import chai from 'chai';
 import {Contract, utils, Wallet} from 'ethers';
+import {Provider} from 'ethers/providers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import {
   calculateInitializeSignature,
@@ -15,7 +16,6 @@ import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, de
 import {getFutureAddress} from '@unilogin/contracts/testutils';
 import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
-import {Provider} from 'ethers/providers';
 
 export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
