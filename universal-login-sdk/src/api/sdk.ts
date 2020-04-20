@@ -73,7 +73,7 @@ class UniversalLoginSDK {
     this.sufficientBalanceValidator = new SufficientBalanceValidator(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.config.observedTokensAddresses);
-    this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.config.observedCurrencies, this.config.priceObserverTick);
+    this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.config.priceObserverTick);
     this.gasPriceOracle = new GasPriceOracle();
     this.tokensValueConverter = new TokensValueConverter(this.config.observedCurrencies);
     this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
