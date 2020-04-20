@@ -10,8 +10,8 @@ const getSiteUrl = (url: string) => url.split('#')[0];
 
 const getFaviconUrl = () => {
   const favicon = getFavicon();
-  const siteURL = getSiteUrl(document.URL);
   if (!favicon) return null;
+  const siteURL = getSiteUrl(document.URL);
   return (siteURL[siteURL.length - 1] === '/' && favicon[0] === '/')
     ? removeLastChar(siteURL) + favicon
     : siteURL + favicon;
