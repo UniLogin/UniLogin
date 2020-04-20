@@ -6,10 +6,15 @@ export const getApplicationInfoFromDocument = () => {
 
 const removeLastChar = (value: string) => value.slice(0, -1);
 
+const getSiteUrl = (url: string) => url.split('#')[0];
+
 const getFaviconUrl = () => {
   const favicon = getFavicon();
-  const siteURL = removeLastChar(document.URL);
-  return favicon ? (siteURL + favicon) : null;
+  const siteURL = getSiteUrl(document.URL);
+  if (!favicon) return null;
+  return (siteURL[siteURL.length - 1] === '/' && favicon[0] === '/')
+    ? removeLastChar(siteURL) + favicon
+    : siteURL + favicon;
 };
 
 const getFavicon = () => {
