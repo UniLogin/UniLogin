@@ -5,13 +5,17 @@ export interface ThemedComponentProps {
   name: string;
   children?: ReactNode;
   className?: string;
+  id?: string;
 }
 
-export const ThemedComponent = ({name, children, className}: ThemedComponentProps) => {
+export const ThemedComponent = ({name, children, className, id}: ThemedComponentProps) => {
   const themedClass = useClassFor(name);
 
   return (
-    <div className={[themedClass, className].filter(Boolean).join(' ')}>
+    <div
+      id={id || ''}
+      className={[themedClass, className].filter(Boolean).join(' ')}
+    >
       {children}
     </div>
   );

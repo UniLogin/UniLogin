@@ -1,11 +1,12 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
 import {SECURITY_CODE_LENGTH, isCodeSufficientButInvalid} from '@unilogin/commons';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
-import '../styles/emojiDefaults.sass';
+import '../styles/themes/Legacy/emojiThemeLegacy.sass';
+import '../styles/themes/UniLogin/emojiThemeUniLogin.sass';
+import '../styles/themes/Jarvis/emojiThemeJarvis.sass';
 import range from 'lodash.range';
-import {useThemeClassFor} from '../utils/classFor';
+import {ThemedComponent} from '../commons/ThemedComponent';
 
 interface EmojiPlaceholdersProps {
   enteredCode: number[];
@@ -35,15 +36,13 @@ export const EmojiPlaceholders = ({enteredCode, publicKey, onEmojiClick, classNa
   };
 
   return (
-    <div className={`${useThemeClassFor()} universal-login-emojis`}>
-      <div className={getStyleForTopLevelComponent(className)}>
-        <div className="emoji-placeholders-container">
-          <ul className="emojis-placeholders-list">
-            {renderPlaceholderPanel()}
-          </ul>
-          {isCodeSufficientButInvalid(enteredCode, publicKey) && <p className="emoji-input-chosen-invalid">Invalid emoji chosen</p>}
-        </div>
+    <ThemedComponent name="emoji" className={className}>
+      <div className="emoji-placeholders-container">
+        <ul className="emoji-placeholders-list">
+          {renderPlaceholderPanel()}
+        </ul>
+        {isCodeSufficientButInvalid(enteredCode, publicKey) && <p className="emoji-input-chosen-invalid">Invalid emoji chosen</p>}
       </div>
-    </div>
+    </ThemedComponent>
   );
 };

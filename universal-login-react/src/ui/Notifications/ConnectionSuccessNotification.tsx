@@ -1,8 +1,10 @@
 import React from 'react';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import '../styles/emoji.sass';
-import '../styles/emojiDefaults.sass';
+import '../styles/themes/Legacy/emojiThemeLegacy.sass';
+import '../styles/themes/UniLogin/emojiThemeUniLogin.sass';
+import '../styles/themes/Jarvis/emojiThemeJarvis.sass';
 import {useHistory} from 'react-router';
+import {ThemedComponent} from '../commons/ThemedComponent';
 
 interface ConnectionSuccessNotificationProps {
   basePath: string;
@@ -13,13 +15,11 @@ export const ConnectionSuccessNotification = ({basePath, className}: ConnectionS
   const history = useHistory();
 
   return (
-    <div id="notifications" className="universal-login-emojis">
-      <div className={getStyleForTopLevelComponent(className)}>
-        <div className="emoji-success">
-          <p className="emoji-success-text">You successfully authorized a new device.</p>
-          <button className="emoji-success-button" onClick={() => history.replace(basePath)}>Go to devices</button>
-        </div>
+    <ThemedComponent id="notifications" name="emoji" className={className}>
+      <div className="emoji-success">
+        <p className="emoji-success-text">You successfully authorized a new device.</p>
+        <button className="emoji-success-button" onClick={() => history.replace(basePath)}>Go to devices</button>
       </div>
-    </div>
+    </ThemedComponent>
   );
 };

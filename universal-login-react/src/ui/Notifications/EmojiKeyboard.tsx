@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {EMOJI_COLORS, getEmojiSet, getColoredEmojiCode, CATEGORIES} from '@unilogin/commons';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {Emoji} from '../commons/Emoji';
 import '../styles/emoji.sass';
-import '../styles/emojiDefaults.sass';
+import '../styles/themes/Legacy/emojiThemeLegacy.sass';
+import '../styles/themes/UniLogin/emojiThemeUniLogin.sass';
+import '../styles/themes/Jarvis/emojiThemeJarvis.sass';
 import '../styles/colors.css';
+import {ThemedComponent} from '../commons/ThemedComponent';
 
 interface EmojiKeyboardProps {
   onEmojiClick: (code: number) => void;
@@ -70,29 +72,27 @@ export const EmojiKeyboard = ({onEmojiClick, className}: EmojiKeyboardProps) => 
   );
 
   return (
-    <div className="universal-login-emojis">
-      <div className={getStyleForTopLevelComponent(className)}>
-        <div className="emoji-keyboard">
-          <ul className="emoji-category-row">
-            {renderCategories()}
+    <ThemedComponent name="emoji" className={className}>
+      <div className="emoji-keyboard">
+        <ul className="emoji-category-row">
+          {renderCategories()}
+        </ul>
+        <div className="emoji-keyboard-row">
+          <button
+            disabled={category === 0}
+            onClick={() => setCategory(category - 1)}
+            className="emoji-keyboard-arrow-button emoji-keyboard-prev"
+          />
+          <ul className="emoji-keyboard-batch">
+            {renderKeyboard()}
           </ul>
-          <div className="emoji-keyboard-row">
-            <button
-              disabled={category === 0}
-              onClick={() => setCategory(category - 1)}
-              className="emoji-keyboard-arrow-button emoji-keyboard-prev"
-            />
-            <ul className="emojis-keyboard-batch">
-              {renderKeyboard()}
-            </ul>
-            <button
-              disabled={category === 4}
-              onClick={() => setCategory(category + 1)}
-              className="emoji-keyboard-arrow-button emoji-keyboard-next"
-            />
-          </div>
+          <button
+            disabled={category === 4}
+            onClick={() => setCategory(category + 1)}
+            className="emoji-keyboard-arrow-button emoji-keyboard-next"
+          />
         </div>
       </div>
-    </div>
+    </ThemedComponent>
   );
 };
