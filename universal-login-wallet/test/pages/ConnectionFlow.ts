@@ -10,7 +10,7 @@ export default class ConnectionFlow {
   }
 
   clickCancel() {
-    this.wrapper.find('.connect-emoji-btn').simulate('click');
+    this.wrapper.find('.cancel-emoji-btn').simulate('click');
   }
 
   async waitForEmojiView(timeout?: number) {

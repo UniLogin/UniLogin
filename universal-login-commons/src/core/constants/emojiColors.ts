@@ -1,5 +1,5 @@
 export const EMOJI_COLORS = [
-  '#B9C3F8',
+  '#08AEC5',
   '#E7D300',
   '#0FB989',
   '#FFAEFC',

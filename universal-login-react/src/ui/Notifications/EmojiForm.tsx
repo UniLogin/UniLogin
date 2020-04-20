@@ -65,9 +65,9 @@ export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, se
             publicKey={soleAddress}
             className={className}
           />
-          <div className="emojis-form-reject-wrapper">
+          <div className="emoji-form-reject-wrapper">
             <button
-              className="emojis-form-reject"
+              className="emoji-form-reject"
               id="reject"
               onClick={onDenyClick}
             >

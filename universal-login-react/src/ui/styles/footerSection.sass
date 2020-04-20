@@ -14,11 +14,11 @@
     align-items: center
 
   .universal-login-gas
-    @media only screen and (max-width: 600px)
+    +media(s)
       width: 100%
 
   .backup-btn.backup-btn-primary.generate-code-btn
-    @media only screen and (max-width: 600px)
+    +media(s)
       width: 100%
 
 .unilogin-component-footer-section:empty
@@ -26,7 +26,8 @@
 
 .footer-deny-btn,
 .footer-approve-btn
-  width: 170px
+  max-width: 170px
+  width: 100%
   height: 40px
   border-radius: 3px
   font-weight: 500
@@ -34,23 +35,28 @@
   line-height: 17px
   text-align: center
 
-  @media only screen and (max-width: 600px)
-    width: unset
+  +media(s)
+    max-width: initial
 
 
 .footer-deny-btn
   background:rgb(255, 108, 108)
 
 .footer-approve-btn
-  @media only screen and (max-width: 600px)
+ +media(s)
     width: 100%
 
 .footer-buttons-row
   display: grid
   grid-template-rows: 1fr
   grid-template-columns: 1fr 1fr
+  grid-gap: 15px
   align-items: center
+  max-width: 355px
+  width: 100%
+  margin-left: 15px
 
   +media(s)
     width: 100%
     margin: 30px 0 10px
+    max-width: initial

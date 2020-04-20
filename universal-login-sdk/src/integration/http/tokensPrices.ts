@@ -29,7 +29,7 @@ const getCoingeckoId = (token: TokenDetails) => {
   }
 };
 
-export async function getPrices(fromTokens: TokenDetails[], toTokens: ObservedCurrency[]): Promise<TokensPrices> {
+export async function getPrices(fromTokens: TokenDetails[]): Promise<TokensPrices> {
   const tokenDetailsWithCoingeckoId = fromTokens.map(token => ({...token, coingeckoId: getCoingeckoId(token)}));
   const pricesWithCoingeckoId = await fetchTokenInfo(tokenDetailsWithCoingeckoId, ['ETH', 'USD']);
   return getPricesFromPricesWithCoingeckoId(tokenDetailsWithCoingeckoId, pricesWithCoingeckoId);

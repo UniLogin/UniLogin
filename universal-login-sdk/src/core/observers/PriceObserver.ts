@@ -1,4 +1,4 @@
-import {ObservedCurrency, TokensPrices} from '@unilogin/commons';
+import {TokensPrices} from '@unilogin/commons';
 import ObserverRunner from './ObserverRunner';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
 import {getPrices} from '../../integration/http/tokensPrices';
@@ -11,7 +11,7 @@ export class PriceObserver extends ObserverRunner {
   private lastTokenPrices: TokensPrices = {};
   private callbacks: OnTokenPricesChange[] = [];
 
-  constructor(private tokensDetailsStore: TokensDetailsStore, private observedCurrencies: ObservedCurrency[], tick: number) {
+  constructor(private tokensDetailsStore: TokensDetailsStore, tick: number) {
     super();
     this.tick = tick;
   }
@@ -47,6 +47,6 @@ export class PriceObserver extends ObserverRunner {
   }
 
   getCurrentPrices(): Promise<TokensPrices> {
-    return getPrices(this.tokensDetailsStore.tokensDetails, this.observedCurrencies);
+    return getPrices(this.tokensDetailsStore.tokensDetails);
   }
 }
