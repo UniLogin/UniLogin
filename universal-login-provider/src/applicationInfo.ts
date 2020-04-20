@@ -4,9 +4,11 @@ export const getApplicationInfoFromDocument = () => {
   return {applicationName, logo, type: 'laptop'};
 };
 
+const removeLastChar = (value: string) => value.slice(0, -1);
+
 const getFaviconUrl = () => {
   const favicon = getFavicon();
-  const siteURL = document.URL.slice(0, -1);
+  const siteURL = removeLastChar(document.URL);
   return favicon ? (siteURL + favicon) : null;
 };
 
