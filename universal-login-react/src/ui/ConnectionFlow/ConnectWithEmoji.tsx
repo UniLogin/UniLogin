@@ -48,7 +48,7 @@ export const ConnectWithEmoji = ({onCancel, onConnect, walletService}: ConnectWi
               ? <EmojiPanel code={securityCodes} />
               : <Spinner className="spinner-center" />}
             <p className="connect-emoji-warning">Do not close this window, until the connection is completed.</p>
-            <button onClick={onCancelClick} className="connect-emoji-btn">Cancel Request</button>
+            <button onClick={onCancelClick} className="cancel-emoji-btn">Cancel Request</button>
           </div>
         </div>
       </div>
