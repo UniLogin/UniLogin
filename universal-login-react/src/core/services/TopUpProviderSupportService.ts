@@ -16,7 +16,7 @@ export class TopUpProviderSupportService {
   }
 
   checkWyreSupport(countryName: string): boolean {
-    const wyreSupportedCountries = ['Australia', 'Austria', 'Belgium', 'Canada', 'Czechia', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hong Kong', 'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Mexico', 'Netherlands', 'New Zealand', 'Norway', 'Poland', 'Portugal', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'United States']
+    const wyreSupportedCountries = ['Australia', 'Austria', 'Belgium', 'Canada', 'Czechia', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hong Kong', 'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Mexico', 'Netherlands', 'New Zealand', 'Norway', 'Poland', 'Portugal', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'United States'];
     return wyreSupportedCountries.includes(countryName);
   }
 
