@@ -36,14 +36,19 @@ describe('TopUpProviderSupportService', function () {
     });
 
     it('returns false for unsupported country', function () {
-      expect(service.checkWyreSupport('Poland')).to.be.false;
+      expect(service.checkWyreSupport('Bulgaria')).to.be.false;
     });
   });
 
   describe('getSupportingProviders', function () {
     it('returns a list of providers supporting given country', function () {
       expect(service.getProviders('Denmark'))
-        .to.have.members([TopUpProvider.RAMP, TopUpProvider.SAFELLO]);
+        .to.have.members([TopUpProvider.RAMP, TopUpProvider.SAFELLO, TopUpProvider.WYRE]);
+    });
+
+    it('returns a list of providers supporting given country without safello', function () {
+      expect(service.getProviders('Poland'))
+        .to.have.members([TopUpProvider.RAMP, TopUpProvider.WYRE]);
     });
 
     it('returns an empty list for unsupported country', function () {
