@@ -22,7 +22,7 @@ describe('TopUpProviderSupportService', function () {
 
   describe('checkSafelloSupport', function () {
     it('returns true for supported country', function () {
-      expect(service.checkSafelloSupport('Denmark')).to.be.true;
+      expect(service.checkSafelloSupport('Denmark')).to.be.false;
     });
 
     it('returns false for unsupported country', function () {
@@ -43,7 +43,7 @@ describe('TopUpProviderSupportService', function () {
   describe('getSupportingProviders', function () {
     it('returns a list of providers supporting given country', function () {
       expect(service.getProviders('Denmark'))
-        .to.have.members([TopUpProvider.RAMP, TopUpProvider.SAFELLO, TopUpProvider.WYRE]);
+        .to.have.members([TopUpProvider.RAMP, TopUpProvider.WYRE]);
     });
 
     it('returns a list of providers supporting given country without safello', function () {

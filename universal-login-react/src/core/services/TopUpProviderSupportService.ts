@@ -11,8 +11,7 @@ export class TopUpProviderSupportService {
   }
 
   checkSafelloSupport(countryName: string): boolean {
-    const scandinavianCountries = ['Denmark', 'Sweden', 'Norway'];
-    return scandinavianCountries.includes(countryName);
+    return false;
   }
 
   checkWyreSupport(countryName: string): boolean {
