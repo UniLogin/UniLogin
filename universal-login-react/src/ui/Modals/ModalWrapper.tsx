@@ -28,7 +28,7 @@ export const ModalWrapper = ({children, modalClassName, hideModal, message}: Mod
   });
 
   return (
-    <div className="modal-backdrop">
+    <div className={useClassFor('modal-backdrop')}>
       <div className={modalClassName ? `universal-login ${modalClassName}` : 'universal-login universal-login-default'}>
         <div className={classForComponent('modal-overlay')} onClick={hideModal} />
         <div className={`${useClassFor('modal-wrapper')}`}>
