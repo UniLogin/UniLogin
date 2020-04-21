@@ -27,7 +27,7 @@ export const countries: Country[] = [
     code: 'HR',
     currency: 'EUR',
     isEU: true,
-    isSupportedByWyre: false
+    isSupportedByWyre: false,
   },
   {
     name: 'Cyprus',
