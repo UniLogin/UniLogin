@@ -1,5 +1,6 @@
 import chai from 'chai';
 import {Contract, utils, Wallet} from 'ethers';
+import {Provider} from 'ethers/providers';
 import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
 import {
   calculateInitializeSignature,
@@ -9,6 +10,7 @@ import {
   TEST_GAS_PRICE,
   waitForContractDeploy,
   DEPLOY_GAS_LIMIT,
+  KeyPair,
 } from '@unilogin/commons';
 import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, deployProxyFactory, deployGnosisSafe, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {getFutureAddress} from '@unilogin/contracts/testutils';
@@ -25,7 +27,7 @@ export const startRelayer = async (port = '33111') => {
   return {provider, wallet, otherWallet, relayer, deployer, factoryContract, walletContract, mockToken, ensAddress};
 };
 
-export const createWalletContract = async (provider, relayerUrlOrServer, publicKey, ensName = 'marek.mylogin.eth') => {
+export const createWalletContract = async (provider: Provider, relayerUrlOrServer: string, publicKey: string, ensName = 'marek.mylogin.eth') => {
   const result = await chai.request(relayerUrlOrServer)
     .post('/wallet')
     .send({
@@ -36,7 +38,7 @@ export const createWalletContract = async (provider, relayerUrlOrServer, publicK
   return waitForContractDeploy(provider, beta2.WalletContract, transaction.hash);
 };
 
-export const createWalletCounterfactually = async (wallet, relayerUrlOrServer, keyPair, walletContractAddress, factoryContractAddress, ensAddress, ensName = 'marek.mylogin.eth') => {
+export const createWalletCounterfactually = async (wallet: Wallet, relayerUrlOrServer: string, keyPair: KeyPair, walletContractAddress: string, factoryContractAddress: string, ensAddress: string, ensName = 'marek.mylogin.eth') => {
   const futureAddress = getFutureAddress(walletContractAddress, factoryContractAddress, keyPair.publicKey);
   await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
   const initData = await getInitData(keyPair, ensName, ensAddress, wallet.provider, TEST_GAS_PRICE);
@@ -68,7 +70,7 @@ export const startRelayerWithRefund = async (port = '33111') => {
   return {provider, relayer, mockToken, factoryContract, walletContract, deployer, ensAddress, wallet, otherWallet, ensRegistrar, fallbackHandlerContract};
 };
 
-export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPrice, gasToken = ETHER_NATIVE_TOKEN.address) => {
+export const getInitData = async (keyPair: KeyPair, ensName: string, ensAddress: string, provider: Provider, gasPrice: string, gasToken = ETHER_NATIVE_TOKEN.address) => {
   const [label, domain] = parseDomain(ensName);
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
   const node = utils.namehash(`${label}.${domain}`);
@@ -78,7 +80,7 @@ export const getInitData = async (keyPair, ensName, ensAddress, provider, gasPri
   return encodeInitializeWithENSData([keyPair.publicKey, hashLabel, ensName, node, ensAddress, registrarAddress, resolverAddress, gasPrice, gasToken]);
 };
 
-export const getSetupData = async (keyPair, ensName, ensAddress, provider, gasPrice, relayerAddress, ensRegistrarAddress, fallbackHandlerAddress, gasToken = ETHER_NATIVE_TOKEN.address) => {
+export const getSetupData = async (keyPair: KeyPair, ensName: string, ensAddress: string, provider: Provider, gasPrice: string, relayerAddress: string, ensRegistrarAddress: string, fallbackHandlerAddress: string, gasToken = ETHER_NATIVE_TOKEN.address) => {
   const [label, domain] = parseDomain(ensName);
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
   const node = utils.namehash(`${label}.${domain}`);

@@ -1,12 +1,11 @@
-import {ContractFactory, Contract, utils} from 'ethers';
+import {ContractFactory, Contract, utils, Wallet} from 'ethers';
 import {defaultDeployOptions, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
-import {beta2} from '@unilogin/contracts';
-import {encodeInitializeData, deployWalletContract} from '@unilogin/contracts';
+import {encodeInitializeData, deployWalletContract, beta2} from '@unilogin/contracts';
 
-export default async function createWalletContract(wallet) {
+export default async function createWalletContract(wallet: Wallet) {
   const walletContract = await deployWalletContract(wallet);
   const factory = new ContractFactory(
-    beta2.WalletProxy.interface,
+    beta2.WalletProxy.abi,
     `0x${beta2.WalletProxy.evm.bytecode.object}`,
     wallet,
   );
