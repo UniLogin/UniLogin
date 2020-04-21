@@ -5,8 +5,8 @@ import {State, waitFor} from 'reactive-properties';
 import {getApplicationInfoFromDocument} from './applicationInfo';
 import {buildIframeUrl} from './buildIframeUrl';
 import {normalizeUpstream} from './normalizeUpstream';
-import {Network} from './modals/network';
-import {Provider} from './modals/provider';
+import {Network} from './models/network';
+import {Provider} from './models/provider';
 
 export interface ExtendedConfig extends ProviderConfig {
   enablePicker: boolean;
