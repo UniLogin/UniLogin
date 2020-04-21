@@ -16,8 +16,8 @@ export class TopUpProviderSupportService {
   }
 
   checkWyreSupport(countryName: string): boolean {
-    const country = this.countries.find(({name}) => name === countryName);
-    return !!country && country.isSupportedByWyre;
+    const wyreSupportedCountries = ['Australia', 'Austria', 'Belgium', 'Canada', 'Czechia', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hong Kong', 'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Mexico', 'Netherlands', 'New Zealand', 'Norway', 'Poland', 'Portugal', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'United States']
+    return wyreSupportedCountries.includes(countryName);
   }
 
   getProviders(countryName: string): TopUpProvider[] {

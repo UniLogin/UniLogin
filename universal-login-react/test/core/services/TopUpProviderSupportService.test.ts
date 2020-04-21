@@ -36,7 +36,7 @@ describe('TopUpProviderSupportService', function () {
     });
 
     it('returns false for unsupported country', function () {
-      expect(service.checkWyreSupport('Canada')).to.be.false;
+      expect(service.checkWyreSupport('Bulgaria')).to.be.false;
     });
   });
 
