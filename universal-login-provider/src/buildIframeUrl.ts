@@ -1,4 +1,4 @@
-import {Network} from './modals/network';
+import {Network} from './models/network';
 
 export function buildIframeUrl(iframeUrl: string, applicationInfo: Record<string, any>, picker: boolean, network?: Network): string {
   const query = encodeQuery({

@@ -1,5 +1,5 @@
-import {Provider} from './modals/provider';
-import {Network} from './modals/network';
+import {Provider} from './models/provider';
+import {Network} from './models/network';
 
 export function normalizeUpstream(upstream: Provider | Network) {
   if (upstream === undefined) {
