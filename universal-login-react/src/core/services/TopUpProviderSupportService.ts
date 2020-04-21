@@ -16,7 +16,8 @@ export class TopUpProviderSupportService {
   }
 
   checkWyreSupport(countryName: string): boolean {
-    return countryName === 'United States';
+    const country = this.countries.find(({name}) => name === countryName);
+    return !!country && country.isSupportedByWyre;
   }
 
   getProviders(countryName: string): TopUpProvider[] {
