@@ -3,7 +3,7 @@ import {Config, getConfigForNetwork} from './config';
 import UniversalLoginSDK, {WalletService, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
 import {providers, utils} from 'ethers';
-import {ApplicationInfo, DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network, InitializationHandler, addressEquals} from '@unilogin/commons';
+import {DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network, InitializationHandler, addressEquals} from '@unilogin/commons';
 import {waitForTrue} from './ui/utils/utils';
 import {getOrCreateUlButton, initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
@@ -17,14 +17,13 @@ export interface ULWeb3ProviderOptions {
   provider: Provider;
   relayerUrl: string;
   ensDomains: string[];
-  applicationInfo?: ApplicationInfo;
+  sdkConfigOverrides?: Partial<SdkConfig>;
   uiInitializer?: (services: ULWeb3RootProps) => void;
-  storageService?: StorageService;
   browserChecker?: BrowserChecker;
 }
 
 export class ULWeb3Provider implements Provider {
-  static getDefaultProvider(networkOrConfig: Network | Config, applicationInfo?: ApplicationInfo) {
+  static getDefaultProvider(networkOrConfig: Network | Config, sdkConfigOverrides?: Partial<SdkConfig>) {
     const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
 
     return new ULWeb3Provider({
@@ -32,7 +31,7 @@ export class ULWeb3Provider implements Provider {
       provider: config.provider,
       relayerUrl: config.relayerUrl,
       ensDomains: config.ensDomains,
-      applicationInfo,
+      sdkConfigOverrides,
     });
   }
 
@@ -55,27 +54,24 @@ export class ULWeb3Provider implements Provider {
     provider,
     relayerUrl,
     ensDomains,
-    applicationInfo,
+    sdkConfigOverrides,
     uiInitializer = initUi,
-    storageService = new StorageService(),
     browserChecker = new BrowserChecker(),
   }: ULWeb3ProviderOptions) {
+    const sdkConfig = {
+      network,
+      storageService: new StorageService(),
+      ...sdkConfigOverrides,
+    };
     this.provider = provider;
     this.network = network;
-    const sdkConfig: Partial<SdkConfig> = {
-      network,
-      storageService,
-    };
-    if (applicationInfo) {
-      sdkConfig.applicationInfo = applicationInfo;
-    }
     this.sdk = new UniversalLoginSDK(
       relayerUrl,
       new providers.Web3Provider(this.provider as any),
       sdkConfig,
     );
     this.browserChecker = browserChecker;
-    this.walletService = new WalletService(this.sdk, walletFromBrain, storageService);
+    this.walletService = new WalletService(this.sdk, walletFromBrain, sdkConfig.storageService);
 
     this.uiController = new UIController(this.walletService);
 
