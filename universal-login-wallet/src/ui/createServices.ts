@@ -20,6 +20,21 @@ export interface Overrides {
   sdkConfig?: DeepPartial<SdkConfig>;
 }
 
+const getDeviceType = () => {
+  if(typeof window !== 'undefined'){
+    const body = document.body;
+    const width = body.clientWidth;
+    const height = body.clientHeight;
+    if (width <= 512 || height <= 512) {
+      return 'phone';
+    } else if (width <= 1024) {
+      return 'tablet';
+    }
+    return 'laptop';
+  }
+  return 'unknown';
+}
+
 export const createServices = (config: Config, overrides: Overrides = {}) => {
   const storageService = overrides.storageService || new StorageService();
   const sdkConfig = {
@@ -28,6 +43,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     applicationInfo: {
       applicationName: 'Jarvis',
       logo: 'https://beta.jarvis.network/logo.ico',
+      type: getDeviceType(),
     },
     paymentOptions: {},
     observedTokensAddresses: config.tokens,
