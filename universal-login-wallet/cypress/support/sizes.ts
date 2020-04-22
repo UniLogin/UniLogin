@@ -1,0 +1,1 @@
+export const sizes = ['macbook-13', 'iphone-x', 'iphone-5', 'ipad-2'];
