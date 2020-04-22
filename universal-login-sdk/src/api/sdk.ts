@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy} from '@unilogin/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle} from '@unilogin/commons';
 import {BlockchainService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -14,7 +14,6 @@ import {MessageConverter} from '../core/services/MessageConverter';
 import {TokensDetailsStore} from '../core/services/TokensDetailsStore';
 import {InvalidContract, InvalidENSRecord, InvalidEvent} from '../core/utils/errors';
 import {ENSService} from '../integration/ethereum/ENSService';
-import {GasPriceOracle} from '../integration/ethereum/gasPriceOracle';
 import {RelayerApi} from '../integration/http/RelayerApi';
 import {FutureWalletFactory} from './FutureWalletFactory';
 import {FutureWallet} from './wallet/FutureWallet';

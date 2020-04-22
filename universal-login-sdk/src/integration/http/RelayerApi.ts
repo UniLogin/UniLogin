@@ -1,5 +1,4 @@
-import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus, Device, StoredFutureWallet} from '@unilogin/commons';
-import {fetch} from './fetch';
+import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus, Device, StoredFutureWallet, fetch} from '@unilogin/commons';
 
 export class RelayerApi {
   private readonly http: HttpFunction;
