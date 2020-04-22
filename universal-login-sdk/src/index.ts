@@ -4,7 +4,7 @@ export {BalanceDetails} from './api/FutureWalletFactory';
 export {DeployedWallet} from './api/wallet/DeployedWallet';
 export {DeployingWallet} from './api/wallet/DeployingWallet';
 export {FutureWallet} from './api/wallet/FutureWallet';
-export {SdkConfig} from './config/SdkConfig';
+export {SdkConfig, asSdkConfigOverrides} from './config/SdkConfig';
 export {WalletEventArgs, WalletEventCallback, WalletEventFilter, WalletEventType} from './core/models/events';
 export {SerializedDeployingWallet, SerializedWalletState, WalletState, WalletStorage} from './core/models/WalletService';
 export {IStorageService} from './core/models/IStorageService';

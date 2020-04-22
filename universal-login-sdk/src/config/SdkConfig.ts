@@ -1,5 +1,6 @@
-import {ObservedCurrency, ApplicationInfo, Network} from '@unilogin/commons';
+import {ObservedCurrency, ApplicationInfo, Network, asNetwork, asApplicationInfo, Omit} from '@unilogin/commons';
 import {IStorageService} from '../core/models/IStorageService';
+import {asArray, asString, asNumber, asPartialObject} from '@restless/sanitizers';
 
 export interface SdkConfig {
   network: Network;
@@ -17,3 +18,20 @@ export interface SdkConfig {
   notifySdkApiKey: string;
   rampApiKey?: string;
 }
+
+type SdkOverrides = Omit<SdkConfig, 'observedCurrencies' | 'storageService'>;
+
+export const asSdkConfigOverrides = asPartialObject<SdkOverrides>({
+  network: asNetwork,
+  applicationInfo: asApplicationInfo,
+  observedTokensAddresses: asArray(asString),
+  saiTokenAddress: asString,
+  notice: asString,
+  authorizationsObserverTick: asNumber,
+  balanceObserverTick: asNumber,
+  priceObserverTick: asNumber,
+  mineableFactoryTick: asNumber,
+  mineableFactoryTimeout: asNumber,
+  notifySdkApiKey: asString,
+  rampApiKey: asString,
+});
