@@ -1,12 +1,24 @@
 export const getApplicationInfoFromDocument = () => {
   const applicationName = document.title;
   const logo = getFaviconUrl() || 'none';
-  return {applicationName, logo, type: 'laptop'};
+  const type = getType();
+  return {applicationName, logo, type};
 };
 
 const removeLastChar = (value: string) => value.slice(0, -1);
 
 const getSiteUrl = (url: string) => url.split('#')[0];
+
+const getType = () => {
+  const width = document.body.clientWidth;
+  const height = document.body.clientHeight;
+  if (width <= 512 || height <= 512) {
+    return 'phone';
+  } else if (width <= 1024) {
+    return 'tablet';
+  }
+  return 'laptop';
+};
 
 const getFaviconUrl = () => {
   const favicon = getFavicon();
