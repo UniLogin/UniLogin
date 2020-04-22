@@ -1,6 +1,6 @@
-import {ObservedCurrency, ApplicationInfo, Network, asNetwork, asApplicationInfo, Omit, asPartialObject} from '@unilogin/commons';
+import {ObservedCurrency, ApplicationInfo, Network, asNetwork, asApplicationInfo, Omit} from '@unilogin/commons';
 import {IStorageService} from '../core/models/IStorageService';
-import {asArray, asString, asNumber} from '@restless/sanitizers';
+import {asArray, asString, asNumber, asPartialObject} from '@restless/sanitizers';
 
 export interface SdkConfig {
   network: Network;
