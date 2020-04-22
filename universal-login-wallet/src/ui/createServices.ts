@@ -21,18 +21,17 @@ export interface Overrides {
 }
 
 const getDeviceType = () => {
-  if (typeof window !== 'undefined') {
-    const body = document.body;
-    const width = body.clientWidth;
-    const height = body.clientHeight;
-    if (width <= 512 || height <= 512) {
-      return 'phone';
-    } else if (width <= 1024) {
-      return 'tablet';
-    }
-    return 'laptop';
+  if (typeof window !== 'undefined')
+    return 'unknown';
+  const body = document.body;
+  const width = body.clientWidth;
+  const height = body.clientHeight;
+  if (width <= 512 || height <= 512) {
+    return 'phone';
+  } else if (width <= 1024) {
+    return 'tablet';
   }
-  return 'unknown';
+  return 'laptop';
 };
 
 export const createServices = (config: Config, overrides: Overrides = {}) => {
