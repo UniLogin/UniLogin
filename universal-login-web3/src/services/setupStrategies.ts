@@ -1,16 +1,16 @@
+import {Provider} from 'web3/providers';
+import {Network} from '@unilogin/commons';
+import {SdkConfig} from '@unilogin/sdk';
+import {BrowserChecker} from '@unilogin/react';
 import {Web3ProviderFactory} from '../models/Web3ProviderFactory';
 import {getConfigForNetwork} from '../config';
 import {ULWeb3Provider} from '../ULWeb3Provider';
-import {ApplicationInfo, Network} from '@unilogin/commons';
-import {StorageService, BrowserChecker} from '@unilogin/react';
 import UniLoginLogo from '../ui/assets/U.svg';
 import MetamaskLogo from '../ui/assets/MetaMaskLogoTitle.svg';
-import {Provider} from 'web3/providers';
 import {getNetworkId} from '../utils/getNetworkId';
 
 export interface SetupUniLoginOverrides {
-  applicationInfo?: ApplicationInfo;
-  storageService?: StorageService;
+  sdkConfig?: Partial<SdkConfig>;
   browserChecker?: BrowserChecker;
 }
 
@@ -22,8 +22,7 @@ export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverr
     const uniLoginConfig = getConfigForNetwork(networkVersion);
     return new ULWeb3Provider({
       ...uniLoginConfig,
-      applicationInfo: overrides?.applicationInfo,
-      storageService: overrides?.storageService,
+      sdkConfigOverrides: overrides?.sdkConfig,
       browserChecker: overrides?.browserChecker,
     });
   },

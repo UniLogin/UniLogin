@@ -17,10 +17,12 @@ function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider
     provider,
     relayerUrl,
     ensDomains: ['mylogin.eth'],
+    sdkConfigOverrides: {
+      storageService: new MemoryStorageService(),
+    },
     uiInitializer: (props: ULWeb3RootProps) => {
       services = props;
     },
-    storageService: new MemoryStorageService(),
     browserChecker: mockedBrowserChecker,
   });
   return [ulProvider, services!];
