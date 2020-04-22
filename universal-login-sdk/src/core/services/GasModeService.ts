@@ -1,9 +1,7 @@
 import {utils} from 'ethers';
-import {GasMode, TokensPrices, safeMultiplyAndFormatEther, safeDivide} from '@unilogin/commons';
+import {GasMode, TokensPrices, safeMultiplyAndFormatEther, safeDivide, GasPriceOracle, GasPriceEstimation} from '@unilogin/commons';
 import {TokensDetailsStore} from './TokensDetailsStore';
-import {GasPriceOracle} from '../../integration/ethereum/gasPriceOracle';
 import {PriceObserver} from '../observers/PriceObserver';
-import {GasPriceEstimation} from '../models/GasPriceSuggestion';
 
 const GAS_TOKENS = ['ETH', 'DAI', 'SAI'];
 
