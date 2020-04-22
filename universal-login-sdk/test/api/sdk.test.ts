@@ -39,6 +39,15 @@ describe('INT: SDK', () => {
         expect(provider.connection.url).to.eq(jsonRpcUrl);
       });
 
+      it('isRefundPaid returns false if no api key', () => {
+        expect(sdk.isRefundPaid()).to.be.false;
+      });
+
+      it('isRefundPaid returns true if api key was passed in config', () => {
+        const sdk = new UniversalLoginSDK(relayer.url(), jsonRpcUrl, {...TEST_SDK_CONFIG, apiKey: 'API_KEY'});
+        expect(sdk.isRefundPaid()).to.be.true;
+      });
+
       it('should register ENS name', async () => {
         expect(await relayer.provider.resolveName('alex.mylogin.eth')).to.eq(contractAddress);
       });
