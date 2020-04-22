@@ -1,6 +1,5 @@
-import {ObservedCurrency, TokensPrices, http as _http, TokenDetails, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {ObservedCurrency, TokensPrices, http as _http, TokenDetails, ETHER_NATIVE_TOKEN, fetch} from '@unilogin/commons';
 const cryptocompare = require('cryptocompare');
-import {fetch} from './fetch';
 import {Sanitizer, asObject, asNumber, cast} from '@restless/sanitizers';
 
 interface TokenDetailsWithCoingeckoId extends TokenDetails {

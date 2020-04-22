@@ -1,8 +1,8 @@
 import {utils} from 'ethers';
-import {handleApiResponse} from '@unilogin/commons';
-import {fetch} from '../http/fetch';
-import {GasPriceSuggestion} from '../../core/models/GasPriceSuggestion';
 import {asObject, asNumber, cast} from '@restless/sanitizers';
+import {GasPriceSuggestion} from '../../core/models/GasPriceSuggestion';
+import {handleApiResponse} from '../http/http';
+import {fetch} from '../http/fetch';
 
 export class GasPriceOracle {
   private async fetchGasPrices() {

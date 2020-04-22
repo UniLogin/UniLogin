@@ -61,7 +61,34 @@ body > div
   max-width: 800px
   width: 100%
   background: #FFFFFF
-  box-shadow: 0 2px 28px 0 rgba(40,42,42,0.27);
+  box-shadow: 0 2px 28px 0 rgba(40,42,42,0.27)
+  display: flex
+  flex-direction: column
+  min-height: 595px
+
+  @media only screen and (max-width: 770px)
+    min-height: 100%
+
+  .modal-success-btn
+    display: flex
+    justify-content: center
+    align-items: center
+    max-width: 200px
+    margin-top: auto
+    margin-bottom: 30px
+
+    @media only screen and (max-width: 770px)
+      max-width: 330px
+
+  .modal-avatar-succes
+    display: block
+    width: 100px
+    height: 100px
+    margin: 38px auto 42px
+
+    @media only screen and (max-width: 770px)
+      margin: 30px auto 20px
+
 
 .box-header
   padding: 22px 25px
@@ -74,12 +101,33 @@ body > div
   font-weight: 500
 
 .box-content
+  display: flex
+  flex-direction: column
+  align-items: center
+  flex: 1
   background: #fafafa
+  padding: 0 15px
 
-  @media only screen and (max-width: 770px)
-    display: flex
-    flex-direction: column
-    flex: 1
+  .created-account-hash
+    opacity: 0.7
+    font-size: 14px
+    color: #31405E
+    word-break: break-all
+    margin: 15px 0
+
+  .created-account-label
+    margin-bottom: 5px
+    opacity: 0.7
+    font-weight: 600
+    line-height: 130%
+    font-size: 16px
+    color: #31405E
+
+  .congratulation-text
+    text-align: center
+    line-height: 130%
+    color: #31405E
+    margin-bottom: 15px
 
 .box-text
   font-size: 16px
