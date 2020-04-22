@@ -21,8 +21,7 @@ export interface Overrides {
 }
 
 const getDeviceType = () => {
-  if (typeof window !== 'undefined')
-    return 'unknown';
+  if (typeof window !== 'undefined') {return 'unknown';}
   const body = document.body;
   const width = body.clientWidth;
   const height = body.clientHeight;
