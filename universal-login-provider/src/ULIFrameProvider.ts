@@ -29,11 +29,11 @@ export class ULIFrameProvider {
   ) {
     const applicationInfo = getApplicationInfoFromDocument();
     const sdkConfig = {
+      applicationInfo,
       ...config.sdkConfig,
       network: config.network,
-      applicationInfo,
     };
-    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, applicationInfo, config.enablePicker, sdkConfig, config.network));
+    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, config.enablePicker, sdkConfig, config.network));
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
       this.handleRpc.bind(this),
