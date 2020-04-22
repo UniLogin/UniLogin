@@ -24,7 +24,7 @@ const isMetamaskPresent = () => !!(window as any).ethereum;
 const ProviderSelect = ({name, icon, labelTop, labelBottom, selectedProvider, onClick}: IWeb3ProviderProps) =>
   <ProviderButton disabled={name === 'Metamask' && !isMetamaskPresent()} name={name} selectedProvider={selectedProvider} onClick={onClick}>
     {(labelTop) && <ProviderLabelTop>{labelTop}</ProviderLabelTop>}
-    <img src={icon} alt={name + ' logo'}/>
+    <ProviderIcon src={icon} alt={name + ' logo'}/>
     {(labelBottom) && <ProviderLabelBottom>{labelBottom}</ProviderLabelBottom>}
     {(name === 'Metamask') && <Indicator status={isMetamaskPresent()}/>}
   </ProviderButton>;
@@ -42,6 +42,7 @@ const ProviderButton = styled.button<IProviderButton>`
   cursor: pointer;
   position: relative;
   font-family: 'HelveticaNeue', sans-serif;
+  min-height: 88px;
 
   &:hover {
     box-shadow: 0px 10px 40px rgba(0, 131, 188, 0.12);
@@ -91,6 +92,12 @@ const ProviderIndicatorRed = styled.div`
   right: .7rem;
   border-radius: 50%;
   background: red;
+`;
+
+const ProviderIcon = styled.img`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 
 export default ProviderSelect;

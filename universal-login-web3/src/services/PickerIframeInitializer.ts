@@ -1,19 +1,20 @@
+import {Network} from '@unilogin/commons';
+import {SdkConfig} from '@unilogin/sdk';
 import {Web3PickerProvider} from '../Web3PickerProvider';
 import {setupStrategies} from './setupStrategies';
 import {combine, flatMap, Property, State} from 'reactive-properties';
 import {ULWeb3Provider} from '../ULWeb3Provider';
 import {IframeInitializerBase} from './IframeInitializerBase';
-import {ApplicationInfo, Network} from '@unilogin/commons';
 import {getConfigForNetwork} from '../config';
 import {IframeBridgeEndpoint} from './IframeBridgeEndpoint';
 
 export class PickerIframeInitializer extends IframeInitializerBase {
   private readonly provider: Web3PickerProvider;
 
-  constructor(endpoint: IframeBridgeEndpoint, applicationInfo: ApplicationInfo, network?: Network) {
+  constructor(endpoint: IframeBridgeEndpoint, sdkConfig: Partial<SdkConfig>, network?: Network) {
     super(endpoint);
     const upstream = this.getUpstream(network);
-    const web3ProviderFactories = setupStrategies(upstream, ['UniLogin', 'Metamask'], {applicationInfo});
+    const web3ProviderFactories = setupStrategies(upstream, ['UniLogin', 'Metamask'], {sdkConfig});
     this.provider = new Web3PickerProvider(web3ProviderFactories, upstream);
     endpoint.setHandler(this.provider);
   }

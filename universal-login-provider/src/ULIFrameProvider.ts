@@ -12,6 +12,7 @@ export interface ExtendedConfig extends ProviderConfig {
   enablePicker: boolean;
   upstream?: Provider;
   network?: Network;
+  sdkConfig?: Record<string, any>;
 }
 
 export class ULIFrameProvider {
@@ -26,8 +27,11 @@ export class ULIFrameProvider {
   constructor(
     private readonly config: ExtendedConfig,
   ) {
-    const applicationInfo = getApplicationInfoFromDocument();
-    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, applicationInfo, config.enablePicker, config.network));
+    const sdkConfig = {
+      applicationInfo: getApplicationInfoFromDocument(),
+      ...config.sdkConfig,
+    } as any;
+    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, config.enablePicker, sdkConfig, config.network));
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
       this.handleRpc.bind(this),
@@ -100,18 +104,20 @@ export class ULIFrameProvider {
     return ULIFrameProvider.instance;
   }
 
-  static create(network: Network, config = DEFAULT_CONFIG) {
+  static create(network: Network, sdkConfig?: Record<string, any>, config = DEFAULT_CONFIG) {
     return ULIFrameProvider.getInstance({
       enablePicker: false,
       network: network.toString() as Network,
+      sdkConfig,
       ...config,
     });
   }
 
-  static createPicker(upstream: Provider | Network, config = DEFAULT_CONFIG) {
+  static createPicker(upstream: Provider | Network, sdkConfig?: Record<string, any>, config = DEFAULT_CONFIG) {
     return ULIFrameProvider.getInstance({
       enablePicker: true,
       ...normalizeUpstream(upstream),
+      sdkConfig,
       ...config,
     });
   }

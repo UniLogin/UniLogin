@@ -14,7 +14,7 @@ describe('UNIT: setupStrategies', () => {
       logo: 'https://kickback.events/favicon.ico',
       type: 'laptop',
     };
-    const result = setupStrategies(mockProvider, ['UniLogin'], {applicationInfo, storageService: new MemoryStorageService(), browserChecker: {isLocalStorageBlocked: () => false}});
+    const result = setupStrategies(mockProvider, ['UniLogin'], {sdkConfig: {applicationInfo, storageService: new MemoryStorageService()}, browserChecker: {isLocalStorageBlocked: () => false}});
     expect(result[0].name).to.eq('UniLogin');
     expect(result[0].icon).to.eq(UniLoginLogo);
     expect(result[0].create).to.not.be.null;

@@ -2,15 +2,16 @@ import {ULWeb3Provider} from '../ULWeb3Provider';
 import {Property} from 'reactive-properties';
 import {IframeInitializerBase} from './IframeInitializerBase';
 import {Provider} from 'web3/providers';
-import {Network, ApplicationInfo} from '@unilogin/commons';
+import {Network} from '@unilogin/commons';
 import {IframeBridgeEndpoint} from './IframeBridgeEndpoint';
+import {SdkConfig} from '@unilogin/sdk';
 
 export class ProviderOnlyIframeInitializer extends IframeInitializerBase {
   private readonly provider: ULWeb3Provider;
 
-  constructor(endpoint: IframeBridgeEndpoint, network: Network, applicationInfo?: ApplicationInfo) {
+  constructor(endpoint: IframeBridgeEndpoint, network: Network, sdkConfig?: Partial<SdkConfig>) {
     super(endpoint);
-    this.provider = ULWeb3Provider.getDefaultProvider(network, applicationInfo);
+    this.provider = ULWeb3Provider.getDefaultProvider(network, sdkConfig);
     endpoint.setHandler(this.provider);
   }
 
