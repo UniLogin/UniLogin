@@ -103,18 +103,20 @@ export class ULIFrameProvider {
     return ULIFrameProvider.instance;
   }
 
-  static create(network: Network, sdkConfig: Record<string, any>, config = DEFAULT_CONFIG) {
+  static create(network: Network, sdkConfig?: Record<string, any>, config = DEFAULT_CONFIG) {
     return ULIFrameProvider.getInstance({
       enablePicker: false,
       network: network.toString() as Network,
+      sdkConfig,
       ...config,
     });
   }
 
-  static createPicker(upstream: Provider | Network, config = DEFAULT_CONFIG) {
+  static createPicker(upstream: Provider | Network, sdkConfig?: Record<string, any>, config = DEFAULT_CONFIG) {
     return ULIFrameProvider.getInstance({
       enablePicker: true,
       ...normalizeUpstream(upstream),
+      sdkConfig,
       ...config,
     });
   }
