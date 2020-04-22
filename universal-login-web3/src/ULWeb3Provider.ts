@@ -61,7 +61,7 @@ export class ULWeb3Provider implements Provider {
     const sdkConfig = {
       network,
       storageService: new StorageService(),
-      ...sdkConfigOverrides || {},
+      ...sdkConfigOverrides,
     };
     this.provider = provider;
     this.network = network;
