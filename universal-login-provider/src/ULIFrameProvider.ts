@@ -28,11 +28,8 @@ export class ULIFrameProvider {
     private readonly config: ExtendedConfig,
   ) {
     const applicationInfo = getApplicationInfoFromDocument();
-    const sdkConfig = {
-      applicationInfo,
-      ...config.sdkConfig,
-      network: config.network,
-    };
+    const sdkConfig = {applicationInfo, ...config.sdkConfig} as any;
+    if (config.network) sdkConfig.network = config.network;
     this.iframe = createIFrame(buildIframeUrl(config.backendUrl, config.enablePicker, sdkConfig, config.network));
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
@@ -106,7 +103,7 @@ export class ULIFrameProvider {
     return ULIFrameProvider.instance;
   }
 
-  static create(network: Network, config = DEFAULT_CONFIG) {
+  static create(network: Network, sdkConfig: Record<string, any>, config = DEFAULT_CONFIG) {
     return ULIFrameProvider.getInstance({
       enablePicker: false,
       network: network.toString() as Network,
