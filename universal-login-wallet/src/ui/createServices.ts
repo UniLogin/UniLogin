@@ -21,7 +21,7 @@ export interface Overrides {
 }
 
 const getDeviceType = () => {
-  if(typeof window !== 'undefined'){
+  if (typeof window !== 'undefined') {
     const body = document.body;
     const width = body.clientWidth;
     const height = body.clientHeight;
@@ -33,7 +33,7 @@ const getDeviceType = () => {
     return 'laptop';
   }
   return 'unknown';
-}
+};
 
 export const createServices = (config: Config, overrides: Overrides = {}) => {
   const storageService = overrides.storageService || new StorageService();
