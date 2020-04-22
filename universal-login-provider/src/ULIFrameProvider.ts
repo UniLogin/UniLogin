@@ -12,6 +12,7 @@ export interface ExtendedConfig extends ProviderConfig {
   enablePicker: boolean;
   upstream?: Provider;
   network?: Network;
+  sdkConfig?: Record<string, any>;
 }
 
 export class ULIFrameProvider {
@@ -27,7 +28,12 @@ export class ULIFrameProvider {
     private readonly config: ExtendedConfig,
   ) {
     const applicationInfo = getApplicationInfoFromDocument();
-    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, applicationInfo, config.enablePicker, config.network));
+    const sdkConfig = {
+      ...config.sdkConfig,
+      network: config.network,
+      applicationInfo,
+    };
+    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, applicationInfo, config.enablePicker, sdkConfig, config.network));
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
       this.handleRpc.bind(this),
