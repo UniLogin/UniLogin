@@ -28,6 +28,7 @@ export const Input = ({onChange, placeholder, autoFocus, onFocus, className, id,
       spellCheck={checkSpelling}
       autoCapitalize='off'
       onFocus={onFocus}
+      autoComplete='off'
     />
   );
 };
