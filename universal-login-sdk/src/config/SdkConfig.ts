@@ -17,6 +17,7 @@ export interface SdkConfig {
   storageService: IStorageService;
   notifySdkApiKey: string;
   rampApiKey?: string;
+  apiKey?: string;
 }
 
 type SdkOverrides = Omit<SdkConfig, 'observedCurrencies' | 'storageService'>;
@@ -34,4 +35,5 @@ export const asSdkConfigOverrides = asPartialObject<SdkOverrides>({
   mineableFactoryTimeout: asNumber,
   notifySdkApiKey: asString,
   rampApiKey: asString,
+  apiKey: asString,
 });
