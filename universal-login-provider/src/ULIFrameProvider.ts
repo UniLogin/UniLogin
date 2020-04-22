@@ -31,7 +31,6 @@ export class ULIFrameProvider {
       applicationInfo: getApplicationInfoFromDocument(),
       ...config.sdkConfig,
     } as any;
-    if (config.network) sdkConfig.network = config.network;
     this.iframe = createIFrame(buildIframeUrl(config.backendUrl, config.enablePicker, sdkConfig, config.network));
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
