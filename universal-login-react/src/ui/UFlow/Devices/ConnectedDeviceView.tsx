@@ -14,7 +14,7 @@ export const ConnectedDeviceView = ({deviceInfo, isHighlighted, trashButton}: Co
     <li className={`connected-devices-item ${isHighlighted ? 'highlighted' : ''}`}>
       <Logo deviceType={type} logo={logo} applicationName={applicationName} />
       <div>
-        <p className="connected-devices-type">{applicationName}{platform && ` • ${platform}`}</p>
+        <p className="connected-devices-type">{applicationName}{platform && ` • ${type}`}</p>
         <p className="connected-devices-details">
           {city}
         </p>
