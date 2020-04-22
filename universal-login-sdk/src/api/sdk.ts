@@ -99,6 +99,10 @@ class UniversalLoginSDK {
     return `This is beta version running on ${this.config.network}`;
   }
 
+  isRefundPaid() {
+    return !!this.config.apiKey;
+  }
+
   getFutureWalletFactory() {
     this.getRelayerConfig();
     this.fetchFutureWalletFactory();
