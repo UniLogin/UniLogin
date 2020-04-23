@@ -9,15 +9,15 @@ import {DevicesService} from '../../core/services/DevicesService';
 
 export class WalletDeploymentService {
   private readonly supportedTokens: SupportedToken[] = this.config.supportedTokens;
-  private gasPriceOracle = new GasPriceOracle();
 
   constructor(
     private config: Config,
     private ensService: ENSService,
     private walletDeployer: WalletDeployer,
     private requiredBalanceChecker: RequiredBalanceChecker,
-    private devicesService: DevicesService) {
-  }
+    private devicesService: DevicesService,
+    private gasPriceOracle = new GasPriceOracle(),
+  ) {}
 
   async setupInitializeData({publicKey, ensName, gasPrice, gasToken}: Omit<DeployArgs, 'signature'>) {
     const ensArgs = await this.ensService.argsFor(ensName);
