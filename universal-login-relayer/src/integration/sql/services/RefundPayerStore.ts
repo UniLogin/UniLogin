@@ -11,10 +11,10 @@ export class RefundPayerStore {
       .insert(refundPayer, ['name', 'apiKey']);
   }
 
-  async get(apiKey: string): Promise<RefundPayer | undefined> {
+  async get(apiKey: string): Promise<RefundPayerEntity | undefined> {
     return this.database<RefundPayerEntity>(this.tableName)
       .where({apiKey})
-      .select(['name', 'apiKey'])
+      .select()
       .first();
   }
 }

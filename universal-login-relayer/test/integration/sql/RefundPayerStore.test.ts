@@ -17,7 +17,11 @@ describe('INT: RefundPayerStore', () => {
     const [addedRefundPayer] = await refundPayerStore.add(TEST_REFUND_PAYER);
     expect(addedRefundPayer).deep.eq(TEST_REFUND_PAYER);
     const gotRefundPayer = await refundPayerStore.get(TEST_REFUND_PAYER.apiKey);
-    expect(gotRefundPayer).deep.eq(TEST_REFUND_PAYER);
+    expect(gotRefundPayer).to.not.be.undefined;
+    const {id, ...refundPayer} = gotRefundPayer!;
+    expect(typeof id).eq('number');
+    expect(id).at.least(1);
+    expect(refundPayer).deep.eq(TEST_REFUND_PAYER);
   });
 
   afterEach(async () => {
