@@ -17,9 +17,11 @@ export interface DeviceInfo extends ApplicationInfo {
 
 export interface ApplicationInfo {
   applicationName: string;
-  type: string;
+  type: DeviceType;
   logo: string;
 }
+
+export type DeviceType = 'laptop' | 'phone' | 'tablet' | 'unknown';
 
 export interface Device {
   contractAddress: string;

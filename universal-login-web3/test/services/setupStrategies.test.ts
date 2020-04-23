@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import {DeviceType} from '@unilogin/commons';
 import {MemoryStorageService} from '@unilogin/sdk';
 import {setupStrategies} from '../../src/services/setupStrategies';
 import {Web3ProviderFactory} from '../../src/models/Web3ProviderFactory';
@@ -12,7 +13,7 @@ describe('UNIT: setupStrategies', () => {
     const applicationInfo = {
       applicationName: 'Kickback',
       logo: 'https://kickback.events/favicon.ico',
-      type: 'laptop',
+      type: 'laptop' as DeviceType,
     };
     const result = setupStrategies(mockProvider, ['UniLogin'], {sdkConfig: {applicationInfo, storageService: new MemoryStorageService()}, browserChecker: {isLocalStorageBlocked: () => false}});
     expect(result[0].name).to.eq('UniLogin');

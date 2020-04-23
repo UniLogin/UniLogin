@@ -1,6 +1,7 @@
 import {utils, constants} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from './constants';
 import {Network} from '../models/Network';
+import {DeviceType} from '../models/notifications';
 
 export const TEST_ACCOUNT_ADDRESS = '0x0000000000000000000000000000000000000001';
 
@@ -40,7 +41,7 @@ export const TEST_EXECUTION_OPTIONS = {gasPrice: TEST_GAS_PRICE, gasLimit: TEST_
 export const TEST_APPLICATION_INFO = {
   applicationName: 'UniversalLogin',
   logo: 'logo',
-  type: 'laptop',
+  type: 'laptop' as DeviceType,
 };
 
 export const TEST_DEVICE_INFO = {

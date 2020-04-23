@@ -2,9 +2,9 @@ import {Router, Request} from 'express';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject} from '@restless/sanitizers';
 import {asEthAddress} from '@restless/ethereum';
-import {RelayerRequest, ApplicationInfo} from '@unilogin/commons';
+import {RelayerRequest, ApplicationInfo, asApplicationInfo} from '@unilogin/commons';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
-import {asRelayerRequest, asApplicationInfo} from '../utils/sanitizers';
+import {asRelayerRequest} from '../utils/sanitizers';
 import AuthorisationService from '../../core/services/AuthorisationService';
 import {AddAuthorisationRequest} from '../../core/models/AddAuthorisationRequest';
 

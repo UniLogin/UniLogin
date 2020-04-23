@@ -8,6 +8,6 @@ export const EMPTY_DEVICE_INFO: DeviceInfo = {
   ipAddress: '',
   time: '',
   browser: '',
-  type: '',
+  type: 'unknown',
   logo: '',
 };

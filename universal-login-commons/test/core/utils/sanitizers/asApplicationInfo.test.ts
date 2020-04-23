@@ -7,7 +7,7 @@ describe('asApplicationInfo', () => {
     const expectedApplicationInfo = {
       applicationName: 'UniLogin',
       logo: 'UniLogo',
-      type: 'web',
+      type: 'unknown',
     };
     const applicationInfo = cast(expectedApplicationInfo, asApplicationInfo);
     expect(applicationInfo).to.deep.eq(expectedApplicationInfo);
@@ -25,7 +25,7 @@ describe('asApplicationInfo', () => {
     const expectedApplicationInfo = {
       applicationName: 'UniLogin',
       logo: 'UniLogo',
-      type: 'web',
+      type: 'tablet',
     };
     const appInfoWithExtraField = {...expectedApplicationInfo, extraField: 'extraField'};
     const applicationInfo = cast(appInfoWithExtraField, asApplicationInfo);
