@@ -29,7 +29,7 @@ describe('INT: WalletService', () => {
   it('create wallet', async () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
     const name = 'name.mylogin.eth';
-    const futureWallet = await walletService.createFutureOrDeployingWallet(name);
+    const futureWallet = await walletService.createWallet(name);
     expect(futureWallet.contractAddress).to.be.properAddress;
     expect(futureWallet.privateKey).to.be.properPrivateKey;
     expect(futureWallet).instanceOf(FutureWallet);
@@ -40,7 +40,7 @@ describe('INT: WalletService', () => {
 
   describe('deploy, wait for transaction hash and success', () => {
     it('transaction upfront', async () => {
-      const futureWallet = await walletService.createFutureOrDeployingWallet('name.mylogin.eth');
+      const futureWallet = await walletService.createWallet('name.mylogin.eth');
       await wallet.sendTransaction({to: futureWallet.contractAddress, value: utils.parseEther('4')});
       await walletService.initDeploy();
       ensure(walletService.state.kind === 'Deploying', chai.AssertionError, `Expected state.kind to be 'Deploying', but was ${walletService.state.kind}`);

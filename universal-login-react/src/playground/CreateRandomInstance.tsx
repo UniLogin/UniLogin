@@ -16,7 +16,7 @@ export const CreateRandomInstance = ({walletService}: CreateRandomInstanceProps)
     const randomString = Math.random().toString(36).substring(7);
     const name = `${randomString}.mylogin.eth`;
     setEnsName(name);
-    const futureWallet = await walletService.createFutureOrDeployingWallet(name);
+    const futureWallet = await walletService.createWallet(name);
     ensure(futureWallet instanceof FutureWallet, TypeError);
     const {waitForBalance, contractAddress} = futureWallet;
     setStatus(`Waiting for intial funds in ${contractAddress}`);

@@ -118,7 +118,7 @@ describe('UNIT: WalletService', () => {
     sdk = {...sdk, isRefundPaid: () => true, createFutureWallet: () => futureWallet};
     walletService = new WalletService(sdk);
     const name = 'name.mylogin.eth';
-    const deployingWallet = await walletService.createFutureOrDeployingWallet(name);
+    const deployingWallet = await walletService.createWallet(name);
     expect(deployingWallet).instanceOf(DeployingWallet);
   });
 
