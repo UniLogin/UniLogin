@@ -113,6 +113,16 @@ describe('UNIT: WalletService', () => {
     expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
   });
 
+  it('create deploying wallet if isRefundPaid', async () => {
+    expect(walletService.state).to.deep.eq({kind: 'None'});
+    sdk = {...sdk, isRefundPaid: () => true, createFutureWallet: () => futureWallet};
+    walletService = new WalletService(sdk);
+    const name = 'name.mylogin.eth';
+    const deployingWallet = await walletService.createWallet(name);
+    expect(walletService.state.kind).to.be.eq('Deploying');
+    expect(deployingWallet).instanceOf(DeployingWallet);
+  });
+
   it('roundtrip', () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
