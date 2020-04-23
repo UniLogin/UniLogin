@@ -72,12 +72,7 @@ export class WalletService {
     const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
     if (this.sdk.isRefundPaid()) {
       const futureWallet = await this.sdk.createFutureWallet(name, '0', gasOption.token.address);
-      const deployingWallet = new DeployingWallet({
-        name,
-        contractAddress: futureWallet.contractAddress,
-        privateKey: futureWallet.privateKey,
-        deploymentHash: '',
-      }, this.sdk);
+      const deployingWallet = await futureWallet.deploy();
       this.setDeploying(deployingWallet);
       return deployingWallet;
     }
