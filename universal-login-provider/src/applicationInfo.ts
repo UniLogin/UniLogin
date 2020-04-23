@@ -10,8 +10,8 @@ const removeLastChar = (value: string) => value.slice(0, -1);
 const getSiteUrl = (url: string) => url.split('#')[0];
 
 const getType = () => {
-  const width = document.body.clientWidth;
-  const height = document.body.clientHeight;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
   if (width <= 512 || height <= 512) {
     return 'phone';
   } else if (width <= 1024) {

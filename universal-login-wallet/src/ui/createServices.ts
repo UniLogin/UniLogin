@@ -22,9 +22,8 @@ export interface Overrides {
 
 const getDeviceType = (): DeviceType => {
   if (typeof window === 'undefined') {return 'unknown';}
-  const body = document.body;
-  const width = body.clientWidth;
-  const height = body.clientHeight;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
   if (width <= 512 || height <= 512) {
     return 'phone';
   } else if (width <= 1024) {
