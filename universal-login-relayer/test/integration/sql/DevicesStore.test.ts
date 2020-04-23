@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {DevicesStore} from '../../../src/integration/sql/services/DevicesStore';
-import {TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO, TEST_APPLICATION_INFO} from '@unilogin/commons';
+import {TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_DEVICE_INFO, TEST_APPLICATION_INFO, DeviceType} from '@unilogin/commons';
 import {getKnexConfig} from '../../testhelpers/knex';
 import {clearDatabase} from '../../../src/http/relayers/RelayerUnderTest';
 
@@ -15,7 +15,7 @@ describe('INT: DevicesStore', () => {
     time: '18 minutes ago',
     browser: 'Safari',
     logo: 'logo2',
-    type: 'laptop',
+    type: 'laptop' as DeviceType,
   };
   const knex = getKnexConfig();
 

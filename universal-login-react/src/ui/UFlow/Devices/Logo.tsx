@@ -1,10 +1,10 @@
 import React from 'react';
-import {UNIVERSAL_LOGIN_LOGO_URL as DEFAULT_LOGO, EMPTY_LOGO} from '@unilogin/commons';
+import {UNIVERSAL_LOGIN_LOGO_URL as DEFAULT_LOGO, EMPTY_LOGO, DeviceType} from '@unilogin/commons';
 
 interface LogoProps {
   logo: string;
   applicationName: string;
-  deviceType: string;
+  deviceType: DeviceType;
 }
 
 export const Logo = ({logo, applicationName, deviceType}: LogoProps) => {

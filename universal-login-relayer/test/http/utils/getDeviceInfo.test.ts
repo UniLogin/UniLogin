@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {getDeviceInfo} from '../../../src/http/utils/getDeviceInfo';
-import {TEST_APPLICATION_INFO} from '@unilogin/commons';
+import {TEST_APPLICATION_INFO, DeviceType} from '@unilogin/commons';
 
 describe('UNIT: getDeviceInfo', () => {
   const req = {
@@ -15,7 +15,7 @@ describe('UNIT: getDeviceInfo', () => {
 
   it('iOS/Evidance', () => {
     req.useragent.source = 'deecert/4 CFNetwork/1098.7 Darwin/18.7.0';
-    const appInfo = {applicationName: 'Evidance', type: 'phone', logo: 'none'};
+    const appInfo = {applicationName: 'Evidance', type: 'phone' as DeviceType, logo: 'none'};
     const deviceInfo = getDeviceInfo(req, appInfo);
     expect(deviceInfo).to.deep.eq(
       {
@@ -39,7 +39,7 @@ describe('UNIT: getDeviceInfo', () => {
       platform: 'OSX',
       browser: 'Mozilla',
     };
-    const appInfo = {applicationName: 'Jarvis', type: 'laptop', logo: 'none'};
+    const appInfo = {applicationName: 'Jarvis', type: 'laptop' as DeviceType, logo: 'none'};
     const deviceInfo = getDeviceInfo(req, appInfo);
     expect(deviceInfo).to.deep.eq(
       {

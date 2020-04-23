@@ -1,10 +1,10 @@
 import {Router, Request} from 'express';
 import MessageHandler from '../../core/services/execution/messages/MessageHandler';
-import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash, StoredFutureWallet} from '@unilogin/commons';
+import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash, StoredFutureWallet, asApplicationInfo} from '@unilogin/commons';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject, asNumber} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
-import {asArrayish, asApplicationInfo} from '../utils/sanitizers';
+import {asArrayish} from '../utils/sanitizers';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
 import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';

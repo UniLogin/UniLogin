@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {filterKeyWithCodeByPrefix, filterNotificationByCodePrefix, generateCode, generateCodeWithFakes, isValidCode, isCodeSufficientButInvalid, addCodesToNotifications, isProperSecurityCode, isProperSecurityCodeWithFakes} from '../../../src/core/utils/securityCodes';
-import {Notification} from '../../../src';
+import {Notification, DeviceType} from '../../../src';
 
 describe('UNIT: security codes', () => {
   const mockedAddress = '0xFFFFFFe7d45c34110B34Ed269AD86248884E78C7';
@@ -150,7 +150,7 @@ describe('UNIT: security codes', () => {
             os: 'unknown',
             browser: 'node-fetch',
             time: '1:30',
-            type: 'laptop',
+            type: 'laptop' as DeviceType,
             logo: 'icon',
           },
         },
