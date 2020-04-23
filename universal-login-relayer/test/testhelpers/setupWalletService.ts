@@ -25,6 +25,7 @@ export default async function setupWalletService(wallet: Wallet) {
     addOrUpdate: sinon.spy(),
   };
   const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceChecker as any, fakeDevicesService as any);
+  (walletService as any).gasPriceOracle = {getGasPrices: () => ({fast: {gasPrice: utils.bigNumberify('9090')}})};
   return {provider, wallet, walletService, factoryContract, ensService, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler};
 }
 
