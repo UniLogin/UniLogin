@@ -68,14 +68,14 @@ export class WalletService {
   }
 
   async createFutureWallet(name: string): Promise<FutureWallet | DeployingWallet> {
-    const gasModes = await this.sdk.getGasModes();
-    const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
     if (this.sdk.isRefundPaid()) {
-      const futureWallet = await this.sdk.createFutureWallet(name, '0', gasOption.token.address);
+      const futureWallet = await this.sdk.createFutureWallet(name, '0', ETHER_NATIVE_TOKEN.address);
       const deployingWallet = await futureWallet.deploy();
       this.setDeploying(deployingWallet);
       return deployingWallet;
     }
+    const gasModes = await this.sdk.getGasModes();
+    const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
     const futureWallet = await this.sdk.createFutureWallet(name, gasOption.gasPrice.toString(), gasOption.token.address);
     this.setFutureWallet(futureWallet, name);
     return futureWallet;

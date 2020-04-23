@@ -117,14 +117,11 @@ describe('UNIT: WalletService', () => {
 
   it('create deploying wallet if isRefundPaid', async () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
-    const [wallet] = getWallets(createMockProvider());
-    const {sdk, relayer} = await setupSdk(wallet);
+    sdk = {...sdk, isRefundPaid: () => true, createFutureWallet: () => futureWallet};
     walletService = new WalletService(sdk);
-    walletService.sdk.isRefundPaid = () => {return true;};
     const name = 'name.mylogin.eth';
     const deployingWallet = await walletService.createFutureWallet(name);
     expect(deployingWallet).instanceOf(DeployingWallet);
-    await relayer.stop();
   });
 
   it('roundtrip', () => {

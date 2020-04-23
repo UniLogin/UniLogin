@@ -33,8 +33,8 @@ describe('INT: WalletService', () => {
     expect(futureWallet.contractAddress).to.be.properAddress;
     expect(futureWallet.privateKey).to.be.properPrivateKey;
     expect(futureWallet).instanceOf(FutureWallet);
-    expect((futureWallet as any).deploy).to.be.a('function');
-    expect((futureWallet as any).waitForBalance).to.be.a('function');
+    expect((futureWallet as FutureWallet).deploy).to.be.a('function');
+    expect((futureWallet as FutureWallet).waitForBalance).to.be.a('function');
     expect(walletService.state).to.deep.eq({kind: 'Future', name, wallet: futureWallet});
   });
 
