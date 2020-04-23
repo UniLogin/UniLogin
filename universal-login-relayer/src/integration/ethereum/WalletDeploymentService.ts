@@ -1,4 +1,4 @@
-import {utils} from 'ethers';
+import {utils, constants} from 'ethers';
 import {ensure, RequiredBalanceChecker, DeployArgs, getInitializeSigner, DEPLOY_GAS_LIMIT, DeviceInfo, SupportedToken, safeMultiplyAndFormatEther, MINIMAL_DEPLOYMENT_GAS_LIMIT} from '@unilogin/commons';
 import {computeGnosisCounterfactualAddress, encodeDataForSetup, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@unilogin/contracts';
 import ENSService from './ensService';
@@ -20,7 +20,8 @@ export class WalletDeploymentService {
 
   async setupInitializeData({publicKey, ensName, gasPrice, gasToken}: Omit<DeployArgs, 'signature'>) {
     const ensArgs = await this.ensService.argsFor(ensName);
-    const deployment = {owners: [publicKey],
+    const deployment = {
+      owners: [publicKey],
       requiredConfirmations: INITIAL_REQUIRED_CONFIRMATIONS,
       deploymentCallAddress: this.config.ensRegistrar,
       deploymentCallData: new utils.Interface(gnosisSafe.ENSRegistrar.interface as any).functions.register.encode(ensArgs),
@@ -36,18 +37,26 @@ export class WalletDeploymentService {
     return computeGnosisCounterfactualAddress(this.config.factoryAddress, 1, setupData, this.config.walletContractAddress);
   }
 
+  getGasPrice(gasPrice: string) {
+    if (utils.bigNumberify(gasPrice).isZero()) {
+      return constants.Zero; // TODO: Add Oracle
+    } else {
+      return utils.bigNumberify(gasPrice);
+    }
+  }
+
   async deploy({publicKey, ensName, gasPrice, gasToken, signature}: DeployArgs, deviceInfo: DeviceInfo) {
     const initWithENS = await this.setupInitializeData({publicKey, ensName, gasPrice, gasToken});
     ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);
     const contractAddress = await this.computeFutureAddress(initWithENS);
-    const supportedTokens = this.getTokensWithMinimalAmount(gasPrice);
+    const supportedTokens = this.getTokensWithMinimalAmount(this.getGasPrice(gasPrice));
     ensure(!!await this.requiredBalanceChecker.findTokenWithRequiredBalance(supportedTokens, contractAddress), NotEnoughBalance);
-    const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '1', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: utils.bigNumberify(gasPrice)});
+    const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '1', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: this.getGasPrice(gasPrice)});
     await this.devicesService.addOrUpdate(contractAddress, publicKey, deviceInfo);
     return transaction;
   }
 
-  getTokensWithMinimalAmount(gasPrice: string) {
+  getTokensWithMinimalAmount(gasPrice: utils.BigNumberish) {
     return this.supportedTokens.map((supportedToken) =>
       ({...supportedToken, minimalAmount: safeMultiplyAndFormatEther(utils.bigNumberify(MINIMAL_DEPLOYMENT_GAS_LIMIT), gasPrice)}));
   }
