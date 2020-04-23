@@ -1,7 +1,5 @@
-import {sizes} from '../support/sizes';
-
 describe('E2E: Create Account', () => {
-  sizes.forEach((size) => {
+  ['macbook-13', 'iphone-x', 'iphone-5', 'ipad-2'].forEach((size) => {
     it(`Create account on ${size}`, () => {
       const ensName = Math.random().toString(36).substring(7);
       cy.viewport(size);
@@ -9,7 +7,6 @@ describe('E2E: Create Account', () => {
       cy.get('.welcome-box-create').click();
       cy.ensureCorrectLocation('/terms');
       cy.approveTerms();
-      cy.wait(150);
       cy.ensureCorrectLocation('/selectDeployName');
       cy.pickUsername(ensName);
       cy.ensureCorrectLocation('/create/topUp');
