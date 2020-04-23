@@ -67,9 +67,20 @@ export class WalletService {
     return this.state.wallet;
   }
 
-  async createFutureWallet(name: string): Promise<FutureWallet> {
+  async createFutureWallet(name: string): Promise<FutureWallet | DeployingWallet> {
     const gasModes = await this.sdk.getGasModes();
     const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
+    if (this.sdk.isRefundPaid()) {
+      const futureWallet = await this.sdk.createFutureWallet(name, '0', gasOption.token.address);
+      const deployingWallet = new DeployingWallet({
+        name,
+        contractAddress: futureWallet.contractAddress,
+        privateKey: futureWallet.privateKey,
+        deploymentHash: '',
+      }, this.sdk);
+      this.setDeploying(deployingWallet);
+      return deployingWallet;
+    }
     const futureWallet = await this.sdk.createFutureWallet(name, gasOption.gasPrice.toString(), gasOption.token.address);
     this.setFutureWallet(futureWallet, name);
     return futureWallet;
@@ -120,6 +131,11 @@ export class WalletService {
     const {name, wallet: {contractAddress, privateKey}} = this.state;
     const wallet = new DeployedWallet(contractAddress, name, privateKey, this.sdk);
     this.setState({kind: 'Deployed', wallet});
+  }
+
+  setDeploying(wallet: DeployingWallet) {
+    ensure(this.state.kind === 'None', WalletOverridden);
+    this.setState({kind: 'Deploying', wallet});
   }
 
   setConnecting(wallet: ConnectingWallet) {
