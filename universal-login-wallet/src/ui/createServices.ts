@@ -1,6 +1,6 @@
 import React from 'react';
 import {providers} from 'ethers';
-import {walletFromBrain, DeepPartial, Network} from '@unilogin/commons';
+import {walletFromBrain, DeepPartial, Network, DeviceType} from '@unilogin/commons';
 import UniversalLoginSDK, {SdkConfig, WalletService} from '@unilogin/sdk';
 import {StorageService} from '@unilogin/react';
 import WalletPresenter from '../core/presenters/WalletPresenter';
@@ -20,8 +20,8 @@ export interface Overrides {
   sdkConfig?: DeepPartial<SdkConfig>;
 }
 
-const getDeviceType = () => {
-  if (typeof window !== 'undefined') {return 'unknown';}
+const getDeviceType = (): DeviceType => {
+  if (typeof window === 'undefined') {return 'unknown';}
   const body = document.body;
   const width = body.clientWidth;
   const height = body.clientHeight;
