@@ -7,10 +7,9 @@ import {
   DEFAULT_GAS_PRICE,
   ETHER_NATIVE_TOKEN,
   generateCode,
-  ensure,
 } from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
-import UniversalLoginSDK, {WalletService, FutureWallet} from '@unilogin/sdk';
+import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
 import {setupSdk, createAndSetWallet} from '@unilogin/sdk/testutils';
 import Relayer from '@unilogin/relayer';
 import {DeployedWallet} from '@unilogin/sdk';

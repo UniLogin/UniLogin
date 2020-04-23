@@ -7,7 +7,7 @@ import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, utils} from 'ethers';
 import {ensure, TEST_EXECUTION_OPTIONS} from '@unilogin/commons';
 import {createWallet} from '../../helpers';
-import {DeployedWallet, FutureWallet} from '../../../src';
+import {DeployedWallet} from '../../../src';
 
 chai.use(solidity);
 
