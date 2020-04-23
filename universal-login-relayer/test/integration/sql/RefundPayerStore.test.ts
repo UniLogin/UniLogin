@@ -17,9 +17,8 @@ describe('INT: RefundPayerStore', () => {
   });
 
   it('add to store 1 element', async () => {
-    const id = await refundPayerStore.add(refundPayer);
-    expect(typeof id).eq('number');
-    expect(id).to.be.at.least(1);
+    const [returnedRefundPayer] = await refundPayerStore.add(refundPayer);
+    expect(returnedRefundPayer).deep.eq(refundPayer);
   });
 
   afterEach(async () => {

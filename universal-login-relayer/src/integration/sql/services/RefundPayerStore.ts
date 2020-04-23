@@ -9,10 +9,8 @@ export class RefundPayerStore {
   }
 
   async add(refundPayer: RefundPayer) {
-    const [id] = await this.table
-      .returning('id')
-      .insert(refundPayer);
-    return id;
+    return this.table
+      .insert(refundPayer, ['name', 'apiKey']);
   }
 
   get(id: number) {
