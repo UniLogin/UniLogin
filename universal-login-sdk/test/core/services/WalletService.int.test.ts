@@ -7,7 +7,7 @@ import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, utils} from 'ethers';
 import {ensure, TEST_EXECUTION_OPTIONS} from '@unilogin/commons';
 import {createWallet} from '../../helpers';
-import {DeployedWallet} from '../../../src';
+import {DeployedWallet, FutureWallet} from '../../../src';
 
 chai.use(solidity);
 
@@ -32,8 +32,9 @@ describe('INT: WalletService', () => {
     const futureWallet = await walletService.createFutureWallet(name);
     expect(futureWallet.contractAddress).to.be.properAddress;
     expect(futureWallet.privateKey).to.be.properPrivateKey;
-    expect(futureWallet.deploy).to.be.a('function');
-    expect(futureWallet.waitForBalance).to.be.a('function');
+    expect(futureWallet).instanceOf(FutureWallet);
+    expect((futureWallet as any).deploy).to.be.a('function');
+    expect((futureWallet as any).waitForBalance).to.be.a('function');
     expect(walletService.state).to.deep.eq({kind: 'Future', name, wallet: futureWallet});
   });
 

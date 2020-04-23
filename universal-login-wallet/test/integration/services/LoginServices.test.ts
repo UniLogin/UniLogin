@@ -7,9 +7,10 @@ import {
   DEFAULT_GAS_PRICE,
   ETHER_NATIVE_TOKEN,
   generateCode,
+  ensure,
 } from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
-import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
+import UniversalLoginSDK, {WalletService, FutureWallet} from '@unilogin/sdk';
 import {setupSdk, createAndSetWallet} from '@unilogin/sdk/testutils';
 import Relayer from '@unilogin/relayer';
 import {DeployedWallet} from '@unilogin/sdk';
@@ -38,8 +39,9 @@ describe('Login', () => {
   describe('CreationService', () => {
     it('should create contract wallet', async () => {
       name = 'name.mylogin.eth';
-      const {contractAddress, waitForBalance, deploy, privateKey} = await walletService.createFutureWallet(name);
-
+      const futureWallet = await walletService.createFutureWallet(name);
+      ensure(futureWallet instanceof FutureWallet, TypeError);
+      const {contractAddress, waitForBalance, deploy, privateKey} = futureWallet;
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
       await waitForBalance();
       await deploy();

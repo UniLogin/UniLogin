@@ -8,6 +8,8 @@ import {DeployedWallet} from '../../../src/api/wallet/DeployedWallet';
 import {FutureWallet} from '../../../src/api/wallet/FutureWallet';
 import {DeployingWallet} from '../../../src';
 import {TEST_STORAGE_KEY} from '../../helpers/constants';
+import {setupSdk} from '../../helpers/setupSdk';
+import {getWallets, createMockProvider} from 'ethereum-waffle';
 
 chai.use(chaiAsPromised);
 
@@ -111,6 +113,18 @@ describe('UNIT: WalletService', () => {
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include(applicationWallet);
     expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: applicationWallet}));
+  });
+
+  it('create deploying wallet if isRefundPaid', async () => {
+    expect(walletService.state).to.deep.eq({kind: 'None'});
+    const [wallet] = getWallets(createMockProvider());
+    const {sdk, relayer} = await setupSdk(wallet);
+    walletService = new WalletService(sdk);
+    walletService.sdk.isRefundPaid = () => {return true;};
+    const name = 'name.mylogin.eth';
+    const deployingWallet = await walletService.createFutureWallet(name);
+    expect(deployingWallet).instanceOf(DeployingWallet);
+    await relayer.stop();
   });
 
   it('roundtrip', () => {
