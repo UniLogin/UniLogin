@@ -13,7 +13,7 @@ export const CreateAccount = () => {
   const history = useHistory();
 
   const onCreateClick = async (ensName: string) => {
-    await walletService.createFutureWallet(ensName);
+    await walletService.createFutureOrDeployingWallet(ensName);
     history.push('/create/topUp');
   };
 

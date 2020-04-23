@@ -67,7 +67,7 @@ export class WalletService {
     return this.state.wallet;
   }
 
-  async createFutureWallet(name: string): Promise<FutureWallet | DeployingWallet> {
+  async createFutureOrDeployingWallet(name: string): Promise<FutureWallet | DeployingWallet> {
     if (this.sdk.isRefundPaid()) {
       const futureWallet = await this.sdk.createFutureWallet(name, '0', ETHER_NATIVE_TOKEN.address);
       const deployingWallet = await futureWallet.deploy();
