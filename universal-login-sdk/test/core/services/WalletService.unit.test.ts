@@ -119,6 +119,7 @@ describe('UNIT: WalletService', () => {
     walletService = new WalletService(sdk);
     const name = 'name.mylogin.eth';
     const deployingWallet = await walletService.createWallet(name);
+    expect(walletService.state.kind).to.be.eq('Deploying');
     expect(deployingWallet).instanceOf(DeployingWallet);
   });
 

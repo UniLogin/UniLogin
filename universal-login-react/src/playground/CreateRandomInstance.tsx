@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {WalletService, FutureWallet} from '@unilogin/sdk';
-import {DEV_DEFAULT_PRIVATE_KEY, ensure} from '@unilogin/commons';
+import {WalletService} from '@unilogin/sdk';
+import {DEV_DEFAULT_PRIVATE_KEY} from '@unilogin/commons';
 import {utils, Wallet} from 'ethers';
 
 export interface CreateRandomInstanceProps {
@@ -16,9 +16,7 @@ export const CreateRandomInstance = ({walletService}: CreateRandomInstanceProps)
     const randomString = Math.random().toString(36).substring(7);
     const name = `${randomString}.mylogin.eth`;
     setEnsName(name);
-    const futureWallet = await walletService.createWallet(name);
-    ensure(futureWallet instanceof FutureWallet, TypeError);
-    const {waitForBalance, contractAddress} = futureWallet;
+    const {waitForBalance, contractAddress} = await walletService.createFutureWallet(name);
     setStatus(`Waiting for intial funds in ${contractAddress}`);
     const wallet = new Wallet(DEV_DEFAULT_PRIVATE_KEY, walletService.sdk.provider);
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('4')});
