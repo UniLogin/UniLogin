@@ -17,8 +17,10 @@ describe('INT: RefundPayerStore', () => {
   });
 
   it('add to store 1 element', async () => {
-    const [returnedRefundPayer] = await refundPayerStore.add(refundPayer);
-    expect(returnedRefundPayer).deep.eq(refundPayer);
+    const [addedRefundPayer] = await refundPayerStore.add(refundPayer);
+    expect(addedRefundPayer).deep.eq(refundPayer);
+    const gotRefundPayer = await refundPayerStore.get(refundPayer.apiKey);
+    expect(gotRefundPayer).deep.eq(refundPayer);
   });
 
   afterEach(async () => {

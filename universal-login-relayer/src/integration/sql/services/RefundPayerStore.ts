@@ -1,22 +1,20 @@
-import Knex, {QueryBuilder} from 'knex';
+import Knex from 'knex';
 import {RefundPayer} from '../../../core/models/RefundPayer';
 
 export class RefundPayerStore {
-  private table: QueryBuilder;
+  private tableName = 'refund_payers';
 
-  constructor(database: Knex) {
-    this.table = database<RefundPayer>('refund_payers');
-  }
+  constructor(private database: Knex) {}
 
   async add(refundPayer: RefundPayer) {
-    return this.table
+    return this.database<RefundPayer>(this.tableName)
       .insert(refundPayer, ['name', 'apiKey']);
   }
 
   get(apiKey: string) {
-    return this.table
+    return this.database<RefundPayer>(this.tableName)
       .where({apiKey})
-      .select()
+      .select(['name', 'apiKey'])
       .first();
   }
 }
