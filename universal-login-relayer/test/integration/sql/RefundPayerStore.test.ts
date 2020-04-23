@@ -8,11 +8,11 @@ describe('INT: RefundPayerStore', () => {
   const refundPayerStore = new RefundPayerStore(knex);
   const refundPayer = {
     name: 'Alex',
-    apiKey: 'Example api key',
+    apiKey: 'aaaa-bbbb-cccc',
   };
 
   it('initially empty', async () => {
-    const devices = await refundPayerStore.get(1);
+    const devices = await refundPayerStore.get(refundPayer.apiKey);
     expect(devices).to.deep.eq(undefined);
   });
 

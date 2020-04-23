@@ -13,9 +13,9 @@ export class RefundPayerStore {
       .insert(refundPayer, ['name', 'apiKey']);
   }
 
-  get(id: number) {
+  get(apiKey: string) {
     return this.table
-      .where({id})
+      .where({apiKey})
       .select()
       .first();
   }
