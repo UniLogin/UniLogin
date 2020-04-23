@@ -8,8 +8,6 @@ import {DeployedWallet} from '../../../src/api/wallet/DeployedWallet';
 import {FutureWallet} from '../../../src/api/wallet/FutureWallet';
 import {DeployingWallet} from '../../../src';
 import {TEST_STORAGE_KEY} from '../../helpers/constants';
-import {setupSdk} from '../../helpers/setupSdk';
-import {getWallets, createMockProvider} from 'ethereum-waffle';
 
 chai.use(chaiAsPromised);
 
