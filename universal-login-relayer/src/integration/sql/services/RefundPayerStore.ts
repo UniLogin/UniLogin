@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {RefundPayer} from '../../../core/models/RefundPayer';
+import {RefundPayer, RefundPayerEntity} from '../../../core/models/RefundPayer';
 
 export class RefundPayerStore {
   private tableName = 'refund_payers';
@@ -7,12 +7,12 @@ export class RefundPayerStore {
   constructor(private database: Knex) {}
 
   async add(refundPayer: RefundPayer) {
-    return this.database<RefundPayer>(this.tableName)
+    return this.database<RefundPayerEntity>(this.tableName)
       .insert(refundPayer, ['name', 'apiKey']);
   }
 
-  get(apiKey: string) {
-    return this.database<RefundPayer>(this.tableName)
+  async get(apiKey: string): Promise<RefundPayer | undefined> {
+    return this.database<RefundPayerEntity>(this.tableName)
       .where({apiKey})
       .select(['name', 'apiKey'])
       .first();
