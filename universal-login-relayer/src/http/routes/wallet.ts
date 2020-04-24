@@ -2,7 +2,7 @@ import {Router, Request} from 'express';
 import MessageHandler from '../../core/services/execution/messages/MessageHandler';
 import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash, StoredFutureWallet, asApplicationInfo} from '@unilogin/commons';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
-import {asString, asObject, asNumber} from '@restless/sanitizers';
+import {asString, asObject, asNumber, asOptional} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
 import {asArrayish} from '../utils/sanitizers';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
@@ -22,7 +22,7 @@ const getMessageStatus = (messageHandler: MessageHandler) =>
   };
 
 const deploymentHandling = (deploymentHandler: DeploymentHandler) =>
-  async (data: {body: DeployArgs & {contractAddress: string, applicationInfo: ApplicationInfo}}, req: Request) => {
+  async (data: {headers: {api_key: string | undefined}, body: DeployArgs & {contractAddress: string, applicationInfo: ApplicationInfo}}, req: Request) => {
     const {contractAddress, applicationInfo, ...deployArgs} = data.body;
     const deviceInfo = getDeviceInfo(req, applicationInfo);
     const deploymentHash = await deploymentHandler.handleDeployment(contractAddress, deployArgs, deviceInfo);
@@ -74,6 +74,7 @@ export default (deploymentHandler: DeploymentHandler, messageHandler: MessageHan
 
   router.post('/deploy', asyncHandler(
     sanitize({
+      headers: asObject({api_key: asOptional(asString)}),
       body: asObject({
         publicKey: asEthAddress,
         ensName: asString,

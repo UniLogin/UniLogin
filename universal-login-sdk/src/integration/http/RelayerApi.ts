@@ -1,4 +1,4 @@
-import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus, Device, StoredFutureWallet, fetch} from '@unilogin/commons';
+import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus, Device, StoredFutureWallet, fetch, COMMON_HEADERS} from '@unilogin/commons';
 
 export class RelayerApi {
   private readonly http: HttpFunction;
@@ -54,7 +54,7 @@ export class RelayerApi {
     return this.http('GET', `/devices/${contractAddress}?signature=${signature}`);
   }
 
-  deploy(publicKey: string, ensName: string, gasPrice: string, gasToken: string, signature: string, applicationInfo: ApplicationInfo, contractAddress: string) {
+  deploy(publicKey: string, ensName: string, gasPrice: string, gasToken: string, signature: string, applicationInfo: ApplicationInfo, contractAddress: string, apiKey?: string) {
     return this.http('POST', '/wallet/deploy', {
       publicKey,
       ensName,
@@ -63,7 +63,7 @@ export class RelayerApi {
       signature,
       applicationInfo,
       contractAddress,
-    });
+    }, apiKey ? {...COMMON_HEADERS, apiKey} : COMMON_HEADERS);
   }
 
   getDeploymentStatus(deploymentHash: string): Promise<DeploymentStatus> {
