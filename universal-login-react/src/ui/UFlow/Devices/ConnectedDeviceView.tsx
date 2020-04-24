@@ -9,12 +9,12 @@ export interface ConnectedDeviceViewProps {
 }
 
 export const ConnectedDeviceView = ({deviceInfo, isHighlighted, trashButton}: ConnectedDeviceViewProps) => {
-  const {applicationName, type, city, logo, platform} = deviceInfo;
+  const {applicationName, type, city, logo, platform, browser} = deviceInfo;
   return (
     <li className={`connected-devices-item ${isHighlighted ? 'highlighted' : ''}`}>
       <Logo deviceType={type} logo={logo} applicationName={applicationName} />
       <div>
-        <p className="connected-devices-type">{applicationName}{platform && ` • ${platform}`}</p>
+        <p className="connected-devices-type">{browser}{platform && ` • ${platform}`}</p>
         <p className="connected-devices-details">
           {city}
         </p>

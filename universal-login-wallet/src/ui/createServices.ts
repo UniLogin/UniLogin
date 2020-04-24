@@ -1,6 +1,6 @@
 import React from 'react';
 import {providers} from 'ethers';
-import {walletFromBrain, DeepPartial, Network} from '@unilogin/commons';
+import {walletFromBrain, DeepPartial, Network, DeviceType} from '@unilogin/commons';
 import UniversalLoginSDK, {SdkConfig, WalletService} from '@unilogin/sdk';
 import {StorageService} from '@unilogin/react';
 import WalletPresenter from '../core/presenters/WalletPresenter';
@@ -20,6 +20,18 @@ export interface Overrides {
   sdkConfig?: DeepPartial<SdkConfig>;
 }
 
+const getDeviceType = (): DeviceType => {
+  if (typeof window === 'undefined') {return 'unknown';}
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  if (width <= 512 || height <= 512) {
+    return 'phone';
+  } else if (width <= 1024) {
+    return 'tablet';
+  }
+  return 'laptop';
+};
+
 export const createServices = (config: Config, overrides: Overrides = {}) => {
   const storageService = overrides.storageService || new StorageService();
   const sdkConfig = {
@@ -28,6 +40,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     applicationInfo: {
       applicationName: 'Jarvis',
       logo: 'https://beta.jarvis.network/logo.ico',
+      type: getDeviceType(),
     },
     paymentOptions: {},
     observedTokensAddresses: config.tokens,
