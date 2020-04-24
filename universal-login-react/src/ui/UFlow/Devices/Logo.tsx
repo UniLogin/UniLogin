@@ -38,7 +38,7 @@ const getDeviceTypeImg = (deviceType: DeviceType, color: string) => {
 };
 
 export const Logo = ({logo, applicationName, deviceType}: LogoProps) => {
-  const color = useThemeName() === 'jarvis' ? 'black' : 'white';
+  const color = useThemeName() === 'default' ? 'white' : 'black';
   return (
     <div className={'connected-devices-img-wrapper'}>
       <img
