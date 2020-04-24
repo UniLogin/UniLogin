@@ -108,7 +108,7 @@ describe('INT: PendingMessages', () => {
   describe('Ensure correct execution', async () => {
     it('should throw when pending signedMessage already has transaction hash', async () => {
       await pendingMessages.add(signedMessage);
-      await messageRepository.markAsPending(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec');
+      await messageRepository.markAsPending(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec', '2020');
       const status = await pendingMessages.getStatus(messageHash);
       const required = await (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
       await expect(pendingMessages.ensureCorrectExecution(status, required))

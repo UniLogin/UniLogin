@@ -21,9 +21,9 @@ export class DeploymentExecutor implements IExecutor<Deployment> {
     try {
       const deployment = await this.deploymentRepository.get(deploymentHash);
       const transactionResponse = await this.execute(deployment);
-      const {hash, wait} = transactionResponse;
+      const {hash, wait, gasPrice} = transactionResponse;
       ensureNotFalsy(hash, TransactionHashNotFound);
-      await this.deploymentRepository.markAsPending(deploymentHash, hash!);
+      await this.deploymentRepository.markAsPending(deploymentHash, hash!, gasPrice.toString());
       await wait();
       await this.deploymentRepository.setState(deploymentHash, 'Success');
     } catch (error) {
