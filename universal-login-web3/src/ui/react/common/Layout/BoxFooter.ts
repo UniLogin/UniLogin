@@ -6,7 +6,7 @@ export const BoxFooter = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  margin-top: 220px;
+  margin-top: auto;
   flex-grow: 1;
 
   & ${ButtonPrimary} {
