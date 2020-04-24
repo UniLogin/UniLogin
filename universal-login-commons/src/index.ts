@@ -80,7 +80,7 @@ export {defaultDeployOptions, getDeployTransaction} from './integration/ethereum
 export {SufficientBalanceValidator} from './integration/ethereum/validators/SufficientBalanceValidator';
 export {sendAndWaitForTransaction, waitForContractDeploy, waitToBeMined} from './integration/ethereum/wait';
 export {walletFromBrain} from './integration/ethereum/walletFromBrain';
-export {http, HttpFunction, handleApiResponse} from './integration/http/http';
+export {COMMON_HEADERS, http, HttpFunction, handleApiResponse} from './integration/http/http';
 export {classesForElement} from './react/classesForElement';
 export {copy} from './react/copy';
 export {escapePressed} from './react/escapePressed';
