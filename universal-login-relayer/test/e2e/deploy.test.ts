@@ -196,6 +196,22 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(result.body).to.eq('Not Found');
   });
 
+  it('Counterfactual deployment fail if gasPrice is 0, when no apiKey', async () => {
+    const result = await chai.request(relayerUrl)
+      .post('/wallet/deploy/')
+      .send({
+        publicKey: keyPair.publicKey,
+        ensName,
+        gasPrice: '0',
+        gasToken: ETHER_NATIVE_TOKEN.address,
+        signature,
+        applicationInfo: TEST_APPLICATION_INFO,
+        contractAddress,
+      });
+    expect(result.status).eq(400);
+    expect(result.error.text).contain('Invalid api key: undefined');
+  });
+
   afterEach(async () => {
     await relayer.stop();
   });
