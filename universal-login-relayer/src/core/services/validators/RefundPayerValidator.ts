@@ -1,6 +1,7 @@
 import {RefundPayerStore} from '../../../integration/sql/services/RefundPayerStore';
 import {InvalidApiKey} from '../../utils/errors';
-import {ensure} from '@unilogin/commons';
+import {ensure, ensureNotFalsy} from '@unilogin/commons';
+import {utils} from 'ethers';
 
 export class RefundPayerValidator {
   constructor(private store: RefundPayerStore) {}
@@ -10,7 +11,10 @@ export class RefundPayerValidator {
     return !!refundPayer;
   }
 
-  async validate(apiKey: string) {
-    ensure(await this.isRefundPayer(apiKey), InvalidApiKey, apiKey);
+  async validate(gasPrice: string, apiKey?: string) {
+    if (utils.bigNumberify(gasPrice).isZero()) {
+      ensureNotFalsy(apiKey, InvalidApiKey, 'undefined');
+      ensure(await this.isRefundPayer(apiKey), InvalidApiKey, apiKey);
+    }
   }
 }

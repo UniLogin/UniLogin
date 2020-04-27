@@ -18,12 +18,24 @@ describe('UNIT: RefundPayerValidator', () => {
   });
 
   describe('validate', () => {
-    it('should resolve false if not valid apiKey', async () => {
-      await expect(validator.validate('not valid api key')).to.be.rejectedWith('Invalid api key: not valid api key');
+    describe('gas price eq 0', () => {
+      it('should reject if apiKey is not valid', async () => {
+        await expect(validator.validate('0', 'not valid api key')).to.be.rejectedWith('Invalid api key: not valid api key');
+      });
+
+      it('should reject if apiKey is not valid', async () => {
+        await expect(validator.validate('0', undefined)).to.be.rejectedWith('Invalid api key: undefined');
+      });
+
+      it('should resolve with valid apiKey', async () => {
+        await expect(validator.validate('0', TEST_REFUND_PAYER.apiKey)).to.be.fulfilled;
+      });
     });
 
-    it('should resolve true if valid apiKey', async () => {
-      await expect(validator.validate(TEST_REFUND_PAYER.apiKey)).to.be.fulfilled;
+    it('should resolve with gas prices gt than 0', async () => {
+      await expect(validator.validate('1', undefined)).to.be.fulfilled;
+      await expect(validator.validate('1', 'not valid api key')).to.be.fulfilled;
+      await expect(validator.validate('1', TEST_REFUND_PAYER.apiKey)).to.be.fulfilled;
     });
   });
 });
