@@ -7,11 +7,23 @@ describe('UNIT: RefundPayerValidator', () => {
 
   const validator = new RefundPayerValidator(refundPayerStoreMock);
 
-  it('should resolve false if not valid apiKey', async () => {
-    expect(await validator.isRefundPayer('not valid api key')).to.be.false;
+  describe('isRefundPayer', () => {
+    it('should resolve false if not valid apiKey', async () => {
+      expect(await validator.isRefundPayer('not valid api key')).to.be.false;
+    });
+
+    it('should resolve true if valid apiKey', async () => {
+      expect(await validator.isRefundPayer(TEST_REFUND_PAYER.apiKey)).to.be.true;
+    });
   });
 
-  it('should resolve true if valid apiKey', async () => {
-    expect(await validator.isRefundPayer(TEST_REFUND_PAYER.apiKey)).to.be.true;
+  describe('validate', () => {
+    it('should resolve false if not valid apiKey', async () => {
+      await expect(validator.validate('not valid api key')).to.be.rejectedWith('Invalid api key: not valid api key');
+    });
+
+    it('should resolve true if valid apiKey', async () => {
+      await expect(validator.validate(TEST_REFUND_PAYER.apiKey)).to.be.fulfilled;
+    });
   });
 });
