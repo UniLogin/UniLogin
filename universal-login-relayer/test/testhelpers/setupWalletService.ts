@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import {Wallet, Contract, utils} from 'ethers';
-import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN, createKeyPair} from '@unilogin/commons';
 import {encodeDataForSetup, computeGnosisCounterfactualAddress, deployGnosisSafe, deployProxyFactory, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {WalletDeploymentService} from '../../src/integration/ethereum/WalletDeploymentService';
 import {buildEnsService} from './buildEnsService';
@@ -50,3 +50,14 @@ export const createFutureWallet = async (keyPair: KeyPair, ensName: string, fact
   const signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
   return {signature, futureContractAddress};
 };
+
+// export const createTestFutureWallet = async (wallet: Wallet) => {
+//   const keyPair = createKeyPair();
+//   const ensName = 'login.unilogin.eth';
+//   const factoryContract = undefined;
+//   const ensService = undefined;
+//   const ensRegistrarAddress = '';
+//   const gnosisSafeAddress = '';
+//   const fallbackHandler = '';
+//   return createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrarAddress, gnosisSafeAddress, fallbackHandler);
+// }

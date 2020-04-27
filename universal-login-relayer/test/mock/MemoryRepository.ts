@@ -46,4 +46,8 @@ export default class MemoryRepository<T extends Mineable> implements IRepository
   async setState(hash: string, state: MineableState) {
     this.items[hash].state = state;
   }
+
+  async updateDeployment(hash: string, gasUsed: string){
+    // Handle this
+  }
 }

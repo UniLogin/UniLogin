@@ -57,4 +57,8 @@ export default class MessageMemoryRepository extends MemoryRepository<MessageIte
     const key = getKeyFromHashAndSignature(messageHash, signature);
     this.items[messageHash].collectedSignatureKeyPairs.push({signature, key});
   }
+
+  async updateDeployment(hash: string, gasUsed: string){
+    // TODO: Handle this
+  }
 }

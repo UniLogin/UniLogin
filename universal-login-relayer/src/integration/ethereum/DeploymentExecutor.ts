@@ -24,8 +24,9 @@ export class DeploymentExecutor implements IExecutor<Deployment> {
       const {hash, wait, gasPrice} = transactionResponse;
       ensureNotFalsy(hash, TransactionHashNotFound);
       await this.deploymentRepository.markAsPending(deploymentHash, hash!, gasPrice.toString());
-      await wait();
-      await this.deploymentRepository.setState(deploymentHash, 'Success');
+      const {gasUsed} = await wait();
+      if (gasUsed) await this.deploymentRepository.markAsSuccess(hash, gasUsed.toString());
+      else throw new Error('No gas used');
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
       await this.deploymentRepository.markAsError(deploymentHash, errorMessage);
