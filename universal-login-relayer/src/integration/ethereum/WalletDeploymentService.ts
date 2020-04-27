@@ -16,7 +16,7 @@ export class WalletDeploymentService {
     private walletDeployer: WalletDeployer,
     private requiredBalanceChecker: RequiredBalanceChecker,
     private devicesService: DevicesService,
-    private gasPriceOracle = new GasPriceOracle(),
+    private gasPriceOracle: GasPriceOracle,
   ) {}
 
   async setupInitializeData({publicKey, ensName, gasPrice, gasToken}: Omit<DeployArgs, 'signature'>) {
