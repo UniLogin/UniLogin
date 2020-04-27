@@ -4,12 +4,14 @@ import IRepository from '../../../models/messages/IRepository';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
 import {RefundPayerValidator} from '../../validators/RefundPayerValidator';
 import {utils} from 'ethers';
+import {RefundPayerStore} from '../../../../integration/sql/services/RefundPayerStore';
 
 class DeploymentHandler {
   constructor(
     private deploymentRepository: IRepository<Deployment>,
     private executionQueue: IExecutionQueue,
     private refundPayerValidator: RefundPayerValidator,
+    private refundPayerStore: RefundPayerStore,
   ) {}
 
   async handleDeployment(contractAddress: string, deployArgs: DeployArgs, deviceInfo: DeviceInfo, apiKey?: string) {
@@ -22,7 +24,7 @@ class DeploymentHandler {
       deviceInfo,
       state: 'Queued',
       contractAddress,
-      refundPayerId: apiKey && (await this.refundPayerValidator.store.get(apiKey))?.id,
+      refundPayerId: apiKey && (await this.refundPayerStore.get(apiKey))?.id,
     } as Deployment;
     await this.deploymentRepository.add(deployment.hash, deployment);
     return this.executionQueue.addDeployment(deployment.hash);
