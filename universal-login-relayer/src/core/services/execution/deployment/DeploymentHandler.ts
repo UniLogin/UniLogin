@@ -3,6 +3,7 @@ import {calculateDeployHash, DeviceInfo, DeployArgs, DeploymentStatus} from '@un
 import IRepository from '../../../models/messages/IRepository';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
 import {RefundPayerValidator} from '../../validators/RefundPayerValidator';
+import {utils} from 'ethers';
 
 class DeploymentHandler {
   constructor(
@@ -12,7 +13,9 @@ class DeploymentHandler {
   ) {}
 
   async handleDeployment(contractAddress: string, deployArgs: DeployArgs, deviceInfo: DeviceInfo, apiKey?: string) {
-    await this.refundPayerValidator.validate(deployArgs.gasPrice, apiKey);
+    if (utils.bigNumberify(deployArgs.gasPrice).isZero()) {
+      await this.refundPayerValidator.validate(apiKey);
+    }
     const deployment: Deployment = {
       ...deployArgs,
       hash: calculateDeployHash(deployArgs),
