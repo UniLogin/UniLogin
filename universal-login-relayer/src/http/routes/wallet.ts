@@ -25,7 +25,8 @@ const deploymentHandling = (deploymentHandler: DeploymentHandler) =>
   async (data: {headers: {api_key: string | undefined}, body: DeployArgs & {contractAddress: string, applicationInfo: ApplicationInfo}}, req: Request) => {
     const {contractAddress, applicationInfo, ...deployArgs} = data.body;
     const deviceInfo = getDeviceInfo(req, applicationInfo);
-    const deploymentHash = await deploymentHandler.handleDeployment(contractAddress, deployArgs, deviceInfo);
+    const apiKey = data.headers.api_key;
+    const deploymentHash = await deploymentHandler.handleDeployment(contractAddress, deployArgs, deviceInfo, apiKey);
     const status = await deploymentHandler.getStatus(deploymentHash);
     return responseOf(status, 201);
   };

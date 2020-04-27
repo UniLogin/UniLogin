@@ -41,6 +41,8 @@ import {WalletContractService} from '../../integration/ethereum/WalletContractSe
 import {GnosisSafeService} from '../../integration/ethereum/GnosisSafeService';
 import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
 import {FutureWalletStore} from '../../integration/sql/services/FutureWalletStore';
+import {RefundPayerStore} from '../../integration/sql/services/RefundPayerStore';
+import {RefundPayerValidator} from '../../core/services/validators/RefundPayerValidator';
 
 const defaultPort = '3311';
 
@@ -98,7 +100,9 @@ class Relayer {
     const messageRepository = new MessageSQLRepository(this.database);
     const deploymentRepository = new SQLRepository(this.database, 'deployments');
     const executionQueue = new QueueSQLStore(this.database);
-    const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue);
+    const refundPayerStore = new RefundPayerStore(this.database);
+    const refundPayerValidator = new RefundPayerValidator(refundPayerStore);
+    const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue, refundPayerValidator);
     this.walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider), new GnosisSafeService(this.provider));
     const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(this.walletContractService);
     const authorisationStore = new AuthorisationStore(this.database);

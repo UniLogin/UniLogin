@@ -18,11 +18,15 @@ describe('UNIT: RefundPayerValidator', () => {
   });
 
   describe('validate', () => {
-    it('should resolve false if not valid apiKey', async () => {
+    it('should reject if apiKey is not valid', async () => {
       await expect(validator.validate('not valid api key')).to.be.rejectedWith('Invalid api key: not valid api key');
     });
 
-    it('should resolve true if valid apiKey', async () => {
+    it('should reject if apiKey is undefined', async () => {
+      await expect(validator.validate(undefined)).to.be.rejectedWith('Invalid api key: undefined');
+    });
+
+    it('should resolve with valid apiKey', async () => {
       await expect(validator.validate(TEST_REFUND_PAYER.apiKey)).to.be.fulfilled;
     });
   });
