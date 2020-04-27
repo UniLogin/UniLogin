@@ -15,6 +15,7 @@ import {getTestSignedMessage} from '../../../testconfig/message';
 import MemoryRepository from '../../../mock/MemoryRepository';
 import MessageMemoryRepository from '../../../mock/MessageMemoryRepository';
 import QueueMemoryStore from '../../../mock/QueueMemoryStore';
+import {constants} from 'ethers';
 
 use(sinonChai);
 
@@ -30,6 +31,7 @@ describe('UNIT: Queue Service', async () => {
     sendTransaction: sinon.fake.returns({
       hash: TEST_TRANSACTION_HASH,
       wait,
+      gasPrice: constants.One,
     }),
   };
   const walletService: WalletDeploymentService = {
