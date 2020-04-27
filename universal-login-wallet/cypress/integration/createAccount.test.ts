@@ -10,10 +10,12 @@ describe('E2E: Create Account', () => {
       cy.ensureCorrectLocation('/selectDeployName');
       cy.pickUsername(ensName);
       cy.ensureCorrectLocation('/create/topUp');
+      cy.checkLocalStorageTokenProp('wallet-ganache', 'kind', 'Future');
       cy.selectTopUpWithCrypto();
       cy.topUpAccount();
       cy.ensureCorrectLocation('/creationSuccess');
       cy.goToDashboard();
+      cy.checkLocalStorageTokenProp('wallet-ganache', 'kind', 'Deployed');
     });
   });
 });
