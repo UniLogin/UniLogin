@@ -88,10 +88,12 @@ for (const config of [{
     });
 
     describe('markAsPending', async () => {
+      const mockedGasPrice = '2020';
+
       it('should mark message item as pending', async () => {
         await messageRepository.add(messageHash, messageItem);
         const expectedTransactionHash = TEST_TRANSACTION_HASH;
-        await messageRepository.markAsPending(messageHash, expectedTransactionHash);
+        await messageRepository.markAsPending(messageHash, expectedTransactionHash, mockedGasPrice);
         const {transactionHash, state} = await messageRepository.get(messageHash);
         expect(transactionHash).to.eq(expectedTransactionHash);
         expect(state).to.eq('Pending');
@@ -100,7 +102,7 @@ for (const config of [{
       it('should throw error if transactionHash is invalid', async () => {
         await messageRepository.add(messageHash, messageItem);
         const invalidTransactionHash = '0x0';
-        await expect(messageRepository.markAsPending(messageHash, invalidTransactionHash)).to.be.rejectedWith(`Invalid transaction: ${invalidTransactionHash}`);
+        await expect(messageRepository.markAsPending(messageHash, invalidTransactionHash, mockedGasPrice)).to.be.rejectedWith(`Invalid transaction: ${invalidTransactionHash}`);
       });
     });
 

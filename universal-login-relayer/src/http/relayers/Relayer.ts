@@ -28,7 +28,6 @@ import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig} from '@unil
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
-import SQLRepository from '../../integration/sql/services/SQLRepository';
 import ExecutionWorker from '../../core/services/execution/ExecutionWorker';
 import DeploymentExecutor from '../../integration/ethereum/DeploymentExecutor';
 import {MinedTransactionHandler} from '../../core/services/execution/MinedTransactionHandler';
@@ -43,6 +42,7 @@ import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
 import {FutureWalletStore} from '../../integration/sql/services/FutureWalletStore';
 import {RefundPayerStore} from '../../integration/sql/services/RefundPayerStore';
 import {RefundPayerValidator} from '../../core/services/validators/RefundPayerValidator';
+import {DeploymentSQLRepository} from '../../integration/sql/services/DeploymentSQLRepository';
 
 const defaultPort = '3311';
 
@@ -98,7 +98,7 @@ class Relayer {
     const balanceChecker = new BalanceChecker(this.provider);
     const requiredBalanceChecker = new RequiredBalanceChecker(balanceChecker);
     const messageRepository = new MessageSQLRepository(this.database);
-    const deploymentRepository = new SQLRepository(this.database, 'deployments');
+    const deploymentRepository = new DeploymentSQLRepository(this.database);
     const executionQueue = new QueueSQLStore(this.database);
     const refundPayerStore = new RefundPayerStore(this.database);
     const refundPayerValidator = new RefundPayerValidator(refundPayerStore);
