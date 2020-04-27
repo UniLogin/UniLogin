@@ -102,7 +102,7 @@ class Relayer {
     const executionQueue = new QueueSQLStore(this.database);
     const refundPayerStore = new RefundPayerStore(this.database);
     const refundPayerValidator = new RefundPayerValidator(refundPayerStore);
-    const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue, refundPayerValidator);
+    const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue, refundPayerValidator, refundPayerStore);
     this.walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider), new GnosisSafeService(this.provider));
     const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(this.walletContractService);
     const authorisationStore = new AuthorisationStore(this.database);
