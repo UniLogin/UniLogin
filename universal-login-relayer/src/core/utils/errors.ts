@@ -20,6 +20,7 @@ type ErrorType =
   'NotEnoughSignatures' |
   'InvalidTransaction' |
   'InvalidHexData' |
+  'InvalidApiKey' |
   'EnsNameTaken' |
   'UnauthorisedAddress' |
   'InvalidRefundReceiver';
@@ -95,6 +96,13 @@ export class InvalidHexData extends ValidationFailed {
   constructor(hexData: string) {
     super(`Invalid hex data: ${hexData}`, 'InvalidHexData');
     Object.setPrototypeOf(this, InvalidHexData.prototype);
+  }
+}
+
+export class InvalidApiKey extends ValidationFailed {
+  constructor(apiKey: string) {
+    super(`Invalid api key: ${apiKey}`, 'InvalidApiKey');
+    Object.setPrototypeOf(this, InvalidApiKey.prototype);
   }
 }
 
