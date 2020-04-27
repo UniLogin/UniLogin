@@ -3,7 +3,7 @@ import {InvalidApiKey} from '../../utils/errors';
 import {ensure, ensureNotFalsy} from '@unilogin/commons';
 
 export class RefundPayerValidator {
-  constructor(public store: RefundPayerStore) {}
+  constructor(private store: RefundPayerStore) {}
 
   async isRefundPayer(apiKey: string) {
     const refundPayer = await this.store.get(apiKey);
