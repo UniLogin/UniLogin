@@ -4,7 +4,7 @@ import {ensure, ensureNotFalsy} from '@unilogin/commons';
 import {utils} from 'ethers';
 
 export class RefundPayerValidator {
-  constructor(private store: RefundPayerStore) {}
+  constructor(public store: RefundPayerStore) {}
 
   async isRefundPayer(apiKey: string) {
     const refundPayer = await this.store.get(apiKey);
