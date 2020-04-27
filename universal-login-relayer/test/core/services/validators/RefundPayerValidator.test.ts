@@ -22,7 +22,7 @@ describe('UNIT: RefundPayerValidator', () => {
       await expect(validator.validate('not valid api key')).to.be.rejectedWith('Invalid api key: not valid api key');
     });
 
-    it('should reject if apiKey is not valid', async () => {
+    it('should reject if apiKey is undefined', async () => {
       await expect(validator.validate(undefined)).to.be.rejectedWith('Invalid api key: undefined');
     });
 
