@@ -16,4 +16,11 @@ export class DeploymentSQLRepository extends SQLRepository<Deployment> {
       .update({transactionHash, usedGasPrice})
       .update('state', 'Pending');
   }
+
+  async markAsSuccess(hash: string, usedGasPrice: string) {
+    await this.knex(this.tableName)
+      .where('hash', hash)
+      .update('usedGasPrice', usedGasPrice)
+      .update('state', 'Success');
+  }
 }

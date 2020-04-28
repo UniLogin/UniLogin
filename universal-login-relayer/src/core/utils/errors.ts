@@ -5,6 +5,7 @@ type ErrorType =
   'StatusNotFound' |
   'MessageNotFound' |
   'TransactionHashNotFound' |
+  'GasUsedNotFound' |
   'NodeEnvNotSpecified' |
   'InvalidENSDomain' |
   'PaymentError' |
@@ -173,6 +174,13 @@ export class TransactionHashNotFound extends NotFound {
   constructor() {
     super('Transaction hash not found for executed transaction ', 'TransactionHashNotFound');
     Object.setPrototypeOf(this, TransactionHashNotFound.prototype);
+  }
+}
+
+export class GasUsedNotFound extends NotFound {
+  constructor() {
+    super('Gas used not found in transaction receipt', 'GasUsedNotFound');
+    Object.setPrototypeOf(this, GasUsedNotFound.prototype);
   }
 }
 

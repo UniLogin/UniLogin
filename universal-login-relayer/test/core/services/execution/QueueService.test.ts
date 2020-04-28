@@ -26,7 +26,7 @@ describe('UNIT: Queue Service', async () => {
   let deploymentRepository: IRepository<Deployment>;
   let messageExecutor: MessageExecutor;
   let deploymentExecutor: DeploymentExecutor;
-  const wait = sinon.spy();
+  const wait = sinon.fake.returns({gasUsed: '1'});
   const wallet: any = {
     sendTransaction: sinon.fake.returns({
       hash: TEST_TRANSACTION_HASH,
@@ -41,7 +41,7 @@ describe('UNIT: Queue Service', async () => {
     validate: sinon.fake.returns(true),
   };
   const onTransactionMined = sinon.spy();
-  const minedTransactionHandler = {
+  const minedTransactionHandler: any = {
     handle: onTransactionMined,
   };
   let signedMessage: SignedMessage;
