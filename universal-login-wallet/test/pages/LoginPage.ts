@@ -1,5 +1,6 @@
 import {ReactWrapper} from 'enzyme';
-import {waitForUI} from '../testhelpers/utils';
+import {waitForUI} from '@unilogin/react/testutils';
+
 import {getSuggestionId} from '@unilogin/commons';
 
 export default class LoginPage {
