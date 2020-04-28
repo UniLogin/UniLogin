@@ -1,2 +1,2 @@
-export const getSuggestionId = (operationType: string) =>
+export const getSuggestionId = (operationType: 'create new' | 'connect') =>
   operationType.replace(/ /g, '-');
