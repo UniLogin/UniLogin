@@ -3,7 +3,7 @@ import {SignedMessage, ensureNotFalsy, IMessageValidator} from '@unilogin/common
 import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';
 import IMessageRepository from '../../core/models/messages/IMessagesRepository';
-import {TransactionHashNotFound} from '../../core/utils/errors';
+import {TransactionHashNotFound, GasUsedNotFound} from '../../core/utils/errors';
 import {IMinedTransactionHandler} from '../../core/models/IMinedTransactionHandler';
 import {WalletContractService} from './WalletContractService';
 
@@ -31,11 +31,8 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
       await this.messageRepository.markAsPending(messageHash, hash!, gasPrice.toString());
       const {gasUsed} = await wait();
       await this.minedTransactionHandler.handle(transactionResponse);
-      if (gasUsed) {
-        await this.messageRepository.markAsSuccess(messageHash, gasUsed.toString());
-      } else {
-        throw new Error('Gas used not found in transaction receipt');
-      }
+      ensureNotFalsy(gasUsed, GasUsedNotFound);
+      await this.messageRepository.markAsSuccess(messageHash, gasUsed.toString());
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
       await this.messageRepository.markAsError(messageHash, errorMessage);

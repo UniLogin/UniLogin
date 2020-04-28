@@ -69,7 +69,7 @@ describe('UNIT: Queue Service', async () => {
     await queueMemoryStore.addMessage(messageHash);
     await waitExpect(() => expect(executeSpy).to.be.calledOnce);
     await waitExpect(() => expect(wait).to.be.calledOnce);
-    expect(onTransactionMined).to.be.calledAfter(wait);
+    expect(onTransactionMined).to.be.calledImmediatelyAfter(wait);
     expect(wait).to.be.calledOnce;
     expect(onTransactionMined).to.be.calledOnce;
   });

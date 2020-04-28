@@ -3,7 +3,7 @@ import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';
 import Deployment from '../../core/models/Deployment';
 import IRepository from '../../core/models/messages/IRepository';
-import {TransactionHashNotFound} from '../../core/utils/errors';
+import {TransactionHashNotFound, GasUsedNotFound} from '../../core/utils/errors';
 import {ensureNotFalsy} from '@unilogin/commons';
 import {WalletDeploymentService} from './WalletDeploymentService';
 
@@ -25,11 +25,8 @@ export class DeploymentExecutor implements IExecutor<Deployment> {
       ensureNotFalsy(hash, TransactionHashNotFound);
       await this.deploymentRepository.markAsPending(deploymentHash, hash!, gasPrice.toString());
       const {gasUsed} = await wait();
-      if (gasUsed) {
-        await this.deploymentRepository.markAsSuccess(deploymentHash, gasUsed.toString());
-      } else {
-        throw new Error('Gas used not found in transaction receipt');
-      }
+      ensureNotFalsy(gasUsed, GasUsedNotFound);
+      await this.deploymentRepository.markAsSuccess(deploymentHash, gasUsed.toString());
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
       await this.deploymentRepository.markAsError(deploymentHash, errorMessage);
