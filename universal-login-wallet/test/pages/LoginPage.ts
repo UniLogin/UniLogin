@@ -1,6 +1,6 @@
 import {ReactWrapper} from 'enzyme';
 import {waitForUI} from '@unilogin/react/testutils';
-import {getSuggestionId} from '@unilogin/react';
+import {getSuggestionId, SuggestionOperationType} from '@unilogin/react';
 
 export default class LoginPage {
   constructor(private wrapper: ReactWrapper) {
@@ -20,7 +20,7 @@ export default class LoginPage {
     this.wrapper.find('button.terms-btn').last().simulate('click');
   }
 
-  async pickUsername(userName: string, action: 'create new' | 'connect', result: string) {
+  async pickUsername(userName: string, action: SuggestionOperationType, result: string) {
     const input = this.wrapper.find('input');
     input.simulate('focus');
     input.simulate('change', {target: {value: userName}});
@@ -28,7 +28,7 @@ export default class LoginPage {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes(result));
   }
 
-  async clickAction(action: 'create new' | 'connect') {
+  async clickAction(action: SuggestionOperationType) {
     await waitForUI(this.wrapper, () => this.wrapper.exists(`#${getSuggestionId(action)}`));
     this.wrapper.find(`#${getSuggestionId(action)}`).simulate('click');
   }
