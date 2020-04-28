@@ -24,7 +24,7 @@ type ErrorType =
   'InvalidApiKey' |
   'EnsNameTaken' |
   'UnauthorisedAddress' |
-  'InvalidRefundReceiver' ;
+  'InvalidRefundReceiver';
 
 export class RelayerError extends Error {
   errorType: ErrorType;
