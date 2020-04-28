@@ -1,8 +1,8 @@
 import {expect} from 'chai';
+import {TEST_REFUND_PAYER} from '@unilogin/commons';
 import {RefundPayerStore} from '../../../src/integration/sql/services/RefundPayerStore';
 import {clearDatabase} from '../../../src/http/relayers/RelayerUnderTest';
 import {getKnexConfig} from '../../testhelpers/knex';
-import {TEST_REFUND_PAYER} from '../../testhelpers/constants';
 
 describe('INT: RefundPayerStore', () => {
   const knex = getKnexConfig();
