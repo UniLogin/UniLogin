@@ -1,5 +1,5 @@
 import {ReactWrapper} from 'enzyme';
-import {waitForUI} from '../testhelpers/utils';
+import {waitForUI} from '@unilogin/react/testutils';
 
 export default class GasModePage {
   constructor(private wrapper: ReactWrapper) {}

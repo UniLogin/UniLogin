@@ -1,5 +1,6 @@
 import {ReactWrapper} from 'enzyme';
-import {waitForUI} from '../testhelpers/utils';
+import {waitForUI} from '@unilogin/react/testutils';
+
 import {getSuggestionId} from '@unilogin/commons';
 
 export default class LoginPage {
@@ -42,7 +43,7 @@ export default class LoginPage {
   }
 
   async waitForHomeView(balance: string, timeout?: number) {
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes(`Balance${balance}`), timeout);
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes(`Your total balance${balance}`), timeout);
   }
 
   async waitForCongratulations(timeout?: number) {
