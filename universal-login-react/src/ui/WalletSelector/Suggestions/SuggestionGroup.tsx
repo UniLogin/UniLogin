@@ -3,9 +3,10 @@ import {MultipleSuggestion} from './MultipleSuggestion';
 import {classForComponent} from '../../utils/classFor';
 import {SuggestionItem} from '../../../core/models/Suggestion';
 import {SingleSuggestion} from './SingleSuggestion';
+import {SuggestionOperationType} from '../../../core/models/SuggestionProps';
 
 interface SuggestionGroupProps {
-  operationType: string;
+  operationType: SuggestionOperationType;
   label: string;
   onClick: (ensName: string) => void;
   selectedSuggestion: string;

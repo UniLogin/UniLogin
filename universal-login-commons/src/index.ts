@@ -84,7 +84,6 @@ export {COMMON_HEADERS, http, HttpFunction, handleApiResponse} from './integrati
 export {classesForElement} from './react/classesForElement';
 export {copy} from './react/copy';
 export {escapePressed} from './react/escapePressed';
-export {getSuggestionId} from './react/getSuggestionId';
 export {isDataForFunctionCall} from './core/utils/isDataForFunctionCall';
 export {isNumber} from './core/utils/isNumber';
 export {ValueRounder} from './core/utils/ValueRounder';
