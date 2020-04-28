@@ -30,9 +30,12 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
       ensureNotFalsy(hash, TransactionHashNotFound);
       await this.messageRepository.markAsPending(messageHash, hash!, gasPrice.toString());
       const {gasUsed} = await wait();
-      await this.markAsSuccess(messageHash, gasUsed?.toString());
       await this.minedTransactionHandler.handle(transactionResponse);
-      await this.messageRepository.setState(messageHash, 'Success');
+      if (gasUsed) {
+        await this.messageRepository.markAsSuccess(messageHash, gasUsed.toString());
+      } else {
+        throw new Error('No gas used');
+      }
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
       await this.messageRepository.markAsError(messageHash, errorMessage);
@@ -43,12 +46,6 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     await this.messageValidator.validate(signedMessage);
     const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage);
     return this.wallet.sendTransaction(transactionReq);
-  }
-
-  async markAsSuccess(hash: string, gasUsed?: string){
-    if(gasUsed){
-      await this.messageRepository.markAsSuccess(hash, gasUsed);
-    }
   }
 }
 
