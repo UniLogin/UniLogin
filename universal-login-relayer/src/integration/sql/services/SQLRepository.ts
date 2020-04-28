@@ -59,6 +59,12 @@ export class SQLRepository<T extends Mineable> implements IRepository<T> {
       .update('state', 'Pending');
   }
 
+  async markAsSuccess(hash: string, gasUsed: string) {
+    await this.knex(this.tableName)
+      .where('hash', hash)
+      .update('state', 'Success');
+  }
+
   async markAsError(hash: string, error: string) {
     await this.knex(this.tableName)
       .where('hash', hash)
