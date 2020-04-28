@@ -115,3 +115,8 @@ export const TEST_SDK_CONFIG = {
   mineableFactoryTick: 3,
   mineableFactoryTimeout: 1000,
 };
+
+export const TEST_REFUND_PAYER = {
+  name: 'Alex',
+  apiKey: 'aaaa-bbbb-cccc',
+};

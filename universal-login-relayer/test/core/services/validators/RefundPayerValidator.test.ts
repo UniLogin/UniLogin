@@ -1,6 +1,6 @@
 import {expect} from 'chai';
+import {TEST_REFUND_PAYER} from '@unilogin/commons';
 import {RefundPayerValidator} from '../../../../src/core/services/validators/RefundPayerValidator';
-import {TEST_REFUND_PAYER} from '../../../testhelpers/constants';
 
 describe('UNIT: RefundPayerValidator', () => {
   const refundPayerStoreMock = {get: (apiKey: string) => Promise.resolve(apiKey === TEST_REFUND_PAYER.apiKey ? TEST_REFUND_PAYER : undefined)} as any;

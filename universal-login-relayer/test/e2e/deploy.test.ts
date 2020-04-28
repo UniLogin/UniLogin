@@ -1,13 +1,12 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
-import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEPLOY_GAS_LIMIT, TEST_APPLICATION_INFO, getDeployData} from '@unilogin/commons';
+import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEPLOY_GAS_LIMIT, TEST_APPLICATION_INFO, TEST_REFUND_PAYER, getDeployData} from '@unilogin/commons';
 import {beta2, computeGnosisCounterfactualAddress, signStringMessage, calculateGnosisStringHash, DEPLOY_CONTRACT_NONCE, gnosisSafe} from '@unilogin/contracts';
 import {startRelayerWithRefund, getInitData, getSetupData} from '../testhelpers/http';
 import {RelayerUnderTest} from '../../src';
 import {waitForDeploymentStatus} from '../testhelpers/waitForDeploymentStatus';
 import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
-import {TEST_REFUND_PAYER} from '../testhelpers/constants';
 chai.use(chaiHttp);
 
 describe('E2E: Relayer - counterfactual deployment', () => {

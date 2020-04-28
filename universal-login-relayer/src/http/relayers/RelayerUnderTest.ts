@@ -8,13 +8,13 @@ import {
   ETHER_NATIVE_TOKEN,
   getContractHash,
   withENS,
+  TEST_REFUND_PAYER,
 } from '@unilogin/commons';
 import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
 import {getConfig} from '../../core/utils/config';
-import {TEST_REFUND_PAYER} from '../../../test/testhelpers/constants';
 import {RefundPayerStore} from '../../integration/sql/services/RefundPayerStore';
 
 const ENSBuilder = require('ens-builder');
