@@ -59,12 +59,12 @@ describe('INT: WalletService', async () => {
       expect(fakeDevicesService.addOrUpdate).be.calledOnceWithExactly(futureContractAddress, keyPair2.publicKey, EMPTY_DEVICE_INFO);
     });
 
-    it('throw error if gasPrice is 0', async () => {
+    it('deployed with gasPrice eq zero with gas price from oracle', async () => {
       const ensName = 'name.mylogin.eth';
       const gasPrice = '0';
       const {signature} = await createFutureWalletAndSendEther(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address, gasPrice);
-      const creationPromise = walletService.deploy({publicKey: keyPair.publicKey, ensName, signature, gasPrice, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
-      await expect(creationPromise).to.be.rejectedWith('Not enough gas');
+      const transaction = await walletService.deploy({publicKey: keyPair.publicKey, ensName, signature, gasPrice, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
+      expect(transaction.gasPrice.toString()).deep.eq('9090');
     });
 
     it('setup initialize data', async () => {
