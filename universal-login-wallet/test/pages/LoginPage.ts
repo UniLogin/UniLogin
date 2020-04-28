@@ -20,7 +20,7 @@ export default class LoginPage {
     this.wrapper.find('button.terms-btn').last().simulate('click');
   }
 
-  async pickUsername(userName: string, action: string, result: string) {
+  async pickUsername(userName: string, action: 'create new' | 'connect', result: string) {
     const input = this.wrapper.find('input');
     input.simulate('focus');
     input.simulate('change', {target: {value: userName}});
@@ -28,7 +28,7 @@ export default class LoginPage {
     await waitForUI(this.wrapper, () => this.wrapper.text().includes(result));
   }
 
-  async clickAction(action: string) {
+  async clickAction(action: 'create new' | 'connect') {
     await waitForUI(this.wrapper, () => this.wrapper.exists(`#${getSuggestionId(action)}`));
     this.wrapper.find(`#${getSuggestionId(action)}`).simulate('click');
   }
