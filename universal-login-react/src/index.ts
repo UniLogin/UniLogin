@@ -47,3 +47,5 @@ export {CompanyLogo} from './ui/commons/CompanyLogo';
 export {BrowserChecker} from './app/BrowserChecker';
 export {useThemeClassFor} from './ui/utils/classFor';
 export {parseQuery} from './core/utils/parseQuery';
+export {getSuggestionId} from './app/getSuggestionId';
+export {SuggestionOperationType} from './core/models/SuggestionProps';

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getSuggestionId} from '../../src/react/getSuggestionId';
+import {getSuggestionId} from '../../src/app/getSuggestionId';
 
 describe('getSuggestionId', () => {
   it('returns proper id name', () => {

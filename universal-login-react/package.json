@@ -15,7 +15,7 @@
     "build": "yarn build:cjs && yarn build:esm",
     "build:cjs": "tsc --outDir dist/cjs --declaration false --declarationMap false && yarn copy:assets:cjs",
     "build:esm": "tsc --outDir dist/esm --module ES6 && yarn copy:assets:esm",
-    "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only -r ./test/testconfig -t 10000 --exit 'test/**/*.ts'",
+    "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only -r ./test/testconfig -t 10000 --exit 'test/**/*.{ts,tsx}'",
     "start:dev": "ts-node scripts/dev-start.ts"
   },
   "dependencies": {

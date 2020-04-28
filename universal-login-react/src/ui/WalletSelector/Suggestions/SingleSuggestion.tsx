@@ -1,9 +1,9 @@
 import React from 'react';
-import {getSuggestionId} from '@unilogin/commons';
 import {SingleSuggestionProps} from '../../../core/models/SuggestionProps';
 import {EnsName} from '../../commons/EnsName';
 import {Spinner} from '../../commons/Spinner';
 import {classForComponent} from '../../utils/classFor';
+import {getSuggestionId} from '../../../app/getSuggestionId';
 
 export const SingleSuggestion = ({onClick, operationType, suggestion, hint, selectedSuggestion}: SingleSuggestionProps) => {
   return (
