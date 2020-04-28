@@ -8,4 +8,5 @@ export default interface Deployment extends DeployArgs {
   state: DeploymentState;
   contractAddress: string;
   refundPayerId?: number;
+  gasUsed: string | null;
 }

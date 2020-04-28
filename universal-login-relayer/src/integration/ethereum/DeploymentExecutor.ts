@@ -3,7 +3,7 @@ import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';
 import Deployment from '../../core/models/Deployment';
 import IRepository from '../../core/models/messages/IRepository';
-import {TransactionHashNotFound} from '../../core/utils/errors';
+import {TransactionHashNotFound, GasUsedNotFound} from '../../core/utils/errors';
 import {ensureNotFalsy} from '@unilogin/commons';
 import {WalletDeploymentService} from './WalletDeploymentService';
 
@@ -24,8 +24,9 @@ export class DeploymentExecutor implements IExecutor<Deployment> {
       const {hash, wait, gasPrice} = transactionResponse;
       ensureNotFalsy(hash, TransactionHashNotFound);
       await this.deploymentRepository.markAsPending(deploymentHash, hash!, gasPrice.toString());
-      await wait();
-      await this.deploymentRepository.setState(deploymentHash, 'Success');
+      const {gasUsed} = await wait();
+      ensureNotFalsy(gasUsed, GasUsedNotFound);
+      await this.deploymentRepository.markAsSuccess(deploymentHash, gasUsed.toString());
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
       await this.deploymentRepository.markAsError(deploymentHash, errorMessage);
