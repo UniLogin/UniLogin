@@ -51,7 +51,7 @@ describe('INT: Deployment Executor', () => {
     };
     (deploymentExecutor.execute as any) = () => failedTransactionResponse;
     await deploymentExecutor.handleExecute('');
-    expect(deploymentRepository.markAsError).to.be.calledOnceWith('', 'Error: No gas used');
+    expect(deploymentRepository.markAsError).to.be.calledOnceWith('', 'Error: Gas used not found in transaction receipt');
   });
 
   it('should mark state as success if there is gasUsed', async () => {

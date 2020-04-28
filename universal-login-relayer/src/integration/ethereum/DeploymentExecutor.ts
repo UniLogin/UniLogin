@@ -28,7 +28,7 @@ export class DeploymentExecutor implements IExecutor<Deployment> {
       if (gasUsed) {
         await this.deploymentRepository.markAsSuccess(deploymentHash, gasUsed.toString());
       } else {
-        throw new Error('No gas used');
+        throw new Error('Gas used not found in transaction receipt');
       }
     } catch (error) {
       const errorMessage = `${error.name}: ${error.message}`;
