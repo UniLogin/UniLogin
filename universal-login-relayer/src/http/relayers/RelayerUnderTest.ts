@@ -21,6 +21,7 @@ const {WalletContract, WalletProxy} = beta2;
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
 const DOMAIN = `${DOMAIN_LABEL}.${DOMAIN_TLD}`;
+const TEST_API_KEY = 'AAA-BBB-CCC';
 
 type CreateRelayerArgs = {
   port: string;
@@ -100,6 +101,11 @@ export class RelayerUnderTest extends Relayer {
     return clearDatabase(this.database);
   }
 
+  async setupTestPartner() {
+    await setupTestPartner(this.database, TEST_API_KEY);
+    return TEST_API_KEY;
+  }
+
   async stop() {
     await clearDatabase(this.database);
     (this.walletContractService as any).walletVersions = {};
@@ -108,7 +114,6 @@ export class RelayerUnderTest extends Relayer {
 }
 
 export async function clearDatabase(knex: Knex) {
-  await knex('refund_payers').del();
   await knex('devices').del();
   await knex('future_wallets').del();
   await knex('queue_items').del();
@@ -116,6 +121,11 @@ export async function clearDatabase(knex: Knex) {
   await knex('messages').del();
   await knex('authorisations').del();
   await knex('deployments').del();
+  await knex('refund_payers').del();
+}
+
+export async function setupTestPartner(knex: Knex, apiKey: string) {
+  await knex('refund_payers').insert({name: 'Partner', apiKey}, ['name', 'apiKey']);
 }
 
 export const getContractWhiteList = () => ({

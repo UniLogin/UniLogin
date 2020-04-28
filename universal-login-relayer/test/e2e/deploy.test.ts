@@ -4,13 +4,13 @@ import {utils, providers, Contract, Wallet} from 'ethers';
 import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEPLOY_GAS_LIMIT, TEST_APPLICATION_INFO, getDeployData} from '@unilogin/commons';
 import {beta2, computeGnosisCounterfactualAddress, signStringMessage, calculateGnosisStringHash, DEPLOY_CONTRACT_NONCE, gnosisSafe} from '@unilogin/contracts';
 import {startRelayerWithRefund, getInitData, getSetupData} from '../testhelpers/http';
-import Relayer from '../../src';
+import {RelayerUnderTest} from '../../src';
 import {waitForDeploymentStatus} from '../testhelpers/waitForDeploymentStatus';
 import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
 chai.use(chaiHttp);
 
 describe('E2E: Relayer - counterfactual deployment', () => {
-  let relayer: Relayer;
+  let relayer: RelayerUnderTest;
   let provider: providers.Provider;
   let deployer: Wallet;
   let walletContract: Contract;
@@ -76,6 +76,30 @@ describe('E2E: Relayer - counterfactual deployment', () => {
         time: body[0].deviceInfo.time,
       },
     }]);
+  });
+
+  it('Deployment succeed when api key is valid', async () => {
+    const apiKey = await relayer.setupTestPartner();
+    const newKeyPair = createKeyPair();
+    const setupData = await getSetupData(newKeyPair, 'name-1.mylogin.eth', ensAddress, provider, '0', deployer.address, relayer.publicConfig.ensRegistrar, fallbackHandlerContract.address);
+    contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, walletContract.address);
+    signature = await calculateInitializeSignature(setupData, newKeyPair.privateKey);
+    const result = await chai.request(relayerUrl)
+      .post('/wallet/deploy/')
+      .set('api_key', apiKey)
+      .send({
+        publicKey: newKeyPair.publicKey,
+        ensName: 'name-1.mylogin.eth',
+        gasPrice: '0',
+        gasToken: ETHER_NATIVE_TOKEN.address,
+        signature,
+        applicationInfo: TEST_APPLICATION_INFO,
+        contractAddress,
+      });
+    expect(result.status).to.eq(201);
+    await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
+    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(gnosisSafe.Proxy as any)}`);
+    expect(await provider.getBalance(contractAddress)).to.eq(0);
   });
 
   it('Counterfactual deployment fail if ENS name is taken', async () => {
