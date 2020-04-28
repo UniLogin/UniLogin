@@ -49,12 +49,11 @@ export class WalletDeploymentService {
 
   async deploy({publicKey, ensName, gasPrice, gasToken, signature}: DeployArgs, deviceInfo: DeviceInfo) {
     const initWithENS = await this.setupInitializeData({publicKey, ensName, gasPrice, gasToken});
-    const bignumberifiedGasPrice = await this.getGasPrice(gasPrice);
     ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);
     const contractAddress = await this.computeFutureAddress(initWithENS);
-    const supportedTokens = this.getTokensWithMinimalAmount(bignumberifiedGasPrice);
+    const supportedTokens = this.getTokensWithMinimalAmount(gasPrice);
     ensure(!!await this.requiredBalanceChecker.findTokenWithRequiredBalance(supportedTokens, contractAddress), NotEnoughBalance);
-    const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '1', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: bignumberifiedGasPrice});
+    const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '1', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: await this.getGasPrice(gasPrice)});
     await this.devicesService.addOrUpdate(contractAddress, publicKey, deviceInfo);
     return transaction;
   }

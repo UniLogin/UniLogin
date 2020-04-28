@@ -14,6 +14,8 @@ import {mockContracts} from '@unilogin/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
 import {getConfig} from '../../core/utils/config';
+import {TEST_REFUND_PAYER} from '../../../test/testhelpers/constants';
+import {RefundPayerStore} from '../../integration/sql/services/RefundPayerStore';
 
 const ENSBuilder = require('ens-builder');
 const {WalletContract, WalletProxy} = beta2;
@@ -100,6 +102,10 @@ export class RelayerUnderTest extends Relayer {
     return clearDatabase(this.database);
   }
 
+  async setupTestPartner() {
+    return new RefundPayerStore(this.database).add(TEST_REFUND_PAYER);
+  }
+
   async stop() {
     await clearDatabase(this.database);
     (this.walletContractService as any).walletVersions = {};
@@ -108,7 +114,6 @@ export class RelayerUnderTest extends Relayer {
 }
 
 export async function clearDatabase(knex: Knex) {
-  await knex('refund_payers').del();
   await knex('devices').del();
   await knex('future_wallets').del();
   await knex('queue_items').del();
@@ -116,6 +121,7 @@ export async function clearDatabase(knex: Knex) {
   await knex('messages').del();
   await knex('authorisations').del();
   await knex('deployments').del();
+  await knex('refund_payers').del();
 }
 
 export const getContractWhiteList = () => ({
