@@ -8,6 +8,7 @@
 
   .unilogin-component-modal
     max-height: 700px
+    background: unset
 
     @media only screen and (max-width: 600px)
       max-height: unset
@@ -15,8 +16,35 @@
   .unilogin-component-devices .devices-inner
     min-height: unset
 
+  .udashboard-header
+    background: #fff
+
+  .udashboard-subheader
+    background: #fff
+
+  .udashboard-header-nav
+    & > :not(:last-child)
+      border-right: 1px solid #DDEBF1
+
+  .udashboard-tab
+    margin: unset
+    padding: 0 20px
+
+  .udashboard-tab.active > .udashboard-tab-text
+    color: #0F0C4A
+
+  .udashboard-tab-text
+    color: #7D7C9C
+
+  .new-notifications::after
+    background: linear-gradient(91.66deg, #0ADBC2 0%, #07D1D1 100%)
+
 .unilogin-theme-unilogin .udashboard-content
   height: calc(100% - 89px)
+  background: #fff
+  border-bottom-left-radius: 8px
+  border-bottom-right-radius: 8px
+
   .universal-login-emojis
     flex: 1
 
@@ -40,9 +68,6 @@
 
   .unilogin-component-onboarding-progress-wrapper
     display: none
-
-  .unilogin-component-modal-title
-    color: #fff
 
 .unilogin-theme-unilogin
   .unilogin-component-modal-backdrop

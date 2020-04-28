@@ -11,7 +11,7 @@
     border: none
 
   .emoji-form-title
-    color: #FFFFFF
+    color: #0F0C4A
 
   .emoji-keyboard-batch
     border: 1px solid rgba(188, 229, 241, 0.45)
@@ -26,25 +26,44 @@
     border-bottom: 7px solid #fff
 
   .emoji-category-button
-    color: #FFFFFF
+    color: #7D7C9C
+
+  .emoji-category-button::before
+    filter: invert(54%) sepia(4%) saturate(2451%) hue-rotate(203deg) brightness(91%) contrast(81%)
 
   .emoji-category-item.active
-    border-color: #0FB989
+    border-color: #0ADBC2
 
   .emoji-category-item.active .emoji-category-button
     font-weight: 500
+    color: #0F0C4A
+
+  .emoji-fakes-title
+    font-size: 10px
+    color: #7D7C9C
+    opacity: .8
+    margin-left: 60px
+    margin-top: 20px
+    margin-bottom: unset
+
+    @media only screen and (max-width: 800px)
+      margin-left: 6px
+
+  .emoji-category-item.active .emoji-category-button::before
+    filter: invert(4%) sepia(56%) saturate(7485%) hue-rotate(247deg) brightness(20%) contrast(103%)
 
   .approve-device-title
-    color: #FFFFFF
+    color: #0F0C4A
 
   .approve-device-text
-    color: #FFFFFF
+    color: #7D7C9C
+    margin: 0 15px
 
   .approve-device .connection-device-status
-    color: #FFFFFF
+    color: #7D7C9C
 
   .emoji-success-text
-    color: #FFFFFF
+    color: #7D7C9C
 
   .connect-cancel-btn,
   .connect-approve-btn
@@ -58,10 +77,10 @@
     background: #0FB989
 
   .correct-input-title
-    color: #FFFFFF
+    color: #0F0C4A
 
   .connect-emoji-title
-    color: #FFFFFF
+    color: #0F0C4A
 
   .connect-emoji-text
     color: #FFFFFF
@@ -77,7 +96,7 @@
     border: none
 
   .correct-input-confirmation-text
-    color: #FFFFFF
+    color: #7D7C9C
 
   .emoji-input-chosen-invalid
     color: red

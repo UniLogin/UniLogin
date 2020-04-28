@@ -18,7 +18,7 @@ export const Balance = ({amount, className}: BalanceProps) => {
               <Spinner className="balance-spinner" />
             </div>
             : <>
-              <p className="balance-text">Balance</p>
+              <p className="balance-text">Your total balance</p>
               <p className="balance-amount">{formatCurrency(amount.toString())}</p>
             </>
           }
