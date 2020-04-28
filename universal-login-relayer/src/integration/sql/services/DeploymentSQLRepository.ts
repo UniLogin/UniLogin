@@ -17,10 +17,10 @@ export class DeploymentSQLRepository extends SQLRepository<Deployment> {
       .update('state', 'Pending');
   }
 
-  async markAsSuccess(hash: string, usedGasPrice: string) {
+  async markAsSuccess(hash: string, gasUsed: string) {
     await this.knex(this.tableName)
       .where('hash', hash)
-      .update('usedGasPrice', usedGasPrice)
+      .update('gasUsed', gasUsed)
       .update('state', 'Success');
   }
 }
