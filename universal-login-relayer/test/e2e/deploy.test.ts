@@ -7,6 +7,7 @@ import {startRelayerWithRefund, getInitData, getSetupData} from '../testhelpers/
 import {RelayerUnderTest} from '../../src';
 import {waitForDeploymentStatus} from '../testhelpers/waitForDeploymentStatus';
 import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
+import {TEST_REFUND_PAYER} from '../testhelpers/constants';
 chai.use(chaiHttp);
 
 describe('E2E: Relayer - counterfactual deployment', () => {
@@ -79,14 +80,14 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   });
 
   it('Deployment succeed when api key is valid', async () => {
-    const apiKey = await relayer.setupTestPartner();
+    await relayer.setupTestPartner();
     const newKeyPair = createKeyPair();
     const setupData = await getSetupData(newKeyPair, 'name-1.mylogin.eth', ensAddress, provider, '0', deployer.address, relayer.publicConfig.ensRegistrar, fallbackHandlerContract.address);
     contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, walletContract.address);
     signature = await calculateInitializeSignature(setupData, newKeyPair.privateKey);
     const result = await chai.request(relayerUrl)
       .post('/wallet/deploy/')
-      .set('api_key', apiKey)
+      .set('api_key', TEST_REFUND_PAYER.apiKey)
       .send({
         publicKey: newKeyPair.publicKey,
         ensName: 'name-1.mylogin.eth',

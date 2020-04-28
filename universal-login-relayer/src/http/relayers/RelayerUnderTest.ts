@@ -14,6 +14,8 @@ import {mockContracts} from '@unilogin/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
 import {getConfig} from '../../core/utils/config';
+import {TEST_REFUND_PAYER} from '../../../test/testhelpers/constants';
+import {RefundPayerStore} from '../../integration/sql/services/RefundPayerStore';
 
 const ENSBuilder = require('ens-builder');
 const {WalletContract, WalletProxy} = beta2;
@@ -21,7 +23,6 @@ const {WalletContract, WalletProxy} = beta2;
 const DOMAIN_LABEL = 'mylogin';
 const DOMAIN_TLD = 'eth';
 const DOMAIN = `${DOMAIN_LABEL}.${DOMAIN_TLD}`;
-const TEST_API_KEY = 'AAA-BBB-CCC';
 
 type CreateRelayerArgs = {
   port: string;
@@ -102,8 +103,7 @@ export class RelayerUnderTest extends Relayer {
   }
 
   async setupTestPartner() {
-    await setupTestPartner(this.database, TEST_API_KEY);
-    return TEST_API_KEY;
+    return new RefundPayerStore(this.database).add(TEST_REFUND_PAYER);
   }
 
   async stop() {
@@ -122,10 +122,6 @@ export async function clearDatabase(knex: Knex) {
   await knex('authorisations').del();
   await knex('deployments').del();
   await knex('refund_payers').del();
-}
-
-export async function setupTestPartner(knex: Knex, apiKey: string) {
-  await knex('refund_payers').insert({name: 'Partner', apiKey}, ['name', 'apiKey']);
 }
 
 export const getContractWhiteList = () => ({
