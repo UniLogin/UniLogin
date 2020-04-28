@@ -76,6 +76,7 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
                 <Transfer
                   transferService={transferService}
                   onTransferTriggered={onTransferTriggered}
+                  sdk={sdk}
                 />
               </SubDialogWrapper>
             </ModalWrapper>

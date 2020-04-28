@@ -39,6 +39,7 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
           <Transfer
             transferService={transferService}
             onTransferTriggered={onTransferTriggered}
+            sdk={deployedWallet.sdk}
           />
         </ModalWrapperClosable>
       </Route>
