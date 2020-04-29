@@ -3,7 +3,7 @@ import Knex from 'knex';
 import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, EMPTY_DEVICE_INFO} from '@unilogin/commons';
-import setupWalletService, {createFutureWalletAndSendEther} from '../../testhelpers/setupWalletService';
+import setupWalletService, {createFutureWallet} from '../../testhelpers/setupWalletService';
 import AuthorisationStore from '../../../src/integration/sql/services/AuthorisationStore';
 import {getKnexConfig} from '../../testhelpers/knex';
 import deviceInfo from '../../testconfig/defaults';
@@ -26,7 +26,7 @@ describe('INT: Authorisation Store', async () => {
     database = getKnexConfig();
     authorisationStore = new AuthorisationStore(database);
     const {walletService, factoryContract, ensService, ensRegistrar, gnosisSafeMaster: walletContract, fallbackHandler} = await setupWalletService(wallet);
-    const {futureContractAddress, signature} = await createFutureWalletAndSendEther(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, walletContract.address, fallbackHandler.address);
+    const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, walletContract.address, fallbackHandler.address);
     await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
     contractAddress = futureContractAddress;
   });
