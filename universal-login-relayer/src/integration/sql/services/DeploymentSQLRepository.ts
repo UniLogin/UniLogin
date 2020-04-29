@@ -9,11 +9,11 @@ export class DeploymentSQLRepository extends SQLRepository<Deployment> {
   }
 
   // Override
-  async markAsPending(hash: string, transactionHash: string, usedGasPrice: string) {
+  async markAsPending(hash: string, transactionHash: string, gasPriceUsed: string) {
     ensureProperTransactionHash(transactionHash);
     await this.knex(this.tableName)
       .where('hash', hash)
-      .update({transactionHash, usedGasPrice})
+      .update({transactionHash, gasPriceUsed})
       .update('state', 'Pending');
   }
 
