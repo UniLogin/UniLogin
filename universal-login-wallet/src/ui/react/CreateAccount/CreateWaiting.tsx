@@ -11,7 +11,9 @@ interface CreateWaitingProps {
 export function CreateWaiting({walletState}: CreateWaitingProps) {
   const {walletService} = useServices();
 
-  if (walletState.kind === 'Deploying') {
+  if (walletState.kind === 'Deployed') {
+    return <Redirect to='/creationSuccess'/>;
+  } else {
     return (
       <div className="main-bg">
         <OnboardingWaitForDeployment
@@ -20,7 +22,5 @@ export function CreateWaiting({walletState}: CreateWaitingProps) {
         />
       </div>
     );
-  } else {
-    return <Redirect to='/creationSuccess'/>;
   }
 }
