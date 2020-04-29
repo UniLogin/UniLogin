@@ -1,27 +1,15 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useHistory} from 'react-router';
-import {ensure} from '@unilogin/commons';
-import {TopUp} from '@unilogin/react';
+import {OnboardingTopUp} from '@unilogin/react';
 import {useServices} from '../../hooks';
-import {InvalidWalletState} from '@unilogin/sdk';
 
 export function CreateTopUp() {
   const {walletService} = useServices();
   const history = useHistory();
 
-  ensure(walletService.state.kind === 'Future', InvalidWalletState, 'Future', walletService.state.kind);
-  const wallet = walletService.state.wallet;
-
-  useEffect(() => {
-    wallet.waitForBalance()
-      .then(() => walletService.initDeploy())
-      .then(() => history.push('/create/waiting'))
-      .catch(console.error);
-  }, []);
-
   return (
     <div className="main-bg">
-      <TopUp
+      <OnboardingTopUp
         walletService={walletService}
         isModal
         hideModal={() => {
@@ -31,7 +19,6 @@ export function CreateTopUp() {
           }
         }}
         modalClassName="topup-modal-wrapper"
-        logoColor="black"
       />
     </div>
   );
