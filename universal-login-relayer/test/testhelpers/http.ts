@@ -8,7 +8,6 @@ import {
   parseDomain,
   TEST_APPLICATION_INFO,
   TEST_GAS_PRICE,
-  waitForContractDeploy,
   DEPLOY_GAS_LIMIT,
   KeyPair,
 } from '@unilogin/commons';
@@ -25,17 +24,6 @@ export const startRelayer = async (port = '33111') => {
   const {relayer, factoryContract, walletContract, mockToken, ensAddress} = await RelayerUnderTest.createPreconfigured(deployer, port);
   await relayer.start();
   return {provider, wallet, otherWallet, relayer, deployer, factoryContract, walletContract, mockToken, ensAddress};
-};
-
-export const createWalletContract = async (provider: Provider, relayerUrlOrServer: string, publicKey: string, ensName = 'marek.mylogin.eth') => {
-  const result = await chai.request(relayerUrlOrServer)
-    .post('/wallet')
-    .send({
-      managementKey: publicKey,
-      ensName,
-    });
-  const {transaction} = result.body;
-  return waitForContractDeploy(provider, beta2.WalletContract, transaction.hash);
 };
 
 export const createWalletCounterfactually = async (wallet: Wallet, relayerUrlOrServer: string, keyPair: KeyPair, walletContractAddress: string, factoryContractAddress: string, ensAddress: string, ensName = 'marek.mylogin.eth') => {
