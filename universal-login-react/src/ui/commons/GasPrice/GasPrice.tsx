@@ -29,7 +29,7 @@ const GAS_PRICE_FOR_NO_REFUND = {
   gasToken: ETHER_NATIVE_TOKEN.address,
 };
 
-const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
+export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
   useAsyncEffect(async () => {
@@ -136,7 +136,7 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
     }
   });
 
-  return sdk.isRefundPaid ? <div className={classNameForGasPrice}></div> : <GasPriceWithOptions
+  return sdk.isRefundPaid() ? <div className={classNameForGasPrice}></div> : <GasPriceWithOptions
     isDeployed={isDeployed}
     deployedWallet={deployedWallet}
     gasLimit={gasLimit}
