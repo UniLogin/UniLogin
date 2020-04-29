@@ -6,7 +6,7 @@ import {Contract, providers, Wallet} from 'ethers';
 import sinonChai from 'sinon-chai';
 import ENSService from '../../../src/integration/ethereum/ensService';
 import {WalletDeploymentService} from '../../../src/integration/ethereum/WalletDeploymentService';
-import setupWalletService, {createFutureWallet, getSetupData} from '../../testhelpers/setupWalletService';
+import setupWalletService, {createFutureWalletUsingEnsService, getSetupDataUsingEnsService} from '../../testhelpers/setupWalletService';
 
 chai.use(require('chai-string'));
 chai.use(sinonChai);
@@ -29,7 +29,7 @@ describe('INT: WalletService', async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     ({walletService, factoryContract, ensService, provider, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler} = await setupWalletService(wallet));
-    const {futureContractAddress, signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
+    const {futureContractAddress, signature} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
     await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
     walletContract = new Contract(futureContractAddress, GnosisSafeInterface, provider);
   });
@@ -53,7 +53,7 @@ describe('INT: WalletService', async () => {
     it('deploy should add deviceInfo', async () => {
       const keyPair2 = createKeyPair();
       const ensName = 'jarek.mylogin.eth';
-      const {futureContractAddress, signature} = await createFutureWallet(keyPair2, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
+      const {futureContractAddress, signature} = await createFutureWalletUsingEnsService(keyPair2, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
       const creationPromise = walletService.deploy({publicKey: keyPair2.publicKey, ensName, signature, gasPrice: '1', gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
       await expect(creationPromise).to.be.fulfilled;
       expect(fakeDevicesService.addOrUpdate).be.calledOnceWithExactly(futureContractAddress, keyPair2.publicKey, EMPTY_DEVICE_INFO);
@@ -62,7 +62,7 @@ describe('INT: WalletService', async () => {
     it('deployed with gasPrice eq zero with gas price from oracle', async () => {
       const ensName = 'name.mylogin.eth';
       const gasPrice = '0';
-      const {signature} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address, gasPrice);
+      const {signature} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address, gasPrice);
       const transaction = await walletService.deploy({publicKey: keyPair.publicKey, ensName, signature, gasPrice, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
       expect(transaction.gasPrice.toString()).deep.eq('9090');
     });
@@ -72,7 +72,7 @@ describe('INT: WalletService', async () => {
       const ensName = 'qwertyuiop.mylogin.eth';
       const gasPrice = '1';
       const initializeData = await walletService.setupInitializeData({publicKey: keyPair.publicKey, ensName, gasPrice, gasToken: ETHER_NATIVE_TOKEN.address});
-      const expectedInitializeData = await getSetupData(keyPair, ensName, ensService, gasPrice, wallet.address, ensRegistrar.address, fallbackHandler.address, ETHER_NATIVE_TOKEN.address);
+      const expectedInitializeData = await getSetupDataUsingEnsService(keyPair, ensName, ensService, gasPrice, wallet.address, ensRegistrar.address, fallbackHandler.address, ETHER_NATIVE_TOKEN.address);
       expect(initializeData).to.eq(expectedInitializeData);
     });
 

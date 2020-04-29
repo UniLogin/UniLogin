@@ -31,7 +31,7 @@ export default async function setupWalletService(wallet: Wallet) {
   return {provider, wallet, walletService, factoryContract, ensService, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler};
 }
 
-export const getSetupData = async (keyPair: KeyPair, ensName: string, ensService: ENSService, gasPrice: string, relayerAddress: string, ensRegistrarAddress: string, fallbackHandlerAddress: string, gasToken = ETHER_NATIVE_TOKEN.address) => {
+export const getSetupDataUsingEnsService = async (keyPair: KeyPair, ensName: string, ensService: ENSService, gasPrice: string, relayerAddress: string, ensRegistrarAddress: string, fallbackHandlerAddress: string, gasToken = ETHER_NATIVE_TOKEN.address) => {
   const args = await ensService.argsFor(ensName);
   const deployment = {
     owners: [keyPair.publicKey],
@@ -46,8 +46,8 @@ export const getSetupData = async (keyPair: KeyPair, ensName: string, ensService
   return encodeDataForSetup(deployment);
 };
 
-export const createFutureWallet = async (keyPair: KeyPair, ensName: string, factoryContract: Contract, wallet: Wallet, ensService: ENSService, ensRegistrarAddress: string, gnosisSafeAddress: string, fallbackHandler: string, gasPrice = '1') => {
-  const setupData = await getSetupData(keyPair, ensName, ensService, gasPrice, wallet.address, ensRegistrarAddress, fallbackHandler, ETHER_NATIVE_TOKEN.address);
+export const createFutureWalletUsingEnsService = async (keyPair: KeyPair, ensName: string, factoryContract: Contract, wallet: Wallet, ensService: ENSService, ensRegistrarAddress: string, gnosisSafeAddress: string, fallbackHandler: string, gasPrice = '1') => {
+  const setupData = await getSetupDataUsingEnsService(keyPair, ensName, ensService, gasPrice, wallet.address, ensRegistrarAddress, fallbackHandler, ETHER_NATIVE_TOKEN.address);
   const futureContractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, gnosisSafeAddress);
   const signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
   await wallet.sendTransaction({to: futureContractAddress, value: utils.parseEther('1')});

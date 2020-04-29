@@ -1,4 +1,4 @@
-import setupWalletService, {createFutureWallet} from '../../testhelpers/setupWalletService';
+import setupWalletService, {createFutureWalletUsingEnsService} from '../../testhelpers/setupWalletService';
 import {createKeyPair, ETHER_NATIVE_TOKEN, KeyPair, DeployArgs} from '@unilogin/commons';
 import sinon from 'sinon';
 import DeploymentExecutor from '../../../src/integration/ethereum/DeploymentExecutor';
@@ -21,7 +21,7 @@ describe('INT: Deployment Executor', () => {
     [wallet] = getWallets(createMockProvider());
     const {walletService, gnosisSafeMaster, factoryContract, ensRegistrar, ensService, fallbackHandler} = await setupWalletService(wallet);
     keyPair = createKeyPair();
-    ({signature, futureContractAddress} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address, '1'));
+    ({signature, futureContractAddress} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address, '1'));
     deployment = {
       publicKey: keyPair.publicKey,
       ensName,
