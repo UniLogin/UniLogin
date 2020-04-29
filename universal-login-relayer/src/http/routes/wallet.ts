@@ -11,7 +11,7 @@ import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
 
 const messageHandling = (messageHandler: MessageHandler) =>
   async (data: {body: SignedMessage}) => {
-    const status = await messageHandler.handleMessage(data.body);
+    const status = await messageHandler.handle(data.body);
     return responseOf({status}, 201);
   };
 
