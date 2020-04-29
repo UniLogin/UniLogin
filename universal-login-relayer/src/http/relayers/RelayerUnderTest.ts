@@ -15,7 +15,7 @@ import {mockContracts} from '@unilogin/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
 import {getConfig} from '../../core/utils/config';
-import {RefundPayerStore} from '../../integration/sql/services/RefundPayerStore';
+import {addRefundPayer} from '../../core/utils/addRefundPayer';
 
 const ENSBuilder = require('ens-builder');
 const {WalletContract, WalletProxy} = beta2;
@@ -103,7 +103,7 @@ export class RelayerUnderTest extends Relayer {
   }
 
   async setupTestPartner() {
-    return new RefundPayerStore(this.database).add(TEST_REFUND_PAYER);
+    return addRefundPayer(this, TEST_REFUND_PAYER);
   }
 
   async stop() {

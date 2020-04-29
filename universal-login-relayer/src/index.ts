@@ -5,3 +5,4 @@ export {getConfig} from './core/utils/config';
 export {RelayerClass};
 export {getContractWhiteList, RelayerUnderTest} from './http/relayers/RelayerUnderTest';
 export {UnauthorisedAddress} from './core/utils/errors';
+export {addRefundPayer} from './core/utils/addRefundPayer';
