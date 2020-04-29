@@ -12,7 +12,7 @@ export class WalletSelectorPage {
     input.simulate('change', {target: {value: name}});
   }
 
-  async waitSuggestions() {
+  async waitForSuggestions() {
     return waitForUI(this.wrapper, () => this.wrapper.exists('.unilogin-component-suggestions-group'));
   }
 

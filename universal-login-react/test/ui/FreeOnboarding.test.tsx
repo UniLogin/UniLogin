@@ -31,7 +31,7 @@ describe('INT: Free Onboarding', () => {
   it('succeed free onboard', async () => {
     const walletSelectorPage = new WalletSelectorPage(reactWrapper);
     walletSelectorPage.typeName('alex');
-    await walletSelectorPage.waitSuggestions();
+    await walletSelectorPage.waitForSuggestions();
     walletSelectorPage.selectSuggestion('create new');
     await waitExpect(() => expect(createSpy).calledOnce, 2500);
   });
