@@ -8,10 +8,11 @@ import {asArrayish} from '../utils/sanitizers';
 import {getDeviceInfo} from '../utils/getDeviceInfo';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
 import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
+import {ApiKeyHandler} from '../../core/services/execution/ApiKeyHandler';
 
 const messageHandling = (messageHandler: MessageHandler) =>
   async (data: {body: SignedMessage}) => {
-    const status = await messageHandler.handleMessage(data.body);
+    const status = await messageHandler.handle(data.body);
     return responseOf({status}, 201);
   };
 
@@ -21,12 +22,13 @@ const getMessageStatus = (messageHandler: MessageHandler) =>
     return responseOf(status);
   };
 
-const deploymentHandling = (deploymentHandler: DeploymentHandler) =>
+const deploymentHandling = (deploymentHandler: DeploymentHandler, apiKeyHandler: ApiKeyHandler) =>
   async (data: {headers: {api_key: string | undefined}, body: DeployArgs & {contractAddress: string, applicationInfo: ApplicationInfo}}, req: Request) => {
     const {contractAddress, applicationInfo, ...deployArgs} = data.body;
     const deviceInfo = getDeviceInfo(req, applicationInfo);
     const apiKey = data.headers.api_key;
-    const deploymentHash = await deploymentHandler.handleDeployment(contractAddress, deployArgs, deviceInfo, apiKey);
+    const refundPayerId = await apiKeyHandler.handle(apiKey, deployArgs.gasPrice);
+    const deploymentHash = await deploymentHandler.handle(contractAddress, deployArgs, deviceInfo, refundPayerId);
     const status = await deploymentHandler.getStatus(deploymentHash);
     return responseOf(status, 201);
   };
@@ -43,7 +45,12 @@ const futureWalletHandling = (futureWalletHandler: FutureWalletHandler) =>
     return responseOf({contractAddress}, 201);
   };
 
-export default (deploymentHandler: DeploymentHandler, messageHandler: MessageHandler, futureWalletHandler: FutureWalletHandler) => {
+export default (
+  deploymentHandler: DeploymentHandler,
+  messageHandler: MessageHandler,
+  futureWalletHandler: FutureWalletHandler,
+  apiKeyHandler: ApiKeyHandler,
+) => {
   const router = Router();
 
   router.post('/execution', asyncHandler(
@@ -86,7 +93,7 @@ export default (deploymentHandler: DeploymentHandler, messageHandler: MessageHan
         contractAddress: asString,
       }),
     }),
-    deploymentHandling(deploymentHandler),
+    deploymentHandling(deploymentHandler, apiKeyHandler),
   ));
 
   router.get('/deploy/:deploymentHash', asyncHandler(

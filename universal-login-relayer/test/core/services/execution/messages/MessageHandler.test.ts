@@ -46,7 +46,7 @@ describe('INT: MessageHandler', async () => {
     const mockToken = await deployContract(wallet, mockContracts.MockToken);
     await mockToken.transfer(walletContract.address, 1);
     const signedMessage = getTestSignedMessage({...msg, gasToken: mockToken.address}, wallet.privateKey);
-    const {messageHash} = await messageHandler.handleMessage(signedMessage);
+    const {messageHash} = await messageHandler.handle(signedMessage);
     await executionWorker.stopLater();
     const messageEntry = await messageHandler.getStatus(messageHash);
     expect(messageEntry?.error).to.eq('Error: Not enough tokens');
@@ -57,14 +57,14 @@ describe('INT: MessageHandler', async () => {
     const baseGas = 7696;
     const gasLimit = utils.bigNumberify(baseGas + safeTxGas).add(GAS_FIXED);
     const signedMessage = getTestSignedMessage({...msg, gasLimit}, wallet.privateKey);
-    await expect(messageHandler.handleMessage(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got safeTxGas 1 but should greater than ${GAS_BASE}`);
+    await expect(messageHandler.handle(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got safeTxGas 1 but should greater than ${GAS_BASE}`);
   });
 
   describe('Transfer', async () => {
     it('successful execution of transfer', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
       const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
-      const {messageHash} = await messageHandler.handleMessage(signedMessage);
+      const {messageHash} = await messageHandler.handle(signedMessage);
       await executionWorker.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       const msgStatus = await messageHandler.getStatus(messageHash);
@@ -78,7 +78,7 @@ describe('INT: MessageHandler', async () => {
       msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
       const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
 
-      await messageHandler.handleMessage(signedMessage);
+      await messageHandler.handle(signedMessage);
       await executionWorker.stopLater();
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
@@ -89,7 +89,7 @@ describe('INT: MessageHandler', async () => {
         await authorisationStore.addRequest(request);
         msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
         const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
-        await messageHandler.handleMessage(signedMessage);
+        await messageHandler.handle(signedMessage);
         await executionWorker.stopLater();
         const authorisations = await authorisationStore.getPendingAuthorisations(walletContract.address);
         expect(authorisations).to.deep.eq([]);
@@ -104,7 +104,7 @@ describe('INT: MessageHandler', async () => {
       const data = encodeFunction(beta2.WalletContract, 'addKeys', [keys]);
       msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), data, refundReceiver: wallet.address};
       const signedMessage0 = getTestSignedMessage(msg, wallet.privateKey);
-      await messageHandler.handleMessage(signedMessage0);
+      await messageHandler.handle(signedMessage0);
       await executionWorker.stopLater();
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
       const devices = await devicesStore.get(walletContract.address);
@@ -117,7 +117,7 @@ describe('INT: MessageHandler', async () => {
       const message = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
       const signedMessage = getTestSignedMessage(message, wallet.privateKey);
 
-      await messageHandler.handleMessage(signedMessage);
+      await messageHandler.handle(signedMessage);
     });
 
     it('should remove key', async () => {
@@ -125,7 +125,7 @@ describe('INT: MessageHandler', async () => {
       const message = {...removeKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
       const signedMessage = getTestSignedMessage(message, wallet.privateKey);
 
-      await messageHandler.handleMessage(signedMessage);
+      await messageHandler.handle(signedMessage);
       await executionWorker.stopLater();
       expect(await devicesStore.get(walletContract.address)).to.deep.eq([]);
       expect(await walletContract.keyExist(otherWallet.address)).to.eq(false);
