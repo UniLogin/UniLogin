@@ -29,7 +29,7 @@ const Body = ({action, description, relayerConfig, transactionHash, info}: Waiti
       />
       <div className={classForComponent('waitingfortransaction-pending-img')}></div>
     </div>
-    {info && <p className={classForComponent('info-text')}>{info}</p>}
+    {info && <p className={useClassFor('info-text')}>{info}</p>}
   </div>
 );
 
