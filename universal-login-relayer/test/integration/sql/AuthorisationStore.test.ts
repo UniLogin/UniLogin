@@ -17,6 +17,7 @@ describe('INT: Authorisation Store', async () => {
   let contractAddress: string;
   let otherWallet: Wallet;
   let database: Knex;
+  let signature: string;
   const keyPair = createKeyPair();
   const ensName = 'justyna.mylogin.eth';
 
@@ -26,9 +27,8 @@ describe('INT: Authorisation Store', async () => {
     database = getKnexConfig();
     authorisationStore = new AuthorisationStore(database);
     const {walletService, factoryContract, ensService, ensRegistrar, gnosisSafeMaster: walletContract, fallbackHandler} = await setupWalletService(wallet);
-    const {futureContractAddress, signature} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, walletContract.address, fallbackHandler.address);
+    ({contractAddress, signature} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, walletContract.address, fallbackHandler.address));
     await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
-    contractAddress = futureContractAddress;
   });
 
   it('Authorisation roundtrip', async () => {
