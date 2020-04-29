@@ -2,29 +2,21 @@ import Deployment from '../../../models/Deployment';
 import {calculateDeployHash, DeviceInfo, DeployArgs, DeploymentStatus} from '@unilogin/commons';
 import IRepository from '../../../models/messages/IRepository';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
-import {RefundPayerValidator} from '../../validators/RefundPayerValidator';
-import {utils} from 'ethers';
-import {RefundPayerStore} from '../../../../integration/sql/services/RefundPayerStore';
 
 class DeploymentHandler {
   constructor(
     private deploymentRepository: IRepository<Deployment>,
     private executionQueue: IExecutionQueue,
-    private refundPayerValidator: RefundPayerValidator,
-    private refundPayerStore: RefundPayerStore,
   ) {}
 
-  async handle(contractAddress: string, deployArgs: DeployArgs, deviceInfo: DeviceInfo, apiKey?: string) {
-    if (utils.bigNumberify(deployArgs.gasPrice).isZero()) {
-      await this.refundPayerValidator.validate(apiKey);
-    }
+  async handle(contractAddress: string, deployArgs: DeployArgs, deviceInfo: DeviceInfo, refundPayerId?: string) {
     const deployment: Deployment = {
       ...deployArgs,
       hash: calculateDeployHash(deployArgs),
       deviceInfo,
       state: 'Queued',
       contractAddress,
-      refundPayerId: apiKey && (await this.refundPayerStore.get(apiKey))?.id,
+      refundPayerId,
     } as Deployment;
     await this.deploymentRepository.add(deployment.hash, deployment);
     return this.executionQueue.addDeployment(deployment.hash);
