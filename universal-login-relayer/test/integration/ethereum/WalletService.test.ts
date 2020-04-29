@@ -29,9 +29,9 @@ describe('INT: WalletService', async () => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     ({walletService, factoryContract, ensService, provider, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler} = await setupWalletService(wallet));
-    const {futureContractAddress, signature} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
+    const {contractAddress, signature} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
     await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
-    walletContract = new Contract(futureContractAddress, GnosisSafeInterface, provider);
+    walletContract = new Contract(contractAddress, GnosisSafeInterface, provider);
   });
 
   describe('Create', async () => {
@@ -53,10 +53,10 @@ describe('INT: WalletService', async () => {
     it('deploy should add deviceInfo', async () => {
       const keyPair2 = createKeyPair();
       const ensName = 'jarek.mylogin.eth';
-      const {futureContractAddress, signature} = await createFutureWalletUsingEnsService(keyPair2, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
+      const {contractAddress, signature} = await createFutureWalletUsingEnsService(keyPair2, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
       const creationPromise = walletService.deploy({publicKey: keyPair2.publicKey, ensName, signature, gasPrice: '1', gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
       await expect(creationPromise).to.be.fulfilled;
-      expect(fakeDevicesService.addOrUpdate).be.calledOnceWithExactly(futureContractAddress, keyPair2.publicKey, EMPTY_DEVICE_INFO);
+      expect(fakeDevicesService.addOrUpdate).be.calledOnceWithExactly(contractAddress, keyPair2.publicKey, EMPTY_DEVICE_INFO);
     });
 
     it('deployed with gasPrice eq zero with gas price from oracle', async () => {
