@@ -63,7 +63,7 @@ export class RelayerApi {
       signature,
       applicationInfo,
       contractAddress,
-    }, apiKey ? {...COMMON_HEADERS, apiKey} : COMMON_HEADERS);
+    }, apiKey ? {...COMMON_HEADERS, api_key: apiKey} : COMMON_HEADERS);
   }
 
   getDeploymentStatus(deploymentHash: string): Promise<DeploymentStatus> {
