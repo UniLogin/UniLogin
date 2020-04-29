@@ -14,14 +14,14 @@ describe('INT: Deployment Executor', () => {
   let deployment: DeployArgs;
   let deploymentExecutor: DeploymentExecutor;
   let deploymentRepository: DeploymentSQLRepository;
-  let futureContractAddress: string;
+  let contractAddress: string;
   let wallet: Wallet;
 
   beforeEach(async () => {
     [wallet] = getWallets(createMockProvider());
     const {walletService, gnosisSafeMaster, factoryContract, ensRegistrar, ensService, fallbackHandler} = await setupWalletService(wallet);
     keyPair = createKeyPair();
-    ({signature, futureContractAddress} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address, '1'));
+    ({signature, contractAddress} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address, '1'));
     deployment = {
       publicKey: keyPair.publicKey,
       ensName,
@@ -55,7 +55,7 @@ describe('INT: Deployment Executor', () => {
   });
 
   it('should mark state as success if there is gasUsed', async () => {
-    await wallet.sendTransaction({to: futureContractAddress, value: utils.parseEther('1')});
+    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
     await deploymentExecutor.handleExecute('');
     expect(deploymentRepository.markAsSuccess).to.be.calledOnce;
   });
