@@ -17,17 +17,23 @@ export function Header() {
 
   return (
     <div className="header">
-      <Link className="header-logo-link" to="/wallet">
+      <Link className="header-logo-link" to="/dashboard">
         <img className="header-logo" src={logo} />
       </Link>
       <div className="header-row">
         <ul className="header-list">
           <li className="header-list-item">
-            <NavLink exact to="/wallet" className="header-btn header-funds-btn">Funds</NavLink>
+            <NavLink
+              exact
+              to="/dashboard"
+              className="header-btn header-funds-btn"
+            >
+                Funds
+            </NavLink>
           </li>
           <li className="header-list-item">
             <NavLink
-              to="/wallet/devices"
+              to="/dashboard/devices"
               id="devicesButton"
               className="header-btn devices-btn"
             >
@@ -36,7 +42,12 @@ export function Header() {
             </NavLink>
           </li>
           <li className="header-list-item">
-            <NavLink to="/wallet/backup" className="header-btn header-backup-btn">Backup</NavLink>
+            <NavLink
+              to="/dashboard/backup"
+              className="header-btn header-backup-btn"
+            >
+              Backup
+            </NavLink>
           </li>
         </ul>
         <p className="header-user-name">{walletPresenter.getName()}</p>

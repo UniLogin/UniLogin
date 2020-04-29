@@ -7,7 +7,7 @@ import {useServices} from '../../hooks';
 import ModalTransfer from '../Modals/Transfer/ModalTransfer';
 
 const HomeScreen = () => {
-  const basePath = '/wallet';
+  const basePath = '/dashboard';
   const {walletService, walletPresenter} = useServices();
 
   const deployedWallet = walletService.getDeployedWallet();
@@ -51,7 +51,7 @@ const HomeScreen = () => {
                   <TopUp
                     walletService={walletService}
                     logoColor="black"
-                    hideModal={() => history.push('/wallet')}
+                    hideModal={() => history.push('/dashboard')}
                   />
                 </Route>
                 <Route

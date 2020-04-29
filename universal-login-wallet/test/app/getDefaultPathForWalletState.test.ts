@@ -9,7 +9,7 @@ describe('UNIT: getDefaultPathForWalletState', () => {
     });
 
   itGetDefaultPathFor('Future', '/create/topUp');
-  itGetDefaultPathFor('Deployed', '/wallet');
+  itGetDefaultPathFor('Deployed', '/dashboard');
   itGetDefaultPathFor('Deploying', '/create/waiting');
   itGetDefaultPathFor('None', '/welcome');
   itGetDefaultPathFor('Connecting', '/connect/emoji');

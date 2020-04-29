@@ -5,7 +5,7 @@ export const getDefaultPathForWalletState = ({kind}: WalletState) => {
     case 'Future':
       return '/create/topUp';
     case 'Deployed':
-      return '/wallet';
+      return '/dashboard';
     case 'None':
       return '/welcome';
     case 'Deploying':
