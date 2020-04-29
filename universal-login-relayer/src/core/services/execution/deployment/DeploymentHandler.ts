@@ -14,7 +14,7 @@ class DeploymentHandler {
     private refundPayerStore: RefundPayerStore,
   ) {}
 
-  async handleDeployment(contractAddress: string, deployArgs: DeployArgs, deviceInfo: DeviceInfo, apiKey?: string) {
+  async handle(contractAddress: string, deployArgs: DeployArgs, deviceInfo: DeviceInfo, apiKey?: string) {
     if (utils.bigNumberify(deployArgs.gasPrice).isZero()) {
       await this.refundPayerValidator.validate(apiKey);
     }

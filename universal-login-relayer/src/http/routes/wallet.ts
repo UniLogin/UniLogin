@@ -26,7 +26,7 @@ const deploymentHandling = (deploymentHandler: DeploymentHandler) =>
     const {contractAddress, applicationInfo, ...deployArgs} = data.body;
     const deviceInfo = getDeviceInfo(req, applicationInfo);
     const apiKey = data.headers.api_key;
-    const deploymentHash = await deploymentHandler.handleDeployment(contractAddress, deployArgs, deviceInfo, apiKey);
+    const deploymentHash = await deploymentHandler.handle(contractAddress, deployArgs, deviceInfo, apiKey);
     const status = await deploymentHandler.getStatus(deploymentHash);
     return responseOf(status, 201);
   };
