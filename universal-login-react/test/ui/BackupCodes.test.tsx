@@ -17,7 +17,7 @@ describe('INT: BackupCodes', () => {
   let dashboard: DashboardPage;
   let relayer: Relayer;
 
-  beforeEach(async () => {
+  before(async () => {
     ([wallet] = getWallets(createMockProvider()));
     ({deployedWallet, relayer} = await setupDeployedWallet(wallet, ensName));
     const appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
@@ -38,11 +38,8 @@ describe('INT: BackupCodes', () => {
     );
   }).timeout(15000);
 
-  afterEach(async () => {
-    deployedWallet.sdk.stop();
-  });
-
   after(async () => {
-    await relayer.stopLater();
+    await deployedWallet.sdk.finalizeAndStop();
+    await relayer.stop();
   });
 });
