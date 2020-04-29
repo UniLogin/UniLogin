@@ -9,7 +9,7 @@ import '../styles/themes/Jarvis/emojiThemeJarvis.sass';
 import '../styles/themes/Jarvis/footerThemeJarvis.sass';
 import {useHistory} from 'react-router';
 import {join} from 'path';
-import {GasPriceWithOptions} from '../commons/GasPrice/GasPrice';
+import {GasPrice} from '../commons/GasPrice/GasPrice';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import {FooterSection} from '../commons/FooterSection';
 import Spinner from '../commons/Spinner';
@@ -71,7 +71,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
         {publicKey && notifications.length > 0 &&
           <div className="correct-input-footer">
             <FooterSection>
-              <GasPriceWithOptions
+              <GasPrice
                 isDeployed={true}
                 deployedWallet={deployedWallet}
                 gasLimit={DEFAULT_GAS_LIMIT}
