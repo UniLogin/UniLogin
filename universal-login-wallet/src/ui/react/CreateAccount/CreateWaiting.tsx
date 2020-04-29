@@ -1,8 +1,7 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
-import {ensure} from '@unilogin/commons';
-import {InvalidWalletState, WalletState} from '@unilogin/sdk';
-import {ModalWrapper, WaitingForDeployment, useAsyncEffect, DEPLOYMENT_DESCRIPTION} from '@unilogin/react';
+import {WalletState} from '@unilogin/sdk';
+import {OnboardingWaitForDeployment} from '@unilogin/react';
 import {useServices} from '../../hooks';
 
 interface CreateWaitingProps {
@@ -10,31 +9,18 @@ interface CreateWaitingProps {
 }
 
 export function CreateWaiting({walletState}: CreateWaitingProps) {
-  const {sdk, walletService} = useServices();
+  const {walletService} = useServices();
 
-  useAsyncEffect(async () => {
-    try {
-      await walletService.waitForTransactionHash();
-      await walletService.waitToBeSuccess();
-    } catch (e) {
-      console.error(e);
-    }
-  }, []);
-
-  if (walletState.kind === 'Deployed') {
-    return <Redirect to="/creationSuccess" />;
-  } else {
-    ensure(walletState.kind === 'Deploying', InvalidWalletState, 'Deploying', walletState.kind);
+  if (walletState.kind === 'Deploying') {
     return (
       <div className="main-bg">
-        <ModalWrapper modalClassName="jarvis-modal">
-          <WaitingForDeployment
-            transactionHash={walletState.transactionHash}
-            relayerConfig={sdk.getRelayerConfig()}
-            info={DEPLOYMENT_DESCRIPTION}
-          />
-        </ModalWrapper>
+        <OnboardingWaitForDeployment
+          walletService={walletService}
+          relayerConfig={walletService.sdk.getRelayerConfig()}
+        />
       </div>
     );
-  };
+  } else {
+    return <Redirect to='/creationSuccess'/>
+  }
 }

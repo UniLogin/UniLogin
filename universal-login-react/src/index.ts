@@ -50,3 +50,4 @@ export {parseQuery} from './core/utils/parseQuery';
 export {getSuggestionId} from './app/getSuggestionId';
 export {SuggestionOperationType} from './core/models/SuggestionProps';
 export {OnboardingTopUp} from './ui/Onboarding/OnboardingTopUp';
+export {OnboardingWaitForDeployment} from './ui/Onboarding/OnboardingWaitForDeployment';
