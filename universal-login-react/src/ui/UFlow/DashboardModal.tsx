@@ -11,13 +11,15 @@ import {ModalWrapper} from '../Modals/ModalWrapper';
 import {Funds} from './Funds';
 import {Transfer} from '../Transfer/Transfer';
 import {useClassFor} from '../utils/classFor';
+import {join} from 'path';
 
 export interface DashboardModalProps {
   walletService: WalletService;
-  onClose: () => void;
+  onClose?: () => void;
+  basePath?: string;
 }
 
-export const DashboardModal = ({walletService, onClose}: DashboardModalProps) => {
+export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}: DashboardModalProps) => {
   const history = useHistory();
 
   const deployedWallet = walletService.getDeployedWallet();
@@ -28,21 +30,21 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
   const transferService = new TransferService(deployedWallet);
 
   const onTransferTriggered = async (transfer: () => Promise<Execution>) => {
-    history.replace('/dashboard/waitingForTransfer', {state: {transactionHash: ''}});
+    history.replace(join(basePath, 'waitingForTransfer'), {state: {transactionHash: ''}});
     const {waitToBeSuccess, waitForTransactionHash} = await transfer();
     const {transactionHash} = await waitForTransactionHash();
-    if (history.location.pathname !== '/dashboard/waitingForTransfer') return;
-    history.replace('/dashboard/waitingForTransfer', {state: {transactionHash}});
+    if (history.location.pathname !== join(basePath, 'waitingForTransfer')) return;
+    history.replace(join(basePath, 'waitingForTransfer'), {state: {transactionHash}});
     await waitToBeSuccess();
-    if (history.location.pathname !== '/dashboard/waitingForTransfer') return;
-    history.replace('/dashboard/funds');
+    if (history.location.pathname !== join(basePath, 'waitingForTransfer')) return;
+    history.replace(join(basePath, 'funds'));
   };
 
   return (
     <div className={`udashboard ${useClassFor('udashboard')}`}>
       <Switch>
         <Route
-          path="/dashboard/funds"
+          path={join(basePath, 'funds')}
           exact
           render={({history}) => (
             <ModalWrapper hideModal={onClose} modalClassName="udashboard-modal">
@@ -57,7 +59,7 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
             </ModalWrapper>
           )}
         />
-        <Route path="/dashboard/topUp" exact>
+        <Route path={join(basePath, 'topUp')} exact>
           <ModalWrapper hideModal={onClose} modalClassName="udashboard-modal">
             <SubDialogWrapper message={notice} ensName={name}>
               <TopUp
@@ -68,7 +70,7 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
           </ModalWrapper>
         </Route>
         <Route
-          path="/dashboard/transferAmount"
+          path={join(basePath, 'transferAmount')}
           exact
           render={() => (
             <ModalWrapper hideModal={onClose} modalClassName="udashboard-modal">
@@ -81,7 +83,7 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
             </ModalWrapper>
           )}
         />
-        <Route path="/dashboard/waitingForTransfer"
+        <Route path={join(basePath, 'waitingForTransfer')}
           exact
           render={({location}) => (
             <ModalWrapper hideModal={() => history.replace('/dashboard/funds')}>
@@ -93,14 +95,14 @@ export const DashboardModal = ({walletService, onClose}: DashboardModalProps) =>
             </ModalWrapper>
           )}
         />
-        <Route path="/dashboard/devices">
+        <Route path={join(basePath, 'devices')}>
           <ModalWrapper hideModal={onClose} modalClassName="udashboard-modal">
             <DialogWrapper message={notice} deployedWallet={deployedWallet}>
               <Devices walletService={walletService} onAccountDisconnected={onClose} basePath="/dashboard/devices" />
             </DialogWrapper>
           </ModalWrapper>
         </Route>
-        <Route path="/dashboard/backup">
+        <Route path={join(basePath, 'backup')}>
           <ModalWrapper hideModal={onClose} modalClassName="udashboard-modal">
             <DialogWrapper message={notice} deployedWallet={deployedWallet}>
               <BackupCodes deployedWallet={deployedWallet} />
