@@ -50,11 +50,6 @@ export const createFutureWallet = async (keyPair: KeyPair, ensName: string, fact
   const setupData = await getSetupData(keyPair, ensName, ensService, gasPrice, wallet.address, ensRegistrarAddress, fallbackHandler, ETHER_NATIVE_TOKEN.address);
   const futureContractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, gnosisSafeAddress);
   const signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
-  return {signature, futureContractAddress};
-};
-
-export const createFutureWalletAndSendEther = async (keyPair: KeyPair, ensName: string, factoryContract: Contract, wallet: Wallet, ensService: ENSService, ensRegistrarAddress: string, gnosisSafeAddress: string, fallbackHandler: string, gasPrice = '1') => {
-  const {signature, futureContractAddress} = await createFutureWallet(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrarAddress, gnosisSafeAddress, fallbackHandler, gasPrice);
   await wallet.sendTransaction({to: futureContractAddress, value: utils.parseEther('1')});
   return {signature, futureContractAddress};
 };
