@@ -15,10 +15,11 @@ describe('INT: Dashboard', () => {
   const initialAmount = '199.99';
   let deployedWallet: DeployedWallet;
   let dashboard: DashboardPage;
+  let relayer: any;
 
   beforeEach(async () => {
     ([wallet] = getWallets(createMockProvider()));
-    ({deployedWallet} = await setupDeployedWallet(wallet, ensName));
+    ({deployedWallet, relayer} = await setupDeployedWallet(wallet, ensName));
     const appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
     dashboard = new DashboardPage(appWrapper);
   });
@@ -35,5 +36,9 @@ describe('INT: Dashboard', () => {
     await waitExpect(() =>
       expect(dashboard.funds().getUsdBalance()).to.eq('$399.99'),
     );
+  });
+
+  after(async () => {
+    await relayer.stop();
   });
 });
