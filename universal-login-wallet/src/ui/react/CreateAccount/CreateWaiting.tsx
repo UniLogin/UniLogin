@@ -21,6 +21,6 @@ export function CreateWaiting({walletState}: CreateWaitingProps) {
       </div>
     );
   } else {
-    return <Redirect to='/creationSuccess'/>
+    return <Redirect to='/creationSuccess'/>;
   }
 }
