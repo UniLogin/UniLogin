@@ -6,7 +6,7 @@ import {Contract, providers, Wallet} from 'ethers';
 import sinonChai from 'sinon-chai';
 import ENSService from '../../../src/integration/ethereum/ensService';
 import {WalletDeploymentService} from '../../../src/integration/ethereum/WalletDeploymentService';
-import setupWalletService, {createFutureWalletUsingEnsService, getSetupData} from '../../testhelpers/setupWalletService';
+import setupWalletService, {createFutureWalletUsingEnsService, getSetupDataUsingEnsService} from '../../testhelpers/setupWalletService';
 
 chai.use(require('chai-string'));
 chai.use(sinonChai);
@@ -72,7 +72,7 @@ describe('INT: WalletService', async () => {
       const ensName = 'qwertyuiop.mylogin.eth';
       const gasPrice = '1';
       const initializeData = await walletService.setupInitializeData({publicKey: keyPair.publicKey, ensName, gasPrice, gasToken: ETHER_NATIVE_TOKEN.address});
-      const expectedInitializeData = await getSetupData(keyPair, ensName, ensService, gasPrice, wallet.address, ensRegistrar.address, fallbackHandler.address, ETHER_NATIVE_TOKEN.address);
+      const expectedInitializeData = await getSetupDataUsingEnsService(keyPair, ensName, ensService, gasPrice, wallet.address, ensRegistrar.address, fallbackHandler.address, ETHER_NATIVE_TOKEN.address);
       expect(initializeData).to.eq(expectedInitializeData);
     });
 
