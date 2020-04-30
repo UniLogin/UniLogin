@@ -2,8 +2,12 @@ import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo
 
 export class RelayerApi {
   private readonly http: HttpFunction;
-  constructor(relayerUrl: string) {
+  constructor(relayerUrl: string, private apiKey?: string) {
     this.http = http(fetch)(relayerUrl);
+  }
+
+  private getHeaders() {
+    return this.apiKey ? {...COMMON_HEADERS, api_key: this.apiKey} : COMMON_HEADERS;
   }
 
   getConfig(): Promise<PublicRelayerConfig> {
@@ -54,7 +58,7 @@ export class RelayerApi {
     return this.http('GET', `/devices/${contractAddress}?signature=${signature}`);
   }
 
-  deploy(publicKey: string, ensName: string, gasPrice: string, gasToken: string, signature: string, applicationInfo: ApplicationInfo, contractAddress: string, apiKey?: string) {
+  deploy(publicKey: string, ensName: string, gasPrice: string, gasToken: string, signature: string, applicationInfo: ApplicationInfo, contractAddress: string) {
     return this.http('POST', '/wallet/deploy', {
       publicKey,
       ensName,
@@ -63,7 +67,7 @@ export class RelayerApi {
       signature,
       applicationInfo,
       contractAddress,
-    }, apiKey ? {...COMMON_HEADERS, api_key: apiKey} : COMMON_HEADERS);
+    }, this.getHeaders());
   }
 
   getDeploymentStatus(deploymentHash: string): Promise<DeploymentStatus> {
