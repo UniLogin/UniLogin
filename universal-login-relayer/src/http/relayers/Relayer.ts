@@ -44,6 +44,7 @@ import {RefundPayerStore} from '../../integration/sql/services/RefundPayerStore'
 import {RefundPayerValidator} from '../../core/services/validators/RefundPayerValidator';
 import {DeploymentSQLRepository} from '../../integration/sql/services/DeploymentSQLRepository';
 import {ApiKeyHandler} from '../../core/services/execution/ApiKeyHandler';
+import {TransactionGasPriceComputator} from '../../integration/ethereum/TransactionGasPriceComputator';
 
 const defaultPort = '3311';
 
@@ -112,7 +113,8 @@ class Relayer {
     const devicesStore = new DevicesStore(this.database);
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const gasPriceOracle = new GasPriceOracle();
-    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, requiredBalanceChecker, devicesService, gasPriceOracle);
+    const transactionGasPriceComputator = new TransactionGasPriceComputator(gasPriceOracle);
+    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, requiredBalanceChecker, devicesService, transactionGasPriceComputator);
     const statusService = new MessageStatusService(messageRepository, this.walletContractService);
     const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, this.walletContractService);
     const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
