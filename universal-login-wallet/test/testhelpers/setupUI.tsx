@@ -14,7 +14,7 @@ export const setupUI = async (relayer: Relayer, tokenAddress?: string) => {
   const tokens = tokenAddress ? [tokenAddress, ETHER_NATIVE_TOKEN.address] : [ETHER_NATIVE_TOKEN.address];
   const services = await createPreconfiguredServices(relayer.provider, relayer, tokens);
   const {contractAddress} = await createAndSetWallet(name, services.walletService, wallet, services.sdk);
-  const appWrapper = mountWithContext(<App/>, services, ['/wallet']);
+  const appWrapper = mountWithContext(<App/>, services, ['/dashboard']);
   const appPage = new AppPage(appWrapper);
   await appPage.login().waitForHomeView('$1.99');
   return {appPage, services, contractAddress, appWrapper};

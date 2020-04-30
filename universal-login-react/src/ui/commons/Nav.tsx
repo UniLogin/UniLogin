@@ -26,7 +26,9 @@ export const Nav = ({deployedWallet}: NavProps) => {
         activeClassName="active"
         to="/dashboard/devices"
       >
-        <span className={`udashboard-tab-text ${newNotifications && 'new-notifications'}`}>Devices</span>
+        <span className={`udashboard-tab-text ${newNotifications && 'new-notifications'}`}>
+          Devices
+        </span>
       </NavLink>
       <NavLink
         className="udashboard-tab udashboard-tab-backup"
