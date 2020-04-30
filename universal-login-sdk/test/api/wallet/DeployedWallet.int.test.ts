@@ -6,7 +6,7 @@ import {Contract, utils, providers, Wallet} from 'ethers';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import basicSDK, {transferMessage} from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER} from '@unilogin/commons';
 import UniversalLoginSDK, {DeployedWallet} from '../../../src';
 import {waitForSuccess} from '../../helpers/waitForSuccess';
 
@@ -118,10 +118,16 @@ describe('INT: DeployedWallet', () => {
       expect(await provider.getBalance(message.to!)).to.eq(expectedBalance);
     });
 
-    it('set gasPrice to 0 when execute with apiKey', async () => {
-      deployedWallet.sdk.config.apiKey = 'aaaa-bbbb-cccc';
+    it('Should set gasPrice to 0 when execute with apiKey', async () => {
+      deployedWallet.sdk.config.apiKey = TEST_REFUND_PAYER.apiKey;
       await deployedWallet.execute(message);
-      expect(message.gasPrice).to.eq('0');
+      expect(message.gasPrice).to.deep.eq('0');
+    });
+
+    it('Should not set gasPrice when execute without apiKey', async () => {
+      deployedWallet.sdk.config.apiKey = undefined;
+      await deployedWallet.execute(message);
+      expect(message.gasPrice).to.deep.eq(DEFAULT_GAS_PRICE);
     });
 
     it('Should return transaction hash and proper state', async () => {
