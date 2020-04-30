@@ -10,7 +10,7 @@ class MessageHandler {
 
   }
 
-  async handleMessage(message: SignedMessage) {
+  async handle(message: SignedMessage) {
     await this.validator.validate(message);
     return this.pendingMessages.add(message);
   }

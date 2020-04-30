@@ -8,6 +8,7 @@ import '../styles/base/waitingForTransaction.sass';
 import '../styles/themes/Legacy/waitingForTransactionThemeLegacy.sass';
 import '../styles/themes/Jarvis/waitingForTransactionThemeJarvis.sass';
 import '../styles/themes/UniLogin/waitingForTransactionThemeUniLogin.sass';
+import {InfoText} from './Text/InfoText';
 
 export interface WaitingForTransactionProps extends WaitingForProps {
   relayerConfig: PublicRelayerConfig;
@@ -29,7 +30,7 @@ const Body = ({action, description, relayerConfig, transactionHash, info}: Waiti
       />
       <div className={classForComponent('waitingfortransaction-pending-img')}></div>
     </div>
-    {info && <p className={classForComponent('info-text')}>{info}</p>}
+    {info && <InfoText>{info}</InfoText>}
   </div>
 );
 
@@ -45,7 +46,7 @@ export const WaitingForDeployment = (props: WaitingForTransactionProps) => (
     {...props}
     action={props.action || 'Wallet creation'}
     description={props.description || DEPLOYMENT_DESCRIPTION}
-    info={props.info}
+    info={props.info || DEPLOYMENT_DESCRIPTION}
   />
 );
 

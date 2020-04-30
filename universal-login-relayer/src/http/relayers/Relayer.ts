@@ -43,6 +43,7 @@ import {FutureWalletStore} from '../../integration/sql/services/FutureWalletStor
 import {RefundPayerStore} from '../../integration/sql/services/RefundPayerStore';
 import {RefundPayerValidator} from '../../core/services/validators/RefundPayerValidator';
 import {DeploymentSQLRepository} from '../../integration/sql/services/DeploymentSQLRepository';
+import {ApiKeyHandler} from '../../core/services/execution/ApiKeyHandler';
 
 const defaultPort = '3311';
 
@@ -102,7 +103,8 @@ class Relayer {
     const executionQueue = new QueueSQLStore(this.database);
     const refundPayerStore = new RefundPayerStore(this.database);
     const refundPayerValidator = new RefundPayerValidator(refundPayerStore);
-    const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue, refundPayerValidator, refundPayerStore);
+    const apiKeyHandler = new ApiKeyHandler(refundPayerValidator, refundPayerStore);
+    const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue);
     this.walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider), new GnosisSafeService(this.provider));
     const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(this.walletContractService);
     const authorisationStore = new AuthorisationStore(this.database);
@@ -123,7 +125,7 @@ class Relayer {
     const futureWalletHandler = new FutureWalletHandler(futureWalletStore);
 
     this.app.use(bodyParser.json());
-    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, futureWalletHandler));
+    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, futureWalletHandler, apiKeyHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(authorisationService));
     this.app.use('/devices', DevicesRouter(devicesService));
