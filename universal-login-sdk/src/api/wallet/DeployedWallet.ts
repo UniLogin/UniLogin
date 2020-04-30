@@ -58,6 +58,9 @@ export class DeployedWallet extends AbstractWallet {
   async execute(message: Partial<Message>): Promise<Execution> {
     const relayerConfig = this.sdk.getRelayerConfig();
     const nonce = message.nonce || await this.getNonce();
+    if (this.sdk.isRefundPaid()) {
+      message.gasPrice = '0';
+    }
     const partialMessage = {
       gasToken: ETHER_NATIVE_TOKEN.address,
       ...message,

@@ -6,8 +6,8 @@ import {Contract, utils, providers, Wallet} from 'ethers';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import basicSDK, {transferMessage} from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER, TEST_SDK_CONFIG, OperationType, ensure, TEST_GAS_PRICE} from '@unilogin/commons';
-import UniversalLoginSDK, {DeployedWallet, WalletService} from '../../../src';
+import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER, TEST_SDK_CONFIG} from '@unilogin/commons';
+import UniversalLoginSDK, {DeployedWallet} from '../../../src';
 import {waitForSuccess} from '../../helpers/waitForSuccess';
 
 chai.use(solidity);
@@ -121,15 +121,20 @@ describe('INT: DeployedWallet', () => {
     it('Should return transaction hash and proper state with free transaction', async () => {
       const startingBalance = (await provider.getBalance(message.to!));
       const newSdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, apiKey: TEST_REFUND_PAYER.apiKey});
-      newSdk.getRelayerConfig();
+      await newSdk.fetchRelayerConfig();
       deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, newSdk);
       const msg = {
         ...message,
-        gasPrice: '0',
       };
-      const {waitToBeSuccess} = await deployedWallet.execute(msg);
+      console.log('START execute');
+      const {waitToBeSuccess, waitForTransactionHash, messageStatus} = await deployedWallet.execute(msg);
+      console.log('AFTER execute');
+      console.log('ERROR?: ', messageStatus.error);
+      console.log('STATUS: ', messageStatus.state);
+      const transaciton = await waitForTransactionHash();
+      console.log('TransactionHash: ', transaciton);
       await waitToBeSuccess();
-      expect(await provider.getBalance(message.to!)).to.eq(startingBalance.add('0.5'));
+      expect(await provider.getBalance(message.to!)).to.eq(startingBalance.add(utils.bigNumberify('0.5')));
     });
 
     it('Should return transaction hash and proper state', async () => {
@@ -171,6 +176,18 @@ describe('INT: DeployedWallet', () => {
       const secondDeployedWallet = new DeployedWallet(contractAddress, '', privateKey, secondSdk);
       const {waitToBeSuccess} = await secondDeployedWallet.execute(message);
       await expect(waitToBeSuccess()).to.be.eventually.fulfilled;
+    });
+
+    it('Should set gasPrice to 0 when execute with apiKey', async () => {
+      deployedWallet.sdk.config.apiKey = TEST_REFUND_PAYER.apiKey;
+      await deployedWallet.execute(message);
+      expect(message.gasPrice).to.deep.eq('0');
+    });
+
+    it('Should not set gasPrice when execute without apiKey', async () => {
+      deployedWallet.sdk.config.apiKey = undefined;
+      await deployedWallet.execute(message);
+      expect(message.gasPrice).to.deep.eq(DEFAULT_GAS_PRICE);
     });
   });
 
