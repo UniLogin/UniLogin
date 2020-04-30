@@ -102,6 +102,10 @@ describe('INT: BlockchainService', async () => {
       await expect(blockchainService.fetchProxyVersion(contract.address)).to.be.eventually.rejectedWith('Unsupported proxy version');
     });
 
+    it('throws error if address is not a contract', async () => {
+      await expect(blockchainService.fetchProxyVersion(Wallet.createRandom().address)).to.be.eventually.rejectedWith('Address is not a contract');
+    });
+
     it('gnosis safe proxy', async () => {
       const {provider, proxy} = await loadFixture(setupGnosisSafeContractFixture);
       blockchainService = new BlockchainService(provider);
