@@ -43,7 +43,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   private async getMessageEntry(messageHash: string) {
     return this.knex(this.tableName)
       .where('hash', messageHash)
-      .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state', 'refundPayerId', 'gasPriceUsed'])
+      .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state', 'refundPayerId', 'gasPriceUsed', 'gasUsed'])
       .first();
   }
 

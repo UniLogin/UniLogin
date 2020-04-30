@@ -7,7 +7,6 @@ import {SdkConfig} from '../../src';
 export async function setupSdk(deployer: Wallet, overridePort = '33111', overrideSdkConfig?: Partial<SdkConfig>) {
   const {relayer} = await RelayerUnderTest.createPreconfigured(deployer, overridePort);
   await relayer.start();
-  if (overrideSdkConfig?.apiKey) await relayer.setupTestPartner();
   const {provider} = relayer;
   (provider as any).pollingInterval = 10;
   const sdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, ...overrideSdkConfig});

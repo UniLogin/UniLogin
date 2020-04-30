@@ -5,4 +5,5 @@ export interface Mineable {
   error: string | null;
   state: MessageState;
   gasPriceUsed: string | null;
+  gasUsed: string | null;
 }

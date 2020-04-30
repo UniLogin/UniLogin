@@ -42,9 +42,10 @@ import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
 import {FutureWalletStore} from '../../integration/sql/services/FutureWalletStore';
 import {RefundPayerStore} from '../../integration/sql/services/RefundPayerStore';
 import {RefundPayerValidator} from '../../core/services/validators/RefundPayerValidator';
-import {DeploymentSQLRepository} from '../../integration/sql/services/DeploymentSQLRepository';
 import {ApiKeyHandler} from '../../core/services/execution/ApiKeyHandler';
 import {TransactionGasPriceComputator} from '../../integration/ethereum/TransactionGasPriceComputator';
+import SQLRepository from '../../integration/sql/services/SQLRepository';
+import Deployment from '../../core/models/Deployment';
 
 const defaultPort = '3311';
 
@@ -100,7 +101,7 @@ class Relayer {
     const balanceChecker = new BalanceChecker(this.provider);
     const requiredBalanceChecker = new RequiredBalanceChecker(balanceChecker);
     const messageRepository = new MessageSQLRepository(this.database);
-    const deploymentRepository = new DeploymentSQLRepository(this.database);
+    const deploymentRepository = new SQLRepository<Deployment>(this.database, 'deployments');
     const executionQueue = new QueueSQLStore(this.database);
     const refundPayerStore = new RefundPayerStore(this.database);
     const refundPayerValidator = new RefundPayerValidator(refundPayerStore);

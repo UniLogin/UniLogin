@@ -62,7 +62,7 @@ class UniversalLoginSDK {
       ? new providers.JsonRpcProvider(providerOrUrl)
       : providerOrUrl;
     this.config = deepMerge(SdkConfigDefault, config);
-    this.relayerApi = new RelayerApi(relayerUrl);
+    this.relayerApi = new RelayerApi(relayerUrl, this.config.apiKey);
     this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.config.authorizationsObserverTick);
     this.executionFactory = new ExecutionFactory(this.relayerApi, this.config.mineableFactoryTick, this.config.mineableFactoryTimeout);
     this.blockchainService = new BlockchainService(this.provider);
