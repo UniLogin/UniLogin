@@ -54,7 +54,7 @@ describe('INT: DeployedWallet', () => {
     });
   });
 
-  it('setRequiredSignatures', async function () {
+  it('setRequiredSignatures', async () => {
     await waitForSuccess(deployedWallet.addKey(publicKey, {gasPrice, gasToken: mockToken.address}));
     await waitForSuccess(deployedWallet.setRequiredSignatures(2, {gasPrice, gasToken: mockToken.address}));
     await expect(deployedWallet.getRequiredSignatures()).to.eventually.eq(2);
@@ -116,6 +116,12 @@ describe('INT: DeployedWallet', () => {
       const {transactionHash} = await waitToBeSuccess();
       expect(transactionHash).to.match(/^[0x|0-9|a-f|A-F]{66}/);
       expect(await provider.getBalance(message.to!)).to.eq(expectedBalance);
+    });
+
+    it('set gasPrice to 0 when execute with apiKey', async () => {
+      deployedWallet.sdk.config.apiKey = 'aaaa-bbbb-cccc';
+      await deployedWallet.execute(message);
+      expect(message.gasPrice).to.eq('0');
     });
 
     it('Should return transaction hash and proper state', async () => {
