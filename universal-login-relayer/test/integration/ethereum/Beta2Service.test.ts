@@ -13,7 +13,7 @@ describe('INT: Beta2Service', () => {
     const provider = createMockProvider();
     [wallet] = getWallets(provider);
     ({proxy: proxyContract} = await createWalletContract(wallet));
-    beta2Service = new Beta2Service(provider);
+    beta2Service = new Beta2Service(provider, {} as any);
   });
 
   it('returns required signatures number', async () => {
