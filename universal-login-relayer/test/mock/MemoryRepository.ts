@@ -32,9 +32,10 @@ export default class MemoryRepository<T extends Mineable> implements IRepository
     return item;
   }
 
-  async markAsPending(hash: string, transactionHash: string) {
+  async markAsPending(hash: string, transactionHash: string, gasPriceUsed: string) {
     ensureProperTransactionHash(transactionHash);
     this.items[hash].transactionHash = transactionHash;
+    this.items[hash].gasPriceUsed = gasPriceUsed;
     this.items[hash].state = 'Pending';
   }
 

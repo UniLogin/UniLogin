@@ -52,7 +52,7 @@ describe('UNIT: MessageStatusService', async () => {
   });
 
   it('getStatus after starting handle', async () => {
-    await messageRepository.markAsPending(messageHash, TEST_TRANSACTION_HASH);
+    await messageRepository.markAsPending(messageHash, TEST_TRANSACTION_HASH, '1');
     expect(await messageStatusService.getStatus(messageHash)).to.deep.include({
       state: 'Pending',
       transactionHash: TEST_TRANSACTION_HASH,

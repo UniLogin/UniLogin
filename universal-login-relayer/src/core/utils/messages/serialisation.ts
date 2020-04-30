@@ -74,4 +74,5 @@ export const createMessageItem = (signedMessage: SignedMessage, refundPayerId: s
   message: signedMessage,
   state: 'AwaitSignature',
   refundPayerId,
+  gasPriceUsed: null,
 });
