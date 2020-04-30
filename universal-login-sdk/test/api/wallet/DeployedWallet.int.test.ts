@@ -123,16 +123,7 @@ describe('INT: DeployedWallet', () => {
       const newSdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, apiKey: TEST_REFUND_PAYER.apiKey});
       await newSdk.fetchRelayerConfig();
       deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, newSdk);
-      const msg = {
-        ...message,
-      };
-      console.log('START execute');
-      const {waitToBeSuccess, waitForTransactionHash, messageStatus} = await deployedWallet.execute(msg);
-      console.log('AFTER execute');
-      console.log('ERROR?: ', messageStatus.error);
-      console.log('STATUS: ', messageStatus.state);
-      const transaciton = await waitForTransactionHash();
-      console.log('TransactionHash: ', transaciton);
+      const {waitToBeSuccess} = await deployedWallet.execute(message);
       await waitToBeSuccess();
       expect(await provider.getBalance(message.to!)).to.eq(startingBalance.add(utils.bigNumberify('0.5')));
     });
