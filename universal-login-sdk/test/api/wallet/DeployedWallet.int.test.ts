@@ -6,7 +6,7 @@ import {Contract, utils, providers, Wallet} from 'ethers';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import basicSDK, {transferMessage} from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER} from '@unilogin/commons';
 import UniversalLoginSDK, {DeployedWallet} from '../../../src';
 import {waitForSuccess} from '../../helpers/waitForSuccess';
 
@@ -116,6 +116,10 @@ describe('INT: DeployedWallet', () => {
       const {transactionHash} = await waitToBeSuccess();
       expect(transactionHash).to.match(/^[0x|0-9|a-f|A-F]{66}/);
       expect(await provider.getBalance(message.to!)).to.eq(expectedBalance);
+    });
+
+    it('Should return transaction hash and proper state with free transaction', async () => {
+      sdk.config.apiKey = TEST_REFUND_PAYER.apiKey;
     });
 
     it('Should return transaction hash and proper state', async () => {
