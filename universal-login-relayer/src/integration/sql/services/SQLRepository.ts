@@ -55,8 +55,7 @@ export class SQLRepository<T extends Mineable> implements IRepository<T> {
     ensureProperTransactionHash(transactionHash);
     await this.knex<Mineable>(this.tableName)
       .where('hash', hash)
-      .update({transactionHash, gasPriceUsed})
-      .update('state', 'Pending');
+      .update({transactionHash, gasPriceUsed, state: 'Pending'});
   }
 
   async markAsSuccess(hash: string, gasUsed: string) {
