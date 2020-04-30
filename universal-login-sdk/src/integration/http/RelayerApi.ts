@@ -15,7 +15,7 @@ export class RelayerApi {
   }
 
   execute(message: any) {
-    return this.http('POST', '/wallet/execution', message)
+    return this.http('POST', '/wallet/execution', message, this.getHeaders())
       .catch((e: any) => {
         // TODO: Maybe wrap this as a custom Error?
         throw new Error(e !== undefined && e.error);
