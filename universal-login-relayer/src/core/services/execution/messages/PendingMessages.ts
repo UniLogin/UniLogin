@@ -27,11 +27,10 @@ export default class PendingMessages {
     await this.addSignatureToPendingMessage(messageHash, message);
     const status = await this.getStatus(messageHash);
     const required = (await this.walletContractService.getRequiredSignatures(message.from)).toNumber();
-    const isEnough = this.isEnoughSignatures(status, required);
-    if (isEnough) {
+    if (this.isEnoughSignatures(status, required)) {
       await this.onReadyToExecute(messageHash, status, required);
     }
-    return status;
+    return this.getStatus(messageHash);
   }
 
   private async onReadyToExecute(messageHash: string, status: MessageStatus, required: number) {
