@@ -5,10 +5,11 @@ import IWalletContractService from '../../core/models/IWalletContractService';
 import {GAS_LIMIT_MARGIN, decodeDataForExecTransaction} from '../../core/utils/messages/serialisation';
 import {decodeParametersFromData, getRemovedKey} from '../../core/utils/encodeData';
 import {AddressZero} from 'ethers/constants';
+import {TransactionGasPriceComputator} from './TransactionGasPriceComputator';
 export const INVALID_MSG_HASH = '0x0000000000000000000000000000000000';
 
 export class GnosisSafeService implements IWalletContractService {
-  constructor(private provider: providers.Provider) {
+  constructor(private provider: providers.Provider, private transactionGasPriceComputator: TransactionGasPriceComputator) {
   }
 
   async getRequiredSignatures(walletAddress: string): Promise<utils.BigNumber> {
@@ -61,9 +62,9 @@ export class GnosisSafeService implements IWalletContractService {
     );
   }
 
-  messageToTransaction(message: SignedMessage) {
+  async messageToTransaction(message: SignedMessage) {
     return Object({
-      gasPrice: message.gasPrice,
+      gasPrice: await this.transactionGasPriceComputator.getGasPrice(message.gasPrice),
       gasLimit: utils.bigNumberify(message.safeTxGas).add(message.baseGas).add(GAS_LIMIT_MARGIN),
       to: message.from,
       value: 0,

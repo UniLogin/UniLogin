@@ -4,7 +4,7 @@ import {utils} from 'ethers';
 export class TransactionGasPriceComputator {
   constructor(private gasPriceOracle: GasPriceOracle) {}
 
-  async getGasPrice(gasPrice: string) {
+  async getGasPrice(gasPrice: utils.BigNumberish) {
     if (utils.bigNumberify(gasPrice).isZero()) {
       const {fast} = await this.gasPriceOracle.getGasPrices();
       return fast.gasPrice;

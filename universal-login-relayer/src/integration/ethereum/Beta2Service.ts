@@ -5,9 +5,10 @@ import {getKeyFromHashAndSignature, isAddKeyCall, isAddKeysCall, isRemoveKeyCall
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {beta2} from '@unilogin/contracts';
 import {messageToTransaction, decodeDataForExecuteSigned} from '../../core/utils/messages/serialisation';
+import {TransactionGasPriceComputator} from './TransactionGasPriceComputator';
 
 export class Beta2Service implements IWalletContractService {
-  constructor(private provider: providers.Provider) {
+  constructor(private provider: providers.Provider, private transactionGasPriceComputator: TransactionGasPriceComputator) {
   }
 
   async getRequiredSignatures(walletAddress: string): Promise<utils.BigNumber> {
@@ -50,8 +51,8 @@ export class Beta2Service implements IWalletContractService {
     return recoverFromRelayerRequest(relayerRequest);
   }
 
-  messageToTransaction(message: SignedMessage) {
-    return messageToTransaction(message);
+  async messageToTransaction(message: SignedMessage) {
+    return {...messageToTransaction(message), gasPrice: await this.transactionGasPriceComputator.getGasPrice(message.gasPrice)};
   }
 
   isAddKeyCall(data: string) {
