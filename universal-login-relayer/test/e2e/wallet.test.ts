@@ -49,13 +49,13 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       .post('/wallet/execution')
       .send(stringifiedMessage);
     expect(status).to.eq(201);
-    await waitExpect(async () => expect(await otherWallet.getBalance()).to.eq(balanceBefore.add(msg.value)), 3000);
     const checkMessageState = async () => {
       const {body: messageStatus} = await chai.request((relayer as any).server)
         .get(`/wallet/execution/${body.status.messageHash}`);
       expect(messageStatus.state).eq('Success');
     };
     await waitExpect(() => checkMessageState());
+    expect(await otherWallet.getBalance()).to.eq(balanceBefore.add(msg.value));
   });
 
   it('Execution fail if gasPrice is 0 and no apiKey', async () => {
