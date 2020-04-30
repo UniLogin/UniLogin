@@ -1,11 +1,11 @@
 import chai, {expect} from 'chai';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
-import Relayer from '@unilogin/relayer';
+import {RelayerUnderTest} from '@unilogin/relayer';
 import {setupSdk} from '../../helpers/setupSdk';
 import UniversalLoginSDK from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, utils} from 'ethers';
-import {ensure, TEST_EXECUTION_OPTIONS} from '@unilogin/commons';
+import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG} from '@unilogin/commons';
 import {createWallet} from '../../helpers';
 import {DeployedWallet} from '../../../src';
 
@@ -14,7 +14,7 @@ chai.use(solidity);
 describe('INT: WalletService', () => {
   let walletService: WalletService;
   let sdk: UniversalLoginSDK;
-  let relayer: Relayer;
+  let relayer: RelayerUnderTest;
   let wallet: Wallet;
 
   before(async () => {
@@ -53,6 +53,17 @@ describe('INT: WalletService', () => {
       await walletService.waitToBeSuccess();
       expect(walletService.state.kind).to.eq('Deployed');
       expect(walletService.getDeployedWallet().name).to.eq('name.mylogin.eth');
+    });
+
+    it('free deployment', async () => {
+      const newSdk = new UniversalLoginSDK(relayer.url(), wallet.provider, {...TEST_SDK_CONFIG, apiKey: TEST_REFUND_PAYER.apiKey});
+      walletService = new WalletService(newSdk);
+      await newSdk.fetchRelayerConfig();
+      await walletService.createWallet('meme.mylogin.eth');
+      await walletService.waitForTransactionHash();
+      expect(walletService.state.kind).to.eq('Deploying');
+      await walletService.waitToBeSuccess();
+      expect(walletService.state.kind).to.eq('Deployed');
     });
   });
 
