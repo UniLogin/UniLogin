@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {startRelayerWithRefund} from '../testhelpers/http';
+import {startRelayer} from '../testhelpers/http';
 import {createKeyPair, TEST_APPLICATION_INFO, RelayerRequest, KeyPair} from '@unilogin/commons';
 import {signStringMessage, calculateGnosisStringHash} from '@unilogin/contracts';
 import {deployGnosisSafeProxy} from '../testhelpers/createGnosisSafeContract';
@@ -55,7 +55,7 @@ describe('E2E: Relayer - Authorisation routes', async () => {
   const relayerPort = '33511';
 
   beforeEach(async () => {
-    ({relayer, deployer, walletContract, factoryContract} = await startRelayerWithRefund(relayerPort));
+    ({relayer, deployer, walletContract, factoryContract} = await startRelayer(relayerPort));
     ({proxyContract, keyPair} = await deployGnosisSafeProxy(deployer, factoryContract.address, walletContract.address));
   });
 
