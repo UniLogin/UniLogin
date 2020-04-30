@@ -103,7 +103,8 @@ describe('INT: BlockchainService', async () => {
     });
 
     it('throws error if address is not a contract', async () => {
-      await expect(blockchainService.fetchProxyVersion(Wallet.createRandom().address)).to.be.eventually.rejectedWith('Address is not a contract');
+      const address = Wallet.createRandom().address;
+      await expect(blockchainService.fetchProxyVersion(address)).to.be.eventually.rejectedWith(`Invalid contract address: ${address}`);
     });
 
     it('gnosis safe proxy', async () => {

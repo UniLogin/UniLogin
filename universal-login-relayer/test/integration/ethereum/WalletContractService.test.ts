@@ -71,7 +71,7 @@ describe('INT: WalletContractService', () => {
 
     it('throws an error if a random address provided', async () => {
       const address = Wallet.createRandom().address;
-      await expect(walletContractService.getWalletVersion(address)).to.be.rejectedWith('Unsupported proxy version');
+      await expect(walletContractService.getWalletVersion(address)).to.be.rejectedWith(`Invalid contract address: ${address}`);
     });
   });
 

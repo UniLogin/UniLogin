@@ -1,5 +1,5 @@
 import {Contract, providers, utils} from 'ethers';
-import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion, PROXY_VERSIONS, isContract, ensure} from '@unilogin/commons';
+import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, fetchHardforkVersion, PROXY_VERSIONS, isContract, ensure, InvalidContract} from '@unilogin/commons';
 import {interfaces} from '../beta2/contracts';
 import {IProxyInterface} from '../gnosis-safe@1.1.1/interfaces';
 import {computeGnosisCounterfactualAddress} from '../gnosis-safe@1.1.1/utils';
@@ -68,7 +68,7 @@ export class BlockchainService {
 
   async fetchProxyVersion(contractAddress: string) {
     const proxyBytecode = await this.getCode(contractAddress);
-    ensure(proxyBytecode !== '0x', Error, 'Address is not a contract');
+    ensure(proxyBytecode !== '0x', InvalidContract, contractAddress);
     const proxyVersion = PROXY_VERSIONS[utils.keccak256(proxyBytecode)];
     ensureNotFalsy(proxyVersion, Error, 'Unsupported proxy version');
     return proxyVersion;
