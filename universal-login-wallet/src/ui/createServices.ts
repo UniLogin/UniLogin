@@ -12,6 +12,7 @@ export interface Config {
   jsonRpcUrl: string;
   tokens: string[];
   rampApiKey?: string;
+  apiKey?: string;
 }
 
 export interface Overrides {
@@ -46,6 +47,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     observedTokensAddresses: config.tokens,
     storageService,
     rampApiKey: config.rampApiKey,
+    apiKey: config.apiKey,
   };
   const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
   const sdk = new UniversalLoginSDK(

@@ -9,9 +9,9 @@ import '../styles/themes/Jarvis/emojiThemeJarvis.sass';
 import '../styles/themes/Jarvis/footerThemeJarvis.sass';
 import {useHistory} from 'react-router';
 import {join} from 'path';
-import {FooterSection} from '../commons/FooterSection';
-import {GasPrice} from '../commons/GasPrice';
+import {GasPrice} from '../commons/GasPrice/GasPrice';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
+import {FooterSection} from '../commons/FooterSection';
 import Spinner from '../commons/Spinner';
 import {ThemedComponent} from '../commons/ThemedComponent';
 
@@ -77,6 +77,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 gasLimit={DEFAULT_GAS_LIMIT}
                 onGasParametersChanged={setGasParameters}
                 className={className}
+                sdk={deployedWallet.sdk}
               />
               <div className="footer-buttons-row">
                 <button onClick={() => deployedWallet.denyRequests()} className="footer-deny-btn">Deny</button>
