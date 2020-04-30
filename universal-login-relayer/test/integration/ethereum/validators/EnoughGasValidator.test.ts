@@ -40,6 +40,6 @@ describe('INT: EstimateGasValidator', async () => {
 
   it('not throws when not gas price is zero', async () => {
     const signedMessage = getTestSignedMessage({...message, gasPrice: 0}, wallet.privateKey);
-    await expect(validator.validate(signedMessage)).not.to.be.rejectedWith('Not enough gas');
+    await expect(validator.validate(signedMessage)).to.be.fulfilled;
   });
 });
