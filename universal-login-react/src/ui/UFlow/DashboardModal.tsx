@@ -78,6 +78,7 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
                 <Transfer
                   transferService={transferService}
                   onTransferTriggered={onTransferTriggered}
+                  sdk={sdk}
                 />
               </SubDialogWrapper>
             </ModalWrapper>

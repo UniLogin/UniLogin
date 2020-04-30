@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, signString, createKeyPair, CURRENT_NETWORK_VERSION, SignedMessage, calculateMessageHash} from '@unilogin/commons';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
-import {messageToSignedMessage, calculateGnosisStringHash, calculateMessageHash as calculateMessageHashGnosis, signStringMessage, GnosisSafeInterface, calculateMessageSignature} from '@unilogin/contracts';
+import {messageToSignedMessage, calculateGnosisStringHash, calculateMessageHash as calculateMessageHashGnosis, signStringMessage, GnosisSafeInterface, calculateMessageSignature, encodeDataForExecTransaction, encodeDataForExecuteSigned} from '@unilogin/contracts';
 import {ERC1271} from '@unilogin/contracts';
 import {setupGnosisSafeContract, executeAddKeyGnosis, executeRemoveKey} from '@unilogin/contracts/testutils';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
@@ -12,6 +12,7 @@ import createWalletContract from '../../testhelpers/createWalletContract';
 import {getTestSignedMessage} from '../../testconfig/message';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 import {INVALID_MSG_HASH} from '../../../src/integration/ethereum/GnosisSafeService';
+import {GAS_LIMIT_MARGIN} from '../../../src/core/utils/messages/serialisation';
 
 chai.use(sinonChai);
 
@@ -121,6 +122,30 @@ describe('INT: WalletContractService', () => {
     it('isValidMessageHash returns false if msg hash is invalid', async () => {
       expect(await walletContractService.isValidMessageHash(proxyContract.address, '0x949949', signedMessage)).to.be.false;
     });
+
+    it('set gasPrice to current gas price if gasPrice in message eq 0', async () => {
+      const msg = {
+        to: proxyContract.address,
+        from: proxyContract.address,
+        data: '0x0',
+        value: utils.parseEther('1'),
+        nonce: await proxyContract.lastNonce(),
+        gasToken: ETHER_NATIVE_TOKEN.address,
+        gasPrice: utils.bigNumberify('0'),
+        gasLimit: '300000',
+        operationType: OperationType.call,
+        refundReceiver: wallet.address,
+      };
+      const signedMessage = messageToSignedMessage(msg, wallet.privateKey, CURRENT_NETWORK_VERSION, 'beta2');
+      const expectedTransacton = {
+        value: 0,
+        gasPrice: TEST_GAS_PRICE,
+        to: msg.from,
+        gasLimit: utils.bigNumberify(signedMessage.safeTxGas).add(signedMessage.baseGas).add(GAS_LIMIT_MARGIN),
+        data: encodeDataForExecuteSigned(signedMessage),
+      };
+      expect(await walletContractService.messageToTransaction(signedMessage)).to.deep.eq(expectedTransacton);
+    });
   });
 
   describe('beta3', () => {
@@ -228,6 +253,30 @@ describe('INT: WalletContractService', () => {
 
     it('isValidMessageHash returns true if provided messageHash is not 0x0000000000000000000000000000000000', async () => {
       expect(await walletContractService.isValidMessageHash(proxyContract.address, '0x1234', {} as any)).to.be.true;
+    });
+
+    it('set gasPrice to current gas price if gasPrice in message eq 0', async () => {
+      const msg = {
+        to: proxyContract.address,
+        from: proxyContract.address,
+        data: '0x0',
+        value: utils.parseEther('1'),
+        nonce: await proxyContract.nonce(),
+        gasToken: ETHER_NATIVE_TOKEN.address,
+        gasPrice: utils.bigNumberify('0'),
+        gasLimit: '300000',
+        operationType: OperationType.call,
+        refundReceiver: wallet.address,
+      };
+      const signedMessage = messageToSignedMessage(msg, keyPair.privateKey, CURRENT_NETWORK_VERSION, 'beta3');
+      const expectedTransacton = {
+        value: 0,
+        gasPrice: TEST_GAS_PRICE,
+        to: msg.from,
+        gasLimit: utils.bigNumberify(signedMessage.safeTxGas).add(signedMessage.baseGas).add(GAS_LIMIT_MARGIN),
+        data: encodeDataForExecTransaction(signedMessage),
+      };
+      expect(await walletContractService.messageToTransaction(signedMessage)).to.deep.eq(expectedTransacton);
     });
   });
 

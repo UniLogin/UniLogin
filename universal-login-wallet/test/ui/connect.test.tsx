@@ -34,7 +34,7 @@ describe('UI: Connection flow', () => {
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [gasToken]);
     ({privateKey, contractAddress} = await createWallet(name, services.sdk, wallet));
-    appWrapper = mountWithContext(<App/>, services, ['/wallet']);
+    appWrapper = mountWithContext(<App/>, services, ['/dashboard']);
   });
 
   it('Should connect to existing wallet', async () => {

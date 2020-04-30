@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TransferService, TransferErrors, Execution} from '@unilogin/sdk';
+import UniversalLoginSDK, {TransferService, TransferErrors, Execution} from '@unilogin/sdk';
 import {TransferDetails, TokenDetails, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN, SEND_TRANSACTION_GAS_LIMIT} from '@unilogin/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {FooterSection} from '../commons/FooterSection';
@@ -18,9 +18,10 @@ export interface TransferProps {
   transferService: TransferService;
   onTransferTriggered: (transfer: () => Promise<Execution>) => Promise<void>;
   transferClassName?: string;
+  sdk: UniversalLoginSDK;
 }
 
-export const Transfer = ({transferService, onTransferTriggered, transferClassName}: TransferProps) => {
+export const Transfer = ({transferService, onTransferTriggered, transferClassName, sdk}: TransferProps) => {
   const [transferDetails, setTransferDetails] = useState({transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails);
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
   const [tokenDetailsWithBalance] = useBalances(transferService.deployedWallet);
@@ -69,6 +70,7 @@ export const Transfer = ({transferService, onTransferTriggered, transferClassNam
             gasLimit={SEND_TRANSACTION_GAS_LIMIT}
             onGasParametersChanged={(gasParameters: GasParameters) => updateField('gasParameters')(gasParameters)}
             className={transferClassName}
+            sdk={sdk}
           />
           <div className="footer-buttons-row">
             <button id="send-button" onClick={onTransferClick} className="footer-approve-btn" disabled={!transferDetails.gasParameters}>Send</button>

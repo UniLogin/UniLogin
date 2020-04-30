@@ -1,11 +1,12 @@
 import {utils} from 'ethers';
-import {DeployArgs, DEPLOY_GAS_LIMIT, ensure, GasPriceOracle, getInitializeSigner, DeviceInfo, MINIMAL_DEPLOYMENT_GAS_LIMIT, RequiredBalanceChecker, safeMultiplyAndFormatEther, SupportedToken} from '@unilogin/commons';
+import {DeployArgs, DEPLOY_GAS_LIMIT, ensure, getInitializeSigner, DeviceInfo, MINIMAL_DEPLOYMENT_GAS_LIMIT, RequiredBalanceChecker, safeMultiplyAndFormatEther, SupportedToken} from '@unilogin/commons';
 import {computeGnosisCounterfactualAddress, encodeDataForSetup, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@unilogin/contracts';
 import ENSService from './ensService';
 import {NotEnoughBalance, InvalidSignature} from '../../core/utils/errors';
 import {Config} from '../../config/relayer';
 import {WalletDeployer} from './WalletDeployer';
 import {DevicesService} from '../../core/services/DevicesService';
+import {TransactionGasPriceComputator} from './TransactionGasPriceComputator';
 
 export class WalletDeploymentService {
   private readonly supportedTokens: SupportedToken[] = this.config.supportedTokens;
@@ -16,7 +17,7 @@ export class WalletDeploymentService {
     private walletDeployer: WalletDeployer,
     private requiredBalanceChecker: RequiredBalanceChecker,
     private devicesService: DevicesService,
-    private gasPriceOracle: GasPriceOracle,
+    private transactionGasPriceComputator: TransactionGasPriceComputator,
   ) {}
 
   async setupInitializeData({publicKey, ensName, gasPrice, gasToken}: Omit<DeployArgs, 'signature'>) {
@@ -38,22 +39,13 @@ export class WalletDeploymentService {
     return computeGnosisCounterfactualAddress(this.config.factoryAddress, 1, setupData, this.config.walletContractAddress);
   }
 
-  async getGasPrice(gasPrice: string) {
-    if (utils.bigNumberify(gasPrice).isZero()) {
-      const {fast} = await this.gasPriceOracle.getGasPrices();
-      return fast.gasPrice;
-    } else {
-      return utils.bigNumberify(gasPrice);
-    }
-  }
-
   async deploy({publicKey, ensName, gasPrice, gasToken, signature}: DeployArgs, deviceInfo: DeviceInfo) {
     const initWithENS = await this.setupInitializeData({publicKey, ensName, gasPrice, gasToken});
     ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);
     const contractAddress = await this.computeFutureAddress(initWithENS);
     const supportedTokens = this.getTokensWithMinimalAmount(gasPrice);
     ensure(!!await this.requiredBalanceChecker.findTokenWithRequiredBalance(supportedTokens, contractAddress), NotEnoughBalance);
-    const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '1', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: await this.getGasPrice(gasPrice)});
+    const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '1', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: await this.transactionGasPriceComputator.getGasPrice(gasPrice)});
     await this.devicesService.addOrUpdate(contractAddress, publicKey, deviceInfo);
     return transaction;
   }

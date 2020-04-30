@@ -11,7 +11,7 @@ export default interface IWalletContractService {
   isValidSignature: (message: string, walletAddress: string, signature: string) => Promise<string>;
   getRelayerRequestMessage: (relayerRequest: RelayerRequest) => Promise<string> | string;
   recoverFromRelayerRequest: (relayerRequest: RelayerRequest) => Promise<string> | string;
-  messageToTransaction: (message: SignedMessage) => Promise<TransactionRequest> | TransactionRequest;
+  messageToTransaction: (message: SignedMessage) => Promise<TransactionRequest>;
   isAddKeyCall: (data: string) => boolean;
   isAddKeysCall: (data: string) => boolean;
   isRemoveKeyCall: (data: string) => boolean;

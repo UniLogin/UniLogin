@@ -44,6 +44,7 @@ import {RefundPayerStore} from '../../integration/sql/services/RefundPayerStore'
 import {RefundPayerValidator} from '../../core/services/validators/RefundPayerValidator';
 import {DeploymentSQLRepository} from '../../integration/sql/services/DeploymentSQLRepository';
 import {ApiKeyHandler} from '../../core/services/execution/ApiKeyHandler';
+import {TransactionGasPriceComputator} from '../../integration/ethereum/TransactionGasPriceComputator';
 
 const defaultPort = '3311';
 
@@ -105,14 +106,14 @@ class Relayer {
     const refundPayerValidator = new RefundPayerValidator(refundPayerStore);
     const apiKeyHandler = new ApiKeyHandler(refundPayerValidator, refundPayerStore);
     const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue);
-    this.walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider), new GnosisSafeService(this.provider));
+    const transactionGasPriceComputator = new TransactionGasPriceComputator(new GasPriceOracle());
+    this.walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider, transactionGasPriceComputator), new GnosisSafeService(this.provider, transactionGasPriceComputator));
     const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(this.walletContractService);
     const authorisationStore = new AuthorisationStore(this.database);
     const authorisationService = new AuthorisationService(authorisationStore, relayerRequestSignatureValidator, this.walletContractService);
     const devicesStore = new DevicesStore(this.database);
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
-    const gasPriceOracle = new GasPriceOracle();
-    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, requiredBalanceChecker, devicesService, gasPriceOracle);
+    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, requiredBalanceChecker, devicesService, transactionGasPriceComputator);
     const statusService = new MessageStatusService(messageRepository, this.walletContractService);
     const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, this.walletContractService);
     const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);

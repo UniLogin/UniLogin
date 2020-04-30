@@ -8,7 +8,6 @@ import {basicWalletContractWithMockToken} from '../fixtures/basicWalletContractW
 import MessageSQLRepository from '../../src/integration/sql/services/MessageSQLRepository';
 import {getContractWhiteList} from '../../src/http/relayers/RelayerUnderTest';
 import {MessageStatusService} from '../../src/core/services/execution/messages/MessageStatusService';
-import {Beta2Service} from '../../src/integration/ethereum/Beta2Service';
 import MessageExecutionValidator from '../../src/integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../src/integration/ethereum/MessageExecutor';
 import {DevicesStore} from '../../src/integration/sql/services/DevicesStore';
@@ -25,8 +24,7 @@ import {GasComputation} from '../../src/core/services/GasComputation';
 import {BlockchainService} from '@unilogin/contracts';
 import MessageHandlerValidator from '../../src/core/services/validators/MessageHandlerValidator';
 import PendingMessages from '../../src/core/services/execution/messages/PendingMessages';
-import {WalletContractService} from '../../src/integration/ethereum/WalletContractService';
-import {GnosisSafeService} from '../../src/integration/ethereum/GnosisSafeService';
+import {setupWalletContractService} from './setupWalletContractService';
 
 export default async function setupMessageService(knex: Knex, config: Config) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
@@ -35,12 +33,10 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const deploymentRepository = new SQLRepository<Deployment>(knex, 'deployments');
   const devicesStore = new DevicesStore(knex);
   const executionQueue = new QueueSQLStore(knex);
-  const beta2Service = new Beta2Service(wallet.provider);
   const blockchainService = new BlockchainService(provider);
   const gasComputation = new GasComputation(blockchainService);
   const messageHandlerValidator = new MessageHandlerValidator(config.maxGasLimit, gasComputation, wallet.address);
-  const gnosisSafeService = new GnosisSafeService(provider);
-  const walletContractService = new WalletContractService(blockchainService, beta2Service, gnosisSafeService);
+  const walletContractService = await setupWalletContractService(provider);
   const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
   const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
   const minedTransactionHandler = new MinedTransactionHandler(authorisationStore, devicesService, walletContractService);

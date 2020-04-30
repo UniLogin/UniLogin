@@ -10,6 +10,7 @@ import {deployContract} from 'ethereum-waffle';
 import {DEPLOY_GAS_LIMIT} from '@unilogin/commons';
 import {DEPLOY_CONTRACT_NONCE} from '@unilogin/contracts';
 import {getSetupData} from './http';
+import {TransactionGasPriceComputator} from '../../src/integration/ethereum/TransactionGasPriceComputator';
 
 export default async function setupWalletService(wallet: Wallet) {
   const [ensService, provider] = await buildEnsService(wallet, 'mylogin.eth');
@@ -28,7 +29,8 @@ export default async function setupWalletService(wallet: Wallet) {
   const fakeGasPriceOracle: any = {
     getGasPrices: () => ({fast: {gasPrice: utils.bigNumberify('9090')}}),
   };
-  const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceChecker, fakeDevicesService, fakeGasPriceOracle);
+  const transactionGasPriceComputator = new TransactionGasPriceComputator(fakeGasPriceOracle as any);
+  const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceChecker, fakeDevicesService, transactionGasPriceComputator);
   return {provider, wallet, walletService, factoryContract, ensService, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler};
 }
 
