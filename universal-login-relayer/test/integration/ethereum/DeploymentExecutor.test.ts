@@ -2,10 +2,11 @@ import setupWalletService, {createFutureWalletUsingEnsService} from '../../testh
 import {createKeyPair, ETHER_NATIVE_TOKEN, KeyPair, DeployArgs} from '@unilogin/commons';
 import sinon from 'sinon';
 import DeploymentExecutor from '../../../src/integration/ethereum/DeploymentExecutor';
-import {DeploymentSQLRepository} from '../../../src/integration/sql/services/DeploymentSQLRepository';
 import {expect} from 'chai';
 import {utils, Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
+import SQLRepository from '../../../src/integration/sql/services/SQLRepository';
+import Deployment from '../../../src/core/models/Deployment';
 
 describe('INT: Deployment Executor', () => {
   let keyPair: KeyPair;
@@ -13,7 +14,7 @@ describe('INT: Deployment Executor', () => {
   let signature;
   let deployment: DeployArgs;
   let deploymentExecutor: DeploymentExecutor;
-  let deploymentRepository: DeploymentSQLRepository;
+  let deploymentRepository: SQLRepository<Deployment>;
   let contractAddress: string;
   let wallet: Wallet;
 
