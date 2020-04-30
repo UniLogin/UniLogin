@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEPLOY_GAS_LIMIT, TEST_APPLICATION_INFO, TEST_REFUND_PAYER, getDeployData} from '@unilogin/commons';
 import {beta2, signStringMessage, calculateGnosisStringHash, gnosisSafe} from '@unilogin/contracts';
-import {startRelayerWithRefund, getInitData} from '../testhelpers/http';
+import {startRelayer, getInitData} from '../testhelpers/http';
 import {RelayerUnderTest} from '../../src';
 import {waitForDeploymentStatus} from '../testhelpers/waitForDeploymentStatus';
 import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
@@ -29,7 +29,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   let ensRegistrar: Contract;
 
   beforeEach(async () => {
-    ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress, ensRegistrar, fallbackHandlerContract} = await startRelayerWithRefund(relayerPort));
+    ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress, ensRegistrar, fallbackHandlerContract} = await startRelayer(relayerPort));
     keyPair = createKeyPair();
     initCode = getDeployData(beta2.WalletProxy as any, [walletContract.address]);
     ({signature, contractAddress} = await createFutureWallet(keyPair, ensName, factoryContract, deployer, ensAddress, relayer.publicConfig.ensRegistrar, walletContract.address, fallbackHandlerContract.address));

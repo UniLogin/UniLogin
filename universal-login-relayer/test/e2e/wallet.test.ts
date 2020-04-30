@@ -4,7 +4,7 @@ import {utils, Wallet, Contract} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE, KeyPair} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
-import {startRelayerWithRefund} from '../testhelpers/http';
+import {startRelayer} from '../testhelpers/http';
 import {getGnosisTestSignedMessage, getTestSignedMessage} from '../testconfig/message';
 import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
 import Relayer from '../../src';
@@ -24,7 +24,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
   let ensRegistrar: Contract;
 
   before(async () => {
-    ({relayer, deployer, otherWallet, mockToken, ensAddress, walletContract, factoryContract, ensRegistrar} = await startRelayerWithRefund(relayerPort));
+    ({relayer, deployer, otherWallet, mockToken, ensAddress, walletContract, factoryContract, ensRegistrar} = await startRelayer(relayerPort));
     ({proxyContract: contract, keyPair} = await deployGnosisSafeProxyWithENS(deployer, factoryContract.address, walletContract.address, 'name.mylogin.eth', ensAddress, ensRegistrar.address, TEST_GAS_PRICE));
     await mockToken.transfer(contract.address, utils.parseEther('10.0'));
   });

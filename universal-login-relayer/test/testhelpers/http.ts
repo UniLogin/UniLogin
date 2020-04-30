@@ -36,7 +36,7 @@ export const createWalletCounterfactually = async (wallet: Wallet, relayerUrlOrS
   return new Contract(futureAddress, WalletContractInterface, wallet);
 };
 
-export const startRelayerWithRefund = async (port = '33111') => {
+export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
   const [deployer, wallet, otherWallet] = getWallets(provider);
   const walletContract = await deployGnosisSafe(deployer);
