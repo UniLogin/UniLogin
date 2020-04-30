@@ -15,7 +15,7 @@ import {join} from 'path';
 
 export interface DashboardModalProps {
   walletService: WalletService;
-  onClose?: () => void;
+  onClose: () => void;
   basePath?: string;
 }
 
@@ -51,9 +51,9 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
               <DialogWrapper message={notice} deployedWallet={deployedWallet}>
                 <Funds
                   deployedWallet={deployedWallet}
-                  onTopUpClick={() => history.push('/dashboard/topUp')}
-                  onSendClick={() => history.push('/dashboard/transferAmount')}
-                  onDeviceMessageClick={() => history.push('/dashboard/devices/approveDevice')}
+                  onTopUpClick={() => history.push(join(basePath, 'topUp'))}
+                  onSendClick={() => history.push(join(basePath, 'transferAmount'))}
+                  onDeviceMessageClick={() => history.push(join(basePath, 'devices/approveDevice'))}
                 />
               </DialogWrapper>
             </ModalWrapper>
@@ -98,7 +98,7 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
         <Route path={join(basePath, 'devices')}>
           <ModalWrapper hideModal={onClose} modalClassName="udashboard-modal">
             <DialogWrapper message={notice} deployedWallet={deployedWallet}>
-              <Devices walletService={walletService} onAccountDisconnected={onClose} basePath="/dashboard/devices" />
+              <Devices walletService={walletService} onAccountDisconnected={onClose} basePath={join(basePath, 'devices')} />
             </DialogWrapper>
           </ModalWrapper>
         </Route>
