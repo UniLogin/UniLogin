@@ -94,6 +94,11 @@ export class RelayerUnderTest extends Relayer {
     return this.config;
   }
 
+  async start() {
+    await super.start();
+    await this.setupTestPartner();
+  }
+
   getServer() {
     return this.server;
   }
