@@ -6,8 +6,8 @@ import {Contract, utils, providers, Wallet} from 'ethers';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import basicSDK, {transferMessage} from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER} from '@unilogin/commons';
-import UniversalLoginSDK, {DeployedWallet} from '../../../src';
+import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER, TEST_SDK_CONFIG, OperationType, ensure, TEST_GAS_PRICE} from '@unilogin/commons';
+import UniversalLoginSDK, {DeployedWallet, WalletService} from '../../../src';
 import {waitForSuccess} from '../../helpers/waitForSuccess';
 
 chai.use(solidity);
@@ -119,7 +119,17 @@ describe('INT: DeployedWallet', () => {
     });
 
     it('Should return transaction hash and proper state with free transaction', async () => {
-      sdk.config.apiKey = TEST_REFUND_PAYER.apiKey;
+      const startingBalance = (await provider.getBalance(message.to!));
+      const newSdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, apiKey: TEST_REFUND_PAYER.apiKey});
+      newSdk.getRelayerConfig();
+      deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, newSdk);
+      const msg = {
+        ...message,
+        gasPrice: '0',
+      };
+      const {waitToBeSuccess} = await deployedWallet.execute(msg);
+      await waitToBeSuccess();
+      expect(await provider.getBalance(message.to!)).to.eq(startingBalance.add('0.5'));
     });
 
     it('Should return transaction hash and proper state', async () => {
