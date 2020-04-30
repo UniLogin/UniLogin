@@ -5,4 +5,5 @@ export default interface MessageItem extends Mineable {
   collectedSignatureKeyPairs: CollectedSignatureKeyPair[];
   walletAddress: string;
   message: SignedMessage;
+  refundPayerId: string | null;
 }
