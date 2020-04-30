@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet, Contract} from 'ethers';
 import {loadFixture} from 'ethereum-waffle';
-import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair, TEST_ACCOUNT_ADDRESS, UnsignedMessage, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION} from '@unilogin/commons';
+import {calculateMessageHash, SignedMessage, TEST_TRANSACTION_HASH, bignumberifySignedMessageFields, stringifySignedMessageFields, CollectedSignatureKeyPair, TEST_ACCOUNT_ADDRESS, UnsignedMessage, CURRENT_WALLET_VERSION, CURRENT_NETWORK_VERSION, TEST_REFUND_PAYER} from '@unilogin/commons';
 import {messageToUnsignedMessage, unsignedMessageToSignedMessage} from '@unilogin/contracts';
 import {executeSetRequiredSignatures, emptyMessage} from '@unilogin/contracts/testutils';
 import IMessageRepository from '../../../src/core/models/messages/IMessagesRepository';
@@ -13,6 +13,7 @@ import MessageSQLRepository from '../../../src/integration/sql/services/MessageS
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {clearDatabase} from '../../../src/http/relayers/RelayerUnderTest';
 import {createMessageItem} from '../../../src/core/utils/messages/serialisation';
+import {RefundPayerStore} from '../../../src/integration/sql/services/RefundPayerStore';
 
 for (const config of [{
   Type: MessageSQLRepository,
@@ -32,6 +33,13 @@ for (const config of [{
     let actionWallet: Wallet;
     const knex = getKnexConfig();
 
+    const setupRefundPayerStore = async () => {
+      const refundPayerStore = new RefundPayerStore(knex);
+      await refundPayerStore.add(TEST_REFUND_PAYER);
+      const refundPayerEntity = await refundPayerStore.get(TEST_REFUND_PAYER.apiKey);
+      return refundPayerEntity!.id;
+    };
+
     beforeEach(async () => {
       ({wallet, walletContract, actionKey, actionWallet} = await loadFixture(basicWalletContractWithMockToken));
       let args: any;
@@ -43,12 +51,9 @@ for (const config of [{
       unsignedMessage = messageToUnsignedMessage(message, CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION);
       signedMessage = unsignedMessageToSignedMessage(unsignedMessage, wallet.privateKey);
 
-      messageItem = createMessageItem(signedMessage);
+      const refundPayerId = await setupRefundPayerStore();
+      messageItem = createMessageItem(signedMessage, refundPayerId);
       messageHash = calculateMessageHash(signedMessage);
-    });
-
-    afterEach(async () => {
-      config.Type.name.includes('SQL') && await clearDatabase(knex);
     });
 
     it('roundtrip', async () => {
@@ -137,6 +142,10 @@ for (const config of [{
       await messageRepository.addSignature(messageHash, signature, actionWallet.address);
       const key2 = getKeyFromHashAndSignature(messageHash, signature);
       expect(await messageRepository.getCollectedSignatureKeyPairs(messageHash)).to.deep.eq([{key, signature: signedMessage.signature}, {key: key2, signature}]);
+    });
+
+    afterEach(async () => {
+      config.Type.name.includes('SQL') && await clearDatabase(knex);
     });
 
     after(async () => {

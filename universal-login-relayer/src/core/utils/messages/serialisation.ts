@@ -66,11 +66,12 @@ const dataToMessageGnosis = (data: any): DecodedMessageGnosis => ({
   signature: data[9],
 });
 
-export const createMessageItem = (signedMessage: SignedMessage): MessageItem => ({
+export const createMessageItem = (signedMessage: SignedMessage, refundPayerId: string | null = null): MessageItem => ({
   walletAddress: signedMessage.from,
   collectedSignatureKeyPairs: [],
   transactionHash: null,
   error: null,
   message: signedMessage,
   state: 'AwaitSignature',
+  refundPayerId,
 });
