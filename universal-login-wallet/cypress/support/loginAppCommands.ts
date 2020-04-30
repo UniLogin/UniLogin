@@ -21,8 +21,8 @@ Cypress.Commands.add('selectTopUpWithCrypto', () => {
 
 Cypress.Commands.add('topUpAccount', () => {
   cy.get('.unilogin-component-top-up-body')
-  .get('.unilogin-component-top-up-row')
-  .get('input[id="contract-address"]').then(input => cy.task('topUpAccount', input.val()));
+    .get('.unilogin-component-top-up-row')
+    .get('input[id="contract-address"]').then(input => cy.task('topUpAccount', input.val()));
 });
 
 Cypress.Commands.add('goToDashboard', () => {

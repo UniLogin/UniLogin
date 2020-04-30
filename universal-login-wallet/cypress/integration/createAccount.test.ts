@@ -9,11 +9,11 @@ describe('E2E: Create Account', () => {
       cy.approveTerms();
       cy.ensureCorrectLocation('/selectDeployName');
       cy.pickUsername(ensName);
-      cy.ensureCorrectLocation('/create/topUp');
-      cy.selectTopUpWithCrypto();
-      cy.topUpAccount();
+      cy.get('.unilogin-component-waitingfor-action-title');
+      cy.checkLocalStorageTokenProp('wallet-ganache', 'kind', 'Deploying');
       cy.ensureCorrectLocation('/creationSuccess');
       cy.goToDashboard();
+      cy.checkLocalStorageTokenProp('wallet-ganache', 'kind', 'Deployed');
     });
   });
 });
