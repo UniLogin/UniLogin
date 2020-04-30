@@ -10,9 +10,9 @@ class MessageHandler {
 
   }
 
-  async handle(message: SignedMessage) {
+  async handle(message: SignedMessage, refundPayerId?: string) {
     await this.validator.validate(message);
-    return this.pendingMessages.add(message);
+    return this.pendingMessages.add(message, refundPayerId);
   }
 
   async getStatus(messageHash: string) {
