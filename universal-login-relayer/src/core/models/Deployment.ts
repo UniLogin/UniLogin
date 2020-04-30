@@ -9,4 +9,5 @@ export default interface Deployment extends DeployArgs {
   contractAddress: string;
   refundPayerId?: number;
   gasUsed: string | null;
+  gasPriceUsed: string | null;
 }
