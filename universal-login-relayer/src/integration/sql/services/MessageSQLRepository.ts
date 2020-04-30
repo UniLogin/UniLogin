@@ -18,6 +18,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
       walletAddress: messageItem.walletAddress,
       state: 'AwaitSignature',
       message: stringifySignedMessageFields(messageItem.message),
+      refundPayerId: messageItem.refundPayerId,
     } as MessageItem,
     );
   }
@@ -42,7 +43,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   private async getMessageEntry(messageHash: string) {
     return this.knex(this.tableName)
       .where('hash', messageHash)
-      .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state'])
+      .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state', 'refundPayerId'])
       .first();
   }
 

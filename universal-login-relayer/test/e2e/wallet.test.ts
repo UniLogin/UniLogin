@@ -5,7 +5,7 @@ import {AddressZero} from 'ethers/constants';
 import {DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE, KeyPair} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {startRelayerWithRefund} from '../testhelpers/http';
-import {getGnosisTestSignedMessage} from '../testconfig/message';
+import {getGnosisTestSignedMessage, getTestSignedMessage} from '../testconfig/message';
 import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
 import Relayer from '../../src';
 chai.use(chaiHttp);
@@ -56,6 +56,14 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       expect(statusById.body.transactionHash).to.not.be.null;
     };
     await waitExpect(() => checkStatusId());
+  });
+
+  it('Execution fail if gasPrice is 0 and no apiKey', async () => {
+    const result = await chai.request((relayer as any).server)
+      .post('/wallet/execution/')
+      .send(stringifySignedMessageFields(getTestSignedMessage({gasPrice: 0})));
+    expect(result.status).eq(400);
+    expect(result.error.text).contain('Invalid api key: undefined');
   });
 
   it('status is 400 if refundReceiver isn`t relayer', async () => {

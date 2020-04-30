@@ -10,9 +10,10 @@ import DeploymentHandler from '../../core/services/execution/deployment/Deployme
 import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
 import {ApiKeyHandler} from '../../core/services/execution/ApiKeyHandler';
 
-const messageHandling = (messageHandler: MessageHandler) =>
-  async (data: {body: SignedMessage}) => {
-    const status = await messageHandler.handle(data.body);
+const messageHandling = (messageHandler: MessageHandler, apiKeyHandler: ApiKeyHandler) =>
+  async (data: {headers: {api_key: string | undefined}, body: SignedMessage}) => {
+    const refundPayerId = await apiKeyHandler.handle(data.headers.api_key, data.body.gasPrice.toString());
+    const status = await messageHandler.handle(data.body, refundPayerId);
     return responseOf({status}, 201);
   };
 
@@ -55,6 +56,7 @@ export default (
 
   router.post('/execution', asyncHandler(
     sanitize({
+      headers: asObject({api_key: asOptional(asString)}),
       body: asObject({
         gasToken: asString,
         to: asEthAddress,
@@ -70,7 +72,7 @@ export default (
         refundReceiver: asEthAddress,
       }),
     }),
-    messageHandling(messageHandler),
+    messageHandling(messageHandler, apiKeyHandler),
   ));
 
   router.get('/execution/:messageHash', asyncHandler(
