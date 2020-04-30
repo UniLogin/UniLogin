@@ -16,16 +16,6 @@ import {getFutureAddress} from '@unilogin/contracts/testutils';
 import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
 
-export const startRelayer = async (port = '33111') => {
-  const provider = createMockProvider();
-  const [deployer] = getWallets(provider);
-  const wallet = Wallet.createRandom();
-  const otherWallet = Wallet.createRandom();
-  const {relayer, factoryContract, walletContract, mockToken, ensAddress} = await RelayerUnderTest.createPreconfigured(deployer, port);
-  await relayer.start();
-  return {provider, wallet, otherWallet, relayer, deployer, factoryContract, walletContract, mockToken, ensAddress};
-};
-
 export const createWalletCounterfactually = async (wallet: Wallet, relayerUrlOrServer: string, keyPair: KeyPair, walletContractAddress: string, factoryContractAddress: string, ensAddress: string, ensName = 'marek.mylogin.eth') => {
   const futureAddress = getFutureAddress(walletContractAddress, factoryContractAddress, keyPair.publicKey);
   await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});

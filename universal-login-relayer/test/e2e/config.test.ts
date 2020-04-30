@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils} from 'ethers';
 import {PublicRelayerConfig} from '@unilogin/commons';
-import {startRelayer} from '../testhelpers/http';
+import {startRelayerWithRefund} from '../testhelpers/http';
 import {getPublicConfig} from '../../src/http/routes/config';
 import {RelayerUnderTest} from '../../src';
 
@@ -12,7 +12,7 @@ describe('E2E: Relayer - Config routes', async () => {
   let relayer: RelayerUnderTest;
 
   before(async () => {
-    ({relayer} = await startRelayer());
+    ({relayer} = await startRelayerWithRefund());
   });
 
   it('should return public config', async () => {

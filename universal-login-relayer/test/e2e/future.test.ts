@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import {RelayerUnderTest} from '../../src';
-import {startRelayer} from '../testhelpers/http';
+import {startRelayerWithRefund} from '../testhelpers/http';
 import {TEST_CONTRACT_ADDRESS, TEST_KEY, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 describe('E2E: Relayer - future wallet', () => {
@@ -9,7 +9,7 @@ describe('E2E: Relayer - future wallet', () => {
   const relayerUrl = `http://localhost:${relayerPort}`;
 
   before(async () => {
-    ({relayer} = await startRelayer(relayerPort));
+    ({relayer} = await startRelayerWithRefund(relayerPort));
   });
 
   it('returns 400, when missing parameter', async () => {
