@@ -17,14 +17,19 @@ import {useClassFor} from '../../utils/classFor';
 
 interface GasPriceProps {
   deployedWallet?: DeployedWallet;
-  sdk?: UniversalLoginSDK;
+  sdk: UniversalLoginSDK;
   isDeployed: boolean;
   gasLimit: utils.BigNumberish;
   onGasParametersChanged: OnGasParametersChanged;
   className?: string;
 }
 
-export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
+const GAS_PRICE_FOR_NO_REFUND = {
+  gasPrice: utils.bigNumberify('0'),
+  gasToken: ETHER_NATIVE_TOKEN.address,
+};
+
+export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
   useAsyncEffect(async () => {
@@ -115,11 +120,30 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
       </div>
     </>
   );
+
   return (
     <div ref={ref} className={useClassFor('gas-price')}>
       {gasModes ? renderComponent(gasModes) : <Spinner className="spinner-small" />}
     </div>
   );
+};
+
+export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
+  const classNameForGasPrice = useClassFor('gas-price');
+  useEffect(() => {
+    if (sdk.isRefundPaid()) {
+      onGasParametersChanged(GAS_PRICE_FOR_NO_REFUND);
+    }
+  });
+
+  return sdk.isRefundPaid() ? <div className={classNameForGasPrice}></div> : <GasPriceWithOptions
+    isDeployed={isDeployed}
+    deployedWallet={deployedWallet}
+    gasLimit={gasLimit}
+    onGasParametersChanged={onGasParametersChanged}
+    className={className}
+    sdk={sdk}
+  />;
 };
 
 const GasPriceTitle = () => (
