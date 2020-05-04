@@ -8,6 +8,7 @@ import {startRelayer} from '../testhelpers/http';
 import {getGnosisTestSignedMessage, getTestSignedMessage} from '../testconfig/message';
 import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
 import Relayer from '../../src';
+import {describe} from 'mocha';
 chai.use(chaiHttp);
 
 describe('E2E: Relayer - WalletContract routes', async () => {
@@ -29,14 +30,14 @@ describe('E2E: Relayer - WalletContract routes', async () => {
     await mockToken.transfer(contract.address, utils.parseEther('10.0'));
   });
 
-  const checkMessageState = async (messageHash: string) => {
-    const {body: messageStatus} = await chai.request((relayer as any).server)
-      .get(`/wallet/execution/${messageHash}`);
-    expect(messageStatus.state).eq('Success');
-  };
+  describe('Execute signed transfer', () => {
+    const checkMessageState = async (messageHash: string) => {
+      const {body: messageStatus} = await chai.request((relayer as any).server)
+        .get(`/wallet/execution/${messageHash}`);
+      expect(messageStatus.state).eq('Success');
+    };
 
-  it('Execute signed transfer', async () => {
-    const msg = {
+    const getTransferMessage = async (gasPrice: number) => ({
       from: contract.address,
       to: otherWallet.address,
       value: 1000000000,
@@ -45,44 +46,37 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       operationType: OperationType.call,
       refundReceiver: deployer.address,
       gasToken: mockToken.address,
-      gasPrice: 100,
+      gasPrice,
       gasLimit: DEFAULT_GAS_LIMIT,
-    };
-    const balanceBefore = await otherWallet.getBalance();
-    const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
-    const stringifiedMessage = stringifySignedMessageFields(signedMessage);
-    const {status, body} = await chai.request((relayer as any).server)
-      .post('/wallet/execution')
-      .send(stringifiedMessage);
-    expect(status).to.eq(201);
-    await waitExpect(() => checkMessageState(body.status.messageHash));
-    expect(await otherWallet.getBalance()).to.eq(balanceBefore.add(msg.value));
-  });
+    });
 
-  it('Execute free signed transfer', async () => {
-    const msg = {
-      from: contract.address,
-      to: otherWallet.address,
-      value: 1000000000,
-      data: '0x0',
-      nonce: await contract.nonce(),
-      operationType: OperationType.call,
-      refundReceiver: deployer.address,
-      gasToken: mockToken.address,
-      gasPrice: 0,
-      gasLimit: DEFAULT_GAS_LIMIT,
-    };
-    const balanceBefore = await relayer.provider.getBalance(contract.address);
-    expect(balanceBefore.gt(utils.bigNumberify(msg.value))).to.be.true;
-    const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
-    const stringifiedMessage = stringifySignedMessageFields(signedMessage);
-    const {status, body} = await chai.request((relayer as any).server)
-      .post('/wallet/execution')
-      .set('api_key', TEST_REFUND_PAYER.apiKey)
-      .send(stringifiedMessage);
-    expect(status).to.eq(201);
-    await waitExpect(() => checkMessageState(body.status.messageHash));
-    expect(await relayer.provider.getBalance(contract.address)).to.eq(balanceBefore.sub(msg.value));
+    it('basic', async () => {
+      const msg = await getTransferMessage(100);
+      const balanceBefore = await otherWallet.getBalance();
+      const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
+      const stringifiedMessage = stringifySignedMessageFields(signedMessage);
+      const {status, body} = await chai.request((relayer as any).server)
+        .post('/wallet/execution')
+        .send(stringifiedMessage);
+      expect(status).to.eq(201);
+      await waitExpect(() => checkMessageState(body.status.messageHash));
+      expect(await otherWallet.getBalance()).to.eq(balanceBefore.add(msg.value));
+    });
+
+    it('free', async () => {
+      const msg = await getTransferMessage(0);
+      const balanceBefore = await relayer.provider.getBalance(contract.address);
+      expect(balanceBefore.gt(utils.bigNumberify(msg.value))).to.be.true;
+      const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
+      const stringifiedMessage = stringifySignedMessageFields(signedMessage);
+      const {status, body} = await chai.request((relayer as any).server)
+        .post('/wallet/execution')
+        .set('api_key', TEST_REFUND_PAYER.apiKey)
+        .send(stringifiedMessage);
+      expect(status).to.eq(201);
+      await waitExpect(() => checkMessageState(body.status.messageHash));
+      expect(await relayer.provider.getBalance(contract.address)).to.eq(balanceBefore.sub(msg.value));
+    });
   });
 
   it('Execution fail if gasPrice is 0 and no apiKey', async () => {
