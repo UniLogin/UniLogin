@@ -8,7 +8,7 @@ import {startRelayer} from '../testhelpers/http';
 import {getGnosisTestSignedMessage, getTestSignedMessage} from '../testconfig/message';
 import {deployGnosisSafeProxyWithENS} from '../testhelpers/createGnosisSafeContract';
 import Relayer from '../../src';
-import {describe} from 'mocha';
+
 chai.use(chaiHttp);
 
 describe('E2E: Relayer - WalletContract routes', async () => {
