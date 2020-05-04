@@ -58,9 +58,6 @@ export class DeployedWallet extends AbstractWallet {
   async execute(message: Partial<Message>): Promise<Execution> {
     const relayerConfig = this.sdk.getRelayerConfig();
     const nonce = message.nonce || await this.getNonce();
-    if (this.sdk.isRefundPaid()) {
-      message.gasPrice = '0';
-    }
     const partialMessage = {
       gasToken: ETHER_NATIVE_TOKEN.address,
       ...message,
@@ -68,6 +65,7 @@ export class DeployedWallet extends AbstractWallet {
       refundReceiver: relayerConfig.relayerAddress,
       operationType: OperationType.call,
       from: this.contractAddress,
+      gasPrice: this.sdk.isRefundPaid() ? '0' : message.gasPrice,
     };
     ensure(partialMessage.gasLimit! <= relayerConfig.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${relayerConfig.maxGasLimit}`);
     const signedMessage: SignedMessage = await this.sdk.messageConverter.messageToSignedMessage(partialMessage, this.privateKey);

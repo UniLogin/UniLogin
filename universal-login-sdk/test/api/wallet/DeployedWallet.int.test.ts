@@ -37,6 +37,7 @@ describe('INT: DeployedWallet', () => {
   beforeEach(async () => {
     const {...rest} = await loadFixture(basicSDK) as any;
     ({wallet, sdk, provider, otherWallet, relayer, walletContract, contractAddress, privateKey, mockToken, ensName} = rest);
+    await relayer.setupTestPartner();
     deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
     message = {...transferMessage, from: contractAddress, gasToken: ETHER_NATIVE_TOKEN.address, data: '0x'};
   });
@@ -118,23 +119,23 @@ describe('INT: DeployedWallet', () => {
       expect(await provider.getBalance(message.to!)).to.eq(expectedBalance);
     });
 
-    it('Should return transaction hash and proper state with free transaction', async () => {
-      const startingBalance = (await provider.getBalance(message.from!));
-      await relayer.setupTestPartner();
-      const newSdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, apiKey: TEST_REFUND_PAYER.apiKey});
-      await newSdk.start();
-      deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, newSdk);
-      const {waitToBeSuccess} = await deployedWallet.execute(message);
-      await waitToBeSuccess();
-      expect(await provider.getBalance(message.from!)).to.eq(startingBalance.sub(utils.bigNumberify('0.5')));
-      newSdk.stop();
-    });
-
     it('Should return transaction hash and proper state', async () => {
       const {waitToBeSuccess} = await deployedWallet.execute(message);
       const {transactionHash, state} = await waitToBeSuccess();
       expect(transactionHash).to.be.properHex(64);
       expect(state).to.eq('Success');
+    });
+
+    it('Should return transaction hash and proper state with free transaction', async () => {
+      const startingBalance = (await provider.getBalance(message.from!));
+      const newSdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
+      await newSdk.start();
+      deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, newSdk);
+      message.gasPrice = DEFAULT_GAS_PRICE;
+      const {waitToBeSuccess} = await deployedWallet.execute(message);
+      await waitToBeSuccess();
+      expect(await provider.getBalance(message.from!)).to.eq(startingBalance.sub(utils.parseEther('0.5')));
+      newSdk.stop();
     });
 
     it('when not enough tokens ', async () => {
@@ -169,19 +170,6 @@ describe('INT: DeployedWallet', () => {
       const secondDeployedWallet = new DeployedWallet(contractAddress, '', privateKey, secondSdk);
       const {waitToBeSuccess} = await secondDeployedWallet.execute(message);
       await expect(waitToBeSuccess()).to.be.eventually.fulfilled;
-    });
-
-    it('Should set gasPrice to 0 when execute with apiKey', async () => {
-      deployedWallet.sdk.config.apiKey = TEST_REFUND_PAYER.apiKey;
-      await relayer.setupTestPartner();
-      await deployedWallet.execute(message);
-      expect(message.gasPrice).to.deep.eq('0');
-    });
-
-    it('Should not set gasPrice when execute without apiKey', async () => {
-      deployedWallet.sdk.config.apiKey = undefined;
-      await deployedWallet.execute(message);
-      expect(message.gasPrice).to.deep.eq(DEFAULT_GAS_PRICE);
     });
   });
 
