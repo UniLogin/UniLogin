@@ -65,6 +65,7 @@ export class DeployedWallet extends AbstractWallet {
       refundReceiver: relayerConfig.relayerAddress,
       operationType: OperationType.call,
       from: this.contractAddress,
+      gasPrice: this.sdk.isRefundPaid() ? '0' : message.gasPrice,
     };
     ensure(partialMessage.gasLimit! <= relayerConfig.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${relayerConfig.maxGasLimit}`);
     const signedMessage: SignedMessage = await this.sdk.messageConverter.messageToSignedMessage(partialMessage, this.privateKey);

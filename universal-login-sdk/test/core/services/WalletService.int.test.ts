@@ -56,9 +56,9 @@ describe('INT: WalletService', () => {
     });
 
     it('free deployment', async () => {
-      const newSdk = new UniversalLoginSDK(relayer.url(), wallet.provider, {...TEST_SDK_CONFIG, apiKey: TEST_REFUND_PAYER.apiKey});
-      walletService = new WalletService(newSdk);
-      await newSdk.fetchRelayerConfig();
+      const refundPaidSdk = new UniversalLoginSDK(relayer.url(), wallet.provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
+      walletService = new WalletService(refundPaidSdk);
+      await refundPaidSdk.fetchRelayerConfig();
       await walletService.createWallet('meme.mylogin.eth');
       await walletService.waitForTransactionHash();
       expect(walletService.state.kind).to.eq('Deploying');

@@ -6,7 +6,7 @@ import {Contract, utils, providers, Wallet} from 'ethers';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import basicSDK, {transferMessage} from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER, TEST_SDK_CONFIG} from '@unilogin/commons';
 import UniversalLoginSDK, {DeployedWallet} from '../../../src';
 import {waitForSuccess} from '../../helpers/waitForSuccess';
 
@@ -37,6 +37,7 @@ describe('INT: DeployedWallet', () => {
   beforeEach(async () => {
     const {...rest} = await loadFixture(basicSDK) as any;
     ({wallet, sdk, provider, otherWallet, relayer, walletContract, contractAddress, privateKey, mockToken, ensName} = rest);
+    await relayer.setupTestPartner();
     deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
     message = {...transferMessage, from: contractAddress, gasToken: ETHER_NATIVE_TOKEN.address, data: '0x'};
   });
@@ -123,6 +124,17 @@ describe('INT: DeployedWallet', () => {
       const {transactionHash, state} = await waitToBeSuccess();
       expect(transactionHash).to.be.properHex(64);
       expect(state).to.eq('Success');
+    });
+
+    it('Should return transaction hash and proper state with free transaction', async () => {
+      const startingBalance = (await provider.getBalance(message.from!));
+      const refundPaidSdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
+      await refundPaidSdk.start();
+      deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, refundPaidSdk);
+      const {waitToBeSuccess} = await deployedWallet.execute(message);
+      await waitToBeSuccess();
+      expect(await provider.getBalance(message.from!)).to.eq(startingBalance.sub(utils.parseEther('0.5')));
+      refundPaidSdk.stop();
     });
 
     it('when not enough tokens ', async () => {
