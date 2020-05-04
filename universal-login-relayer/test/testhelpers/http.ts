@@ -1,7 +1,7 @@
 import chai from 'chai';
 import {Contract, utils, Wallet} from 'ethers';
 import {Provider} from 'ethers/providers';
-import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
+import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {
   calculateInitializeSignature,
   ETHER_NATIVE_TOKEN,
@@ -11,7 +11,7 @@ import {
   DEPLOY_GAS_LIMIT,
   KeyPair,
 } from '@unilogin/commons';
-import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, deployProxyFactory, deployGnosisSafe, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS, deployDefaultCallbackHandler} from '@unilogin/contracts';
+import {beta2, encodeInitializeWithENSData, ENSInterface, encodeDataForSetup, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@unilogin/contracts';
 import {getFutureAddress} from '@unilogin/contracts/testutils';
 import {RelayerUnderTest} from '../../src/http/relayers/RelayerUnderTest';
 import {waitForDeploymentStatus} from './waitForDeploymentStatus';
@@ -39,11 +39,7 @@ export const createWalletCounterfactually = async (wallet: Wallet, relayerUrlOrS
 export const startRelayer = async (port = '33111') => {
   const provider = createMockProvider();
   const [deployer, wallet, otherWallet] = getWallets(provider);
-  const walletContract = await deployGnosisSafe(deployer);
-  const factoryContract = await deployProxyFactory(deployer);
-  const fallbackHandlerContract = await deployDefaultCallbackHandler(deployer);
-  const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
-  const {relayer, mockToken, ensAddress} = await RelayerUnderTest.createPreconfiguredRelayer({port, wallet: deployer, walletContract, factoryContract, ensRegistrar, fallbackHandlerContract});
+  const {relayer, factoryContract, ensAddress, walletContract, mockToken, ensRegistrar, fallbackHandlerContract} = await RelayerUnderTest.createPreconfigured(deployer, port);
   await relayer.start();
   return {provider, relayer, mockToken, factoryContract, walletContract, deployer, ensAddress, wallet, otherWallet, ensRegistrar, fallbackHandlerContract};
 };

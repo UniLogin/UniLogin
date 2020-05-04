@@ -48,7 +48,7 @@ describe('E2E: Relayer - Authorisation routes', async () => {
   let relayer: Relayer;
   let proxyContract: Contract;
   let keyPair: KeyPair;
-  let walletContract: Wallet;
+  let walletContract: Contract;
   let factoryContract: Contract;
   let deployer: Wallet;
 
