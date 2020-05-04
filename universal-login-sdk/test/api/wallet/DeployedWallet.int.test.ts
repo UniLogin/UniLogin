@@ -120,7 +120,7 @@ describe('INT: DeployedWallet', () => {
 
     it('Should return transaction hash and proper state with free transaction', async () => {
       const startingBalance = (await provider.getBalance(message.from!));
-      await relayer.setupPartner();
+      await relayer.setupTestPartner();
       const newSdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, apiKey: TEST_REFUND_PAYER.apiKey});
       await newSdk.start();
       deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, newSdk);
@@ -173,6 +173,7 @@ describe('INT: DeployedWallet', () => {
 
     it('Should set gasPrice to 0 when execute with apiKey', async () => {
       deployedWallet.sdk.config.apiKey = TEST_REFUND_PAYER.apiKey;
+      await relayer.setupTestPartner();
       await deployedWallet.execute(message);
       expect(message.gasPrice).to.deep.eq('0');
     });
