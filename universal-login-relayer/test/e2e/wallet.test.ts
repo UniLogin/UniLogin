@@ -60,11 +60,10 @@ describe('E2E: Relayer - WalletContract routes', async () => {
   });
 
   it('Execute free signed transfer', async () => {
-    const value = 1000000000;
     const msg = {
       from: contract.address,
       to: otherWallet.address,
-      value,
+      value: 1000000000,
       data: '0x0',
       nonce: await contract.nonce(),
       operationType: OperationType.call,
@@ -74,7 +73,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       gasLimit: DEFAULT_GAS_LIMIT,
     };
     const balanceBefore = await relayer.provider.getBalance(contract.address);
-    expect(balanceBefore.gt(utils.bigNumberify(value))).to.be.true;
+    expect(balanceBefore.gt(utils.bigNumberify(msg.value))).to.be.true;
     const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
     const stringifiedMessage = stringifySignedMessageFields(signedMessage);
     const {status, body} = await chai.request((relayer as any).server)
