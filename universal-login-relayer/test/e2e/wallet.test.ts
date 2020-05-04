@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, Wallet, Contract} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE, KeyPair} from '@unilogin/commons';
+import {DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE, KeyPair, TEST_REFUND_PAYER} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {startRelayer} from '../testhelpers/http';
 import {getGnosisTestSignedMessage, getTestSignedMessage} from '../testconfig/message';
@@ -56,6 +56,36 @@ describe('E2E: Relayer - WalletContract routes', async () => {
     };
     await waitExpect(() => checkMessageState());
     expect(await otherWallet.getBalance()).to.eq(balanceBefore.add(msg.value));
+  });
+
+  it('Execute free signed transfer', async () => {
+    const msg = {
+      from: contract.address,
+      to: otherWallet.address,
+      value: 1000000000,
+      data: '0x0',
+      nonce: '0',
+      operationType: OperationType.call,
+      refundReceiver: deployer.address,
+      gasToken: mockToken.address,
+      gasPrice: 0,
+      gasLimit: DEFAULT_GAS_LIMIT,
+    };
+    const balanceBefore = await relayer.provider.getBalance(contract.address);
+    const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
+    const stringifiedMessage = stringifySignedMessageFields(signedMessage);
+    const {status, body} = await chai.request((relayer as any).server)
+      .post('/wallet/execution')
+      .set('api_key', TEST_REFUND_PAYER.apiKey)
+      .send(stringifiedMessage);
+    expect(status).to.eq(201);
+    const checkMessageState = async () => {
+      const {body: messageStatus} = await chai.request((relayer as any).server)
+        .get(`/wallet/execution/${body.status.messageHash}`);
+      expect(messageStatus.state).eq('Success');
+    };
+    await waitExpect(() => checkMessageState());
+    expect(await relayer.provider.getBalance(contract.address)).to.eq(balanceBefore.sub(msg.value));
   });
 
   it('Execution fail if gasPrice is 0 and no apiKey', async () => {
