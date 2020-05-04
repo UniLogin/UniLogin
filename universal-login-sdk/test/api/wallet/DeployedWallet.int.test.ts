@@ -119,13 +119,15 @@ describe('INT: DeployedWallet', () => {
     });
 
     it('Should return transaction hash and proper state with free transaction', async () => {
-      const startingBalance = (await provider.getBalance(message.to!));
+      const startingBalance = (await provider.getBalance(message.from!));
+      await relayer.setupPartner();
       const newSdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, apiKey: TEST_REFUND_PAYER.apiKey});
-      await newSdk.fetchRelayerConfig();
+      await newSdk.start();
       deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, newSdk);
       const {waitToBeSuccess} = await deployedWallet.execute(message);
       await waitToBeSuccess();
-      expect(await provider.getBalance(message.to!)).to.eq(startingBalance.add(utils.bigNumberify('0.5')));
+      expect(await provider.getBalance(message.from!)).to.eq(startingBalance.sub(utils.bigNumberify('0.5')));
+      newSdk.stop();
     });
 
     it('Should return transaction hash and proper state', async () => {
