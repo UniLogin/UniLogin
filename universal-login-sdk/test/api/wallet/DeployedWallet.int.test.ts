@@ -128,14 +128,13 @@ describe('INT: DeployedWallet', () => {
 
     it('Should return transaction hash and proper state with free transaction', async () => {
       const startingBalance = (await provider.getBalance(message.from!));
-      const newSdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
-      await newSdk.start();
-      deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, newSdk);
-      message.gasPrice = DEFAULT_GAS_PRICE;
+      const refundPaidSdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
+      await refundPaidSdk.start();
+      deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, refundPaidSdk);
       const {waitToBeSuccess} = await deployedWallet.execute(message);
       await waitToBeSuccess();
       expect(await provider.getBalance(message.from!)).to.eq(startingBalance.sub(utils.parseEther('0.5')));
-      newSdk.stop();
+      refundPaidSdk.stop();
     });
 
     it('when not enough tokens ', async () => {
