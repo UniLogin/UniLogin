@@ -2,7 +2,7 @@ import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet} from 'ethers';
 import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
-import Relayer, {Config} from '@unilogin/relayer';
+import {Config} from '@unilogin/relayer';
 import {gnosisSafe, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
