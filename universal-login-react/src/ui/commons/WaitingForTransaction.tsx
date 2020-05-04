@@ -46,7 +46,7 @@ export const WaitingForDeployment = (props: WaitingForTransactionProps) => (
     {...props}
     action={props.action || 'Wallet creation'}
     description={props.description || DEPLOYMENT_DESCRIPTION}
-    info={props.info || DEPLOYMENT_DESCRIPTION}
+    info={props.info}
   />
 );
 
