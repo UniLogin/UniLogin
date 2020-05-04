@@ -1,4 +1,4 @@
-const {startDevelopment, createEnv, spawnProcess} = require('@unilogin/ops');
+const {startDevAndCreateEnv, spawnProcess} = require('@unilogin/ops');
 
 function runWebServer(vars: any) {
   const env = {...process.env, ...vars};
@@ -6,8 +6,7 @@ function runWebServer(vars: any) {
 }
 
 async function start() {
-  const artifacts = await startDevelopment();
-  const env = createEnv(artifacts);
+  const env = await startDevAndCreateEnv();
   runWebServer(env);
 }
 

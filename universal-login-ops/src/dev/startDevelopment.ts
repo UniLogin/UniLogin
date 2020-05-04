@@ -2,7 +2,7 @@ import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet} from 'ethers';
 import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
-import {Config} from '@unilogin/relayer';
+import Relayer, {Config} from '@unilogin/relayer';
 import {gnosisSafe, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
@@ -13,6 +13,7 @@ import {deployGnosisSafe} from './deployWalletContractOnDev';
 import deployToken from './deployToken';
 import {deployGnosisFactory} from '../ops/deployFactory';
 import deployENSRegistrar from '../ops/deployENSRegistrar';
+import createEnv from '../common/createEnv';
 
 const ganachePort = 18545;
 
@@ -123,5 +124,10 @@ async function startDevelopment({nodeUrl}: StartDevelopmentOverrides = {}) {
   await startDevelopmentRelayer(relayerConfig, provider);
   return {jsonRpcUrl, deployWallet, walletContractAddress: address, saiTokenAddress, daiTokenAddress, ensAddress, ensDomains};
 }
+
+export async function startDevAndCreateEnv() {
+  const artifacts = await startDevelopment();
+  return createEnv(artifacts);
+};
 
 export default startDevelopment;
