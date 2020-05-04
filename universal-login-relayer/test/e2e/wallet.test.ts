@@ -29,6 +29,12 @@ describe('E2E: Relayer - WalletContract routes', async () => {
     await mockToken.transfer(contract.address, utils.parseEther('10.0'));
   });
 
+  const checkMessageState = async (messageHash: string) => {
+    const {body: messageStatus} = await chai.request((relayer as any).server)
+      .get(`/wallet/execution/${messageHash}`);
+    expect(messageStatus.state).eq('Success');
+  };
+
   it('Execute signed transfer', async () => {
     const msg = {
       from: contract.address,
@@ -49,12 +55,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       .post('/wallet/execution')
       .send(stringifiedMessage);
     expect(status).to.eq(201);
-    const checkMessageState = async () => {
-      const {body: messageStatus} = await chai.request((relayer as any).server)
-        .get(`/wallet/execution/${body.status.messageHash}`);
-      expect(messageStatus.state).eq('Success');
-    };
-    await waitExpect(() => checkMessageState());
+    await waitExpect(() => checkMessageState(body.status.messageHash));
     expect(await otherWallet.getBalance()).to.eq(balanceBefore.add(msg.value));
   });
 
@@ -79,12 +80,7 @@ describe('E2E: Relayer - WalletContract routes', async () => {
       .set('api_key', TEST_REFUND_PAYER.apiKey)
       .send(stringifiedMessage);
     expect(status).to.eq(201);
-    const checkMessageState = async () => {
-      const {body: messageStatus} = await chai.request((relayer as any).server)
-        .get(`/wallet/execution/${body.status.messageHash}`);
-      expect(messageStatus.state).eq('Success');
-    };
-    await waitExpect(() => checkMessageState());
+    await waitExpect(() => checkMessageState(body.status.messageHash));
     expect(await relayer.provider.getBalance(contract.address)).to.eq(balanceBefore.sub(msg.value));
   });
 
