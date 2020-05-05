@@ -5,7 +5,7 @@ import {GasModePage} from './GasModePage';
 export class TransferPage {
   constructor(
     private wrapper: ReactWrapper,
-    private gasModePage = new GasModePage(wrapper),
+    readonly gasModePage = new GasModePage(wrapper),
   ) {}
 
   async chooseCurrency(currency: string) {
