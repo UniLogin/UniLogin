@@ -9,5 +9,5 @@ export const setupDeployedWallet = async (wallet: Wallet, ensName: string, overr
   await sdk.start();
   const {contractAddress, privateKey} = await createWallet(ensName, sdk, wallet);
   const deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
-  return {deployedWallet, relayer};
+  return {deployedWallet, relayer, sdk};
 };

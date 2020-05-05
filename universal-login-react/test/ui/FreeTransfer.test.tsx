@@ -6,8 +6,7 @@ import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import {TEST_CONTRACT_ADDRESS, TEST_REFUND_PAYER} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {TransferService, DeployedWallet} from '@unilogin/sdk';
-import {waitExpect} from '@unilogin/commons/testutils';
+import UniLoginSDK, {TransferService, DeployedWallet} from '@unilogin/sdk';
 import {Transfer} from '../../src/ui/Transfer/Transfer';
 import {setupDeployedWallet} from '../helpers/setupDeploymentWallet';
 import {TransferPage} from '../helpers/pages/TransferPage';
@@ -20,6 +19,7 @@ describe('INT: Free Transfer', () => {
 
   let relayer: RelayerUnderTest;
   let deployedWallet: DeployedWallet;
+  let sdk: UniLoginSDK;
 
   const onTransferTriggered = async (transfer: any) => {
     initSpy();
@@ -30,11 +30,11 @@ describe('INT: Free Transfer', () => {
 
   before(async () => {
     const [wallet] = getWallets(createMockProvider());
-    ({deployedWallet, relayer} = await setupDeployedWallet(wallet, 'user.mylogin.eth', {apiKey: TEST_REFUND_PAYER.apiKey}));
+    ({deployedWallet, relayer, sdk} = await setupDeployedWallet(wallet, 'jarek.mylogin.eth', {apiKey: TEST_REFUND_PAYER.apiKey}));
     reactWrapper = mount(<Transfer
       transferService={new TransferService(deployedWallet)}
       onTransferTriggered={onTransferTriggered}
-      sdk={deployedWallet.sdk}
+      sdk={sdk}
     />);
   });
 
@@ -53,6 +53,7 @@ describe('INT: Free Transfer', () => {
   });
 
   after(async () => {
+    sdk.stop();
     await relayer.stop();
   });
 });
