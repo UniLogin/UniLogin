@@ -40,6 +40,11 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
     history.replace(join(basePath, 'funds'));
   };
 
+  const closeBackupCodes = () => {
+    const message = 'Are you sure you want to leave? You might lose your backup code.';
+    if (confirm(message)) onClose();
+  }
+
   return (
     <div className={`udashboard ${useClassFor('udashboard')}`}>
       <Switch>
@@ -104,7 +109,7 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
           </ModalWrapper>
         </Route>
         <Route path={join(basePath, 'backup')}>
-          <ModalWrapper hideModal={onClose} modalClassName="udashboard-modal">
+          <ModalWrapper hideModal={closeBackupCodes} modalClassName="udashboard-modal">
             <DialogWrapper message={notice} deployedWallet={deployedWallet}>
               <BackupCodes deployedWallet={deployedWallet} />
             </DialogWrapper>
