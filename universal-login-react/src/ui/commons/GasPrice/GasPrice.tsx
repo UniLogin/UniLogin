@@ -134,7 +134,7 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
     if (sdk.isRefundPaid()) {
       onGasParametersChanged(GAS_PRICE_FOR_NO_REFUND);
     }
-  });
+  }, []);
 
   return sdk.isRefundPaid() ? <div className={classNameForGasPrice}></div> : <GasPriceWithOptions
     isDeployed={isDeployed}
