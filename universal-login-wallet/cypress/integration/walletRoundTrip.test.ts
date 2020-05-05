@@ -1,5 +1,5 @@
 describe('E2E: Wallet roundtrip', () => {
-  ['macbook-13', 'iphone-x', 'iphone-5', 'ipad-2'].forEach((size) => {
+  ['macbook-13', 'iphone-x'].forEach((size) => {
     it(`Wallet roundtrip on ${size}`, () => {
       const ensName = Math.random().toString(36).substring(7);
       cy.viewport(size);
