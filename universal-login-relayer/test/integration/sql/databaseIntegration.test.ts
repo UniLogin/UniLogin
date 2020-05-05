@@ -8,4 +8,5 @@ before('BEFORE: Database migration', async () => {
   await relayer.database.migrate.rollback();
   await expect(relayer.start()).to.not.be.reverted;
   await relayer.stop();
+  console.log('relayer?')
 });

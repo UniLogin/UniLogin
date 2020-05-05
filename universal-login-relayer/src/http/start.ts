@@ -1,10 +1,11 @@
 import Relayer from './relayers/Relayer';
-import {getConfig} from '../core/utils/config';
-import {NodeEnv, asNodeEnv, getEnv} from '@unilogin/commons';
+import {Network, getEnv, asNetwork} from '@unilogin/commons';
+import {getConfigForNetwork} from '../config/config';
 import {cast} from '@restless/sanitizers';
 
-export const start = (nodeEnv: NodeEnv) => {
-  const config = getConfig(nodeEnv);
+export const start = (network: Network) => {
+  console.log({network});
+  const config = getConfigForNetwork(network);
   const relayer = new Relayer(config);
   relayer.start().then(
     () => console.log(`Server listening on port ${config.port}`),
@@ -12,6 +13,4 @@ export const start = (nodeEnv: NodeEnv) => {
   );
 };
 
-const nodeEnv = cast(getEnv('NODE_ENV'), asNodeEnv);
-
-start(nodeEnv);
+start(cast(getEnv('NETWORK', 'mainnet'), asNetwork));

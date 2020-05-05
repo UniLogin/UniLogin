@@ -14,7 +14,7 @@ import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory, deployDefaultCa
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
-import {getConfig} from '../../core/utils/config';
+import {getConfigForNetwork} from '../../config/config';
 import {addRefundPayer} from '../../core/utils/addRefundPayer';
 
 const ENSBuilder = require('ens-builder');
@@ -74,13 +74,20 @@ export class RelayerUnderTest extends Relayer {
       contractWhiteList,
       factoryAddress: factoryContract.address,
       supportedTokens,
+      database: {
+        connection: {
+          database: 'universal_login_relayer_test',
+        },
+      },
     };
     const relayer = RelayerUnderTest.createTestRelayer(overrideConfig, providerWithENS);
     return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletContract, mockToken, provider: providerWithENS, ensRegistrar, fallbackHandlerContract};
   }
 
   static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.Provider) {
-    const config: Config = deepMerge(getConfig('test'), overrideConfig);
+    console.log('create test telayer')
+    const config: Config = deepMerge(getConfigForNetwork('ganache'), overrideConfig);
+    console.log(config)
     return new RelayerUnderTest(config, providerWithENS);
   }
 
