@@ -1,6 +1,6 @@
-describe('E2E: Create Account', () => {
+describe('E2E: Wallet roundtrip', () => {
   ['macbook-13', 'iphone-x', 'iphone-5', 'ipad-2'].forEach((size) => {
-    it(`Create account on ${size}`, () => {
+    it(`Wallet roundtrip on ${size}`, () => {
       const ensName = Math.random().toString(36).substring(7);
       cy.viewport(size);
       cy.initApplication();
@@ -14,6 +14,11 @@ describe('E2E: Create Account', () => {
       cy.ensureCorrectLocation('/creationSuccess');
       cy.goToDashboard();
       cy.checkLocalStorageTokenProp('wallet-ganache', 'kind', 'Deployed');
+      cy.goToDevices();
+      cy.ensureCorrectLocation('/dashboard/devices');
+      cy.goToDisconnectAccount();
+      cy.ensureCorrectLocation('/dashboard/devices/disconnectAccount');
+      cy.deleteAccount(ensName, 'mylogin.eth');
     });
   });
 });
