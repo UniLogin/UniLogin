@@ -38,10 +38,10 @@ jobs:
       - checkout
       - run: yarn install --frozen-lockfile
       - run: yarn lint
-      - run: yarn build
-      - run: cd universal-login-contracts && yarn test
-      - run: cd universal-login-commons && yarn test
-      - run: cd universal-login-ops && yarn test
+      - run: cd universal-login-commons && yarn build && yarn test
+      - run: cd universal-login-contracts && yarn build && yarn test
+      - run: cd universal-login-relayer && yarn build
+      - run: cd universal-login-ops && yarn build && yarn test
       - run: yarn codechecks
   test_sdk_relayer:
     docker:
@@ -56,9 +56,10 @@ jobs:
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: cd universal-login-sdk && yarn test
-      - run: cd universal-login-relayer && yarn test
+      - run: cd universal-login-commons && yarn build
+      - run: cd universal-login-contracts && yarn build
+      - run: cd universal-login-relayer && yarn build && yarn test
+      - run: cd universal-login-sdk && yarn build && yarn test
   test_react_wallet_web3:
     docker:
       - image: circleci/node:11.15

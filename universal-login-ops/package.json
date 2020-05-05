@@ -24,7 +24,6 @@
     "@unilogin/commons": "0.5.21",
     "@unilogin/contracts": "0.5.21",
     "@unilogin/relayer": "0.5.21",
-    "@unilogin/sdk": "0.5.21",
     "cross-spawn": "^6.0.5",
     "dotenv": "^8.1.0",
     "ens-builder": "^2.0.2",
