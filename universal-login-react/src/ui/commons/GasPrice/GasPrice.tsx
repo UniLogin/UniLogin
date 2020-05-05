@@ -14,8 +14,9 @@ import {SelectedGasPrice} from './SelectedGasPrice';
 import {useOutsideClick} from '../../hooks/useClickOutside';
 import {Spinner} from '../Spinner';
 import {useClassFor} from '../../utils/classFor';
+import {NoRefundGasPrice} from './NoRefundGasPrice';
 
-interface GasPriceProps {
+export interface GasPriceProps {
   deployedWallet?: DeployedWallet;
   sdk: UniLoginSdk;
   isDeployed: boolean;
@@ -23,11 +24,6 @@ interface GasPriceProps {
   onGasParametersChanged: OnGasParametersChanged;
   className?: string;
 }
-
-const GAS_PRICE_FOR_NO_REFUND = {
-  gasPrice: utils.bigNumberify('0'),
-  gasToken: ETHER_NATIVE_TOKEN.address,
-};
 
 export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
@@ -128,23 +124,17 @@ export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gas
   );
 };
 
-export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
-  const classNameForGasPrice = useClassFor('gas-price');
-  useEffect(() => {
-    if (sdk.isRefundPaid()) {
-      onGasParametersChanged(GAS_PRICE_FOR_NO_REFUND);
-    }
-  }, []);
-
-  return sdk.isRefundPaid() ? <div className={classNameForGasPrice}></div> : <GasPriceWithOptions
-    isDeployed={isDeployed}
-    deployedWallet={deployedWallet}
-    gasLimit={gasLimit}
-    onGasParametersChanged={onGasParametersChanged}
-    className={className}
-    sdk={sdk}
-  />;
-};
+export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) =>
+  sdk.isRefundPaid()
+    ? <NoRefundGasPrice sdk={sdk} onGasParametersChanged={onGasParametersChanged} />
+    : <GasPriceWithOptions
+      isDeployed={isDeployed}
+      deployedWallet={deployedWallet}
+      gasLimit={gasLimit}
+      onGasParametersChanged={onGasParametersChanged}
+      className={className}
+      sdk={sdk}
+    />;
 
 const GasPriceTitle = () => (
   <div className="gas-price-top">
