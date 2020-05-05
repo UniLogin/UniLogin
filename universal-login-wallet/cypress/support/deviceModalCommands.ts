@@ -1,5 +1,6 @@
 Cypress.Commands.add('goToDevices', () => {
   cy.get('.devices-btn').click();
+  cy.get('.connected-devices-title').should('be.exist');
 });
 
 Cypress.Commands.add('goToDisconnectAccount', () => {
