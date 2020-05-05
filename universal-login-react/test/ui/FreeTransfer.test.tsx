@@ -7,6 +7,7 @@ import {utils} from 'ethers';
 import {TEST_CONTRACT_ADDRESS, TEST_REFUND_PAYER} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import UniLoginSDK, {TransferService, DeployedWallet} from '@unilogin/sdk';
+import {waitExpect} from '@unilogin/commons/testutils';
 import {Transfer} from '../../src/ui/Transfer/Transfer';
 import {setupDeployedWallet} from '../helpers/setupDeploymentWallet';
 import {TransferPage} from '../helpers/pages/TransferPage';
@@ -42,14 +43,14 @@ describe('INT: Free Transfer', () => {
     const senderBalanceBefore = await relayer.provider.getBalance(deployedWallet.contractAddress);
     const transferPage = new TransferPage(reactWrapper);
     await transferPage.chooseCurrency('ETH');
-    transferPage.enterTransferAmount('0.5');
+    transferPage.enterTransferAmount('1');
     transferPage.enterRecipient(TEST_CONTRACT_ADDRESS);
     expect(transferPage.gasModePage.isRendered()).to.be.false;
     transferPage.transfer();
-    expect(initSpy).to.be.calledOnce;
-    expect(successSpy).to.be.calledOnce;
+    await waitExpect(() => expect(initSpy).to.be.calledOnce);
+    await waitExpect(() => expect(successSpy).to.be.calledOnce);
     expect(successSpy).calledImmediatelyAfter(initSpy);
-    expect(await relayer.provider.getBalance(deployedWallet.contractAddress)).eq(senderBalanceBefore.sub(utils.parseEther('0.5')));
+    expect(await relayer.provider.getBalance(deployedWallet.contractAddress)).eq(senderBalanceBefore.sub(utils.parseEther('1')));
   });
 
   after(async () => {
