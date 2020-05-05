@@ -6,7 +6,8 @@ import {Config} from '../../config/relayer';
 
 export function getPublicConfig(config: Config): PublicRelayerConfig {
   const {
-    chainSpec,
+    ensAddress,
+    name,
     supportedTokens,
     factoryAddress,
     contractWhiteList,
@@ -21,7 +22,8 @@ export function getPublicConfig(config: Config): PublicRelayerConfig {
   } = config;
   return {
     ensRegistrar,
-    chainSpec,
+    ensAddress,
+    name,
     supportedTokens,
     factoryAddress,
     fallbackHandlerAddress,

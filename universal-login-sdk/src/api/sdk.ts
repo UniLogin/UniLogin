@@ -86,8 +86,8 @@ class UniLoginSdk {
 
   private async loadRelayerConfigFromApi() {
     const config = await this.relayerApi.getConfig();
-    if (!Network.equals(cast(config.chainSpec.name, asNetwork), this.config.network)) {
-      throw new Error(`Relayer is configured to a different network. Expected: ${this.config.network}, got: ${config.chainSpec.name}`);
+    if (!Network.equals(cast(config.name, asNetwork), this.config.network)) {
+      throw new Error(`Relayer is configured to a different network. Expected: ${this.config.network}, got: ${config.name}`);
     }
     return config;
   }

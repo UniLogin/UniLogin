@@ -6,12 +6,6 @@ export interface SupportedToken {
   minimalAmount?: string;
 }
 
-export interface ChainSpec {
-  ensAddress: string;
-  chainId: number;
-  name: string;
-}
-
 export interface ContractWhiteList {
   wallet: string[];
   proxy: string[];
@@ -29,7 +23,8 @@ export interface PublicRelayerConfig {
   factoryAddress: string;
   fallbackHandlerAddress: string;
   walletContractAddress: string;
-  chainSpec: ChainSpec;
+  ensAddress: string;
+  name: string;
   contractWhiteList: ContractWhiteList;
   localization: LocalizationConfig;
   onRampProviders: OnRampConfig;

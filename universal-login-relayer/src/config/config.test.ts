@@ -5,11 +5,8 @@ import {UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
 export const config: Config = Object.freeze({
   port: 'GENERATED',
   privateKey: 'GENERATED',
-  chainSpec: {
-    name: 'ganache',
-    ensAddress: 'GENERATED',
-    chainId: 0,
-  },
+  name: 'ganache',
+  ensAddress: 'GENERATED',
   ensRegistrars: ['GENERATED'],
   ensRegistrar: 'GENERATED',
   fallbackHandlerAddress: 'GENERATED',

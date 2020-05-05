@@ -16,11 +16,12 @@ describe('E2E: Relayer - Config routes', async () => {
   });
 
   it('should return public config', async () => {
-    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey, ensRegistrar, walletContractAddress, fallbackHandlerAddress} = relayer.getConfig();
+    const {supportedTokens, ensAddress, name, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey, ensRegistrar, walletContractAddress, fallbackHandlerAddress} = relayer.getConfig();
     const expectedConfig: PublicRelayerConfig = {
       ensRegistrar,
       supportedTokens,
-      chainSpec,
+      ensAddress,
+      name,
       walletContractAddress,
       fallbackHandlerAddress,
       factoryAddress,
@@ -37,11 +38,12 @@ describe('E2E: Relayer - Config routes', async () => {
   });
 
   it('getPublicConfig should return PublicConfig', () => {
-    const {supportedTokens, chainSpec, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey, ensRegistrar, walletContractAddress, fallbackHandlerAddress} = relayer.getConfig();
+    const {supportedTokens, ensAddress, name, factoryAddress, contractWhiteList, localization, onRampProviders, maxGasLimit, ipGeolocationApi, privateKey, ensRegistrar, walletContractAddress, fallbackHandlerAddress} = relayer.getConfig();
     const expectedConfig: PublicRelayerConfig = {
       ensRegistrar,
       supportedTokens,
-      chainSpec,
+      ensAddress,
+      name,
       walletContractAddress,
       fallbackHandlerAddress,
       factoryAddress,

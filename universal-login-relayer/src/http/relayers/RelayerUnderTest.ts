@@ -66,9 +66,7 @@ export class RelayerUnderTest extends Relayer {
     const overrideConfig: DeepPartial<Config> = {
       port,
       privateKey: wallet.privateKey,
-      chainSpec: {
-        ensAddress: ensBuilder.ens.address,
-      },
+      ensAddress: ensBuilder.ens.address,
       ensRegistrars: [DOMAIN],
       fallbackHandlerAddress: fallbackHandlerContract.address,
       ensRegistrar: ensRegistrar.address,
