@@ -4,8 +4,12 @@ import {waitForUI} from '../waitForUI';
 export class GasModePage {
   constructor(private wrapper: ReactWrapper) {}
 
+  isRendered() {
+    return this.wrapper.exists('.gas-price-btn');
+  }
+
   async waitForGasMode() {
-    return waitForUI(this.wrapper, () => this.wrapper.exists('.gas-price-btn'));
+    return waitForUI(this.wrapper, () => this.isRendered());
   }
 
   selectGasMode() {
