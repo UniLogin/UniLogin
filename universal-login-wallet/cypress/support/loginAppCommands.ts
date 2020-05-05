@@ -27,4 +27,5 @@ Cypress.Commands.add('topUpAccount', () => {
 
 Cypress.Commands.add('goToDashboard', () => {
   cy.get('.modal-success-btn').click();
+  cy.get('.balance-amount').should('be.exist');
 });
