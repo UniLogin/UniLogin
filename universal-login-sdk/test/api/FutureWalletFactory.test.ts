@@ -40,16 +40,13 @@ describe('INT: FutureWalletFactory', () => {
       fallbackHandlerAddress: fallbackHandlerContract.address,
       relayerAddress: wallet.address,
       contractWhiteList,
-      chainSpec: {
-        ensAddress,
-        chainId: 0,
-        name: '',
-      },
+      ensAddress,
+      network: '',
     };
     relayerApi = new RelayerApi(relayerUrl);
     futureWalletFactory = new FutureWalletFactory(
       futureWalletConfig,
-      new ENSService(provider, futureWalletConfig.chainSpec.ensAddress, ensRegistrar.address),
+      new ENSService(provider, futureWalletConfig.ensAddress, ensRegistrar.address),
       {config: {applicationInfo: TEST_APPLICATION_INFO}, provider, relayerApi} as any,
     );
   });

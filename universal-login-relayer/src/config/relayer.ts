@@ -6,7 +6,7 @@ export interface Config {
   port?: string;
   privateKey: string;
   ensAddress: string;
-  name: string;
+  network: string;
   ensRegistrars: string[];
   ensRegistrar: string;
   fallbackHandlerAddress: string;

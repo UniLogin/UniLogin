@@ -24,7 +24,7 @@ export interface PublicRelayerConfig {
   fallbackHandlerAddress: string;
   walletContractAddress: string;
   ensAddress: string;
-  name: string;
+  network: string;
   contractWhiteList: ContractWhiteList;
   localization: LocalizationConfig;
   onRampProviders: OnRampConfig;

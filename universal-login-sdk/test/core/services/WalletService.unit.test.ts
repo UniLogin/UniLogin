@@ -40,7 +40,7 @@ describe('UNIT: WalletService', () => {
         mineableFactoryTimeout: 100,
         network: 'ganache',
       },
-      getRelayerConfig: sinon.stub().returns({chainSpec: {name: 'ganache'}}),
+      getRelayerConfig: sinon.stub().returns({network: 'ganache'}),
     };
 
     walletFromPassphrase.withArgs(name, passphrase).resolves({

@@ -66,7 +66,7 @@ class Relayer {
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl,
       {
         ensAddress: config.ensAddress,
-        name: config.name,
+        name: config.network,
         chainId: 0,
       });
     this.wallet = new Wallet(config.privateKey, this.provider);

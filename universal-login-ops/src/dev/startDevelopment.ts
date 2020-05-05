@@ -47,11 +47,8 @@ function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddr
     jsonRpcUrl,
     port: '3311',
     privateKey: wallet.privateKey,
-    chainSpec: {
-      name: 'ganache',
-      ensAddress,
-      chainId: 0,
-    },
+    ensAddress,
+    network: 'ganache',
     ensRegistrars,
     fallbackHandlerAddress: fallbackHandler,
     ensRegistrar,
