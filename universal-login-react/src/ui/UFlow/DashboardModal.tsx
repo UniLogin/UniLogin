@@ -43,7 +43,7 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
   const closeBackupCodes = () => {
     const message = 'Are you sure you want to leave? You might lose your backup code.';
     if (confirm(message)) onClose();
-  }
+  };
 
   return (
     <div className={`udashboard ${useClassFor('udashboard')}`}>
