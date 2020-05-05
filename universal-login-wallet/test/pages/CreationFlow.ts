@@ -1,6 +1,5 @@
 import {ReactWrapper} from 'enzyme';
-import {waitForUI} from '@unilogin/react/testutils';
-import GasModePage from './GasModePage';
+import {GasModePage, waitForUI} from '@unilogin/react/testutils';
 
 export default class CreationFlow {
   constructor(
