@@ -26,7 +26,8 @@
     "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only -r ./test/testconfig -t 10000 'test/**/*.ts'",
     "build": "webpack --mode production",
-    "start": "webpack-dev-server --mode development"
+    "start": "webpack-dev-server --mode development",
+    "start:dev": "ts-node src/playground/dev-start.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
