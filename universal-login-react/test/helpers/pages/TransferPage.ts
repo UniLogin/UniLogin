@@ -4,44 +4,44 @@ import {GasModePage} from './GasModePage';
 
 export class TransferPage {
   constructor(
-    private appWrapper: ReactWrapper,
-    private gasModePage = new GasModePage(appWrapper),
+    private wrapper: ReactWrapper,
+    private gasModePage = new GasModePage(wrapper),
   ) {}
 
   async chooseCurrency(currency: string) {
-    await waitForUI(this.appWrapper, () => this.appWrapper.find('button.currency-accordion-item').length !== 0);
-    this.appWrapper.find('button.currency-accordion-btn').simulate('click');
-    const items = this.appWrapper.find('button.currency-accordion-item');
+    await waitForUI(this.wrapper, () => this.wrapper.find('button.currency-accordion-item').length !== 0);
+    this.wrapper.find('button.currency-accordion-btn').simulate('click');
+    const items = this.wrapper.find('button.currency-accordion-item');
     items.filterWhere(item => item.text().includes(currency)).first().simulate('click');
   }
 
   transfer() {
-    this.appWrapper.find('#send-button').first().simulate('click');
+    this.wrapper.find('#send-button').first().simulate('click');
   }
 
   async doesAmountErrorExists() {
-    await waitForUI(this.appWrapper, () => this.appWrapper.find('.transfer-amount-hint').exists());
-    return this.appWrapper.find('.transfer-amount-hint').exists();
+    await waitForUI(this.wrapper, () => this.wrapper.find('.transfer-amount-hint').exists());
+    return this.wrapper.find('.transfer-amount-hint').exists();
   }
 
   async doesRecipientErrorExists() {
-    await waitForUI(this.appWrapper, () => this.appWrapper.find('.transfer-recipient-hint').exists());
-    return this.appWrapper.find('.transfer-recipient-hint').exists();
+    await waitForUI(this.wrapper, () => this.wrapper.find('.transfer-recipient-hint').exists());
+    return this.wrapper.find('.transfer-recipient-hint').exists();
   }
 
   enterTransferAmount(amount: string) {
-    const amountInput = this.appWrapper.find('input#amount-eth');
+    const amountInput = this.wrapper.find('input#amount-eth');
     amountInput.simulate('change', {target: {value: amount}});
   }
 
   enterRecipient(address: string) {
-    const addressInput = this.appWrapper.find('input#input-recipient');
+    const addressInput = this.wrapper.find('input#input-recipient');
     addressInput.simulate('change', {target: {value: address}});
   }
 
   getErrorMessage() {
-    this.appWrapper.update();
-    return this.appWrapper.find('.error-message-text').text();
+    this.wrapper.update();
+    return this.wrapper.find('.error-message-text').text();
   }
 
   selectGasMode() {
@@ -53,6 +53,6 @@ export class TransferPage {
   }
 
   async waitForBalance() {
-    await waitForUI(this.appWrapper, () => this.appWrapper.find('.assets-balance').exists());
+    await waitForUI(this.wrapper, () => this.wrapper.find('.assets-balance').exists());
   }
 }
