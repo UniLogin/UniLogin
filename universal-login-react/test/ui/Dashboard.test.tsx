@@ -39,6 +39,7 @@ describe('INT: Dashboard', () => {
   });
 
   after(async () => {
+    deployedWallet.sdk.stop();
     await relayer.stop();
   });
 });

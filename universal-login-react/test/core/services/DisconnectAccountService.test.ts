@@ -25,7 +25,6 @@ describe('DisconnectAccountService', () => {
   before(async () => {
     ([wallet] = getWallets(createMockProvider()));
     ({deployedWallet, relayer} = await setupDeployedWallet(wallet, ensName));
-    (deployedWallet.sdk.provider as any).pollingInterval = 100;
   });
 
   beforeEach(async () => {
@@ -63,6 +62,7 @@ describe('DisconnectAccountService', () => {
   });
 
   after(async () => {
+    deployedWallet.sdk.stop();
     await relayer.stop();
   });
 });
