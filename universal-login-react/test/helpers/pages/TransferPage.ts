@@ -1,10 +1,11 @@
 import {ReactWrapper} from 'enzyme';
-import {GasModePage, waitForUI} from '@unilogin/react/testutils';
+import {waitForUI} from '../waitForUI';
+import {GasModePage} from './GasModePage';
 
-export default class TransferPage {
+export class TransferPage {
   constructor(
     private appWrapper: ReactWrapper,
-    private gasModePage: GasModePage,
+    private gasModePage = new GasModePage(appWrapper),
   ) {}
 
   async chooseCurrency(currency: string) {
