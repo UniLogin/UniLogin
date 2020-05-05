@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {createFixtureLoader} from 'ethereum-waffle';
 import {utils, providers} from 'ethers';
 import basicSDK from '../fixtures/basicSDK';
-import UniversalLoginSDK from '../../src/api/sdk';
+import UniLoginSdk from '../../src/api/sdk';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {isValidCode, isProperSecurityCode, TEST_SDK_CONFIG} from '@unilogin/commons';
 
@@ -11,13 +11,13 @@ const loadFixture = createFixtureLoader();
 describe('INT: SDK connecting', () => {
   let provider: providers.Provider;
   let relayer: RelayerUnderTest;
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   let contractAddress: string;
-  let sdk2: UniversalLoginSDK;
+  let sdk2: UniLoginSdk;
 
   beforeEach(async () => {
     ({provider, sdk, contractAddress, relayer} = await loadFixture(basicSDK));
-    sdk2 = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
+    sdk2 = new UniLoginSdk(relayer.url(), provider, TEST_SDK_CONFIG);
   });
 
   it('security code roundtrip', async () => {

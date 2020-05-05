@@ -1,5 +1,5 @@
 import React from 'react';
-import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
+import UniLoginSdk, {WalletService} from '@unilogin/sdk';
 import {ErrorMessage, ModalWrapper, Onboarding, useProperty, ManualDashboard, AppPreloader} from '@unilogin/react';
 import {UIController} from '../../services/UIController';
 import {TransactionConfirmation} from './Confirmation/TransactionConfirmation';
@@ -8,7 +8,7 @@ import {SignConfirmation} from './Confirmation/SignConfirmation';
 import {LocalStorageBlockedWarningScreen} from './warning/LocalStorageBlockedWarningScreen';
 
 export interface ULWeb3RootProps {
-  sdk: UniversalLoginSDK;
+  sdk: UniLoginSdk;
   walletService: WalletService;
   uiController: UIController;
   domains: string[];

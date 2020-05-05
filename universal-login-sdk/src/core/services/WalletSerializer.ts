@@ -1,11 +1,11 @@
 import {SerializedWalletState, WalletState} from '../models/WalletService';
-import UniversalLoginSDK, {DeployedWallet} from '../..';
+import UniLoginSdk, {DeployedWallet} from '../..';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
 
 export class WalletSerializer {
   constructor(
-    private readonly sdk: UniversalLoginSDK,
+    private readonly sdk: UniLoginSdk,
   ) {}
 
   serialize(state: WalletState): SerializedWalletState | undefined {

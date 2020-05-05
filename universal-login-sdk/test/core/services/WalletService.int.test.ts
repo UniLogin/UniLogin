@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {setupSdk} from '../../helpers/setupSdk';
-import UniversalLoginSDK from '../../../src/api/sdk';
+import UniLoginSdk from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, utils} from 'ethers';
 import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG} from '@unilogin/commons';
@@ -13,7 +13,7 @@ chai.use(solidity);
 
 describe('INT: WalletService', () => {
   let walletService: WalletService;
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   let relayer: RelayerUnderTest;
   let wallet: Wallet;
 
@@ -56,7 +56,7 @@ describe('INT: WalletService', () => {
     });
 
     it('free deployment', async () => {
-      const refundPaidSdk = new UniversalLoginSDK(relayer.url(), wallet.provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
+      const refundPaidSdk = new UniLoginSdk(relayer.url(), wallet.provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
       walletService = new WalletService(refundPaidSdk);
       await refundPaidSdk.fetchRelayerConfig();
       await walletService.createWallet('meme.mylogin.eth');

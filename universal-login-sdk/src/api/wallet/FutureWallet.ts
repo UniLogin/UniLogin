@@ -3,7 +3,7 @@ import {SerializableFutureWallet, ensure, isValidEnsName, calculateInitializeSig
 import {DeployingWallet} from './DeployingWallet';
 import {DeploymentReadyObserver} from '../../core/observers/DeploymentReadyObserver';
 import {InvalidAddressOrEnsName} from '../../core/utils/errors';
-import UniversalLoginSDK from '../sdk';
+import UniLoginSdk from '../sdk';
 import {utils} from 'ethers';
 import {setupInitData} from '../../core/utils/setupInitData';
 import {ENSService} from '../../integration/ethereum/ENSService';
@@ -20,7 +20,7 @@ export class FutureWallet implements SerializableFutureWallet {
 
   constructor(
     serializableFutureWallet: SerializableFutureWallet,
-    readonly sdk: UniversalLoginSDK,
+    readonly sdk: UniLoginSdk,
     private ensService: ENSService,
     private relayerAddress: string,
     private fallbackHandlerAddress: string,

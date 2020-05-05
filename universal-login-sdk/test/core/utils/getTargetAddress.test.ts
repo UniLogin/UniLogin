@@ -3,12 +3,12 @@ import {Wallet} from 'ethers';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import UniversalLoginSDK from '../../../src';
+import UniLoginSdk from '../../../src';
 import {getTargetAddress} from '../../../src/core/utils/getTargetAddress';
 import {setupSdk, createWallet} from '../../helpers';
 
 describe('getTargetAddress', () => {
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   let relayer: RelayerUnderTest;
   let wallet: Wallet;
 

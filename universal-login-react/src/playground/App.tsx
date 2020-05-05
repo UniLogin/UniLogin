@@ -10,7 +10,7 @@ import {Onboarding} from '../ui/Onboarding/Onboarding';
 import {LogoButton} from '../ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './CreateRandomInstance';
 import '../ui/styles/playground.css';
-import UniversalLoginSDK, {DeployedWallet, DeployingWallet} from '@unilogin/sdk';
+import UniLoginSdk, {DeployedWallet, DeployingWallet} from '@unilogin/sdk';
 import {Spinner} from '../ui/commons/Spinner';
 import {useAsync} from '../ui/hooks/useAsync';
 import {WalletService} from '@unilogin/sdk';
@@ -28,7 +28,7 @@ import config from './config';
 
 export const App = () => {
   const [sdk] = useState(() => {
-    const sdk = new UniversalLoginSDK(config.relayerUrl, config.jsonRpcUrl, {
+    const sdk = new UniLoginSdk(config.relayerUrl, config.jsonRpcUrl, {
       applicationInfo: {type: 'laptop'},
       observedTokensAddresses: config.tokens,
       saiTokenAddress: config.saiTokenAddress,

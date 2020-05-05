@@ -6,14 +6,14 @@ import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {TEST_REFUND_PAYER} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {setupSdk} from '@unilogin/sdk/testutils';
-import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
+import UniLoginSdk, {WalletService} from '@unilogin/sdk';
 import {Onboarding} from '../../src/ui/Onboarding/Onboarding';
 import {WalletSelectorPage} from '../helpers/pages/WalletSelectorPage';
 
 describe('INT: Free Onboarding', () => {
   let reactWrapper: ReactWrapper;
   const createSpy = sinon.spy();
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   let relayer: any;
 
   before(async () => {

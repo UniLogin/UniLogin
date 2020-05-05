@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {TokensPrices} from '@unilogin/commons';
-import UniversalLoginSDK from '@unilogin/sdk';
+import UniLoginSdk from '@unilogin/sdk';
 import Spinner from './Spinner';
 import './../styles/assetsItem.sass';
 import './../styles/themes/UniLogin/assetsItemThemeUnilogin.sass';
@@ -10,7 +10,7 @@ import {getTildeGivenAmount, formatCurrency} from '../../core/utils/formatCurren
 import {ThemedComponent} from './ThemedComponent';
 
 export interface AssetProps {
-  sdk: UniversalLoginSDK;
+  sdk: UniLoginSdk;
   name: string;
   symbol: string;
   balance: string | null;

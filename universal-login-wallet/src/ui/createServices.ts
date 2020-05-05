@@ -1,7 +1,7 @@
 import React from 'react';
 import {providers} from 'ethers';
 import {walletFromBrain, DeepPartial, Network, DeviceType} from '@unilogin/commons';
-import UniversalLoginSDK, {SdkConfig, WalletService} from '@unilogin/sdk';
+import UniLoginSdk, {SdkConfig, WalletService} from '@unilogin/sdk';
 import {StorageService} from '@unilogin/react';
 import WalletPresenter from '../core/presenters/WalletPresenter';
 
@@ -50,7 +50,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     apiKey: config.apiKey,
   };
   const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
-  const sdk = new UniversalLoginSDK(
+  const sdk = new UniLoginSdk(
     config.relayerUrl,
     providerOrProviderUrl,
     sdkConfig,

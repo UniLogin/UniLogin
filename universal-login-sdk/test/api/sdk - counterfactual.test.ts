@@ -5,13 +5,13 @@ import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_
 import {emptyMessage} from '@unilogin/contracts/testutils';
 import {gnosisSafe} from '@unilogin/contracts';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import UniversalLoginSDK from '../../src/api/sdk';
+import UniLoginSdk from '../../src/api/sdk';
 
 chai.use(solidity);
 
 describe('INT: SDK counterfactual deployment', () => {
   let provider: providers.Provider;
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   let relayer: RelayerUnderTest;
   let wallet: Wallet;
   const ensName = 'name.mylogin.eth';
@@ -21,7 +21,7 @@ describe('INT: SDK counterfactual deployment', () => {
     [wallet] = getWallets(provider);
     ({relayer, provider} = await RelayerUnderTest.createPreconfigured(wallet));
     await relayer.start();
-    sdk = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
+    sdk = new UniLoginSdk(relayer.url(), provider, TEST_SDK_CONFIG);
     await sdk.fetchRelayerConfig();
   });
 

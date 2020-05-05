@@ -3,7 +3,7 @@ import './../../styles/base/gasPrice.sass';
 import './../../styles/themes/Legacy/gasPriceThemeLegacy.sass';
 import './../../styles/themes/UniLogin/gasPriceThemeUniLogin.sass';
 import './../../styles/themes/Jarvis/gasPriceThemeJarvis.sass';
-import UniversalLoginSDK, {DeployedWallet} from '@unilogin/sdk';
+import UniLoginSdk, {DeployedWallet} from '@unilogin/sdk';
 import {utils} from 'ethers';
 import {useAsync} from '../../hooks/useAsync';
 import {GasMode, GasOption, TokenDetailsWithBalance, EMPTY_GAS_OPTION, ensureNotFalsy, OnGasParametersChanged, ETHER_NATIVE_TOKEN, findGasMode, findGasOption, FAST_GAS_MODE_INDEX} from '@unilogin/commons';
@@ -17,7 +17,7 @@ import {useClassFor} from '../../utils/classFor';
 
 interface GasPriceProps {
   deployedWallet?: DeployedWallet;
-  sdk: UniversalLoginSDK;
+  sdk: UniLoginSdk;
   isDeployed: boolean;
   gasLimit: utils.BigNumberish;
   onGasParametersChanged: OnGasParametersChanged;

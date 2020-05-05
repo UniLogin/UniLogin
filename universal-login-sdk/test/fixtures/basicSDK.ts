@@ -4,7 +4,7 @@ import {TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE
 import {gnosisSafe} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import UniversalLoginSDK from '../../src/api/sdk';
+import UniLoginSdk from '../../src/api/sdk';
 import {createdDeployedWallet} from '../helpers/createDeployedWallet';
 
 export default async function basicSDK(givenProvider: providers.Provider, wallets: Wallet[]) {
@@ -12,7 +12,7 @@ export default async function basicSDK(givenProvider: providers.Provider, wallet
   const {relayer, provider} = await RelayerUnderTest.createPreconfigured(deployer);
   await relayer.start();
   (provider as any).pollingInterval = 10;
-  const sdk = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
+  const sdk = new UniLoginSdk(relayer.url(), provider, TEST_SDK_CONFIG);
   await sdk.fetchRelayerConfig();
   const ensName = 'alex.mylogin.eth';
   const {contractAddress, privateKey} = await createdDeployedWallet(ensName, sdk, wallet);

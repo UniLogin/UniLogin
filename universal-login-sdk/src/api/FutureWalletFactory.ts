@@ -6,7 +6,7 @@ import {
 } from '@unilogin/commons';
 import {computeGnosisCounterfactualAddress} from '@unilogin/contracts';
 import {ENSService} from '../integration/ethereum/ENSService';
-import UniversalLoginSDK from './sdk';
+import UniLoginSdk from './sdk';
 import {FutureWallet} from './wallet/FutureWallet';
 import {setupInitData} from '../core/utils/setupInitData';
 import {SavingFutureWalletFailed} from '../core/utils/errors';
@@ -22,7 +22,7 @@ export class FutureWalletFactory {
   constructor(
     private config: FutureFactoryConfig,
     private ensService: ENSService,
-    private sdk: UniversalLoginSDK,
+    private sdk: UniLoginSdk,
   ) {
   }
 

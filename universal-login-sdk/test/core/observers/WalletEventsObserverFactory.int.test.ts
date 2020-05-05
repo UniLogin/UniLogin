@@ -5,7 +5,7 @@ import chai, {expect} from 'chai';
 import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import UniversalLoginSDK, {DeployedWallet, WalletEventFilter} from '../../../src';
+import UniLoginSdk, {DeployedWallet, WalletEventFilter} from '../../../src';
 import WalletEventsObserverFactory from '../../../src/core/observers/WalletEventsObserverFactory';
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
@@ -22,7 +22,7 @@ describe('INT: WalletEventsObserverFactory', () => {
   const [deployer] = getWallets(provider);
   const {publicKey} = createKeyPair();
   let relayer: RelayerUnderTest;
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   let deployedWallet: DeployedWallet;
   let filter: WalletEventFilter;
   let factory: WalletEventsObserverFactory;

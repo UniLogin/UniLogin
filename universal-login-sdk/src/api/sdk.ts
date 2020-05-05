@@ -27,7 +27,7 @@ import {NotifySdk} from '../integration/notifySdk/NotifySdk';
 import {cast} from '@restless/sanitizers';
 import {INotifySdk} from '../integration/notifySdk/interfaces';
 
-class UniversalLoginSDK {
+class UniLoginSdk {
   readonly provider: providers.Provider;
   readonly relayerApi: RelayerApi;
   readonly authorisationsObserver: AuthorisationsObserver;
@@ -247,4 +247,4 @@ class UniversalLoginSDK {
   }
 }
 
-export default UniversalLoginSDK;
+export default UniLoginSdk;

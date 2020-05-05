@@ -1,5 +1,5 @@
 import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil} from '@unilogin/commons';
-import UniversalLoginSDK from '../../api/sdk';
+import UniLoginSdk from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
 import {InvalidWalletState, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
@@ -39,7 +39,7 @@ export class WalletService {
   }
 
   constructor(
-    public readonly sdk: UniversalLoginSDK,
+    public readonly sdk: UniLoginSdk,
     private readonly walletFromPassphrase: WalletFromBackupCodes = walletFromBrain,
     storageService: IStorageService = new NoopStorageService(),
   ) {
