@@ -1,7 +1,7 @@
 import {SerializedDeployingWallet} from '../..';
 import {DeployedWallet} from './DeployedWallet';
 import {MineableFactory} from '../../core/services/MineableFactory';
-import UniversalLoginSDK from '../sdk';
+import UniLoginSdk from '../sdk';
 
 export class DeployingWallet extends MineableFactory implements SerializedDeployingWallet {
   name: string;
@@ -11,7 +11,7 @@ export class DeployingWallet extends MineableFactory implements SerializedDeploy
 
   constructor(
     serializedDeployingWallet: SerializedDeployingWallet,
-    private sdk: UniversalLoginSDK) {
+    private sdk: UniLoginSdk) {
     super(
       sdk.config.mineableFactoryTick,
       sdk.config.mineableFactoryTimeout,

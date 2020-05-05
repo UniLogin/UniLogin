@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@unilogin/commons';
-import UniversalLoginSDK from '@unilogin/sdk';
+import UniLoginSdk from '@unilogin/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {useToggler} from '../../hooks/useToggler';
 import {getIconForToken} from '../../../core/utils/getIconForToken';
@@ -8,7 +8,7 @@ import {useOutsideClick} from '../../hooks/useClickOutside';
 import '../../styles/themes/Jarvis/components/currencyDropdownThemeJarvis.sass';
 
 interface TransferDropdownProps {
-  sdk: UniversalLoginSDK;
+  sdk: UniLoginSdk;
   tokenDetailsWithBalance: TokenDetailsWithBalance[];
   tokenDetails: TokenDetails;
   setToken: (token: TokenDetails) => void;

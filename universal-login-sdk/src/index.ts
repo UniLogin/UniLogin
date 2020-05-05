@@ -1,5 +1,5 @@
-import UniversalLoginSDK from './api/sdk';
-export default UniversalLoginSDK;
+import UniLoginSdk from './api/sdk';
+export default UniLoginSdk;
 export {BalanceDetails} from './api/FutureWalletFactory';
 export {DeployedWallet} from './api/wallet/DeployedWallet';
 export {DeployingWallet} from './api/wallet/DeployingWallet';

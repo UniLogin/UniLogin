@@ -1,10 +1,10 @@
 import React from 'react';
-import UniversalLoginSDK from '@unilogin/sdk';
+import UniLoginSdk from '@unilogin/sdk';
 import {Asset} from '../../commons/Asset';
 import {TokenDetails} from '@unilogin/commons';
 
 export interface DropdownItemProps {
-  sdk: UniversalLoginSDK;
+  sdk: UniLoginSdk;
   tokenDetails: TokenDetails;
   balance: string | null;
   icon: string;

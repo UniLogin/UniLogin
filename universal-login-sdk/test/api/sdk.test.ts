@@ -7,7 +7,7 @@ import {gnosisSafe} from '@unilogin/contracts';
 import {TEST_SDK_CONFIG} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import basicSDK from '../fixtures/basicSDK';
-import UniversalLoginSDK from '../../src/api/sdk';
+import UniLoginSdk from '../../src/api/sdk';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -19,7 +19,7 @@ const jsonRpcUrl = 'http://localhost:18545';
 describe('INT: SDK', () => {
   let provider: providers.Provider;
   let relayer: RelayerUnderTest;
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   let contractAddress: string;
   let privateKey: string;
 
@@ -34,7 +34,7 @@ describe('INT: SDK', () => {
   describe('Create', () => {
     describe('Initalization', () => {
       it('creates provider from URL', () => {
-        const universalLoginSDK = new UniversalLoginSDK(relayer.url(), jsonRpcUrl, TEST_SDK_CONFIG);
+        const universalLoginSDK = new UniLoginSdk(relayer.url(), jsonRpcUrl, TEST_SDK_CONFIG);
         const provider = universalLoginSDK.provider as providers.JsonRpcProvider;
         expect(provider.connection.url).to.eq(jsonRpcUrl);
       });
@@ -44,7 +44,7 @@ describe('INT: SDK', () => {
       });
 
       it('isRefundPaid returns true if api key was passed in config', () => {
-        const sdk = new UniversalLoginSDK(relayer.url(), jsonRpcUrl, {...TEST_SDK_CONFIG, apiKey: 'API_KEY'});
+        const sdk = new UniLoginSdk(relayer.url(), jsonRpcUrl, {...TEST_SDK_CONFIG, apiKey: 'API_KEY'});
         expect(sdk.isRefundPaid()).to.be.true;
       });
 

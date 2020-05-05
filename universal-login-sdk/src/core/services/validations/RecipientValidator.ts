@@ -1,7 +1,7 @@
 import {Validator, TransferErrors} from './Validator';
 import {utils} from 'ethers';
 import {isValidEnsName, TransferDetails} from '@unilogin/commons';
-import UniversalLoginSDK from '../../../api/sdk';
+import UniLoginSdk from '../../../api/sdk';
 import {AddressZero} from 'ethers/constants';
 
 const isProperAddress = (recipient: string): boolean => {
@@ -14,7 +14,7 @@ const isProperAddress = (recipient: string): boolean => {
 };
 
 export class RecipientValidator implements Validator<TransferDetails> {
-  constructor(private readonly sdk: UniversalLoginSDK) {
+  constructor(private readonly sdk: UniLoginSdk) {
   }
 
   async validate(transferDetails: TransferDetails, errors: TransferErrors) {

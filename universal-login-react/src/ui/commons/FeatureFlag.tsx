@@ -1,10 +1,10 @@
 import React, {ReactNode} from 'react';
-import UniversalLoginSDK from '@unilogin/sdk';
+import UniLoginSdk from '@unilogin/sdk';
 
 export interface FeatureFlagProps {
   feature: string;
   children: ReactNode;
-  sdk: UniversalLoginSDK;
+  sdk: UniLoginSdk;
 }
 
 export const FeatureFlag = ({sdk, feature, children}: FeatureFlagProps) => {

@@ -6,7 +6,7 @@ import {AbstractWallet} from './AbstractWallet';
 import {BackupCodesWithExecution} from './BackupCodesWithExecution';
 import {InvalidGasLimit} from '../../core/utils/errors';
 import {ensureSufficientGas} from '../../core/utils/validation';
-import UniversalLoginSDK from '../sdk';
+import UniLoginSdk from '../sdk';
 import {Execution} from '../../core/services/ExecutionFactory';
 import {propertyFromSubscription} from '../../core/utils/propertyFromSubscription';
 
@@ -15,7 +15,7 @@ export class DeployedWallet extends AbstractWallet {
     contractAddress: string,
     name: string,
     privateKey: string,
-    public readonly sdk: UniversalLoginSDK,
+    public readonly sdk: UniLoginSdk,
   ) {
     super(contractAddress, name, privateKey);
   }

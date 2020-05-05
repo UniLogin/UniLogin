@@ -7,7 +7,7 @@ import {mockContracts} from '@unilogin/contracts/testutils';
 import basicSDK, {transferMessage} from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER, TEST_SDK_CONFIG} from '@unilogin/commons';
-import UniversalLoginSDK, {DeployedWallet} from '../../../src';
+import UniLoginSdk, {DeployedWallet} from '../../../src';
 import {waitForSuccess} from '../../helpers/waitForSuccess';
 
 chai.use(solidity);
@@ -30,7 +30,7 @@ describe('INT: DeployedWallet', () => {
   let otherWallet: Wallet;
   let contractAddress: string;
   let privateKey: string;
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   const publicKey = createKeyPair().publicKey;
   const publicKey2 = createKeyPair().publicKey;
 
@@ -128,7 +128,7 @@ describe('INT: DeployedWallet', () => {
 
     it('Should return transaction hash and proper state with free transaction', async () => {
       const startingBalance = (await provider.getBalance(message.from!));
-      const refundPaidSdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
+      const refundPaidSdk = new UniLoginSdk(relayer.url(), provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
       await refundPaidSdk.start();
       deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, refundPaidSdk);
       const {waitToBeSuccess} = await deployedWallet.execute(message);

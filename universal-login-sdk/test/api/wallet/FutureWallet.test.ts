@@ -2,7 +2,7 @@ import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TES
 import {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {providers, utils, Wallet} from 'ethers';
-import UniversalLoginSDK, {FutureWallet} from '../../../src';
+import UniLoginSdk, {FutureWallet} from '../../../src';
 import {ENSService} from '../../../src/integration/ethereum/ENSService';
 import {AddressZero} from 'ethers/constants';
 
@@ -18,7 +18,7 @@ describe('UNIT: FutureWallet', () => {
   let provider: providers.Provider;
   let wallet: Wallet;
   let futureWallet: FutureWallet;
-  let mockSDK: UniversalLoginSDK;
+  let mockSDK: UniLoginSdk;
 
   before(() => {
     provider = createMockProvider();

@@ -4,7 +4,7 @@ import {utils, providers, Contract, Wallet} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@unilogin/commons';
 import {deployMockToken} from '@unilogin/commons/testutils';
-import UniversalLoginSDK from '../../../src/api/sdk';
+import UniLoginSdk from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {TransferService} from '../../../src/core/services/TransferService';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
@@ -23,7 +23,7 @@ describe('INT: TransferService', () => {
   let transferService: TransferService;
   let provider: providers.Provider;
   let relayer: any;
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   let mockTokenContract: Contract;
   let tokenDetailsService: TokenDetailsService;
   let tokenService: TokensDetailsStore;

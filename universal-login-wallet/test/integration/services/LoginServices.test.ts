@@ -9,7 +9,7 @@ import {
   generateCode,
 } from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
-import UniversalLoginSDK, {WalletService} from '@unilogin/sdk';
+import UniLoginSdk, {WalletService} from '@unilogin/sdk';
 import {setupSdk, createAndSetWallet} from '@unilogin/sdk/testutils';
 import Relayer from '@unilogin/relayer';
 import {DeployedWallet} from '@unilogin/sdk';
@@ -17,7 +17,7 @@ import {DeployedWallet} from '@unilogin/sdk';
 describe('Login', () => {
   let walletService: WalletService;
   let walletServiceForConnect: WalletService;
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   let relayer: Relayer;
   let wallet: Wallet;
   let provider: providers.Provider;

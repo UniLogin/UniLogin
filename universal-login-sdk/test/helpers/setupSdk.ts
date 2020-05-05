@@ -1,7 +1,7 @@
 import {Wallet} from 'ethers';
 import {TEST_SDK_CONFIG, TEST_GAS_MODES} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import UniversalLoginSDK from '../../src/api/sdk';
+import UniLoginSdk from '../../src/api/sdk';
 import {SdkConfig} from '../../src';
 
 export async function setupSdk(deployer: Wallet, overridePort = '33111', overrideSdkConfig?: Partial<SdkConfig>) {
@@ -9,7 +9,7 @@ export async function setupSdk(deployer: Wallet, overridePort = '33111', overrid
   await relayer.start();
   const {provider} = relayer;
   (provider as any).pollingInterval = 10;
-  const sdk = new UniversalLoginSDK(relayer.url(), provider, {...TEST_SDK_CONFIG, ...overrideSdkConfig});
+  const sdk = new UniLoginSdk(relayer.url(), provider, {...TEST_SDK_CONFIG, ...overrideSdkConfig});
   await sdk.fetchRelayerConfig();
   sdk.getGasModes = () => new Promise(resolve => resolve(TEST_GAS_MODES));
   return {sdk, relayer, provider};

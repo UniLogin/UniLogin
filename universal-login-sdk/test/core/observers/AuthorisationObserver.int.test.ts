@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import Relayer from '@unilogin/relayer';
 import basicSDK from '../../fixtures/basicSDK';
-import UniversalLoginSDK from '../../../src/api/sdk';
+import UniLoginSdk from '../../../src/api/sdk';
 import AuthorisationsObserver from '../../../src/core/observers/AuthorisationsObserver';
 import {waitUntil, RelayerRequest} from '@unilogin/commons';
 import {utils, Wallet} from 'ethers';
@@ -17,14 +17,14 @@ const loadFixture = createFixtureLoader();
 
 describe('INT: AuthorisationsObserver', () => {
   let relayer: Relayer;
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   let contractAddress: string;
   let authorisationsObserver: AuthorisationsObserver;
   let privateKey: string;
   let wallet: Wallet;
   let authorisationRequest: RelayerRequest;
 
-  const createauthorisationRequest = async (walletContractAddress: string, privateKey: string, sdk: UniversalLoginSDK) => {
+  const createauthorisationRequest = async (walletContractAddress: string, privateKey: string, sdk: UniLoginSdk) => {
     const authorisationRequest: RelayerRequest = {
       contractAddress: walletContractAddress,
       signature: '',

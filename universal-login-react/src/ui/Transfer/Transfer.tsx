@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import UniversalLoginSDK, {TransferService, TransferErrors, Execution} from '@unilogin/sdk';
+import UniLoginSdk, {TransferService, TransferErrors, Execution} from '@unilogin/sdk';
 import {TransferDetails, TokenDetails, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN, SEND_TRANSACTION_GAS_LIMIT} from '@unilogin/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {FooterSection} from '../commons/FooterSection';
@@ -18,7 +18,7 @@ export interface TransferProps {
   transferService: TransferService;
   onTransferTriggered: (transfer: () => Promise<Execution>) => Promise<void>;
   transferClassName?: string;
-  sdk: UniversalLoginSDK;
+  sdk: UniLoginSdk;
 }
 
 export const Transfer = ({transferService, onTransferTriggered, transferClassName, sdk}: TransferProps) => {

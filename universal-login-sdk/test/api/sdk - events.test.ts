@@ -8,7 +8,7 @@ import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG} from '@unilogin/c
 import {waitExpect} from '@unilogin/commons/testutils';
 import {mineBlock} from '@unilogin/contracts/testutils';
 import basicSDK from '../fixtures/basicSDK';
-import UniversalLoginSDK from '../../src/api/sdk';
+import UniLoginSdk from '../../src/api/sdk';
 import {DeployedWallet} from '../../src';
 import {Callback} from 'reactive-properties';
 
@@ -23,7 +23,7 @@ const gasLimit = DEFAULT_GAS_LIMIT;
 describe('INT: Events', () => {
   let relayer: RelayerUnderTest;
   let provider: providers.Provider;
-  let sdk: UniversalLoginSDK;
+  let sdk: UniLoginSdk;
   let deployedWallet: DeployedWallet;
   let contractAddress: string;
   let wallet: Wallet;
@@ -41,7 +41,7 @@ describe('INT: Events', () => {
 
   it('create, request connection, addKey roundtrip', async () => {
     const keyCallback = sinon.spy();
-    const newKeySDK = new UniversalLoginSDK(relayer.url(), provider, TEST_SDK_CONFIG);
+    const newKeySDK = new UniLoginSdk(relayer.url(), provider, TEST_SDK_CONFIG);
     await newKeySDK.start();
     const {privateKey: newPrivateKey} = await newKeySDK.connect(contractAddress);
     const publicKeyToAdd = utils.computeAddress(newPrivateKey);

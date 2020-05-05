@@ -3,7 +3,7 @@ import {
   WALLET_SUGGESTION_ALL_ACTIONS,
   WalletSuggestionAction,
 } from '@unilogin/commons';
-import UniversalLoginSDK from '@unilogin/sdk';
+import UniLoginSdk from '@unilogin/sdk';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {EnsNamePicker} from './EnsNamePicker';
 import './../styles/hint.css';
@@ -16,7 +16,7 @@ import {useThemeClassFor} from '../utils/classFor';
 export interface WalletSelectorProps {
   onCreateClick?(ensName: string): Promise<void> | void;
   onConnectClick?(ensName: string): Promise<void> | void;
-  sdk: UniversalLoginSDK;
+  sdk: UniLoginSdk;
   domains: string[];
   actions?: WalletSuggestionAction[];
   className?: string;

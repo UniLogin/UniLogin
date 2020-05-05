@@ -1,6 +1,6 @@
 import {Provider, JsonRPCRequest, Callback, JsonRPCResponse} from 'web3/providers';
 import {Config, getConfigForNetwork} from './config';
-import UniversalLoginSDK, {WalletService, SdkConfig} from '@unilogin/sdk';
+import UniLoginSdk, {WalletService, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
 import {providers, utils} from 'ethers';
 import {DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network, InitializationHandler, addressEquals} from '@unilogin/commons';
@@ -39,7 +39,7 @@ export class ULWeb3Provider implements Provider {
 
   private readonly initHandler = new InitializationHandler(() => this._init(), () => this._finalizeAndStop());
   private readonly provider: Provider;
-  private readonly sdk: UniversalLoginSDK;
+  private readonly sdk: UniLoginSdk;
   private readonly walletService: WalletService;
   private readonly uiController: UIController;
   private readonly browserChecker: BrowserChecker;
@@ -65,7 +65,7 @@ export class ULWeb3Provider implements Provider {
     };
     this.provider = provider;
     this.network = network;
-    this.sdk = new UniversalLoginSDK(
+    this.sdk = new UniLoginSdk(
       relayerUrl,
       new providers.Web3Provider(this.provider as any),
       sdkConfig,
