@@ -1,4 +1,4 @@
-import Relayer, {RelayerClass, addRefundPayer} from '@unilogin/relayer';
+import Relayer, {addRefundPayer} from '@unilogin/relayer';
 import {providers, utils} from 'ethers';
 import {TEST_REFUND_PAYER} from '@unilogin/commons';
 
@@ -10,10 +10,9 @@ export const withENS = (provider: providers.JsonRpcProvider, ensAddress: string)
 export async function startDevelopmentRelayer(
   configuration: any,
   provider: providers.JsonRpcProvider,
-  RelayerConstructor: RelayerClass = Relayer,
 ) {
   const providerWithENS = withENS(provider, configuration.chainSpec.ensAddress);
-  const relayer = new RelayerConstructor(configuration, providerWithENS);
+  const relayer = new Relayer(configuration, providerWithENS);
   await relayer.start();
   await addRefundPayer(relayer, TEST_REFUND_PAYER);
   console.log(`         Relayer url: http://localhost:${configuration.port}`);

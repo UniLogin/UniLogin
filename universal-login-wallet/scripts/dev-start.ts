@@ -1,5 +1,4 @@
 const {startDevelopment, createEnv, spawnProcess} = require('@unilogin/ops');
-import Relayer from '@unilogin/relayer';
 
 function runWebServer(vars: any) {
   const env = {...process.env, ...vars};
@@ -7,7 +6,7 @@ function runWebServer(vars: any) {
 }
 
 async function start() {
-  const artifacts = await startDevelopment({relayerClass: Relayer});
+  const artifacts = await startDevelopment();
   const env = createEnv(artifacts);
   runWebServer(env);
 }

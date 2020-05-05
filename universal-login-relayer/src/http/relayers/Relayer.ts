@@ -49,10 +49,6 @@ import Deployment from '../../core/models/Deployment';
 
 const defaultPort = '3311';
 
-export type RelayerClass = {
-  new(config: any, provider: providers.Provider): Relayer;
-};
-
 class Relayer {
   protected readonly port: string;
   provider: providers.Provider;

@@ -2,7 +2,7 @@ import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
 import {providers, Wallet} from 'ethers';
 import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
-import {RelayerClass, Config} from '@unilogin/relayer';
+import {Config} from '@unilogin/relayer';
 import {gnosisSafe, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
@@ -100,10 +100,9 @@ function getMigrationPath() {
 
 declare interface StartDevelopmentOverrides {
   nodeUrl?: string;
-  relayerClass?: RelayerClass;
 }
 
-async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrides = {}) {
+async function startDevelopment({nodeUrl}: StartDevelopmentOverrides = {}) {
   const jsonRpcUrl = nodeUrl || await startGanache(ganachePort);
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [, , , , ensDeployer, deployWallet] = getWallets(provider);
@@ -121,7 +120,7 @@ async function startDevelopment({nodeUrl, relayerClass}: StartDevelopmentOverrid
     proxy: [proxyContractHash],
   };
   const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, daiTokenAddress, saiTokenAddress, ensRegistrar.address, fallbackHandler.address);
-  await startDevelopmentRelayer(relayerConfig, provider, relayerClass);
+  await startDevelopmentRelayer(relayerConfig, provider);
   return {jsonRpcUrl, deployWallet, walletContractAddress: address, saiTokenAddress, daiTokenAddress, ensAddress, ensDomains};
 }
 
