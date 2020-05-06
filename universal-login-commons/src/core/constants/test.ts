@@ -113,7 +113,7 @@ export const TEST_SDK_CONFIG = {
   balanceObserverTick: 3,
   priceObserverTick: 3,
   mineableFactoryTick: 3,
-  mineableFactoryTimeout: 1000,
+  mineableFactoryTimeout: 2000,
 };
 
 export const TEST_REFUND_PAYER = {
