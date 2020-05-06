@@ -2,6 +2,8 @@ import {TokenPricesService, TokenDetails} from '../../../src';
 import {expect} from 'chai';
 
 describe('UNIT: TokenPricesService', () => {
+  const tokenPricesService = new TokenPricesService();
+
   const ETHPrices = {eth: 1, usd: 213.69};
   const DAIPrices = {eth: 0.00483321, usd: 1.02};
   const mockFetchTokenInfo = () => {
@@ -9,7 +11,6 @@ describe('UNIT: TokenPricesService', () => {
   };
 
   it('Should return empty prices when empty tokenDetails array', async () => {
-    const tokenPricesService = new TokenPricesService();
     (tokenPricesService as any).fetchTokenInfo = () => {};
     const prices = await tokenPricesService.getPrices([]);
     expect(prices).be.deep.eq({});
@@ -17,7 +18,6 @@ describe('UNIT: TokenPricesService', () => {
 
   it('Should return prices for ETH and DAI', async () => {
     const tokenDetails = [{symbol: 'ETH'}, {symbol: 'DAI'}] as TokenDetails[];
-    const tokenPricesService = new TokenPricesService();
     (tokenPricesService as any).fetchTokenInfo = mockFetchTokenInfo;
     const prices = await tokenPricesService.getPrices(tokenDetails);
     const ethPrices = prices['ETH'];
