@@ -1,8 +1,8 @@
 import Relayer from './relayers/Relayer';
 import {getConfig} from '../core/utils/config';
-import {getEnv} from '@unilogin/commons';
+import {NodeEnv, getNodeEnv} from '@unilogin/commons';
 
-export const start = (nodeEnv: string) => {
+export const start = (nodeEnv: NodeEnv) => {
   const config = getConfig(nodeEnv);
   const relayer = new Relayer(config);
   relayer.start().then(
@@ -11,4 +11,4 @@ export const start = (nodeEnv: string) => {
   );
 };
 
-start(getEnv('NODE_ENV', 'production'));
+start(getNodeEnv('production'));
