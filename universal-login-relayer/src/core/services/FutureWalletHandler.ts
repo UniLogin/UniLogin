@@ -1,8 +1,8 @@
-import {StoredFutureWalletRequest} from '@unilogin/commons';
+import {StoredFutureWalletRequest, TokenPricesService} from '@unilogin/commons';
 import {FutureWalletStore} from '../../integration/sql/services/FutureWalletStore';
 
 export class FutureWalletHandler {
-  constructor(private futureWalletStore: FutureWalletStore) {}
+  constructor(private futureWalletStore: FutureWalletStore, private tokenPricesService: TokenPricesService) {}
 
   handle(futureWallet: StoredFutureWalletRequest) {
     const tokenPriceInETH = '1';

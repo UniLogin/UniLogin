@@ -24,7 +24,7 @@ import {MessageStatusService} from '../../core/services/execution/messages/Messa
 import {Beta2Service} from '../../integration/ethereum/Beta2Service';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
-import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig, GasPriceOracle} from '@unilogin/commons';
+import {BalanceChecker, GasPriceOracle, PublicRelayerConfig, RequiredBalanceChecker, TokenPricesService} from '@unilogin/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
@@ -125,7 +125,7 @@ class Relayer {
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
     const futureWalletStore = new FutureWalletStore(this.database);
-    const futureWalletHandler = new FutureWalletHandler(futureWalletStore);
+    const futureWalletHandler = new FutureWalletHandler(futureWalletStore, new TokenPricesService());
 
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, futureWalletHandler, apiKeyHandler));

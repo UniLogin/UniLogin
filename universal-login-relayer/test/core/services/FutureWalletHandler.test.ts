@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {TEST_CONTRACT_ADDRESS, TEST_KEY, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, TEST_CONTRACT_ADDRESS, TEST_KEY, TokenPricesService} from '@unilogin/commons';
 import {FutureWalletHandler} from '../../../src/core/services/FutureWalletHandler';
 import {FutureWalletStore} from '../../../src/integration/sql/services/FutureWalletStore';
 import getKnexConfig from '../../testhelpers/knex';
@@ -8,7 +8,8 @@ import {clearDatabase} from '../../../src/http/relayers/RelayerUnderTest';
 describe('INT: FutureWalletHandler', () => {
   const knex = getKnexConfig();
   const futureWalletStore = new FutureWalletStore(knex);
-  const futureWalletHandler = new FutureWalletHandler(futureWalletStore);
+  const tokenPricesService = new TokenPricesService();
+  const futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService);
 
   it('creates future wallet', async () => {
     const futureWallet = {
