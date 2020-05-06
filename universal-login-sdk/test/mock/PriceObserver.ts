@@ -1,5 +1,6 @@
 import {PriceObserver} from '../../src/core/observers/PriceObserver';
 import {TokensDetailsStore} from '../../src/core/services/TokensDetailsStore';
+import {TokenPricesService} from '@unilogin/commons';
 
 export const PRICES_BEFORE = {
   ETH: {USD: 218.21, DAI: 194.38, SAI: 194.38, ETH: 0.01893},
@@ -21,7 +22,7 @@ export const createMockedPriceObserver = () => {
   const resetCallCount = () => {
     callCount = 0;
   };
-  const mockedPriceObserver = new PriceObserver({} as TokensDetailsStore, 150);
+  const mockedPriceObserver = new PriceObserver({} as TokensDetailsStore, {} as TokenPricesService, 150);
 
   mockedPriceObserver.getCurrentPrices = async () => {
     return callCount < PRICES.length ? PRICES[callCount++] : {};

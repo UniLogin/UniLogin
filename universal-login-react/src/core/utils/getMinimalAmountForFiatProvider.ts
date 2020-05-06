@@ -1,14 +1,18 @@
 import {utils} from 'ethers';
-import {getEtherPriceInCurrency, bigNumberMax, WalletService} from '@unilogin/sdk';
+import {bigNumberMax, WalletService} from '@unilogin/sdk';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {getPriceInEther} from './getPriceInEther';
-import {ValueRounder} from '@unilogin/commons';
+import {ValueRounder, TokenPricesService} from '@unilogin/commons';
 
-export const getMinimalAmountForFiatProvider = async (paymentMethod: TopUpProvider, requiredDeploymentBalance: string) => {
+export const getMinimalAmountForFiatProvider = async (
+  paymentMethod: TopUpProvider,
+  requiredDeploymentBalance: string,
+  tokenPricesService: TokenPricesService,
+) => {
   switch (paymentMethod) {
     case TopUpProvider.RAMP: {
       const providerMinimalAmountInFiat = '1';
-      const etherPriceInGBP = (await getEtherPriceInCurrency('GBP')).toString();
+      const etherPriceInGBP = (await tokenPricesService.getEtherPriceInCurrency('GBP')).toString();
       const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat, etherPriceInGBP);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
       return ValueRounder.ceil(utils.formatEther(bigNumberMax(
@@ -23,13 +27,13 @@ export const getMinimalAmountForFiatProvider = async (paymentMethod: TopUpProvid
   }
 };
 
-export const getMinimalAmount = (walletService: WalletService, paymentMethod: TopUpProvider) => {
+export const getMinimalAmount = (walletService: WalletService, paymentMethod: TopUpProvider, tokenPricesService = new TokenPricesService()) => {
   try {
     const requiredDeploymentBalance = walletService.getRequiredDeploymentBalance();
-    return getMinimalAmountForFiatProvider(paymentMethod, requiredDeploymentBalance);
+    return getMinimalAmountForFiatProvider(paymentMethod, requiredDeploymentBalance, tokenPricesService);
   } catch (error) {
     if (error.message === 'Wallet state is Deployed, but expected Future') {
-      return getMinimalAmountForFiatProvider(paymentMethod, '0');
+      return getMinimalAmountForFiatProvider(paymentMethod, '0', tokenPricesService);
     }
   }
 };
