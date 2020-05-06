@@ -6,7 +6,7 @@ import {createMockProvider, getWallets} from 'ethereum-waffle';
 import {utils} from 'ethers';
 import {TEST_CONTRACT_ADDRESS, TEST_REFUND_PAYER} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import UniLoginSDK, {TransferService, DeployedWallet} from '@unilogin/sdk';
+import UniLoginSDK, {TransferService, DeployedWallet, Execution} from '@unilogin/sdk';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {Transfer} from '../../src/ui/Transfer/Transfer';
 import {setupDeployedWallet} from '../helpers/setupDeploymentWallet';
@@ -22,7 +22,7 @@ describe('INT: Free Transfer', () => {
   let deployedWallet: DeployedWallet;
   let sdk: UniLoginSDK;
 
-  const onTransferTriggered = async (transfer: any) => {
+  const onTransferTriggered = async (transfer: () => Promise<Execution>) => {
     initSpy();
     const {waitToBeSuccess} = await transfer();
     await waitToBeSuccess();
