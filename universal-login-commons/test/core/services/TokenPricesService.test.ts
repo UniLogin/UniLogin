@@ -2,11 +2,10 @@ import {TokenPricesService, TokenDetails} from '../../../src';
 import {expect} from 'chai';
 
 describe('UNIT: TokenPricesService', () => {
-  const ETHPrices = { eth: 1, usd: 213.69 };
-  const DAIPrices = { eth: 0.00483321, usd: 1.02 };
+  const ETHPrices = {eth: 1, usd: 213.69};
+  const DAIPrices = {eth: 0.00483321, usd: 1.02};
   const mockFetchTokenInfo = () => {
-    return {ethereum: ETHPrices,
-            dai: DAIPrices};
+    return {ethereum: ETHPrices, dai: DAIPrices};
   };
 
   it('Should return empty prices when empty tokenDetails array', async () => {
