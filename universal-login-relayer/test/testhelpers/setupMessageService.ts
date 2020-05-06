@@ -1,6 +1,6 @@
 import Knex from 'knex';
 import {loadFixture} from 'ethereum-waffle';
-import {IMessageValidator} from '@unilogin/commons';
+import {IMessageValidator, MAX_GAS_LIMIT} from '@unilogin/commons';
 import MessageHandler from '../../src/core/services/execution/messages/MessageHandler';
 import QueueSQLStore from '../../src/integration/sql/services/QueueSQLStore';
 import AuthorisationStore from '../../src/integration/sql/services/AuthorisationStore';
@@ -13,7 +13,6 @@ import MessageExecutor from '../../src/integration/ethereum/MessageExecutor';
 import {DevicesStore} from '../../src/integration/sql/services/DevicesStore';
 import {DevicesService} from '../../src/core/services/DevicesService';
 import RelayerRequestSignatureValidator from '../../src/integration/ethereum/validators/RelayerRequestSignatureValidator';
-import {Config} from '../../src';
 import ExecutionWorker from '../../src/core/services/execution/ExecutionWorker';
 import DeploymentExecutor from '../../src/integration/ethereum/DeploymentExecutor';
 import SQLRepository from '../../src/integration/sql/services/SQLRepository';
@@ -26,7 +25,7 @@ import MessageHandlerValidator from '../../src/core/services/validators/MessageH
 import PendingMessages from '../../src/core/services/execution/messages/PendingMessages';
 import {setupWalletContractService} from './setupWalletContractService';
 
-export default async function setupMessageService(knex: Knex, config: Config) {
+export default async function setupMessageService(knex: Knex) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
   const authorisationStore = new AuthorisationStore(knex);
   const messageRepository = new MessageSQLRepository(knex);
@@ -35,7 +34,7 @@ export default async function setupMessageService(knex: Knex, config: Config) {
   const executionQueue = new QueueSQLStore(knex);
   const blockchainService = new BlockchainService(provider);
   const gasComputation = new GasComputation(blockchainService);
-  const messageHandlerValidator = new MessageHandlerValidator(config.maxGasLimit, gasComputation, wallet.address);
+  const messageHandlerValidator = new MessageHandlerValidator(MAX_GAS_LIMIT, gasComputation, wallet.address);
   const walletContractService = await setupWalletContractService(provider);
   const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
   const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);

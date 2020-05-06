@@ -16,6 +16,8 @@ export const GAS_BASE = 30000;
 
 export const MINIMAL_DEPLOYMENT_GAS_LIMIT = multiplyBy150Percent(DEPLOYMENT_REFUND);
 
+export const MAX_GAS_LIMIT = 500000;
+
 export const INITIAL_GAS_PARAMETERS = {
   gasToken: ETHER_NATIVE_TOKEN.address,
   gasPrice: utils.bigNumberify('0'),

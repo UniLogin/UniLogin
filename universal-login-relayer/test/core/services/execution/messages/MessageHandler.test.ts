@@ -28,11 +28,10 @@ describe('INT: MessageHandler', async () => {
   let msg: Message;
   let otherWallet: Wallet;
   let executionWorker: ExecutionWorker;
-  const config = getConfig('test');
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, provider, messageHandler, authorisationStore, walletContract, otherWallet, devicesStore, executionWorker} = await setupMessageService(knex, config));
+    ({wallet, provider, messageHandler, authorisationStore, walletContract, otherWallet, devicesStore, executionWorker} = await setupMessageService(knex));
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
     executionWorker.start();
   });
