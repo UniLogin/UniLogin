@@ -6,7 +6,7 @@
 
 exports.up = async (knex) => {
   await knex.schema.table('future_wallets', (table) => {
-    table.string('tokenPriceInETH', 64).notNullable();
+    table.string('tokenPriceInETH', 64).notNullable().defaultTo('1');
   });
 
   await knex('future_wallets').update({tokenPriceInETH: '1'});
