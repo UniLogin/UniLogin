@@ -85,9 +85,7 @@ export class RelayerUnderTest extends Relayer {
   }
 
   static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.Provider) {
-    console.log('create test telayer')
     const config: Config = deepMerge(getConfigForNetwork('ganache'), overrideConfig);
-    console.log(config)
     return new RelayerUnderTest(config, providerWithENS);
   }
 

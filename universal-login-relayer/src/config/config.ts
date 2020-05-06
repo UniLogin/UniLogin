@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import {ContractWhiteList, SupportedToken, LocalizationConfig, OnRampConfig, IPGeolocationApiConfig, Network, getEnv, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
+import {ContractWhiteList, SupportedToken, LocalizationConfig, OnRampConfig, IPGeolocationApiConfig, Network, getEnv, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL, NodeEnv, getNodeEnv} from '@unilogin/commons';
 import {KnexConfig} from './KnexConfig';
 import path from 'path';
 
@@ -51,17 +51,16 @@ const baseConfig = {
   },
   httpsRedirect: getEnv('HTTPS_REDIRECT', '') === 'true',
   port: getEnv('PORT', ''),
+  privateKey: getEnv('PRIVATE_KEY', ''),
 };
 
 export function getConfigForNetwork(network: Network): Config {
-  console.log('env', getEnv('PRIVATE_KEY', ''));
   switch (network) {
     case '1':
     case 'mainnet':
       return {
         ...baseConfig,
         jsonRpcUrl: 'https://mainnet.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
-        privateKey: getEnv('PRIVATE_KEY', ''),
         network: 'mainnet',
         ensAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
         ensRegistrars: ['unibeta.eth'],
@@ -99,7 +98,6 @@ export function getConfigForNetwork(network: Network): Config {
       return {
         ...baseConfig,
         jsonRpcUrl: 'https://ropsten.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
-        privateKey: getEnv('PRIVATE_KEY', ''),
         network: 'ropsten',
         ensAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
         ensRegistrars: ['unilogin.test'],
@@ -138,7 +136,6 @@ export function getConfigForNetwork(network: Network): Config {
         ...baseConfig,
         network: 'rinkeby',
         jsonRpcUrl: 'https://rinkeby.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
-        privateKey: getEnv('PRIVATE_KEY', ''),
         ensAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
         ensRegistrars: ['unilogin.test'],
         ensRegistrar: '0x1BA9B86331DDcD63c2AcA7a98886F7e7C2788cD4',
@@ -176,7 +173,6 @@ export function getConfigForNetwork(network: Network): Config {
         ...baseConfig,
         network: 'kovan',
         jsonRpcUrl: 'https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
-        privateKey: getEnv('PRIVATE_KEY', ''),
         ensAddress: '0x4Ca9B09FE1CDC2C4b0B489b6f92b24fd27feBB40',
         ensRegistrars: ['unilogin.test', 'poppularapp.test'],
         ensRegistrar: '0xD79721fD1c007320cB443D4F7026b5B06f68ff97',
@@ -238,19 +234,7 @@ export function getConfigForNetwork(network: Network): Config {
             wyreUrl: 'https://pay.testwyre.com/purchase',
           },
         },
-        database: {
-          client: 'postgresql',
-          connection: {
-            database: 'universal_login_relayer_development',
-            user: 'postgres',
-            password: 'postgres',
-          },
-          migrations: {
-            tableName: 'knex_migrations',
-            directory: path.join(__dirname, '../integration/sql/migrations'),
-            loadExtensions: ['.js'],
-          },
-        },
+        database: getDatabaseForGanacheConfig(getNodeEnv()),
         supportedTokens: [{
           address: ETHER_NATIVE_TOKEN.address,
         },
@@ -262,3 +246,38 @@ export function getConfigForNetwork(network: Network): Config {
       throw new Error(`Invalid network: ${network}`);
   }
 }
+
+const getDatabaseForGanacheConfig = (env: NodeEnv) => {
+  switch (env) {
+    case 'test':
+      return {
+        client: 'postgresql',
+        connection: {
+          database: 'universal_login_relayer_test',
+          user: 'postgres',
+          password: 'postgres',
+        },
+        migrations: {
+          tableName: 'knex_migrations',
+          directory: path.join(__dirname, '../integration/sql/migrations'),
+          loadExtensions: ['.js'],
+        },
+      };
+    case 'development':
+      return {
+        client: 'postgresql',
+        connection: {
+          database: 'universal_login_relayer_development',
+          user: 'postgres',
+          password: 'postgres',
+        },
+        migrations: {
+          tableName: 'knex_migrations',
+          directory: path.join(__dirname, '../integration/sql/migrations'),
+          loadExtensions: ['.js'],
+        },
+      };
+    default:
+      throw TypeError('Invalid environment');
+  }
+};
