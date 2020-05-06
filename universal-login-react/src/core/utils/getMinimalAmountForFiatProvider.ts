@@ -4,11 +4,14 @@ import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {getPriceInEther} from './getPriceInEther';
 import {ValueRounder, TokenPricesService} from '@unilogin/commons';
 
-export const getMinimalAmountForFiatProvider = async (paymentMethod: TopUpProvider, requiredDeploymentBalance: string) => {
+export const getMinimalAmountForFiatProvider = async (
+  paymentMethod: TopUpProvider,
+  requiredDeploymentBalance: string,
+  tokenPricesService: TokenPricesService,
+) => {
   switch (paymentMethod) {
     case TopUpProvider.RAMP: {
       const providerMinimalAmountInFiat = '1';
-      const tokenPricesService = new TokenPricesService();
       const etherPriceInGBP = (await tokenPricesService.getEtherPriceInCurrency('GBP')).toString();
       const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat, etherPriceInGBP);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);

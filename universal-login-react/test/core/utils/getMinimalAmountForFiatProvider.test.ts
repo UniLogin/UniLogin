@@ -8,20 +8,20 @@ import {TokenPricesService} from '@unilogin/commons';
 describe('getMinimalAmountForFiatProvider', () => {
   describe('RAMP provider', () => {
     const paymentMethod = TopUpProvider.RAMP;
+    const tokenPricesService = new TokenPricesService();
 
     before(() => {
-      const tokenPricesService = new TokenPricesService();
-      sinon.stub(tokenPricesService, 'getEtherPriceInCurrency').returns(new Promise((resolve) => resolve('1')));
+      sinon.stub(tokenPricesService, 'getEtherPriceInCurrency').resolves('1');
     });
 
     it('return provider minimal amount', async () => {
       const bigMinimalAmount = '2';
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount)).to.eq('2');
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService)).to.eq('2');
     });
 
     it('return UniversalLogin minimal amount', async () => {
       const smallMinimalAmount = '0.0001';
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount)).to.eq('1');
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService)).to.eq('1');
     });
     after(() => {
       sinon.restore();
@@ -32,7 +32,7 @@ describe('getMinimalAmountForFiatProvider', () => {
 describe('UNIT: getMinimalAmount', () => {
   before(() => {
     const tokenPricesService = new TokenPricesService();
-    sinon.stub(tokenPricesService, 'getEtherPriceInCurrency').returns(new Promise((resolve) => resolve('1')));
+    sinon.stub(tokenPricesService, 'getEtherPriceInCurrency').resolves('1');
   });
 
   it('returns 2 for Ramp and future wallet', async () => {
