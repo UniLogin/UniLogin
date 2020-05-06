@@ -2,15 +2,16 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {getMinimalAmountForFiatProvider, getMinimalAmount} from '../../../src/core/utils/getMinimalAmountForFiatProvider';
 import {TopUpProvider} from '../../../src/core/models/TopUpProvider';
-import * as sdk from '@unilogin/sdk';
 import {InvalidWalletState} from '@unilogin/sdk';
+import {TokenPricesService} from '@unilogin/commons';
 
 describe('getMinimalAmountForFiatProvider', () => {
   describe('RAMP provider', () => {
     const paymentMethod = TopUpProvider.RAMP;
 
     before(() => {
-      sinon.stub(sdk, 'getEtherPriceInCurrency').returns(new Promise((resolve) => resolve('1')));
+      const tokenPricesService = new TokenPricesService();
+      sinon.stub(tokenPricesService, 'getEtherPriceInCurrency').returns(new Promise((resolve) => resolve('1')));
     });
 
     it('return provider minimal amount', async () => {
@@ -30,7 +31,8 @@ describe('getMinimalAmountForFiatProvider', () => {
 
 describe('UNIT: getMinimalAmount', () => {
   before(() => {
-    sinon.stub(sdk, 'getEtherPriceInCurrency').returns(new Promise((resolve) => resolve('1')));
+    const tokenPricesService = new TokenPricesService();
+    sinon.stub(tokenPricesService, 'getEtherPriceInCurrency').returns(new Promise((resolve) => resolve('1')));
   });
 
   it('returns 2 for Ramp and future wallet', async () => {

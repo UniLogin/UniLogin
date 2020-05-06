@@ -1,14 +1,15 @@
 import {utils} from 'ethers';
-import {getEtherPriceInCurrency, bigNumberMax, WalletService} from '@unilogin/sdk';
+import {bigNumberMax, WalletService} from '@unilogin/sdk';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {getPriceInEther} from './getPriceInEther';
-import {ValueRounder} from '@unilogin/commons';
+import {ValueRounder, TokenPricesService} from '@unilogin/commons';
 
 export const getMinimalAmountForFiatProvider = async (paymentMethod: TopUpProvider, requiredDeploymentBalance: string) => {
   switch (paymentMethod) {
     case TopUpProvider.RAMP: {
       const providerMinimalAmountInFiat = '1';
-      const etherPriceInGBP = (await getEtherPriceInCurrency('GBP')).toString();
+      const tokenPricesService = new TokenPricesService();
+      const etherPriceInGBP = (await tokenPricesService.getEtherPriceInCurrency('GBP')).toString();
       const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat, etherPriceInGBP);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
       return ValueRounder.ceil(utils.formatEther(bigNumberMax(

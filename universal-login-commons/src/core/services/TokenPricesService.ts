@@ -1,4 +1,5 @@
 import {ObservedCurrency, TokensPrices, http as _http, TokenDetails, ETHER_NATIVE_TOKEN, fetch} from '../../';
+const cryptocompare = require('cryptocompare');
 import {Sanitizer, asObject, asNumber, cast} from '@restless/sanitizers';
 
 interface TokenDetailsWithCoingeckoId extends TokenDetails {
@@ -11,6 +12,11 @@ export class TokenPricesService {
     const pricesWithCoingeckoId = await this.fetchTokenInfo(tokenDetailsWithCoingeckoId, ['ETH', 'USD']);
     return this.getPricesFromPricesWithCoingeckoId(tokenDetailsWithCoingeckoId, pricesWithCoingeckoId);
   }
+
+  getEtherPriceInCurrency = async (currency: 'USD' | 'EUR' | 'GBP'): Promise<string> => {
+    const priceInCurrency = await cryptocompare.price('ETH', currency);
+    return priceInCurrency[currency];
+  };
 
   private fetchTokenInfo = async (tokenDetails: TokenDetailsWithCoingeckoId[], currencies: ObservedCurrency[]) => {
     const http = _http(fetch)('https://api.coingecko.com/api/v3');
