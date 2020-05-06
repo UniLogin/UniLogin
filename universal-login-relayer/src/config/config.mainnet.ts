@@ -4,7 +4,7 @@ import {getEnv, UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
 import path from 'path';
 import {baseConfig} from './baseConfig';
 
-export const config = {
+export const getConfig = () => ({
   ...baseConfig,
   jsonRpcUrl: 'https://mainnet.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
   network: 'mainnet',
@@ -38,4 +38,4 @@ export const config = {
       loadExtensions: ['.js'],
     },
   },
-};
+});

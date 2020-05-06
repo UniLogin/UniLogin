@@ -1,10 +1,10 @@
 import {ContractWhiteList, SupportedToken, LocalizationConfig, OnRampConfig, IPGeolocationApiConfig, Network} from '@unilogin/commons';
 import {KnexConfig} from './KnexConfig';
-import {config as configGanache} from './config.ganache';
-import {config as configKovan} from './config.kovan';
-import {config as configMainnet} from './config.mainnet';
-import {config as configRinkeby} from './config.rinkeby';
-import {config as configRopsten} from './config.ropsten';
+import {getConfig as getGanacheConfig} from './config.ganache';
+import {getConfig as getKovanConfig} from './config.kovan';
+import {getConfig as getMainnetConfig} from './config.mainnet';
+import {getConfig as getRinkebyConfig} from './config.rinkeby';
+import {getConfig as getRopstenConfig} from './config.ropsten';
 
 export interface Config {
   jsonRpcUrl?: string;
@@ -31,19 +31,19 @@ export function getConfigForNetwork(network: Network): Config {
   switch (network) {
     case '1':
     case 'mainnet':
-      return configMainnet;
+      return getMainnetConfig();
     case '3':
     case 'ropsten':
-      return configRopsten;
+      return getRopstenConfig();
     case '4':
     case 'rinkeby':
-      return configRinkeby;
+      return getRinkebyConfig();
     case '42':
     case 'kovan':
-      return configKovan;
+      return getKovanConfig();
     case '8545':
     case 'ganache':
-      return configGanache;
+      return getGanacheConfig();
     default:
       throw new Error(`Invalid network: ${network}`);
   }
