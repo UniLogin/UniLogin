@@ -6,10 +6,8 @@ interface TokenDetailsWithCoingeckoId extends TokenDetails {
 };
 
 export class TokenPricesService {
-  constructor(private tokensDetails: TokenDetails[]) {}
-
-  async getPrices(): Promise<TokensPrices> {
-    const tokenDetailsWithCoingeckoId = this.tokensDetails.map(token => ({...token, coingeckoId: this.getCoingeckoId(token)}));
+  async getPrices(tokensDetails: TokenDetails[]): Promise<TokensPrices> {
+    const tokenDetailsWithCoingeckoId = tokensDetails.map(token => ({...token, coingeckoId: this.getCoingeckoId(token)}));
     const pricesWithCoingeckoId = await this.fetchTokenInfo(tokenDetailsWithCoingeckoId, ['ETH', 'USD']);
     return this.getPricesFromPricesWithCoingeckoId(tokenDetailsWithCoingeckoId, pricesWithCoingeckoId);
   }

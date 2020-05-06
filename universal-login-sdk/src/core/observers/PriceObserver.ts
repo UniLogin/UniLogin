@@ -2,16 +2,19 @@ import {TokensPrices, TokenPricesService} from '@unilogin/commons';
 import ObserverRunner from './ObserverRunner';
 const deepEqual = require('deep-equal');
 import cloneDeep from 'lodash.clonedeep';
+import {TokensDetailsStore} from '../services/TokensDetailsStore';
 
 export type OnTokenPricesChange = (data: TokensPrices) => void;
 
 export class PriceObserver extends ObserverRunner {
   private lastTokenPrices: TokensPrices = {};
   private callbacks: OnTokenPricesChange[] = [];
+  private tokenPricesService: TokenPricesService;
 
-  constructor(private tokenPricesService: TokenPricesService, tick: number) {
+  constructor(private tokensDetailsStore: TokensDetailsStore, tick: number) {
     super();
     this.tick = tick;
+    this.tokenPricesService = new TokenPricesService();
   }
 
   subscribe(callback: OnTokenPricesChange) {
@@ -45,6 +48,6 @@ export class PriceObserver extends ObserverRunner {
   }
 
   getCurrentPrices(): Promise<TokensPrices> {
-    return this.tokenPricesService.getPrices();
+    return this.tokenPricesService.getPrices(this.tokensDetailsStore.tokensDetails);
   }
 }

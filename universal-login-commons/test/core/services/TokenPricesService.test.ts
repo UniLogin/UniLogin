@@ -9,17 +9,17 @@ describe('UNIT: TokenPricesService', () => {
   };
 
   it('Should return empty prices when empty tokenDetails array', async () => {
-    const tokenPricesService = new TokenPricesService([]);
+    const tokenPricesService = new TokenPricesService();
     (tokenPricesService as any).fetchTokenInfo = () => {};
-    const prices = await tokenPricesService.getPrices();
+    const prices = await tokenPricesService.getPrices([]);
     expect(prices).be.deep.eq({});
   });
 
   it('Should return prices for ETH and DAI', async () => {
     const tokenDetails = [{symbol: 'ETH'}, {symbol: 'DAI'}] as TokenDetails[];
-    const tokenPricesService = new TokenPricesService(tokenDetails);
+    const tokenPricesService = new TokenPricesService();
     (tokenPricesService as any).fetchTokenInfo = mockFetchTokenInfo;
-    const prices = await tokenPricesService.getPrices();
+    const prices = await tokenPricesService.getPrices(tokenDetails);
     const ethPrices = prices['ETH'];
     expect(ethPrices.ETH).be.eq(ETHPrices.eth);
     expect(ethPrices.USD).be.eq(ETHPrices.usd);

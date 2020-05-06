@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle, TokenPricesService} from '@unilogin/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle} from '@unilogin/commons';
 import {BlockchainService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -37,7 +37,6 @@ class UniLoginSdk {
   readonly priceObserver: PriceObserver;
   readonly tokenDetailsService: TokenDetailsService;
   readonly tokensDetailsStore: TokensDetailsStore;
-  readonly tokenPricesService: TokenPricesService;
   readonly blockchainService: BlockchainService;
   readonly gasPriceOracle: GasPriceOracle;
   readonly gasModeService: GasModeService;
@@ -73,8 +72,7 @@ class UniLoginSdk {
     this.sufficientBalanceValidator = new SufficientBalanceValidator(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.config.observedTokensAddresses);
-    this.tokenPricesService = new TokenPricesService(this.tokensDetailsStore.tokensDetails);
-    this.priceObserver = new PriceObserver(this.tokenPricesService, this.config.priceObserverTick);
+    this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.config.priceObserverTick);
     this.gasPriceOracle = new GasPriceOracle();
     this.tokensValueConverter = new TokensValueConverter(this.config.observedCurrencies);
     this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
