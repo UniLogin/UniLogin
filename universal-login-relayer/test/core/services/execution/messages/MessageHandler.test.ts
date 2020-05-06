@@ -5,7 +5,6 @@ import {encodeFunction, mockContracts} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {deployContract} from 'ethereum-waffle';
 import {utils, Wallet, Contract} from 'ethers';
-import {getConfig} from '../../../../../src';
 import {clearDatabase} from '../../../../../src/http/relayers/RelayerUnderTest';
 import defaultDeviceInfo from '../../../../testconfig/defaults';
 import {getTestSignedMessage} from '../../../../testconfig/message';
@@ -28,11 +27,10 @@ describe('INT: MessageHandler', async () => {
   let msg: Message;
   let otherWallet: Wallet;
   let executionWorker: ExecutionWorker;
-  const config = getConfig('test');
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, provider, messageHandler, authorisationStore, walletContract, otherWallet, devicesStore, executionWorker} = await setupMessageService(knex, config));
+    ({wallet, provider, messageHandler, authorisationStore, walletContract, otherWallet, devicesStore, executionWorker} = await setupMessageService(knex));
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
     executionWorker.start();
   });

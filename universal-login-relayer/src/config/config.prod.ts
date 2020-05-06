@@ -1,5 +1,5 @@
 import path from 'path';
-import {getEnv, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
+import {getEnv, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL, MAX_GAS_LIMIT} from '@unilogin/commons';
 import {Config} from './relayer';
 
 export const config: Config = Object.freeze({
@@ -48,7 +48,7 @@ export const config: Config = Object.freeze({
       loadExtensions: ['.js'],
     },
   },
-  maxGasLimit: 500000,
+  maxGasLimit: MAX_GAS_LIMIT,
   ipGeolocationApi: {
     baseUrl: 'https://api.ipdata.co',
     accessKey: 'c7fd60a156452310712a66ca266558553470f80bf84674ae7e34e9ee',
