@@ -1,7 +1,6 @@
 import Relayer from './relayers/Relayer';
-import {Network, getEnv, asNetwork} from '@unilogin/commons';
+import {Network} from '@unilogin/commons';
 import {getConfigForNetwork} from '../config/config';
-import {cast} from '@restless/sanitizers';
 
 export const start = (network: Network) => {
   const config = getConfigForNetwork(network);
@@ -11,5 +10,3 @@ export const start = (network: Network) => {
     console.error,
   );
 };
-
-start(cast(getEnv('NETWORK', 'mainnet'), asNetwork));
