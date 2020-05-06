@@ -30,8 +30,9 @@ describe('getMinimalAmountForFiatProvider', () => {
 });
 
 describe('UNIT: getMinimalAmount', () => {
+  const tokenPricesService = new TokenPricesService();
+
   before(() => {
-    const tokenPricesService = new TokenPricesService();
     sinon.stub(tokenPricesService, 'getEtherPriceInCurrency').resolves('1');
   });
 
@@ -40,7 +41,7 @@ describe('UNIT: getMinimalAmount', () => {
       getRequiredDeploymentBalance: () => '2',
     };
     const paymentMethod = TopUpProvider.RAMP;
-    expect(await getMinimalAmount(walletService as any, paymentMethod)).to.eq('2');
+    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('2');
   });
 
   it('returns 30 for Safello and future wallet', async () => {
@@ -48,7 +49,7 @@ describe('UNIT: getMinimalAmount', () => {
       getRequiredDeploymentBalance: () => '2',
     };
     const paymentMethod = TopUpProvider.SAFELLO;
-    expect(await getMinimalAmount(walletService as any, paymentMethod)).to.eq('30');
+    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('30');
   });
 
   it('returns 30 for Safello and deployed wallet', async () => {
@@ -58,7 +59,7 @@ describe('UNIT: getMinimalAmount', () => {
       },
     };
     const paymentMethod = TopUpProvider.SAFELLO;
-    expect(await getMinimalAmount(walletService as any, paymentMethod)).to.eq('30');
+    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('30');
   });
 
   it('returns 1 for Ramp and deployed wallet', async () => {
@@ -68,7 +69,7 @@ describe('UNIT: getMinimalAmount', () => {
       },
     };
     const paymentMethod = TopUpProvider.RAMP;
-    expect(await getMinimalAmount(walletService as any, paymentMethod)).to.eq('1');
+    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('1');
   });
 
   after(() => {

@@ -27,13 +27,13 @@ export const getMinimalAmountForFiatProvider = async (
   }
 };
 
-export const getMinimalAmount = (walletService: WalletService, paymentMethod: TopUpProvider) => {
+export const getMinimalAmount = (walletService: WalletService, paymentMethod: TopUpProvider, tokenPricesService = new TokenPricesService()) => {
   try {
     const requiredDeploymentBalance = walletService.getRequiredDeploymentBalance();
-    return getMinimalAmountForFiatProvider(paymentMethod, requiredDeploymentBalance);
+    return getMinimalAmountForFiatProvider(paymentMethod, requiredDeploymentBalance, tokenPricesService);
   } catch (error) {
     if (error.message === 'Wallet state is Deployed, but expected Future') {
-      return getMinimalAmountForFiatProvider(paymentMethod, '0');
+      return getMinimalAmountForFiatProvider(paymentMethod, '0', tokenPricesService);
     }
   }
 };
