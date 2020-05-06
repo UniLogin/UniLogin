@@ -4,7 +4,8 @@ import {FutureWalletStore} from '../../integration/sql/services/FutureWalletStor
 export class FutureWalletHandler {
   constructor(private futureWalletStore: FutureWalletStore) {}
 
-  handle(futureWallet: StoredFutureWallet) {
-    return this.futureWalletStore.add(futureWallet);
+  handle(futureWallet: Omit<StoredFutureWallet, 'tokenPriceInETH'>) {
+    const tokenPriceInETH = '1';
+    return this.futureWalletStore.add({...futureWallet, tokenPriceInETH});
   }
 }

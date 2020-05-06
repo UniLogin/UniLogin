@@ -12,4 +12,5 @@ export interface StoredFutureWallet {
   ensName: string;
   gasPrice: string;
   gasToken: string;
+  tokenPriceInETH: string;
 };
