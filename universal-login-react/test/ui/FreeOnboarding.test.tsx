@@ -37,6 +37,7 @@ describe('INT: Free Onboarding', () => {
   });
 
   after(async () => {
+    reactWrapper.unmount();
     await relayer.stop();
   });
 });

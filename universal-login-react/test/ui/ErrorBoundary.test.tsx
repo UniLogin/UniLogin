@@ -14,5 +14,6 @@ describe('ErrorBoundary', () => {
     const wrapper = mount(<Component />);
     wrapper.find(ProblemComponent).simulateError('error');
     expect(wrapper.text()).include('Something went wrong');
+    wrapper.unmount();
   });
 });

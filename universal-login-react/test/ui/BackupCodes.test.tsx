@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {mount} from 'enzyme';
+import {mount, ReactWrapper} from 'enzyme';
 import React from 'react';
 import {getWallets, createMockProvider} from 'ethereum-waffle';
 import {DeployedWallet} from '@unilogin/sdk';
@@ -16,11 +16,12 @@ describe('INT: BackupCodes', () => {
   let deployedWallet: DeployedWallet;
   let dashboard: DashboardPage;
   let relayer: Relayer;
+  let appWrapper: ReactWrapper;
 
   before(async () => {
     ([wallet] = getWallets(createMockProvider()));
     ({deployedWallet, relayer} = await setupDeployedWallet(wallet, ensName));
-    const appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
+    appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
     dashboard = new DashboardPage(appWrapper);
   });
 
@@ -39,6 +40,7 @@ describe('INT: BackupCodes', () => {
   }).timeout(15000);
 
   after(async () => {
+    appWrapper.unmount();
     await deployedWallet.sdk.finalizeAndStop();
     await relayer.stop();
   });
