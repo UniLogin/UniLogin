@@ -7,7 +7,6 @@ import {waitExpect} from '@unilogin/commons/testutils';
 import {executeSetRequiredSignatures, mockContracts} from '@unilogin/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../../testhelpers/setupMessageService';
-import {getConfig} from '../../../../../src';
 import {getKnexConfig} from '../../../../testhelpers/knex';
 import {clearDatabase} from '../../../../../src/http/relayers/RelayerUnderTest';
 import {getTestSignedMessage} from '../../../../testconfig/message';

@@ -5,7 +5,6 @@ import {encodeFunction, mockContracts} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {deployContract} from 'ethereum-waffle';
 import {utils, Wallet, Contract} from 'ethers';
-import {getConfig} from '../../../../../src';
 import {clearDatabase} from '../../../../../src/http/relayers/RelayerUnderTest';
 import defaultDeviceInfo from '../../../../testconfig/defaults';
 import {getTestSignedMessage} from '../../../../testconfig/message';
