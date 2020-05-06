@@ -2,7 +2,6 @@ import Knex from 'knex';
 import {Contract, providers, Wallet} from 'ethers';
 import {
   ContractJSON,
-  deepMerge,
   DeepPartial,
   deployContract,
   ETHER_NATIVE_TOKEN,
@@ -74,18 +73,13 @@ export class RelayerUnderTest extends Relayer {
       contractWhiteList,
       factoryAddress: factoryContract.address,
       supportedTokens,
-      database: {
-        connection: {
-          database: 'universal_login_relayer_test',
-        },
-      },
     };
     const relayer = RelayerUnderTest.createTestRelayer(overrideConfig, providerWithENS);
     return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletContract, mockToken, provider: providerWithENS, ensRegistrar, fallbackHandlerContract};
   }
 
   static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.Provider) {
-    const config: Config = deepMerge(getConfigForNetwork('ganache'), overrideConfig);
+    const config = {...getConfigForNetwork('ganache'), ...overrideConfig} as Config;
     return new RelayerUnderTest(config, providerWithENS);
   }
 
