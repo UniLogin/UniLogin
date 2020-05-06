@@ -9,12 +9,10 @@ export type OnTokenPricesChange = (data: TokensPrices) => void;
 export class PriceObserver extends ObserverRunner {
   private lastTokenPrices: TokensPrices = {};
   private callbacks: OnTokenPricesChange[] = [];
-  private tokenPricesService: TokenPricesService;
 
-  constructor(private tokensDetailsStore: TokensDetailsStore, tick: number) {
+  constructor(private tokensDetailsStore: TokensDetailsStore, private tokenPricesService: TokenPricesService, tick: number) {
     super();
     this.tick = tick;
-    this.tokenPricesService = new TokenPricesService();
   }
 
   subscribe(callback: OnTokenPricesChange) {
