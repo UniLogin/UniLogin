@@ -11,7 +11,7 @@ export async function startDevelopmentRelayer(
   configuration: any,
   provider: providers.JsonRpcProvider,
 ) {
-  const providerWithENS = withENS(provider, configuration.chainSpec.ensAddress);
+  const providerWithENS = withENS(provider, configuration.ensAddress);
   const relayer = new Relayer(configuration, providerWithENS);
   await relayer.start();
   await addRefundPayer(relayer, TEST_REFUND_PAYER);

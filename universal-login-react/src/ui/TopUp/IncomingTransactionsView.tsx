@@ -30,7 +30,7 @@ export const IncomingTransactionsView = ({futureWallet}: IncomingTransactionsVie
           </Value>
           <ExternalLinkIcon src={externalLink}/>
           <EthersanLink
-            href={getEtherscanUrl(relayerConfig.chainSpec.name, tx.transactionHash)}
+            href={getEtherscanUrl(relayerConfig.network, tx.transactionHash)}
             target="_blank"
             rel="noopener noreferrer"
           >

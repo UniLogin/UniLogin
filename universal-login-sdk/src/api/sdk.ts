@@ -86,8 +86,8 @@ class UniLoginSdk {
 
   private async loadRelayerConfigFromApi() {
     const config = await this.relayerApi.getConfig();
-    if (!Network.equals(cast(config.chainSpec.name, asNetwork), this.config.network)) {
-      throw new Error(`Relayer is configured to a different network. Expected: ${this.config.network}, got: ${config.chainSpec.name}`);
+    if (!Network.equals(cast(config.network, asNetwork), this.config.network)) {
+      throw new Error(`Relayer is configured to a different network. Expected: ${this.config.network}, got: ${config.network}`);
     }
     return config;
   }
@@ -144,11 +144,11 @@ class UniLoginSdk {
   }
 
   private fetchFutureWalletFactory() {
-    const {supportedTokens, factoryAddress, contractWhiteList, chainSpec, ensRegistrar, walletContractAddress, relayerAddress, fallbackHandlerAddress} = this.getRelayerConfig();
-    const futureWalletConfig = {supportedTokens, factoryAddress, contractWhiteList, chainSpec, walletContractAddress, relayerAddress, fallbackHandlerAddress};
+    const {supportedTokens, factoryAddress, contractWhiteList, ensAddress, ensRegistrar, walletContractAddress, relayerAddress, fallbackHandlerAddress} = this.getRelayerConfig();
+    const futureWalletConfig = {supportedTokens, factoryAddress, contractWhiteList, ensAddress, walletContractAddress, relayerAddress, fallbackHandlerAddress};
     this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(
       futureWalletConfig,
-      new ENSService(this.provider, futureWalletConfig.chainSpec.ensAddress, ensRegistrar),
+      new ENSService(this.provider, futureWalletConfig.ensAddress, ensRegistrar),
       this,
     );
   }
@@ -166,8 +166,8 @@ class UniLoginSdk {
   }
 
   async resolveName(ensName: string): Promise<Nullable<string>> {
-    const {chainSpec} = await this.fetchRelayerConfig();
-    return resolveName(this.provider, chainSpec.ensAddress, ensName);
+    const {ensAddress} = await this.fetchRelayerConfig();
+    return resolveName(this.provider, ensAddress, ensName);
   }
 
   async connect(walletContractAddress: string) {
@@ -220,7 +220,7 @@ class UniLoginSdk {
       const relayerConfig = this.getRelayerConfig();
       this.notifySdk = NotifySdk.createForNetwork(
         this.config.notifySdkApiKey,
-        cast(relayerConfig.chainSpec.name, asNetwork),
+        cast(relayerConfig.network, asNetwork),
       );
     }
     return this.notifySdk!;

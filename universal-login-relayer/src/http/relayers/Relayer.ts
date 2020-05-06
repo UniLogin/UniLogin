@@ -63,7 +63,12 @@ class Relayer {
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
-    this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
+    this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl,
+      {
+        ensAddress: config.ensAddress,
+        name: config.network,
+        chainId: 0,
+      });
     this.wallet = new Wallet(config.privateKey, this.provider);
     this.database = Knex(config.database);
     this.publicConfig = getPublicConfig(this.config);
@@ -89,7 +94,7 @@ class Relayer {
       this.app.use(httpsRedirect);
     }
 
-    this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
+    this.ensService = new ENSService(this.config.ensAddress, this.config.ensRegistrars, this.provider);
     const blockchainService = new BlockchainService(this.provider);
     const gasComputation = new GasComputation(blockchainService);
     const messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address);

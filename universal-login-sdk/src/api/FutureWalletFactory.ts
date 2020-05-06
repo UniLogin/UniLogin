@@ -16,7 +16,7 @@ export type BalanceDetails = {
   contractAddress: string;
 };
 
-type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'chainSpec' | 'walletContractAddress' | 'relayerAddress' | 'fallbackHandlerAddress'>;
+type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'ensAddress' | 'walletContractAddress' | 'relayerAddress' | 'fallbackHandlerAddress'>;
 
 export class FutureWalletFactory {
   constructor(

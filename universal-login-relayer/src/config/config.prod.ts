@@ -6,11 +6,8 @@ export const config: Config = Object.freeze({
   jsonRpcUrl: getEnv('JSON_RPC_URL', ''),
   port: getEnv('PORT', ''),
   privateKey: getEnv('PRIVATE_KEY', ''),
-  chainSpec: Object.freeze({
-    name: getEnv('CHAIN_NAME', ''),
-    ensAddress: getEnv('ENS_ADDRESS', ''),
-    chainId: 0,
-  }),
+  network: getEnv('CHAIN_NAME', ''),
+  ensAddress: getEnv('ENS_ADDRESS', ''),
   ensRegistrars: getEnv('ENS_DOMAINS', '').split(','),
   ensRegistrar: getEnv('ENS_REGISTRAR', ''),
   fallbackHandlerAddress: getEnv('FALLBACK_HANDLER_ADDRESS', ''),
