@@ -6,7 +6,7 @@ import {baseConfig} from './baseConfig';
 
 export const getConfig = () => ({
   ...baseConfig,
-  jsonRpcUrl: 'https://ropsten.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
+  jsonRpcUrl: `https://ropsten.infura.io/v3/${getEnv('INFURA_API_KEY', '')}`,
   network: 'ropsten',
   ensAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
   ensRegistrars: ['unilogin.test'],

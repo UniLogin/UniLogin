@@ -7,7 +7,7 @@ import {baseConfig} from './baseConfig';
 export const getConfig = () => ({
   ...baseConfig,
   network: 'kovan',
-  jsonRpcUrl: 'https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
+  jsonRpcUrl: `https://kovan.infura.io/v3/${getEnv('INFURA_API_KEY', '')}`,
   ensAddress: '0x4Ca9B09FE1CDC2C4b0B489b6f92b24fd27feBB40',
   ensRegistrars: ['unilogin.test', 'poppularapp.test'],
   ensRegistrar: '0xD79721fD1c007320cB443D4F7026b5B06f68ff97',
