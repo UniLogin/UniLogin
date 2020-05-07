@@ -120,3 +120,14 @@ export const TEST_REFUND_PAYER = {
   name: 'Alex',
   apiKey: 'aaaa-bbbb-cccc',
 };
+
+export const TEST_GAS_PRICES = {
+  cheap: {
+    gasPrice: utils.parseUnits('20', 'gwei'),
+    timeEstimation: '114',
+  },
+  fast: {
+    gasPrice: utils.parseUnits('24', 'gwei'),
+    timeEstimation: '30',
+  },
+};
