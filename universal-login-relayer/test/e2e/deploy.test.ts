@@ -28,11 +28,23 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   let signature: string;
   let ensRegistrar: Contract;
 
+  const createFutureWalletAndPost = async (keyPair: KeyPair, ensName: string, factoryContract: Contract, relayerWallet: Wallet, ensAddress: string, ensRegistrarAddress: string, gnosisSafeAddress: string, fallbackHandlerAddress: string, gasPrice = TEST_GAS_PRICE, gasToken = ETHER_NATIVE_TOKEN.address) => {
+    const {signature, contractAddress: tempContractAddress} = await createFutureWallet(keyPair, ensName, factoryContract, relayerWallet, ensAddress, ensRegistrarAddress, gnosisSafeAddress, fallbackHandlerAddress, gasPrice, gasToken);
+    await chai.request(relayerUrl).post('/wallet/future').send({
+      contractAddress: tempContractAddress,
+      gasToken,
+      gasPrice,
+      publicKey: keyPair.publicKey,
+      ensName,
+    });
+    return {signature, contractAddress: tempContractAddress};
+  }
+
   beforeEach(async () => {
     ({provider, relayer, deployer, walletContract, factoryContract, mockToken, ensAddress, ensRegistrar, fallbackHandlerContract} = await startRelayer(relayerPort));
     keyPair = createKeyPair();
     initCode = getDeployData(beta2.WalletProxy as any, [walletContract.address]);
-    ({signature, contractAddress} = await createFutureWallet(keyPair, ensName, factoryContract, deployer, ensAddress, relayer.publicConfig.ensRegistrar, walletContract.address, fallbackHandlerContract.address));
+    ({signature, contractAddress} = await createFutureWalletAndPost(keyPair, ensName, factoryContract, deployer, ensAddress, relayer.publicConfig.ensRegistrar, walletContract.address, fallbackHandlerContract.address));
   });
 
   it('Counterfactual deployment with ether payment and refund', async () => {
@@ -82,7 +94,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     const newKeyPair = createKeyPair();
     const newEnsName = 'name-1.mylogin.eth';
     const gasPriceForFreeDeployment = '0';
-    ({signature, contractAddress} = await createFutureWallet(
+    ({signature, contractAddress} = await createFutureWalletAndPost(
       newKeyPair,
       newEnsName,
       factoryContract,
@@ -135,7 +147,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   });
 
   it('Counterfactual deployment with token payment', async () => {
-    ({signature, contractAddress} = await createFutureWallet(
+    ({signature, contractAddress} = await createFutureWalletAndPost(
       keyPair,
       ensName,
       factoryContract,
