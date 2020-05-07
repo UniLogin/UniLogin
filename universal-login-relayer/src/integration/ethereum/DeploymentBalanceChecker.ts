@@ -1,13 +1,13 @@
-import {BalanceChecker, ensure} from '@unilogin/commons'
+import {BalanceChecker, ensure} from '@unilogin/commons';
 import {NotEnoughBalance} from '../../core/utils/errors';
 import {BigNumber} from 'ethers/utils';
 
-export class DeploymentBalanceChecker{
+export class DeploymentBalanceChecker {
   constructor(private balanceChecker: BalanceChecker) {}
 
-  async validateBalance(contractAddress: string, tokenAddress: string, gasPriceInToken: BigNumber){
+  async validateBalance(contractAddress: string, tokenAddress: string, gasInToken: BigNumber) {
     const balanceChecked = await this.balanceChecker.getBalance(contractAddress, tokenAddress);
-    ensure(balanceChecked.gte(gasPriceInToken), NotEnoughBalance);
+    ensure(balanceChecked.gte(gasInToken), NotEnoughBalance);
     return balanceChecked;
   }
 };
