@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import {getEnv, UNIVERSAL_LOGIN_LOGO_URL, ETHER_NATIVE_TOKEN, NodeEnv, getNodeEnv} from '@unilogin/commons';
+import {getEnv, UNIVERSAL_LOGIN_LOGO_URL, ETHER_NATIVE_TOKEN, NodeEnv, asNodeEnv} from '@unilogin/commons';
 import path from 'path';
 import {baseConfig} from './baseConfig';
+import {cast} from '@restless/sanitizers';
 
 const getDatabaseForGanacheConfig = (env: NodeEnv) => {
   switch (env) {
@@ -67,7 +68,7 @@ export const getConfig = () => ({
       wyreUrl: 'https://pay.testwyre.com/purchase',
     },
   },
-  database: getDatabaseForGanacheConfig(getNodeEnv()),
+  database: getDatabaseForGanacheConfig(cast(getEnv('NODE_ENV', 'development'), asNodeEnv)),
   supportedTokens: [{
     address: ETHER_NATIVE_TOKEN.address,
   },
