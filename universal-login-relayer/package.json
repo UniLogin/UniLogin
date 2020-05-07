@@ -29,7 +29,7 @@
     "build": "yarn build:cjs && yarn build:esm",
     "build:cjs": "tsc --outDir dist/cjs --declaration false --declarationMap false",
     "build:esm": "tsc --outDir dist/esm --module ES6",
-    "start": "node dist/cjs/src/http/start.js",
+    "start": "cross-env NODE_ENV=production node dist/cjs/src/http/start.js",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only -t 10000 --exit 'test/**/*.{js,ts}'",
     "lint": "eslint '{src,test}/**/*.{ts,js}'",
     "relayer:start": "yarn start",
