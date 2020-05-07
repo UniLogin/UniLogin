@@ -18,7 +18,7 @@ export class FutureWalletHandler {
       return '1';
     }
     const tokenDetails = await this.tokenDetailsService.getTokenDetails(tokenAddress);
-    const prices = await this.tokenPricesService.getPrices([tokenDetails]);
-    return prices[tokenDetails.symbol].ETH.toString();
+    const price = await this.tokenPricesService.getTokenPriceInEth(tokenDetails);
+    return price.toString();
   }
 }

@@ -18,9 +18,9 @@ describe('INT: FutureWalletHandler', () => {
 
   before(() => {
     sinon.stub(tokenDetailsService, 'getTokenDetails').resolves(TEST_TOKEN_DETAILS[0]);
-    sinon.stub(tokenPricesService, 'getPrices')
-      .withArgs([TEST_TOKEN_DETAILS[0]])
-      .resolves({[TEST_TOKEN_DETAILS[0].symbol]: {ETH: 0.001}} as any);
+    sinon.stub(tokenPricesService, 'getTokenPriceInEth')
+      .withArgs(TEST_TOKEN_DETAILS[0])
+      .resolves(0.001);
   });
 
   it('creates future wallet', async () => {

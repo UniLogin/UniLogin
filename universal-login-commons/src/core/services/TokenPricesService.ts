@@ -13,6 +13,11 @@ export class TokenPricesService {
     return this.getPricesFromPricesWithCoingeckoId(tokenDetailsWithCoingeckoId, pricesWithCoingeckoId);
   }
 
+  async getTokenPriceInEth(tokenDetails: TokenDetails) {
+    const prices = await this.getPrices([tokenDetails]);
+    return prices[tokenDetails.symbol].ETH;
+  }
+
   getEtherPriceInCurrency = async (currency: 'USD' | 'EUR' | 'GBP'): Promise<string> => {
     const priceInCurrency = await cryptocompare.price('ETH', currency);
     return priceInCurrency[currency];
