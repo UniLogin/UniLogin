@@ -2,7 +2,6 @@ import Knex from 'knex';
 import {Contract, providers, Wallet} from 'ethers';
 import {
   ContractJSON,
-  deepMerge,
   DeepPartial,
   deployContract,
   ETHER_NATIVE_TOKEN,
@@ -14,7 +13,7 @@ import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory, deployDefaultCa
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
-import {getConfig} from '../../core/utils/config';
+import {getConfigForNetwork} from '../../config/config';
 import {addRefundPayer} from '../../core/utils/addRefundPayer';
 
 const ENSBuilder = require('ens-builder');
@@ -80,7 +79,7 @@ export class RelayerUnderTest extends Relayer {
   }
 
   static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.Provider) {
-    const config: Config = deepMerge(getConfig('test'), overrideConfig);
+    const config = {...getConfigForNetwork('ganache'), ...overrideConfig} as Config;
     return new RelayerUnderTest(config, providerWithENS);
   }
 

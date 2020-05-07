@@ -1,12 +1,10 @@
 import {dirname, join} from 'path';
 import {getWallets} from 'ethereum-waffle';
-import {providers, Wallet} from 'ethers';
-import {ContractWhiteList, getContractHash, SupportedToken, ContractJSON, ETHER_NATIVE_TOKEN, UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
-import {Config} from '@unilogin/relayer';
-import {gnosisSafe, deployDefaultCallbackHandler} from '@unilogin/contracts';
+import {providers} from 'ethers';
+import {start as startRelayer} from '@unilogin/relayer';
+import {deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {ensureDatabaseExist} from '../common/ensureDatabaseExist';
-import {startDevelopmentRelayer} from './startRelayer';
 import {startGanache} from './startGanache';
 import {deployENS} from './deployEns';
 import {deployGnosisSafe} from './deployWalletContractOnDev';
@@ -33,64 +31,6 @@ const databaseConfig = {
 
 const ensDomains = ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'];
 
-function getRelayerConfig(jsonRpcUrl: string, wallet: Wallet, walletContractAddress: string, ensAddress: string, ensRegistrars: string[], contractWhiteList: ContractWhiteList, factoryAddress: string, daiTokenAddress: string, saiTokenAddress: string, ensRegistrar: string, fallbackHandler: string) {
-  const supportedTokens: SupportedToken[] = [{
-    address: daiTokenAddress,
-  },
-  {
-    address: saiTokenAddress,
-  },
-  {
-    address: ETHER_NATIVE_TOKEN.address,
-  }];
-  return {
-    jsonRpcUrl,
-    port: '3311',
-    privateKey: wallet.privateKey,
-    ensAddress,
-    network: 'ganache',
-    ensRegistrars,
-    fallbackHandlerAddress: fallbackHandler,
-    ensRegistrar,
-    walletContractAddress,
-    contractWhiteList,
-    factoryAddress,
-    supportedTokens,
-    localization: {
-      language: 'en',
-      country: 'any',
-    },
-    onRampProviders: {
-      safello: {
-        appId: '1234-5678',
-        baseAddress: 'https://app.s4f3.io/sdk/quickbuy.html',
-        addressHelper: true,
-      },
-      ramp: {
-        appName: 'Universal Login',
-        logoUrl: UNIVERSAL_LOGIN_LOGO_URL,
-        rampUrl: 'https://ri-widget-staging.firebaseapp.com/',
-      },
-      wyre: {
-        wyreUrl: 'https://pay.testwyre.com/purchase',
-      },
-    },
-    database: databaseConfig,
-    maxGasLimit: 500000,
-    ipGeolocationApi: {
-      baseUrl: 'https://api.ipdata.co',
-      accessKey: 'c7fd60a156452310712a66ca266558553470f80bf84674ae7e34e9ee',
-    },
-    httpsRedirect: false,
-  };
-}
-
-function getProxyContractHash() {
-  const proxyContractHash = getContractHash(gnosisSafe.Proxy as ContractJSON);
-  console.log(`beta2.WalletProxy hash: ${proxyContractHash}`);
-  return proxyContractHash;
-}
-
 function getMigrationPath() {
   const packagePath = require.resolve('@unilogin/relayer/package.json');
   return join(dirname(packagePath), 'dist', 'cjs', 'src', 'integration', 'sql', 'migrations');
@@ -105,20 +45,14 @@ async function startDevelopment({nodeUrl}: StartDevelopmentOverrides = {}) {
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
   const [, , , , ensDeployer, deployWallet] = getWallets(provider);
   const ensAddress = await deployENS(ensDeployer, ensDomains);
-  const {address, walletContractHash} = await deployGnosisSafe(deployWallet);
-  const proxyContractHash = getProxyContractHash();
-  const fallbackHandler = await deployDefaultCallbackHandler(deployWallet);
-  const factoryAddress = await deployGnosisFactory(deployWallet, {nodeUrl: 'dev', privateKey: 'dev'});
+  const {address} = await deployGnosisSafe(deployWallet);
+  await deployDefaultCallbackHandler(deployWallet);
+  await deployGnosisFactory(deployWallet, {nodeUrl: 'dev', privateKey: 'dev'});
   const saiTokenAddress = await deployToken(deployWallet, mockContracts.MockSai);
   const daiTokenAddress = await deployToken(deployWallet, mockContracts.MockDai);
-  const ensRegistrar = await deployENSRegistrar(deployWallet);
+  await deployENSRegistrar(deployWallet);
   await ensureDatabaseExist(databaseConfig);
-  const contractWhiteList = {
-    wallet: [walletContractHash],
-    proxy: [proxyContractHash],
-  };
-  const relayerConfig: Config = getRelayerConfig(jsonRpcUrl, deployWallet, address, ensAddress, ensDomains, contractWhiteList, factoryAddress, daiTokenAddress, saiTokenAddress, ensRegistrar.address, fallbackHandler.address);
-  await startDevelopmentRelayer(relayerConfig, provider);
+  await startRelayer('ganache');
   return {jsonRpcUrl, deployWallet, walletContractAddress: address, saiTokenAddress, daiTokenAddress, ensAddress, ensDomains};
 }
 
