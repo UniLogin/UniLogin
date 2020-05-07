@@ -110,7 +110,7 @@ describe('INT: PendingMessages', () => {
       await pendingMessages.add(signedMessage);
       await messageRepository.markAsPending(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec', '2020');
       const status = await pendingMessages.getStatus(messageHash);
-      const required = await (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
+      const required = (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
       await expect(pendingMessages.ensureCorrectExecution(status, required))
         .to.be.rejectedWith('Execution request already processed');
     });
@@ -118,7 +118,7 @@ describe('INT: PendingMessages', () => {
     it('should throw error when pending signedMessage has not enough signatures', async () => {
       await pendingMessages.add(signedMessage);
       const status = await pendingMessages.getStatus(messageHash);
-      const required = await (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
+      const required = (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
       await expect(pendingMessages.ensureCorrectExecution(status, required))
         .to.be.rejectedWith('Not enough signatures, required 2, got only 1');
     });
