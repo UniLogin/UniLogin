@@ -2,6 +2,7 @@ import chai, {expect} from 'chai';
 import {RelayerUnderTest} from '../../src';
 import {startRelayer} from '../testhelpers/http';
 import {TEST_CONTRACT_ADDRESS, TEST_KEY, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {utils} from 'ethers';
 
 describe('E2E: Relayer - future wallet', () => {
   let relayer: RelayerUnderTest;
@@ -19,18 +20,18 @@ describe('E2E: Relayer - future wallet', () => {
   });
 
   it('returns 201 if valid future wallet', async () => {
-    const serializedFutureWallet = {
+    const storedFutureWallet = {
       contractAddress: TEST_CONTRACT_ADDRESS,
       publicKey: TEST_KEY,
       ensName: 'name.mylogin.eth',
       gasToken: ETHER_NATIVE_TOKEN.address,
-      gasPrice: '1',
+      gasPrice: utils.parseUnits('24', 'gwei').toString(),
     };
     const result = await chai.request(relayerUrl)
       .post('/wallet/future')
-      .send(serializedFutureWallet);
+      .send(storedFutureWallet);
     expect(result.status).to.eq(201);
-    expect(result.body).to.deep.eq({contractAddress: serializedFutureWallet.contractAddress});
+    expect(result.body).to.deep.eq({contractAddress: storedFutureWallet.contractAddress});
   });
 
   after(() => {
