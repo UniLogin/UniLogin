@@ -35,7 +35,7 @@ describe('UNIT: GasModeService', () => {
         token: TEST_TOKEN_DETAILS[1],
       },
       {
-        gasPrice: gasPrices.cheap.gasPrice,
+        gasPrice: TEST_GAS_PRICES.cheap.gasPrice,
         token: TEST_TOKEN_DETAILS[2],
       }],
     },
@@ -52,7 +52,7 @@ describe('UNIT: GasModeService', () => {
         token: TEST_TOKEN_DETAILS[1],
       },
       {
-        gasPrice: gasPrices.fast.gasPrice,
+        gasPrice: TEST_GAS_PRICES.fast.gasPrice,
         token: TEST_TOKEN_DETAILS[2],
       }],
     },
