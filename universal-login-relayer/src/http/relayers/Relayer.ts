@@ -24,7 +24,7 @@ import {MessageStatusService} from '../../core/services/execution/messages/Messa
 import {Beta2Service} from '../../integration/ethereum/Beta2Service';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
-import {BalanceChecker, GasPriceOracle, PublicRelayerConfig, RequiredBalanceChecker, TokenPricesService, TokenDetailsService} from '@unilogin/commons';
+import {BalanceChecker, GasPriceOracle, PublicRelayerConfig, TokenPricesService, TokenDetailsService} from '@unilogin/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
@@ -47,6 +47,7 @@ import {TransactionGasPriceComputator} from '../../integration/ethereum/Transact
 import SQLRepository from '../../integration/sql/services/SQLRepository';
 import Deployment from '../../core/models/Deployment';
 import {GasTokenValidator} from '../../core/services/validators/GasTokenValidator';
+import {DeploymentBalanceChecker} from '../../integration/ethereum/DeploymentBalanceChecker';
 
 const defaultPort = '3311';
 
@@ -102,7 +103,6 @@ class Relayer {
     const messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address);
     const walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
     const balanceChecker = new BalanceChecker(this.provider);
-    const requiredBalanceChecker = new RequiredBalanceChecker(balanceChecker);
     const messageRepository = new MessageSQLRepository(this.database);
     const deploymentRepository = new SQLRepository<Deployment>(this.database, 'deployments');
     const executionQueue = new QueueSQLStore(this.database);
@@ -118,7 +118,11 @@ class Relayer {
     const authorisationService = new AuthorisationService(authorisationStore, relayerRequestSignatureValidator, this.walletContractService);
     const devicesStore = new DevicesStore(this.database);
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
-    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, requiredBalanceChecker, devicesService, transactionGasPriceComputator);
+    const futureWalletStore = new FutureWalletStore(this.database);
+    const tokenPricesService = new TokenPricesService();
+    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider),  new GasTokenValidator(gasPriceOracle));
+    const deploymentBalanceChecker = new DeploymentBalanceChecker(balanceChecker);
+    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, deploymentBalanceChecker, devicesService, transactionGasPriceComputator, futureWalletStore);
     const statusService = new MessageStatusService(messageRepository, this.walletContractService);
     const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, this.walletContractService);
     const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
@@ -127,9 +131,6 @@ class Relayer {
     const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService);
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
-    const futureWalletStore = new FutureWalletStore(this.database);
-    const tokenPricesService = new TokenPricesService();
-    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider), new GasTokenValidator(gasPriceOracle));
 
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, this.futureWalletHandler, apiKeyHandler));

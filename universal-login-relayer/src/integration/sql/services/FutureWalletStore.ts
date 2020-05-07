@@ -11,7 +11,7 @@ export class FutureWalletStore {
       .returning('contractAddress');
   }
 
-  getGasPriceInToken(contractAddress: string){
+  getGasPriceInToken(contractAddress: string) {
     return this.database
       .first()
       .orderBy('created_at', 'asc')

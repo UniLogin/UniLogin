@@ -15,7 +15,7 @@ describe('UNIT: FutureWalletStore', () => {
       ensName: 'name.mylogin.eth',
       gasPrice: '1',
       gasToken: ETHER_NATIVE_TOKEN.address,
-      tokenPriceInETH: mockedTokenPriceInETH
+      tokenPriceInETH: mockedTokenPriceInETH,
     };
 
     const [contractAddress] = await futureWalletStore.add(storedFutureWallet);
@@ -23,5 +23,4 @@ describe('UNIT: FutureWalletStore', () => {
     const [tokenPriceInETH] = await futureWalletStore.getGasPriceInToken(contractAddress);
     expect(tokenPriceInETH).be.deep.eq(mockedTokenPriceInETH);
   });
-
 });
