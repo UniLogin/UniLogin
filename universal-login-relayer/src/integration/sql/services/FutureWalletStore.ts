@@ -13,10 +13,9 @@ export class FutureWalletStore {
 
   getGasPriceInToken(contractAddress: string) {
     return this.database
-      .first()
-      .orderBy('created_at', 'asc')
-      .column('tokenPriceInETH')
+      .select('tokenPriceInETH')
+      .from('future_wallets')
       .where('contractAddress', contractAddress)
-      .select();
+      .first();
   }
 }
