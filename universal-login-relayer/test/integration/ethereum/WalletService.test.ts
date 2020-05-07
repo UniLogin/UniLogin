@@ -54,7 +54,7 @@ describe('INT: WalletService', async () => {
       const keyPair2 = createKeyPair();
       const ensName = 'jarek.mylogin.eth';
       const {contractAddress, signature} = await createFutureWalletUsingEnsService(keyPair2, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
-      const creationPromise = walletService.deploy({publicKey: keyPair2.publicKey, ensName, signature, gasPrice: '1', gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
+      const creationPromise = walletService.deploy({publicKey: keyPair2.publicKey, ensName, signature, gasPrice: TEST_GAS_PRICE, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
       await expect(creationPromise).to.be.fulfilled;
       expect(fakeDevicesService.addOrUpdate).be.calledOnceWithExactly(contractAddress, keyPair2.publicKey, EMPTY_DEVICE_INFO);
     });

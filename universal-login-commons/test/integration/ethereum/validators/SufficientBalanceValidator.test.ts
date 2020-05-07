@@ -17,7 +17,7 @@ describe('INT: SufficientBalanceValidator', () => {
     const token = await deployContract(wallet, MockToken);
     await token.transfer(TEST_CONTRACT_ADDRESS, utils.parseEther('1'));
     await wallet.sendTransaction({to: TEST_CONTRACT_ADDRESS, value: utils.parseEther('1')});
-    signedMessage = getTestSignedMessage(TEST_PRIVATE_KEY, {gasToken: token.address});
+    signedMessage = getTestSignedMessage(TEST_PRIVATE_KEY, {gasPrice: '1', gasToken: token.address});
   });
 
   it('successfully pass the validation', async () => {
@@ -44,7 +44,7 @@ describe('INT: SufficientBalanceValidator', () => {
 
   describe('Same tokens', () => {
     it('passes when gas and value have same token addresses', async () => {
-      const signedMessage = getTestSignedMessage(TEST_PRIVATE_KEY);
+      const signedMessage = getTestSignedMessage(TEST_PRIVATE_KEY, {gasPrice: '1'});
       await expect(validator.validate({...signedMessage, value: utils.parseEther('0.5'), safeTxGas: utils.parseEther('0.5'), baseGas: 0})).to.be.eventually.fulfilled;
       await expect(validator.validate({...signedMessage, value: utils.parseEther('0.5'), safeTxGas: 0, baseGas: utils.parseEther('0.5')})).to.be.eventually.fulfilled;
       await expect(validator.validate({...signedMessage, value: utils.parseEther('0.3'), safeTxGas: utils.parseEther('0.2'), baseGas: utils.parseEther('0.5')})).to.be.eventually.fulfilled;

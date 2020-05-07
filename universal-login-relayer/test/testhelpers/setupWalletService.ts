@@ -49,10 +49,10 @@ export const getSetupDataUsingEnsService = async (keyPair: KeyPair, ensName: str
   return encodeDataForSetup(deployment);
 };
 
-export const createFutureWalletUsingEnsService = async (keyPair: KeyPair, ensName: string, factoryContract: Contract, wallet: Wallet, ensService: ENSService, ensRegistrarAddress: string, gnosisSafeAddress: string, fallbackHandler: string, gasPrice = '1') => {
+export const createFutureWalletUsingEnsService = async (keyPair: KeyPair, ensName: string, factoryContract: Contract, wallet: Wallet, ensService: ENSService, ensRegistrarAddress: string, gnosisSafeAddress: string, fallbackHandler: string, gasPrice = TEST_GAS_PRICE) => {
   const setupData = await getSetupDataUsingEnsService(keyPair, ensName, ensService, gasPrice, wallet.address, ensRegistrarAddress, fallbackHandler, ETHER_NATIVE_TOKEN.address);
   const contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, gnosisSafeAddress);
-  const signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
+  const signature = calculateInitializeSignature(setupData, keyPair.privateKey);
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
   return {signature, contractAddress};
 };
@@ -60,6 +60,6 @@ export const createFutureWalletUsingEnsService = async (keyPair: KeyPair, ensNam
 export const createFutureWallet = async (keyPair: KeyPair, ensName: string, factoryContract: Contract, relayerWallet: Wallet, ensAddress: string, ensRegistrarAddress: string, gnosisSafeAddress: string, fallbackHandlerAddress: string, gasPrice = TEST_GAS_PRICE, gasToken?: string) => {
   const setupData = await getSetupData(keyPair, ensName, ensAddress, relayerWallet.provider, gasPrice, relayerWallet.address, ensRegistrarAddress, fallbackHandlerAddress, gasToken);
   const contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, gnosisSafeAddress);
-  const signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
+  const signature = calculateInitializeSignature(setupData, keyPair.privateKey);
   return {signature, contractAddress};
 };
