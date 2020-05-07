@@ -8,6 +8,12 @@ export const safeMultiplyAndFormatEther = (valueInWei: utils.BigNumber, multipli
   return utils.formatUnits(resultE18, SAFE_MULTIPLY_UNITS_NORMALIZE);
 };
 
+export const safeMultiply = (value: utils.BigNumber, multiplier: utils.BigNumberish) => {
+  const normalizedMultiplier = utils.parseEther(multiplier.toString());
+  const resultE18 = normalizedMultiplier.mul(value);
+  return utils.formatEther(resultE18);
+};
+
 export const safeDivide = (valueInWei: utils.BigNumber, divider: utils.BigNumberish) => {
   const priceAsBigNumber = utils.parseEther(divider.toString());
   ensure(!priceAsBigNumber.eq(0), Error, 'Can not divide by 0');

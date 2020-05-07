@@ -4,7 +4,7 @@ export {EMPTY_DEVICE_INFO} from './core/constants/device';
 export {isStringANumberRegex} from './core/constants/isStringANumberRegex';
 export {EMOJI_COLORS} from './core/constants/emojiColors';
 export {CONSTANT_EXECUTION_COSTS, DEFAULT_GAS_LIMIT, DEFAULT_GAS_LIMIT_EXECUTION, DEFAULT_GAS_PRICE, DEPLOYMENT_REFUND, EMPTY_GAS_OPTION, GAS_BASE, GAS_FIXED, INITIAL_GAS_PARAMETERS, MINIMAL_DEPLOYMENT_GAS_LIMIT, NON_ZERO_NONCE_COST, SEND_TRANSACTION_GAS_LIMIT, SIGNATURE_CHECK_COST, ZERO_NONCE_COST, MAX_GAS_LIMIT} from './core/constants/gas';
-export {testJsonRpcUrl, TEST_ACCOUNT_ADDRESS, TEST_APPLICATION_INFO, TEST_CONTRACT_ADDRESS, TEST_DEVICE_INFO, TEST_EXECUTION_OPTIONS, TEST_GAS_LIMIT, TEST_GAS_MODES, TEST_GAS_PRICE, TEST_KEY, TEST_KEY2, TEST_MESSAGE_HASH, TEST_OVERRIDES_FOR_REVERT, TEST_PRIVATE_KEY, TEST_REFUND_PAYER, TEST_SDK_CONFIG, TEST_SIGNATURE_KEY_PAIRS, TEST_TOKEN_ADDRESS, TEST_TOKEN_DETAILS, TEST_TRANSACTION_HASH} from './core/constants/test';
+export {testJsonRpcUrl, TEST_ACCOUNT_ADDRESS, TEST_APPLICATION_INFO, TEST_CONTRACT_ADDRESS, TEST_DEVICE_INFO, TEST_EXECUTION_OPTIONS, TEST_GAS_LIMIT, TEST_GAS_MODES, TEST_GAS_PRICE, TEST_KEY, TEST_KEY2, TEST_MESSAGE_HASH, TEST_OVERRIDES_FOR_REVERT, TEST_PRIVATE_KEY, TEST_REFUND_PAYER, TEST_SDK_CONFIG, TEST_SIGNATURE_KEY_PAIRS, TEST_TOKEN_ADDRESS, TEST_TOKEN_DETAILS, TEST_TRANSACTION_HASH, TEST_GAS_PRICES} from './core/constants/test';
 export {DEFAULT_LOCATION, KEY_CODE_ESCAPE, UNIVERSAL_LOGIN_LOGO_URL, EMPTY_LOGO} from './core/constants/ui';
 export {WalletVersion, WALLET_MASTER_VERSIONS} from './core/constants/walletMasterVersions';
 export {PROXY_VERSIONS, ProxyVersion} from './core/constants/proxyVersions';
@@ -60,7 +60,7 @@ export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './c
 export {GasDataComputation, NetworkVersion} from './core/utils/messages/computeGasData';
 export {getMessageWithSignatures} from './core/utils/messages/signMessage';
 export {hashRelayerRequest, recoverFromRelayerRequest, signRelayerRequest, verifyRelayerRequest} from './core/utils/relayerRequest';
-export {safeMultiplyAndFormatEther, safeDivide} from './core/utils/safeMultiply';
+export {safeMultiply, safeMultiplyAndFormatEther, safeDivide} from './core/utils/safeMultiply';
 export {asExactly} from './core/utils/sanitizers/asExactly';
 export {asApplicationInfo, asDeviceType} from './core/utils/sanitizers/asApplicationInfo';
 export {asDeploymentHash, asHexString} from './core/utils/sanitizers/asHexString';

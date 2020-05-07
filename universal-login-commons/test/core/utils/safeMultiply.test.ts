@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {safeMultiplyAndFormatEther, safeDivide} from '../../../src/core/utils/safeMultiply';
+import {safeMultiplyAndFormatEther, safeDivide, safeMultiply} from '../../../src/core/utils/safeMultiply';
 import {utils} from 'ethers';
 
 describe('safeMultiplyAndFormatEther', () => {
@@ -19,6 +19,33 @@ describe('safeMultiplyAndFormatEther', () => {
     const actualEthTotalWorth = safeMultiplyAndFormatEther(utils.parseEther('2'), 0);
 
     expect(actualEthTotalWorth).to.eq('0.0');
+  });
+});
+
+describe('safeMultiply', () => {
+  it('111.11 * 2 ETH = 222.22 * e^18', () => {
+    const result = safeMultiply(utils.parseEther('2'), 111.11);
+    expect(result).to.eq('222220000000000000000.0');
+  });
+
+  it('111.11 * 2 = 222.22', () => {
+    const result = safeMultiply(utils.bigNumberify('2'), 111.11);
+    expect(result).to.eq('222.22');
+  });
+
+  it('111.11 * 0 = 0', () => {
+    const result = safeMultiply(utils.bigNumberify('0'), 111.11);
+    expect(result).to.eq('0.0');
+  });
+
+  it('0 * 2 = 0', () => {
+    const result = safeMultiply(utils.bigNumberify('2'), 0);
+    expect(result).to.eq('0.0');
+  });
+
+  it('0 * 2 = 0', () => {
+    const result = safeMultiply(utils.bigNumberify('2'), 2);
+    expect(result).to.eq('4.0');
   });
 });
 
