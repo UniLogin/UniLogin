@@ -1,6 +1,7 @@
 import Relayer from './relayers/Relayer';
 import {getConfig} from '../core/utils/config';
-import {NodeEnv, getNodeEnv} from '@unilogin/commons';
+import {NodeEnv, asNodeEnv, getEnv} from '@unilogin/commons';
+import {cast} from '@restless/sanitizers';
 
 export const start = (nodeEnv: NodeEnv) => {
   const config = getConfig(nodeEnv);
@@ -11,4 +12,6 @@ export const start = (nodeEnv: NodeEnv) => {
   );
 };
 
-start(getNodeEnv('production'));
+const nodeEnv = cast(getEnv('NODE_ENV'), asNodeEnv);
+
+start(nodeEnv);
