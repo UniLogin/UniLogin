@@ -5,8 +5,8 @@ import {BigNumber} from 'ethers/utils';
 export class BalanceValidator {
   constructor(private balanceChecker: BalanceChecker) {}
 
-  async validate(contractAddress: string, tokenAddress: string, gasInToken: BigNumber) {
+  async validate(contractAddress: string, tokenAddress: string, minimalAmountInToken: BigNumber) {
     const balance = await this.balanceChecker.getBalance(contractAddress, tokenAddress);
-    ensure(balance.gte(gasInToken), NotEnoughBalance);
+    ensure(balance.gte(minimalAmountInToken), NotEnoughBalance);
   }
 };
