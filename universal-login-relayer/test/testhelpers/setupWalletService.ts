@@ -20,8 +20,8 @@ export default async function setupWalletService(wallet: Wallet) {
   const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
   const config = {walletContractAddress: gnosisSafeMaster.address, factoryAddress: factoryContract.address, supportedTokens: [], ensRegistrar: ensRegistrar.address, fallbackHandlerAddress: fallbackHandler.address};
   const walletDeployer = new WalletDeployer(factoryContract.address, wallet);
-  const fakeBalanceChecker: any = {
-    validateBalance: () => Promise.resolve(),
+  const fakeBalanceValidator: any = {
+    validate: () => Promise.resolve(),
   };
   const fakeDevicesService: any = {
     addOrUpdate: sinon.spy(),
@@ -33,7 +33,7 @@ export default async function setupWalletService(wallet: Wallet) {
     getGasPriceInToken: () => {return {tokenPriceInETH: '1'};},
   };
   const transactionGasPriceComputator = new TransactionGasPriceComputator(fakeGasPriceOracle as any);
-  const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceChecker, fakeDevicesService, transactionGasPriceComputator, fakeFutureWalletStore);
+  const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceValidator, fakeDevicesService, transactionGasPriceComputator);
   return {provider, wallet, walletService, factoryContract, ensService, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler};
 }
 

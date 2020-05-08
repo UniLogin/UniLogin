@@ -121,8 +121,8 @@ class Relayer {
     const futureWalletStore = new FutureWalletStore(this.database);
     const tokenPricesService = new TokenPricesService();
     this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider), new GasTokenValidator(gasPriceOracle));
-    const deploymentBalanceChecker = new BalanceValidator(balanceChecker);
-    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, deploymentBalanceChecker, devicesService, transactionGasPriceComputator, futureWalletStore);
+    const balanceValidator = new BalanceValidator(balanceChecker);
+    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, balanceValidator, devicesService, transactionGasPriceComputator);
     const statusService = new MessageStatusService(messageRepository, this.walletContractService);
     const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, this.walletContractService);
     const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
