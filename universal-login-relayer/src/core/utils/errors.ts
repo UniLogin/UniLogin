@@ -21,6 +21,7 @@ type ErrorType =
   'NotEnoughSignatures' |
   'InvalidTransaction' |
   'InvalidHexData' |
+  'InvalidTolerance' |
   'InvalidApiKey' |
   'EnsNameTaken' |
   'UnauthorisedAddress' |
@@ -97,6 +98,13 @@ export class InvalidHexData extends ValidationFailed {
   constructor(hexData: string) {
     super(`Invalid hex data: ${hexData}`, 'InvalidHexData');
     Object.setPrototypeOf(this, InvalidHexData.prototype);
+  }
+}
+
+export class InvalidTolerance extends ValidationFailed {
+  constructor(tolerance: number) {
+    super(`Tolerance should be between 0 and 1, but got: ${tolerance}`, 'InvalidTolerance');
+    Object.setPrototypeOf(this, InvalidTolerance.prototype);
   }
 }
 
