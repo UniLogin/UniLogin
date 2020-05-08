@@ -55,7 +55,6 @@ export const App = () => {
     privateKey: TEST_PRIVATE_KEY,
     deploy: async () => deployingWallet,
     waitForBalance: (async () => {}) as any,
-    setSupportedToken: (() => {}) as any,
     getMinimalAmount: () => '1',
   } as any;
 

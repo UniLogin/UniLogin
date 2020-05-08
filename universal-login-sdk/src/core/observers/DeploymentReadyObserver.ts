@@ -1,27 +1,16 @@
-import {providers} from 'ethers';
-import {SupportedToken, ensure, RequiredBalanceChecker, BalanceChecker} from '@unilogin/commons';
+import {utils} from 'ethers';
+import {ensure, BalanceChecker} from '@unilogin/commons';
 import {ConcurrentDeployment} from '../utils/errors';
 import ObserverRunner from './ObserverRunner';
 
-export type ReadyToDeployCallback = (tokenAddress: string, contractAddress: string) => void;
+export type ReadyToDeployCallback = (contractAddress: string) => void;
 
 export class DeploymentReadyObserver extends ObserverRunner {
   private contractAddress?: string;
   private callback?: ReadyToDeployCallback;
-  private requiredBalanceChecker: RequiredBalanceChecker;
 
-  constructor(private supportedTokens: SupportedToken[], private provider: providers.Provider) {
+  constructor(private tokenAddress: string, private minimalAmount: string, private balanceChecker: BalanceChecker) {
     super();
-    this.requiredBalanceChecker = new RequiredBalanceChecker(new BalanceChecker(this.provider));
-  }
-
-  setSupportedToken(supportedToken: SupportedToken) {
-    this.supportedTokens = this.supportedTokens.map(token =>
-      (token.address === supportedToken.address) ? supportedToken : token);
-  }
-
-  getSupportedToken() {
-    return this.supportedTokens;
   }
 
   startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {
@@ -41,15 +30,15 @@ export class DeploymentReadyObserver extends ObserverRunner {
 
   async checkDeploymentReadiness() {
     if (this.contractAddress) {
-      const tokenAddress = await this.requiredBalanceChecker.findTokenWithRequiredBalance(this.supportedTokens, this.contractAddress);
-      if (tokenAddress) {
-        this.onDeploymentReady(this.contractAddress, tokenAddress);
+      const balance = await this.balanceChecker.getBalance(this.contractAddress, this.tokenAddress);
+      if (balance.gte(utils.parseEther(this.minimalAmount!))) {
+        this.onDeploymentReady(this.contractAddress);
       }
     }
   }
 
-  onDeploymentReady(contractAddress: string, tokenAddress: string) {
-    this.callback!(tokenAddress, contractAddress);
+  onDeploymentReady(contractAddress: string) {
+    this.callback!(contractAddress);
     this.contractAddress = undefined;
     this.stop();
   }
