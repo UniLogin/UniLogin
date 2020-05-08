@@ -49,7 +49,7 @@ describe('UI: Connection flow', () => {
     await waitExpect(() => expect(services.walletPresenter.getName()).to.eq(name));
     await appPage.login().waitForCongratulations();
     await appPage.login().goToHomeView();
-    expect(appPage.dashboard().getWalletBalance()).to.startWith('$1.99');
+    expect(appPage.dashboard().getWalletBalance()).to.startWith('$1.98');
   });
 
   it('Cancel connection', async () => {
