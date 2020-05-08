@@ -20,7 +20,6 @@ describe('UNIT: FutureWalletStore', () => {
 
     const [contractAddress] = await futureWalletStore.add(storedFutureWallet);
     expect(contractAddress).be.deep.eq(TEST_CONTRACT_ADDRESS);
-    const {tokenPriceInETH} = await futureWalletStore.getGasPriceInETH(contractAddress);
-    expect(tokenPriceInETH).be.deep.eq(mockedTokenPriceInETH);
+    expect(await futureWalletStore.get(contractAddress)).be.deep.eq(storedFutureWallet);
   });
 });
