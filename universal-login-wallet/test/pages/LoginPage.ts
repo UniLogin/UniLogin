@@ -51,6 +51,6 @@ export default class LoginPage {
 
   async goToHomeView() {
     this.wrapper.find('a.modal-success-btn').simulate('click', {button: 0});
-    await this.waitForHomeView('$1.99');
+    await this.waitForHomeView('$1.98');
   }
 }

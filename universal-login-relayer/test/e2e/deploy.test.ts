@@ -164,7 +164,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
     expect(status.transactionHash).to.be.properHex(64);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(gnosisSafe.Proxy as any)}`);
-    expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(DEPLOY_GAS_LIMIT));
+    expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(utils.bigNumberify(TEST_GAS_PRICE).mul(DEPLOY_GAS_LIMIT)));
   });
 
   it('Counterfactual deployment fail if not enough balance', async () => {

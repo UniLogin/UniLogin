@@ -16,6 +16,6 @@ export const setupUI = async (relayer: Relayer, tokenAddress?: string) => {
   const {contractAddress} = await createAndSetWallet(name, services.walletService, wallet, services.sdk);
   const appWrapper = mountWithContext(<App/>, services, ['/dashboard']);
   const appPage = new AppPage(appWrapper);
-  await appPage.login().waitForHomeView('$1.99');
+  await appPage.login().waitForHomeView('$1.98');
   return {appPage, services, contractAddress, appWrapper};
 };
