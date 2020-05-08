@@ -1,4 +1,4 @@
-import {createKeyPair, EMPTY_DEVICE_INFO, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, DEPLOY_GAS_LIMIT} from '@unilogin/commons';
+import {createKeyPair, EMPTY_DEVICE_INFO, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 import {GnosisSafeInterface} from '@unilogin/contracts';
 import chai, {expect} from 'chai';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
@@ -24,9 +24,6 @@ describe('INT: WalletService', async () => {
   const keyPair = createKeyPair();
   const ensName = 'alex.mylogin.eth';
   let fakeDevicesService: any;
-  const fakeFutureWalletStore: any = {
-    getGasPriceInToken: () => {return {tokenPriceInETH: '1'};},
-  };
 
   before(async () => {
     provider = createMockProvider();

@@ -8,7 +8,6 @@ import {WalletDeployer} from './WalletDeployer';
 import {DevicesService} from '../../core/services/DevicesService';
 import {TransactionGasPriceComputator} from './TransactionGasPriceComputator';
 import {BalanceValidator} from './BalanceValidator';
-import {FutureWalletStore} from '../sql/services/FutureWalletStore';
 
 export class WalletDeploymentService {
   constructor(
