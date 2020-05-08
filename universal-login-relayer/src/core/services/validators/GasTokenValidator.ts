@@ -1,5 +1,6 @@
 import {utils} from 'ethers';
 import {GasPriceOracle, StoredFutureWallet, ensure, safeMultiply, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {InvalidTolerance} from '../../utils/errors';
 
 export class GasTokenValidator {
   constructor(private oracle: GasPriceOracle) {}
@@ -15,7 +16,7 @@ export class GasTokenValidator {
 }
 
 export const calculateTolerancedValue = (value: utils.BigNumber, tolerance: number) => {
-  ensure(tolerance >= 0 && tolerance <= 1, Error, `Percentage should be between 0 and 1, but got: ${tolerance}`);
+  ensure(tolerance >= 0 && tolerance <= 1, InvalidTolerance, tolerance);
   const bigNumber100 = utils.bigNumberify(100);
   const multiplier = safeMultiply(bigNumber100, tolerance);
   const percentage = bigNumber100.sub(multiplier);
