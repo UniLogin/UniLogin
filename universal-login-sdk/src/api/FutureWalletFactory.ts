@@ -3,6 +3,7 @@ import {
   PublicRelayerConfig,
   createKeyPair,
   ensure,
+  BalanceChecker,
 } from '@unilogin/commons';
 import {computeGnosisCounterfactualAddress} from '@unilogin/contracts';
 import {ENSService} from '../integration/ethereum/ENSService';
@@ -11,10 +12,6 @@ import {FutureWallet} from './wallet/FutureWallet';
 import {setupInitData} from '../core/utils/setupInitData';
 import {SavingFutureWalletFailed} from '../core/utils/errors';
 
-export type BalanceDetails = {
-  contractAddress: string;
-};
-
 type FutureFactoryConfig = Pick<PublicRelayerConfig, 'supportedTokens' | 'factoryAddress' | 'ensAddress' | 'walletContractAddress' | 'relayerAddress' | 'fallbackHandlerAddress'>;
 
 export class FutureWalletFactory {
@@ -22,11 +19,12 @@ export class FutureWalletFactory {
     private config: FutureFactoryConfig,
     private ensService: ENSService,
     private sdk: UniLoginSdk,
+    private balanceChecker: BalanceChecker,
   ) {
   }
 
   createFrom(wallet: SerializableFutureWallet): FutureWallet {
-    return new FutureWallet(wallet, this.sdk, this.ensService, this.config.relayerAddress, this.config.fallbackHandlerAddress);
+    return new FutureWallet(wallet, this.sdk, this.ensService, this.config.relayerAddress, this.config.fallbackHandlerAddress, this.balanceChecker);
   }
 
   async createNew(ensName: string, gasPrice: string, gasToken: string): Promise<FutureWallet> {

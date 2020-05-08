@@ -35,7 +35,7 @@ describe('INT: SDK counterfactual deployment', () => {
     const {waitForBalance, contractAddress} = (await sdk.createFutureWallet(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address));
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     const result = await waitForBalance();
-    expect(result.contractAddress).be.eq(contractAddress);
+    expect(result).be.eq(contractAddress);
   });
 
   it('should not deploy contract which does not have balance', async () => {

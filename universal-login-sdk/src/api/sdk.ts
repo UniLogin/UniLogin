@@ -152,6 +152,7 @@ class UniLoginSdk {
       futureWalletConfig,
       new ENSService(this.provider, futureWalletConfig.ensAddress, ensRegistrar),
       this,
+      this.balanceChecker,
     );
   }
 

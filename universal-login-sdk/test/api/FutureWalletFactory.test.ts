@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, Wallet, providers, Contract} from 'ethers';
 import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO, StoredFutureWallet} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO, StoredFutureWallet, BalanceChecker} from '@unilogin/commons';
 import {gnosisSafe} from '@unilogin/contracts';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {FutureWalletFactory} from '../../src/api/FutureWalletFactory';
@@ -48,6 +48,7 @@ describe('INT: FutureWalletFactory', () => {
       futureWalletConfig,
       new ENSService(provider, futureWalletConfig.ensAddress, ensRegistrar.address),
       {config: {applicationInfo: TEST_APPLICATION_INFO}, provider, relayerApi} as any,
+      new BalanceChecker(provider),
     );
   });
 
@@ -56,7 +57,7 @@ describe('INT: FutureWalletFactory', () => {
     const {waitForBalance, contractAddress, deploy} = (await futureWalletFactory.createNew(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address));
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
     const result = await waitForBalance();
-    expect(result.contractAddress).be.eq(contractAddress);
+    expect(result).be.eq(contractAddress);
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     const {waitToBeSuccess, deploymentHash} = await deploy();
     expect(deploymentHash).to.be.properHex(64);

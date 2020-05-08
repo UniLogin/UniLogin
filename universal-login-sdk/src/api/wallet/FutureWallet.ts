@@ -1,5 +1,4 @@
-import {BalanceDetails} from '../FutureWalletFactory';
-import {SerializableFutureWallet, ensure, isValidEnsName, calculateInitializeSignature, SupportedToken, DEPLOY_GAS_LIMIT, multiplyBy150Percent, RequiredBalanceChecker, BalanceChecker} from '@unilogin/commons';
+import {SerializableFutureWallet, ensure, isValidEnsName, calculateInitializeSignature, DEPLOY_GAS_LIMIT, multiplyBy150Percent, BalanceChecker} from '@unilogin/commons';
 import {DeployingWallet} from './DeployingWallet';
 import {DeploymentReadyObserver} from '../../core/observers/DeploymentReadyObserver';
 import {InvalidAddressOrEnsName} from '../../core/utils/errors';
@@ -24,6 +23,7 @@ export class FutureWallet implements SerializableFutureWallet {
     private ensService: ENSService,
     private relayerAddress: string,
     private fallbackHandlerAddress: string,
+    balanceChecker: BalanceChecker,
   ) {
     this.contractAddress = serializableFutureWallet.contractAddress;
     this.privateKey = serializableFutureWallet.privateKey;
@@ -31,16 +31,15 @@ export class FutureWallet implements SerializableFutureWallet {
     this.gasPrice = serializableFutureWallet.gasPrice;
     this.ensName = serializableFutureWallet.ensName;
     this.gasToken = serializableFutureWallet.gasToken;
-    const balanceChecker = new BalanceChecker(this.sdk.provider);
     this.deploymentReadyObserver = new DeploymentReadyObserver(this.gasToken, this.getMinimalAmount(), balanceChecker);
   }
 
-  waitForBalance = () => new Promise<BalanceDetails>(
+  waitForBalance = () => new Promise<string>(
     (resolve) => {
       try {
         this.deploymentReadyObserver.startAndSubscribe(
           this.contractAddress,
-          (contractAddress) => resolve({contractAddress}),
+          (contractAddress) => resolve(contractAddress),
         );
       } catch (e) {
         console.error(e);
