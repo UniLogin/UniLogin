@@ -11,7 +11,7 @@ export class FutureWalletStore {
       .returning('contractAddress');
   }
 
-  getGasPriceInToken(contractAddress: string) {
+  getGasPriceInETH(contractAddress: string) {
     return this.database
       .select('tokenPriceInETH')
       .from('future_wallets')

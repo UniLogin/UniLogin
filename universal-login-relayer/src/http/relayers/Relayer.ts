@@ -47,7 +47,7 @@ import {TransactionGasPriceComputator} from '../../integration/ethereum/Transact
 import SQLRepository from '../../integration/sql/services/SQLRepository';
 import Deployment from '../../core/models/Deployment';
 import {GasTokenValidator} from '../../core/services/validators/GasTokenValidator';
-import {DeploymentBalanceChecker} from '../../integration/ethereum/DeploymentBalanceChecker';
+import {BalanceValidator} from '../../integration/ethereum/BalanceValidator';
 
 const defaultPort = '3311';
 
@@ -121,7 +121,7 @@ class Relayer {
     const futureWalletStore = new FutureWalletStore(this.database);
     const tokenPricesService = new TokenPricesService();
     this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider), new GasTokenValidator(gasPriceOracle));
-    const deploymentBalanceChecker = new DeploymentBalanceChecker(balanceChecker);
+    const deploymentBalanceChecker = new BalanceValidator(balanceChecker);
     const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, deploymentBalanceChecker, devicesService, transactionGasPriceComputator, futureWalletStore);
     const statusService = new MessageStatusService(messageRepository, this.walletContractService);
     const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, this.walletContractService);
