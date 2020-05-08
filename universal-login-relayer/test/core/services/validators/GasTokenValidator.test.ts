@@ -2,7 +2,9 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
 import {StoredFutureWallet, TEST_GAS_PRICES, TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_TOKEN_ADDRESS, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
-import {GasTokenValidator} from '../../../../src/core/services/validators/GasTokenValidator';
+import {GasTokenValidator, calculateTolerancedValue} from '../../../../src/core/services/validators/GasTokenValidator';
+import {parseEther, bigNumberify} from 'ethers/utils';
+import {constants} from 'ethers';
 
 chai.use(chaiAsPromised);
 
@@ -58,4 +60,28 @@ describe('UNIT: GasTokenValidator', () => {
     await expect(validator.validate(storedFutureWallet, 0.1)).to.be.fulfilled;
     await expect(validator.validate(storedFutureWallet)).to.be.fulfilled;
   });
+});
+
+describe('UNIT: calculateTolerancedValue', () => {
+  describe('1 eth', () => {
+    it('0.1 tolerance', () => expect(calculateTolerancedValue(constants.WeiPerEther, 0)).to.eq(constants.WeiPerEther));
+    it('0.1 tolerance', () => expect(calculateTolerancedValue(constants.WeiPerEther, 0.1)).to.eq(parseEther('0.9')));
+    it('0.15 tolerance', () => expect(calculateTolerancedValue(constants.WeiPerEther, 0.15)).to.eq(parseEther('0.85')));
+    it('0.5 tolerance', () => expect(calculateTolerancedValue(constants.WeiPerEther, 0.5)).to.eq(parseEther('0.5')));
+    it('1 tolerance', () => expect(calculateTolerancedValue(constants.WeiPerEther, 1)).to.eq(parseEther('0')));
+  });
+
+  describe('10', () => {
+    const ten = bigNumberify('10');
+    it('0.1 tolerance', () => expect(calculateTolerancedValue(ten, 0)).to.eq(ten));
+    it('0.1 tolerance', () => expect(calculateTolerancedValue(ten, 0.1)).to.eq(bigNumberify('9')));
+    it('0.15 tolerance', () => expect(calculateTolerancedValue(ten, 0.15)).to.eq(bigNumberify('8')));
+    it('0.5 tolerance', () => expect(calculateTolerancedValue(ten, 0.5)).to.eq(bigNumberify('5')));
+    it('1 tolerance', () => expect(calculateTolerancedValue(ten, 1)).to.eq(bigNumberify('0')));
+  });
+
+  describe('invalid tolerance', () => {
+    it('0.1 tolerance', () => expect(() => calculateTolerancedValue(parseEther('1'), 12)).to.throws('Percentage should be between 0 and 1, but got: 12'));
+  });
+
 });
