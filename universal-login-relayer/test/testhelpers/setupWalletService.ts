@@ -21,7 +21,7 @@ export default async function setupWalletService(wallet: Wallet) {
   const config = {walletContractAddress: gnosisSafeMaster.address, factoryAddress: factoryContract.address, supportedTokens: [], ensRegistrar: ensRegistrar.address, fallbackHandlerAddress: fallbackHandler.address};
   const walletDeployer = new WalletDeployer(factoryContract.address, wallet);
   const fakeBalanceChecker: any = {
-    validateBalance: () => '3',
+    validateBalance: () => Promise.resolve(),
   };
   const fakeDevicesService: any = {
     addOrUpdate: sinon.spy(),
