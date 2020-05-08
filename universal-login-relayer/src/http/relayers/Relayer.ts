@@ -120,7 +120,7 @@ class Relayer {
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const futureWalletStore = new FutureWalletStore(this.database);
     const tokenPricesService = new TokenPricesService();
-    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider),  new GasTokenValidator(gasPriceOracle));
+    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider), new GasTokenValidator(gasPriceOracle));
     const deploymentBalanceChecker = new DeploymentBalanceChecker(balanceChecker);
     const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, deploymentBalanceChecker, devicesService, transactionGasPriceComputator, futureWalletStore);
     const statusService = new MessageStatusService(messageRepository, this.walletContractService);
