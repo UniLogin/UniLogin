@@ -12,7 +12,6 @@ import {setupInitData} from '../core/utils/setupInitData';
 import {SavingFutureWalletFailed} from '../core/utils/errors';
 
 export type BalanceDetails = {
-  tokenAddress: string;
   contractAddress: string;
 };
 

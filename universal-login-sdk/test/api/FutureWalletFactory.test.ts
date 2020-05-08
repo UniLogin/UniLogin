@@ -57,7 +57,6 @@ describe('INT: FutureWalletFactory', () => {
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
     const result = await waitForBalance();
     expect(result.contractAddress).be.eq(contractAddress);
-    expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     const {waitToBeSuccess, deploymentHash} = await deploy();
     expect(deploymentHash).to.be.properHex(64);

@@ -35,7 +35,6 @@ describe('UNIT: FutureWallet', () => {
     const result = await futureWallet.waitForBalance();
     expect(await provider.getBalance(to)).to.be.above(minimalAmount);
     expect(result.contractAddress).be.eq(to);
-    expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
   });
 
   it('returns minimal amount to deploy', () => {
