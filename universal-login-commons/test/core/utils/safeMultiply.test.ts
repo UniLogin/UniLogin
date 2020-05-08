@@ -25,7 +25,7 @@ describe('safeMultiplyAndFormatEther', () => {
 describe('safeMultiply', () => {
   it('111.11 * 2 ETH = 222.22 * e^18', () => {
     const result = safeMultiply(utils.parseEther('2'), 111.11);
-    expect(result).to.eq('222220000000000000000.0');
+    expect(result).to.eq('222220000000000000000');
   });
 
   it('111.11 * 2 = 222.22', () => {
@@ -35,17 +35,17 @@ describe('safeMultiply', () => {
 
   it('111.11 * 0 = 0', () => {
     const result = safeMultiply(utils.bigNumberify('0'), 111.11);
-    expect(result).to.eq('0.0');
+    expect(result).to.eq('0');
   });
 
   it('0 * 2 = 0', () => {
     const result = safeMultiply(utils.bigNumberify('2'), 0);
-    expect(result).to.eq('0.0');
+    expect(result).to.eq('0');
   });
 
-  it('0 * 2 = 0', () => {
+  it('2 * 2 = 4', () => {
     const result = safeMultiply(utils.bigNumberify('2'), 2);
-    expect(result).to.eq('4.0');
+    expect(result).to.eq('4');
   });
 });
 

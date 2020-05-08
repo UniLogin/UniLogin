@@ -13,7 +13,8 @@ describe('INT: FutureWalletHandler', () => {
   const futureWalletStore = new FutureWalletStore(knex);
   const tokenPricesService = new TokenPricesService();
   const tokenDetailsService = new TokenDetailsService(provider);
-  const futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, tokenDetailsService);
+  const mockedGasTokenValidator = {validate: () => Promise.resolve()} as any;
+  const futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, tokenDetailsService, mockedGasTokenValidator);
   const addSpy = sinon.spy(futureWalletStore, 'add');
 
   before(() => {
