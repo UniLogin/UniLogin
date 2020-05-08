@@ -12,10 +12,10 @@ export const safeMultiply = (value: utils.BigNumber, multiplier: utils.BigNumber
   const normalizedMultiplier = utils.parseEther(multiplier.toString());
   const resultE18 = normalizedMultiplier.mul(value);
   const result = utils.formatEther(resultE18);
-  return cutZeroForInteger(result);
+  return cutPrecisionForInteger(result);
 };
 
-const cutZeroForInteger = (value: string) => value.split('.')[1] === '0' ? value.split('.')[0] : value;
+const cutPrecisionForInteger = (value: string) => value.split('.')[1] === '0' ? value.split('.')[0] : value;
 
 export const safeDivide = (valueInWei: utils.BigNumber, divider: utils.BigNumberish) => {
   const priceAsBigNumber = utils.parseEther(divider.toString());

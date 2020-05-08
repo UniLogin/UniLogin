@@ -81,7 +81,7 @@ describe('UNIT: calculateTolerancedValue', () => {
   });
 
   describe('invalid tolerance', () => {
-    it('0.1 tolerance', () => expect(() => calculateTolerancedValue(parseEther('1'), 12)).to.throws('Percentage should be between 0 and 1, but got: 12'));
+    it('12 tolerance', () => expect(() => calculateTolerancedValue(parseEther('1'), 12)).to.throws('Percentage should be between 0 and 1, but got: 12'));
+    it('-0.1 tolerance', () => expect(() => calculateTolerancedValue(parseEther('1'), -0.1)).to.throws('Percentage should be between 0 and 1, but got: -0.1'));
   });
-
 });
