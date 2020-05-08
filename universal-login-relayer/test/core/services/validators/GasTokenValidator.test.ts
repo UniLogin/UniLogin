@@ -1,8 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
-import {utils} from 'ethers';
-import {StoredFutureWallet, TEST_GAS_PRICES, TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_TOKEN_ADDRESS} from '@unilogin/commons';
+import {StoredFutureWallet, TEST_GAS_PRICES, TEST_CONTRACT_ADDRESS, TEST_ACCOUNT_ADDRESS, TEST_TOKEN_ADDRESS, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 import {GasTokenValidator} from '../../../../src/core/services/validators/GasTokenValidator';
 
 chai.use(chaiAsPromised);
@@ -11,17 +10,17 @@ describe('UNIT: GasTokenValidator', () => {
   const oracle = {getGasPrices: sinon.stub().resolves(TEST_GAS_PRICES)} as any;
   const validator = new GasTokenValidator(oracle);
 
-  const getStoredFutureWallet = (tokenPriceInGwei: string) => ({
+  const getStoredFutureWallet = (tokenPriceInETH: string) => ({
     publicKey: TEST_ACCOUNT_ADDRESS,
     contractAddress: TEST_CONTRACT_ADDRESS,
     ensName: 'user.unilogin.eth',
-    gasPrice: '1',
+    gasPrice: TEST_GAS_PRICE,
     gasToken: TEST_TOKEN_ADDRESS,
-    tokenPriceInETH: utils.parseUnits(tokenPriceInGwei, 'gwei').toString(),
+    tokenPriceInETH,
   });
 
-  describe('bellow gasPrice from oracle (1*20 < 24 gwei)', () => {
-    const storedFutureWallet: StoredFutureWallet = getStoredFutureWallet('20');
+  describe('bellow gasPrice from oracle (1 * 20 gwei < 24 gwei)', () => {
+    const storedFutureWallet: StoredFutureWallet = getStoredFutureWallet('1');
 
     it('throw when gasToken is less than minimum expected', async () => {
       await expect(validator.validate(storedFutureWallet, 0.1)).to.be.rejectedWith('Gas price is not enough');
@@ -36,14 +35,26 @@ describe('UNIT: GasTokenValidator', () => {
     });
   });
 
-  it('eq gasPrice from oracle (1*24 = 24 gwei)', async () => {
-    const storedFutureWallet: StoredFutureWallet = getStoredFutureWallet('24');
+  describe('gasPrice === 0', () => {
+    it('ether', async () => {
+      const storedFutureWallet: StoredFutureWallet = {...getStoredFutureWallet('1'), gasPrice: '0', gasToken: ETHER_NATIVE_TOKEN.address};
+      await expect(validator.validate(storedFutureWallet)).to.be.fulfilled;
+    });
+
+    it('token', async () => {
+      const storedFutureWallet: StoredFutureWallet = getStoredFutureWallet('1');
+      await expect(validator.validate(storedFutureWallet)).to.be.rejectedWith('Gas price is not enough');
+    });
+  });
+
+  it('eq gasPrice from oracle (1.2 * 20 gwei = 24 gwei)', async () => {
+    const storedFutureWallet: StoredFutureWallet = getStoredFutureWallet('1.2');
     await expect(validator.validate(storedFutureWallet, 0.1)).to.be.fulfilled;
     await expect(validator.validate(storedFutureWallet)).to.be.fulfilled;
   });
 
-  it('under gasPrice from oracle (1*24 < 28 gwei)', async () => {
-    const storedFutureWallet: StoredFutureWallet = getStoredFutureWallet('28');
+  it('under gasPrice from oracle (1.4 * 20 gwei  > 24 gwei)', async () => {
+    const storedFutureWallet: StoredFutureWallet = getStoredFutureWallet('1.4');
     await expect(validator.validate(storedFutureWallet, 0.1)).to.be.fulfilled;
     await expect(validator.validate(storedFutureWallet)).to.be.fulfilled;
   });
