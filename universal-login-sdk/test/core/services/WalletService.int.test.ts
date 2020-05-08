@@ -5,7 +5,7 @@ import {setupSdk} from '../../helpers/setupSdk';
 import UniLoginSdk from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, utils} from 'ethers';
-import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG} from '@unilogin/commons';
+import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG, ETHER_NATIVE_TOKEN, TEST_TOKEN_ADDRESS} from '@unilogin/commons';
 import {createWallet} from '../../helpers';
 import {DeployedWallet} from '../../../src';
 
@@ -26,12 +26,25 @@ describe('INT: WalletService', () => {
     walletService = new WalletService(sdk);
   });
 
-  it('create wallet', async () => {
+  it('create wallet with ether', async () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
     const name = 'name.mylogin.eth';
     const futureWallet = await walletService.createFutureWallet(name);
     expect(futureWallet.contractAddress).to.be.properAddress;
     expect(futureWallet.privateKey).to.be.properPrivateKey;
+    expect(futureWallet.gasToken).to.eq(ETHER_NATIVE_TOKEN.address);
+    expect(futureWallet.deploy).to.be.a('function');
+    expect(futureWallet.waitForBalance).to.be.a('function');
+    expect(walletService.state).to.deep.eq({kind: 'Future', name, wallet: futureWallet});
+  });
+
+  it('create wallet with token', async () => {
+    expect(walletService.state).to.deep.eq({kind: 'None'});
+    const name = 'name.mylogin.eth';
+    const futureWallet = await walletService.createFutureWallet(name, TEST_TOKEN_ADDRESS);
+    expect(futureWallet.contractAddress).to.be.properAddress;
+    expect(futureWallet.privateKey).to.be.properPrivateKey;
+    expect(futureWallet.gasToken).to.eq(TEST_TOKEN_ADDRESS);
     expect(futureWallet.deploy).to.be.a('function');
     expect(futureWallet.waitForBalance).to.be.a('function');
     expect(walletService.state).to.deep.eq({kind: 'Future', name, wallet: futureWallet});
