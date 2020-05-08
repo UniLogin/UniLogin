@@ -46,6 +46,7 @@ import {ApiKeyHandler} from '../../core/services/execution/ApiKeyHandler';
 import {TransactionGasPriceComputator} from '../../integration/ethereum/TransactionGasPriceComputator';
 import SQLRepository from '../../integration/sql/services/SQLRepository';
 import Deployment from '../../core/models/Deployment';
+import {GasTokenValidator} from '../../core/services/validators/GasTokenValidator';
 
 const defaultPort = '3311';
 
@@ -109,7 +110,8 @@ class Relayer {
     const refundPayerValidator = new RefundPayerValidator(refundPayerStore);
     const apiKeyHandler = new ApiKeyHandler(refundPayerValidator, refundPayerStore);
     const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue);
-    const transactionGasPriceComputator = new TransactionGasPriceComputator(new GasPriceOracle());
+    const gasPriceOracle = new GasPriceOracle();
+    const transactionGasPriceComputator = new TransactionGasPriceComputator(gasPriceOracle);
     this.walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider, transactionGasPriceComputator), new GnosisSafeService(this.provider, transactionGasPriceComputator));
     const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(this.walletContractService);
     const authorisationStore = new AuthorisationStore(this.database);
@@ -127,7 +129,7 @@ class Relayer {
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
     const futureWalletStore = new FutureWalletStore(this.database);
     const tokenPricesService = new TokenPricesService();
-    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider));
+    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider), new GasTokenValidator(gasPriceOracle));
 
     this.app.use(bodyParser.json());
     this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, this.futureWalletHandler, apiKeyHandler));
