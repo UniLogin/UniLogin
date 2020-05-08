@@ -42,7 +42,7 @@ export class WalletDeploymentService {
     return computeGnosisCounterfactualAddress(this.config.factoryAddress, 1, setupData, this.config.walletContractAddress);
   }
 
-  private async calculateTransactionFeeInToken(contractAddress: string, gasPrice: string) {
+  async calculateTransactionFeeInToken(contractAddress: string, gasPrice: string) {
     const {tokenPriceInETH} = await this.futureWalletStore.getGasPriceInToken(contractAddress);
     const gasUsedInToken = utils.bigNumberify(tokenPriceInETH).mul(DEPLOY_GAS_LIMIT);
     return gasUsedInToken.mul(gasPrice);
