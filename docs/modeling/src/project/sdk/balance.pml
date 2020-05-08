@@ -50,11 +50,6 @@ package commons {
     getTokensTotalWorth(tokensDetailsWithBalance: TokenDetailsWithBalance[], tokensPrices: TokensPrices)
     getTokenTotalWorth(balance: utils.BigNumber, tokenPrices: CurrencyToValue)
   }
-
-  class RequiredBalanceChecker {
-    constructor(private balanceChecker: BalanceChecker)
-    findTokenWithRequiredBalance()
-  }
 }
 
 package integration {
@@ -81,7 +76,6 @@ BalanceObserver --|> ObserverRunner
 PriceObserver --|> ObserverRunner
 GasModeService --> GasPriceOracle
 GasModeService --> PriceObserver
-RequiredBalanceChecker --> BalanceChecker
 SDK --> GasModeService
 
 @enduml
