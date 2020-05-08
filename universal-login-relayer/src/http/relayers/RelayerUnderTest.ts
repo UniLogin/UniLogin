@@ -94,6 +94,7 @@ export class RelayerUnderTest extends Relayer {
   async start() {
     await super.start();
     await this.setupTestPartner();
+    (this.futureWalletHandler as any).getTokenPriceInEth = async () => 1;
   }
 
   getServer() {

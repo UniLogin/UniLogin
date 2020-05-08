@@ -60,6 +60,7 @@ class Relayer {
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   publicConfig: PublicRelayerConfig;
+  protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
@@ -125,10 +126,11 @@ class Relayer {
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
     const futureWalletStore = new FutureWalletStore(this.database);
-    const futureWalletHandler = new FutureWalletHandler(futureWalletStore, new TokenPricesService(), new TokenDetailsService(this.provider));
+    const tokenPricesService = new TokenPricesService();
+    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider));
 
     this.app.use(bodyParser.json());
-    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, futureWalletHandler, apiKeyHandler));
+    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, this.futureWalletHandler, apiKeyHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(authorisationService));
     this.app.use('/devices', DevicesRouter(devicesService));
