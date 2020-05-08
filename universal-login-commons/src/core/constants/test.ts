@@ -27,7 +27,7 @@ export const TEST_SIGNATURE_KEY_PAIRS = [{
 
 export const testJsonRpcUrl = 'http://localhost:8545';
 
-export const TEST_GAS_PRICE = utils.parseUnits('24', 'gwei').toString();
+export const TEST_GAS_PRICE = utils.parseUnits('20', 'gwei').toString();
 
 export const TEST_GAS_LIMIT = 200000;
 

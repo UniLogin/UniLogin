@@ -34,12 +34,12 @@ describe('WalletImplementation', () => {
 
   it('initializeWithENS', async () => {
     await walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
-    expect(utils.formatEther(await provider.getBalance(walletContract.address))).to.eq('0.98632');
+    expect(utils.formatEther(await provider.getBalance(walletContract.address))).to.eq('0.9886');
   });
 
   it('initialize', async () => {
     await walletContract.initialize(keyPair.publicKey, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
-    expect(utils.formatEther(await provider.getBalance(walletContract.address))).to.eq('0.98632');
+    expect(utils.formatEther(await provider.getBalance(walletContract.address))).to.eq('0.9886');
   });
 
   it('can`t initializeWithENS twice', async () => {

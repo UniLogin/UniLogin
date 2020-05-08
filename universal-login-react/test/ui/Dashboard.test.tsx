@@ -12,7 +12,7 @@ import {setupDeployedWallet} from '../helpers/setupDeploymentWallet';
 describe('INT: Dashboard', () => {
   let wallet: Wallet;
   const ensName = 'jarek.mylogin.eth';
-  const initialAmount = '198.32';
+  const initialAmount = '198.60';
   let deployedWallet: DeployedWallet;
   let dashboard: DashboardPage;
   let relayer: any;
@@ -35,7 +35,7 @@ describe('INT: Dashboard', () => {
       value: utils.parseEther('2'),
     });
     await waitExpect(() =>
-      expect(dashboard.funds().getUsdBalance()).to.eq('$398.32'),
+      expect(dashboard.funds().getUsdBalance()).to.eq('$398.60'),
     );
   });
 
