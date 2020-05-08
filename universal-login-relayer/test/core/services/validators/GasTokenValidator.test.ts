@@ -44,7 +44,7 @@ describe('UNIT: GasTokenValidator', () => {
     });
 
     it('token', async () => {
-      const storedFutureWallet: StoredFutureWallet = getStoredFutureWallet('1');
+      const storedFutureWallet: StoredFutureWallet = {...getStoredFutureWallet('1'), gasPrice: '0'};
       await expect(validator.validate(storedFutureWallet)).to.be.rejectedWith('Gas price is not enough');
     });
   });
