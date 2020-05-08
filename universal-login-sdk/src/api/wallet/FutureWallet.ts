@@ -55,10 +55,6 @@ export class FutureWallet implements SerializableFutureWallet {
     return new DeployingWallet({deploymentHash, contractAddress: this.contractAddress, name: this.ensName, privateKey: this.privateKey}, this.sdk);
   };
 
-  setSupportedToken = (supportedToken: SupportedToken) => {
-    this.deploymentReadyObserver.setSupportedToken(supportedToken);
-  };
-
   getMinimalAmount = () => utils.formatEther(
     multiplyBy150Percent(
       utils.bigNumberify(this.gasPrice).mul(DEPLOY_GAS_LIMIT)));

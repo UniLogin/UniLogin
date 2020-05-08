@@ -70,7 +70,6 @@ describe('UNIT: WalletService', () => {
       gasToken: ETHER_NATIVE_TOKEN.address,
       deploy: sinon.stub().resolves(deployingWallet),
       waitForBalance: (async () => {}) as any,
-      setSupportedToken: (() => {}) as any,
     } as any;
 
     storage = {

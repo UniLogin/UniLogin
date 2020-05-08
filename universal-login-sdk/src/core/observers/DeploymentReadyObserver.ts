@@ -15,11 +15,6 @@ export class DeploymentReadyObserver extends ObserverRunner {
     this.requiredBalanceChecker = new RequiredBalanceChecker(new BalanceChecker(this.provider));
   }
 
-  setSupportedToken(supportedToken: SupportedToken) {
-    this.supportedTokens = this.supportedTokens.map(token =>
-      (token.address === supportedToken.address) ? supportedToken : token);
-  }
-
   getSupportedToken() {
     return this.supportedTokens;
   }

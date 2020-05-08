@@ -60,32 +60,6 @@ describe('INT: DeploymentReadyObserver', () => {
       .throws('Other wallet waiting for counterfactual deployment. Stop observer to cancel old wallet instantialisation.');
   });
 
-  it('set supported tokens, none token', () => {
-    const deploymentReadyObserver = new DeploymentReadyObserver([], provider);
-    deploymentReadyObserver.setSupportedToken({address: ETHER_NATIVE_TOKEN.address, minimalAmount: '1'});
-    expect(deploymentReadyObserver.getSupportedToken()).to.deep.eq([]);
-  });
-
-  it('set supported tokens, 1 token', () => {
-    const deploymentReadyObserver = new DeploymentReadyObserver([{address: ETHER_NATIVE_TOKEN.address, minimalAmount: '0.5'}], provider);
-    const newSupportedTokens = {address: ETHER_NATIVE_TOKEN.address, minimalAmount: '1'};
-    deploymentReadyObserver.setSupportedToken(newSupportedTokens);
-    expect(deploymentReadyObserver.getSupportedToken()).to.deep.eq([newSupportedTokens]);
-  });
-
-  it('set supported tokens, 1 token and trying to add new one', () => {
-    const deploymentReadyObserver = new DeploymentReadyObserver([{address: ETHER_NATIVE_TOKEN.address, minimalAmount: '0.5'}], provider);
-    deploymentReadyObserver.setSupportedToken({address: mockToken.address, minimalAmount: '1'});
-    const expectedSupportedTokens = [{address: ETHER_NATIVE_TOKEN.address, minimalAmount: '0.5'}];
-    expect(deploymentReadyObserver.getSupportedToken()).to.deep.eq(expectedSupportedTokens);
-  });
-
-  it('set supported tokens, 2 tokens', () => {
-    deploymentReadyObserver.setSupportedToken({address: ETHER_NATIVE_TOKEN.address, minimalAmount: '1'});
-    const expectedSupportedTokens = [{address: ETHER_NATIVE_TOKEN.address, minimalAmount: '1'}, {address: mockToken.address, minimalAmount}];
-    expect(deploymentReadyObserver.getSupportedToken()).to.deep.eq(expectedSupportedTokens);
-  });
-
   afterEach(async () => {
     await deploymentReadyObserver.finalizeAndStop();
   });
