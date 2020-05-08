@@ -21,6 +21,8 @@ describe('E2E: Wallet roundtrip', () => {
       cy.selectCrypto();
       cy.receiveCrypto();
       cy.goToFunds();
+      cy.goToSend();
+      cy.sendEther();
       cy.goToGenerateBackupCodes();
       cy.generateBackupCodes();
       cy.goToDevices();
