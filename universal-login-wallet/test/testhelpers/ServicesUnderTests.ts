@@ -1,6 +1,6 @@
 import {createServices} from '../../src/ui/createServices';
 import {providers, utils} from 'ethers';
-import {TEST_SDK_CONFIG} from '@unilogin/commons';
+import {TEST_SDK_CONFIG, TEST_GAS_PRICE} from '@unilogin/commons';
 import {SdkConfig, MemoryStorageService} from '@unilogin/sdk';
 import getConfig from '../../src/config/getConfig';
 
@@ -13,11 +13,11 @@ export const createPreconfiguredServices = async (provider: providers.Provider, 
   services.sdk.gasPriceOracle.getGasPrices = () => {
     return Promise.resolve({
       cheap: {
-        gasPrice: utils.parseUnits('0.12', 'gwei'),
+        gasPrice: utils.parseUnits('12', 'gwei'),
         timeEstimation: 132,
       },
       fast: {
-        gasPrice: utils.parseUnits('0.24', 'gwei'),
+        gasPrice: utils.bigNumberify(TEST_GAS_PRICE),
         timeEstimation: 12,
       },
     });
