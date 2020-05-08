@@ -24,6 +24,7 @@ import {ThemeProvider} from '../ui/themes/Theme';
 import {ErrorMessage} from '../ui/commons/ErrorMessage';
 import {AppPreloader} from '../ui/commons/AppPreloader';
 import {TopUpProvider} from '../core/models/TopUpProvider';
+import {ChooseTopUpToken} from '../ui/TopUp/ChooseTopUpToken';
 import config from './config';
 
 export const App = () => {
@@ -99,6 +100,16 @@ export const App = () => {
                     onCreate={() => history.push('/onboarding/success')}
                     hideModal={() => history.push('/')}
                   />}
+              />
+              <Route
+                exact
+                path="/chooseToken"
+                render={({history}) =>
+                  <ModalWrapper hideModal={() => history.push('/waitForTransaction')} message="This is a test environment running on Ropsten network">
+                    <ChooseTopUpToken
+                      supportedTokens={['ETH', 'DAI']}
+                    />
+                  </ModalWrapper>}
               />
               <Route exact path="/walletSelector">
                 <WalletSelector
