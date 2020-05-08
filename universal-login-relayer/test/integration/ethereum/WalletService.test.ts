@@ -83,13 +83,4 @@ describe('INT: WalletService', async () => {
       fakeDevicesService.addOrUpdate.resetHistory();
     });
   });
-
-  describe('calculateTransactionFee', () => {
-    it('Should calculate transaction fee for ETH', async () => {
-      (walletService as any).futureWalletStore = fakeFutureWalletStore;
-      const gasPrice = '3';
-      const transactionFee = await walletService.calculateTransactionFee('contractAddress', gasPrice);
-      expect(transactionFee).be.deep.eq(DEPLOY_GAS_LIMIT.mul(gasPrice));
-    });
-  });
 });
