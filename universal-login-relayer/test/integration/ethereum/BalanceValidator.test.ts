@@ -13,10 +13,10 @@ describe('UNIT: BalanceValidator', () => {
   const deploymentBalanceChecker = new BalanceValidator(balanceChecker);
 
   it('Should throw error when balance is not valid', async () => {
-    await expect(deploymentBalanceChecker.validateBalance(AddressZero, ETHER_NATIVE_TOKEN.address, utils.bigNumberify('3'))).rejectedWith(NotEnoughBalance);
+    await expect(deploymentBalanceChecker.validate(AddressZero, ETHER_NATIVE_TOKEN.address, utils.bigNumberify('3'))).rejectedWith(NotEnoughBalance);
   });
 
   it('Should validate with success when balance is valid', async () => {
-    await deploymentBalanceChecker.validateBalance(AddressZero, ETHER_NATIVE_TOKEN.address, utils.bigNumberify('1'));
+    await deploymentBalanceChecker.validate(AddressZero, ETHER_NATIVE_TOKEN.address, utils.bigNumberify('1'));
   });
 });

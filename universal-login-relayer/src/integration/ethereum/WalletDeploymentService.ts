@@ -15,7 +15,7 @@ export class WalletDeploymentService {
     private config: Config,
     private ensService: ENSService,
     private walletDeployer: WalletDeployer,
-    private deploymentBalanceChecker: BalanceValidator,
+    private balanceValidator: BalanceValidator,
     private devicesService: DevicesService,
     private transactionGasPriceComputator: TransactionGasPriceComputator,
     private futureWalletStore: FutureWalletStore,
@@ -40,7 +40,7 @@ export class WalletDeploymentService {
     return computeGnosisCounterfactualAddress(this.config.factoryAddress, 1, setupData, this.config.walletContractAddress);
   }
 
-  async calculateTransactionFeeInToken(contractAddress: string, gasPrice: string) {
+  async calculateTransactionFee(contractAddress: string, gasPrice: string) {
     const {tokenPriceInETH} = await this.futureWalletStore.getGasPriceInETH(contractAddress);
     const gasUsedInToken = utils.bigNumberify(tokenPriceInETH).mul(DEPLOY_GAS_LIMIT);
     return gasUsedInToken.mul(gasPrice);
@@ -50,8 +50,8 @@ export class WalletDeploymentService {
     const initWithENS = await this.setupInitializeData({publicKey, ensName, gasPrice, gasToken});
     ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);
     const contractAddress = await this.computeFutureAddress(initWithENS);
-    const transactionFeeInToken = await this.calculateTransactionFeeInToken(contractAddress, gasPrice);
-    await this.deploymentBalanceChecker.validateBalance(contractAddress, gasToken, transactionFeeInToken);
+    const transactionFeeInToken = await this.calculateTransactionFee(contractAddress, gasPrice);
+    await this.balanceValidator.validate(contractAddress, gasToken, transactionFeeInToken);
     const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '1', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: await this.transactionGasPriceComputator.getGasPrice(gasPrice)});
     await this.devicesService.addOrUpdate(contractAddress, publicKey, deviceInfo);
     return transaction;
