@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {WalletService} from '@unilogin/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import {ApplicationWallet, WalletSuggestionAction} from '@unilogin/commons';
@@ -10,6 +10,7 @@ import {Switch} from 'react-router';
 import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocation';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
+import {ChooseTopUpToken} from '../TopUp/ChooseTopUpToken';
 
 export interface OnboardingProps {
   walletService: WalletService;
@@ -23,6 +24,7 @@ export interface OnboardingProps {
 
 export const Onboarding = (props: OnboardingProps) => {
   const onSuccess = () => props.onConnect?.();
+  const [ensName, setEnsName] = useState('');
 
   return (
     <div className="universal-login">
@@ -42,9 +44,9 @@ export const Onboarding = (props: OnboardingProps) => {
                   <div className="perspective">
                     <WalletSelector
                       sdk={props.walletService.sdk}
-                      onCreateClick={async (ensName) => {
-                        await props.walletService.createWallet(ensName);
-                        history.push('/create');
+                      onCreateClick={(ensName) => {
+                        setEnsName(ensName);
+                        history.push('/chooseToken');
                       }}
                       onConnectClick={(ensName) => history.push('/connectFlow/chooseMethod', {ensName})}
                       domains={props.domains}
@@ -52,6 +54,18 @@ export const Onboarding = (props: OnboardingProps) => {
                     />
                   </div>
                 </OnboardingStepsWrapper>}
+            />
+            <Route
+              path="/chooseToken"
+              render={({history}) =>
+                <ChooseTopUpToken
+                  supportedTokens={['ETH', 'DAI']}
+                  onClick={async (token: string) => {
+                    const gasToken = props.walletService.sdk.tokensDetailsStore.getTokenAddress(token);
+                    await props.walletService.createWallet(ensName, gasToken);
+                    history.push("/create");
+                  }}
+                />}
             />
             <Route
               exact
