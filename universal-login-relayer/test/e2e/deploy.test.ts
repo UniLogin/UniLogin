@@ -117,7 +117,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     const newKeyPair = createKeyPair();
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
     const initData = await getInitData(newKeyPair, ensName, ensAddress, provider, TEST_GAS_PRICE);
-    signature = await calculateInitializeSignature(initData, newKeyPair.privateKey);
+    signature = calculateInitializeSignature(initData, newKeyPair.privateKey);
     const result = await chai.request(relayerUrl)
       .post('/wallet/deploy/')
       .send({
