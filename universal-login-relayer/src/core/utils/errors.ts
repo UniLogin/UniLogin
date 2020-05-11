@@ -4,6 +4,7 @@ type ErrorType =
   'InsufficientGas' |
   'StatusNotFound' |
   'MessageNotFound' |
+  'FutureWalletNotFound' |
   'TransactionHashNotFound' |
   'GasUsedNotFound' |
   'NodeEnvNotSpecified' |
@@ -183,6 +184,13 @@ export class MessageNotFound extends NotFound {
   constructor(messageHash: string) {
     super(`Message not found for hash: ${messageHash}`, 'MessageNotFound');
     Object.setPrototypeOf(this, MessageNotFound.prototype);
+  }
+}
+
+export class FutureWalletNotFound extends NotFound {
+  constructor() {
+    super('Future wallet not found', 'FutureWalletNotFound');
+    Object.setPrototypeOf(this, FutureWalletNotFound.prototype);
   }
 }
 
