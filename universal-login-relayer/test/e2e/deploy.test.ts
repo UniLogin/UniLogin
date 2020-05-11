@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, providers, Contract, Wallet} from 'ethers';
-import {createKeyPair, getDeployedBytecode, computeCounterfactualAddress, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEPLOY_GAS_LIMIT, TEST_APPLICATION_INFO, TEST_REFUND_PAYER, getDeployData} from '@unilogin/commons';
+import {createKeyPair, getDeployedBytecode, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEPLOY_GAS_LIMIT, TEST_APPLICATION_INFO, TEST_REFUND_PAYER, getDeployData} from '@unilogin/commons';
 import {beta2, signStringMessage, calculateGnosisStringHash, gnosisSafe} from '@unilogin/contracts';
 import {startRelayer, getInitData} from '../testhelpers/http';
 import {createFutureWalletAndPost} from '../testhelpers/createFutureWalletAndPost';
@@ -21,7 +21,6 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   let keyPair: KeyPair;
   let ensAddress: string;
   let contractAddress: string;
-  let initCode: string;
   const relayerPort = '33511';
   const relayerUrl = `http://localhost:${relayerPort}`;
   const ensName = 'myname.mylogin.eth';
