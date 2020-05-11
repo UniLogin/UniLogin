@@ -1,15 +1,24 @@
 import Deployment from '../../../models/Deployment';
-import {calculateDeployHash, DeviceInfo, DeployArgs, DeploymentStatus} from '@unilogin/commons';
+import {calculateDeployHash, DeviceInfo, DeployArgs, DeploymentStatus, ensure, ensureNotFalsy} from '@unilogin/commons';
 import IRepository from '../../../models/messages/IRepository';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
+import {FutureWalletStore} from '../../../../integration/sql/services/FutureWalletStore';
+import {GasTokenValidator} from '../../validators/GasTokenValidator';
 
 class DeploymentHandler {
   constructor(
     private deploymentRepository: IRepository<Deployment>,
     private executionQueue: IExecutionQueue,
+    private gasTokenValidator: GasTokenValidator,
+    private futureWalletStore: FutureWalletStore,
   ) {}
 
   async handle(contractAddress: string, deployArgs: DeployArgs, deviceInfo: DeviceInfo, refundPayerId?: string) {
+    const storedFutureWallet = await this.futureWalletStore.get(contractAddress);
+    ensureNotFalsy(storedFutureWallet, Error, 'Future Wallet not found');
+    ensure(storedFutureWallet.gasPrice === deployArgs.gasPrice, Error, `Expected gasPrice eq ${storedFutureWallet.gasPrice}, but got ${deployArgs.gasPrice}`);
+    ensure(storedFutureWallet.gasToken === deployArgs.gasToken, Error, `Expected gasToken eq ${storedFutureWallet.gasToken}, but got ${deployArgs.gasToken}`);
+    await this.gasTokenValidator.validate(storedFutureWallet, 0.3);
     const deployment: Deployment = {
       ...deployArgs,
       hash: calculateDeployHash(deployArgs),

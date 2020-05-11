@@ -109,7 +109,6 @@ class Relayer {
     const refundPayerStore = new RefundPayerStore(this.database);
     const refundPayerValidator = new RefundPayerValidator(refundPayerStore);
     const apiKeyHandler = new ApiKeyHandler(refundPayerValidator, refundPayerStore);
-    const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue);
     const gasPriceOracle = new GasPriceOracle();
     const transactionGasPriceComputator = new TransactionGasPriceComputator(gasPriceOracle);
     this.walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider, transactionGasPriceComputator), new GnosisSafeService(this.provider, transactionGasPriceComputator));
@@ -120,7 +119,9 @@ class Relayer {
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const futureWalletStore = new FutureWalletStore(this.database);
     const tokenPricesService = new TokenPricesService();
-    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider), new GasTokenValidator(gasPriceOracle));
+    const gasTokenValidator = new GasTokenValidator(gasPriceOracle);
+    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider), gasTokenValidator);
+    const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue, gasTokenValidator, futureWalletStore);
     const balanceValidator = new BalanceValidator(balanceChecker);
     const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, balanceValidator, devicesService, transactionGasPriceComputator);
     const statusService = new MessageStatusService(messageRepository, this.walletContractService);

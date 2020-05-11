@@ -189,10 +189,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
 
   it('Counterfactual deployment fail if invalid ENS name', async () => {
     const invalidEnsName = 'myname.non-existing.eth';
-    contractAddress = computeCounterfactualAddress(factoryContract.address, keyPair.publicKey, initCode);
+    ({signature, contractAddress} = await createFutureWalletAndPost(relayerUrl, keyPair, ensName, factoryContract, deployer, ensAddress, relayer.publicConfig.ensRegistrar, walletContract.address, fallbackHandlerContract.address));
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('1.0')});
-    const initData = await getInitData(keyPair, invalidEnsName, ensAddress, provider, TEST_GAS_PRICE);
-    signature = await calculateInitializeSignature(initData, keyPair.privateKey);
     const result = await chai.request(relayerUrl)
       .post('/wallet/deploy/')
       .send({
@@ -214,7 +212,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
     const newKeyPair = createKeyPair();
     const initData = await getInitData(keyPair, ensName, ensAddress, provider, TEST_GAS_PRICE);
-    signature = await calculateInitializeSignature(initData, newKeyPair.privateKey);
+    signature = calculateInitializeSignature(initData, newKeyPair.privateKey);
     const result = await chai.request(relayerUrl)
       .post('/wallet/deploy/')
       .send({
