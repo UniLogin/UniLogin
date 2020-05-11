@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/UniversalLogin/UniversalLoginSDK/tree/master.svg?style=svg)](https://circleci.com/gh/UniversalLogin/UniversalLoginSDK/tree/master)
+[![CircleCI](https://circleci.com/gh/UniLogin/UniLogin/tree/master.svg?style=svg)](https://circleci.com/gh/UniLogin/UniLogin/tree/master)
 
 ![Universal-Login](./docs/source/static/logo.png)
 
