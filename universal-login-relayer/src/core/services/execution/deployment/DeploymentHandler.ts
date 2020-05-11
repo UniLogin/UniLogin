@@ -4,6 +4,7 @@ import IRepository from '../../../models/messages/IRepository';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
 import {FutureWalletStore} from '../../../../integration/sql/services/FutureWalletStore';
 import {GasTokenValidator} from '../../validators/GasTokenValidator';
+import {InvalidValue} from '../../../utils/errors';
 
 class DeploymentHandler {
   constructor(
@@ -16,8 +17,8 @@ class DeploymentHandler {
   async handle(contractAddress: string, deployArgs: DeployArgs, deviceInfo: DeviceInfo, refundPayerId?: string) {
     const storedFutureWallet = await this.futureWalletStore.get(contractAddress);
     ensureNotFalsy(storedFutureWallet, Error, 'Future Wallet not found');
-    ensure(storedFutureWallet.gasPrice === deployArgs.gasPrice, Error, `Expected gasPrice eq ${storedFutureWallet.gasPrice}, but got ${deployArgs.gasPrice}`);
-    ensure(storedFutureWallet.gasToken === deployArgs.gasToken, Error, `Expected gasToken eq ${storedFutureWallet.gasToken}, but got ${deployArgs.gasToken}`);
+    ensure(storedFutureWallet.gasPrice === deployArgs.gasPrice, InvalidValue, 'gas price', storedFutureWallet.gasPrice, deployArgs.gasPrice);
+    ensure(storedFutureWallet.gasToken === deployArgs.gasToken, InvalidValue, 'gas token', storedFutureWallet.gasToken, deployArgs.gasToken);
     await this.gasTokenValidator.validate(storedFutureWallet, 0.3);
     const deployment: Deployment = {
       ...deployArgs,

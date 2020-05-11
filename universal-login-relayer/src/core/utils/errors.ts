@@ -22,6 +22,7 @@ type ErrorType =
   'InvalidTransaction' |
   'InvalidHexData' |
   'InvalidTolerance' |
+  'InvalidValue' |
   'InvalidApiKey' |
   'EnsNameTaken' |
   'UnauthorisedAddress' |
@@ -98,6 +99,13 @@ export class InvalidHexData extends ValidationFailed {
   constructor(hexData: string) {
     super(`Invalid hex data: ${hexData}`, 'InvalidHexData');
     Object.setPrototypeOf(this, InvalidHexData.prototype);
+  }
+}
+
+export class InvalidValue extends ValidationFailed {
+  constructor(variableName: string, expectedValue: string, gottenValue: string) {
+    super(`Expected ${variableName} equals ${expectedValue}, but got ${gottenValue}`, 'InvalidValue');
+    Object.setPrototypeOf(this, InvalidValue.prototype);
   }
 }
 
