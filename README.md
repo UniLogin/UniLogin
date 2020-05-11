@@ -1,6 +1,6 @@
-[![CircleCI](https://circleci.com/gh/UniversalLogin/UniversalLoginSDK/tree/master.svg?style=svg)](https://circleci.com/gh/UniversalLogin/UniversalLoginSDK/tree/master)
+[![UniLogin](https://circleci.com/gh/UniLogin/UniLogin/tree/master.svg?style=svg)](https://circleci.com/gh/UniLogin/UniLogin/tree/master)
 
-![Universal-Login](./docs/source/static/logo.png)
+![UniLogin](./docs/source/static/logo.png)
 
 # Ethereum Universal Login
 
