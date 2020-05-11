@@ -4,6 +4,7 @@ type ErrorType =
   'InsufficientGas' |
   'StatusNotFound' |
   'MessageNotFound' |
+  'FutureWalletNotFound' |
   'TransactionHashNotFound' |
   'GasUsedNotFound' |
   'NodeEnvNotSpecified' |
@@ -22,6 +23,7 @@ type ErrorType =
   'InvalidTransaction' |
   'InvalidHexData' |
   'InvalidTolerance' |
+  'InvalidValue' |
   'InvalidApiKey' |
   'EnsNameTaken' |
   'UnauthorisedAddress' |
@@ -101,6 +103,13 @@ export class InvalidHexData extends ValidationFailed {
   }
 }
 
+export class InvalidValue extends ValidationFailed {
+  constructor(variableName: string, expectedValue: string, gottenValue: string) {
+    super(`Expected ${variableName} equals ${expectedValue}, but got ${gottenValue}`, 'InvalidValue');
+    Object.setPrototypeOf(this, InvalidValue.prototype);
+  }
+}
+
 export class InvalidTolerance extends ValidationFailed {
   constructor(tolerance: number) {
     super(`Tolerance should be between 0 and 1, but got: ${tolerance}`, 'InvalidTolerance');
@@ -175,6 +184,13 @@ export class MessageNotFound extends NotFound {
   constructor(messageHash: string) {
     super(`Message not found for hash: ${messageHash}`, 'MessageNotFound');
     Object.setPrototypeOf(this, MessageNotFound.prototype);
+  }
+}
+
+export class FutureWalletNotFound extends NotFound {
+  constructor() {
+    super('Future wallet not found', 'FutureWalletNotFound');
+    Object.setPrototypeOf(this, FutureWalletNotFound.prototype);
   }
 }
 
