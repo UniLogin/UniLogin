@@ -1,12 +1,18 @@
 import {utils} from 'ethers';
-import {GasPriceOracle, StoredFutureWallet, ensure, safeMultiply, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {GasPriceOracle, ensure, safeMultiply, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {InvalidTolerance} from '../../utils/errors';
+
+export interface GasPriceDetails {
+  gasPrice: string;
+  gasToken: string;
+  tokenPriceInETH: string;
+}
 
 export class GasTokenValidator {
   constructor(private oracle: GasPriceOracle) {}
 
-  async validate(futureWallet: StoredFutureWallet, tolerance = 0) {
-    const {gasPrice, gasToken, tokenPriceInETH} = futureWallet;
+  async validate(gasPriceDetails: GasPriceDetails, tolerance = 0) {
+    const {gasPrice, gasToken, tokenPriceInETH} = gasPriceDetails;
     if (gasPrice === '0' && gasToken === ETHER_NATIVE_TOKEN.address) return;
     const gasPriceInEth = utils.bigNumberify(safeMultiply(utils.bigNumberify(gasPrice), tokenPriceInETH));
     const gasPrices = await this.oracle.getGasPrices();
