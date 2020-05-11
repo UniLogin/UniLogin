@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {GasPriceOracle, ensure, safeMultiply, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {GasPriceOracle, ensure, safeMultiply, ETHER_NATIVE_TOKEN, ValueRounder} from '@unilogin/commons';
 import {InvalidTolerance} from '../../utils/errors';
 
 export interface GasPriceDetails {
@@ -14,10 +14,11 @@ export class GasTokenValidator {
   async validate(gasPriceDetails: GasPriceDetails, tolerance = 0) {
     const {gasPrice, gasToken, tokenPriceInETH} = gasPriceDetails;
     if (gasPrice === '0' && gasToken === ETHER_NATIVE_TOKEN.address) return;
-    const gasPriceInEth = utils.bigNumberify(safeMultiply(utils.bigNumberify(gasPrice), tokenPriceInETH));
+    const gasPriceInEth = safeMultiply(utils.bigNumberify(gasPrice), tokenPriceInETH);
+    const roundedToWeiGasPrice = utils.bigNumberify(ValueRounder.floor(gasPriceInEth, 0));
     const gasPrices = await this.oracle.getGasPrices();
     const minimumGasPriceAllowed = calculateTolerancedValue(gasPrices.fast.gasPrice, tolerance);
-    ensure(gasPriceInEth.gte(minimumGasPriceAllowed), Error, 'Gas price is not enough');
+    ensure(roundedToWeiGasPrice.gte(minimumGasPriceAllowed), Error, 'Gas price is not enough');
   }
 }
 
