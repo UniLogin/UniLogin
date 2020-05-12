@@ -6,7 +6,7 @@ Cypress.Commands.add('approveTerms', () => {
 });
 
 Cypress.Commands.add('pickUsername', (name) => {
-  cy.get('.unilogin-theme-jarvis.universal-login').find('#loginInput').type(name);
+  cy.get('.unilogin-theme-jarvis.unilogin-component-wallet-selector-wrapper').find('#loginInput').type(name);
   cy.get('.unilogin-component-suggestions-list').first()
     .get('.unilogin-component-suggestions-ens-name')
     .get('p.unilogin-component-ens-name').contains(name);
