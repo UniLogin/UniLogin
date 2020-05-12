@@ -14,7 +14,7 @@ export const ChooseTopUpToken = ({supportedTokens = ['ETH']}: ChooseTopUpTokenPr
     <div className={useClassFor('top-up')}>
       <CompanyLogo />
       <div className={classForComponent('onboarding-progress-wrapper')}>
-        <ModalProgressBar steps={3} progress={2}/>
+        <ModalProgressBar steps={4} progress={2}/>
       </div>
       <div className={classForComponent('top-up-header')}>
         <div className={classForComponent('top-up-choose-token')}>
