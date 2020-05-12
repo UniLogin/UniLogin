@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import UniLoginSdk, {TransferService, TransferErrors, Execution} from '@unilogin/sdk';
 import {TransferDetails, TokenDetails, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN, SEND_TRANSACTION_GAS_LIMIT} from '@unilogin/commons';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
 import {TransferAmount} from './Amount/TransferAmount';
@@ -43,40 +42,38 @@ export const Transfer = ({transferService, onTransferTriggered, transferClassNam
 
   return (
     <div className="universal-login-transfer">
-      <div className={getStyleForTopLevelComponent(transferClassName)}>
-        <div className="transfer">
-          <TransferDropdown
-            sdk={transferService.deployedWallet.sdk}
-            tokenDetailsWithBalance={tokenDetailsWithBalance}
-            tokenDetails={selectedToken}
-            setToken={(token: TokenDetails) => updateField('transferToken')(token.address)}
-            className={transferClassName}
-          />
-          <TransferAmount
-            value={transferDetails.amount}
-            tokenSymbol={selectedToken.symbol}
-            errors={errors.amount}
-            onChange={updateField('amount')}
-          />
-          <TransferRecipient
-            onChange={updateField('to')}
-            errors={errors.to}
-          />
-        </div>
-        <FooterSection>
-          <GasPrice
-            isDeployed={true}
-            deployedWallet={transferService.deployedWallet}
-            gasLimit={SEND_TRANSACTION_GAS_LIMIT}
-            onGasParametersChanged={(gasParameters: GasParameters) => updateField('gasParameters')(gasParameters)}
-            className={transferClassName}
-            sdk={sdk}
-          />
-          <div className="footer-buttons-row">
-            <button id="send-button" onClick={onTransferClick} className="footer-approve-btn" disabled={!transferDetails.gasParameters}>Send</button>
-          </div>
-        </FooterSection>
+      <div className="transfer">
+        <TransferDropdown
+          sdk={transferService.deployedWallet.sdk}
+          tokenDetailsWithBalance={tokenDetailsWithBalance}
+          tokenDetails={selectedToken}
+          setToken={(token: TokenDetails) => updateField('transferToken')(token.address)}
+          className={transferClassName}
+        />
+        <TransferAmount
+          value={transferDetails.amount}
+          tokenSymbol={selectedToken.symbol}
+          errors={errors.amount}
+          onChange={updateField('amount')}
+        />
+        <TransferRecipient
+          onChange={updateField('to')}
+          errors={errors.to}
+        />
       </div>
+      <FooterSection>
+        <GasPrice
+          isDeployed={true}
+          deployedWallet={transferService.deployedWallet}
+          gasLimit={SEND_TRANSACTION_GAS_LIMIT}
+          onGasParametersChanged={(gasParameters: GasParameters) => updateField('gasParameters')(gasParameters)}
+          className={transferClassName}
+          sdk={sdk}
+        />
+        <div className="footer-buttons-row">
+          <button id="send-button" onClick={onTransferClick} className="footer-approve-btn" disabled={!transferDetails.gasParameters}>Send</button>
+        </div>
+      </FooterSection>
     </div>
   );
 };
