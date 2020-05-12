@@ -312,7 +312,13 @@
 
     .unilogin-component-top-up-method
       height: 229px
-
-    .unilogin-component-top-up-method
       border: none
       padding: unset
+
+    .unilogin-component-top-up-radio-inner
+      transition: all .5s
+
+    .unilogin-component-top-up-method:disabled
+    .unilogin-component-top-up-method[disabled]
+      & > .unilogin-component-top-up-radio-inner
+        background: rgba(119, 119, 119, 0.1)

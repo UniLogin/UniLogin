@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {classForComponent, useClassFor} from '../utils/classFor';
 import {ModalTitle} from '../commons/Modal/ModalTitle';
 import {ModalProgressBar} from '../commons/ModalProgressBar';
 import {CompanyLogo} from '../..';
 import {getIconForToken} from '../../core/utils/getIconForToken';
+import Spinner from '../commons/Spinner';
 
 interface ChooseTopUpTokenProps {
   onClick: (token: string) => void;
@@ -11,6 +12,18 @@ interface ChooseTopUpTokenProps {
 };
 
 export const ChooseTopUpToken = ({supportedTokens = ['ETH'], onClick}: ChooseTopUpTokenProps) => {
+  const [isClicked, setIsClicked] = useState(false);
+  const [selectedToken, setSelectedToken] = useState(null);
+  const handleClick = (token: any) => {
+    setIsClicked(true);
+    onClick(token);
+    setSelectedToken(token);
+    setTimeout(() => {
+      setIsClicked(false);
+      setSelectedToken(null);
+    }, 1000);
+  };
+
   return (
     <div className={useClassFor('top-up')}>
       <CompanyLogo />
@@ -23,10 +36,14 @@ export const ChooseTopUpToken = ({supportedTokens = ['ETH'], onClick}: ChooseTop
           <div className={classForComponent('top-up-methods')}>
             {supportedTokens && supportedTokens.map((token) => {
               return (
-                <button key={token} className={`${classForComponent('top-up-method')}`} onClick={() => onClick(token)}>
+                <button
+                  key={token}
+                  className={`${classForComponent('top-up-method')}`}
+                  onClick={() => handleClick(token)}
+                  disabled={isClicked}>
                   <div className={classForComponent('top-up-radio-inner')}>
                     <div className={classForComponent('top-up-method-icons')}>
-                      <img className={classForComponent('top-up-method-icon')} src={getIconForToken(token)} alt={token} />
+                      {selectedToken === token ? <Spinner/> : <img className={classForComponent('top-up-method-icon')} src={getIconForToken(token)} alt={token} />}
                     </div>
                     <p className={classForComponent('top-up-method-title')}>{token}</p>
                   </div>
