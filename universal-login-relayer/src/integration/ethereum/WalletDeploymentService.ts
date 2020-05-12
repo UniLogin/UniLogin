@@ -8,6 +8,7 @@ import {WalletDeployer} from './WalletDeployer';
 import {DevicesService} from '../../core/services/DevicesService';
 import {TransactionGasPriceComputator} from './TransactionGasPriceComputator';
 import {BalanceValidator} from './BalanceValidator';
+import {FutureWalletStore} from '../sql/services/FutureWalletStore';
 
 export class WalletDeploymentService {
   constructor(
@@ -17,6 +18,7 @@ export class WalletDeploymentService {
     private balanceValidator: BalanceValidator,
     private devicesService: DevicesService,
     private transactionGasPriceComputator: TransactionGasPriceComputator,
+    private futureWalletStore: FutureWalletStore,
   ) {}
 
   async setupInitializeData({publicKey, ensName, gasPrice, gasToken}: Omit<DeployArgs, 'signature'>) {

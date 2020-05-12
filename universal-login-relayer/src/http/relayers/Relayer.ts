@@ -125,7 +125,7 @@ class Relayer {
     this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, this.tokenPricesService, new TokenDetailsService(this.provider), gasTokenValidator);
     const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue, gasTokenValidator, futureWalletStore);
     const balanceValidator = new BalanceValidator(balanceChecker);
-    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, balanceValidator, devicesService, transactionGasPriceComputator);
+    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, balanceValidator, devicesService, transactionGasPriceComputator, futureWalletStore);
     const statusService = new MessageStatusService(messageRepository, this.walletContractService);
     const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, this.walletContractService);
     const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
@@ -145,7 +145,7 @@ class Relayer {
   }
 
   async stop() {
-    await this.executionWorker.stop();
+    this.executionWorker.stop();
     await this.database.destroy();
     await new Promise(resolve => this.server.close(resolve));
   }
