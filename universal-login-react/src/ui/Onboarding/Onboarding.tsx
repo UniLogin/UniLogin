@@ -11,6 +11,8 @@ import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocati
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
 import {ChooseTopUpToken} from '../TopUp/ChooseTopUpToken';
+import {classForComponent} from '../utils/classFor';
+import {ModalProgressBar} from '../commons/ModalProgressBar';
 
 export interface OnboardingProps {
   walletService: WalletService;
@@ -63,14 +65,16 @@ export const Onboarding = (props: OnboardingProps) => {
             <Route
               path="/chooseToken"
               render={({history}) =>
-                <ChooseTopUpToken
-                  supportedTokens={['ETH', 'DAI']}
-                  onClick={async (token: string) => {
-                    const gasToken = props.walletService.sdk.tokensDetailsStore.getTokenAddress(token);
-                    await props.walletService.createWallet(ensName, gasToken);
-                    history.push('/create');
-                  }}
-                />}
+                <ModalWrapper hideModal={props.hideModal} message={props.walletService.sdk.getNotice()}>
+                  <ChooseTopUpToken
+                    supportedTokens={['ETH', 'DAI']}
+                    onClick={async (token: string) => {
+                      const gasToken = props.walletService.sdk.tokensDetailsStore.getTokenAddress(token);
+                      await props.walletService.createWallet(ensName, gasToken);
+                      history.push('/create');
+                    }}
+                  />
+                </ModalWrapper>}
             />
             <Route
               exact
