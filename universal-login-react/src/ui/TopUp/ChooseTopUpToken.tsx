@@ -6,10 +6,11 @@ import {CompanyLogo} from '../..';
 import {getIconForToken} from '../../core/utils/getIconForToken';
 
 interface ChooseTopUpTokenProps {
+  onClick: (token: string) => void;
   supportedTokens?: Array<string>;
 };
 
-export const ChooseTopUpToken = ({supportedTokens = ['ETH']}: ChooseTopUpTokenProps) => {
+export const ChooseTopUpToken = ({supportedTokens = ['ETH'], onClick}: ChooseTopUpTokenProps) => {
   return (
     <div className={useClassFor('top-up')}>
       <CompanyLogo />
@@ -22,7 +23,7 @@ export const ChooseTopUpToken = ({supportedTokens = ['ETH']}: ChooseTopUpTokenPr
           <div className={classForComponent('top-up-methods')}>
             {supportedTokens && supportedTokens.map((token) => {
               return (
-                <button key={token} className={`${classForComponent('top-up-method')}`} onClick={(token) => console.log(token)}>
+                <button key={token} className={`${classForComponent('top-up-method')}`} onClick={() => onClick(token)}>
                   <div className={classForComponent('top-up-radio-inner')}>
                     <div className={classForComponent('top-up-method-icons')}>
                       <img className={classForComponent('top-up-method-icon')} src={getIconForToken(token)} alt={token} />
