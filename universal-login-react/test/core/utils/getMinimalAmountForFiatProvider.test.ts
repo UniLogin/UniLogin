@@ -2,7 +2,6 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {getMinimalAmountForFiatProvider, getMinimalAmount} from '../../../src/core/utils/getMinimalAmountForFiatProvider';
 import {TopUpProvider} from '../../../src/core/models/TopUpProvider';
-import {InvalidWalletState} from '@unilogin/sdk';
 import {TokenPricesService} from '@unilogin/commons';
 
 describe('getMinimalAmountForFiatProvider', () => {
@@ -39,6 +38,7 @@ describe('UNIT: getMinimalAmount', () => {
   it('returns 2 for Ramp and future wallet', async () => {
     const walletService = {
       getRequiredDeploymentBalance: () => '2',
+      isKind: (state: string) => state === 'Future',
     };
     const paymentMethod = TopUpProvider.RAMP;
     expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('2');
@@ -47,6 +47,7 @@ describe('UNIT: getMinimalAmount', () => {
   it('returns 30 for Safello and future wallet', async () => {
     const walletService = {
       getRequiredDeploymentBalance: () => '2',
+      isKind: (state: string) => state === 'Future',
     };
     const paymentMethod = TopUpProvider.SAFELLO;
     expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('30');
@@ -54,9 +55,7 @@ describe('UNIT: getMinimalAmount', () => {
 
   it('returns 30 for Safello and deployed wallet', async () => {
     const walletService = {
-      getRequiredDeploymentBalance: () => {
-        throw new InvalidWalletState('Future', 'Deployed');
-      },
+      isKind: (state: string) => state === 'Deployed',
     };
     const paymentMethod = TopUpProvider.SAFELLO;
     expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('30');
@@ -64,12 +63,19 @@ describe('UNIT: getMinimalAmount', () => {
 
   it('returns 1 for Ramp and deployed wallet', async () => {
     const walletService = {
-      getRequiredDeploymentBalance: () => {
-        throw new InvalidWalletState('Future', 'Deployed');
-      },
+      isKind: (state: string) => state === 'Deployed',
     };
     const paymentMethod = TopUpProvider.RAMP;
     expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('1');
+  });
+
+  it('Throw error if invalid wallet state', async () => {
+    const walletService = {
+      state: {kind: 'None'},
+      isKind: (state: string) => state === 'None',
+    };
+    const paymentMethod = TopUpProvider.RAMP;
+    expect(() => getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.throw('Wallet state is None, but expected Future or Deployed');
   });
 
   after(() => {
