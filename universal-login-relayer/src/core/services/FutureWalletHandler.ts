@@ -1,4 +1,4 @@
-import {StoredFutureWalletRequest, TokenPricesService, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@unilogin/commons';
+import {StoredFutureWalletRequest, TokenPricesService, TokenDetailsService} from '@unilogin/commons';
 import {FutureWalletStore} from '../../integration/sql/services/FutureWalletStore';
 import {GasTokenValidator} from './validators/GasTokenValidator';
 
@@ -11,18 +11,10 @@ export class FutureWalletHandler {
   ) {}
 
   async handle(futureWallet: StoredFutureWalletRequest) {
-    const tokenPriceInETH = await this.getTokenPriceInEth(futureWallet.gasToken);
+    const tokenDetails = await this.tokenDetailsService.getTokenDetails(futureWallet.gasToken);
+    const tokenPriceInETH = (await this.tokenPricesService.getTokenPriceInEth(tokenDetails)).toString();
     const storedFutureWallet = {...futureWallet, tokenPriceInETH};
     await this.gasTokenValidator.validate(storedFutureWallet, 0.1);
     return this.futureWalletStore.add(storedFutureWallet);
-  }
-
-  private async getTokenPriceInEth(tokenAddress: string) {
-    if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
-      return '1';
-    }
-    const tokenDetails = await this.tokenDetailsService.getTokenDetails(tokenAddress);
-    const price = await this.tokenPricesService.getTokenPriceInEth(tokenDetails);
-    return price.toString();
   }
 }
