@@ -23,7 +23,6 @@ export interface OnboardingProps {
 
 export const Onboarding = (props: OnboardingProps) => {
   const onSuccess = () => props.onConnect?.();
-  const [ensName, setEnsName] = useState('');
 
   return (
     <div className="universal-login">
@@ -43,9 +42,8 @@ export const Onboarding = (props: OnboardingProps) => {
                     <WalletSelector
                       sdk={props.walletService.sdk}
                       onCreateClick={async (givenEnsName) => {
-                        setEnsName(givenEnsName);
                         await props.walletService.createWallet(givenEnsName, ETHER_NATIVE_TOKEN.address);
-                        history.push('/create');
+                        history.push('/create', {givenEnsName});
                       }}
                       onConnectClick={(ensName) => history.push('/connectFlow/chooseMethod', {ensName})}
                       domains={props.domains}
@@ -57,13 +55,13 @@ export const Onboarding = (props: OnboardingProps) => {
             <Route
               exact
               path="/create"
-            >
+              render={({location}) =>
               <OnboardingSteps
                 walletService={props.walletService}
                 onCreate={props.onCreate}
-                ensName={ensName}
-              />
-            </Route>
+                ensName={location.state.ensName}
+              />}
+            />
             <Route
               path="/connectFlow"
               render={({history, location}) =>
