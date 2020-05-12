@@ -46,9 +46,9 @@ export const Onboarding = (props: OnboardingProps) => {
                       sdk={props.walletService.sdk}
                       onCreateClick={async (ensName) => {
                         setEnsName(ensName);
-                        if(props.walletService.sdk.isRefundPaid()) {
+                        if (props.walletService.sdk.isRefundPaid()) {
                           history.push('/chooseToken');
-                        }else {
+                        } else {
                           await props.walletService.createWallet(ensName);
                           history.push('/create');
                         }
@@ -68,7 +68,7 @@ export const Onboarding = (props: OnboardingProps) => {
                   onClick={async (token: string) => {
                     const gasToken = props.walletService.sdk.tokensDetailsStore.getTokenAddress(token);
                     await props.walletService.createWallet(ensName, gasToken);
-                    history.push("/create");
+                    history.push('/create');
                   }}
                 />}
             />

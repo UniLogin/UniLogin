@@ -1,7 +1,7 @@
 import {providers, utils} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {connectToEthereumNode} from '../cli/connectAndExecute';
-import {IERC20Interface} from '@unilogin/contracts'
+import {IERC20Interface} from '@unilogin/contracts';
 
 export interface SendFundsParameters {
   nodeUrl: string;
