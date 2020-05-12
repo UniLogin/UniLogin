@@ -40,7 +40,7 @@ export const TopUpRadioCrypto = (props: Omit<TopUpRadioProps, 'children'>) => (
       <img className={classForComponent('top-up-method-icon')} src={getIconForToken(props.topUpCurrency || 'ETH')} alt="Ethereum" />
     </div>
     <p className={classForComponent('top-up-method-title')}>Crypto</p>
-    <p className={classForComponent('top-up-method-text')}>Free-Deposit ETH</p>
+    <p className={classForComponent('top-up-method-text')}>Free-Deposit {props.topUpCurrency}</p>
   </TopUpRadio>
 );
 

@@ -11,7 +11,6 @@ import './../styles/themes/Jarvis/chooseTopUpThemeJarvis.sass';
 import './../styles/themes/UniLogin/chooseTopUpThemeUniLogin.sass';
 import {TopUpMethod} from '../../core/models/TopUpMethod';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
-import {ensure} from '@unilogin/commons';
 
 export interface TopUpProps {
   walletService: WalletService;
@@ -24,8 +23,7 @@ export interface TopUpProps {
 export const TopUp = ({walletService, modalClassName, hideModal, isModal, logoColor}: TopUpProps) => {
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
   const [headerVisible, setHeaderVisible] = useState<boolean>(true);
-  ensure(walletService.state.kind === 'Future', InvalidWalletState, 'Future', walletService.state.kind);
-  const topUpCurrency = walletService.sdk.tokensDetailsStore.getTokenByAddress(walletService.state.wallet.gasToken).symbol;
+  const topUpCurrency = walletService.isKind('Future') ? walletService.getFutureWallet().getTopUpCurrencySymbol() : 'ETH or DAI';
 
   const renderTopUpContent = () => (<>
     {headerVisible && <ChooseTopUpMethod
