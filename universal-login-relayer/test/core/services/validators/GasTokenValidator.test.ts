@@ -57,6 +57,11 @@ describe('UNIT: GasTokenValidator', () => {
     await expect(validator.validate(gasPriceDetails, 0.1)).to.be.fulfilled;
     await expect(validator.validate(gasPriceDetails)).to.be.fulfilled;
   });
+
+  it('fulfilled with big precision number', async () => {
+    const gasPriceDetails = {...getGasPriceDetails('0.00530977'), gasPrice: '4331637716887'};
+    await expect(validator.validate(gasPriceDetails, 0.1)).to.be.fulfilled;
+  });
 });
 
 describe('UNIT: calculateTolerancedValue', () => {
