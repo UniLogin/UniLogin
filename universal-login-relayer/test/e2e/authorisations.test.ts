@@ -5,7 +5,7 @@ import {createKeyPair, TEST_APPLICATION_INFO, RelayerRequest, KeyPair} from '@un
 import {signStringMessage, calculateGnosisStringHash} from '@unilogin/contracts';
 import {deployGnosisSafeProxy} from '../testhelpers/createGnosisSafeContract';
 import {utils, Wallet, Contract} from 'ethers';
-import Relayer, {RelayerUnderTest} from '../../src';
+import {RelayerUnderTest} from '../../src';
 
 chai.use(chaiHttp);
 
@@ -16,7 +16,7 @@ const signRelayerRequest = (relayerRequest: RelayerRequest, privateKey: string) 
   return relayerRequestSignature;
 };
 
-async function postAuthorisationRequest(relayer: Relayer, contract: Contract, keyPair: KeyPair) {
+async function postAuthorisationRequest(relayer: RelayerUnderTest, contract: Contract, keyPair: KeyPair) {
   const result = await chai.request((relayer as any).server)
     .post('/authorisation')
     .send({
@@ -27,7 +27,7 @@ async function postAuthorisationRequest(relayer: Relayer, contract: Contract, ke
   expect(result.status).to.eq(201);
 }
 
-async function getAuthorisation(relayer: Relayer, contract: Contract, keyPair: KeyPair) {
+async function getAuthorisation(relayer: RelayerUnderTest, contract: Contract, keyPair: KeyPair) {
   const msgHash = calculateGnosisStringHash(utils.arrayify(utils.toUtf8Bytes(contract.address)), contract.address);
   const relayerRequestSignature = signStringMessage(msgHash, keyPair.privateKey);
   const authorisationRequest = {
