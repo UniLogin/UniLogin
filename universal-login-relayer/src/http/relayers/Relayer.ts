@@ -62,8 +62,9 @@ class Relayer {
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   publicConfig: PublicRelayerConfig;
-  protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
+  protected tokenPricesService: TokenPricesService = {} as TokenPricesService;
   protected gasPriceOracle: GasPriceOracle = {} as GasPriceOracle;
+  protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
@@ -119,9 +120,9 @@ class Relayer {
     const devicesStore = new DevicesStore(this.database);
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const futureWalletStore = new FutureWalletStore(this.database);
-    const tokenPricesService = new TokenPricesService();
+    this.tokenPricesService = new TokenPricesService();
     const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
-    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider), gasTokenValidator);
+    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, this.tokenPricesService, new TokenDetailsService(this.provider), gasTokenValidator);
     const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue, gasTokenValidator, futureWalletStore);
     const balanceValidator = new BalanceValidator(balanceChecker);
     const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, balanceValidator, devicesService, transactionGasPriceComputator);

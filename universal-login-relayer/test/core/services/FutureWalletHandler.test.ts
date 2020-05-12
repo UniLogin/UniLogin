@@ -18,10 +18,10 @@ describe('INT: FutureWalletHandler', () => {
   const addSpy = sinon.spy(futureWalletStore, 'add');
 
   before(() => {
-    sinon.stub(tokenDetailsService, 'getTokenDetails').resolves(TEST_TOKEN_DETAILS[0]);
-    sinon.stub(tokenPricesService, 'getTokenPriceInEth')
-      .withArgs(TEST_TOKEN_DETAILS[0])
-      .resolves(0.001);
+    const getTokenDetailsStub = sinon.stub(tokenDetailsService, 'getTokenDetails').resolves(TEST_TOKEN_DETAILS[0]);
+    getTokenDetailsStub.withArgs(ETHER_NATIVE_TOKEN.address).resolves(ETHER_NATIVE_TOKEN);
+    const getTokenPriceInEthStub = sinon.stub(tokenPricesService, 'getTokenPriceInEth').withArgs(ETHER_NATIVE_TOKEN).resolves(1);
+    getTokenPriceInEthStub.withArgs(TEST_TOKEN_DETAILS[0]).resolves(0.001);
   });
 
   it('creates future wallet', async () => {
