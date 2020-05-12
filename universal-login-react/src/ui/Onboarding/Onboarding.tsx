@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {WalletService} from '@unilogin/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import {ApplicationWallet, WalletSuggestionAction, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
@@ -56,11 +56,11 @@ export const Onboarding = (props: OnboardingProps) => {
               exact
               path="/create"
               render={({location}) =>
-              <OnboardingSteps
-                walletService={props.walletService}
-                onCreate={props.onCreate}
-                ensName={location.state.ensName}
-              />}
+                <OnboardingSteps
+                  walletService={props.walletService}
+                  onCreate={props.onCreate}
+                  ensName={location.state.ensName}
+                />}
             />
             <Route
               path="/connectFlow"
