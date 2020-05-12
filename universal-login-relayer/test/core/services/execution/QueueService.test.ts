@@ -19,7 +19,7 @@ import {constants} from 'ethers';
 
 use(sinonChai);
 
-describe('UNIT: Queue Service', async () => {
+describe('UNIT: Queue Service', () => {
   let executionWorker: ExecutionWorker;
   let queueMemoryStore: QueueMemoryStore;
   let messageRepository: IMessageRepository;

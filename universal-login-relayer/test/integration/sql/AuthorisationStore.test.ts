@@ -10,7 +10,7 @@ import deviceInfo from '../../testconfig/defaults';
 
 chai.use(require('chai-string'));
 
-describe('INT: Authorisation Store', async () => {
+describe('INT: Authorisation Store', () => {
   let authorisationStore: AuthorisationStore;
   let wallet: Wallet;
   let provider;

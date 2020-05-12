@@ -94,9 +94,9 @@ export class RelayerUnderTest extends Relayer {
 
   async start() {
     await super.start();
-    this.gasPriceOracle.getGasPrices = async () => ({fast: {gasPrice: utils.bigNumberify(TEST_GAS_PRICE)}}) as any;
+    this.gasPriceOracle.getGasPrices = () => Promise.resolve({fast: {gasPrice: utils.bigNumberify(TEST_GAS_PRICE)}}) as any;
     await this.setupTestPartner();
-    (this.futureWalletHandler as any).getTokenPriceInEth = async () => 1;
+    (this.futureWalletHandler as any).getTokenPriceInEth = () => Promise.resolve(1);
   }
 
   getServer() {

@@ -9,7 +9,7 @@ import {getTestSignedMessage} from '../../../testconfig/message';
 import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletContractWithMockToken';
 import {setupWalletContractService} from '../../../testhelpers/setupWalletContractService';
 
-describe('INT: EstimateGasValidator', async () => {
+describe('INT: EstimateGasValidator', () => {
   let message: Message;
   let mockToken: Contract;
   let walletContract: Contract;

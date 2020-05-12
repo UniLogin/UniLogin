@@ -11,7 +11,7 @@ import setupWalletService, {createFutureWalletUsingEnsService, getSetupDataUsing
 chai.use(require('chai-string'));
 chai.use(sinonChai);
 
-describe('INT: WalletService', async () => {
+describe('INT: WalletService', () => {
   let walletService: WalletDeploymentService;
   let provider: providers.Provider;
   let wallet: Wallet;
@@ -34,7 +34,7 @@ describe('INT: WalletService', async () => {
     walletContract = new Contract(contractAddress, GnosisSafeInterface, provider);
   });
 
-  describe('Create', async () => {
+  describe('Create', () => {
     it('is initialized with management key', async () => {
       expect(await walletContract.getThreshold()).to.eq(1);
       expect(await walletContract.isOwner(keyPair.publicKey)).to.eq(true);

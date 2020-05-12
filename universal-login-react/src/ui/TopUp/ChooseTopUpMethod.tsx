@@ -16,7 +16,7 @@ export const ChooseTopUpMethod = ({topUpMethod, setTopUpMethod}: ChooseTopUpMeth
     <ChooseTopUpMethodWrapper topUpMethod={topUpMethod}>
       <CompanyLogo />
       <div className={classForComponent('onboarding-progress-wrapper')}>
-        <ModalProgressBar steps={3} progress={2}/>
+        <ModalProgressBar steps={4} progress={3}/>
       </div>
       <ChooseTopUpMethodHeader
         topUpMethod={topUpMethod}

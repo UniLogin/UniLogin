@@ -13,7 +13,7 @@ describe('INT: RelayerRequestSignatureValidator', () => {
   let wallet: Wallet;
   let provider;
 
-  before(async () => {
+  before(() => {
     provider = createMockProvider();
     [wallet] = getWallets(provider);
     const walletContractService = setupWalletContractService(provider);
