@@ -6,7 +6,7 @@ import {buildEnsService, registerENSName} from '../../testhelpers/buildEnsServic
 
 chai.use(require('chai-string'));
 
-describe('INT: ENSService', async () => {
+describe('INT: ENSService', () => {
   let ensService: ENSService;
   let provider: providers.Provider;
   let ensBuilder: any;

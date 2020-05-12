@@ -56,7 +56,7 @@ describe('UNIT: getDeviceInfo', () => {
     );
   });
 
-  it('Test getDeviceInfo', async () => {
+  it('Test getDeviceInfo', () => {
     const req = {
       headers: {
         'x-forwarded-for': '::ffff:127.0.0.1',
@@ -83,7 +83,7 @@ describe('UNIT: getDeviceInfo', () => {
     expect(expectedResult).to.deep.eq(result);
   });
 
-  it('Test getDeviceInfo with real ip', async () => {
+  it('Test getDeviceInfo with real ip', () => {
     const req = {
       headers: {
         'x-forwarded-for': '::ffff:63.141.56.121',

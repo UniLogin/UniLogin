@@ -8,7 +8,7 @@ import {createMessageItem} from '../../../../src/core/utils/messages/serialisati
 import {getTestSignedMessage} from '../../../testconfig/message';
 import MessageMemoryRepository from '../../../mock/MessageMemoryRepository';
 
-describe('UNIT: MessageStatusService', async () => {
+describe('UNIT: MessageStatusService', () => {
   const contractService: any = {
     getRequiredSignatures: sinon.stub().returns(utils.bigNumberify(1)),
   };

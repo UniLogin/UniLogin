@@ -7,7 +7,7 @@ export class DevicesStore {
   constructor(public database: Knex) {
   }
 
-  async add(contractAddress: string, publicKey: string, deviceInfo: DeviceInfo) {
+  add(contractAddress: string, publicKey: string, deviceInfo: DeviceInfo) {
     return this.database(this.tableName).insert({contractAddress, publicKey, deviceInfo});
   }
 
@@ -17,7 +17,7 @@ export class DevicesStore {
       .select();
   }
 
-  async remove(contractAddress: string, publicKey: string) {
+  remove(contractAddress: string, publicKey: string) {
     return this.database(this.tableName)
       .where({contractAddress})
       .andWhere({publicKey})

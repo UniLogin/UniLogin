@@ -5,7 +5,7 @@ import {createKeyPair, TEST_APPLICATION_INFO, RelayerRequest, KeyPair} from '@un
 import {signStringMessage, calculateGnosisStringHash} from '@unilogin/contracts';
 import {deployGnosisSafeProxy} from '../testhelpers/createGnosisSafeContract';
 import {utils, Wallet, Contract} from 'ethers';
-import Relayer from '../../src';
+import Relayer, {RelayerUnderTest} from '../../src';
 
 chai.use(chaiHttp);
 
@@ -44,8 +44,8 @@ async function getAuthorisation(relayer: Relayer, contract: Contract, keyPair: K
   return {result, response: result.body.response};
 }
 
-describe('E2E: Relayer - Authorisation routes', async () => {
-  let relayer: Relayer;
+describe('E2E: Relayer - Authorisation routes', () => {
+  let relayer: RelayerUnderTest;
   let proxyContract: Contract;
   let keyPair: KeyPair;
   let walletContract: Contract;
