@@ -32,12 +32,12 @@ describe('UNIT: TokenPricesService', () => {
     it('dai', async () => {
       const tokenDetails = {symbol: 'DAI'} as TokenDetails;
       const priceInEth = await tokenPricesService.getTokenPriceInEth(tokenDetails);
-      expect(priceInEth).eq(0.00483321);
+      expect(priceInEth).eq(DAIPrices.eth);
     });
 
     it('eth', async () => {
       const priceInEth = await tokenPricesService.getTokenPriceInEth(ETHER_NATIVE_TOKEN);
-      expect(priceInEth).eq(1);
+      expect(priceInEth).eq(ETHPrices.eth);
     });
   });
 });
