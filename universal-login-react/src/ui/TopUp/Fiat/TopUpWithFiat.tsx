@@ -99,7 +99,6 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
         />
         : <WaitingForOnRampProvider
           onRampProviderName={paymentMethod!}
-          className={modalClassName}
           logoColor={logoColor}
         />;
     default:
