@@ -63,6 +63,7 @@ class Relayer {
   protected server: Server = {} as Server;
   publicConfig: PublicRelayerConfig;
   protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
+  protected gasPriceOracle: GasPriceOracle = {} as GasPriceOracle;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
@@ -109,8 +110,8 @@ class Relayer {
     const refundPayerStore = new RefundPayerStore(this.database);
     const refundPayerValidator = new RefundPayerValidator(refundPayerStore);
     const apiKeyHandler = new ApiKeyHandler(refundPayerValidator, refundPayerStore);
-    const gasPriceOracle = new GasPriceOracle();
-    const transactionGasPriceComputator = new TransactionGasPriceComputator(gasPriceOracle);
+    this.gasPriceOracle = new GasPriceOracle();
+    const transactionGasPriceComputator = new TransactionGasPriceComputator(this.gasPriceOracle);
     this.walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider, transactionGasPriceComputator), new GnosisSafeService(this.provider, transactionGasPriceComputator));
     const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(this.walletContractService);
     const authorisationStore = new AuthorisationStore(this.database);
@@ -119,7 +120,7 @@ class Relayer {
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const futureWalletStore = new FutureWalletStore(this.database);
     const tokenPricesService = new TokenPricesService();
-    const gasTokenValidator = new GasTokenValidator(gasPriceOracle);
+    const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
     this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, tokenPricesService, new TokenDetailsService(this.provider), gasTokenValidator);
     const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue, gasTokenValidator, futureWalletStore);
     const balanceValidator = new BalanceValidator(balanceChecker);
