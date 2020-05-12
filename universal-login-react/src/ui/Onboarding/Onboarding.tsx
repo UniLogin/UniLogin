@@ -31,7 +31,6 @@ export const Onboarding = (props: OnboardingProps) => {
   return (
     <div className="universal-login">
       <div className={getStyleForTopLevelComponent(props.className)}>
-
         <MemoryRouter initialEntries={[getInitialOnboardingLocation(props.walletService.state)]}>
           <Switch>
             <Route
@@ -46,14 +45,12 @@ export const Onboarding = (props: OnboardingProps) => {
                   <div className="perspective">
                     <WalletSelector
                       sdk={props.walletService.sdk}
-                      onCreateClick={async (ensName) => {
-                        setEnsName(ensName);
+                      onCreateClick={async (givenEnsName) => {
+                        setEnsName(givenEnsName);
                         if (props.walletService.sdk.isRefundPaid()) {
-                          await props.walletService.createWallet(ensName);
-                          history.push('/create');
-                        } else {
-                          history.push('/chooseToken');
+                          await props.walletService.createWallet(givenEnsName);
                         }
+                        history.push('/create');
                       }}
                       onConnectClick={(ensName) => history.push('/connectFlow/chooseMethod', {ensName})}
                       domains={props.domains}
@@ -63,26 +60,13 @@ export const Onboarding = (props: OnboardingProps) => {
                 </OnboardingStepsWrapper>}
             />
             <Route
-              path="/chooseToken"
-              render={({history}) =>
-                <ModalWrapper hideModal={props.hideModal} message={props.walletService.sdk.getNotice()}>
-                  <ChooseTopUpToken
-                    supportedTokens={['ETH', 'DAI']}
-                    onClick={async (token: string) => {
-                      const gasToken = props.walletService.sdk.tokensDetailsStore.getTokenAddress(token);
-                      await props.walletService.createWallet(ensName, gasToken);
-                      history.push('/create');
-                    }}
-                  />
-                </ModalWrapper>}
-            />
-            <Route
               exact
               path="/create"
             >
               <OnboardingSteps
                 walletService={props.walletService}
                 onCreate={props.onCreate}
+                ensName={ensName}
               />
             </Route>
             <Route
