@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {WalletService} from '@unilogin/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
-import {ApplicationWallet, WalletSuggestionAction} from '@unilogin/commons';
+import {ApplicationWallet, WalletSuggestionAction, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {ConnectionFlow, ModalWrapper} from '../..';
 import {OnboardingSteps} from './OnboardingSteps';
@@ -10,9 +10,6 @@ import {Switch} from 'react-router';
 import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocation';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
-import {ChooseTopUpToken} from '../TopUp/ChooseTopUpToken';
-import {classForComponent} from '../utils/classFor';
-import {ModalProgressBar} from '../commons/ModalProgressBar';
 
 export interface OnboardingProps {
   walletService: WalletService;
@@ -47,9 +44,7 @@ export const Onboarding = (props: OnboardingProps) => {
                       sdk={props.walletService.sdk}
                       onCreateClick={async (givenEnsName) => {
                         setEnsName(givenEnsName);
-                        if (props.walletService.sdk.isRefundPaid()) {
-                          await props.walletService.createWallet(givenEnsName);
-                        }
+                        await props.walletService.createWallet(givenEnsName, ETHER_NATIVE_TOKEN.address);
                         history.push('/create');
                       }}
                       onConnectClick={(ensName) => history.push('/connectFlow/chooseMethod', {ensName})}
