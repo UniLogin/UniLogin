@@ -7,7 +7,7 @@ chai.use(chaiAsPromised);
 
 describe('UNIT: ComposeValidator', () => {
   const passingValidator: IMessageValidator = {validate: async () => {}};
-  const createFailingValidator = (errorMsg: string) => ({validate: async () => {throw new Error(errorMsg);}} as IMessageValidator);
+  const createFailingValidator = (errorMsg: string) => ({validate: () => Promise.reject(errorMsg)} as IMessageValidator);
   const message: SignedMessage = {
     to: '0xa3697367b0e19F6E9E3E7Fa1bC8b566106C68e1b',
     value: 0,

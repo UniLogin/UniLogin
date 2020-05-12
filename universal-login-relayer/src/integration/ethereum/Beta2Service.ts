@@ -17,7 +17,7 @@ export class Beta2Service implements IWalletContractService {
     return requiredSignatures;
   }
 
-  async keyExist(walletAddress: string, key: string) {
+  keyExist(walletAddress: string, key: string) {
     const walletContract = new Contract(walletAddress, WalletContractInterface, this.provider);
     return walletContract.keyExist(key);
   }
@@ -38,7 +38,7 @@ export class Beta2Service implements IWalletContractService {
     return walletProxy.implementation();
   }
 
-  async isValidSignature(message: string, walletAddress: string, signature: string) {
+  isValidSignature(message: string, walletAddress: string, signature: string) {
     const contract = new Contract(walletAddress, beta2.WalletContract.interface as any, this.provider);
     return contract.isValidSignature(message, signature);
   }
@@ -47,7 +47,7 @@ export class Beta2Service implements IWalletContractService {
     return hashRelayerRequest(relayerRequest);
   }
 
-  async recoverFromRelayerRequest(relayerRequest: RelayerRequest) {
+  recoverFromRelayerRequest(relayerRequest: RelayerRequest) {
     return recoverFromRelayerRequest(relayerRequest);
   }
 

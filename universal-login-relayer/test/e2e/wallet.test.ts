@@ -11,7 +11,7 @@ import Relayer from '../../src';
 
 chai.use(chaiHttp);
 
-describe('E2E: Relayer - WalletContract routes', async () => {
+describe('E2E: Relayer - WalletContract routes', () => {
   let relayer: Relayer;
   let otherWallet: Wallet;
   let contract: Contract;

@@ -11,7 +11,7 @@ import {transferMessage} from '../../../fixtures/basicWalletContract';
 import {getTestSignedMessage} from '../../../testconfig/message';
 import {setupWalletContractService} from '../../../testhelpers/setupWalletContractService';
 
-describe('INT: MessageExecutionValidator', async () => {
+describe('INT: MessageExecutionValidator', () => {
   let message: Message;
   let master: Contract;
   let walletContract: Contract;

@@ -17,7 +17,7 @@ import AuthorisationStore from '../../../../../src/integration/sql/services/Auth
 import {DevicesStore} from '../../../../../src/integration/sql/services/DevicesStore';
 import ExecutionWorker from '../../../../../src/core/services/execution/ExecutionWorker';
 
-describe('INT: MessageHandler', async () => {
+describe('INT: MessageHandler', () => {
   let messageHandler: MessageHandler;
   let provider: Provider;
   let authorisationStore: AuthorisationStore;
@@ -58,7 +58,7 @@ describe('INT: MessageHandler', async () => {
     await expect(messageHandler.handle(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got safeTxGas 1 but should greater than ${GAS_BASE}`);
   });
 
-  describe('Transfer', async () => {
+  describe('Transfer', () => {
     it('successful execution of transfer', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
       const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
@@ -71,7 +71,7 @@ describe('INT: MessageHandler', async () => {
     });
   });
 
-  describe('Add Key', async () => {
+  describe('Add Key', () => {
     it('execute add key', async () => {
       msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
       const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
@@ -81,7 +81,7 @@ describe('INT: MessageHandler', async () => {
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
 
-    describe('Collaboration with Authorisation Service', async () => {
+    describe('Collaboration with Authorisation Service', () => {
       it('should remove request from pending authorisations if addKey', async () => {
         const request = {walletContractAddress: walletContract.address, key: otherWallet.address, deviceInfo: defaultDeviceInfo};
         await authorisationStore.addRequest(request);
@@ -96,7 +96,7 @@ describe('INT: MessageHandler', async () => {
     });
   });
 
-  describe('Add Keys', async () => {
+  describe('Add Keys', () => {
     it('execute add keys', async () => {
       const keys = [otherWallet.address];
       const data = encodeFunction(beta2.WalletContract, 'addKeys', [keys]);
@@ -110,7 +110,7 @@ describe('INT: MessageHandler', async () => {
     });
   });
 
-  describe('Remove key ', async () => {
+  describe('Remove key ', () => {
     beforeEach(async () => {
       const message = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
       const signedMessage = getTestSignedMessage(message, wallet.privateKey);

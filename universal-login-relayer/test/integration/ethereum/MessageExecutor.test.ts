@@ -10,7 +10,7 @@ import {basicWalletContractWithMockToken} from '../../fixtures/basicWalletContra
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 
-describe('INT: MessageExecutor', async () => {
+describe('INT: MessageExecutor', () => {
   let messageExecutor: MessageExecutor;
   let signedMessage: SignedMessage;
   let provider: providers.Provider;

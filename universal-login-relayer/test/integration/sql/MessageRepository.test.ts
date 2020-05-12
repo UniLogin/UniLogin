@@ -21,7 +21,7 @@ for (const config of [{
   Type: MessageMemoryRepository,
 }]
 ) {
-  describe(`INT: IMessageRepository (${config.Type.name})`, async () => {
+  describe(`INT: IMessageRepository (${config.Type.name})`, () => {
     let messageRepository: IMessageRepository;
     let wallet: Wallet;
     let walletContract: Contract;
@@ -92,7 +92,7 @@ for (const config of [{
       expect(signatures).to.contains(message2.signature);
     });
 
-    describe('markAsPending', async () => {
+    describe('markAsPending', () => {
       const mockedGasPrice = '2020';
 
       it('should mark message item as pending', async () => {

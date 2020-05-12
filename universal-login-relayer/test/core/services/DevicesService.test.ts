@@ -28,7 +28,7 @@ describe('UNIT: DevicesService', () => {
     relayerRequestSignatureValidator.ensureValidRelayerRequestSignature.withArgs(invalidRequest).rejects(new UnauthorisedAddress(recoverFromRelayerRequest(invalidRequest)));
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
   });
 

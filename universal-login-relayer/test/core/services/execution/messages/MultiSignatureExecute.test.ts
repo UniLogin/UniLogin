@@ -13,7 +13,7 @@ import {getTestSignedMessage} from '../../../../testconfig/message';
 import MessageHandler from '../../../../../src/core/services/execution/messages/MessageHandler';
 import ExecutionWorker from '../../../../../src/core/services/execution/ExecutionWorker';
 
-describe('INT: MultiSignatureExecute', async () => {
+describe('INT: MultiSignatureExecute', () => {
   let messageHandler: MessageHandler;
   let provider: Provider;
   let wallet: Wallet;
@@ -63,7 +63,7 @@ describe('INT: MultiSignatureExecute', async () => {
     await expect(messageHandler.handle(signedMessage1)).to.be.rejectedWith(`Insufficient Gas. Got safeTxGas 1 but should greater than ${GAS_BASE}`);
   });
 
-  describe('Transfer', async () => {
+  describe('Transfer', () => {
     it('successful execution of transfer', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
       const signedMessage0 = getTestSignedMessage(msg, wallet.privateKey);
@@ -78,7 +78,7 @@ describe('INT: MultiSignatureExecute', async () => {
     });
   });
 
-  describe('Add Key', async () => {
+  describe('Add Key', () => {
     beforeEach(async () => {
       msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
     });
@@ -92,7 +92,7 @@ describe('INT: MultiSignatureExecute', async () => {
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
 
-    describe('Query message status', async () => {
+    describe('Query message status', () => {
       it('should get pending execution status', async () => {
         const signedMessage0 = getTestSignedMessage(msg, wallet.privateKey);
         const signedMessage1 = getTestSignedMessage(msg, actionKey);
@@ -112,7 +112,7 @@ describe('INT: MultiSignatureExecute', async () => {
     });
   });
 
-  describe('Remove key ', async () => {
+  describe('Remove key ', () => {
     beforeEach(async () => {
       const message = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
       const signedMessage0 = getTestSignedMessage(message, wallet.privateKey);
