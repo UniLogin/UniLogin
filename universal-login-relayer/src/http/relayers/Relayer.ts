@@ -64,6 +64,7 @@ class Relayer {
   publicConfig: PublicRelayerConfig;
   protected tokenPricesService: TokenPricesService = {} as TokenPricesService;
   protected gasPriceOracle: GasPriceOracle = {} as GasPriceOracle;
+  protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
@@ -121,7 +122,7 @@ class Relayer {
     const futureWalletStore = new FutureWalletStore(this.database);
     this.tokenPricesService = new TokenPricesService();
     const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
-    const futureWalletHandler = new FutureWalletHandler(futureWalletStore, this.tokenPricesService, new TokenDetailsService(this.provider), gasTokenValidator);
+    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, this.tokenPricesService, new TokenDetailsService(this.provider), gasTokenValidator);
     const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue, gasTokenValidator, futureWalletStore);
     const balanceValidator = new BalanceValidator(balanceChecker);
     const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, balanceValidator, devicesService, transactionGasPriceComputator);
@@ -135,7 +136,7 @@ class Relayer {
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
 
     this.app.use(bodyParser.json());
-    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, futureWalletHandler, apiKeyHandler));
+    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, this.futureWalletHandler, apiKeyHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(authorisationService));
     this.app.use('/devices', DevicesRouter(devicesService));
