@@ -44,9 +44,14 @@ export const Onboarding = (props: OnboardingProps) => {
                   <div className="perspective">
                     <WalletSelector
                       sdk={props.walletService.sdk}
-                      onCreateClick={(ensName) => {
+                      onCreateClick={async (ensName) => {
                         setEnsName(ensName);
-                        history.push('/chooseToken');
+                        if(props.walletService.sdk.isRefundPaid()) {
+                          history.push('/chooseToken');
+                        }else {
+                          await props.walletService.createWallet(ensName);
+                          history.push('/create');
+                        }
                       }}
                       onConnectClick={(ensName) => history.push('/connectFlow/chooseMethod', {ensName})}
                       domains={props.domains}
