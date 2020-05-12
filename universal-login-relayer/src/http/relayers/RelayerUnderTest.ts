@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {Contract, providers, Wallet} from 'ethers';
+import {Contract, providers, Wallet, utils} from 'ethers';
 import {
   ContractJSON,
   DeepPartial,
@@ -8,6 +8,7 @@ import {
   getContractHash,
   withENS,
   TEST_REFUND_PAYER,
+  TEST_GAS_PRICE,
 } from '@unilogin/commons';
 import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
@@ -93,6 +94,7 @@ export class RelayerUnderTest extends Relayer {
 
   async start() {
     await super.start();
+    this.gasPriceOracle.getGasPrices = async () => ({fast: {gasPrice: utils.bigNumberify(TEST_GAS_PRICE)}}) as any;
     await this.setupTestPartner();
     (this.futureWalletHandler as any).getTokenPriceInEth = async () => 1;
   }
@@ -101,11 +103,11 @@ export class RelayerUnderTest extends Relayer {
     return this.server;
   }
 
-  async clearDatabase() {
+  clearDatabase() {
     return clearDatabase(this.database);
   }
 
-  async setupTestPartner() {
+  setupTestPartner() {
     return addRefundPayer(this, TEST_REFUND_PAYER);
   }
 
