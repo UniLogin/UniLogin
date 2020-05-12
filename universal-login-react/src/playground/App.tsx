@@ -107,6 +107,9 @@ export const App = () => {
                   <ModalWrapper hideModal={() => history.push('/waitForTransaction')} message="This is a test environment running on Ropsten network">
                     <ChooseTopUpToken
                       supportedTokens={['ETH', 'DAI']}
+                      onClick={() => {
+                        console.log('Clicked');
+                      }}
                     />
                   </ModalWrapper>}
               />

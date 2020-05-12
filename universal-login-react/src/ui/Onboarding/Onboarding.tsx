@@ -1,7 +1,7 @@
 import React from 'react';
 import {WalletService} from '@unilogin/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
-import {ApplicationWallet, WalletSuggestionAction} from '@unilogin/commons';
+import {ApplicationWallet, WalletSuggestionAction, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 import {ConnectionFlow, ModalWrapper} from '../..';
 import {OnboardingSteps} from './OnboardingSteps';
@@ -27,7 +27,6 @@ export const Onboarding = (props: OnboardingProps) => {
   return (
     <div className="universal-login">
       <div className={getStyleForTopLevelComponent(props.className)}>
-
         <MemoryRouter initialEntries={[getInitialOnboardingLocation(props.walletService.state)]}>
           <Switch>
             <Route
@@ -43,8 +42,8 @@ export const Onboarding = (props: OnboardingProps) => {
                     <WalletSelector
                       sdk={props.walletService.sdk}
                       onCreateClick={async (ensName) => {
-                        await props.walletService.createWallet(ensName);
-                        history.push('/create');
+                        await props.walletService.createWallet(ensName, ETHER_NATIVE_TOKEN.address);
+                        history.push('/create', {ensName});
                       }}
                       onConnectClick={(ensName) => history.push('/connectFlow/chooseMethod', {ensName})}
                       domains={props.domains}
@@ -56,12 +55,13 @@ export const Onboarding = (props: OnboardingProps) => {
             <Route
               exact
               path="/create"
-            >
-              <OnboardingSteps
-                walletService={props.walletService}
-                onCreate={props.onCreate}
-              />
-            </Route>
+              render={({location}) =>
+                <OnboardingSteps
+                  walletService={props.walletService}
+                  onCreate={props.onCreate}
+                  ensName={location.state.ensName}
+                />}
+            />
             <Route
               path="/connectFlow"
               render={({history, location}) =>
