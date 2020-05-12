@@ -5,7 +5,6 @@ import {WalletSelector} from '../ui/WalletSelector/WalletSelector';
 import {EmojiForm} from '../ui/Notifications/EmojiForm';
 import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH} from '@unilogin/commons';
 import {EmojiPanel} from '../ui/WalletSelector/EmojiPanel';
-import {Settings} from '../ui/Settings/Settings';
 import {Onboarding} from '../ui/Onboarding/Onboarding';
 import {LogoButton} from '../ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './CreateRandomInstance';
@@ -178,7 +177,6 @@ export const App = () => {
                   />;
                 }}
               />
-              <Route exact path="/settings" render={() => <Settings deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)} />} />
               <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />
               <Route exact path="/waiting">
                 <WaitingForOnRampProvider onRampProviderName={TopUpProvider.RAMP} />

@@ -9,7 +9,6 @@ export {useProperty} from './ui/hooks/useProperty';
 export {useBalances} from './ui/hooks/useBalances';
 export {WalletSelector} from './ui/WalletSelector/WalletSelector';
 export {ConnectionNotification} from './ui/Notifications/ConnectionNotification';
-export {Settings} from './ui/Settings/Settings';
 export {EmojiPanel} from './ui/WalletSelector/EmojiPanel';
 export {EmojiForm} from './ui/Notifications/EmojiForm';
 export {EmojiPanelWithFakes} from './ui/Notifications/EmojiPanelWithFakes';
