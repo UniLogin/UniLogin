@@ -32,7 +32,7 @@ describe('ENS register', () => {
 
     before(() => {
       domainRegistrar = new DomainRegistrar({ensAddress, publicResolverAddress: publicResolver}, wallet, transactionOverrides, nullConsole);
-      label = 'universal-login';
+      label = 'unilogin';
       labelHash = utils.keccak256(utils.toUtf8Bytes(label));
       node = utils.namehash(`${label}.${tld}`);
     });
