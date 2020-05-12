@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {WalletService} from '@unilogin/sdk';
 import MastercardLogo from './../../assets/logos/mastercard.jpg';
 import MastercardLogo2x from './../../assets/logos/mastercard@2x.jpg';
@@ -19,9 +19,17 @@ interface FiatFooterProps {
 }
 
 export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
+  const [topUpCurrency, setTopUpCurrency] = useState('');
+
   const [minimumAmount] = useAsync(async () => {
     if (paymentMethod) {return getMinimalAmount(walletService, paymentMethod);}
   }, [paymentMethod]);
+
+  useEffect(() => {
+    if (walletService.isKind('Future')) {
+      setTopUpCurrency(walletService.getFutureWallet().getTopUpCurrencySymbol());
+    };
+  }, []);
 
   switch (paymentMethod) {
     case TopUpProvider.RAMP:
