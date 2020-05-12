@@ -58,7 +58,7 @@ class ExecutionWorker {
     } while (this.state !== 'stopped');
   }
 
-  async stop() {
+  stop() {
     this.state = 'stopped';
   }
 

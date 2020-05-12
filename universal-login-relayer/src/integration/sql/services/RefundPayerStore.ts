@@ -6,7 +6,7 @@ export class RefundPayerStore {
 
   constructor(private database: Knex) {}
 
-  async add(refundPayer: RefundPayer) {
+  add(refundPayer: RefundPayer) {
     return this.database<RefundPayerEntity>(this.tableName)
       .insert(refundPayer, ['name', 'apiKey']);
   }

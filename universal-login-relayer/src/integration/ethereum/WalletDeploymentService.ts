@@ -34,7 +34,7 @@ export class WalletDeploymentService {
     return encodeDataForSetup(deployment as any);
   }
 
-  private async computeFutureAddress(setupData: string) {
+  private computeFutureAddress(setupData: string) {
     return computeGnosisCounterfactualAddress(this.config.factoryAddress, 1, setupData, this.config.walletContractAddress);
   }
 

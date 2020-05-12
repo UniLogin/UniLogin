@@ -47,7 +47,7 @@ describe('INT: PendingMessages', () => {
     await clearDatabase(knex);
   });
 
-  it('not present initally', async () => {
+  it('not present initially', async () => {
     expect(await pendingMessages.isPresent(TEST_MESSAGE_HASH)).to.be.false;
   });
 
@@ -64,9 +64,9 @@ describe('INT: PendingMessages', () => {
     const signedMessage2 = unsignedMessageToSignedMessage(unsignedMessage, actionKey);
     await pendingMessages.add(signedMessage);
     const status = await pendingMessages.getStatus(messageHash);
-    const required = await (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
-    const isEnoughSignetures = await pendingMessages.isEnoughSignatures(status, required);
-    expect(isEnoughSignetures).to.eq(false);
+    const required = (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
+    const isEnoughSignatures = pendingMessages.isEnoughSignatures(status, required);
+    expect(isEnoughSignatures).to.eq(false);
     expect(spy.calledOnce).to.be.false;
     await pendingMessages.add(signedMessage2);
     expect(spy.calledOnce).to.be.true;
@@ -80,7 +80,7 @@ describe('INT: PendingMessages', () => {
     expect((await messageRepository.get(messageHash)).toString()).to.eq(messageItem.toString());
   });
 
-  describe('Add', async () => {
+  describe('Add', () => {
     it('should push one signature', async () => {
       await pendingMessages.add(signedMessage);
       const status = await pendingMessages.getStatus(messageHash);
@@ -105,22 +105,22 @@ describe('INT: PendingMessages', () => {
     });
   });
 
-  describe('Ensure correct execution', async () => {
+  describe('Ensure correct execution', () => {
     it('should throw when pending signedMessage already has transaction hash', async () => {
       await pendingMessages.add(signedMessage);
       await messageRepository.markAsPending(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec', '2020');
       const status = await pendingMessages.getStatus(messageHash);
       const required = (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
-      await expect(pendingMessages.ensureCorrectExecution(status, required))
-        .to.be.rejectedWith('Execution request already processed');
+      expect(() => pendingMessages.ensureCorrectExecution(status, required))
+        .throws('Execution request already processed');
     });
 
     it('should throw error when pending signedMessage has not enough signatures', async () => {
       await pendingMessages.add(signedMessage);
       const status = await pendingMessages.getStatus(messageHash);
       const required = (await walletContractService.getRequiredSignatures(signedMessage.from)).toNumber();
-      await expect(pendingMessages.ensureCorrectExecution(status, required))
-        .to.be.rejectedWith('Not enough signatures, required 2, got only 1');
+      expect(() => pendingMessages.ensureCorrectExecution(status, required))
+        .throws('Not enough signatures, required 2, got only 1');
     });
   });
 

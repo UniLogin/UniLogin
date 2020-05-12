@@ -18,7 +18,7 @@ export class GnosisSafeService implements IWalletContractService {
     return requiredSignatures;
   }
 
-  async keyExist(walletAddress: string, key: string) {
+  keyExist(walletAddress: string, key: string) {
     const walletContract = new Contract(walletAddress, GnosisSafeInterface, this.provider);
     return walletContract.isOwner(key);
   }

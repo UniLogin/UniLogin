@@ -14,7 +14,7 @@ export default class PendingMessages {
     private walletContractService: WalletContractService,
   ) {}
 
-  async isPresent(messageHash: string) {
+  isPresent(messageHash: string) {
     return this.messageRepository.isPresent(messageHash);
   }
 
@@ -35,7 +35,7 @@ export default class PendingMessages {
   }
 
   private async onReadyToExecute(messageHash: string, status: MessageStatus, required: number) {
-    await this.ensureCorrectExecution(status, required);
+    this.ensureCorrectExecution(status, required);
     await this.messageRepository.setState(messageHash, 'Queued');
     return this.executionQueue.addMessage(messageHash);
   }
@@ -50,11 +50,11 @@ export default class PendingMessages {
     await this.messageRepository.addSignature(messageHash, message.signature, key);
   }
 
-  async getStatus(messageHash: string) {
+  getStatus(messageHash: string) {
     return this.statusService.getStatus(messageHash);
   }
 
-  async ensureCorrectExecution(messageStatus: MessageStatus, required: number) {
+  ensureCorrectExecution(messageStatus: MessageStatus, required: number) {
     const {transactionHash, totalCollected} = messageStatus;
     ensure(!transactionHash, DuplicatedExecution);
     const isEnough = this.isEnoughSignatures(messageStatus, required);

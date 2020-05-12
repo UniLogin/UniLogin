@@ -8,7 +8,7 @@ import {RelayerUnderTest} from '../../src';
 
 chai.use(chaiHttp);
 
-describe('E2E: Relayer - Config routes', async () => {
+describe('E2E: Relayer - Config routes', () => {
   let relayer: RelayerUnderTest;
 
   before(async () => {

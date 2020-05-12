@@ -7,21 +7,14 @@ import {
   isAddKeyCall,
   isAddKeysCall,
 } from '../../../src/core/utils/encodeData';
-import {Wallet} from 'ethers';
 import {WalletContractInterface} from '@unilogin/contracts';
 
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-describe('INT: Core tools test', async () => {
-  let provider;
-  let wallet: Wallet;
-  let otherWallet: Wallet;
-
-  before(async () => {
-    provider = createMockProvider();
-    [wallet, otherWallet] = getWallets(provider);
-  });
+describe('INT: Core tools test', () => {
+  const provider = createMockProvider();
+  const [wallet, otherWallet] = getWallets(provider);
 
   describe('getFunctionParametersData', () => {
     it('no params', () => {
@@ -48,44 +41,44 @@ describe('INT: Core tools test', async () => {
     });
   });
 
-  describe('decodeParametersFromData', async () => {
-    it('Should return proper key for addKey', async () => {
+  describe('decodeParametersFromData', () => {
+    it('Should return proper key for addKey', () => {
       const data = WalletContractInterface.functions.addKey.encode([wallet.address]);
       expect(decodeParametersFromData(data, ['address'])[0]).to.eq(wallet.address);
     });
 
-    it('Should return proper key for removeKey', async () => {
+    it('Should return proper key for removeKey', () => {
       const data = WalletContractInterface.functions.removeKey.encode([wallet.address]);
       expect(decodeParametersFromData(data, ['address'])[0]).to.eq(wallet.address);
     });
 
-    it('Should return proper key for addKeys', async () => {
+    it('Should return proper key for addKeys', () => {
       const keys = [wallet.address];
       const data = WalletContractInterface.functions.addKeys.encode([keys]);
       expect(decodeParametersFromData(data, ['address[]'])[0]).to.deep.eq(keys);
     });
   });
 
-  describe('isAddKeyCall', async () => {
-    it('Should return true if addKey call', async () => {
+  describe('isAddKeyCall', () => {
+    it('Should return true if addKey call', () => {
       const data = WalletContractInterface.functions.addKey.encode([wallet.address]);
       expect(isAddKeyCall(data)).to.be.true;
     });
 
-    it('Should return false if no addKey call', async () => {
+    it('Should return false if no addKey call', () => {
       const data = WalletContractInterface.functions.removeKey.encode([wallet.address]);
       expect(isAddKeyCall(data)).to.be.false;
     });
   });
 
-  describe('isAddKeysCall', async () => {
-    it('Should return true if addKeys call', async () => {
+  describe('isAddKeysCall', () => {
+    it('Should return true if addKeys call', () => {
       const keys = [wallet.address, otherWallet.address];
       const data = WalletContractInterface.functions.addKeys.encode([keys]);
       expect(isAddKeysCall(data)).to.be.true;
     });
 
-    it('Should return false if no addKeys call', async () => {
+    it('Should return false if no addKeys call', () => {
       const data = WalletContractInterface.functions.removeKey.encode([wallet.address]);
       expect(isAddKeysCall(data)).to.be.false;
     });

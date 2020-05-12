@@ -33,7 +33,7 @@ export class DeploymentExecutor implements IExecutor<Deployment> {
     }
   }
 
-  async execute(deployment: Deployment): Promise<providers.TransactionResponse> {
+  execute(deployment: Deployment): Promise<providers.TransactionResponse> {
     return this.walletService.deploy(deployment, deployment.deviceInfo);
   }
 }
