@@ -13,7 +13,10 @@ export class TokenPricesService {
     return this.getPricesFromPricesWithCoingeckoId(tokenDetailsWithCoingeckoId, pricesWithCoingeckoId);
   }
 
-  async getTokenPriceInEth(tokenDetails: TokenDetails) {
+  async getTokenPriceInEth(tokenDetails: TokenDetails): Promise<number> {
+    if (tokenDetails.address === ETHER_NATIVE_TOKEN.address) {
+      return 1;
+    }
     const prices = await this.getPrices([tokenDetails]);
     return prices[tokenDetails.symbol].ETH;
   }

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {TokenPricesService, TokenDetails} from '../../../src';
+import {TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN} from '../../../src';
 
 describe('UNIT: TokenPricesService', () => {
   const tokenPricesService = new TokenPricesService();
@@ -28,9 +28,16 @@ describe('UNIT: TokenPricesService', () => {
     expect(daiPrices.USD).be.eq(DAIPrices.usd);
   });
 
-  it('return token price in eth', async () => {
-    const tokenDetails = {symbol: 'DAI'} as TokenDetails;
-    const priceInEth = await tokenPricesService.getTokenPriceInEth(tokenDetails);
-    expect(priceInEth).eq(0.00483321);
+  describe('return token price in eth', () => {
+    it('dai', async () => {
+      const tokenDetails = {symbol: 'DAI'} as TokenDetails;
+      const priceInEth = await tokenPricesService.getTokenPriceInEth(tokenDetails);
+      expect(priceInEth).eq(0.00483321);
+    });
+
+    it('eth', async () => {
+      const priceInEth = await tokenPricesService.getTokenPriceInEth(ETHER_NATIVE_TOKEN);
+      expect(priceInEth).eq(1);
+    });
   });
 });
