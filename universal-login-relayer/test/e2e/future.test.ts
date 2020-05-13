@@ -2,6 +2,7 @@ import chai, {expect} from 'chai';
 import {TEST_CONTRACT_ADDRESS, TEST_KEY, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 import {RelayerUnderTest} from '../../src';
 import {startRelayer} from '../testhelpers/http';
+import {constants} from 'ethers';
 
 describe('E2E: Relayer - future wallet', () => {
   let relayer: RelayerUnderTest;
@@ -24,7 +25,7 @@ describe('E2E: Relayer - future wallet', () => {
       publicKey: TEST_KEY,
       ensName: 'name.mylogin.eth',
       gasToken: ETHER_NATIVE_TOKEN.address,
-      gasPrice: TEST_GAS_PRICE,
+      gasPrice: constants.Two.mul(TEST_GAS_PRICE).toString(),
     };
     const result = await chai.request(relayerUrl)
       .post('/wallet/future')

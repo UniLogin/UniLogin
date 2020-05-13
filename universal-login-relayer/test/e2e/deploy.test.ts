@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {utils, providers, Contract, Wallet} from 'ethers';
+import {utils, providers, Contract, Wallet, constants} from 'ethers';
 import {createKeyPair, getDeployedBytecode, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEPLOY_GAS_LIMIT, TEST_APPLICATION_INFO, TEST_REFUND_PAYER} from '@unilogin/commons';
 import {signStringMessage, calculateGnosisStringHash, gnosisSafe} from '@unilogin/contracts';
 import {startRelayer, getInitData} from '../testhelpers/http';
@@ -134,6 +134,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   });
 
   it('Counterfactual deployment with token payment', async () => {
+    const gasPrice = constants.Two.mul(TEST_GAS_PRICE).toString();
     ({signature, contractAddress} = await createFutureWalletAndPost(
       relayerUrl,
       keyPair,
@@ -144,27 +145,31 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       relayer.publicConfig.ensRegistrar,
       walletContract.address,
       fallbackHandlerContract.address,
-      TEST_GAS_PRICE,
+      gasPrice,
       mockToken.address));
-    await deployer.sendTransaction({to: contractAddress, value: utils.parseEther('0.5')});
     await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
     const initialRelayerBalance = await mockToken.balanceOf(deployer.address);
+    const initialRelayerEthBalance = await provider.getBalance(deployer.address);
     const result = await chai.request(relayerUrl)
       .post('/wallet/deploy/')
       .send({
         publicKey: keyPair.publicKey,
         ensName,
-        gasPrice: TEST_GAS_PRICE,
+        gasPrice,
         gasToken: mockToken.address,
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
         contractAddress,
       });
-    expect(result.status).to.eq(201);
+    expect(result.status).to.eq(201, result.body);
     const status = await waitForDeploymentStatus(relayerUrl, result.body.deploymentHash, 'Success');
     expect(status.transactionHash).to.be.properHex(64);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(gnosisSafe.Proxy as any)}`);
-    expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(utils.bigNumberify(TEST_GAS_PRICE).mul(DEPLOY_GAS_LIMIT)));
+    expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT)));
+    expect(await mockToken.balanceOf(contractAddress)).to.eq(utils.parseEther('0.5').sub(utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT)));
+    const {gasUsed} = await provider.getTransactionReceipt(status.transactionHash!);
+    expect(gasUsed).to.not.be.undefined;
+    expect(await provider.getBalance(deployer.address)).to.eq(initialRelayerEthBalance.sub(gasUsed!.mul(TEST_GAS_PRICE)));
   });
 
   it('Counterfactual deployment fail if not enough balance', async () => {
