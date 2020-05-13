@@ -1,14 +1,9 @@
 import React from 'react';
 import {Dashboard, DashboardProps} from './Dashboard';
-import {getStyleForTopLevelComponent} from '../../core/utils/getStyleForTopLevelComponent';
 
-export interface LogoButtonProps extends DashboardProps {
-  className?: string;
-}
-
-export const LogoButton = ({className, ...rest}: LogoButtonProps) => {
+export const LogoButton = ({...rest}: DashboardProps) => {
   return (
-    <div className={getStyleForTopLevelComponent(className)}>
+    <div className='logo-button'>
       <Dashboard {...rest} />
     </div>
   );
