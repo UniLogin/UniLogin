@@ -10,6 +10,7 @@ export const getMinimalAmountForFiatProvider = async (
   tokenPricesService: TokenPricesService,
 ) => {
   switch (paymentMethod) {
+    case TopUpProvider.WYRE:
     case TopUpProvider.RAMP: {
       const providerMinimalAmountInFiat = '1';
       const etherPriceInGBP = (await tokenPricesService.getEtherPriceInCurrency('GBP')).toString();
