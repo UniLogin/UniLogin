@@ -76,7 +76,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modal
         <>
           <Wyre
             address={contractAddress}
-            currency={'ETH'}
+            currency={currency}
             config={relayerConfig.onRampProviders.wyre}
             onBack={() => setModal('none')}
             isDeployed={walletService.isKind('Deployed')}
