@@ -35,7 +35,7 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
             <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
           {minimumAmount && <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount}</InfoText>
+            <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
           </div>}
         </>
       );
@@ -49,7 +49,7 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
             <img src={Yoti} srcSet={Yoti2x} className="yoti-logo" alt="Yoti" />
           </div>
           <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount}</InfoText>
+            <InfoText>Minimum amount is {minimumAmount}€</InfoText>
           </div>
         </>
       );
@@ -58,7 +58,7 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
       return <>
         <VisaMasterCardInfo />
         {minimumAmount && <div className="info-block info-row">
-          <InfoText>Minimum amount is {minimumAmount}</InfoText>
+          <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
         </div>}
       </>;
     default:

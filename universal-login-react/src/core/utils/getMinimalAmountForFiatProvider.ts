@@ -27,12 +27,12 @@ export const getMinimalAmountForFiatProvider = async (
         requiredDeploymentBalanceAsBigNumber,
         providerMinimalAmount,
       ));
-      return ValueRounder.ceil(calculateAmountInCurrency(biggerAmout, currencyPriceInEth)) + ' ' + currencyDetails.symbol;
+      return ValueRounder.ceil(calculateAmountInCurrency(biggerAmout, currencyPriceInEth));
     }
     case TopUpProvider.SAFELLO:
-      return '30€';
+      return '30';
     default:
-      return ValueRounder.ceil(calculateAmountInCurrency(requiredDeploymentBalance, currencyPriceInEth)) + ' ' + currencyDetails.symbol;
+      return ValueRounder.ceil(calculateAmountInCurrency(requiredDeploymentBalance, currencyPriceInEth));
   }
 };
 
