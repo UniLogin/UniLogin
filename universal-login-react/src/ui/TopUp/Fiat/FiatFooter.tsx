@@ -15,7 +15,6 @@ import {InfoText} from '../../commons/Text/InfoText';
 
 interface FiatFooterProps {
   walletService: WalletService;
-  currency: string;
   paymentMethod?: TopUpProvider;
   selectedCurrency: string;
 }
