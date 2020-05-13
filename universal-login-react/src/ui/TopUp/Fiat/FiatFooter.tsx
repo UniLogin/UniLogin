@@ -12,6 +12,7 @@ import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {getMinimalAmount} from '../../../core/utils/getMinimalAmountForFiatProvider';
 import {useAsync} from '../../hooks/useAsync';
 import {InfoText} from '../../commons/Text/InfoText';
+import {CurrencyValue} from '@unilogin/commons';
 
 interface FiatFooterProps {
   walletService: WalletService;
@@ -40,7 +41,7 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
             <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
           {minimumAmount && <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount} ETH</InfoText>
+          <InfoText>Minimum amount is {minimumAmount} {topUpCurrency}</InfoText>
           </div>}
         </>
       );
@@ -63,7 +64,7 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
       return <>
         <VisaMasterCardInfo />
         {minimumAmount && <div className="info-block info-row">
-          <InfoText>Minimum amount is {minimumAmount} ETH</InfoText>
+          <InfoText>Minimum amount is {minimumAmount} {topUpCurrency}</InfoText>
         </div>}
       </>;
     default:
