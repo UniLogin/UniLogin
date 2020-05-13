@@ -12,10 +12,9 @@ import {useOutsideClick} from '../../hooks/useClickOutside';
 export interface CountrySelectProps {
   selectedCountry?: string;
   setCountry: (selectedCountry: string) => void;
-  setCurrency: (currency: string) => void;
 }
 
-export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: CountrySelectProps) => {
+export const CountryDropdown = ({selectedCountry, setCountry}: CountrySelectProps) => {
   const [expanded, setExpanded] = useState(false);
   const ref = useRef(null);
   useOutsideClick(ref, () => {
@@ -24,7 +23,7 @@ export const CountryDropdown = ({selectedCountry, setCountry, setCurrency}: Coun
     }
   }, [expanded]);
 
-  const onDropdownItemClick = (selectedCountry: string, currency: string) => {
+  const onDropdownItemClick = (selectedCountry: string) => {
     setExpanded(false);
     setCountry(selectedCountry);
   };

@@ -63,7 +63,6 @@ export const TopUpDetails = ({walletService, onPayClick, logoColor, amount, onAm
           <CountryDropdown
             selectedCountry={country}
             setCountry={changeCountry}
-            setCurrency={setCurrency}
           />
           {!!country &&
             <FiatPaymentMethods
