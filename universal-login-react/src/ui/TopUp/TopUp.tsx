@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {WalletService, InvalidWalletState} from '@unilogin/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {LogoColor, TopUpWithFiat} from './Fiat';
