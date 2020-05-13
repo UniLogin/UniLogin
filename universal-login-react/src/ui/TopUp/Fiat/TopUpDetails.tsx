@@ -26,7 +26,8 @@ export interface TopUpWithFiatProps {
 
 export const TopUpDetails = ({walletService, onPayClick, logoColor, amount, onAmountChange, paymentMethod, onPaymentMethodChange}: TopUpWithFiatProps) => {
   const [country, setCountry] = useState<string | undefined>(undefined);
-  const [currency, setCurrency] = useState('ETH');
+  const defaultCurrency = walletService.isKind('Future') ? walletService.getFutureWallet().getTopUpCurrencySymbol() : 'ETH';
+  const [currency, setCurrency] = useState(defaultCurrency);
   const [topUpProviderSupportService] = useState(() => new TopUpProviderSupportService(countries));
 
   const changeCountry = (newCountry: string) => {
@@ -78,11 +79,15 @@ export const TopUpDetails = ({walletService, onPayClick, logoColor, amount, onAm
               setCurrency={setCurrency}
               amount={amount}
               onChange={onAmountChange}
-              isDeployment={!walletService.walletDeployed.get()}
+              walletService={walletService}
             />
           }
           <div className={classForComponent('fiat-bottom')}>
-            {!!country && <FiatFooter paymentMethod={paymentMethod} walletService={walletService} />}
+            {!!country && <FiatFooter
+              paymentMethod={paymentMethod}
+              walletService={walletService}
+              selectedCurrency={currency}
+            />}
           </div>
         </div>
       </div>

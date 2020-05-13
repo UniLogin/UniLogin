@@ -3,21 +3,22 @@ import {useClassFor, classForComponent} from '../../utils/classFor';
 import './../../styles/base/components/amountSelect.sass';
 import './../../styles/themes/UniLogin/components/amountSelectThemeUniLogin.sass';
 import {Label} from '../../commons/Form/Label';
+import {WalletService} from '@unilogin/sdk';
 
 export interface AmountInputProps {
   amount: string;
   selectedCurrency: string;
   setCurrency: (currency: string) => void;
   onChange: (amount: string) => void;
-  isDeployment?: boolean;
+  walletService: WalletService;
 }
 
 const REGULAR_CURRENCIES_LIST = ['ETH', 'DAI'];
-const DEPLOYMENT_CURRENCIES_LIST = ['ETH'];
 
-export const AmountInput = ({amount, isDeployment, selectedCurrency, setCurrency, onChange}: AmountInputProps) => {
+export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange, walletService}: AmountInputProps) => {
   const [expanded, setExpanded] = useState(false);
-  const currenciesList = isDeployment ? DEPLOYMENT_CURRENCIES_LIST : REGULAR_CURRENCIES_LIST;
+  const isDeployment = !walletService.walletDeployed.get();
+  const currenciesList = isDeployment ? [walletService.getFutureWallet().getTopUpCurrencySymbol()] : REGULAR_CURRENCIES_LIST;
   const disabled = currenciesList.length < 2;
 
   const onCurrencyItemClick = (currency: string) => {

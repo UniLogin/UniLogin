@@ -16,11 +16,12 @@ import {InfoText} from '../../commons/Text/InfoText';
 interface FiatFooterProps {
   walletService: WalletService;
   paymentMethod?: TopUpProvider;
+  selectedCurrency: string;
 }
 
-export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
+export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: FiatFooterProps) => {
   const [minimumAmount] = useAsync(async () => {
-    if (paymentMethod) {return getMinimalAmount(walletService, paymentMethod);}
+    if (paymentMethod) {return getMinimalAmount(walletService, paymentMethod, walletService.sdk.tokenPricesService);}
   }, [paymentMethod]);
 
   switch (paymentMethod) {
@@ -32,7 +33,7 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
             <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
           {minimumAmount && <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount} ETH</InfoText>
+            <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
           </div>}
         </>
       );
@@ -55,7 +56,7 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
       return <>
         <VisaMasterCardInfo />
         {minimumAmount && <div className="info-block info-row">
-          <InfoText>Minimum amount is {minimumAmount} ETH</InfoText>
+          <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
         </div>}
       </>;
     default:

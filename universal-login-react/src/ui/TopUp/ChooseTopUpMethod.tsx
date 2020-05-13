@@ -9,9 +9,10 @@ import {CompanyLogo} from '../commons/CompanyLogo';
 export interface ChooseTopUpMethodProps {
   setTopUpMethod: (any: any) => void;
   topUpMethod: TopUpMethod;
+  topUpCurrency: string;
 }
 
-export const ChooseTopUpMethod = ({topUpMethod, setTopUpMethod}: ChooseTopUpMethodProps) => {
+export const ChooseTopUpMethod = ({topUpMethod, setTopUpMethod, topUpCurrency}: ChooseTopUpMethodProps) => {
   return (
     <ChooseTopUpMethodWrapper topUpMethod={topUpMethod}>
       <CompanyLogo />
@@ -21,6 +22,7 @@ export const ChooseTopUpMethod = ({topUpMethod, setTopUpMethod}: ChooseTopUpMeth
       <ChooseTopUpMethodHeader
         topUpMethod={topUpMethod}
         setTopUpMethod={setTopUpMethod}
+        topUpCurrency={topUpCurrency}
       />
     </ChooseTopUpMethodWrapper>
   );
