@@ -131,3 +131,5 @@ export const TEST_GAS_PRICES = {
     timeEstimation: '30',
   },
 };
+
+export const TEST_TOKEN_PRICE_IN_ETH = 0.5;
