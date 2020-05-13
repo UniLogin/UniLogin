@@ -169,8 +169,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(await mockToken.balanceOf(contractAddress)).to.eq(tokenTransferValue.sub(utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN).mul(DEPLOY_GAS_LIMIT)));
     const {gasUsed} = await provider.getTransactionReceipt(status.transactionHash!);
     expect(gasUsed).to.not.be.undefined;
-    const gasPriceInEth = safeMultiply(utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN), TEST_TOKEN_PRICE_IN_ETH);
-    expect(await provider.getBalance(deployer.address)).to.eq(initialRelayerEthBalance.sub(gasUsed!.mul(gasPriceInEth)));
+    const expectedGasPriceInEth = safeMultiply(utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN), TEST_TOKEN_PRICE_IN_ETH);
+    expect(await provider.getBalance(deployer.address)).to.eq(initialRelayerEthBalance.sub(gasUsed!.mul(expectedGasPriceInEth)));
   });
 
   it('Counterfactual deployment fail if not enough balance', async () => {
