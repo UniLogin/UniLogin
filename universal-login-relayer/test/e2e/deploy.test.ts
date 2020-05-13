@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {utils, providers, Contract, Wallet, constants} from 'ethers';
-import {createKeyPair, getDeployedBytecode, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, TEST_GAS_PRICE_IN_TOKEN, ETHER_NATIVE_TOKEN, DEPLOY_GAS_LIMIT, TEST_APPLICATION_INFO, TEST_REFUND_PAYER} from '@unilogin/commons';
+import {utils, providers, Contract, Wallet} from 'ethers';
+import {createKeyPair, getDeployedBytecode, KeyPair, calculateInitializeSignature, TEST_GAS_PRICE, TEST_GAS_PRICE_IN_TOKEN, ETHER_NATIVE_TOKEN, DEPLOY_GAS_LIMIT, TEST_APPLICATION_INFO, TEST_REFUND_PAYER, safeMultiply, TEST_TOKEN_PRICE_IN_ETH} from '@unilogin/commons';
 import {signStringMessage, calculateGnosisStringHash, gnosisSafe} from '@unilogin/contracts';
 import {startRelayer, getInitData} from '../testhelpers/http';
 import {createFutureWalletAndPost} from '../testhelpers/createFutureWalletAndPost';
@@ -155,7 +155,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       .send({
         publicKey: keyPair.publicKey,
         ensName,
-        gasPrice,
+        gasPrice: TEST_GAS_PRICE_IN_TOKEN,
         gasToken: mockToken.address,
         signature,
         applicationInfo: TEST_APPLICATION_INFO,
@@ -169,7 +169,8 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(await mockToken.balanceOf(contractAddress)).to.eq(tokenTransferValue.sub(utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN).mul(DEPLOY_GAS_LIMIT)));
     const {gasUsed} = await provider.getTransactionReceipt(status.transactionHash!);
     expect(gasUsed).to.not.be.undefined;
-    expect(await provider.getBalance(deployer.address)).to.eq(initialRelayerEthBalance.sub(gasUsed!.mul(TEST_GAS_PRICE)));
+    const gasPriceInEth = safeMultiply(utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN), TEST_TOKEN_PRICE_IN_ETH);
+    expect(await provider.getBalance(deployer.address)).to.eq(initialRelayerEthBalance.sub(gasUsed!.mul(gasPriceInEth)));
   });
 
   it('Counterfactual deployment fail if not enough balance', async () => {
