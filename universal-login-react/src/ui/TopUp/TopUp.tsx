@@ -11,6 +11,7 @@ import './../styles/themes/Jarvis/chooseTopUpThemeJarvis.sass';
 import './../styles/themes/UniLogin/chooseTopUpThemeUniLogin.sass';
 import {TopUpMethod} from '../../core/models/TopUpMethod';
 import {TopUpWithCrypto} from './TopUpWithCrypto';
+import {TokenDetails} from '@unilogin/commons';
 
 export interface TopUpProps {
   walletService: WalletService;
@@ -18,9 +19,10 @@ export interface TopUpProps {
   hideModal?: () => void;
   isModal?: boolean;
   logoColor?: LogoColor;
+  getGasToken?: () => TokenDetails | undefined;
 }
 
-export const TopUp = ({walletService, modalClassName, hideModal, isModal, logoColor}: TopUpProps) => {
+export const TopUp = ({walletService, modalClassName, hideModal, isModal, logoColor, getGasToken}: TopUpProps) => {
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
   const [headerVisible, setHeaderVisible] = useState<boolean>(true);
 
