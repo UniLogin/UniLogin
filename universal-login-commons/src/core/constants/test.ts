@@ -29,6 +29,8 @@ export const testJsonRpcUrl = 'http://localhost:8545';
 
 export const TEST_GAS_PRICE = utils.parseUnits('20', 'gwei').toString();
 
+export const TEST_GAS_PRICE_IN_TOKEN = constants.Two.mul(TEST_GAS_PRICE).toString();
+
 export const TEST_GAS_LIMIT = 200000;
 
 /*
