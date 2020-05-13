@@ -110,6 +110,8 @@ export const App = () => {
                       onClick={() => {
                         console.log('Clicked');
                       }}
+                      walletService={walletService}
+                      hideModal={() => history.push('/')}
                     />
                   </ModalWrapper>}
               />

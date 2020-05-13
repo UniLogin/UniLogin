@@ -22,15 +22,14 @@ export function OnboardingSteps({walletService, className, onCreate, ensName}: O
   switch (walletState.kind) {
     case 'None':
       return (
-        <ModalWrapper hideModal={() => history.push('/selector')} message={walletService.sdk.getNotice()}>
-          <ChooseTopUpToken
-            supportedTokens={['ETH', 'DAI']}
-            onClick={async (token: string) => {
-              const gasToken = walletService.sdk.tokensDetailsStore.getTokenAddress(token);
-              await walletService.createWallet(ensName, gasToken);
-            }}
-          />
-        </ModalWrapper>
+        <ChooseTopUpToken
+          supportedTokens={['ETH', 'DAI']}
+          onClick={async (tokenAddress: string) => {
+            await walletService.createWallet(ensName, tokenAddress);
+          }}
+          hideModal={() => history.push('/selector')}
+          walletService={walletService}
+        />
       );
     case 'Future':
       return (
