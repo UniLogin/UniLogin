@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {getMinimalAmountForFiatProvider, getMinimalAmount} from '../../../src/core/utils/getMinimalAmountForFiatProvider';
 import {TopUpProvider} from '../../../src/core/models/TopUpProvider';
-import {TokenPricesService, ETHER_NATIVE_TOKEN, TokenDetails, ValueRounder} from '@unilogin/commons';
+import {TokenPricesService, TokenDetails, ValueRounder} from '@unilogin/commons';
 
 describe('getMinimalAmountForFiatProvider', () => {
   describe('RAMP provider', () => {
