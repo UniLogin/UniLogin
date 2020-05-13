@@ -23,11 +23,13 @@ export interface TopUpProps {
 export const TopUp = ({walletService, modalClassName, hideModal, isModal, logoColor}: TopUpProps) => {
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
   const [headerVisible, setHeaderVisible] = useState<boolean>(true);
+  const topUpCurrency = walletService.isKind('Future') ? walletService.getFutureWallet().getTopUpCurrencySymbol() : 'ETH or DAI';
 
   const renderTopUpContent = () => (<>
     {headerVisible && <ChooseTopUpMethod
       topUpMethod={topUpMethod}
       setTopUpMethod={setTopUpMethod}
+      topUpCurrency={topUpCurrency}
     />}
     {topUpMethod === 'fiat' &&
       <TopUpWithFiat

@@ -16,12 +16,8 @@ export const ChooseTopUpToken = ({supportedTokens = ['ETH'], onClick}: ChooseTop
   const [selectedToken, setSelectedToken] = useState(null);
   const handleClick = (token: any) => {
     setIsClicked(true);
-    onClick(token);
     setSelectedToken(token);
-    setTimeout(() => {
-      setIsClicked(false);
-      setSelectedToken(null);
-    }, 1000);
+    onClick(token);
   };
 
   return (

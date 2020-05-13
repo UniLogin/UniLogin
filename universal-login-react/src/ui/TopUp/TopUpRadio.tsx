@@ -12,6 +12,7 @@ export interface TopUpRadioProps {
   children: ReactNode;
   name: string;
   id?: string;
+  topUpCurrency?: string;
 }
 
 export const TopUpRadio = ({id, onClick, checked, children, className, name}: TopUpRadioProps) => (
@@ -36,10 +37,10 @@ export const TopUpRadio = ({id, onClick, checked, children, className, name}: To
 export const TopUpRadioCrypto = (props: Omit<TopUpRadioProps, 'children'>) => (
   <TopUpRadio {...props}>
     <div className={classForComponent('top-up-method-icons')}>
-      <img className={classForComponent('top-up-method-icon')} src={getIconForToken('ETH')} alt="Ethereum" />
+      <img className={classForComponent('top-up-method-icon')} src={getIconForToken(props.topUpCurrency || 'ETH')} alt="Ethereum" />
     </div>
     <p className={classForComponent('top-up-method-title')}>Crypto</p>
-    <p className={classForComponent('top-up-method-text')}>Free-Deposit ETH</p>
+    <p className={classForComponent('top-up-method-text')}>Free-Deposit {props.topUpCurrency}</p>
   </TopUpRadio>
 );
 

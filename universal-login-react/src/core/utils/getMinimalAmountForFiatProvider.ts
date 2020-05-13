@@ -27,7 +27,7 @@ export const getMinimalAmountForFiatProvider = async (
   }
 };
 
-export const getMinimalAmount = (walletService: WalletService, paymentMethod: TopUpProvider, tokenPricesService = new TokenPricesService()) => {
+export const getMinimalAmount = (walletService: WalletService, paymentMethod: TopUpProvider, tokenPricesService: TokenPricesService) => {
   if (walletService.isKind('Future')) {
     const requiredDeploymentBalance = walletService.getRequiredDeploymentBalance();
     return getMinimalAmountForFiatProvider(paymentMethod, requiredDeploymentBalance, tokenPricesService);
