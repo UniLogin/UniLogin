@@ -5,7 +5,6 @@ import {ApplicationWallet} from '@unilogin/commons';
 import {useHistory} from 'react-router';
 import {OnboardingTopUp} from './OnboardingTopUp';
 import {OnboardingWaitForDeployment} from './OnboardingWaitForDeployment';
-import {ModalWrapper} from '../Modals/ModalWrapper';
 import {ChooseTopUpToken} from '../TopUp/ChooseTopUpToken';
 
 interface OnboardingStepsProps {
