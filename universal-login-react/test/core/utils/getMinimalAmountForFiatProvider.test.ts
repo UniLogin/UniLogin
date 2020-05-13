@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {getMinimalAmountForFiatProvider, getMinimalAmount} from '../../../src/core/utils/getMinimalAmountForFiatProvider';
 import {TopUpProvider} from '../../../src/core/models/TopUpProvider';
-import {TokenPricesService, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {TokenPricesService, ETHER_NATIVE_TOKEN, TokenDetails, ValueRounder} from '@unilogin/commons';
 
 describe('getMinimalAmountForFiatProvider', () => {
   describe('RAMP provider', () => {
@@ -15,18 +15,32 @@ describe('getMinimalAmountForFiatProvider', () => {
 
     it('return provider minimal amount', async () => {
       const bigMinimalAmount = '2';
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService)).to.eq('2 ' + ETHER_NATIVE_TOKEN.symbol);
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService)).to.eq('2');
     });
 
     it('return UniversalLogin minimal amount', async () => {
       const smallMinimalAmount = '0.0001';
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService)).to.eq('1 ' + ETHER_NATIVE_TOKEN.symbol);
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService)).to.eq('1');
     });
 
     it('return rounded provider minimal amount for Wyre', async () => {
       const bigMinimalAmount = '2.000000156565';
       const paymentMethod = TopUpProvider.WYRE;
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService)).to.eq('2.0001 ' + ETHER_NATIVE_TOKEN.symbol);
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService)).to.eq('2.0001');
+    });
+
+    it('return correct minimal amount for DAI for Wyre', async () => {
+      const bigMinimalAmount = '1.5';
+      const daiTokenDetails = {
+        symbol: 'DAI',
+        name: 'dai',
+        address: '0x9Ad7E60487F3737ed239DAaC172A4a9533Bd9517',
+      } as TokenDetails;
+      const daiPriceInEth = 0.012;
+      (tokenPricesService.getTokenPriceInEth as any) = () => daiPriceInEth;
+      const paymentMethod = TopUpProvider.WYRE;
+      const expectedMinimalAmount = ValueRounder.ceil((daiPriceInEth * parseFloat(bigMinimalAmount)).toString());
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, daiTokenDetails)).to.eq(expectedMinimalAmount);
     });
 
     after(() => {
@@ -48,7 +62,7 @@ describe('UNIT: getMinimalAmount', () => {
       isKind: (state: string) => state === 'Future',
     };
     const paymentMethod = TopUpProvider.RAMP;
-    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('2 ' + ETHER_NATIVE_TOKEN.symbol);
+    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('2');
   });
 
   it('returns 30 for Safello and future wallet', async () => {
@@ -57,7 +71,7 @@ describe('UNIT: getMinimalAmount', () => {
       isKind: (state: string) => state === 'Future',
     };
     const paymentMethod = TopUpProvider.SAFELLO;
-    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('30€');
+    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('30');
   });
 
   it('returns 30 for Safello and deployed wallet', async () => {
@@ -65,7 +79,7 @@ describe('UNIT: getMinimalAmount', () => {
       isKind: (state: string) => state === 'Deployed',
     };
     const paymentMethod = TopUpProvider.SAFELLO;
-    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('30€');
+    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('30');
   });
 
   it('returns 1 for Ramp and deployed wallet', async () => {
@@ -73,7 +87,7 @@ describe('UNIT: getMinimalAmount', () => {
       isKind: (state: string) => state === 'Deployed',
     };
     const paymentMethod = TopUpProvider.RAMP;
-    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('1 ' + ETHER_NATIVE_TOKEN.symbol);
+    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('1');
   });
 
   it('Throw error if invalid wallet state', async () => {
