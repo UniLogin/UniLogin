@@ -7,8 +7,9 @@ import {TransferAmount} from './Amount/TransferAmount';
 import {TransferRecipient} from './Recipient/TransferRecipient';
 import {TransferDropdown} from './Amount/TransferDropdown';
 import {useBalances} from '../hooks/useBalances';
-import '../styles/transfer.sass';
-import '../styles/transferDefaults.sass';
+import {useClassFor} from '../utils/classFor';
+import '../styles/base/transfer.sass';
+import '../styles/themes/Legacy/transferThemeLegacy.sass';
 import '../styles/themes/Jarvis/transferThemeJarvis.sass';
 import '../styles/themes/UniLogin/transferThemeUniLogin.sass';
 import './../styles/themes/Jarvis/footerThemeJarvis.sass';
@@ -41,7 +42,7 @@ export const Transfer = ({transferService, onTransferTriggered, transferClassNam
   };
 
   return (
-    <div className="universal-login-transfer">
+    <div className={useClassFor('transfer')}>
       <div className="transfer">
         <TransferDropdown
           sdk={transferService.deployedWallet.sdk}
