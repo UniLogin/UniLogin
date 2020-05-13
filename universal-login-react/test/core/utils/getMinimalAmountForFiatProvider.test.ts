@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import {getMinimalAmountForFiatProvider, getMinimalAmount} from '../../../src/core/utils/getMinimalAmountForFiatProvider';
 import {TopUpProvider} from '../../../src/core/models/TopUpProvider';
 import {TokenPricesService, TokenDetails, ValueRounder} from '@unilogin/commons';
+import {utils} from 'ethers';
 
 describe('getMinimalAmountForFiatProvider', () => {
   describe('RAMP provider', () => {
@@ -36,10 +37,9 @@ describe('getMinimalAmountForFiatProvider', () => {
         name: 'dai',
         address: '0x9Ad7E60487F3737ed239DAaC172A4a9533Bd9517',
       } as TokenDetails;
-      const daiPriceInEth = 0.012;
+      const daiPriceInEth = 20;
       (tokenPricesService.getTokenPriceInEth as any) = () => daiPriceInEth;
-      const paymentMethod = TopUpProvider.WYRE;
-      const expectedMinimalAmount = ValueRounder.ceil((daiPriceInEth * parseFloat(bigMinimalAmount)).toString());
+      const expectedMinimalAmount = ValueRounder.ceil(utils.formatEther(utils.parseEther(bigMinimalAmount).mul(daiPriceInEth)));
       expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, daiTokenDetails)).to.eq(expectedMinimalAmount);
     });
 

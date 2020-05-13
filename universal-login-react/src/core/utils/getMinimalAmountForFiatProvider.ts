@@ -5,8 +5,9 @@ import {getPriceInEther} from './getPriceInEther';
 import {ValueRounder, TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 const calculateAmountInCurrency = (amount: string, currencyPriceInEth: number) => {
-  const amountInEth = parseFloat(amount);
-  return (amountInEth * currencyPriceInEth).toString();
+  const amountInEth = utils.parseEther(amount);
+  console.log(amountInEth.toString());
+  return utils.formatEther(amountInEth.mul(currencyPriceInEth));
 };
 
 export const getMinimalAmountForFiatProvider = async (
@@ -23,11 +24,11 @@ export const getMinimalAmountForFiatProvider = async (
       const etherPriceInGBP = (await tokenPricesService.getEtherPriceInCurrency('GBP')).toString();
       const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat, etherPriceInGBP);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
-      const biggerAmout = utils.formatEther(bigNumberMax(
+      const biggerAmount = utils.formatEther(bigNumberMax(
         requiredDeploymentBalanceAsBigNumber,
         providerMinimalAmount,
       ));
-      return ValueRounder.ceil(calculateAmountInCurrency(biggerAmout, currencyPriceInEth));
+      return ValueRounder.ceil(calculateAmountInCurrency(biggerAmount, currencyPriceInEth));
     }
     case TopUpProvider.SAFELLO:
       return '30';
