@@ -29,8 +29,11 @@ export default async function setupWalletService(wallet: Wallet) {
   const fakeGasPriceOracle: any = {
     getGasPrices: () => ({fast: {gasPrice: utils.bigNumberify('9090')}}),
   };
+  const fakeFutureWalletStore: any = {
+    get: () => ({tokenPriceInETH: '1'}),
+  };
   const transactionGasPriceComputator = new TransactionGasPriceComputator(fakeGasPriceOracle as any);
-  const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceValidator, fakeDevicesService, transactionGasPriceComputator);
+  const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceValidator, fakeDevicesService, transactionGasPriceComputator, fakeFutureWalletStore);
   return {provider, wallet, walletService, factoryContract, ensService, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler};
 }
 

@@ -8,6 +8,7 @@ import {WalletDeployer} from './WalletDeployer';
 import {DevicesService} from '../../core/services/DevicesService';
 import {TransactionGasPriceComputator} from './TransactionGasPriceComputator';
 import {BalanceValidator} from './BalanceValidator';
+import {FutureWalletStore} from '../sql/services/FutureWalletStore';
 
 export class WalletDeploymentService {
   constructor(
@@ -17,6 +18,7 @@ export class WalletDeploymentService {
     private balanceValidator: BalanceValidator,
     private devicesService: DevicesService,
     private transactionGasPriceComputator: TransactionGasPriceComputator,
+    private futureWalletStore: FutureWalletStore,
   ) {}
 
   async setupInitializeData({publicKey, ensName, gasPrice, gasToken}: Omit<DeployArgs, 'signature'>) {
@@ -41,10 +43,12 @@ export class WalletDeploymentService {
   async deploy({publicKey, ensName, gasPrice, gasToken, signature}: DeployArgs, deviceInfo: DeviceInfo) {
     const initWithENS = await this.setupInitializeData({publicKey, ensName, gasPrice, gasToken});
     ensure(getInitializeSigner(initWithENS, signature) === publicKey, InvalidSignature);
-    const contractAddress = await this.computeFutureAddress(initWithENS);
+    const contractAddress = this.computeFutureAddress(initWithENS);
+    const {tokenPriceInETH} = await this.futureWalletStore.get(contractAddress);
     const transactionFeeInToken = utils.bigNumberify(gasPrice).mul(DEPLOY_GAS_LIMIT);
     await this.balanceValidator.validate(contractAddress, gasToken, transactionFeeInToken);
-    const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '1', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: await this.transactionGasPriceComputator.getGasPrice(gasPrice)});
+    const gasPriceInEth = await this.transactionGasPriceComputator.getGasPriceInEth(gasPrice, tokenPriceInETH);
+    const transaction = await this.walletDeployer.deploy(this.config.walletContractAddress, initWithENS, '1', {gasLimit: DEPLOY_GAS_LIMIT, gasPrice: gasPriceInEth});
     await this.devicesService.addOrUpdate(contractAddress, publicKey, deviceInfo);
     return transaction;
   }
