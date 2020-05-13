@@ -33,7 +33,7 @@ export {SuggestionsService, WalletExistenceVerifier} from './core/services/Sugge
 export {TokensValueConverter} from './core/services/TokensValueConverter';
 export {DeepPartial, Nullable, Omit, PartialRequired, Predicate, Procedure} from './core/types/common';
 export {array8bitTo16bit, deepArrayStartWith, shuffle, slices, arrayRemove} from './core/utils/arrays';
-export {normalizeBigNumber} from './core/utils/bigNumbers';
+export {normalizeBigNumber, bigNumberifyDecimal} from './core/utils/bigNumbers';
 export {calculateInitializeSignature, calculateInitializeWithENSSignature, getInitializeSigner} from './core/utils/calculateSignature';
 export {clamp} from './core/utils/clamp';
 export {computeContractAddress, computeCounterfactualAddress} from './core/utils/contracts/computeContractAddress';
