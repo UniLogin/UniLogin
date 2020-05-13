@@ -8,7 +8,7 @@ export const getMinimalAmountForFiatProvider = async (
   paymentMethod: TopUpProvider,
   requiredDeploymentBalance: string,
   tokenPricesService: TokenPricesService,
-  currency: string
+  currency: string,
 ) => {
   switch (paymentMethod) {
     case TopUpProvider.RAMP: {
