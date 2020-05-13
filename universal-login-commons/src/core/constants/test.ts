@@ -2,6 +2,7 @@ import {utils, constants} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from './constants';
 import {Network} from '../models/Network';
 import {DeviceType} from '../models/notifications';
+import {safeDivide} from '../utils/safeMultiply';
 
 export const TEST_ACCOUNT_ADDRESS = '0x0000000000000000000000000000000000000001';
 
@@ -28,6 +29,10 @@ export const TEST_SIGNATURE_KEY_PAIRS = [{
 export const testJsonRpcUrl = 'http://localhost:8545';
 
 export const TEST_GAS_PRICE = utils.parseUnits('20', 'gwei').toString();
+
+export const TEST_TOKEN_PRICE_IN_ETH = 0.5;
+
+export const TEST_GAS_PRICE_IN_TOKEN = safeDivide(utils.bigNumberify(TEST_GAS_PRICE), TEST_TOKEN_PRICE_IN_ETH).toString();
 
 export const TEST_GAS_LIMIT = 200000;
 
@@ -94,11 +99,11 @@ export const TEST_GAS_MODES = [{
   usdAmount: '0.00004412424',
   timeEstimation: 30,
   gasOptions: [{
-    gasPrice: utils.bigNumberify('24000000000'),
+    gasPrice: utils.bigNumberify('40000000000'),
     token: TEST_TOKEN_DETAILS[0],
   },
   {
-    gasPrice: utils.bigNumberify('24000000000'),
+    gasPrice: utils.bigNumberify('40000000000'),
     token: TEST_TOKEN_DETAILS[1],
   },
   {
