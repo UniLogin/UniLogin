@@ -44,6 +44,7 @@ export const ChooseTopUpToken = ({supportedTokens = ['ETH'], onClick, hideModal,
                   <button
                     key={token}
                     className={`${classForComponent('top-up-method')}`}
+                    id={`top-up-token-${token}`}
                     onClick={() => handleClick(token)}
                     disabled={isClicked}>
                     <div className={classForComponent('top-up-radio-inner')}>
