@@ -19,7 +19,7 @@ const developmentConfig: Config = {
   domains: ['mylogin.eth', 'poppularapp.eth', 'universal-id.eth'],
   relayerUrl: 'http://localhost:3311',
   jsonRpcUrl: 'http://localhost:18545',
-  tokens: [ETHER_NATIVE_TOKEN.address, ...tokens],
+  tokens: [ETHER_NATIVE_TOKEN.address, '0x9Ad7E60487F3737ed239DAaC172A4a9533Bd9517'],
   saiTokenAddress: process.env.SAI_TOKEN_ADDRESS,
   ipGeolocationApi: {
     baseUrl: 'https://api.ipdata.co',
