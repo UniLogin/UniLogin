@@ -83,7 +83,11 @@ export const TopUpDetails = ({walletService, onPayClick, logoColor, amount, onAm
             />
           }
           <div className={classForComponent('fiat-bottom')}>
-            {!!country && <FiatFooter paymentMethod={paymentMethod} walletService={walletService} />}
+            {!!country && <FiatFooter
+              paymentMethod={paymentMethod}
+              walletService={walletService}
+              selectedCurrency={currency}
+            />}
           </div>
         </div>
       </div>
