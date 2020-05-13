@@ -134,6 +134,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   });
 
   it('Counterfactual deployment with token payment', async () => {
+    const tokenTransferValue = utils.parseEther('0.5');
     ({signature, contractAddress} = await createFutureWalletAndPost(
       relayerUrl,
       keyPair,
@@ -146,7 +147,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
       fallbackHandlerContract.address,
       TEST_GAS_PRICE_IN_TOKEN,
       mockToken.address));
-    await mockToken.transfer(contractAddress, utils.parseEther('0.5'));
+    await mockToken.transfer(contractAddress, tokenTransferValue);
     const initialRelayerBalance = await mockToken.balanceOf(deployer.address);
     const initialRelayerEthBalance = await provider.getBalance(deployer.address);
     const result = await chai.request(relayerUrl)
@@ -165,7 +166,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
     expect(status.transactionHash).to.be.properHex(64);
     expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(gnosisSafe.Proxy as any)}`);
     expect(await mockToken.balanceOf(deployer.address)).to.eq(initialRelayerBalance.add(utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN).mul(DEPLOY_GAS_LIMIT)));
-    expect(await mockToken.balanceOf(contractAddress)).to.eq(utils.parseEther('0.5').sub(utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN).mul(DEPLOY_GAS_LIMIT)));
+    expect(await mockToken.balanceOf(contractAddress)).to.eq(tokenTransferValue.sub(utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN).mul(DEPLOY_GAS_LIMIT)));
     const {gasUsed} = await provider.getTransactionReceipt(status.transactionHash!);
     expect(gasUsed).to.not.be.undefined;
     expect(await provider.getBalance(deployer.address)).to.eq(initialRelayerEthBalance.sub(gasUsed!.mul(TEST_GAS_PRICE)));
