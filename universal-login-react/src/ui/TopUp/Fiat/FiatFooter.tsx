@@ -15,13 +15,13 @@ import {InfoText} from '../../commons/Text/InfoText';
 
 interface FiatFooterProps {
   walletService: WalletService;
+  currency: string;
   paymentMethod?: TopUpProvider;
   selectedCurrency: string;
 }
-
 export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: FiatFooterProps) => {
   const [minimumAmount] = useAsync(async () => {
-    if (paymentMethod) {return getMinimalAmount(walletService, paymentMethod, walletService.sdk.tokenPricesService);}
+    if (paymentMethod) {return getMinimalAmount(walletService, paymentMethod, selectedCurrency, walletService.sdk.tokenPricesService);}
   }, [paymentMethod]);
 
   switch (paymentMethod) {
@@ -33,7 +33,7 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
             <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
           {minimumAmount && <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
+            <InfoText>Minimum amount is {minimumAmount}</InfoText>
           </div>}
         </>
       );
@@ -47,7 +47,7 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
             <img src={Yoti} srcSet={Yoti2x} className="yoti-logo" alt="Yoti" />
           </div>
           <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount}€</InfoText>
+            <InfoText>Minimum amount is {minimumAmount}</InfoText>
           </div>
         </>
       );
@@ -56,7 +56,7 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
       return <>
         <VisaMasterCardInfo />
         {minimumAmount && <div className="info-block info-row">
-          <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
+          <InfoText>Minimum amount is {minimumAmount}</InfoText>
         </div>}
       </>;
     default:

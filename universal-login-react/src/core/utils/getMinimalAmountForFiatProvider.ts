@@ -8,6 +8,7 @@ export const getMinimalAmountForFiatProvider = async (
   paymentMethod: TopUpProvider,
   requiredDeploymentBalance: string,
   tokenPricesService: TokenPricesService,
+  currency: string
 ) => {
   switch (paymentMethod) {
     case TopUpProvider.RAMP: {
@@ -18,21 +19,21 @@ export const getMinimalAmountForFiatProvider = async (
       return ValueRounder.ceil(utils.formatEther(bigNumberMax(
         requiredDeploymentBalanceAsBigNumber,
         providerMinimalAmount,
-      )));
+      ))) + ' ' + currency;
     }
     case TopUpProvider.SAFELLO:
-      return '30';
+      return '30€';
     default:
-      return requiredDeploymentBalance;
+      return requiredDeploymentBalance + ' ' + currency;
   }
 };
 
-export const getMinimalAmount = (walletService: WalletService, paymentMethod: TopUpProvider, tokenPricesService: TokenPricesService) => {
+export const getMinimalAmount = (walletService: WalletService, paymentMethod: TopUpProvider, currency: string, tokenPricesService: TokenPricesService) => {
   if (walletService.isKind('Future')) {
     const requiredDeploymentBalance = walletService.getRequiredDeploymentBalance();
-    return getMinimalAmountForFiatProvider(paymentMethod, requiredDeploymentBalance, tokenPricesService);
+    return getMinimalAmountForFiatProvider(paymentMethod, requiredDeploymentBalance, tokenPricesService, currency);
   } else if (walletService.isKind('Deployed')) {
-    return getMinimalAmountForFiatProvider(paymentMethod, '0', tokenPricesService);
+    return getMinimalAmountForFiatProvider(paymentMethod, '0', tokenPricesService, currency);
   }
   throw new InvalidWalletState('Future or Deployed', walletService.state.kind);
 };
