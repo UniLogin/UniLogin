@@ -2,11 +2,11 @@ import {utils} from 'ethers';
 import {bigNumberMax, WalletService, InvalidWalletState} from '@unilogin/sdk';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {getPriceInEther} from './getPriceInEther';
-import {ValueRounder, TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {ValueRounder, TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN, safeDivide} from '@unilogin/commons';
 
 const calculateAmountInCurrency = (amount: string, currencyPriceInEth: number) => {
   const amountInEth = utils.parseEther(amount);
-  return utils.formatEther(amountInEth.mul(currencyPriceInEth));
+  return utils.formatEther(safeDivide(amountInEth, currencyPriceInEth));
 };
 
 export const getMinimalAmountForFiatProvider = async (

@@ -36,9 +36,9 @@ describe('getMinimalAmountForFiatProvider', () => {
         name: 'dai',
         address: '0x9Ad7E60487F3737ed239DAaC172A4a9533Bd9517',
       } as TokenDetails;
-      const daiPriceInEth = 1000;
+      const daiPriceInEth = 0.005;
       (tokenPricesService.getTokenPriceInEth as any) = () => daiPriceInEth;
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, daiTokenDetails)).to.eq('1500');
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, daiTokenDetails)).to.eq('300');
     });
 
     after(() => {
