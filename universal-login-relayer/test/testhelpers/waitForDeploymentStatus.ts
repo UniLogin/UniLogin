@@ -6,7 +6,7 @@ export const waitForDeploymentStatus = async (relayerUrl: string, hash: string, 
   let deploymentStatus: DeploymentStatus;
   await waitExpect(async () => {
     ({body: deploymentStatus} = await chai.request(relayerUrl).get(`/wallet/deploy/${hash}`));
-    expect(deploymentStatus.state).to.eq(expectedState);
+    expect(deploymentStatus.state).to.eq(expectedState, deploymentStatus.error?.toString());
   });
   return deploymentStatus!;
 };
