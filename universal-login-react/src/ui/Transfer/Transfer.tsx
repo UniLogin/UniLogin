@@ -17,11 +17,10 @@ import './../styles/themes/Jarvis/footerThemeJarvis.sass';
 export interface TransferProps {
   transferService: TransferService;
   onTransferTriggered: (transfer: () => Promise<Execution>) => Promise<void>;
-  transferClassName?: string;
   sdk: UniLoginSdk;
 }
 
-export const Transfer = ({transferService, onTransferTriggered, transferClassName, sdk}: TransferProps) => {
+export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferProps) => {
   const [transferDetails, setTransferDetails] = useState({transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails);
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
   const [tokenDetailsWithBalance] = useBalances(transferService.deployedWallet);
@@ -49,7 +48,6 @@ export const Transfer = ({transferService, onTransferTriggered, transferClassNam
           tokenDetailsWithBalance={tokenDetailsWithBalance}
           tokenDetails={selectedToken}
           setToken={(token: TokenDetails) => updateField('transferToken')(token.address)}
-          className={transferClassName}
         />
         <TransferAmount
           value={transferDetails.amount}

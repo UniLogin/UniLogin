@@ -10,10 +10,9 @@ export interface DropdownItemProps {
   icon: string;
   onClick: (transferToken: TokenDetails) => void;
   dropdownClassName: string;
-  className?: string;
 }
 
-export const TransferDropdownItem = ({sdk, tokenDetails, balance, icon, onClick, className, dropdownClassName}: DropdownItemProps) => {
+export const TransferDropdownItem = ({sdk, tokenDetails, balance, icon, onClick, dropdownClassName}: DropdownItemProps) => {
   return (
     <button onClick={() => onClick(tokenDetails)} className={dropdownClassName}>
       <Asset
@@ -22,7 +21,6 @@ export const TransferDropdownItem = ({sdk, tokenDetails, balance, icon, onClick,
         symbol={tokenDetails.symbol}
         balance={balance}
         icon={icon}
-        className={className}
       />
     </button>
   );
