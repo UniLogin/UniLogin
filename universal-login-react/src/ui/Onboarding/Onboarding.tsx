@@ -1,7 +1,7 @@
 import React from 'react';
 import {WalletService} from '@unilogin/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
-import {ApplicationWallet, WalletSuggestionAction, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {ApplicationWallet, WalletSuggestionAction} from '@unilogin/commons';
 import {ConnectionFlow, ModalWrapper} from '../..';
 import {OnboardingSteps} from './OnboardingSteps';
 import {Route, MemoryRouter} from 'react-router-dom';

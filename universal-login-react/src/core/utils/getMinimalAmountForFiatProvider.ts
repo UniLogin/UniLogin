@@ -3,7 +3,6 @@ import {bigNumberMax, WalletService, InvalidWalletState} from '@unilogin/sdk';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {getPriceInEther} from './getPriceInEther';
 import {ValueRounder, TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN, safeDivide} from '@unilogin/commons';
-import {BigNumber} from 'ethers/utils';
 
 export const getMinimalAmountForFiatProvider = async (
   paymentMethod: TopUpProvider,
@@ -27,7 +26,7 @@ export const getMinimalAmountForFiatProvider = async (
     case TopUpProvider.SAFELLO:
       return '30';
     default:
-      return ValueRounder.ceil(requiredDeploymentBalance);
+    return ValueRounder.ceil(requiredDeploymentBalance);
   }
 };
 
