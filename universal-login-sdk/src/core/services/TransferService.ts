@@ -56,7 +56,7 @@ export class TransferService {
   }
 
   getTokenDetails(tokenAddress: string) {
-    return this.deployedWallet.sdk.tokensDetailsStore.getTokenByAddress(tokenAddress);
+    return this.deployedWallet.sdk.tokensDetailsStore.getTokenBy('address', tokenAddress);
   }
 
   subscribeToBalances(callback: OnBalanceChange) {

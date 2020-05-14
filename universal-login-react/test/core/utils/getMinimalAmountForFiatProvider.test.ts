@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {getMinimalAmountForFiatProvider, getMinimalAmount} from '../../../src/core/utils/getMinimalAmountForFiatProvider';
 import {TopUpProvider} from '../../../src/core/models/TopUpProvider';
-import {TokenPricesService, TokenDetails} from '@unilogin/commons';
+import {TokenPricesService, TEST_TOKEN_PRICE_IN_ETH, TEST_DAI_TOKEN} from '@unilogin/commons';
 
 describe('getMinimalAmountForFiatProvider', () => {
   describe('RAMP provider', () => {
@@ -31,14 +31,9 @@ describe('getMinimalAmountForFiatProvider', () => {
 
     it('return correct minimal amount for DAI for Wyre', async () => {
       const bigMinimalAmount = '1.5';
-      const daiTokenDetails = {
-        symbol: 'DAI',
-        name: 'dai',
-        address: '0x9Ad7E60487F3737ed239DAaC172A4a9533Bd9517',
-      } as TokenDetails;
-      const daiPriceInEth = 0.005;
+      const daiPriceInEth = TEST_TOKEN_PRICE_IN_ETH;
       (tokenPricesService.getTokenPriceInEth as any) = () => daiPriceInEth;
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, daiTokenDetails)).to.eq('300');
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('300');
     });
 
     after(() => {

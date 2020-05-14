@@ -17,14 +17,9 @@ export class TokensDetailsStore {
     return token ? token.address : undefined;
   }
 
-  getTokenByAddress(address: string): TokenDetails {
-    const token = this.tokensDetails.find((token) => token.address === address);
-    ensureNotFalsy(token, TokenNotFound, address);
-    return token!;
-  }
-
-  getTokenBySymbol(symbol: string): TokenDetails | undefined {
-    const token = this.tokensDetails.find((token) => token.symbol === symbol);
-    return token || undefined;
+  getTokenBy(key: 'symbol' | 'address', value: string) {
+    const token = this.tokensDetails.find((token) => token[key] === value);
+    ensureNotFalsy(token, TokenNotFound, value);
+    return token;
   }
 }

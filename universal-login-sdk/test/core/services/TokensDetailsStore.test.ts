@@ -43,6 +43,13 @@ describe('INT: TokensDetailsStore', () => {
     expect(tokensDetailsStore.getTokenAddress(symbol)).to.eq(mockToken.address);
   });
 
+  it('symbol -> token', async () => {
+    await tokensDetailsStore.fetchTokensDetails();
+    const expectedToken = tokensDetailsStore.tokensDetails[0];
+
+    expect(tokensDetailsStore.getTokenBy('symbol', expectedToken.symbol)).be.deep.eq(expectedToken);
+  });
+
   it('symbol -> undefined', async () => {
     await tokensDetailsStore.fetchTokensDetails();
 
@@ -52,12 +59,12 @@ describe('INT: TokensDetailsStore', () => {
   it('address -> token', async () => {
     await tokensDetailsStore.fetchTokensDetails();
     const expectedToken = tokensDetailsStore.tokensDetails[0];
-    expect(tokensDetailsStore.getTokenByAddress(expectedToken.address)).to.deep.eq(expectedToken);
+    expect(tokensDetailsStore.getTokenBy('address', expectedToken.address)).to.deep.eq(expectedToken);
   });
 
   it('address -> error', async () => {
     await tokensDetailsStore.fetchTokensDetails();
 
-    expect(() => tokensDetailsStore.getTokenByAddress('FAKE')).to.throw('Token not found (address = FAKE)');
+    expect(() => tokensDetailsStore.getTokenBy('address', 'FAKE')).to.throw('Token not found (address = FAKE)');
   });
 });

@@ -63,12 +63,14 @@ export const TEST_TOKEN_ADDRESS = '0x490932174cc4B7a0f546924a070D151D156095f0';
 
 export const TEST_SAI_TOKEN_ADDRESS = '0x05b954633faf5ceeecdf945c13ad825faabbf66f';
 
+export const TEST_DAI_TOKEN = {
+  address: TEST_TOKEN_ADDRESS,
+  symbol: 'DAI',
+  name: 'MockDAIToken',
+};
+
 export const TEST_TOKEN_DETAILS = [
-  {
-    address: TEST_TOKEN_ADDRESS,
-    symbol: 'DAI',
-    name: 'MockDAIToken',
-  },
+  TEST_DAI_TOKEN,
   {
     address: TEST_SAI_TOKEN_ADDRESS,
     symbol: 'SAI',
