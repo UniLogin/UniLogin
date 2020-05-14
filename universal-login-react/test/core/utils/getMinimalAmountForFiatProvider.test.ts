@@ -23,16 +23,22 @@ describe('getMinimalAmountForFiatProvider', () => {
       expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService)).to.eq('1');
     });
 
+    it('return correct UniversalLogin minimal amount for DAI', async () => {
+      const smallMinimalAmount = '0.0000002';
+      (tokenPricesService.getTokenPriceInEth as any) = () => TEST_TOKEN_PRICE_IN_ETH;
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('200');
+    });
+
+    it('return correct minimal amount for DAI', async () => {
+      const bigMinimalAmount = '1500.5';
+      (tokenPricesService.getTokenPriceInEth as any) = () => TEST_TOKEN_PRICE_IN_ETH;
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('1500.5');
+    });
+
     it('return rounded provider minimal amount for Wyre', async () => {
       const bigMinimalAmount = '2.000000156565';
       const paymentMethod = TopUpProvider.WYRE;
       expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService)).to.eq('2.0001');
-    });
-
-    it('return correct minimal amount for DAI for Wyre', async () => {
-      const bigMinimalAmount = '1.5';
-      (tokenPricesService.getTokenPriceInEth as any) = () => TEST_TOKEN_PRICE_IN_ETH;
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('200');
     });
 
     after(() => {
