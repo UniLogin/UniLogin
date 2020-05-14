@@ -134,7 +134,7 @@ describe('E2E: Relayer - counterfactual deployment', () => {
   });
 
   it('Counterfactual deployment with token payment', async () => {
-    const tokenTransferValue = utils.parseEther('0.5');
+    const tokenTransferValue = utils.parseEther('50');
     ({signature, contractAddress} = await createFutureWalletAndPost(
       relayerUrl,
       keyPair,
