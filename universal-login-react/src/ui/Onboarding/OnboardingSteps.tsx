@@ -10,11 +10,10 @@ import {ChooseTopUpToken} from '../TopUp/ChooseTopUpToken';
 interface OnboardingStepsProps {
   walletService: WalletService;
   onCreate?: (arg: ApplicationWallet) => void;
-  className?: string;
   ensName: string;
 }
 
-export function OnboardingSteps({walletService, className, onCreate, ensName}: OnboardingStepsProps) {
+export function OnboardingSteps({walletService, onCreate, ensName}: OnboardingStepsProps) {
   const walletState = useProperty(walletService.stateProperty);
   const history = useHistory();
 
@@ -33,7 +32,6 @@ export function OnboardingSteps({walletService, className, onCreate, ensName}: O
     case 'Future':
       return (
         <OnboardingTopUp
-          modalClassName={className}
           walletService={walletService}
           hideModal={async () => {
             if (confirm('Are you sure you want to leave? You will lose access to this account.')) {
