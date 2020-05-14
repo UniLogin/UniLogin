@@ -10,16 +10,17 @@ export const getMinimalAmountForFiatProvider = async (
   tokenPricesService: TokenPricesService,
   currencyDetails = ETHER_NATIVE_TOKEN,
 ) => {
-  const currencyPriceInEth = await tokenPricesService.getTokenPriceInEth(currencyDetails);
   switch (paymentMethod) {
     case TopUpProvider.RAMP: {
-      const providerMinimalAmountInFiat = safeDivide(utils.bigNumberify('1'), currencyPriceInEth);
+      const currencyPriceInEth = await tokenPricesService.getTokenPriceInEth(currencyDetails);
+      const providerMinimalAmountInFiat = '1';
       const etherPriceInGBP = (await tokenPricesService.getEtherPriceInCurrency('GBP')).toString();
       const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat.toString(), etherPriceInGBP);
+      const providerMinimalAmountInToken = safeDivide(providerMinimalAmount, currencyPriceInEth);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
       const biggerAmount = bigNumberMax(
         requiredDeploymentBalanceAsBigNumber,
-        providerMinimalAmount,
+        providerMinimalAmountInToken,
       );
       return ValueRounder.ceil(utils.formatEther(biggerAmount));
     }
