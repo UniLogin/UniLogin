@@ -21,7 +21,6 @@ export const BackupCodesInitial = ({generateBackupCodes, deployedWallet, setGasP
         deployedWallet={deployedWallet}
         gasLimit={DEFAULT_GAS_LIMIT}
         onGasParametersChanged={setGasParameters}
-        className={className}
         sdk={deployedWallet.sdk}
       />
       <button

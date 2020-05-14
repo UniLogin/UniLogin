@@ -43,10 +43,7 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, onD
             <button id="transferFunds" className="funds-btn funds-send" onClick={onSendClick}>Send</button>
           </div>
         </div>
-        <Assets
-          deployedWallet={deployedWallet}
-          className={className}
-        />
+        <Assets deployedWallet={deployedWallet} />
       </div>
     </ThemedComponent>
   );

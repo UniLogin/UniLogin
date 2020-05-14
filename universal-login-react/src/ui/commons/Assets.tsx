@@ -13,10 +13,9 @@ import {ThemedComponent} from './ThemedComponent';
 
 export interface AssetsProps {
   deployedWallet: DeployedWallet;
-  className?: string;
 }
 
-export const Assets = ({deployedWallet, className}: AssetsProps) => {
+export const Assets = ({deployedWallet}: AssetsProps) => {
   const [tokenDetailsWithBalance] = useBalances(deployedWallet);
 
   return (
@@ -32,7 +31,6 @@ export const Assets = ({deployedWallet, className}: AssetsProps) => {
               symbol={symbol}
               balance={ValueRounder.ceil(utils.formatEther(balance))!}
               icon={getIconForToken(symbol)}
-              className={className}
             />
           ))}
         </div>
