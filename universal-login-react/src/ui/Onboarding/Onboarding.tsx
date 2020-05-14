@@ -40,7 +40,6 @@ export const Onboarding = (props: OnboardingProps) => {
                   <WalletSelector
                     sdk={props.walletService.sdk}
                     onCreateClick={async (ensName) => {
-                      await props.walletService.createWallet(ensName, ETHER_NATIVE_TOKEN.address);
                       history.push('/create', {ensName});
                     }}
                     onConnectClick={(ensName) => history.push('/connectFlow/chooseMethod', {ensName})}
