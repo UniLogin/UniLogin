@@ -6,7 +6,6 @@ import {EmojiForm} from '../ui/Notifications/EmojiForm';
 import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH} from '@unilogin/commons';
 import {EmojiPanel} from '../ui/WalletSelector/EmojiPanel';
 import {Onboarding} from '../ui/Onboarding/Onboarding';
-import {LogoButton} from '../ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './CreateRandomInstance';
 import '../ui/styles/playground.css';
 import UniLoginSdk, {DeployedWallet, DeployingWallet} from '@unilogin/sdk';
@@ -25,6 +24,7 @@ import {AppPreloader} from '../ui/commons/AppPreloader';
 import {TopUpProvider} from '../core/models/TopUpProvider';
 import {ChooseTopUpToken} from '../ui/TopUp/ChooseTopUpToken';
 import config from './config';
+import {Dashboard} from '../ui/UFlow/Dashboard';
 
 export const App = () => {
   const [sdk] = useState(() => {
@@ -73,7 +73,7 @@ export const App = () => {
                   <hr />
                   <CreateRandomInstance walletService={walletService} />
                   <hr />
-                  <LogoButton walletService={walletService} />
+                  <Dashboard walletService={walletService} />
                 </div>
               </Route>
               <Route
