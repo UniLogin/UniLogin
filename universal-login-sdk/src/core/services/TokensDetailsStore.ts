@@ -25,6 +25,6 @@ export class TokensDetailsStore {
 
   getTokenBySymbol(symbol: string): TokenDetails | undefined {
     const token = this.tokensDetails.find((token) => token.symbol === symbol);
-    return token ? token : undefined;
+    return token || undefined;
   }
 }

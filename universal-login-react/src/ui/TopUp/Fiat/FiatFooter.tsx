@@ -20,7 +20,7 @@ interface FiatFooterProps {
 }
 export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: FiatFooterProps) => {
   const currencyDetails = walletService.sdk.tokensDetailsStore.getTokenBySymbol(selectedCurrency);
-  if(!currencyDetails) selectedCurrency = 'ETH';
+  if (!currencyDetails) selectedCurrency = 'ETH';
   const [minimumAmount] = useAsync(async () => {
     if (paymentMethod) {return getMinimalAmount(walletService, paymentMethod, walletService.sdk.tokenPricesService, currencyDetails);}
   }, [paymentMethod]);
