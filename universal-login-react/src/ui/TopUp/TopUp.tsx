@@ -14,13 +14,12 @@ import {TopUpWithCrypto} from './TopUpWithCrypto';
 
 export interface TopUpProps {
   walletService: WalletService;
-  modalClassName?: string;
   hideModal?: () => void;
   isModal?: boolean;
   logoColor?: LogoColor;
 }
 
-export const TopUp = ({walletService, modalClassName, hideModal, isModal, logoColor}: TopUpProps) => {
+export const TopUp = ({walletService, hideModal, isModal, logoColor}: TopUpProps) => {
   const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>(undefined);
   const [headerVisible, setHeaderVisible] = useState<boolean>(true);
   const topUpCurrency = walletService.isKind('Future') ? walletService.getFutureWallet().getTopUpCurrencySymbol() : 'ETH or DAI';
@@ -35,7 +34,6 @@ export const TopUp = ({walletService, modalClassName, hideModal, isModal, logoCo
       <TopUpWithFiat
         walletService={walletService}
         logoColor={logoColor}
-        modalClassName={modalClassName}
         setHeaderVisible={setHeaderVisible}
         hideModal={hideModal}
       />}

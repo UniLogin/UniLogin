@@ -15,7 +15,6 @@ import {OnRampSuccessInfo} from './OnRampSuccessInfo';
 export interface TopUpWithFiatProps {
   walletService: WalletService;
   logoColor?: LogoColor;
-  modalClassName?: string;
   setHeaderVisible: (isVisible: boolean) => void;
   hideModal?: () => void;
 }
@@ -24,7 +23,7 @@ type TopUpWithFiatModal = 'none' | 'wait' | TopUpProvider;
 const getRampConfig = (config: RampConfig, rampApiKey?: string) =>
   rampApiKey ? {...config, rampApiKey} : config;
 
-export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, modalClassName, logoColor}: TopUpWithFiatProps) => {
+export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, logoColor}: TopUpWithFiatProps) => {
   const [modal, setModal] = useState<TopUpWithFiatModal>('none');
   const [amount, setAmount] = useState('');
   const [currency, setCurrency] = useState<string>('ETH');
