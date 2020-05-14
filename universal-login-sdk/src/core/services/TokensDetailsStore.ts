@@ -23,8 +23,8 @@ export class TokensDetailsStore {
     return token!;
   }
 
-  async getTokenBySymbol(symbol: string): Promise<TokenDetails | undefined> {
-    const currencyAddress = this.getTokenAddress(symbol);
-    return currencyAddress ? this.tokenDetailsService.getTokenDetails(currencyAddress) : undefined;
+  getTokenBySymbol(symbol: string): TokenDetails | undefined {
+    const token = this.tokensDetails.find((token) => token.symbol === symbol);
+    return token ? token : undefined;
   }
 }
