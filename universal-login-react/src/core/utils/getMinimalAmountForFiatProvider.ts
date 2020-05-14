@@ -3,11 +3,7 @@ import {bigNumberMax, WalletService, InvalidWalletState} from '@unilogin/sdk';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {getPriceInEther} from './getPriceInEther';
 import {ValueRounder, TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN, safeDivide} from '@unilogin/commons';
-
-const calculateAmountInCurrency = (amount: string, currencyPriceInEth: number) => {
-  const amountInEth = utils.parseEther(amount);
-  return utils.formatEther(safeDivide(amountInEth, currencyPriceInEth));
-};
+import {BigNumber} from 'ethers/utils';
 
 export const getMinimalAmountForFiatProvider = async (
   paymentMethod: TopUpProvider,
@@ -18,20 +14,20 @@ export const getMinimalAmountForFiatProvider = async (
   const currencyPriceInEth = await tokenPricesService.getTokenPriceInEth(currencyDetails);
   switch (paymentMethod) {
     case TopUpProvider.RAMP: {
-      const providerMinimalAmountInFiat = '1';
+      const providerMinimalAmountInFiat = safeDivide(utils.bigNumberify('1'), currencyPriceInEth);
       const etherPriceInGBP = (await tokenPricesService.getEtherPriceInCurrency('GBP')).toString();
-      const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat, etherPriceInGBP);
+      const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat.toString(), etherPriceInGBP);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
-      const biggerAmount = utils.formatEther(bigNumberMax(
+      const biggerAmount = bigNumberMax(
         requiredDeploymentBalanceAsBigNumber,
         providerMinimalAmount,
-      ));
-      return ValueRounder.ceil(calculateAmountInCurrency(biggerAmount, currencyPriceInEth));
+      );
+      return ValueRounder.ceil(utils.formatEther(biggerAmount));
     }
     case TopUpProvider.SAFELLO:
       return '30';
     default:
-      return ValueRounder.ceil(calculateAmountInCurrency(requiredDeploymentBalance, currencyPriceInEth));
+      return ValueRounder.ceil(requiredDeploymentBalance);
   }
 };
 
