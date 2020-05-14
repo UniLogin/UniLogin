@@ -22,4 +22,9 @@ export class TokensDetailsStore {
     ensureNotFalsy(token, TokenNotFound, address);
     return token!;
   }
+
+  async getTokenBySymbol(symbol: string): Promise<TokenDetails | undefined> {
+    const currencyAddress = this.getTokenAddress(symbol);
+    return currencyAddress ? this.tokenDetailsService.getTokenDetails(currencyAddress) : undefined;
+  }
 }

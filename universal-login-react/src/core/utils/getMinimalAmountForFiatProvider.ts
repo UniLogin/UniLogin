@@ -6,7 +6,6 @@ import {ValueRounder, TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN} from
 
 const calculateAmountInCurrency = (amount: string, currencyPriceInEth: number) => {
   const amountInEth = utils.parseEther(amount);
-  console.log(amountInEth.toString());
   return utils.formatEther(amountInEth.mul(currencyPriceInEth));
 };
 
@@ -14,9 +13,8 @@ export const getMinimalAmountForFiatProvider = async (
   paymentMethod: TopUpProvider,
   requiredDeploymentBalance: string,
   tokenPricesService: TokenPricesService,
-  currencyDetails?: TokenDetails,
+  currencyDetails = ETHER_NATIVE_TOKEN,
 ) => {
-  currencyDetails = currencyDetails || ETHER_NATIVE_TOKEN;
   const currencyPriceInEth = await tokenPricesService.getTokenPriceInEth(currencyDetails);
   switch (paymentMethod) {
     case TopUpProvider.RAMP: {

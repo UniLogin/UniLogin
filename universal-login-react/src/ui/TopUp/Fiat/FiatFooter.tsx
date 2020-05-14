@@ -12,7 +12,6 @@ import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {getMinimalAmount} from '../../../core/utils/getMinimalAmountForFiatProvider';
 import {useAsync} from '../../hooks/useAsync';
 import {InfoText} from '../../commons/Text/InfoText';
-import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 interface FiatFooterProps {
   walletService: WalletService;
@@ -20,8 +19,7 @@ interface FiatFooterProps {
   selectedCurrency: string;
 }
 export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: FiatFooterProps) => {
-  const currencyAddress = walletService.sdk.tokensDetailsStore.getTokenAddress(selectedCurrency);
-  const currencyDetails = useAsync(() => walletService.sdk.tokenDetailsService.getTokenDetails(currencyAddress || ETHER_NATIVE_TOKEN.address), [])[0];
+  const currencyDetails = useAsync(() => walletService.sdk.tokensDetailsStore.getTokenBySymbol(selectedCurrency), [])[0];
   const [minimumAmount] = useAsync(async () => {
     if (paymentMethod) {return getMinimalAmount(walletService, paymentMethod, walletService.sdk.tokenPricesService, currencyDetails);}
   }, [paymentMethod]);
