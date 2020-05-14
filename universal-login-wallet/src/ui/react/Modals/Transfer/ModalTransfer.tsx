@@ -60,7 +60,6 @@ const ModalTransfer = ({basePath = ''}: ModalTransferProps) => {
         render={({location, history}) =>
           <ModalWrapperClosable hideModal={() => history.replace('/dashboard')}>
             <ErrorMessage
-              className="jarvis-styles"
               message={location.state.error}
             />
           </ModalWrapperClosable>}

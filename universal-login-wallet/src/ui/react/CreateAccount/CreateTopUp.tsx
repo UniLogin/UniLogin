@@ -18,7 +18,6 @@ export function CreateTopUp() {
             history.push('/selectDeployName');
           }
         }}
-        modalClassName="topup-modal-wrapper"
       />
     </div>
   );

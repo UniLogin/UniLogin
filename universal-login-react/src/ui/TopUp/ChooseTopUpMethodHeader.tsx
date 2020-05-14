@@ -8,9 +8,10 @@ import {classForComponent} from '../utils/classFor';
 interface ChooseTopUpMethodHeaderProps {
   topUpMethod?: TopUpMethod;
   setTopUpMethod: (arg: TopUpMethod) => void;
+  topUpCurrency: string;
 };
 
-export const ChooseTopUpMethodHeader = ({topUpMethod, setTopUpMethod}: ChooseTopUpMethodHeaderProps) => {
+export const ChooseTopUpMethodHeader = ({topUpMethod, setTopUpMethod, topUpCurrency}: ChooseTopUpMethodHeaderProps) => {
   const [isTextVisible, setIsTextVisible] = useState(true);
 
   const onMethodClick = (method: TopUpMethod) => {
@@ -36,6 +37,7 @@ export const ChooseTopUpMethodHeader = ({topUpMethod, setTopUpMethod}: ChooseTop
           checked={topUpMethod === 'crypto'}
           name="top-up-method"
           className={`${classForComponent('top-up-method')} ${topUpMethod === 'crypto' ? 'active' : ''}`}
+          topUpCurrency={topUpCurrency}
         />
       </div>
     </div>

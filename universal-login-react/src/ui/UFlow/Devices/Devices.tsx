@@ -45,7 +45,6 @@ export const Devices = ({walletService, onAccountDisconnected, className, basePa
         exact
         render={({location}) =>
           <ErrorMessage
-            className={className}
             title={'Connecting device failed'}
             message={location.state?.error}
           /> }

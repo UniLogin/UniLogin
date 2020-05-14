@@ -63,7 +63,6 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
     case 'Failure':
       return (
         <ErrorMessage
-          className={className}
           title={'Generating backup code failed'}
           message={state.error}
         />

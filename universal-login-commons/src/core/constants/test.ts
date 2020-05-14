@@ -30,7 +30,7 @@ export const testJsonRpcUrl = 'http://localhost:8545';
 
 export const TEST_GAS_PRICE = utils.parseUnits('20', 'gwei').toString();
 
-export const TEST_TOKEN_PRICE_IN_ETH = 0.5;
+export const TEST_TOKEN_PRICE_IN_ETH = 0.005;
 
 export const TEST_GAS_PRICE_IN_TOKEN = safeDivide(utils.bigNumberify(TEST_GAS_PRICE), TEST_TOKEN_PRICE_IN_ETH).toString();
 
@@ -99,11 +99,11 @@ export const TEST_GAS_MODES = [{
   usdAmount: '0.00004412424',
   timeEstimation: 30,
   gasOptions: [{
-    gasPrice: utils.bigNumberify('40000000000'),
+    gasPrice: utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN),
     token: TEST_TOKEN_DETAILS[0],
   },
   {
-    gasPrice: utils.bigNumberify('40000000000'),
+    gasPrice: utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN),
     token: TEST_TOKEN_DETAILS[1],
   },
   {

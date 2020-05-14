@@ -15,10 +15,9 @@ export interface AssetProps {
   symbol: string;
   balance: string | null;
   icon: string;
-  className?: string;
 }
 
-export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps) => {
+export const Asset = ({sdk, name, symbol, balance, icon}: AssetProps) => {
   const [usdAmount, setUsdAmount] = useState<string>('');
   const [usdPrice, setUsdPrice] = useState<string>('');
 
