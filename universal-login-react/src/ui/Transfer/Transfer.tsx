@@ -68,7 +68,6 @@ export const Transfer = ({transferService, onTransferTriggered, transferClassNam
           deployedWallet={transferService.deployedWallet}
           gasLimit={SEND_TRANSACTION_GAS_LIMIT}
           onGasParametersChanged={(gasParameters: GasParameters) => updateField('gasParameters')(gasParameters)}
-          className={transferClassName}
           sdk={sdk}
         />
         <div className="footer-buttons-row">

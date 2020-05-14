@@ -22,10 +22,9 @@ export interface GasPriceProps {
   isDeployed: boolean;
   gasLimit: utils.BigNumberish;
   onGasParametersChanged: OnGasParametersChanged;
-  className?: string;
 }
 
-export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
+export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged}: GasPriceProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
   useAsyncEffect(async () => {
@@ -124,7 +123,7 @@ export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gas
   );
 };
 
-export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) =>
+export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged}: GasPriceProps) =>
   sdk.isRefundPaid()
     ? <NoRefundGasPrice sdk={sdk} onGasParametersChanged={onGasParametersChanged} />
     : <GasPriceWithOptions
@@ -132,7 +131,6 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
       deployedWallet={deployedWallet}
       gasLimit={gasLimit}
       onGasParametersChanged={onGasParametersChanged}
-      className={className}
       sdk={sdk}
     />;
 
