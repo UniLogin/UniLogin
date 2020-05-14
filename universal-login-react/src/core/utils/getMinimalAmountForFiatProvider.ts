@@ -15,7 +15,7 @@ export const getMinimalAmountForFiatProvider = async (
       const currencyPriceInEth = await tokenPricesService.getTokenPriceInEth(currencyDetails);
       const providerMinimalAmountInFiat = '1';
       const etherPriceInGBP = (await tokenPricesService.getEtherPriceInCurrency('GBP')).toString();
-      const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat.toString(), etherPriceInGBP);
+      const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat, etherPriceInGBP);
       const providerMinimalAmountInToken = safeDivide(providerMinimalAmount, currencyPriceInEth);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
       const biggerAmount = bigNumberMax(
@@ -27,7 +27,7 @@ export const getMinimalAmountForFiatProvider = async (
     case TopUpProvider.SAFELLO:
       return '30';
     default:
-    return ValueRounder.ceil(requiredDeploymentBalance);
+      return ValueRounder.ceil(requiredDeploymentBalance);
   }
 };
 
