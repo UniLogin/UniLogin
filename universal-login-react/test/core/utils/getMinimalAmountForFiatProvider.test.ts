@@ -32,7 +32,7 @@ describe('getMinimalAmountForFiatProvider', () => {
     it('return correct minimal amount for DAI for Wyre', async () => {
       const bigMinimalAmount = '1.5';
       (tokenPricesService.getTokenPriceInEth as any) = () => TEST_TOKEN_PRICE_IN_ETH;
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('300');
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('200');
     });
 
     after(() => {
