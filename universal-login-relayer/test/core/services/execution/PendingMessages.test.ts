@@ -73,7 +73,7 @@ describe('INT: PendingMessages', () => {
   });
 
   it('should get added signed transaction', async () => {
-    const messageItem = createMessageItem(signedMessage);
+    const messageItem = createMessageItem(signedMessage, '1');
     await pendingMessages.add(signedMessage);
     const key = getKeyFromHashAndSignature(messageHash, signedMessage.signature);
     await messageItem.collectedSignatureKeyPairs.push({signature: signedMessage.signature, key});

@@ -58,7 +58,7 @@ describe('UNIT: Queue Service', () => {
     messageHash = calculateMessageHash(signedMessage);
     await messageRepository.add(
       messageHash,
-      createMessageItem(signedMessage),
+      createMessageItem(signedMessage, '1'),
     );
     sinon.resetHistory();
   });
@@ -89,7 +89,7 @@ describe('UNIT: Queue Service', () => {
     const markAsErrorSpy = sinon.spy(messageRepository.markAsError);
     messageRepository.markAsError = markAsErrorSpy;
     queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
-    await messageRepository.add(messageHash, createMessageItem(signedMessage));
+    await messageRepository.add(messageHash, createMessageItem(signedMessage, '1'));
     await queueMemoryStore.addMessage(messageHash);
     await waitExpect(() => expect(messageRepository.markAsError).calledWith(messageHash, 'TypeError: Cannot read property \'hash\' of null'));
     expect(queueMemoryStore.remove).to.be.calledOnce;
@@ -103,7 +103,7 @@ describe('UNIT: Queue Service', () => {
     executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], queueMemoryStore);
     executionWorker.start();
     queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
-    await messageRepository.add(messageHash, createMessageItem(signedMessage));
+    await messageRepository.add(messageHash, createMessageItem(signedMessage, '1'));
     await queueMemoryStore.addMessage(messageHash);
 
     await waitExpect(() => expect(queueMemoryStore.remove).to.be.calledOnce, 3000);

@@ -52,7 +52,7 @@ for (const config of [{
       signedMessage = unsignedMessageToSignedMessage(unsignedMessage, wallet.privateKey);
 
       const refundPayerId = await setupRefundPayerStore();
-      messageItem = createMessageItem(signedMessage, refundPayerId);
+      messageItem = createMessageItem(signedMessage, '1', refundPayerId);
       messageHash = calculateMessageHash(signedMessage);
     });
 
