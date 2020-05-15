@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotFalsy, getMessageWithSignatures} from '@unilogin/commons';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotFalsy, getSignatureFrom} from '@unilogin/commons';
 import IMessageRepository from '../../../core/models/messages/IMessagesRepository';
 import {InvalidMessage, MessageNotFound} from '../../../core/utils/errors';
 import MessageItem from '../../../core/models/messages/MessageItem';
@@ -30,8 +30,8 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
     ensureNotFalsy(messageEntry, InvalidMessage, messageHash);
     const collectedSignatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
     if (messageEntry.message) {
-      messageEntry.message = bignumberifySignedMessageFields(messageEntry.message);
-      messageEntry.message = await getMessageWithSignatures(messageEntry.message, collectedSignatureKeyPairs);
+      const signature = await getSignatureFrom(collectedSignatureKeyPairs);
+      messageEntry.message = {...bignumberifySignedMessageFields(messageEntry.message), signature};
     }
     const messageItem: MessageItem = messageEntry && {
       ...messageEntry,

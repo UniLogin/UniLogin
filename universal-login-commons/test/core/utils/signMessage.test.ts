@@ -1,38 +1,15 @@
 import {expect} from 'chai';
-import {utils} from 'ethers';
-import {AddressZero} from 'ethers/constants';
 import {
-  DEFAULT_GAS_PRICE,
-  DEFAULT_GAS_LIMIT,
-  TEST_ACCOUNT_ADDRESS,
   CollectedSignatureKeyPair,
   TEST_SIGNATURE_KEY_PAIRS,
-  getMessageWithSignatures,
-  EMPTY_DATA,
-  OperationType,
+  getSignatureFrom,
 } from '../../../src';
 
-const expectedMessage = {
-  from: '0x',
-  to: TEST_ACCOUNT_ADDRESS,
-  value: utils.parseEther('0.5'),
-  data: EMPTY_DATA,
-  nonce: '0',
-  operationType: OperationType.call,
-  gasPrice: DEFAULT_GAS_PRICE,
-  safeTxGas: DEFAULT_GAS_LIMIT,
-  baseGas: '0',
-  gasToken: AddressZero,
-  refundReceiver: AddressZero,
-  signature: '0xea229e2779a9838b660b3c45e12f96c07ea838de3ffef621f4b73ae29c9feda06adb51c4c130d063e2aa251759f442a27109e74faddd8665b73072edd4c924b41c',
-};
-
-describe('UNIT: getMessageWithSignatures', () => {
-  it('should return message with signature', async () => {
+describe('UNIT: getSignatureFrom', () => {
+  it('should return valid signature for collected signature-key pairs', async () => {
     const collectedSignatureKeyPairs: CollectedSignatureKeyPair[] = TEST_SIGNATURE_KEY_PAIRS;
-    const {signature, ...unsignedMessage} = expectedMessage;
     const expectedSignature = '0xf65bc65a5043e6582b38aa2269bafd759fcdfe32a3640a3b2b9086260c5f090306bb9b821eb5e452748687c69b13f3cb67b74fb1f49b45fbe60b0c90b73a73651b97a061e4965a13cda63e18cf4786ef174d04407dbede36982194b2316717afdd5737a0f24458f2798419dcbf6fc3198598c12693db80149ddc9846a7f17b747f1c';
-    const messageWithSignaures = await getMessageWithSignatures(unsignedMessage, collectedSignatureKeyPairs);
-    expect(messageWithSignaures).to.deep.eq({...unsignedMessage, signature: expectedSignature});
+    const signatures = await getSignatureFrom(collectedSignatureKeyPairs);
+    expect(signatures).to.eq(expectedSignature);
   });
 });

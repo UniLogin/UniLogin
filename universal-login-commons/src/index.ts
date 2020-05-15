@@ -57,7 +57,7 @@ export {createKeyPair} from './core/utils/keyPair';
 export {calculateDeployHash, calculateMessageHash, calculateMessageSignature, calculateMessageSignatures, concatenateSignatures, removeHexStringPrefix, sortPrivateKeysByAddress} from './core/utils/messages/calculateMessageSignature';
 export {bignumberifySignedMessageFields, stringifySignedMessageFields} from './core/utils/messages/changingMessageFields';
 export {GasDataComputation, NetworkVersion} from './core/utils/messages/computeGasData';
-export {getMessageWithSignatures} from './core/utils/messages/signMessage';
+export {getSignatureFrom} from './core/utils/messages/signMessage';
 export {hashRelayerRequest, recoverFromRelayerRequest, signRelayerRequest, verifyRelayerRequest} from './core/utils/relayerRequest';
 export {safeMultiply, safeMultiplyAndFormatEther, safeDivide} from './core/utils/safeMultiply';
 export {asExactly} from './core/utils/sanitizers/asExactly';
