@@ -26,14 +26,14 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
 
   // Override
   async get(messageHash: string) {
-    const message = await this.getMessageEntry(messageHash);
-    ensureNotFalsy(message, InvalidMessage, messageHash);
-    if (message.message) {
-      message.message = bignumberifySignedMessageFields(message.message);
+    const messageEntry = await this.getMessageEntry(messageHash);
+    ensureNotFalsy(messageEntry, InvalidMessage, messageHash);
+    if (messageEntry.message) {
+      messageEntry.message = bignumberifySignedMessageFields(messageEntry.message);
     }
     const signatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
-    const messageItem: MessageItem = message && {
-      ...message,
+    const messageItem: MessageItem = messageEntry && {
+      ...messageEntry,
       collectedSignatureKeyPairs: signatureKeyPairs,
     };
     return messageItem;
