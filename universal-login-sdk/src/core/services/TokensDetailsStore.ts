@@ -17,9 +17,9 @@ export class TokensDetailsStore {
     return token ? token.address : undefined;
   }
 
-  getTokenByAddress(address: string): TokenDetails {
-    const token = this.tokensDetails.find((token) => token.address === address);
-    ensureNotFalsy(token, TokenNotFound, address);
-    return token!;
+  getTokenBy(key: 'symbol' | 'address', value: string) {
+    const token = this.tokensDetails.find((token) => token[key] === value);
+    ensureNotFalsy(token, TokenNotFound, value);
+    return token;
   }
 }

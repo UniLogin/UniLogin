@@ -18,11 +18,13 @@ interface FiatFooterProps {
   paymentMethod?: TopUpProvider;
   selectedCurrency: string;
 }
-
 export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: FiatFooterProps) => {
+  const currencyDetails = walletService.sdk.tokensDetailsStore.getTokenBy('symbol', selectedCurrency);
   const [minimumAmount] = useAsync(async () => {
-    if (paymentMethod) {return getMinimalAmount(walletService, paymentMethod, walletService.sdk.tokenPricesService);}
-  }, [paymentMethod]);
+    if (paymentMethod) {
+      return getMinimalAmount(walletService, paymentMethod, walletService.sdk.tokenPricesService, currencyDetails);
+    }
+  }, [paymentMethod, selectedCurrency]);
 
   switch (paymentMethod) {
     case TopUpProvider.RAMP:

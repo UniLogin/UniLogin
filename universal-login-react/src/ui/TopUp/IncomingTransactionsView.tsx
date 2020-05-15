@@ -26,7 +26,7 @@ export const IncomingTransactionsView = ({futureWallet}: IncomingTransactionsVie
           <Value>
             {tx.value.toDecimals()}
             {' '}
-            {futureWallet.sdk.tokensDetailsStore.getTokenByAddress(tx.value.address).symbol}
+            {futureWallet.sdk.tokensDetailsStore.getTokenBy('address', tx.value.address).symbol}
           </Value>
           <ExternalLinkIcon src={externalLink}/>
           <EthersanLink
