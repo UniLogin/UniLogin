@@ -10,7 +10,7 @@ describe('getMinimalAmountForFiatProvider', () => {
     const tokenPricesService = new TokenPricesService();
 
     before(() => {
-      sinon.stub(tokenPricesService, 'getEtherPriceInCurrency').resolves('1');
+      sinon.stub(tokenPricesService, 'getEtherPriceInCurrency').resolves('150');
     });
 
     it('return provider minimal amount', async () => {
@@ -18,15 +18,15 @@ describe('getMinimalAmountForFiatProvider', () => {
       expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService)).to.eq('2');
     });
 
-    it('return UniversalLogin minimal amount', async () => {
+    it('return UniLogin minimal amount', async () => {
       const smallMinimalAmount = '0.0001';
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService)).to.eq('1');
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService)).to.eq('0.0067');
     });
 
-    it('return correct UniversalLogin minimal amount for DAI', async () => {
+    it('return correct UniLogin minimal amount for DAI', async () => {
       const smallMinimalAmount = '0.0000002';
       (tokenPricesService.getTokenPriceInEth as any) = () => TEST_TOKEN_PRICE_IN_ETH;
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('200');
+      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('1.3334');
     });
 
     it('return correct minimal amount for DAI', async () => {
