@@ -12,11 +12,7 @@ import {flatMap, map, Property, State} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
 import {asBoolean, asString, cast} from '@restless/sanitizers';
 
-export interface ULWeb3ProviderOptions {
-  network: Network;
-  provider: Provider;
-  relayerUrl: string;
-  ensDomains: string[];
+export interface ULWeb3ProviderOptions extends Config {
   sdkConfigOverrides?: Partial<SdkConfig>;
   uiInitializer?: (services: ULWeb3RootProps) => void;
   browserChecker?: BrowserChecker;
@@ -27,10 +23,7 @@ export class ULWeb3Provider implements Provider {
     const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
 
     return new ULWeb3Provider({
-      network: config.network,
-      provider: config.provider,
-      relayerUrl: config.relayerUrl,
-      ensDomains: config.ensDomains,
+      ...config,
       sdkConfigOverrides,
     });
   }
@@ -56,10 +49,12 @@ export class ULWeb3Provider implements Provider {
     ensDomains,
     sdkConfigOverrides,
     uiInitializer = initUi,
+    observedTokensAddresses,
     browserChecker = new BrowserChecker(),
   }: ULWeb3ProviderOptions) {
     const sdkConfig = {
       network,
+      observedTokensAddresses,
       storageService: new StorageService(),
       ...sdkConfigOverrides,
     };

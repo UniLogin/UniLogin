@@ -59,7 +59,7 @@ export const Onboarding = (props: OnboardingProps) => {
               <OnboardingSteps
                 walletService={props.walletService}
                 onCreate={props.onCreate}
-                ensName={location.state.ensName}
+                ensName={location.state?.ensName}
               />}
           />
           <Route
