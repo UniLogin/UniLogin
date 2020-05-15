@@ -28,13 +28,14 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   async get(messageHash: string) {
     const messageEntry = await this.getMessageEntry(messageHash);
     ensureNotFalsy(messageEntry, InvalidMessage, messageHash);
+    const collectedSignatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
     if (messageEntry.message) {
       messageEntry.message = bignumberifySignedMessageFields(messageEntry.message);
+      messageEntry.message = await getMessageWithSignatures(messageEntry.message, collectedSignatureKeyPairs);
     }
-    const signatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
     const messageItem: MessageItem = messageEntry && {
       ...messageEntry,
-      collectedSignatureKeyPairs: signatureKeyPairs,
+      collectedSignatureKeyPairs,
     };
     return messageItem;
   }
@@ -91,8 +92,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   async getMessage(messageHash: string) {
     const message = (await this.get(messageHash)).message;
     ensureNotFalsy(message, MessageNotFound, messageHash);
-    const collectedSignatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
-    return getMessageWithSignatures(message, collectedSignatureKeyPairs);
+    return message;
   }
 }
 
