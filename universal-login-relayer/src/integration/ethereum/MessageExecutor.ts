@@ -46,7 +46,6 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
   async handleExecute(messageHash: string) {
     try {
       const messageItem = await this.messageRepository.get(messageHash);
-      console.log({messageItem});
       this.validateMessageItem(messageItem);
       const signedMessage = messageItem.message;
       signedMessage.gasPrice = this.calculateSignedMessageGasPrice(signedMessage, messageItem);
