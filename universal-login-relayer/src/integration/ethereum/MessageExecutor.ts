@@ -28,8 +28,8 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
   async validateMessageItem(messageItem: MessageItem) {
     const signedMessage = messageItem.message;
     const {gasPrice, gasToken} = signedMessage;
-    const {tokenPriceInEth} = messageItem;
-    ensureNotFalsy(tokenPriceInEth, Error);
+    let {tokenPriceInEth} = messageItem;
+    tokenPriceInEth = tokenPriceInEth || '1';
     this.gasTokenValidator.validate({
       gasPrice: gasPrice.toString(),
       gasToken,
@@ -38,13 +38,15 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
   }
 
   calculateSignedMessageGasPrice(signedMessage: SignedMessage, messageItem: MessageItem) {
-    const gasPrice = utils.parseEther(signedMessage.gasPrice.toString());
-    return utils.formatEther(safeDivide(gasPrice, messageItem.tokenPriceInEth || '1'));
+    console.log(signedMessage.gasPrice.toString());
+    const gasPrice = utils.bigNumberify(signedMessage.gasPrice);
+    return safeDivide(gasPrice, messageItem.tokenPriceInEth || '1');
   }
 
   async handleExecute(messageHash: string) {
     try {
       const messageItem = await this.messageRepository.get(messageHash);
+      console.log({messageItem});
       this.validateMessageItem(messageItem);
       const signedMessage = messageItem.message;
       signedMessage.gasPrice = this.calculateSignedMessageGasPrice(signedMessage, messageItem);
