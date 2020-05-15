@@ -38,7 +38,6 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
   }
 
   calculateSignedMessageGasPrice(signedMessage: SignedMessage, messageItem: MessageItem) {
-    console.log(signedMessage.gasPrice.toString());
     const gasPrice = utils.bigNumberify(signedMessage.gasPrice);
     return safeDivide(gasPrice, messageItem.tokenPriceInEth || '1');
   }
