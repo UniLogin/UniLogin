@@ -6,4 +6,5 @@ export default interface MessageItem extends Mineable {
   walletAddress: string;
   message: SignedMessage;
   refundPayerId: string | null;
+  tokenPriceInEth: string | null;
 }
