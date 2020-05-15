@@ -60,7 +60,7 @@ for (const config of [{
       expect(await messageRepository.isPresent(messageHash)).to.eq(false, 'store is not initially empty');
       await messageRepository.add(messageHash, messageItem);
       expect(await messageRepository.isPresent(messageHash)).to.eq(true);
-      messageItem.message = bignumberifySignedMessageFields(stringifySignedMessageFields(messageItem.message));
+      messageItem.message = bignumberifySignedMessageFields(stringifySignedMessageFields({...unsignedMessage, signature: '0x'}));
       expect(await messageRepository.get(messageHash)).to.deep.eq(messageItem);
       expect(await messageRepository.isPresent(messageHash)).to.eq(true);
       const removedPendingExecution = await messageRepository.remove(messageHash);
