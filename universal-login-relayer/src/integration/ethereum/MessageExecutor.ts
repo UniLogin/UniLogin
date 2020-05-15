@@ -1,11 +1,13 @@
-import {Wallet, providers} from 'ethers';
-import {SignedMessage, ensureNotFalsy, IMessageValidator} from '@unilogin/commons';
+import {Wallet, providers, utils} from 'ethers';
+import {SignedMessage, ensureNotFalsy, IMessageValidator, safeDivide} from '@unilogin/commons';
 import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';
 import IMessageRepository from '../../core/models/messages/IMessagesRepository';
 import {TransactionHashNotFound, GasUsedNotFound} from '../../core/utils/errors';
 import {IMinedTransactionHandler} from '../../core/models/IMinedTransactionHandler';
 import {WalletContractService} from './WalletContractService';
+import MessageItem from '../../core/models/messages/MessageItem';
+import {GasTokenValidator} from '../../core/services/validators/GasTokenValidator';
 
 export type OnTransactionMined = (transaction: providers.TransactionResponse) => Promise<void>;
 
@@ -16,15 +18,36 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     private messageRepository: IMessageRepository,
     private minedTransactionHandler: IMinedTransactionHandler,
     private walletContractService: WalletContractService,
+    private gasTokenValidator: GasTokenValidator,
   ) {}
 
   canExecute(item: QueueItem): boolean {
     return item.type === 'Message';
   }
 
+  async validateMessageItem(messageItem: MessageItem) {
+    const signedMessage = messageItem.message;
+    const {gasPrice, gasToken} = signedMessage;
+    const {tokenPriceInEth} = messageItem;
+    ensureNotFalsy(tokenPriceInEth, Error);
+    this.gasTokenValidator.validate({
+      gasPrice: gasPrice.toString(),
+      gasToken,
+      tokenPriceInETH: tokenPriceInEth,
+    }, 0.3);
+  }
+
+  calculateSignedMessageGasPrice(signedMessage: SignedMessage, messageItem: MessageItem) {
+    const gasPrice = utils.parseEther(signedMessage.gasPrice.toString());
+    return utils.formatEther(safeDivide(gasPrice, messageItem.tokenPriceInEth || '1'));
+  }
+
   async handleExecute(messageHash: string) {
     try {
-      const signedMessage = await this.messageRepository.getMessage(messageHash);
+      const messageItem = await this.messageRepository.get(messageHash);
+      this.validateMessageItem(messageItem);
+      const signedMessage = messageItem.message;
+      signedMessage.gasPrice = this.calculateSignedMessageGasPrice(signedMessage, messageItem);
       const transactionResponse = await this.execute(signedMessage);
       const {hash, wait, gasPrice} = transactionResponse;
       ensureNotFalsy(hash, TransactionHashNotFound);

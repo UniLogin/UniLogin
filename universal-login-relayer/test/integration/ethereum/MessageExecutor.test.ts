@@ -22,7 +22,7 @@ describe('INT: MessageExecutor', () => {
 
   before(async () => {
     ({wallet, walletContract, provider} = await loadFixture(basicWalletContractWithMockToken));
-    messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any, setupWalletContractService(wallet.provider));
+    messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any, setupWalletContractService(wallet.provider), validator as any);
     const message = {...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2), nonce: await walletContract.lastNonce()};
     signedMessage = getTestSignedMessage(message, wallet.privateKey);
   });
