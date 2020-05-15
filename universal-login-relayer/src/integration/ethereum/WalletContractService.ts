@@ -75,9 +75,9 @@ export class WalletContractService {
     return service.recoverFromRelayerRequest(relayerRequest);
   }
 
-  async messageToTransaction(message: SignedMessage) {
+  async messageToTransaction(message: SignedMessage, tokenPriceInEth: string) {
     const service = await this.getWalletService(message.from);
-    return service.messageToTransaction(message);
+    return service.messageToTransaction(message, tokenPriceInEth);
   }
 
   async isAddKeyCall(walletAddress: string, data: string) {

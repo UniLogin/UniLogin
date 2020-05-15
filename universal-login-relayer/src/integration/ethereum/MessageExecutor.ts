@@ -11,7 +11,7 @@ import {GasTokenValidator} from '../../core/services/validators/GasTokenValidato
 
 export type OnTransactionMined = (transaction: providers.TransactionResponse) => Promise<void>;
 
-export class MessageExecutor implements IExecutor<SignedMessage> {
+export class MessageExecutor implements IExecutor<MessageItem> {
   constructor(
     private wallet: Wallet,
     private messageValidator: IMessageValidator,
@@ -37,18 +37,12 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     }, 0.3);
   }
 
-  calculateSignedMessageGasPrice(signedMessage: SignedMessage, messageItem: MessageItem) {
-    const gasPrice = utils.bigNumberify(signedMessage.gasPrice);
-    return safeDivide(gasPrice, messageItem.tokenPriceInEth || '1');
-  }
 
   async handleExecute(messageHash: string) {
     try {
       const messageItem = await this.messageRepository.get(messageHash);
       this.validateMessageItem(messageItem);
-      const signedMessage = messageItem.message;
-      signedMessage.gasPrice = this.calculateSignedMessageGasPrice(signedMessage, messageItem);
-      const transactionResponse = await this.execute(signedMessage);
+      const transactionResponse = await this.execute(messageItem);
       const {hash, wait, gasPrice} = transactionResponse;
       ensureNotFalsy(hash, TransactionHashNotFound);
       await this.messageRepository.markAsPending(messageHash, hash!, gasPrice.toString());
@@ -62,9 +56,15 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     }
   }
 
-  async execute(signedMessage: SignedMessage): Promise<providers.TransactionResponse> {
+  async execute(messageItem: MessageItem): Promise<providers.TransactionResponse> {
+    const signedMessage = messageItem.message;
     await this.messageValidator.validate(signedMessage);
-    const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage);
+    await this.gasTokenValidator.validate({
+      gasPrice: signedMessage.gasPrice.toString(),
+      gasToken: signedMessage.gasToken,
+      tokenPriceInETH: messageItem.tokenPriceInEth,
+    }, 0.3);
+    const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage, messageItem.tokenPriceInEth);
     return this.wallet.sendTransaction(transactionReq);
   }
 }
