@@ -19,6 +19,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
       state: 'AwaitSignature',
       message: stringifySignedMessageFields(messageItem.message),
       refundPayerId: messageItem.refundPayerId,
+      tokenPriceInEth: messageItem.tokenPriceInEth,
     } as MessageItem,
     );
   }
@@ -26,9 +27,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   // Override
   async get(messageHash: string) {
     const message = await this.getMessageEntry(messageHash);
-    if (!message) {
-      throw new InvalidMessage(messageHash);
-    }
+    ensureNotFalsy(message, InvalidMessage, messageHash);
     if (message.message) {
       message.message = bignumberifySignedMessageFields(message.message);
     }
@@ -43,7 +42,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   private async getMessageEntry(messageHash: string) {
     return this.knex(this.tableName)
       .where('hash', messageHash)
-      .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state', 'refundPayerId', 'gasPriceUsed', 'gasUsed'])
+      .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state', 'refundPayerId', 'gasPriceUsed', 'gasUsed', 'tokenPriceInEth'])
       .first();
   }
 
