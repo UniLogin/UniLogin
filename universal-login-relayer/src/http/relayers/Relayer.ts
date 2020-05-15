@@ -121,12 +121,13 @@ class Relayer {
     const futureWalletStore = new FutureWalletStore(this.database);
     this.tokenPricesService = new TokenPricesService();
     const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
-    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, this.tokenPricesService, new TokenDetailsService(this.provider), gasTokenValidator);
+    const tokenDetailsService = new TokenDetailsService(this.provider);
+    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, this.tokenPricesService, tokenDetailsService, gasTokenValidator);
     const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue, gasTokenValidator, futureWalletStore);
     const balanceValidator = new BalanceValidator(balanceChecker);
     const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, balanceValidator, devicesService, transactionGasPriceComputator, futureWalletStore);
     const statusService = new MessageStatusService(messageRepository, this.walletContractService);
-    const messageHandler = new MessageHandler(messageRepository, executionQueue, statusService, this.walletContractService, messageHandlerValidator);
+    const messageHandler = new MessageHandler(messageRepository, executionQueue, statusService, this.walletContractService, this.tokenPricesService, tokenDetailsService, messageHandlerValidator, gasTokenValidator);
     const messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList, this.walletContractService);
     const minedTransactionHandler = new MinedTransactionHandler(authorisationStore, devicesService, this.walletContractService);
     const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService);

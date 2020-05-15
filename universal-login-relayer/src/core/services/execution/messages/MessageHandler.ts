@@ -1,11 +1,12 @@
-import {SignedMessage, MessageStatus, ensure} from '@unilogin/commons';
+import {ensure, MessageStatus, SignedMessage, TokenPricesService, TokenDetailsService} from '@unilogin/commons';
 import {MessageHandlerValidator} from '../../validators/MessageHandlerValidator';
+import {MessageStatusService} from './MessageStatusService';
 import IMessageRepository from '../../../models/messages/IMessagesRepository';
 import {IExecutionQueue} from '../../../models/execution/IExecutionQueue';
-import {MessageStatusService} from './MessageStatusService';
 import {WalletContractService} from '../../../../integration/ethereum/WalletContractService';
 import {createMessageItem} from '../../../utils/messages/serialisation';
 import {DuplicatedExecution, DuplicatedSignature, InvalidSignature, NotEnoughSignatures} from '../../../utils/errors';
+import {GasTokenValidator} from '../../validators/GasTokenValidator';
 
 class MessageHandler {
   constructor(
@@ -13,15 +14,18 @@ class MessageHandler {
     private executionQueue: IExecutionQueue,
     private statusService: MessageStatusService,
     private walletContractService: WalletContractService,
+    private tokenPricesService: TokenPricesService,
+    private tokenDetailsService: TokenDetailsService,
     private validator: MessageHandlerValidator,
-  ) {
-
-  }
+    private gasTokenValidator: GasTokenValidator,
+  ) {}
 
   async handle(message: SignedMessage, refundPayerId?: string) {
     await this.validator.validate(message);
     const messageHash = await this.walletContractService.calculateMessageHash(message);
     if (!await this.isPresent(messageHash)) {
+      const tokenDetails = await this.tokenDetailsService.getTokenDetails(message.gasToken);
+      const tokenPriceInEth = (await this.tokenPricesService.getTokenPriceInEth(tokenDetails)).toString();
       const messageItem = createMessageItem(message, '1', refundPayerId);
       await this.messageRepository.add(messageHash, messageItem);
     }
