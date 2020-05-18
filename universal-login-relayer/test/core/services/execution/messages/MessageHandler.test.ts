@@ -62,9 +62,12 @@ describe('INT: MessageHandler', () => {
     it('successful execution of transfer', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
       const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
+      console.log({signedMessage});
       const {messageHash} = await messageHandler.handle(signedMessage);
       expect(await messageHandler.isPresent(messageHash)).to.be.true;
       await executionWorker.stopLater();
+      console.log('Expected: ', expectedBalance.toString());
+      console.log('Actual: ', (await provider.getBalance(msg.to)).toString());
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       const msgStatus = await messageHandler.getStatus(messageHash);
       expect(msgStatus?.transactionHash).to.not.be.null;

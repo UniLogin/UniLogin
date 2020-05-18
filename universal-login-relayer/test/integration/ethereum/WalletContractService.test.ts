@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, signString, createKeyPair, CURRENT_NETWORK_VERSION, SignedMessage, calculateMessageHash} from '@unilogin/commons';
+import {TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, OperationType, KeyPair, signString, createKeyPair, CURRENT_NETWORK_VERSION, SignedMessage, calculateMessageHash, TEST_GAS_PRICE_IN_TOKEN, TEST_TOKEN_PRICE_IN_ETH} from '@unilogin/commons';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
 import {messageToSignedMessage, calculateGnosisStringHash, calculateMessageHash as calculateMessageHashGnosis, signStringMessage, GnosisSafeInterface, calculateMessageSignature, encodeDataForExecTransaction, encodeDataForExecuteSigned} from '@unilogin/contracts';
 import {ERC1271} from '@unilogin/contracts';
@@ -139,12 +139,36 @@ describe('INT: WalletContractService', () => {
       const signedMessage = messageToSignedMessage(msg, wallet.privateKey, CURRENT_NETWORK_VERSION, 'beta2');
       const expectedTransacton = {
         value: 0,
-        gasPrice: TEST_GAS_PRICE,
+        gasPrice: utils.bigNumberify(TEST_GAS_PRICE),
         to: msg.from,
         gasLimit: utils.bigNumberify(signedMessage.safeTxGas).add(signedMessage.baseGas).add(GAS_LIMIT_MARGIN),
         data: encodeDataForExecuteSigned(signedMessage),
       };
-      expect(await walletContractService.messageToTransaction(signedMessage)).to.deep.eq(expectedTransacton);
+      expect(await walletContractService.messageToTransaction(signedMessage, '1')).to.deep.eq(expectedTransacton);
+    });
+
+    it('Should return valid transaction for dai', async () => {
+      const msg = {
+        to: proxyContract.address,
+        from: proxyContract.address,
+        data: '0x0',
+        value: utils.parseEther('1'),
+        nonce: await proxyContract.lastNonce(),
+        gasToken: ETHER_NATIVE_TOKEN.address,
+        gasPrice: TEST_GAS_PRICE_IN_TOKEN,
+        gasLimit: '300000',
+        operationType: OperationType.call,
+        refundReceiver: wallet.address,
+      };
+      const signedMessage = messageToSignedMessage(msg, wallet.privateKey, CURRENT_NETWORK_VERSION, 'beta2');
+      const expectedTransacton = {
+        value: 0,
+        gasPrice: utils.bigNumberify(TEST_GAS_PRICE),
+        to: msg.from,
+        gasLimit: utils.bigNumberify(signedMessage.safeTxGas).add(signedMessage.baseGas).add(GAS_LIMIT_MARGIN),
+        data: encodeDataForExecuteSigned(signedMessage),
+      };
+      expect(await walletContractService.messageToTransaction(signedMessage, TEST_TOKEN_PRICE_IN_ETH)).to.deep.eq(expectedTransacton);
     });
   });
 
@@ -271,12 +295,36 @@ describe('INT: WalletContractService', () => {
       const signedMessage = messageToSignedMessage(msg, keyPair.privateKey, CURRENT_NETWORK_VERSION, 'beta3');
       const expectedTransacton = {
         value: 0,
-        gasPrice: TEST_GAS_PRICE,
+        gasPrice: utils.bigNumberify(TEST_GAS_PRICE),
         to: msg.from,
         gasLimit: utils.bigNumberify(signedMessage.safeTxGas).add(signedMessage.baseGas).add(GAS_LIMIT_MARGIN),
         data: encodeDataForExecTransaction(signedMessage),
       };
-      expect(await walletContractService.messageToTransaction(signedMessage)).to.deep.eq(expectedTransacton);
+      expect(await walletContractService.messageToTransaction(signedMessage, '1')).to.deep.eq(expectedTransacton);
+    });
+
+    it('Should return valid transaction for dai', async () => {
+      const msg = {
+        to: proxyContract.address,
+        from: proxyContract.address,
+        data: '0x0',
+        value: utils.parseEther('1'),
+        nonce: await proxyContract.nonce(),
+        gasToken: ETHER_NATIVE_TOKEN.address,
+        gasPrice: TEST_GAS_PRICE_IN_TOKEN,
+        gasLimit: '300000',
+        operationType: OperationType.call,
+        refundReceiver: wallet.address,
+      };
+      const signedMessage = messageToSignedMessage(msg, keyPair.privateKey, CURRENT_NETWORK_VERSION, 'beta3');
+      const expectedTransacton = {
+        value: 0,
+        gasPrice: utils.bigNumberify(TEST_GAS_PRICE),
+        to: msg.from,
+        gasLimit: utils.bigNumberify(signedMessage.safeTxGas).add(signedMessage.baseGas).add(GAS_LIMIT_MARGIN),
+        data: encodeDataForExecTransaction(signedMessage),
+      };
+      expect(await walletContractService.messageToTransaction(signedMessage, TEST_TOKEN_PRICE_IN_ETH)).to.deep.eq(expectedTransacton);
     });
   });
 

@@ -3,6 +3,7 @@ import {BlockchainService} from '@unilogin/contracts';
 import {SignedMessage, RelayerRequest, WalletVersion, isProperAddress, ensure} from '@unilogin/commons';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GnosisSafeService} from './GnosisSafeService';
+import {utils} from 'ethers';
 
 export class WalletContractService {
   private walletVersions: Record<string, WalletVersion | undefined> = {};
@@ -75,9 +76,9 @@ export class WalletContractService {
     return service.recoverFromRelayerRequest(relayerRequest);
   }
 
-  async messageToTransaction(message: SignedMessage) {
+  async messageToTransaction(message: SignedMessage, tokenGasPriceInEth: utils.BigNumberish) {
     const service = await this.getWalletService(message.from);
-    return service.messageToTransaction(message);
+    return service.messageToTransaction(message, tokenGasPriceInEth);
   }
 
   async isAddKeyCall(walletAddress: string, data: string) {

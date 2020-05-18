@@ -51,8 +51,8 @@ export class Beta2Service implements IWalletContractService {
     return recoverFromRelayerRequest(relayerRequest);
   }
 
-  async messageToTransaction(message: SignedMessage) {
-    return {...messageToTransaction(message), gasPrice: await this.transactionGasPriceComputator.getGasPrice(message.gasPrice)};
+  async messageToTransaction(message: SignedMessage, tokenPriceInEth: utils.BigNumberish) {
+    return {...messageToTransaction(message), gasPrice: await this.transactionGasPriceComputator.getGasPriceInEth(message.gasPrice, tokenPriceInEth)};
   }
 
   isAddKeyCall(data: string) {
