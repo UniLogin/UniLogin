@@ -24,14 +24,14 @@ describe('UNIT: GasModeService', () => {
   const expectedModes = [
     {
       name: 'cheap',
-      usdAmount: '0.0000367702',
+      usdAmount: '0.00002941616',
       timeEstimation: '114',
       gasOptions: [{
-        gasPrice: utils.bigNumberify('29894200000004'),
+        gasPrice: utils.bigNumberify('23915360000003'),
         token: TEST_TOKEN_DETAILS[0],
       },
       {
-        gasPrice: utils.bigNumberify('29894200000004'),
+        gasPrice: utils.bigNumberify('23915360000003'),
         token: TEST_TOKEN_DETAILS[1],
       },
       {
@@ -41,14 +41,14 @@ describe('UNIT: GasModeService', () => {
     },
     {
       name: 'fast',
-      usdAmount: '0.00004412424',
+      usdAmount: '0.0000367702',
       timeEstimation: '30',
       gasOptions: [{
-        gasPrice: utils.bigNumberify('35873040000005'),
+        gasPrice: utils.bigNumberify('29894200000004'),
         token: TEST_TOKEN_DETAILS[0],
       },
       {
-        gasPrice: utils.bigNumberify('35873040000005'),
+        gasPrice: utils.bigNumberify('29894200000004'),
         token: TEST_TOKEN_DETAILS[1],
       },
       {

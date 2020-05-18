@@ -128,9 +128,11 @@ export const TEST_REFUND_PAYER = {
   apiKey: 'aaaa-bbbb-cccc',
 };
 
+export const TEST_GAS_PRICE_CHEAP = utils.parseUnits('16', 'gwei');
+
 export const TEST_GAS_PRICES = {
   cheap: {
-    gasPrice: utils.parseUnits('16', 'gwei'),
+    gasPrice: TEST_GAS_PRICE_CHEAP,
     timeEstimation: '114',
   },
   fast: {
