@@ -4,9 +4,9 @@ import {utils} from 'ethers';
 import sinon from 'sinon';
 import MessageItem from '../../../../src/core/models/messages/MessageItem';
 import {MessageStatusService} from '../../../../src/core/services/execution/messages/MessageStatusService';
-import {createMessageItem} from '../../../../src/core/utils/messages/serialisation';
 import {getTestSignedMessage} from '../../../testconfig/message';
 import MessageMemoryRepository from '../../../mock/MessageMemoryRepository';
+import {createTestMessageItem} from '../../../testhelpers/createTestMessageItem';
 
 describe('UNIT: MessageStatusService', () => {
   const contractService: any = {
@@ -22,7 +22,7 @@ describe('UNIT: MessageStatusService', () => {
     messageRepository = new MessageMemoryRepository();
     messageStatusService = new MessageStatusService(messageRepository, contractService);
     message = getTestSignedMessage();
-    messageItem = createMessageItem(message);
+    messageItem = createTestMessageItem(message);
     messageHash = calculateMessageHash(message);
     await messageRepository.add(messageHash, messageItem);
   });

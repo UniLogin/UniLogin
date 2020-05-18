@@ -8,13 +8,13 @@ import sinon, {SinonSpy} from 'sinon';
 import {MessageStatusService} from '../../../../src/core/services/execution/messages/MessageStatusService';
 import PendingMessages from '../../../../src/core/services/execution/messages/PendingMessages';
 import {getKeyFromHashAndSignature} from '../../../../src/core/utils/encodeData';
-import {createMessageItem} from '../../../../src/core/utils/messages/serialisation';
 import {clearDatabase} from '../../../../src/http/relayers/RelayerUnderTest';
 import MessageSQLRepository from '../../../../src/integration/sql/services/MessageSQLRepository';
 import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletContractWithMockToken';
 import {getKnexConfig} from '../../../testhelpers/knex';
 import {setupWalletContractService} from '../../../testhelpers/setupWalletContractService';
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
+import {createTestMessageItem} from '../../../testhelpers/createTestMessageItem';
 
 describe('INT: PendingMessages', () => {
   let pendingMessages: PendingMessages;
@@ -73,7 +73,7 @@ describe('INT: PendingMessages', () => {
   });
 
   it('should get added signed transaction', async () => {
-    const messageItem = createMessageItem(signedMessage);
+    const messageItem = createTestMessageItem(signedMessage);
     await pendingMessages.add(signedMessage);
     const key = getKeyFromHashAndSignature(messageHash, signedMessage.signature);
     await messageItem.collectedSignatureKeyPairs.push({signature: signedMessage.signature, key});
