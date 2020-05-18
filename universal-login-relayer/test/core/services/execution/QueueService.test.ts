@@ -3,11 +3,12 @@ import {waitExpect} from '@unilogin/commons/testutils';
 import {expect, use} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import {constants} from 'ethers';
 import Deployment from '../../../../src/core/models/Deployment';
 import IMessageRepository from '../../../../src/core/models/messages/IMessagesRepository';
 import IRepository from '../../../../src/core/models/messages/IRepository';
 import ExecutionWorker from '../../../../src/core/services/execution/ExecutionWorker';
-import {createMessageItem, messageToTransaction} from '../../../../src/core/utils/messages/serialisation';
+import {messageToTransaction} from '../../../../src/core/utils/messages/serialisation';
 import DeploymentExecutor from '../../../../src/integration/ethereum/DeploymentExecutor';
 import MessageExecutor from '../../../../src/integration/ethereum/MessageExecutor';
 import {WalletDeploymentService} from '../../../../src/integration/ethereum/WalletDeploymentService';
@@ -15,7 +16,7 @@ import {getTestSignedMessage} from '../../../testconfig/message';
 import MemoryRepository from '../../../mock/MemoryRepository';
 import MessageMemoryRepository from '../../../mock/MessageMemoryRepository';
 import QueueMemoryStore from '../../../mock/QueueMemoryStore';
-import {constants} from 'ethers';
+import {createTestMessageItem} from '../../../testhelpers/createTestMessageItem';
 
 use(sinonChai);
 
@@ -58,7 +59,7 @@ describe('UNIT: Queue Service', () => {
     messageHash = calculateMessageHash(signedMessage);
     await messageRepository.add(
       messageHash,
-      createMessageItem(signedMessage),
+      createTestMessageItem(signedMessage),
     );
     sinon.resetHistory();
   });
@@ -89,7 +90,7 @@ describe('UNIT: Queue Service', () => {
     const markAsErrorSpy = sinon.spy(messageRepository.markAsError);
     messageRepository.markAsError = markAsErrorSpy;
     queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
-    await messageRepository.add(messageHash, createMessageItem(signedMessage));
+    await messageRepository.add(messageHash, createTestMessageItem(signedMessage));
     await queueMemoryStore.addMessage(messageHash);
     await waitExpect(() => expect(messageRepository.markAsError).calledWith(messageHash, 'TypeError: Cannot read property \'hash\' of null'));
     expect(queueMemoryStore.remove).to.be.calledOnce;
@@ -103,7 +104,7 @@ describe('UNIT: Queue Service', () => {
     executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], queueMemoryStore);
     executionWorker.start();
     queueMemoryStore.remove = sinon.spy(queueMemoryStore.remove);
-    await messageRepository.add(messageHash, createMessageItem(signedMessage));
+    await messageRepository.add(messageHash, createTestMessageItem(signedMessage));
     await queueMemoryStore.addMessage(messageHash);
 
     await waitExpect(() => expect(queueMemoryStore.remove).to.be.calledOnce, 3000);
