@@ -3,11 +3,10 @@ import sinon from 'sinon';
 import {TokensPrices, TEST_TOKEN_DETAILS, TEST_GAS_PRICES} from '@unilogin/commons';
 import {GasModeService} from '../../../src/core/services/GasModeService';
 import {utils} from 'ethers';
+import {gasPriceOracleMock} from '@unilogin/commons/testutils';
 
 describe('UNIT: GasModeService', () => {
   const tokensDetailsStore: any = {tokensDetails: TEST_TOKEN_DETAILS};
-
-  const gasPriceOracle: any = {getGasPrices: sinon.stub().resolves(TEST_GAS_PRICES)};
 
   const tokenPrices: TokensPrices = {
     ETH: {USD: 1838.51, DAI: 1494.71, SAI: 1494.71, ETH: 1},
@@ -19,7 +18,7 @@ describe('UNIT: GasModeService', () => {
     getCurrentPrices: sinon.stub().resolves(tokenPrices),
   };
 
-  const gasModeService = new GasModeService(tokensDetailsStore, gasPriceOracle, priceObserver);
+  const gasModeService = new GasModeService(tokensDetailsStore, gasPriceOracleMock, priceObserver);
 
   const expectedModes = [
     {
