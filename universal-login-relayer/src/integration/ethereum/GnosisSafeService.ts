@@ -62,9 +62,9 @@ export class GnosisSafeService implements IWalletContractService {
     );
   }
 
-  async messageToTransaction(message: SignedMessage, tokenPriceInEth: string) {
+  async messageToTransaction(message: SignedMessage, tokenPriceInEth?: string) {
     return Object({
-      gasPrice: await this.transactionGasPriceComputator.getGasPriceInEth(message.gasPrice, tokenPriceInEth),
+      gasPrice: await this.transactionGasPriceComputator.getGasPriceInEth(message.gasPrice, tokenPriceInEth || '1'),
       gasLimit: utils.bigNumberify(message.safeTxGas).add(message.baseGas).add(GAS_LIMIT_MARGIN),
       to: message.from,
       value: 0,
