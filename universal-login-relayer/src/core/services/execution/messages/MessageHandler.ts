@@ -25,16 +25,13 @@ class MessageHandler {
       const messageItem = createMessageItem(message, '1', refundPayerId);
       await this.messageRepository.add(messageHash, messageItem);
     }
-    console.log('After is Present');
     await this.addSignatureToPendingMessage(messageHash, message);
     const status = await this.statusService.getStatus(messageHash);
     const required = (await this.walletContractService.getRequiredSignatures(message.from)).toNumber();
-    console.log('After required');
     if (this.isEnoughSignatures(status, required)) {
       await this.onReadyToExecute(messageHash, status, required);
       return this.statusService.getStatus(messageHash);
     }
-    console.log('After isEnought');
     return status;
   }
 

@@ -26,7 +26,6 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     try {
       const signedMessage = await this.messageRepository.getMessage(messageHash);
       const transactionResponse = await this.execute(signedMessage);
-      console.log('TRANSACTION RESPONS');
       const {hash, wait, gasPrice} = transactionResponse;
       ensureNotFalsy(hash, TransactionHashNotFound);
       await this.messageRepository.markAsPending(messageHash, hash!, gasPrice.toString());
