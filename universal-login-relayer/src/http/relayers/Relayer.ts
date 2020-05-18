@@ -130,7 +130,7 @@ class Relayer {
     const messageHandler = new MessageHandler(messageRepository, executionQueue, statusService, this.walletContractService, this.tokenPricesService, tokenDetailsService, messageHandlerValidator, gasTokenValidator);
     const messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList, this.walletContractService);
     const minedTransactionHandler = new MinedTransactionHandler(authorisationStore, devicesService, this.walletContractService);
-    const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService);
+    const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService, gasTokenValidator);
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
 

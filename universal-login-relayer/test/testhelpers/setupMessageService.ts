@@ -47,7 +47,7 @@ export default async function setupMessageService(knex: Knex) {
   const tokenDetailsService = new TokenDetailsService(provider);
   const gasTokenValidator = new GasTokenValidator(gasPriceOracleMock);
   const messageHandler = new MessageHandler(messageRepository, executionQueue, statusService, walletContractService, getTokenPricesServiceMock(), tokenDetailsService, messageHandlerValidator, gasTokenValidator);
-  const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, walletContractService);
+  const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, walletContractService, gasTokenValidator);
   const {walletService} = await setupWalletService(wallet);
   const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
   const executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue, 2);
