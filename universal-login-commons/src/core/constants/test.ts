@@ -130,11 +130,11 @@ export const TEST_REFUND_PAYER = {
 
 export const TEST_GAS_PRICES = {
   cheap: {
-    gasPrice: utils.parseUnits('20', 'gwei'),
+    gasPrice: utils.parseUnits('16', 'gwei'),
     timeEstimation: '114',
   },
   fast: {
-    gasPrice: utils.parseUnits('24', 'gwei'),
+    gasPrice: utils.bigNumberify(TEST_GAS_PRICE),
     timeEstimation: '30',
   },
 };
