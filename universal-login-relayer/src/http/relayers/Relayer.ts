@@ -35,7 +35,6 @@ import {httpsRedirect} from '../middlewares/httpsRedirect';
 import {GasComputation} from '../../core/services/GasComputation';
 import {BlockchainService} from '@unilogin/contracts';
 import {MessageHandlerValidator} from '../../core/services/validators/MessageHandlerValidator';
-import PendingMessages from '../../core/services/execution/messages/PendingMessages';
 import {WalletContractService} from '../../integration/ethereum/WalletContractService';
 import {GnosisSafeService} from '../../integration/ethereum/GnosisSafeService';
 import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
@@ -127,8 +126,7 @@ class Relayer {
     const balanceValidator = new BalanceValidator(balanceChecker);
     const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, balanceValidator, devicesService, transactionGasPriceComputator, futureWalletStore);
     const statusService = new MessageStatusService(messageRepository, this.walletContractService);
-    const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, this.walletContractService);
-    const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
+    const messageHandler = new MessageHandler(messageRepository, executionQueue, statusService, this.walletContractService, messageHandlerValidator);
     const messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList, this.walletContractService);
     const minedTransactionHandler = new MinedTransactionHandler(authorisationStore, devicesService, this.walletContractService);
     const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService);

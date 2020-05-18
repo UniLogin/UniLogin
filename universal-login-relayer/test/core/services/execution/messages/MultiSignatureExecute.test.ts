@@ -68,11 +68,13 @@ describe('INT: MultiSignatureExecute', () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
       const signedMessage0 = getTestSignedMessage(msg, wallet.privateKey);
       const signedMessage1 = getTestSignedMessage(msg, actionKey);
-      await messageHandler.handle(signedMessage0);
+      const {state} = await messageHandler.handle(signedMessage0);
+      expect(state).eq('AwaitSignature');
       const {messageHash} = await messageHandler.handle(signedMessage1);
       await executionWorker.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       const messageStatus = await messageHandler.getStatus(messageHash);
+      expect(messageStatus?.collectedSignatures).deep.eq([signedMessage0.signature, signedMessage1.signature]);
       expect(messageStatus?.transactionHash).to.not.be.null;
       expect(messageStatus?.state).to.eq('Success');
     });

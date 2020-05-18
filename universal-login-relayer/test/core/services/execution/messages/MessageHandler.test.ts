@@ -63,6 +63,7 @@ describe('INT: MessageHandler', () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
       const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
       const {messageHash} = await messageHandler.handle(signedMessage);
+      expect(await messageHandler.isPresent(messageHash)).to.be.true;
       await executionWorker.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       const msgStatus = await messageHandler.getStatus(messageHash);
@@ -127,6 +128,26 @@ describe('INT: MessageHandler', () => {
       await executionWorker.stopLater();
       expect(await devicesStore.get(walletContract.address)).to.deep.eq([]);
       expect(await walletContract.keyExist(otherWallet.address)).to.eq(false);
+    });
+  });
+
+  describe('Ensure correct execution', () => {
+    it('should throw when pending signedMessage already has transaction hash', async () => {
+      const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
+      const {messageHash} = await messageHandler.handle(signedMessage);
+      await (messageHandler as any).messageRepository.markAsPending(messageHash, '0x829751e6e6b484a2128924ce59c2ff518acf07fd345831f0328d117dfac30cec', '2020');
+      const status = await messageHandler.getStatus(messageHash);
+      expect(() => messageHandler.ensureCorrectExecution(status!, 1))
+        .throws('Execution request already processed');
+    });
+
+    it('should throw error when pending signedMessage has not enough signatures', async () => {
+      const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
+      const {messageHash} = await messageHandler.handle(signedMessage);
+      const status = await messageHandler.getStatus(messageHash);
+      expect(status).to.not.be.null;
+      expect(() => messageHandler.ensureCorrectExecution(status!, 2))
+        .throws('Not enough signatures, required 2, got only 1');
     });
   });
 

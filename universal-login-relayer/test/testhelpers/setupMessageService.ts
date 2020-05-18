@@ -22,7 +22,6 @@ import setupWalletService from './setupWalletService';
 import {GasComputation} from '../../src/core/services/GasComputation';
 import {BlockchainService} from '@unilogin/contracts';
 import MessageHandlerValidator from '../../src/core/services/validators/MessageHandlerValidator';
-import PendingMessages from '../../src/core/services/execution/messages/PendingMessages';
 import {setupWalletContractService} from './setupWalletContractService';
 
 export default async function setupMessageService(knex: Knex) {
@@ -35,14 +34,13 @@ export default async function setupMessageService(knex: Knex) {
   const blockchainService = new BlockchainService(provider);
   const gasComputation = new GasComputation(blockchainService);
   const messageHandlerValidator = new MessageHandlerValidator(MAX_GAS_LIMIT, gasComputation, wallet.address);
-  const walletContractService = await setupWalletContractService(provider);
+  const walletContractService = setupWalletContractService(provider);
   const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
   const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
   const minedTransactionHandler = new MinedTransactionHandler(authorisationStore, devicesService, walletContractService);
   const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList(), walletContractService);
   const statusService = new MessageStatusService(messageRepository, walletContractService);
-  const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, walletContractService);
-  const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
+  const messageHandler = new MessageHandler(messageRepository, executionQueue, statusService, walletContractService, messageHandlerValidator);
   const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, walletContractService);
   const {walletService} = await setupWalletService(wallet);
   const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
