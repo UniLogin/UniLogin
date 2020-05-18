@@ -7,7 +7,7 @@ export default class EstimateGasValidator implements IMessageValidator {
   constructor(private wallet: Wallet, private walletContractService: WalletContractService) {}
 
   async validate(signedMessage: SignedMessage) {
-    const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage);
+    const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage, '1');
     let messageHash;
     try {
       messageHash = await this.wallet.provider.call({...transactionReq, from: this.wallet.address}); // TODO estimate gas
