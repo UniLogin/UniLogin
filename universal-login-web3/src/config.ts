@@ -46,7 +46,7 @@ export function getConfigForNetwork(network: Network): Config {
         provider: new HttpProvider('https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d'),
         relayerUrl: 'https://relayer-kovan.herokuapp.com',
         ensDomains: ['unilogin.test'],
-        observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0x813a4658007ed3c7b31f02009e8699bef8539cd8'],
+        observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0x08ae34860fbfe73e223596e65663683973c72dd3'],
       };
     case '8545':
     case 'ganache':
