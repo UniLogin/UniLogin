@@ -12,8 +12,8 @@ import {getKnexConfig} from '../../testhelpers/knex';
 import MessageSQLRepository from '../../../src/integration/sql/services/MessageSQLRepository';
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {clearDatabase} from '../../../src/http/relayers/RelayerUnderTest';
-import {createMessageItem} from '../../../src/core/utils/messages/serialisation';
 import {RefundPayerStore} from '../../../src/integration/sql/services/RefundPayerStore';
+import {createTestMessageItem} from '../../testhelpers/createTestMessageItem';
 
 for (const config of [{
   Type: MessageSQLRepository,
@@ -52,7 +52,7 @@ for (const config of [{
       signedMessage = unsignedMessageToSignedMessage(unsignedMessage, wallet.privateKey);
 
       const refundPayerId = await setupRefundPayerStore();
-      messageItem = createMessageItem(signedMessage, '1', refundPayerId);
+      messageItem = createTestMessageItem(signedMessage, refundPayerId);
       messageHash = calculateMessageHash(signedMessage);
     });
 
