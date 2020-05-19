@@ -64,7 +64,7 @@ describe('INT: WalletService', () => {
       const gasPrice = '0';
       const {signature} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address, gasPrice);
       const transaction = await walletService.deploy({publicKey: keyPair.publicKey, ensName, signature, gasPrice, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
-      expect(transaction.gasPrice.toString()).deep.eq('9090');
+      expect(transaction.gasPrice.toString()).deep.eq('20000000000');
     });
 
     it('setup initialize data', async () => {
