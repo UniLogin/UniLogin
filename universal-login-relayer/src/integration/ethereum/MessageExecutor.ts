@@ -1,4 +1,4 @@
-import {Wallet, providers} from 'ethers';
+import {Wallet, providers, utils} from 'ethers';
 import {SignedMessage, ensureNotFalsy, IMessageValidator} from '@unilogin/commons';
 import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';
@@ -43,12 +43,12 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     }
   }
 
-  async execute(signedMessage: SignedMessage, tokenPriceInEth = '1'): Promise<providers.TransactionResponse> {
+  async execute(signedMessage: SignedMessage, tokenPriceInEth: utils.BigNumberish = '1'): Promise<providers.TransactionResponse> {
     await this.messageValidator.validate(signedMessage);
     this.gasTokenValidator.validate({
       gasPrice: signedMessage.gasPrice.toString(),
       gasToken: signedMessage.gasToken,
-      tokenPriceInETH: tokenPriceInEth,
+      tokenPriceInETH: tokenPriceInEth.toString(),
     });
     const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage, tokenPriceInEth);
     return this.wallet.sendTransaction(transactionReq);

@@ -1,4 +1,4 @@
-import {SignedMessage, TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
+import {SignedMessage, TEST_ACCOUNT_ADDRESS, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_GAS_PRICE_IN_TOKEN} from '@unilogin/commons';
 import {emptyMessage} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
@@ -10,7 +10,7 @@ import {basicWalletContractWithMockToken} from '../../fixtures/basicWalletContra
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 import {GasTokenValidator} from '../../../src/core/services/validators/GasTokenValidator';
-import {gasPriceOracleMock} from '@unilogin/commons/test'
+import {gasPriceOracleMock} from '@unilogin/commons/testutils';
 
 describe('INT: MessageExecutor', () => {
   let messageExecutor: MessageExecutor;
@@ -18,6 +18,7 @@ describe('INT: MessageExecutor', () => {
   let provider: providers.Provider;
   let wallet: Wallet;
   let walletContract: Contract;
+  let message: Message;
   const validator = {
     validate: () => {},
   };
@@ -26,7 +27,7 @@ describe('INT: MessageExecutor', () => {
   before(async () => {
     ({wallet, walletContract, provider} = await loadFixture(basicWalletContractWithMockToken));
     messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any, setupWalletContractService(wallet.provider), gasTokenValidator);
-    const message = {...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2), nonce: await walletContract.lastNonce()};
+    message = {...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2), nonce: await walletContract.lastNonce()};
     signedMessage = getTestSignedMessage(message, wallet.privateKey);
   });
 
