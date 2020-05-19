@@ -1,9 +1,9 @@
 import {utils} from 'ethers';
-import {EMPTY_DATA, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE, OperationType} from '@unilogin/commons';
+import {EMPTY_DATA, TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_LIMIT, OperationType, TEST_GAS_PRICE} from '@unilogin/commons';
 import {encodeFunction} from '@unilogin/contracts/testutils';
 import {beta2} from '@unilogin/contracts';
 
-const gasPrice = utils.bigNumberify(DEFAULT_GAS_PRICE);
+const gasPrice = utils.bigNumberify(TEST_GAS_PRICE);
 const gasLimit = utils.bigNumberify(DEFAULT_GAS_LIMIT);
 
 export const transferMessage = {
