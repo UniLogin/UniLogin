@@ -45,11 +45,11 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
 
   async execute(signedMessage: SignedMessage, tokenPriceInEth: utils.BigNumberish = '1'): Promise<providers.TransactionResponse> {
     await this.messageValidator.validate(signedMessage);
-    this.gasTokenValidator.validate({
+    await this.gasTokenValidator.validate({
       gasPrice: signedMessage.gasPrice.toString(),
       gasToken: signedMessage.gasToken,
       tokenPriceInETH: tokenPriceInEth.toString(),
-    });
+    }, 0.3);
     const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage, tokenPriceInEth);
     return this.wallet.sendTransaction(transactionReq);
   }

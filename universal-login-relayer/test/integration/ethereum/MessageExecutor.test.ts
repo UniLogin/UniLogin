@@ -2,7 +2,7 @@ import {SignedMessage, TEST_ACCOUNT_ADDRESS, Message, TEST_TOKEN_PRICE_IN_ETH, T
 import {emptyMessage} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
-import {Contract, providers, Wallet} from 'ethers';
+import {Contract, providers, Wallet, utils} from 'ethers';
 import {bigNumberify} from 'ethers/utils';
 import MessageExecutor from '../../../src/integration/ethereum/MessageExecutor';
 import {getTestSignedMessage} from '../../testconfig/message';
@@ -46,5 +46,10 @@ describe('INT: MessageExecutor', () => {
     await transactionResponse.wait();
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.eq(expectedBalance);
+  });
+
+  it('should throw error when gasPrice changed significantly', async () => {
+    signedMessage = getTestSignedMessage({...message, gasPrice: utils.parseUnits('2', 'gwei').toString()}, wallet.privateKey);
+    await expect(messageExecutor.execute(signedMessage)).to.be.rejectedWith('Gas price is not enough');
   });
 });
