@@ -1,10 +1,9 @@
 import {expect} from 'chai';
 import {utils, Wallet, Contract} from 'ethers';
 import {Provider} from 'ethers/providers';
-import {deployContract} from 'ethereum-waffle';
 import {calculateMessageHash, GAS_BASE, GAS_FIXED, Message} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
-import {executeSetRequiredSignatures, mockContracts} from '@unilogin/contracts/testutils';
+import {executeSetRequiredSignatures} from '@unilogin/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../../testhelpers/setupMessageService';
 import {getKnexConfig} from '../../../../testhelpers/knex';
@@ -22,10 +21,11 @@ describe('INT: MultiSignatureExecute', () => {
   let otherWallet: Wallet;
   let actionKey: string;
   let executionWorker: ExecutionWorker;
+  let mockTokenNotOwned: Contract;
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, actionKey, provider, messageHandler, walletContract, otherWallet, executionWorker} = await setupMessageService(knex));
+    ({wallet, actionKey, provider, messageHandler, walletContract, otherWallet, executionWorker, mockTokenNotOwned} = await setupMessageService(knex));
     await executeSetRequiredSignatures(walletContract, 2, wallet.privateKey);
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
     executionWorker.start();
@@ -37,10 +37,7 @@ describe('INT: MultiSignatureExecute', () => {
   });
 
   it('Error when not enough tokens', async () => {
-    const mockToken = await deployContract(wallet, mockContracts.MockToken);
-    await mockToken.transfer(walletContract.address, 1);
-
-    const message = {...msg, gasToken: mockToken.address, refundReceiver: wallet.address};
+    const message = {...msg, gasToken: mockTokenNotOwned.address, refundReceiver: wallet.address};
     const signedMessage0 = getTestSignedMessage(message, wallet.privateKey);
     const signedMessage1 = getTestSignedMessage(message, actionKey);
     await messageHandler.handle(signedMessage0);

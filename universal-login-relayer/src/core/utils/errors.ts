@@ -27,7 +27,8 @@ type ErrorType =
   'InvalidApiKey' |
   'EnsNameTaken' |
   'UnauthorisedAddress' |
-  'InvalidRefundReceiver';
+  'InvalidRefundReceiver' |
+  'UnsupportedToken';
 
 export class RelayerError extends Error {
   errorType: ErrorType;
@@ -263,5 +264,12 @@ export class DuplicatedExecution extends Conflict {
   constructor() {
     super('Execution request already processed', 'DuplicatedExecution');
     Object.setPrototypeOf(this, DuplicatedExecution.prototype);
+  }
+}
+
+export class UnsupportedToken extends ValidationFailed {
+  constructor(token: string) {
+    super(`Token: ${token} is not supported.`, 'UnsupportedToken');
+    Object.setPrototypeOf(this, UnsupportedToken.prototype);
   }
 }
