@@ -1,4 +1,4 @@
-import {SignedMessage, TEST_ACCOUNT_ADDRESS, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_GAS_PRICE_IN_TOKEN} from '@unilogin/commons';
+import {SignedMessage, TEST_ACCOUNT_ADDRESS, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_GAS_PRICE_IN_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 import {emptyMessage} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
@@ -24,16 +24,25 @@ describe('INT: MessageExecutor', () => {
   };
   const gasTokenValidator = new GasTokenValidator(gasPriceOracleMock as any);
 
-  before(async () => {
+  beforeEach(async () => {
     ({wallet, walletContract, provider} = await loadFixture(basicWalletContractWithMockToken));
     messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any, setupWalletContractService(wallet.provider), gasTokenValidator);
-    message = {...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2), nonce: await walletContract.lastNonce()};
+    message = {...emptyMessage, gasPrice: TEST_GAS_PRICE, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2), nonce: await walletContract.lastNonce()};
     signedMessage = getTestSignedMessage(message, wallet.privateKey);
   });
 
   it('should execute transaction and wait for it', async () => {
     const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
     const transactionResponse = await messageExecutor.execute(signedMessage);
+    await transactionResponse.wait();
+    const balance = await provider.getBalance(signedMessage.to);
+    expect(balance).to.eq(expectedBalance);
+  });
+
+  it('should execute transaction for token and wait for it', async () => {
+    signedMessage = getTestSignedMessage({...message, gasPrice: TEST_GAS_PRICE_IN_TOKEN}, wallet.privateKey);
+    const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
+    const transactionResponse = await messageExecutor.execute(signedMessage, TEST_TOKEN_PRICE_IN_ETH);
     await transactionResponse.wait();
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.eq(expectedBalance);
