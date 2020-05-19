@@ -1,11 +1,11 @@
-@import helpers/breakpoints
+@import ../helpers/breakpoints
 
 @font-face
   font-family: 'Font Awesome 5 Free'
   font-style: normal
   font-weight: 900
   font-display: auto
-  src: url("../assets/webfonts/icomoon.woff") format("woff")
+  src: url("./../../assets/webfonts/icomoon.woff") format("woff")
 
 .fa,
 .fas
@@ -119,7 +119,7 @@
   .emoji-keyboard-arrow-button
     width: 24px
     height: 24px
-    background: #fff url('./../assets/icons/angle-bright.svg') center no-repeat
+    background: #fff url('./../../assets/icons/angle-bright.svg') center no-repeat
     border: 1px solid #DDEBF1
     border-radius: 4px
     border: none
@@ -146,7 +146,7 @@
     position: relative
     flex-wrap: nowrap
     max-width: 530px
-    margin: 45px auto -2px
+    margin: 30px auto -2px
 
   .emoji-category-item
     padding-bottom: 6px
@@ -175,31 +175,31 @@
   .emoji-category-nature::before
     width: 11px
     height: 12px
-    background: url('./../assets/ucomponent/nature.svg') center no-repeat
+    background: url('./../../assets/ucomponent/nature.svg') center no-repeat
     background-size: contain
 
   .emoji-category-food::before
     width: 13px
     height: 12px
-    background: url('./../assets/ucomponent/food.svg') center no-repeat
+    background: url('./../../assets/ucomponent/food.svg') center no-repeat
     background-size: contain
 
   .emoji-category-activities::before
     width: 13px
     height: 13px
-    background: url('./../assets/ucomponent/activities.svg') center no-repeat
+    background: url('./../../assets/ucomponent/activities.svg') center no-repeat
     background-size: contain
 
   .emoji-category-shapes::before
     width: 13px
     height: 12px
-    background: url('./../assets/ucomponent/shapes.svg') center no-repeat
+    background: url('./../../assets/ucomponent/shapes.svg') center no-repeat
     background-size: contain
 
   .emoji-category-emojis::before
     width: 14px
     height: 14px
-    background: url('./../assets/ucomponent/emojis.svg') center no-repeat
+    background: url('./../../assets/ucomponent/emojis.svg') center no-repeat
     background-size: contain
 
   .emoji-category-item + .emoji-category-item
@@ -208,7 +208,7 @@
   .emoji-form-reject
     display: block
     font-weight: bold
-    margin: 50px auto 0
+    margin: 40px auto 0
     height: 40px
     width: 150px
 
@@ -277,7 +277,7 @@
     transform: translateX(-50%)
     width: 40px
     height: 40px
-    background: url('../assets/icons/correct.svg') center no-repeat
+    background: url('./../../assets/icons/correct.svg') center no-repeat
     background-size: contain
 
   .correct-input-confirmation-text
@@ -350,6 +350,27 @@
 
 .loading-text
   text-align: center
+
+.universal-login-colors ul
+  display: flex
+  list-style: none
+  flex-wrap: wrap
+  align-items: center
+  justify-content: center
+  padding: 0
+
+.universal-login-colors ul li
+  display: flex
+  align-items: center
+  justify-content: center
+  align-items: center
+
+.color-list
+  margin: 0
+
+.color-list button
+  width: 100%
+  height: 100%
 
 @media only screen and (max-width: 768px)
   .unilogin-component-emoji

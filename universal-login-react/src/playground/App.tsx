@@ -7,7 +7,6 @@ import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_ACCOUNT_ADDR
 import {EmojiPanel} from '../ui/WalletSelector/EmojiPanel';
 import {Onboarding} from '../ui/Onboarding/Onboarding';
 import {CreateRandomInstance} from './CreateRandomInstance';
-import '../ui/styles/playground.css';
 import UniLoginSdk, {DeployedWallet, DeployingWallet} from '@unilogin/sdk';
 import {Spinner} from '../ui/commons/Spinner';
 import {useAsync} from '../ui/hooks/useAsync';
@@ -25,6 +24,7 @@ import {TopUpProvider} from '../core/models/TopUpProvider';
 import {ChooseTopUpToken} from '../ui/TopUp/ChooseTopUpToken';
 import config from './config';
 import {Dashboard} from '../ui/UFlow/Dashboard';
+import '../ui/styles/playground.sass';
 
 export const App = () => {
   const [sdk] = useState(() => {

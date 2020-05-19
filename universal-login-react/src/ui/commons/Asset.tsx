@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {TokensPrices} from '@unilogin/commons';
 import UniLoginSdk from '@unilogin/sdk';
 import Spinner from './Spinner';
-import './../styles/assetsItem.sass';
+import './../styles/base/assetsItem.sass';
 import './../styles/themes/UniLogin/assetsItemThemeUnilogin.sass';
 import './../styles/themes/Jarvis/assetsItemThemeJarvis.sass';
 import './../styles/themes/Legacy/assetsItemThemeLegacy.sass';

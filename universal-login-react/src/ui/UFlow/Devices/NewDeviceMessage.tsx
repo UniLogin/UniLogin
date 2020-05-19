@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {DeployedWallet} from '@unilogin/sdk';
-import './../../styles/newDeviceMessage.sass';
+import './../../styles/base/newDeviceMessage.sass';
 import './../../styles/themes/Legacy/newDeviceMessageThemeLegacy.sass';
 import './../../styles/themes/UniLogin/newDeviceMessageThemeUniLogin.sass';
 import './../../styles/themes/Jarvis/newDeviceMessageThemeJarvis.sass';

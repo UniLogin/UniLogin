@@ -3,8 +3,6 @@ import {WalletService} from '@unilogin/sdk';
 import {ChooseTopUpMethod} from './ChooseTopUpMethod';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {LogoColor, TopUpWithFiat} from './Fiat';
-import './../styles/topUp.sass';
-import './../styles/topUpDefaults.sass';
 import './../styles/base/chooseTopUp.sass';
 import './../styles/themes/Legacy/chooseTopUpThemeLegacy.sass';
 import './../styles/themes/Jarvis/chooseTopUpThemeJarvis.sass';

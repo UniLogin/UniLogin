@@ -1,6 +1,6 @@
 import React from 'react';
 import {DeployedWallet} from '@unilogin/sdk';
-import './../../styles/devices.sass';
+import './../../styles/base/devices.sass';
 import './../../styles/themes/Legacy/devicesThemeLegacy.sass';
 import './../../styles/themes/UniLogin/devicesThemeUniLogin.sass';
 import './../../styles/themes/Jarvis/devicesThemeJarvis.sass';

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {DeployedWallet} from '@unilogin/sdk';
 import BackupCodesView from './BackupCodesView';
 import {Prompt} from 'react-router-dom';
-import './../styles/backup.sass';
+import './../styles/base/backup.sass';
 import './../styles/themes/Legacy/backupThemeLegacy.sass';
 import './../styles/themes/UniLogin/backupThemeUniLogin.sass';
 import './../styles/themes/Jarvis/backupThemeJarvis.sass';
