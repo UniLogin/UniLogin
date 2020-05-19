@@ -53,8 +53,6 @@ describe('INT: MessageHandler', () => {
   });
 
   it('Error when token not supported', async () => {
-    const mockToken = await deployContract(wallet, mockContracts.MockToken);
-    await mockToken.transfer(walletContract.address, 1);
     const signedMessage = getTestSignedMessage({...msg, gasToken: TEST_TOKEN_ADDRESS}, wallet.privateKey);
     await expect(messageHandler.handle(signedMessage)).to.be.rejectedWith(`Token: ${TEST_TOKEN_ADDRESS} is not supported.`);
   });
