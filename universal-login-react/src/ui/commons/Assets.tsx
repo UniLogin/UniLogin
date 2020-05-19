@@ -3,7 +3,7 @@ import {utils} from 'ethers';
 import {DeployedWallet} from '@unilogin/sdk';
 import {TokenDetailsWithBalance, ValueRounder} from '@unilogin/commons';
 import {Asset} from './Asset';
-import './../styles/assetsList.sass';
+import './../styles/base/assetsList.sass';
 import './../styles/themes/Legacy/assetsListThemeLegacy.sass';
 import './../styles/themes/UniLogin/assetsListThemeUnilogin.sass';
 import './../styles/themes/Jarvis/assetsListThemeJarvis.sass';

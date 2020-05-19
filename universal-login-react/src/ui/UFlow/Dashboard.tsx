@@ -6,7 +6,7 @@ import {useProperty} from '../..';
 import {DashboardModal} from './DashboardModal';
 import {getWindowConfirmation} from '../../core/utils/getWindowConfirmation';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
-import './../styles/udashboard.sass';
+import './../styles/base/udashboard.sass';
 import './../styles/themes/UniLogin/udashboardThemeUniLogin.sass';
 import './../styles/themes/Legacy/udashboardThemeLegacy.sass';
 

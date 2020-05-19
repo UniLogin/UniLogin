@@ -4,7 +4,7 @@ import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import {DeployedWallet} from '@unilogin/sdk';
 import {Balance} from '../commons/Balance';
 import {Assets} from '../commons/Assets';
-import './../styles/funds.sass';
+import './../styles/base/funds.sass';
 import './../styles/themes/Legacy/fundsThemeLegacy.sass';
 import './../styles/themes/UniLogin/fundsThemeUnilogin.sass';
 import './../styles/themes/Jarvis/fundsThemeJarvis.sass';

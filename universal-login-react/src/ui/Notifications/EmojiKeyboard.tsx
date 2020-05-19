@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {EMOJI_COLORS, getEmojiSet, getColoredEmojiCode, CATEGORIES} from '@unilogin/commons';
 import {Emoji} from '../commons/Emoji';
-import '../styles/emoji.sass';
+import '../styles/base/emoji.sass';
 import '../styles/themes/Legacy/emojiThemeLegacy.sass';
 import '../styles/themes/UniLogin/emojiThemeUniLogin.sass';
 import '../styles/themes/Jarvis/emojiThemeJarvis.sass';
-import '../styles/colors.css';
 import {ThemedComponent} from '../commons/ThemedComponent';
 
 interface EmojiKeyboardProps {

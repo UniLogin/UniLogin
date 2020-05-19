@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import './../styles/footerSection.sass';
+import './../styles/base/footerSection.sass';
 import './../styles/themes/Legacy/footerThemeLegacy.sass';
 import './../styles/themes/UniLogin/footerThemeUniLogin.sass';
 import {ThemedComponent} from './ThemedComponent';

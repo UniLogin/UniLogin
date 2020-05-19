@@ -5,7 +5,7 @@ import {
 } from '@unilogin/commons';
 import UniLoginSdk from '@unilogin/sdk';
 import {EnsNamePicker} from './EnsNamePicker';
-import './../styles/hint.css';
+import './../styles/base/hint.sass';
 import './../styles/base/walletSelector.sass';
 import './../styles/themes/Legacy/walletSelectorThemeLegacy.sass';
 import './../styles/themes/Jarvis/walletSelectorThemeJarvis.sass';

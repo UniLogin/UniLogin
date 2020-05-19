@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {disconnectAccount, getInputClassName} from '../../core/services/DisconnectAccountService';
 import {WalletService} from '@unilogin/sdk';
-import './../styles/disconnectAccount.sass';
+import './../styles/base/disconnectAccount.sass';
 import './../styles/themes/UniLogin/disconnectAccountThemeUniLogin.sass';
 import './../styles/themes/Legacy/disconnectAccountThemeLegacy.sass';
 import './../styles/themes/Jarvis/disconnectAccountThemeJarvis.sass';

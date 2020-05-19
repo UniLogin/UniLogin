@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Spinner from '../commons/Spinner';
 import {WalletService} from '@unilogin/sdk';
 import {useThemeClassFor, classForComponent} from '../utils/classFor';
-import './../styles/connectPassphrase.sass';
+import './../styles/base/connectPassphrase.sass';
 import './../styles/themes/Legacy/connectPassphraseThemeLegacy.sass';
 import './../styles/themes/UniLogin/connectWithPassphraseThemeUniLogin.sass';
 

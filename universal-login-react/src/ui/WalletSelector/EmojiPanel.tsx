@@ -1,6 +1,6 @@
 import React from 'react';
 import {Emoji} from '../commons/Emoji';
-import '../styles/emoji.sass';
+import '../styles/base/emoji.sass';
 import '../styles/themes/Legacy/emojiThemeLegacy.sass';
 import '../styles/themes/UniLogin/emojiThemeUniLogin.sass';
 import '../styles/themes/Jarvis/emojiThemeJarvis.sass';

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Notification, GasParameters, ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
 import {EmojiForm} from './EmojiForm';
 import {DeployedWallet} from '@unilogin/sdk';
-import '../styles/emoji.sass';
+import '../styles/base/emoji.sass';
 import '../styles/themes/Legacy/emojiThemeLegacy.sass';
 import '../styles/themes/UniLogin/emojiThemeUniLogin.sass';
 import '../styles/themes/Jarvis/emojiThemeJarvis.sass';
