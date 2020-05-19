@@ -1,7 +1,7 @@
 import {createGlobalStyle} from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
-.universal-login-default .modal-wrapper {
+.modal-wrapper {
   display: flex;
   flex-direction: column;
   max-width: 770px;
@@ -10,7 +10,7 @@ export const GlobalStyle = createGlobalStyle`
   max-height: 100%;
   overflow-y: auto;
 }
-.universal-login-default .modal {
+.modal {
   background: #ffffff;
   overflow: visible;
 }
