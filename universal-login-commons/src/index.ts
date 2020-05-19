@@ -1,5 +1,5 @@
 export {CURRENT_NETWORK_VERSION, CURRENT_WALLET_VERSION, EMPTY_DATA, ETHER_NATIVE_TOKEN, ONE_SIGNATURE_GAS_COST} from './core/constants/constants';
-export {devJsonRpcUrl, DEV_DEFAULT_PRIVATE_KEY} from './core/constants/dev';
+export {devJsonRpcUrl, DEV_DEFAULT_PRIVATE_KEY, DEV_DAI_ADDRESS} from './core/constants/dev';
 export {EMPTY_DEVICE_INFO} from './core/constants/device';
 export {isStringANumberRegex} from './core/constants/isStringANumberRegex';
 export {EMOJI_COLORS} from './core/constants/emojiColors';
