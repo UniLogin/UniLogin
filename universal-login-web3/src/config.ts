@@ -1,6 +1,6 @@
 import {Provider} from 'web3/providers';
 import {HttpProvider} from './services/HttpProvider';
-import {Network, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {Network, ETHER_NATIVE_TOKEN, DEV_DAI_ADDRESS} from '@unilogin/commons';
 
 export interface Config {
   network: Network;
@@ -55,7 +55,7 @@ export function getConfigForNetwork(network: Network): Config {
         provider: new HttpProvider('http://localhost:18545'),
         relayerUrl: 'http://localhost:3311',
         ensDomains: ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'],
-        observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0x9Ad7E60487F3737ed239DAaC172A4a9533Bd9517'],
+        observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, DEV_DAI_ADDRESS],
       };
     default:
       throw new Error(`Invalid network: ${network}`);

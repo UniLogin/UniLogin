@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {utils, Wallet} from 'ethers';
-import {DEV_DEFAULT_PRIVATE_KEY} from '@unilogin/commons';
+import {DEV_DEFAULT_PRIVATE_KEY, DEV_DAI_ADDRESS} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
 import {IERC20Interface} from '@unilogin/contracts';
 
@@ -8,10 +8,9 @@ export interface CreateRandomInstanceProps {
   walletService: WalletService;
 }
 
-const daiAddressOnDevelopment = '0x9Ad7E60487F3737ed239DAaC172A4a9533Bd9517';
 export const sendDevDai = async (wallet: Wallet, to: string, value: utils.BigNumberish) => {
   const data = IERC20Interface.functions.transfer.encode([to, value]);
-  await wallet.sendTransaction({to: daiAddressOnDevelopment, data});
+  await wallet.sendTransaction({to: DEV_DAI_ADDRESS, data});
 };
 
 export const CreateRandomInstance = ({walletService}: CreateRandomInstanceProps) => {
@@ -30,7 +29,7 @@ export const CreateRandomInstance = ({walletService}: CreateRandomInstanceProps)
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('4')});
       await waitForBalance();
     } else {
-      const {waitForBalance, contractAddress} = await walletService.createFutureWallet(name, daiAddressOnDevelopment);
+      const {waitForBalance, contractAddress} = await walletService.createFutureWallet(name, DEV_DAI_ADDRESS);
       setStatus(`Waiting for intial funds in ${contractAddress}`);
       await sendDevDai(wallet, contractAddress, utils.parseEther('1000'));
       await waitForBalance();
