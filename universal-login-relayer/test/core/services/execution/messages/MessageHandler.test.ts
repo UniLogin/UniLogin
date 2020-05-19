@@ -1,9 +1,8 @@
 import {GAS_BASE, GAS_FIXED, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_TOKEN_ADDRESS} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {beta2} from '@unilogin/contracts';
-import {encodeFunction, mockContracts} from '@unilogin/contracts/testutils';
+import {encodeFunction} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
-import {deployContract} from 'ethereum-waffle';
 import {utils, Wallet, Contract} from 'ethers';
 import {clearDatabase} from '../../../../../src/http/relayers/RelayerUnderTest';
 import defaultDeviceInfo from '../../../../testconfig/defaults';
