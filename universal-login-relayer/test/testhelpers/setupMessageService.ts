@@ -24,8 +24,7 @@ import {BlockchainService} from '@unilogin/contracts';
 import MessageHandlerValidator from '../../src/core/services/validators/MessageHandlerValidator';
 import {setupWalletContractService} from './setupWalletContractService';
 import {GasTokenValidator} from '../../src/core/services/validators/GasTokenValidator';
-import {getTokenPricesServiceMock} from './mocks/tokenPricesService';
-import {gasPriceOracleMock} from './mocks/gasPriceOracle';
+import {getTokenPricesServiceMock, gasPriceOracleMock} from '@unilogin/commons/testutils';
 
 export default async function setupMessageService(knex: Knex) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);

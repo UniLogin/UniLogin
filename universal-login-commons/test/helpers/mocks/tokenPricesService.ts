@@ -1,4 +1,4 @@
-import {TokenPricesService, ETHER_NATIVE_TOKEN, TEST_TOKEN_PRICE_IN_ETH} from '@unilogin/commons';
+import {TokenPricesService, ETHER_NATIVE_TOKEN, TEST_TOKEN_PRICE_IN_ETH} from '../../../src';
 
 export const getTokenPricesServiceMock = () => {
   const tokenPricesService = new TokenPricesService();
