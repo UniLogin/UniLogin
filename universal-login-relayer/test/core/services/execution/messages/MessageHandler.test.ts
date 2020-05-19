@@ -1,4 +1,4 @@
-import {GAS_BASE, GAS_FIXED, Message} from '@unilogin/commons';
+import {GAS_BASE, GAS_FIXED, Message, TEST_TOKEN_PRICE_IN_ETH} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {beta2} from '@unilogin/contracts';
 import {encodeFunction, mockContracts} from '@unilogin/contracts/testutils';
@@ -16,21 +16,24 @@ import {Provider} from 'ethers/providers';
 import AuthorisationStore from '../../../../../src/integration/sql/services/AuthorisationStore';
 import {DevicesStore} from '../../../../../src/integration/sql/services/DevicesStore';
 import ExecutionWorker from '../../../../../src/core/services/execution/ExecutionWorker';
+import IMessageRepository from '../../../../../src/core/models/messages/IMessagesRepository';
 
 describe('INT: MessageHandler', () => {
   let messageHandler: MessageHandler;
   let provider: Provider;
   let authorisationStore: AuthorisationStore;
+  let messageRepository: IMessageRepository;
   let devicesStore: DevicesStore;
   let wallet: Wallet;
   let walletContract: Contract;
   let msg: Message;
   let otherWallet: Wallet;
   let executionWorker: ExecutionWorker;
+  let mockToken: Contract;
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, provider, messageHandler, authorisationStore, walletContract, otherWallet, devicesStore, executionWorker} = await setupMessageService(knex));
+    ({authorisationStore, devicesStore, executionWorker, messageHandler, messageRepository, mockToken, provider, wallet, walletContract, otherWallet} = await setupMessageService(knex));
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
     executionWorker.start();
   });
@@ -64,11 +67,22 @@ describe('INT: MessageHandler', () => {
       const signedMessage = getTestSignedMessage(msg, wallet.privateKey);
       const {messageHash} = await messageHandler.handle(signedMessage);
       expect(await messageHandler.isPresent(messageHash)).to.be.true;
+      const messageItem = await messageRepository.get(messageHash);
+      expect(messageItem.tokenPriceInEth).be.eq('1');
       await executionWorker.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       const msgStatus = await messageHandler.getStatus(messageHash);
       expect(msgStatus?.transactionHash).to.not.be.null;
       expect(msgStatus?.state).to.eq('Success');
+    });
+
+    it('correctly save tokenPriceInEth', async () => {
+      const messageOverrides = {...msg, gasToken: mockToken.address};
+      const signedMessage = getTestSignedMessage(messageOverrides, wallet.privateKey);
+      const {messageHash} = await messageHandler.handle(signedMessage);
+      expect(await messageHandler.isPresent(messageHash)).to.be.true;
+      const messageItem = await messageRepository.get(messageHash);
+      expect(messageItem.tokenPriceInEth).be.eq(TEST_TOKEN_PRICE_IN_ETH.toString());
     });
   });
 

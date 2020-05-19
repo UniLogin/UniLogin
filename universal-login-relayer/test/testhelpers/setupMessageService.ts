@@ -1,6 +1,6 @@
 import Knex from 'knex';
 import {loadFixture} from 'ethereum-waffle';
-import {IMessageValidator, MAX_GAS_LIMIT} from '@unilogin/commons';
+import {IMessageValidator, MAX_GAS_LIMIT, TokenDetailsService} from '@unilogin/commons';
 import MessageHandler from '../../src/core/services/execution/messages/MessageHandler';
 import QueueSQLStore from '../../src/integration/sql/services/QueueSQLStore';
 import AuthorisationStore from '../../src/integration/sql/services/AuthorisationStore';
@@ -23,6 +23,8 @@ import {GasComputation} from '../../src/core/services/GasComputation';
 import {BlockchainService} from '@unilogin/contracts';
 import MessageHandlerValidator from '../../src/core/services/validators/MessageHandlerValidator';
 import {setupWalletContractService} from './setupWalletContractService';
+import {GasTokenValidator} from '../../src/core/services/validators/GasTokenValidator';
+import {getTokenPricesServiceMock, gasPriceOracleMock} from '@unilogin/commons/testutils';
 
 export default async function setupMessageService(knex: Knex) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
@@ -40,10 +42,12 @@ export default async function setupMessageService(knex: Knex) {
   const minedTransactionHandler = new MinedTransactionHandler(authorisationStore, devicesService, walletContractService);
   const messageExecutionValidator: IMessageValidator = new MessageExecutionValidator(wallet, getContractWhiteList(), walletContractService);
   const statusService = new MessageStatusService(messageRepository, walletContractService);
-  const messageHandler = new MessageHandler(messageRepository, executionQueue, statusService, walletContractService, messageHandlerValidator);
+  const tokenDetailsService = new TokenDetailsService(provider);
+  const gasTokenValidator = new GasTokenValidator(gasPriceOracleMock);
+  const messageHandler = new MessageHandler(messageRepository, executionQueue, statusService, walletContractService, getTokenPricesServiceMock(), tokenDetailsService, messageHandlerValidator, gasTokenValidator);
   const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, walletContractService);
   const {walletService} = await setupWalletService(wallet);
   const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
   const executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
-  return {wallet, actionKey, provider, mockToken, authorisationStore, devicesStore, messageHandler, walletContract, otherWallet, executionWorker, walletContractService};
+  return {wallet, actionKey, provider, messageRepository, mockToken, authorisationStore, devicesStore, messageHandler, walletContract, otherWallet, executionWorker, walletContractService};
 }
