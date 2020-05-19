@@ -49,5 +49,5 @@ export default async function setupMessageService(knex: Knex) {
   const {walletService} = await setupWalletService(wallet);
   const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
   const executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
-  return {wallet, actionKey, provider, mockToken, authorisationStore, devicesStore, messageHandler, walletContract, otherWallet, executionWorker, walletContractService};
+  return {wallet, actionKey, provider, messageRepository, mockToken, authorisationStore, devicesStore, messageHandler, walletContract, otherWallet, executionWorker, walletContractService};
 }
