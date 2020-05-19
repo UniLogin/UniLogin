@@ -1,6 +1,6 @@
-import {GAS_BASE, GAS_FIXED, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_TOKEN_ADDRESS, TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {GAS_BASE, GAS_FIXED, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_TOKEN_ADDRESS} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
-import {beta2, IERC20Interface} from '@unilogin/contracts';
+import {beta2} from '@unilogin/contracts';
 import {encodeFunction, mockContracts} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {deployContract} from 'ethereum-waffle';
@@ -30,10 +30,11 @@ describe('INT: MessageHandler', () => {
   let otherWallet: Wallet;
   let executionWorker: ExecutionWorker;
   let mockToken: Contract;
+  let mockTokenNotOwned: Contract;
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({authorisationStore, devicesStore, executionWorker, messageHandler, messageRepository, mockToken, provider, wallet, walletContract, otherWallet} = await setupMessageService(knex));
+    ({authorisationStore, devicesStore, executionWorker, messageHandler, messageRepository, mockToken, mockTokenNotOwned, provider, wallet, walletContract, otherWallet} = await setupMessageService(knex));
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
     executionWorker.start();
   });
@@ -44,11 +45,7 @@ describe('INT: MessageHandler', () => {
   });
 
   it('Error when not enough tokens', async () => {
-    const tokenBalance = await mockToken.balanceOf(walletContract.address);
-    const data = IERC20Interface.functions.transfer.encode([TEST_ACCOUNT_ADDRESS, tokenBalance.sub(1).toString()]);
-    const signedMessageSendAllTokens = getTestSignedMessage({...msg, value: 0, gasToken: ETHER_NATIVE_TOKEN.address, to: mockToken.address, data}, wallet.privateKey);
-    await messageHandler.handle(signedMessageSendAllTokens);
-    const signedMessage = getTestSignedMessage({...msg, nonce: await walletContract.lastNonce(), gasToken: mockToken.address}, wallet.privateKey);
+    const signedMessage = getTestSignedMessage({...msg, gasToken: mockTokenNotOwned.address}, wallet.privateKey);
     const {messageHash} = await messageHandler.handle(signedMessage);
     await executionWorker.stopLater();
     const messageEntry = await messageHandler.getStatus(messageHash);
