@@ -45,6 +45,9 @@ describe('UNIT: Queue Service', () => {
   const minedTransactionHandler: any = {
     handle: onTransactionMined,
   };
+  const gasTokenValidator: any = {
+    validate: () => {},
+  };
   let signedMessage: SignedMessage;
   let messageHash: string;
 
@@ -52,7 +55,7 @@ describe('UNIT: Queue Service', () => {
     queueMemoryStore = new QueueMemoryStore();
     messageRepository = new MessageMemoryRepository();
     deploymentRepository = new MemoryRepository<Deployment>();
-    messageExecutor = new MessageExecutor(wallet, messageValidator, messageRepository, minedTransactionHandler, {messageToTransaction: messageToTransaction} as any, {gasTokenValidator: {validate: () => {}}} as any);
+    messageExecutor = new MessageExecutor(wallet, messageValidator, messageRepository, minedTransactionHandler, {messageToTransaction: messageToTransaction} as any, gasTokenValidator);
     deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], queueMemoryStore);
     signedMessage = getTestSignedMessage();
