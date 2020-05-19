@@ -1,9 +1,8 @@
-import {GAS_BASE, GAS_FIXED, Message, TEST_TOKEN_PRICE_IN_ETH} from '@unilogin/commons';
+import {GAS_BASE, GAS_FIXED, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_TOKEN_ADDRESS} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {beta2} from '@unilogin/contracts';
-import {encodeFunction, mockContracts} from '@unilogin/contracts/testutils';
+import {encodeFunction} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
-import {deployContract} from 'ethereum-waffle';
 import {utils, Wallet, Contract} from 'ethers';
 import {clearDatabase} from '../../../../../src/http/relayers/RelayerUnderTest';
 import defaultDeviceInfo from '../../../../testconfig/defaults';
@@ -30,10 +29,11 @@ describe('INT: MessageHandler', () => {
   let otherWallet: Wallet;
   let executionWorker: ExecutionWorker;
   let mockToken: Contract;
+  let mockTokenNotOwned: Contract;
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({authorisationStore, devicesStore, executionWorker, messageHandler, messageRepository, mockToken, provider, wallet, walletContract, otherWallet} = await setupMessageService(knex));
+    ({authorisationStore, devicesStore, executionWorker, messageHandler, messageRepository, mockToken, mockTokenNotOwned, provider, wallet, walletContract, otherWallet} = await setupMessageService(knex));
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
     executionWorker.start();
   });
@@ -44,13 +44,16 @@ describe('INT: MessageHandler', () => {
   });
 
   it('Error when not enough tokens', async () => {
-    const mockToken = await deployContract(wallet, mockContracts.MockToken);
-    await mockToken.transfer(walletContract.address, 1);
-    const signedMessage = getTestSignedMessage({...msg, gasToken: mockToken.address}, wallet.privateKey);
+    const signedMessage = getTestSignedMessage({...msg, gasToken: mockTokenNotOwned.address}, wallet.privateKey);
     const {messageHash} = await messageHandler.handle(signedMessage);
     await executionWorker.stopLater();
     const messageEntry = await messageHandler.getStatus(messageHash);
     expect(messageEntry?.error).to.eq('Error: Not enough tokens');
+  });
+
+  it('Error when token not supported', async () => {
+    const signedMessage = getTestSignedMessage({...msg, gasToken: TEST_TOKEN_ADDRESS}, wallet.privateKey);
+    await expect(messageHandler.handle(signedMessage)).to.be.rejectedWith(`Token: ${TEST_TOKEN_ADDRESS} is not supported.`);
   });
 
   it('Error when not enough gas', async () => {

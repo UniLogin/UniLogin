@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, Wallet, Contract} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE, KeyPair, TEST_REFUND_PAYER} from '@unilogin/commons';
+import {DEFAULT_GAS_LIMIT, stringifySignedMessageFields, OperationType, TEST_GAS_PRICE, KeyPair, TEST_REFUND_PAYER, ETHER_NATIVE_TOKEN, TEST_TOKEN_ADDRESS} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {startRelayer} from '../testhelpers/http';
 import {getGnosisTestSignedMessage, getTestSignedMessage} from '../testconfig/message';
@@ -37,7 +37,7 @@ describe('E2E: Relayer - WalletContract routes', () => {
       expect(messageStatus.state).eq('Success');
     };
 
-    const getTransferMessage = async (gasPrice: number) => ({
+    const getTransferMessage = async (gasPrice: number, gasToken = ETHER_NATIVE_TOKEN.address) => ({
       from: contract.address,
       to: otherWallet.address,
       value: 1000000000,
@@ -45,7 +45,7 @@ describe('E2E: Relayer - WalletContract routes', () => {
       nonce: await contract.nonce(),
       operationType: OperationType.call,
       refundReceiver: deployer.address,
-      gasToken: mockToken.address,
+      gasToken,
       gasPrice,
       gasLimit: DEFAULT_GAS_LIMIT,
     });
@@ -76,6 +76,17 @@ describe('E2E: Relayer - WalletContract routes', () => {
       expect(status).to.eq(201);
       await waitExpect(() => checkMessageState(body.status.messageHash));
       expect(await relayer.provider.getBalance(contract.address)).to.eq(balanceBefore.sub(msg.value));
+    });
+
+    it('fails for gasToken not eth', async () => {
+      const msg = await getTransferMessage(100, TEST_TOKEN_ADDRESS);
+      const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
+      const stringifiedMessage = stringifySignedMessageFields(signedMessage);
+      const {status, body} = await chai.request((relayer as any).server)
+        .post('/wallet/execution')
+        .send(stringifiedMessage);
+      expect(status).to.eq(400);
+      expect(body.error).to.eq(`Error: Token: ${TEST_TOKEN_ADDRESS} is not supported.`);
     });
   });
 
