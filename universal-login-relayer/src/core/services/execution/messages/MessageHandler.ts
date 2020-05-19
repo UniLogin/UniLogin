@@ -26,6 +26,11 @@ class MessageHandler {
     if (!await this.isPresent(messageHash)) {
       const tokenDetails = await this.tokenDetailsService.getTokenDetails(message.gasToken);
       const tokenPriceInEth = (await this.tokenPricesService.getTokenPriceInEth(tokenDetails)).toString();
+      await this.gasTokenValidator.validate({
+        gasPrice: message.gasPrice.toString(),
+        gasToken: message.gasToken,
+        tokenPriceInETH: tokenPriceInEth,
+      });
       const messageItem = createMessageItem(message, tokenPriceInEth, refundPayerId);
       await this.messageRepository.add(messageHash, messageItem);
     }
