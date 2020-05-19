@@ -3,11 +3,10 @@ import sinon from 'sinon';
 import {TokensPrices, TEST_TOKEN_DETAILS, TEST_GAS_PRICES} from '@unilogin/commons';
 import {GasModeService} from '../../../src/core/services/GasModeService';
 import {utils} from 'ethers';
+import {gasPriceOracleMock} from '@unilogin/commons/testutils';
 
 describe('UNIT: GasModeService', () => {
   const tokensDetailsStore: any = {tokensDetails: TEST_TOKEN_DETAILS};
-
-  const gasPriceOracle: any = {getGasPrices: sinon.stub().resolves(TEST_GAS_PRICES)};
 
   const tokenPrices: TokensPrices = {
     ETH: {USD: 1838.51, DAI: 1494.71, SAI: 1494.71, ETH: 1},
@@ -19,19 +18,19 @@ describe('UNIT: GasModeService', () => {
     getCurrentPrices: sinon.stub().resolves(tokenPrices),
   };
 
-  const gasModeService = new GasModeService(tokensDetailsStore, gasPriceOracle, priceObserver);
+  const gasModeService = new GasModeService(tokensDetailsStore, gasPriceOracleMock, priceObserver);
 
   const expectedModes = [
     {
       name: 'cheap',
-      usdAmount: '0.0000367702',
+      usdAmount: '0.00002941616',
       timeEstimation: '114',
       gasOptions: [{
-        gasPrice: utils.bigNumberify('29894200000004'),
+        gasPrice: utils.bigNumberify('23915360000003'),
         token: TEST_TOKEN_DETAILS[0],
       },
       {
-        gasPrice: utils.bigNumberify('29894200000004'),
+        gasPrice: utils.bigNumberify('23915360000003'),
         token: TEST_TOKEN_DETAILS[1],
       },
       {
@@ -41,14 +40,14 @@ describe('UNIT: GasModeService', () => {
     },
     {
       name: 'fast',
-      usdAmount: '0.00004412424',
+      usdAmount: '0.0000367702',
       timeEstimation: '30',
       gasOptions: [{
-        gasPrice: utils.bigNumberify('35873040000005'),
+        gasPrice: utils.bigNumberify('29894200000004'),
         token: TEST_TOKEN_DETAILS[0],
       },
       {
-        gasPrice: utils.bigNumberify('35873040000005'),
+        gasPrice: utils.bigNumberify('29894200000004'),
         token: TEST_TOKEN_DETAILS[1],
       },
       {

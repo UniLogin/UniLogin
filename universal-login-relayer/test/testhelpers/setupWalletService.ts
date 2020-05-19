@@ -1,13 +1,13 @@
 import sinon from 'sinon';
 import {Wallet, Contract, utils} from 'ethers';
-import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
+import {deployContract} from 'ethereum-waffle';
+import {gasPriceOracleMock} from '@unilogin/commons/testutils';
+import {KeyPair, calculateInitializeSignature, DEPLOY_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 import {encodeDataForSetup, computeGnosisCounterfactualAddress, deployGnosisSafe, deployProxyFactory, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {WalletDeploymentService} from '../../src/integration/ethereum/WalletDeploymentService';
 import {buildEnsService} from './buildEnsService';
 import {WalletDeployer} from '../../src/integration/ethereum/WalletDeployer';
 import ENSService from '../../src/integration/ethereum/ensService';
-import {deployContract} from 'ethereum-waffle';
-import {DEPLOY_GAS_LIMIT} from '@unilogin/commons';
 import {DEPLOY_CONTRACT_NONCE} from '@unilogin/contracts';
 import {getSetupData} from './http';
 import {TransactionGasPriceComputator} from '../../src/integration/ethereum/TransactionGasPriceComputator';
@@ -26,13 +26,10 @@ export default async function setupWalletService(wallet: Wallet) {
   const fakeDevicesService: any = {
     addOrUpdate: sinon.spy(),
   };
-  const fakeGasPriceOracle: any = {
-    getGasPrices: () => ({fast: {gasPrice: utils.bigNumberify('9090')}}),
-  };
   const fakeFutureWalletStore: any = {
     get: () => ({tokenPriceInETH: '1'}),
   };
-  const transactionGasPriceComputator = new TransactionGasPriceComputator(fakeGasPriceOracle as any);
+  const transactionGasPriceComputator = new TransactionGasPriceComputator(gasPriceOracleMock);
   const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceValidator, fakeDevicesService, transactionGasPriceComputator, fakeFutureWalletStore);
   return {provider, wallet, walletService, factoryContract, ensService, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler};
 }

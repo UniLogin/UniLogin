@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import sinon from 'sinon';
-import {TEST_GAS_PRICES, TEST_TOKEN_ADDRESS, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
+import {TEST_TOKEN_ADDRESS, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, TEST_GAS_PRICE_CHEAP} from '@unilogin/commons';
+import {gasPriceOracleMock} from '@unilogin/commons/testutils';
 import {GasTokenValidator, calculateTolerancedValue} from '../../../../src/core/services/validators/GasTokenValidator';
 import {parseEther, bigNumberify} from 'ethers/utils';
 import {constants} from 'ethers';
@@ -9,16 +9,15 @@ import {constants} from 'ethers';
 chai.use(chaiAsPromised);
 
 describe('UNIT: GasTokenValidator', () => {
-  const oracle = {getGasPrices: sinon.stub().resolves(TEST_GAS_PRICES)} as any;
-  const validator = new GasTokenValidator(oracle);
+  const validator = new GasTokenValidator(gasPriceOracleMock);
 
   const getGasPriceDetails = (tokenPriceInETH: string) => ({
-    gasPrice: TEST_GAS_PRICE,
+    gasPrice: TEST_GAS_PRICE_CHEAP.toString(),
     gasToken: TEST_TOKEN_ADDRESS,
     tokenPriceInETH,
   });
 
-  describe('bellow gasPrice from oracle (1 * 20 gwei < 24 gwei)', () => {
+  describe('bellow gasPrice from oracle (1 * 16 gwei <= 20 gwei)', () => {
     const gasPriceDetails = getGasPriceDetails('1');
 
     it('throw when gasToken is less than minimum expected', async () => {
@@ -46,13 +45,13 @@ describe('UNIT: GasTokenValidator', () => {
     });
   });
 
-  it('eq gasPrice from oracle (1.2 * 20 gwei = 24 gwei)', async () => {
-    const gasPriceDetails = getGasPriceDetails('1.2');
+  it('eq gasPrice from oracle 20 gwei', async () => {
+    const gasPriceDetails = {...getGasPriceDetails('1'), gasPrice: TEST_GAS_PRICE};
     await expect(validator.validate(gasPriceDetails, 0.1)).to.be.fulfilled;
     await expect(validator.validate(gasPriceDetails)).to.be.fulfilled;
   });
 
-  it('under gasPrice from oracle (1.4 * 20 gwei  > 24 gwei)', async () => {
+  it('under gasPrice from oracle (1.4 * 16 gwei  > 20 gwei)', async () => {
     const gasPriceDetails = getGasPriceDetails('1.4');
     await expect(validator.validate(gasPriceDetails, 0.1)).to.be.fulfilled;
     await expect(validator.validate(gasPriceDetails)).to.be.fulfilled;
