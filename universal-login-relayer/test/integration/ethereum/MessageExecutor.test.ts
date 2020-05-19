@@ -9,6 +9,8 @@ import {getTestSignedMessage} from '../../testconfig/message';
 import {basicWalletContractWithMockToken} from '../../fixtures/basicWalletContractWithMockToken';
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
+import {GasTokenValidator} from '../../../src/core/services/validators/GasTokenValidator';
+import {gasPriceOracleMock} from '@unilogin/commons/test'
 
 describe('INT: MessageExecutor', () => {
   let messageExecutor: MessageExecutor;
@@ -17,12 +19,13 @@ describe('INT: MessageExecutor', () => {
   let wallet: Wallet;
   let walletContract: Contract;
   const validator = {
-    validate: async () => {},
+    validate: () => {},
   };
+  const gasTokenValidator = new GasTokenValidator(gasPriceOracleMock as any);
 
   before(async () => {
     ({wallet, walletContract, provider} = await loadFixture(basicWalletContractWithMockToken));
-    messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any, setupWalletContractService(wallet.provider), validator as any);
+    messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any, setupWalletContractService(wallet.provider), gasTokenValidator);
     const message = {...emptyMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2), nonce: await walletContract.lastNonce()};
     signedMessage = getTestSignedMessage(message, wallet.privateKey);
   });
