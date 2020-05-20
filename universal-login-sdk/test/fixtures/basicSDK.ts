@@ -14,7 +14,7 @@ export default async function basicSDK(givenProvider: providers.Provider, wallet
   await sdk.fetchRelayerConfig();
   const ensName = 'alex.mylogin.eth';
   const {contractAddress, privateKey} = await createdDeployedWallet(ensName, sdk, wallet);
-  await mockToken.transfer(contractAddress, utils.parseEther('2.0'));
+  await mockToken.transfer(contractAddress, utils.parseEther('3.0'));
   const walletContract = new Contract(contractAddress, gnosisSafe.GnosisSafe.abi, wallet);
   return {wallet, provider, mockToken, otherWallet, otherWallet2, sdk, privateKey, contractAddress, walletContract, relayer, ensName};
 }
