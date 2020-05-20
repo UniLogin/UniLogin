@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {TEST_TOKEN_ADDRESS, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, TEST_GAS_PRICE_CHEAP} from '@unilogin/commons';
-import {gasPriceOracleMock} from '@unilogin/commons/testutils';
+import {getMockedGasPriceOracle} from '@unilogin/commons/testutils';
 import {GasTokenValidator, calculateTolerancedValue} from '../../../../src/core/services/validators/GasTokenValidator';
 import {parseEther, bigNumberify} from 'ethers/utils';
 import {constants} from 'ethers';
@@ -9,7 +9,7 @@ import {constants} from 'ethers';
 chai.use(chaiAsPromised);
 
 describe('UNIT: GasTokenValidator', () => {
-  const validator = new GasTokenValidator(gasPriceOracleMock);
+  const validator = new GasTokenValidator(getMockedGasPriceOracle());
 
   const getGasPriceDetails = (tokenPriceInETH: string) => ({
     gasPrice: TEST_GAS_PRICE_CHEAP.toString(),

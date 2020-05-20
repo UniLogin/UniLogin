@@ -4,5 +4,5 @@ export {deployMockToken} from './fixtures/deployMockToken';
 export {basicENS, deployENS} from './fixtures/basicENS';
 export {waitExpect} from './helpers/waitExpect';
 export {mockProviderWithBlockNumber} from './helpers/mockProvider';
-export {gasPriceOracleMock} from './helpers/mocks/gasPriceOracle';
+export {getMockedGasPriceOracle, mockGasPriceOracle} from './helpers/mocks/gasPriceOracle';
 export {getTokenPricesServiceMock} from './helpers/mocks/tokenPricesService';

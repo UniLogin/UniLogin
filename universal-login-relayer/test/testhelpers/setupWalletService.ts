@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import {Wallet, Contract, utils} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
-import {gasPriceOracleMock} from '@unilogin/commons/testutils';
+import {getMockedGasPriceOracle} from '@unilogin/commons/testutils';
 import {KeyPair, calculateInitializeSignature, DEPLOY_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 import {encodeDataForSetup, computeGnosisCounterfactualAddress, deployGnosisSafe, deployProxyFactory, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {WalletDeploymentService} from '../../src/integration/ethereum/WalletDeploymentService';
@@ -29,7 +29,7 @@ export default async function setupWalletService(wallet: Wallet) {
   const fakeFutureWalletStore: any = {
     get: () => ({tokenPriceInETH: '1'}),
   };
-  const transactionGasPriceComputator = new TransactionGasPriceComputator(gasPriceOracleMock);
+  const transactionGasPriceComputator = new TransactionGasPriceComputator(getMockedGasPriceOracle());
   const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceValidator, fakeDevicesService, transactionGasPriceComputator, fakeFutureWalletStore);
   return {provider, wallet, walletService, factoryContract, ensService, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler};
 }

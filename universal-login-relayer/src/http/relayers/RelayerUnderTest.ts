@@ -11,7 +11,7 @@ import {
   TEST_TOKEN_DETAILS,
   TEST_TOKEN_PRICE_IN_ETH,
 } from '@unilogin/commons';
-import {gasPriceOracleMock} from '@unilogin/commons/testutils';
+import {mockGasPriceOracle} from '@unilogin/commons/testutils';
 import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {Config} from '../../config/relayer';
@@ -96,7 +96,7 @@ export class RelayerUnderTest extends Relayer {
 
   async start() {
     await super.start();
-    this.gasPriceOracle = gasPriceOracleMock;
+    mockGasPriceOracle(this.gasPriceOracle);
     await this.setupTestPartner();
     (this.futureWalletHandler as any).tokenDetailsService.getTokenDetails = (address: string) => TEST_TOKEN_DETAILS.find(token => token.address === address);
     this.tokenPricesService.getTokenPriceInEth = (tokenDetails: any) => Promise.resolve(tokenDetails?.address === ETHER_NATIVE_TOKEN.address ? 1 : TEST_TOKEN_PRICE_IN_ETH);
