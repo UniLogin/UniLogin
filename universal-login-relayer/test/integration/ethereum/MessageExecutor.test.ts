@@ -10,7 +10,7 @@ import {basicWalletContractWithMockToken} from '../../fixtures/basicWalletContra
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 import {GasTokenValidator} from '../../../src/core/services/validators/GasTokenValidator';
-import {gasPriceOracleMock} from '@unilogin/commons/testutils';
+import {getMockedGasPriceOracle} from '@unilogin/commons/test/helpers/mocks/gasPriceOracle';
 
 describe('INT: MessageExecutor', () => {
   let messageExecutor: MessageExecutor;
@@ -22,7 +22,7 @@ describe('INT: MessageExecutor', () => {
   const validator = {
     validate: () => {},
   };
-  const gasTokenValidator = new GasTokenValidator(gasPriceOracleMock as any);
+  const gasTokenValidator = getMockedGasPriceOracle();
 
   beforeEach(async () => {
     ({wallet, walletContract, provider} = await loadFixture(basicWalletContractWithMockToken));
