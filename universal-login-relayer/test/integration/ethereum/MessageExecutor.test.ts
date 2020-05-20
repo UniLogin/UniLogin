@@ -1,4 +1,4 @@
-import {SignedMessage, TEST_ACCOUNT_ADDRESS, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_GAS_PRICE_IN_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
+import {SignedMessage, TEST_ACCOUNT_ADDRESS, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_GAS_PRICE_IN_TOKEN, TEST_GAS_PRICE, getMockedGasPriceOracle} from '@unilogin/commons';
 import {emptyMessage} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {loadFixture} from 'ethereum-waffle';
@@ -10,7 +10,6 @@ import {basicWalletContractWithMockToken} from '../../fixtures/basicWalletContra
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 import {GasTokenValidator} from '../../../src/core/services/validators/GasTokenValidator';
-import {getMockedGasPriceOracle} from '@unilogin/commons/test/helpers/mocks/gasPriceOracle';
 
 describe('INT: MessageExecutor', () => {
   let messageExecutor: MessageExecutor;
