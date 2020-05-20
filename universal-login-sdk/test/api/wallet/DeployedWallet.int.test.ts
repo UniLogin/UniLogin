@@ -6,7 +6,7 @@ import {Contract, utils, providers, Wallet} from 'ethers';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import basicSDK, {transferMessage} from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER, TEST_SDK_CONFIG} from '@unilogin/commons';
+import {walletFromBrain, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER, TEST_SDK_CONFIG, TEST_GAS_PRICE_IN_TOKEN} from '@unilogin/commons';
 import UniLoginSdk, {DeployedWallet} from '../../../src';
 import {waitForSuccess} from '../../helpers/waitForSuccess';
 
@@ -16,7 +16,7 @@ chai.use(chaiAsPromised);
 
 const loadFixture = createFixtureLoader();
 
-const gasPrice = DEFAULT_GAS_PRICE;
+const gasPrice = TEST_GAS_PRICE_IN_TOKEN;
 
 describe('INT: DeployedWallet', () => {
   let provider: providers.Provider;

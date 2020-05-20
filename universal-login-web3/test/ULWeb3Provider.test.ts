@@ -9,7 +9,7 @@ import {RelayerUnderTest} from '@unilogin/relayer';
 import {createWallet} from '@unilogin/sdk/testutils';
 import {ULWeb3RootProps} from '../src/ui/react/ULWeb3Root';
 import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWeb3';
-import {TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
+import {TEST_CONTRACT_ADDRESS, TEST_GAS_PRICE} from '@unilogin/commons';
 
 chai.use(chaiAsPromised);
 
@@ -22,7 +22,7 @@ describe('INT: ULWeb3Provider', () => {
 
   beforeEach(async () => {
     ({relayer, deployer, services, web3, ulProvider} = await setupTestEnvironmentWithWeb3());
-    ulProvider.uiController.confirmRequest = sinon.stub().resolves({isConfirmed: true, gasParameters: {}});
+    ulProvider.uiController.confirmRequest = sinon.stub().resolves({isConfirmed: true, gasParameters: {gasPrice: TEST_GAS_PRICE}});
     ulProvider.uiController.signChallenge = sinon.stub().resolves(true);
   });
 

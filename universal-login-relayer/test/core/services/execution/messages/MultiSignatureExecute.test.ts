@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {utils, Wallet, Contract} from 'ethers';
 import {Provider} from 'ethers/providers';
-import {calculateMessageHash, GAS_BASE, GAS_FIXED, Message} from '@unilogin/commons';
+import {calculateMessageHash, GAS_BASE, GAS_FIXED, Message, TEST_GAS_PRICE_IN_TOKEN} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {executeSetRequiredSignatures} from '@unilogin/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../../fixtures/basicWalletContract';
@@ -37,7 +37,7 @@ describe('INT: MultiSignatureExecute', () => {
   });
 
   it('Error when not enough tokens', async () => {
-    const message = {...msg, gasToken: mockTokenNotOwned.address, refundReceiver: wallet.address};
+    const message = {...msg, gasToken: mockTokenNotOwned.address, gasPrice: TEST_GAS_PRICE_IN_TOKEN, refundReceiver: wallet.address};
     const signedMessage0 = getTestSignedMessage(message, wallet.privateKey);
     const signedMessage1 = getTestSignedMessage(message, actionKey);
     await messageHandler.handle(signedMessage0);
