@@ -30,7 +30,7 @@ class MessageHandler {
         gasPrice: message.gasPrice.toString(),
         gasToken: message.gasToken,
         tokenPriceInETH: tokenPriceInEth,
-      });
+      }, 0.1, 'cheap');
       const messageItem = createMessageItem(message, tokenPriceInEth, refundPayerId);
       await this.messageRepository.add(messageHash, messageItem);
     }
