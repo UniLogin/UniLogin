@@ -1,5 +1,5 @@
-import {Wallet, providers, utils} from 'ethers';
-import {SignedMessage, ensureNotFalsy, IMessageValidator, ensure} from '@unilogin/commons';
+import {Wallet, providers} from 'ethers';
+import {ensureNotFalsy, IMessageValidator} from '@unilogin/commons';
 import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';
 import IMessageRepository from '../../core/models/messages/IMessagesRepository';
