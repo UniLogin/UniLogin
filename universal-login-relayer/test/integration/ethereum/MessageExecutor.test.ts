@@ -11,10 +11,12 @@ import {basicWalletContractWithMockToken} from '../../fixtures/basicWalletContra
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 import {GasTokenValidator} from '../../../src/core/services/validators/GasTokenValidator';
+import MessageItem from '../../../src/core/models/messages/MessageItem';
 
 describe('INT: MessageExecutor', () => {
   let messageExecutor: MessageExecutor;
   let signedMessage: SignedMessage;
+  let messageItem: MessageItem;
   let provider: providers.Provider;
   let wallet: Wallet;
   let walletContract: Contract;
@@ -33,7 +35,8 @@ describe('INT: MessageExecutor', () => {
 
   it('should execute transaction and wait for it', async () => {
     const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
-    const transactionResponse = await messageExecutor.execute(signedMessage, '1');
+    const messageItem = {message: signedMessage, tokenPriceInEth: '1'} as any;
+    const transactionResponse = await messageExecutor.execute(messageItem);
     await transactionResponse.wait();
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.eq(expectedBalance);
@@ -42,7 +45,8 @@ describe('INT: MessageExecutor', () => {
   it('should execute transaction for token and wait for it', async () => {
     signedMessage = getTestSignedMessage({...message, gasPrice: TEST_GAS_PRICE_IN_TOKEN}, wallet.privateKey);
     const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
-    const transactionResponse = await messageExecutor.execute(signedMessage, TEST_TOKEN_PRICE_IN_ETH);
+    const messageItem = {message: signedMessage, tokenPriceInEth: TEST_TOKEN_PRICE_IN_ETH} as any;
+    const transactionResponse = await messageExecutor.execute(messageItem);
     await transactionResponse.wait();
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.eq(expectedBalance);
@@ -50,6 +54,7 @@ describe('INT: MessageExecutor', () => {
 
   it('should throw error when gasPrice changed significantly', async () => {
     signedMessage = getTestSignedMessage({...message, gasPrice: utils.parseUnits('2', 'gwei').toString()}, wallet.privateKey);
-    await expect(messageExecutor.execute(signedMessage, '1')).to.be.rejectedWith('Gas price is not enough');
+    messageItem = {message: signedMessage, tokenPriceInEth: '1'} as any;
+    await expect(messageExecutor.execute(messageItem)).to.be.rejectedWith('Gas price is not enough');
   });
 });
