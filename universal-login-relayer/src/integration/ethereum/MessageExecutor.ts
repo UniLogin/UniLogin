@@ -1,5 +1,5 @@
 import {Wallet, providers, utils} from 'ethers';
-import {SignedMessage, ensureNotFalsy, IMessageValidator} from '@unilogin/commons';
+import {SignedMessage, ensureNotFalsy, IMessageValidator, ensure} from '@unilogin/commons';
 import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';
 import IMessageRepository from '../../core/models/messages/IMessagesRepository';
@@ -28,7 +28,7 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     try {
       const messageItem = await this.messageRepository.get(messageHash);
       const signedMessage = messageItem.message;
-      const tokenPriceInEth = messageItem.tokenPriceInEth || '1';
+      const tokenPriceInEth = messageItem.tokenPriceInEth;
       const transactionResponse = await this.execute(signedMessage, tokenPriceInEth);
       const {hash, wait, gasPrice} = transactionResponse;
       ensureNotFalsy(hash, TransactionHashNotFound);
@@ -43,8 +43,9 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     }
   }
 
-  async execute(signedMessage: SignedMessage, tokenPriceInEth: utils.BigNumberish = '1'): Promise<providers.TransactionResponse> {
+  async execute(signedMessage: SignedMessage, tokenPriceInEth?: utils.BigNumberish): Promise<providers.TransactionResponse> {
     await this.messageValidator.validate(signedMessage);
+    ensure(tokenPriceInEth !== undefined, Error, 'Undefined tokenPriceInEth');
     await this.gasTokenValidator.validate({
       gasPrice: signedMessage.gasPrice.toString(),
       gasToken: signedMessage.gasToken,
