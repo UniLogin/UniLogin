@@ -64,7 +64,7 @@ describe('E2E: Relayer - WalletContract routes', () => {
     });
 
     it('free', async () => {
-      const msg = await getTransferMessage(utils.parseUnits('0', 'gwei'));
+      const msg = await getTransferMessage(0);
       const balanceBefore = await relayer.provider.getBalance(contract.address);
       expect(balanceBefore.gt(utils.bigNumberify(msg.value))).to.be.true;
       const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
