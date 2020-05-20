@@ -33,7 +33,7 @@ describe('INT: MessageExecutor', () => {
 
   it('should execute transaction and wait for it', async () => {
     const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
-    const transactionResponse = await messageExecutor.execute(signedMessage);
+    const transactionResponse = await messageExecutor.execute(signedMessage, '1');
     await transactionResponse.wait();
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.eq(expectedBalance);
@@ -50,6 +50,6 @@ describe('INT: MessageExecutor', () => {
 
   it('should throw error when gasPrice changed significantly', async () => {
     signedMessage = getTestSignedMessage({...message, gasPrice: utils.parseUnits('2', 'gwei').toString()}, wallet.privateKey);
-    await expect(messageExecutor.execute(signedMessage)).to.be.rejectedWith('Gas price is not enough');
+    await expect(messageExecutor.execute(signedMessage, '1')).to.be.rejectedWith('Gas price is not enough');
   });
 });
