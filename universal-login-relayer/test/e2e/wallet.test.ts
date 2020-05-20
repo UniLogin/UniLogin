@@ -46,7 +46,7 @@ describe('E2E: Relayer - WalletContract routes', () => {
       operationType: OperationType.call,
       refundReceiver: deployer.address,
       gasToken,
-      gasPrice,
+      gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei'),
       gasLimit: DEFAULT_GAS_LIMIT,
     });
 
