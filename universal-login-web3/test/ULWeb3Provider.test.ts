@@ -9,7 +9,7 @@ import {RelayerUnderTest} from '@unilogin/relayer';
 import {createWallet} from '@unilogin/sdk/testutils';
 import {ULWeb3RootProps} from '../src/ui/react/ULWeb3Root';
 import {setupTestEnvironmentWithWeb3} from './helpers/setupTestEnvironmentWithWeb3';
-import {TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
+import {TEST_CONTRACT_ADDRESS, TEST_GAS_PRICE} from '@unilogin/commons';
 
 chai.use(chaiAsPromised);
 
@@ -61,6 +61,7 @@ describe('INT: ULWeb3Provider', () => {
       const sendTransactionWithWeb3ToRandom = () => web3.eth.sendTransaction({
         to: Wallet.createRandom().address,
         value: utils.parseEther('0.005').toString(),
+        gasPrice: TEST_GAS_PRICE,
       });
 
       beforeEach(() => {
@@ -103,6 +104,7 @@ describe('INT: ULWeb3Provider', () => {
       const promise = web3.eth.sendTransaction({
         to: Wallet.createRandom().address,
         value: utils.parseEther('0.005').toString(),
+        gasPrice: TEST_GAS_PRICE,
       });
 
       const deployedWallet = await deployWallet();
