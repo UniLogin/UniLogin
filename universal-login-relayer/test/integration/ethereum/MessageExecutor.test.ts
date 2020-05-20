@@ -20,7 +20,7 @@ describe('INT: MessageExecutor', () => {
   let walletContract: Contract;
   let message: Message;
   const validator = {
-    validate: () => {},
+    validate: async () => {},
   };
   const gasTokenValidator = new GasTokenValidator(getMockedGasPriceOracle() as any);
 
