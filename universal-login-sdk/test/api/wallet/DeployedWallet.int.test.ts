@@ -6,7 +6,7 @@ import {Contract, utils, providers, Wallet} from 'ethers';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import basicSDK, {transferMessage} from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {walletFromBrain, DEFAULT_GAS_PRICE, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER, TEST_SDK_CONFIG, TEST_GAS_PRICE, TEST_GAS_LIMIT} from '@unilogin/commons';
+import {walletFromBrain, createKeyPair, TEST_EXECUTION_OPTIONS, Message, PartialRequired, deployContract, GAS_BASE, ETHER_NATIVE_TOKEN, TEST_REFUND_PAYER, TEST_SDK_CONFIG, TEST_GAS_PRICE, TEST_GAS_LIMIT, TEST_GAS_PRICE_IN_TOKEN} from '@unilogin/commons';
 import UniLoginSdk, {DeployedWallet} from '../../../src';
 import {waitForSuccess} from '../../helpers/waitForSuccess';
 
@@ -16,7 +16,7 @@ chai.use(chaiAsPromised);
 
 const loadFixture = createFixtureLoader();
 
-const gasPrice = TEST_GAS_PRICE;
+const gasPrice = TEST_GAS_PRICE_IN_TOKEN;
 const gasLimit = TEST_GAS_LIMIT;
 
 describe('INT: DeployedWallet', () => {
@@ -57,13 +57,13 @@ describe('INT: DeployedWallet', () => {
   });
 
   it('setRequiredSignatures', async function () {
-    await waitForSuccess(deployedWallet.addKey(publicKey, {gasPrice, gasLimit, gasToken: ETHER_NATIVE_TOKEN.address}));
-    await waitForSuccess(deployedWallet.setRequiredSignatures(2, {gasPrice, gasLimit, gasToken: ETHER_NATIVE_TOKEN.address}));
+    await waitForSuccess(deployedWallet.addKey(publicKey, {gasPrice, gasLimit, gasToken: mockToken.address}));
+    await waitForSuccess(deployedWallet.setRequiredSignatures(2, {gasPrice, gasLimit, gasToken: mockToken.address}));
     await expect(deployedWallet.getRequiredSignatures()).to.eventually.eq(2);
   });
 
   it('generateBackupCodes', async () => {
-    const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes({gasPrice, gasToken: ETHER_NATIVE_TOKEN.address});
+    const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.generateBackupCodes({gasPrice, gasToken: mockToken.address});
     const {transactionHash} = await waitForTransactionHash();
     expect(transactionHash).to.be.properHex;
     const codes = await waitToBeSuccess();
