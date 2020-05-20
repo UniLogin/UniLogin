@@ -1,4 +1,4 @@
-import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION, DEFAULT_GAS_PRICE, GAS_FIXED, OperationType, EMPTY_DATA, DEFAULT_GAS_LIMIT, TEST_GAS_PRICE} from '@unilogin/commons';
+import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION, GAS_FIXED, OperationType, EMPTY_DATA, ETHER_NATIVE_TOKEN, DEFAULT_GAS_LIMIT, TEST_GAS_PRICE} from '@unilogin/commons';
 import {utils, Wallet, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import MockContract from '../../dist/contracts/MockContract.json';
@@ -19,7 +19,7 @@ export const emptyMessage = {
   refundReceiver: AddressZero,
   gasPrice: bigNumberify(TEST_GAS_PRICE),
   gasLimit: bigNumberify(DEFAULT_GAS_LIMIT),
-  gasToken: AddressZero,
+  gasToken: ETHER_NATIVE_TOKEN.address,
 };
 
 export const transferMessage = {
@@ -29,7 +29,7 @@ export const transferMessage = {
   nonce: 0,
   operationType: OperationType.call,
   refundReceiver: AddressZero,
-  gasPrice: DEFAULT_GAS_PRICE,
+  gasPrice: TEST_GAS_PRICE,
   safeTxGas: DEFAULT_GAS_LIMIT_EXECUTION,
   baseGas: utils.bigNumberify('7440').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
@@ -42,7 +42,7 @@ export const failedTransferMessage = {
   nonce: 0,
   operationType: OperationType.call,
   refundReceiver: AddressZero,
-  gasPrice: DEFAULT_GAS_PRICE,
+  gasPrice: TEST_GAS_PRICE,
   safeTxGas: DEFAULT_GAS_LIMIT_EXECUTION,
   baseGas: utils.bigNumberify('7440').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
@@ -56,7 +56,7 @@ export const callMessage = {
   nonce: 0,
   operationType: OperationType.call,
   refundReceiver: AddressZero,
-  gasPrice: DEFAULT_GAS_PRICE,
+  gasPrice: TEST_GAS_PRICE,
   safeTxGas: DEFAULT_GAS_LIMIT_EXECUTION,
   baseGas: utils.bigNumberify('8720').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
@@ -70,7 +70,7 @@ export const failedCallMessage = {
   nonce: 0,
   operationType: OperationType.call,
   refundReceiver: AddressZero,
-  gasPrice: DEFAULT_GAS_PRICE,
+  gasPrice: TEST_GAS_PRICE,
   safeTxGas: DEFAULT_GAS_LIMIT_EXECUTION,
   baseGas: utils.bigNumberify('8720').add(GAS_FIXED),
   gasToken: '0x0000000000000000000000000000000000000000',
@@ -120,7 +120,7 @@ export const selfExecute = async (proxyAsWalletContract: Contract, data: string,
     nonce: await proxyAsWalletContract.lastNonce(),
     operationType: OperationType.call,
     refundReceiver: AddressZero,
-    gasPrice: DEFAULT_GAS_PRICE,
+    gasPrice: TEST_GAS_PRICE,
     safeTxGas: DEFAULT_GAS_LIMIT_EXECUTION,
     baseGas: utils.bigNumberify(0).add(GAS_FIXED),
     gasToken: '0x0000000000000000000000000000000000000000',

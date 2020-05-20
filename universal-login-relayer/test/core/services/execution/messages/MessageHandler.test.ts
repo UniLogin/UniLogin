@@ -1,4 +1,4 @@
-import {GAS_BASE, GAS_FIXED, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_TOKEN_ADDRESS} from '@unilogin/commons';
+import {GAS_BASE, GAS_FIXED, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_TOKEN_ADDRESS, TEST_GAS_PRICE_CHEAP, TEST_GAS_PRICE_IN_TOKEN} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {beta2} from '@unilogin/contracts';
 import {encodeFunction} from '@unilogin/contracts/testutils';
@@ -44,7 +44,7 @@ describe('INT: MessageHandler', () => {
   });
 
   it('Error when not enough tokens', async () => {
-    const signedMessage = getTestSignedMessage({...msg, gasToken: mockTokenNotOwned.address}, wallet.privateKey);
+    const signedMessage = getTestSignedMessage({...msg, gasPrice: TEST_GAS_PRICE_IN_TOKEN, gasToken: mockTokenNotOwned.address}, wallet.privateKey);
     const {messageHash} = await messageHandler.handle(signedMessage);
     await executionWorker.stopLater();
     const messageEntry = await messageHandler.getStatus(messageHash);
@@ -64,6 +64,12 @@ describe('INT: MessageHandler', () => {
     await expect(messageHandler.handle(signedMessage)).to.be.rejectedWith(`Insufficient Gas. Got safeTxGas 1 but should greater than ${GAS_BASE}`);
   });
 
+  it('Error when gasPrice below tolerance', async () => {
+    const gasPrice = TEST_GAS_PRICE_CHEAP.div(2);
+    const signedMessage = getTestSignedMessage({...msg, gasPrice}, wallet.privateKey);
+    await expect(messageHandler.handle(signedMessage)).to.be.rejectedWith('Gas price is not enough');
+  });
+
   describe('Transfer', () => {
     it('successful execution of transfer', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
@@ -80,7 +86,7 @@ describe('INT: MessageHandler', () => {
     });
 
     it('correctly save tokenPriceInEth', async () => {
-      const messageOverrides = {...msg, gasToken: mockToken.address};
+      const messageOverrides = {...msg, gasToken: mockToken.address, gasPrice: TEST_GAS_PRICE_IN_TOKEN};
       const signedMessage = getTestSignedMessage(messageOverrides, wallet.privateKey);
       const {messageHash} = await messageHandler.handle(signedMessage);
       expect(await messageHandler.isPresent(messageHash)).to.be.true;
