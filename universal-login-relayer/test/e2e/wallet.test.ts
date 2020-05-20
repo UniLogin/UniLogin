@@ -46,7 +46,7 @@ describe('E2E: Relayer - WalletContract routes', () => {
       operationType: OperationType.call,
       refundReceiver: deployer.address,
       gasToken,
-      gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei'),
+      gasPrice,
       gasLimit: DEFAULT_GAS_LIMIT,
     });
 
@@ -64,7 +64,7 @@ describe('E2E: Relayer - WalletContract routes', () => {
     });
 
     it('free', async () => {
-      const msg = await getTransferMessage(0);
+      const msg = await getTransferMessage(utils.parseUnits('0', 'gwei'));
       const balanceBefore = await relayer.provider.getBalance(contract.address);
       expect(balanceBefore.gt(utils.bigNumberify(msg.value))).to.be.true;
       const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
@@ -79,7 +79,7 @@ describe('E2E: Relayer - WalletContract routes', () => {
     });
 
     it('fails for gasToken not eth', async () => {
-      const msg = await getTransferMessage(100, TEST_TOKEN_ADDRESS);
+      const msg = await getTransferMessage(utils.parseUnits('100', 'gwei'), TEST_TOKEN_ADDRESS);
       const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
       const stringifiedMessage = stringifySignedMessageFields(signedMessage);
       const {status, body} = await chai.request((relayer as any).server)
