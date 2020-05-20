@@ -3,6 +3,7 @@ import {IExecutionQueue} from '../../models/execution/IExecutionQueue';
 import {QueueItem} from '../../models/QueueItem';
 import Deployment from '../../models/Deployment';
 import {IExecutor} from '../../models/execution/IExecutor';
+import MessageItem from '../../models/messages/MessageItem';
 
 type ExecutionWorkerState = 'running' | 'stopped' | 'stopping';
 
@@ -10,7 +11,7 @@ class ExecutionWorker {
   private state: ExecutionWorkerState;
 
   constructor(
-    private executors: Array<IExecutor<SignedMessage | Deployment>>,
+    private executors: Array<IExecutor<MessageItem | Deployment>>,
     private executionQueue: IExecutionQueue,
     private tickInterval: number = 100,
   ) {
@@ -27,7 +28,7 @@ class ExecutionWorker {
     await this.executionQueue.remove(nextItem.hash);
   }
 
-  async execute(executor: IExecutor<SignedMessage | Deployment>, itemHash: string) {
+  async execute(executor: IExecutor<MessageItem | Deployment>, itemHash: string) {
     await executor.handleExecute(itemHash);
     await this.executionQueue.remove(itemHash);
   }
