@@ -51,7 +51,7 @@ describe('E2E: Relayer - WalletContract routes', () => {
     });
 
     it('basic', async () => {
-      const msg = await getTransferMessage(TEST_GAS_PRICE_IN_TOKEN);
+      const msg = await getTransferMessage(TEST_GAS_PRICE_IN_TOKEN, mockToken.address);
       const balanceBefore = await otherWallet.getBalance();
       const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
       const stringifiedMessage = stringifySignedMessageFields(signedMessage);
@@ -64,7 +64,7 @@ describe('E2E: Relayer - WalletContract routes', () => {
     });
 
     it('free', async () => {
-      const msg = await getTransferMessage(0, ETHER_NATIVE_TOKEN.address);
+      const msg = await getTransferMessage(0);
       const balanceBefore = await relayer.provider.getBalance(contract.address);
       expect(balanceBefore.gt(utils.bigNumberify(msg.value))).to.be.true;
       const signedMessage = getGnosisTestSignedMessage(msg, keyPair.privateKey);
