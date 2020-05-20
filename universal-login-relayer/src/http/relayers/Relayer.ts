@@ -150,9 +150,9 @@ class Relayer {
   }
 
   async stopLater() {
+    await new Promise(resolve => this.server.close(resolve));
     await this.executionWorker.stopLater();
     await this.database.destroy();
-    await new Promise(resolve => this.server.close(resolve));
   }
 }
 
