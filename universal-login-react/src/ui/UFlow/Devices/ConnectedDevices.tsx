@@ -8,7 +8,7 @@ import {FeatureFlag} from '../../commons/FeatureFlag';
 export interface ConnectedDevicesProps {
   devicesList: Device[];
   deployedWallet: DeployedWallet;
-  setDeviceToRemove: (arg: string) => void;
+  setDeviceToRemove: (arg: string | undefined) => void;
 }
 
 export const ConnectedDevices = ({devicesList, deployedWallet, setDeviceToRemove}: ConnectedDevicesProps) => {

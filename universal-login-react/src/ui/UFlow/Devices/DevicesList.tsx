@@ -25,12 +25,13 @@ export interface DevicesListProps {
 export const DevicesList = ({deployedWallet, devicesBasePath, className}: DevicesListProps) => {
   const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
-  const [deviceToRemove, setDeviceToRemove] = useState('');
+  const [deviceToRemove, setDeviceToRemove] = useState<string | undefined>(undefined);
 
   const history = useHistory();
 
   const onDeleteDevice = async () => {
     ensureNotFalsy(gasParameters, MissingParameter, 'gas parameters');
+    ensureNotFalsy(deviceToRemove, MissingParameter, 'device to remove');
     history.replace(join(devicesBasePath, '/waitingForRemovingDevice'));
     const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.removeKey(deviceToRemove, gasParameters);
     const {transactionHash} = await waitForTransactionHash();

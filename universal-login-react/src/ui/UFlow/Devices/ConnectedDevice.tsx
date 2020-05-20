@@ -7,7 +7,7 @@ export interface ConnectedDeviceProps extends Device {
   devicesAmount: number;
   deployedWallet: DeployedWallet;
   confirmationsCount: string;
-  setDeviceToRemove: (arg: string) => void;
+  setDeviceToRemove: (arg: string | undefined) => void;
 }
 
 export const ConnectedDevice = ({devicesAmount, deviceInfo, publicKey, deployedWallet, confirmationsCount, setDeviceToRemove}: ConnectedDeviceProps) => {
@@ -42,7 +42,7 @@ export const ConnectedDevice = ({devicesAmount, deviceInfo, publicKey, deployedW
 
   const renderConfirmationButtons = () => (
     <div className="connected-devices-buttons">
-      <button onClick={() => setToBeRemoved(false)} className="connected-devices-cancel">Cancel</button>
+      <button onClick={() => {setToBeRemoved(false); setDeviceToRemove(undefined);}} className="connected-devices-cancel">Cancel</button>
       <button onClick={() => setDeviceToRemove(publicKey)} className="connected-devices-delete">Delete</button>
     </div>
   );
