@@ -15,7 +15,7 @@ export const ConnectedDeviceView = ({deviceInfo, isHighlighted, trashButton}: Co
       <Logo deviceType={type} logo={logo} applicationName={applicationName} />
       <div>
         {applicationName === 'Backup Code'
-          ? <p className="connected-devices-type">Backup Codes</p>
+          ? <p className="connected-devices-type">Backup Code</p>
           : <>
             <p className="connected-devices-type">{browser}{platform && ` • ${platform}`}</p>
             <p className="connected-devices-details">
