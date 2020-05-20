@@ -65,7 +65,8 @@ describe('INT: MessageHandler', () => {
   });
 
   it('Error when gasPrice below tolerance', async () => {
-    const signedMessage = getTestSignedMessage({...msg, gasPrice: TEST_GAS_PRICE_CHEAP}, wallet.privateKey);
+    const gasPrice = TEST_GAS_PRICE_CHEAP.div(2);
+    const signedMessage = getTestSignedMessage({...msg, gasPrice}, wallet.privateKey);
     await expect(messageHandler.handle(signedMessage)).to.be.rejectedWith('Gas price is not enough');
   });
 
