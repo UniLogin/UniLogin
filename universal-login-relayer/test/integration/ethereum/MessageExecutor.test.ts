@@ -22,7 +22,7 @@ describe('INT: MessageExecutor', () => {
   const validator = {
     validate: () => {},
   };
-  const gasTokenValidator = getMockedGasPriceOracle();
+  const gasTokenValidator = new GasTokenValidator(getMockedGasPriceOracle() as any);
 
   beforeEach(async () => {
     ({wallet, walletContract, provider} = await loadFixture(basicWalletContractWithMockToken));

@@ -27,9 +27,7 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
   async handleExecute(messageHash: string) {
     try {
       const messageItem = await this.messageRepository.get(messageHash);
-      const signedMessage = messageItem.message;
-      const tokenPriceInEth = messageItem.tokenPriceInEth;
-      const transactionResponse = await this.execute(signedMessage, tokenPriceInEth);
+      const transactionResponse = await this.execute(messageItem.message, messageItem.tokenPriceInEth);
       const {hash, wait, gasPrice} = transactionResponse;
       ensureNotFalsy(hash, TransactionHashNotFound);
       await this.messageRepository.markAsPending(messageHash, hash!, gasPrice.toString());
@@ -50,7 +48,7 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
       gasPrice: signedMessage.gasPrice.toString(),
       gasToken: signedMessage.gasToken,
       tokenPriceInETH: tokenPriceInEth.toString(),
-    }, 0.3);
+    }, 0.3, 'cheap');
     const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage, tokenPriceInEth);
     return this.wallet.sendTransaction(transactionReq);
   }
