@@ -12,5 +12,8 @@ export async function setupSdk(deployer: Wallet, overridePort = '33111', overrid
   const sdk = new UniLoginSdk(relayer.url(), provider, {...TEST_SDK_CONFIG, ...overrideSdkConfig});
   await sdk.fetchRelayerConfig();
   sdk.getGasModes = () => new Promise(resolve => resolve(TEST_GAS_MODES));
+  sdk.priceObserver.getCurrentPrices = () => {
+    return Promise.resolve({ETH: {USD: 100, DAI: 99, SAI: 99, ETH: 1}});
+  };
   return {sdk, relayer, provider};
 }
