@@ -15,7 +15,7 @@ chai.use(solidity);
 chai.use(chaiAsPromised);
 
 const gasParameters = {
-  gasPrice: utils.bigNumberify('1'),
+  gasPrice: utils.parseUnits('20', 'gwei'),
   gasToken: ETHER_NATIVE_TOKEN.address,
 };
 
@@ -153,7 +153,7 @@ describe('INT: TransferService', () => {
     const {waitToBeSuccess} = await transferService.transfer({to: address, amount, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters});
     await waitToBeSuccess();
     const balance = await provider.getBalance(address);
-    expect(transferService.getMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.4999999999998');
+    expect(transferService.getMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.496');
   });
 
   it('get 0 if Ethereum max amount is below 0', async () => {

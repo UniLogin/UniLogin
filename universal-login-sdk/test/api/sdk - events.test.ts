@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import {Contract, Wallet, providers, utils} from 'ethers';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG} from '@unilogin/commons';
+import {TEST_SDK_CONFIG, TEST_GAS_PRICE, TEST_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {mineBlock} from '@unilogin/contracts/testutils';
 import basicSDK from '../fixtures/basicSDK';
@@ -17,8 +17,8 @@ chai.use(sinonChai);
 
 const loadFixture = createFixtureLoader();
 
-const gasPrice = DEFAULT_GAS_PRICE;
-const gasLimit = DEFAULT_GAS_LIMIT;
+const gasPrice = TEST_GAS_PRICE;
+const gasLimit = TEST_GAS_LIMIT;
 
 describe('INT: Events', () => {
   let relayer: RelayerUnderTest;
@@ -46,7 +46,7 @@ describe('INT: Events', () => {
     const {privateKey: newPrivateKey} = await newKeySDK.connect(contractAddress);
     const publicKeyToAdd = utils.computeAddress(newPrivateKey);
     newKeySDK.subscribe('AddedOwner', {contractAddress, key: publicKeyToAdd}, keyCallback);
-    await deployedWallet.addKey(publicKeyToAdd.toLowerCase(), {gasPrice, gasLimit, gasToken: mockToken.address});
+    await deployedWallet.addKey(publicKeyToAdd.toLowerCase(), {gasPrice, gasLimit, gasToken: ETHER_NATIVE_TOKEN.address});
     await mineBlock(wallet);
     await waitExpect(() => expect(keyCallback).to.have.been.calledOnce);
     await sdk.finalizeAndStop();
