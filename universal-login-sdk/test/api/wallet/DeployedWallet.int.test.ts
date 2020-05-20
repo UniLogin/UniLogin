@@ -22,7 +22,6 @@ const gasLimit = TEST_GAS_LIMIT;
 describe('INT: DeployedWallet', () => {
   let provider: providers.Provider;
   let relayer: RelayerUnderTest;
-  let mockToken: Contract;
   let deployedWallet: DeployedWallet;
   let ensName: string;
   let message: PartialRequired<Message, 'from'>;
