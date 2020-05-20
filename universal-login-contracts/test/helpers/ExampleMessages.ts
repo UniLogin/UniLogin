@@ -1,4 +1,4 @@
-import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION, DEFAULT_GAS_PRICE, GAS_FIXED, OperationType, EMPTY_DATA, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
+import {TEST_ACCOUNT_ADDRESS, UnsignedMessage, calculateMessageSignature, DEFAULT_GAS_LIMIT_EXECUTION, DEFAULT_GAS_PRICE, GAS_FIXED, OperationType, EMPTY_DATA, DEFAULT_GAS_LIMIT, TEST_GAS_PRICE} from '@unilogin/commons';
 import {utils, Wallet, Contract} from 'ethers';
 import {deployContract} from 'ethereum-waffle';
 import MockContract from '../../dist/contracts/MockContract.json';
@@ -17,7 +17,7 @@ export const emptyMessage = {
   nonce: 0,
   operationType: OperationType.call,
   refundReceiver: AddressZero,
-  gasPrice: bigNumberify(DEFAULT_GAS_PRICE),
+  gasPrice: bigNumberify(TEST_GAS_PRICE),
   gasLimit: bigNumberify(DEFAULT_GAS_LIMIT),
   gasToken: AddressZero,
 };

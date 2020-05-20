@@ -86,7 +86,7 @@ describe('INT: WalletContractService', () => {
 
     it('calculates message hash', async () => {
       const message = {...getTestSignedMessage(), from: proxyContract.address};
-      const expectedSignedMsgHash = '0xe6448c3c8cfbacbf03951cb025ac602610e52b432cadbb3b5aa93dadbe6db670';
+      const expectedSignedMsgHash = '0x92f238f6518f37d15a498c3702bca046ccc4741e916ba23f63e94ad55351a841';
       expect(await walletContractService.calculateMessageHash(message)).to.eq(expectedSignedMsgHash);
     });
 
