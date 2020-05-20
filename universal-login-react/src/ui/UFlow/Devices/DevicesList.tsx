@@ -40,7 +40,7 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
     history.replace(devicesBasePath);
   };
 
-  return (
+  return (<>
     <ThemedComponent name="devices">
       <NewDeviceMessage
         deployedWallet={deployedWallet}
@@ -52,25 +52,23 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
           ? <ConnectedDevices
             devicesList={devices}
             deployedWallet={deployedWallet}
-            devicesBasePath={devicesBasePath}
             setDeviceToRemove={setDeviceToRemove}
           />
           : <Spinner className="spinner-center"/>}
       </div>
       <button onClick={() => history.push(join(devicesBasePath, 'disconnectAccount'))} className="disconnect-account-link">Disconnect this device</button>
-      {deviceToRemove
-        ? <FooterSection>
-          <GasPrice
-            isDeployed
-            deployedWallet={deployedWallet}
-            sdk={deployedWallet.sdk}
-            onGasParametersChanged={setGasParameters}
-            gasLimit={DEFAULT_GAS_LIMIT}
-          />
-          <div className="footer-buttons-row">
-            <button id="send-button" onClick={onDeleteDevice} className="footer-approve-btn" disabled={!gasParameters}>Confirm delete</button>
-          </div>
-        </FooterSection> : <></>}
     </ThemedComponent>
-  );
+    {deviceToRemove && <FooterSection>
+      <GasPrice
+        isDeployed
+        deployedWallet={deployedWallet}
+        sdk={deployedWallet.sdk}
+        onGasParametersChanged={setGasParameters}
+        gasLimit={DEFAULT_GAS_LIMIT}
+      />
+      <div className="footer-buttons-row">
+        <button id="send-button" onClick={onDeleteDevice} className="footer-approve-btn" disabled={!gasParameters}>Confirm delete</button>
+      </div>
+    </FooterSection>}
+  </>);
 };
