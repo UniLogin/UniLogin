@@ -17,7 +17,7 @@ describe('UNIT: GasTokenValidator', () => {
     tokenPriceInETH,
   });
 
-  describe('bellow gasPrice from oracle (1 * 16 gwei <= 20 gwei)', () => {
+  describe('bellow gasPrice from oracle with default gas option (1 * 16 gwei <= 20 gwei)', () => {
     const gasPriceDetails = getGasPriceDetails('1');
 
     it('throw when gasToken is less than minimum expected', async () => {
@@ -26,6 +26,11 @@ describe('UNIT: GasTokenValidator', () => {
 
     it('fulfilled when tolerance allows', async () => {
       await expect(validator.validate(gasPriceDetails, 0.2)).to.be.fulfilled;
+    });
+
+    it('fulfilled when gas price option allows', async () => {
+      const gasPriceDetails = getGasPriceDetails('1');
+      await expect(validator.validate(gasPriceDetails, 0, 'cheap')).to.be.fulfilled;
     });
 
     it('reject without specified tolerance', async () => {

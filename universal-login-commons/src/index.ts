@@ -97,6 +97,6 @@ export {Lazy} from './core/utils/Lazy';
 export {InitializationHandler} from './core/utils/InitializationHandler';
 export {addressEquals} from './core/utils/addressEquals';
 export {GasPriceOracle} from './integration/ethereum/gasPriceOracle';
-export {GasPriceEstimation} from './core/models/GasPriceSuggestion';
+export {GasPriceEstimation, GasPriceOption} from './core/models/GasPriceSuggestion';
 export {fetch} from './integration/http/fetch';
 export {NodeEnv, asNodeEnv} from './core/models/NodeEnv';
