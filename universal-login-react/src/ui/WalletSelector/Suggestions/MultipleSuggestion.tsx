@@ -6,7 +6,10 @@ import {classForComponent} from '../../utils/classFor';
 import {getSuggestionId} from '../../../app/getSuggestionId';
 
 export const MultipleSuggestion = ({onClick, operationType, suggestion, selectedSuggestion}: SuggestionProps) => (
-  <button disabled={!!selectedSuggestion} className={classForComponent('suggestions-item-btn')} id={getSuggestionId(operationType)} onClick={() => onClick(suggestion)}>
+  <button
+    disabled={!!selectedSuggestion}
+    className={`${classForComponent('suggestions-item-btn')} multiple`}
+    id={getSuggestionId(operationType)} onClick={() => onClick(suggestion)}>
     <div className="suggestions-item-text">
       <EnsName value={suggestion} />
     </div>
