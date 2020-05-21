@@ -47,15 +47,19 @@ describe('INT: MessageExecutor', () => {
     signedMessage = getTestSignedMessage({...message, gasToken: mockToken.address, gasPrice: TEST_GAS_PRICE_IN_TOKEN}, wallet.privateKey);
     const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
     const messageItem = {message: signedMessage, tokenPriceInEth: TEST_TOKEN_PRICE_IN_ETH} as any;
-    const refund = utils.bigNumberify(signedMessage.safeTxGas).add(signedMessage.baseGas);
-    const refundInToken = refund.mul(signedMessage.gasPrice);
-    const minimalBalanceAfterRefund = (await mockToken.balanceOf(signedMessage.from)).sub(refundInToken);
+    const minimumRefund = utils.bigNumberify(signedMessage.baseGas);
+    const maximumRefund = minimumRefund.add(signedMessage.safeTxGas);
+    const minimalRefundInToken = minimumRefund.mul(signedMessage.gasPrice);
+    const maximumRefundInToken = maximumRefund.mul(signedMessage.gasPrice);
+    const maximumBalanceAfterRefund = (await mockToken.balanceOf(signedMessage.from)).sub(minimalRefundInToken);
+    const minimalBalanceAfterRefund = (await mockToken.balanceOf(signedMessage.from)).sub(maximumRefundInToken);
     const transactionResponse = await messageExecutor.execute(messageItem);
     await transactionResponse.wait();
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.eq(expectedBalance);
     const payerBalance = await mockToken.balanceOf(signedMessage.from);
     expect(payerBalance).to.be.above(minimalBalanceAfterRefund);
+    expect(payerBalance).to.be.below(maximumBalanceAfterRefund);
   });
 
   it('should throw error when gasPrice changed significantly', async () => {
