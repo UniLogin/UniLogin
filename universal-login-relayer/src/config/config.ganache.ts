@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import {getEnv, UNIVERSAL_LOGIN_LOGO_URL, ETHER_NATIVE_TOKEN, NodeEnv, asNodeEnv} from '@unilogin/commons';
+import {getEnv, UNIVERSAL_LOGIN_LOGO_URL, ETHER_NATIVE_TOKEN, NodeEnv, asNodeEnv, DEV_DAI_ADDRESS} from '@unilogin/commons';
 import path from 'path';
 import {baseConfig} from './baseConfig';
 import {cast} from '@restless/sanitizers';
@@ -73,6 +73,6 @@ export const getConfig = () => ({
     address: ETHER_NATIVE_TOKEN.address,
   },
   {
-    address: '0xd19Fbe8878507D0Aa9f2F6Acf40Ff6C21d6CecE8',
+    address: DEV_DAI_ADDRESS,
   }],
 });

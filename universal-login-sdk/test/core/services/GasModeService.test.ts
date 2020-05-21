@@ -30,10 +30,6 @@ describe('UNIT: GasModeService', () => {
         token: TEST_TOKEN_DETAILS[0],
       },
       {
-        gasPrice: utils.bigNumberify('23915360000003'),
-        token: TEST_TOKEN_DETAILS[1],
-      },
-      {
         gasPrice: TEST_GAS_PRICES.cheap.gasPrice,
         token: TEST_TOKEN_DETAILS[2],
       }],
@@ -45,10 +41,6 @@ describe('UNIT: GasModeService', () => {
       gasOptions: [{
         gasPrice: utils.bigNumberify('29894200000004'),
         token: TEST_TOKEN_DETAILS[0],
-      },
-      {
-        gasPrice: utils.bigNumberify('29894200000004'),
-        token: TEST_TOKEN_DETAILS[1],
       },
       {
         gasPrice: TEST_GAS_PRICES.fast.gasPrice,

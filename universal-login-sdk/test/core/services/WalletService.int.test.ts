@@ -4,8 +4,8 @@ import {RelayerUnderTest} from '@unilogin/relayer';
 import {setupSdk} from '../../helpers/setupSdk';
 import UniLoginSdk from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
-import {Wallet, utils} from 'ethers';
-import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG, ETHER_NATIVE_TOKEN, TEST_TOKEN_ADDRESS} from '@unilogin/commons';
+import {Wallet, utils, Contract} from 'ethers';
+import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {createWallet} from '../../helpers';
 import {DeployedWallet} from '../../../src';
 
@@ -16,10 +16,12 @@ describe('INT: WalletService', () => {
   let sdk: UniLoginSdk;
   let relayer: RelayerUnderTest;
   let wallet: Wallet;
+  let mockToken: Contract;
 
   before(async () => {
     ([wallet] = getWallets(createMockProvider()));
-    ({sdk, relayer} = await setupSdk(wallet));
+    ({sdk, relayer, mockToken} = await setupSdk(wallet));
+    await sdk.start();
   });
 
   beforeEach(() => {
@@ -41,10 +43,10 @@ describe('INT: WalletService', () => {
   it('create wallet with token', async () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
     const name = 'name.mylogin.eth';
-    const futureWallet = await walletService.createFutureWallet(name, TEST_TOKEN_ADDRESS);
+    const futureWallet = await walletService.createFutureWallet(name, mockToken.address);
     expect(futureWallet.contractAddress).to.be.properAddress;
     expect(futureWallet.privateKey).to.be.properPrivateKey;
-    expect(futureWallet.gasToken).to.eq(TEST_TOKEN_ADDRESS);
+    expect(futureWallet.gasToken).to.eq(mockToken.address);
     expect(futureWallet.deploy).to.be.a('function');
     expect(futureWallet.waitForBalance).to.be.a('function');
     expect(walletService.state).to.deep.eq({kind: 'Future', name, wallet: futureWallet});
@@ -86,7 +88,6 @@ describe('INT: WalletService', () => {
 
     before(async () => {
       existingDeployedWallet = await createWallet(ensName, sdk, wallet);
-      await sdk.start();
     });
 
     it('simple connect', async () => {
@@ -138,13 +139,10 @@ describe('INT: WalletService', () => {
       await walletService.cancelWaitForConnection();
       expect(walletService.state).to.deep.include({kind: 'Deployed'});
     });
-
-    after(async () => {
-      await sdk.finalizeAndStop();
-    });
   });
 
   after(async () => {
+    sdk.stop();
     await relayer.stop();
   });
 });
