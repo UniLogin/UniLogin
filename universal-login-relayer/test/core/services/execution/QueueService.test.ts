@@ -46,7 +46,7 @@ describe('UNIT: Queue Service', () => {
     handle: onTransactionMined,
   };
   const gasTokenValidator: any = {
-    validate: () => {},
+    validate: async () => Promise.resolve(),
   };
   let signedMessage: SignedMessage;
   let messageHash: string;

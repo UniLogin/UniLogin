@@ -1,4 +1,4 @@
-import {SignedMessage, TEST_ACCOUNT_ADDRESS, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_GAS_PRICE_IN_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
+import {SignedMessage, TEST_ACCOUNT_ADDRESS, Message, TEST_TOKEN_PRICE_IN_ETH, TEST_GAS_PRICE_IN_TOKEN, TEST_GAS_PRICE, TEST_DAI_TOKEN} from '@unilogin/commons';
 import {getMockedGasPriceOracle} from '@unilogin/commons/testutils';
 import {emptyMessage} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
@@ -20,14 +20,15 @@ describe('INT: MessageExecutor', () => {
   let provider: providers.Provider;
   let wallet: Wallet;
   let walletContract: Contract;
+  let mockToken: Contract;
   let message: Message;
   const validator = {
-    validate: async () => {},
+    validate: async () => Promise.resolve(),
   };
   const gasTokenValidator = new GasTokenValidator(getMockedGasPriceOracle() as any);
 
   beforeEach(async () => {
-    ({wallet, walletContract, provider} = await loadFixture(basicWalletContractWithMockToken));
+    ({wallet, walletContract, mockToken, provider} = await loadFixture(basicWalletContractWithMockToken));
     messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any, setupWalletContractService(wallet.provider), gasTokenValidator);
     message = {...emptyMessage, gasPrice: TEST_GAS_PRICE, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2), nonce: await walletContract.lastNonce()};
     signedMessage = getTestSignedMessage(message, wallet.privateKey);
@@ -43,7 +44,7 @@ describe('INT: MessageExecutor', () => {
   });
 
   it('should execute transaction for token and wait for it', async () => {
-    signedMessage = getTestSignedMessage({...message, gasPrice: TEST_GAS_PRICE_IN_TOKEN}, wallet.privateKey);
+    signedMessage = getTestSignedMessage({...message, gasToken: mockToken.address, gasPrice: TEST_GAS_PRICE_IN_TOKEN}, wallet.privateKey);
     const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
     const messageItem = {message: signedMessage, tokenPriceInEth: TEST_TOKEN_PRICE_IN_ETH} as any;
     const transactionResponse = await messageExecutor.execute(messageItem);
