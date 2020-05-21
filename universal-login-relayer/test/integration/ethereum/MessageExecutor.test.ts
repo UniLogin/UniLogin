@@ -49,17 +49,14 @@ describe('INT: MessageExecutor', () => {
     const messageItem = {message: signedMessage, tokenPriceInEth: TEST_TOKEN_PRICE_IN_ETH} as any;
     const minimumRefund = utils.bigNumberify(signedMessage.baseGas);
     const maximumRefund = minimumRefund.add(signedMessage.safeTxGas);
-    const minimalRefundInToken = minimumRefund.mul(signedMessage.gasPrice);
-    const maximumRefundInToken = maximumRefund.mul(signedMessage.gasPrice);
-    const maximumBalanceAfterRefund = (await mockToken.balanceOf(signedMessage.from)).sub(minimalRefundInToken);
-    const minimalBalanceAfterRefund = (await mockToken.balanceOf(signedMessage.from)).sub(maximumRefundInToken);
+    const tokenBalanceBeforeRefund = await mockToken.balanceOf(signedMessage.from);
     const transactionResponse = await messageExecutor.execute(messageItem);
     await transactionResponse.wait();
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.eq(expectedBalance);
     const payerBalance = await mockToken.balanceOf(signedMessage.from);
-    expect(payerBalance).to.be.above(minimalBalanceAfterRefund);
-    expect(payerBalance).to.be.below(maximumBalanceAfterRefund);
+    expect(payerBalance).to.be.above(tokenBalanceBeforeRefund.sub(maximumRefund.mul(signedMessage.gasPrice)));
+    expect(payerBalance).to.be.below(tokenBalanceBeforeRefund.sub(minimumRefund.mul(signedMessage.gasPrice)));
   });
 
   it('should throw error when gasPrice changed significantly', async () => {
