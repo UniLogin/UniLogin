@@ -46,6 +46,7 @@ describe('INT: Free Transfer', () => {
     transferPage.enterTransferAmount('1');
     transferPage.enterRecipient(TEST_CONTRACT_ADDRESS);
     expect(transferPage.gasModePage.isRendered()).to.be.false;
+    await transferPage.waitForBalance();
     transferPage.transfer();
     await waitExpect(() => expect(initSpy).to.be.calledOnce);
     await waitExpect(() => expect(successSpy).to.be.calledOnce);
