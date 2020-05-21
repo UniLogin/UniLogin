@@ -11,12 +11,10 @@ import {basicWalletContractWithMockToken} from '../../fixtures/basicWalletContra
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 import {GasTokenValidator} from '../../../src/core/services/validators/GasTokenValidator';
-import MessageItem from '../../../src/core/models/messages/MessageItem';
 
 describe('INT: MessageExecutor', () => {
   let messageExecutor: MessageExecutor;
   let signedMessage: SignedMessage;
-  let messageItem: MessageItem;
   let provider: providers.Provider;
   let wallet: Wallet;
   let walletContract: Contract;
@@ -46,22 +44,20 @@ describe('INT: MessageExecutor', () => {
   it('should execute transaction for token and wait for it', async () => {
     signedMessage = getTestSignedMessage({...message, gasToken: mockToken.address, gasPrice: TEST_GAS_PRICE_IN_TOKEN}, wallet.privateKey);
     const expectedBalance = (await provider.getBalance(signedMessage.to)).add(signedMessage.value);
-    const messageItem = {message: signedMessage, tokenPriceInEth: TEST_TOKEN_PRICE_IN_ETH} as any;
-    const minimumRefund = utils.bigNumberify(signedMessage.baseGas);
-    const maximumRefund = minimumRefund.add(signedMessage.safeTxGas);
+    const minimumRefundInToken = (utils.bigNumberify(signedMessage.baseGas)).mul(signedMessage.gasPrice);
+    const maximumRefundInToken = (utils.bigNumberify(signedMessage.baseGas).add(signedMessage.safeTxGas)).mul(signedMessage.gasPrice);
     const tokenBalanceBeforeRefund = await mockToken.balanceOf(signedMessage.from);
-    const transactionResponse = await messageExecutor.execute(messageItem);
+    const transactionResponse = await messageExecutor.execute({message: signedMessage, tokenPriceInEth: TEST_TOKEN_PRICE_IN_ETH} as any);
     await transactionResponse.wait();
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.eq(expectedBalance);
     const payerBalance = await mockToken.balanceOf(signedMessage.from);
-    expect(payerBalance).to.be.above(tokenBalanceBeforeRefund.sub(maximumRefund.mul(signedMessage.gasPrice)));
-    expect(payerBalance).to.be.below(tokenBalanceBeforeRefund.sub(minimumRefund.mul(signedMessage.gasPrice)));
+    expect(payerBalance).to.be.above(tokenBalanceBeforeRefund.sub(maximumRefundInToken));
+    expect(payerBalance).to.be.below(tokenBalanceBeforeRefund.sub(minimumRefundInToken));
   });
 
   it('should throw error when gasPrice changed significantly', async () => {
     signedMessage = getTestSignedMessage({...message, gasPrice: utils.parseUnits('2', 'gwei').toString()}, wallet.privateKey);
-    messageItem = {message: signedMessage, tokenPriceInEth: '1'} as any;
-    await expect(messageExecutor.execute(messageItem)).to.be.rejectedWith('Gas price is not enough');
+    await expect(messageExecutor.execute({message: signedMessage, tokenPriceInEth: '1'} as any)).to.be.rejectedWith('Gas price is not enough');
   });
 });
