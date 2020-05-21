@@ -1,5 +1,6 @@
 import {ReactWrapper} from 'enzyme';
 import {waitForUI} from '../waitForUI';
+import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 export class GasModePage {
   constructor(private wrapper: ReactWrapper) {}
@@ -12,12 +13,12 @@ export class GasModePage {
     return waitForUI(this.wrapper, () => this.isRendered());
   }
 
-  selectGasMode() {
+  selectGasMode(tokenAddress = ETHER_NATIVE_TOKEN.address) {
     const button = this.wrapper.find('.gas-price-btn');
     button.simulate('click');
     const fastOption = this.wrapper.find('#fast').last();
     fastOption.simulate('change');
-    const feeToken = this.wrapper.find('#token-0x0000000000000000000000000000000000000000').last();
-    feeToken.simulate('change');
+    const feeToken = this.wrapper.find(`#token-${tokenAddress}`).last();
+    feeToken.simulate('click');
   }
 }
