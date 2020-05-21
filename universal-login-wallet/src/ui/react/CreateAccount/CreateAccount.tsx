@@ -44,7 +44,6 @@ export const CreateAccount = () => {
                   sdk={sdk}
                   domains={walletConfig.domains}
                   actions={[WalletSuggestionAction.create]}
-                  className="jarvis"
                   placeholder="bob"
                 />
               </div>

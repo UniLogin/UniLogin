@@ -40,7 +40,6 @@ export const ConnectSelector = ({setName}: ConnectSelectorProps) => {
             sdk={sdk}
             domains={walletConfig.domains}
             actions={[WalletSuggestionAction.connect]}
-            className="jarvis"
             placeholder="e.g. satoshi"
           />
           <Link to="/welcome" className="button-secondary connect-account-cancel">Cancel</Link>
