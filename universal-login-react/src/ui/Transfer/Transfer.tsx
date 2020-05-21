@@ -24,7 +24,6 @@ export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferPr
   const [transferDetails, setTransferDetails] = useState({transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails);
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
   const [tokenDetailsWithBalance] = useBalances(transferService.deployedWallet);
-
   const selectedToken = transferService.getTokenDetails(transferDetails.transferToken);
   const balance = getBalanceOf(selectedToken.symbol, tokenDetailsWithBalance);
 
@@ -69,7 +68,7 @@ export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferPr
           sdk={sdk}
         />
         <div className="footer-buttons-row">
-          <button id="send-button" onClick={onTransferClick} className="footer-approve-btn" disabled={!transferDetails.gasParameters}>Send</button>
+          <button id="send-button" onClick={onTransferClick} className="footer-approve-btn" disabled={!transferDetails.gasParameters || !balance}>Send</button>
         </div>
       </FooterSection>
     </div>

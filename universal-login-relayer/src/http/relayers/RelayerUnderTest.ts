@@ -54,7 +54,7 @@ export class RelayerUnderTest extends Relayer {
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
     const contractWhiteList = getContractWhiteList();
-    const mockToken = await deployContract(wallet, mockContracts.MockToken);
+    const mockToken = await deployContract(wallet, mockContracts.MockDai);
     const supportedTokens = [
       {
         address: mockToken.address,
