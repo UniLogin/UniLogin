@@ -41,7 +41,7 @@ export const ModalTxnSuccess = ({operation, text}: ModalTxnSuccessProps) => {
 
 export const CreationSuccess = () =>
   <div className="main-bg">
-    <ModalWrapper modalClassName="jarvis-styles">
+    <ModalWrapper>
       <ModalTxnSuccess
         operation="Wallet creation"
         text="You have just created your wallet."

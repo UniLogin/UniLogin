@@ -33,7 +33,6 @@ const HomeScreen = () => {
                     onTopUpClick={() => history.push(join(basePath, 'topUp'))}
                     onSendClick={() => history.push(join(basePath, 'transfer'))}
                     onDeviceMessageClick={() => history.push(join(basePath, 'devices', 'approveDevice'))}
-                    className="jarvis-styles"
                   />
                 </Route>
                 <Route path={join(basePath, 'devices')}>
@@ -41,7 +40,6 @@ const HomeScreen = () => {
                     walletService={walletService}
                     onAccountDisconnected={() => history.push('/welcome')}
                     basePath={join(basePath, 'devices')}
-                    className="jarvis-styles"
                   />
                 </Route>
                 <Route path={join(basePath, 'backup')}>
