@@ -49,13 +49,13 @@ describe('INT: MessageExecutor', () => {
     const messageItem = {message: signedMessage, tokenPriceInEth: TEST_TOKEN_PRICE_IN_ETH} as any;
     const refund = utils.bigNumberify(signedMessage.safeTxGas).add(signedMessage.baseGas);
     const refundInToken = refund.mul(signedMessage.gasPrice);
-    const expectedTokenBalance = (await mockToken.balanceOf(signedMessage.from)).sub(refundInToken);
+    const minimalBalanceAfterRefund = (await mockToken.balanceOf(signedMessage.from)).sub(refundInToken);
     const transactionResponse = await messageExecutor.execute(messageItem);
     await transactionResponse.wait();
     const balance = await provider.getBalance(signedMessage.to);
     expect(balance).to.eq(expectedBalance);
     const payerBalance = await mockToken.balanceOf(signedMessage.from);
-    expect(payerBalance).to.eq(expectedTokenBalance);
+    expect(payerBalance).to.be.above(minimalBalanceAfterRefund);
   });
 
   it('should throw error when gasPrice changed significantly', async () => {
