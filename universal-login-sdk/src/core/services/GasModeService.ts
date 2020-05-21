@@ -3,7 +3,7 @@ import {GasMode, TokensPrices, safeMultiplyAndFormatEther, safeDivide, GasPriceO
 import {TokensDetailsStore} from './TokensDetailsStore';
 import {PriceObserver} from '../observers/PriceObserver';
 
-const GAS_TOKENS = ['ETH', 'DAI', 'SAI'];
+const GAS_TOKENS = ['ETH', 'DAI'];
 
 export class GasModeService {
   constructor(
