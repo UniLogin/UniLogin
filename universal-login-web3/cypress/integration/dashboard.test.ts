@@ -1,14 +1,15 @@
 /// <reference types="cypress" />
 
-describe('E2E: Wallet roundtrip', () => {
-  ['macbook-13', 'iphone-x'].forEach((size) => {
-    it(`Wallet roundtrip on ${size}`, () => {
+describe('E2E: Dashboard', () => {
+  ['macbook-13'].forEach((size) => {
+    it(`Dashboard on ${size}`, () => {
       const ensName = Math.random().toString(36).substring(7);
       cy.viewport(size);
       cy.initApplication();
       cy.clickReactButtonContainsText('Show dashboard');
-      // cy.wait(4000);
-      // cy.get('#universal-login-web3-picker')//.find('.unilogin-component-modal').should('be.visible');
+      // cy.wait(10000);
+      // cy.get('#universal-login-web3-picker').find('.unilogin-component-modal').should('not.be.empty');
+
       // cy.ensureCorrectLocation('/terms');
       // cy.approveTerms();
       // cy.ensureCorrectLocation('/selectDeployName');

@@ -3,6 +3,7 @@ Cypress.Commands.add('initApplication', () => {
   cy.clearCookies();
   cy.clearLocalStorage();
   cy.reload();
+  cy.wait(5000);
 });
 
 Cypress.Commands.add('ensureCorrectLocation', (url: string) => {
