@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import {getEnv, UNIVERSAL_LOGIN_LOGO_URL} from '@unilogin/commons';
+import {getEnv, UNIVERSAL_LOGIN_LOGO_URL, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import path from 'path';
 import {baseConfig} from './baseConfig';
 
@@ -38,4 +38,10 @@ export const getConfig = () => ({
       loadExtensions: ['.js'],
     },
   },
+  supportedTokens: [{
+    address: ETHER_NATIVE_TOKEN.address,
+  },
+  {
+    address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+  }],
 });
