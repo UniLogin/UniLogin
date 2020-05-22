@@ -7,7 +7,7 @@ import {getSuggestionId} from '../../../app/getSuggestionId';
 
 export const SingleSuggestion = ({onClick, operationType, suggestion, hint, selectedSuggestion}: SingleSuggestionProps) => {
   return (
-    <div className={classForComponent('suggestions-item-btn')}>
+    <div className={`${classForComponent('suggestions-item-btn')} single`}>
       <div className={classForComponent('suggestions-ens-name')}>
         <EnsName value={suggestion} />
       </div>
