@@ -49,7 +49,6 @@
 .footer-buttons-row
   display: grid
   grid-template-rows: 1fr
-  grid-template-columns: 1fr
   grid-gap: 15px
   align-items: center
   max-width: 355px
@@ -64,5 +63,8 @@
 .footer-buttons-row > :only-child
   margin-left: auto
 
-.footer-buttons-row:not(:only-child)
+.footer-buttons-row.two
   grid-template-columns: 1fr 1fr
+
+.footer-buttons-row.one
+  grid-template-columns: 1fr
