@@ -67,7 +67,7 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
         onGasParametersChanged={setGasParameters}
         gasLimit={DEFAULT_GAS_LIMIT}
       />
-      <div className="footer-buttons-row">
+      <div className="footer-buttons-row one">
         <button id="send-button" onClick={onDeleteDevice} className="footer-approve-btn" disabled={!gasParameters}>Confirm delete</button>
       </div>
     </FooterSection>}
