@@ -11,16 +11,19 @@ export abstract class IframeInitializerBase {
   protected abstract getHasNotifications(): Property<boolean>;
 
   async start() {
+    console.log('START before getISUIVISIBLE');
     this.getIsUiVisible().pipe(forEach(
       isVisible => this.endpoint.setIframeVisibility(isVisible),
     ));
 
+    console.log('START before getHASNOTI');
     this.getHasNotifications().pipe(forEach(
       hasNotifications => this.endpoint.setNotificationIndicator(hasNotifications),
     ));
   }
 
   ready() {
+    console.log('setReady func');
     this.endpoint.sendReadySignal();
   }
 }

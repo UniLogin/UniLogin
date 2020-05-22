@@ -58,11 +58,13 @@ export class ULIFrameProvider {
   }
 
   private handleRpc(msg: any, cb: (error: any, response: any) => void) {
+    console.log('HANDLE RPC: ', msg)
     switch (msg.method) {
       case 'ul_set_iframe_visibility':
         this.setIframeVisibility(msg.params[0]);
         break;
       case 'ul_ready':
+        console.log('ODPALA SIE READY')
         this.isReady.set(true);
         break;
       case 'ul_set_notification_indicator':
@@ -140,10 +142,14 @@ export class ULIFrameProvider {
   }
 
   async send(msg: any, cb: (error: any, response: any) => void) {
+    console.log('send with: ', msg);
     await this.waitUntilReady();
+    console.log('After wait')
     if (Array.isArray(msg)) {
+      console.log('IsArray');
       this.handleBatchRequest(msg, cb);
     } else {
+      console.log('Not Array');
       this.bridge.send(msg, cb);
     }
   }
@@ -173,8 +179,19 @@ export class ULIFrameProvider {
     this.setDashboardVisibility(false);
   }
 
-  waitUntilReady() {
+  sleep (ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  async waitUntilReady() {
+    console.log('isReady.pipe???: ', this.isReady.get());
+    await this.sleep(1000);
+    console.log('This is ready: ', this.isReady.get());
     return this.isReady.pipe(waitFor(Boolean));
+    this.isReady.set(true);
+    console.log('This isReady before return: ', this.isReady.get());
+
+    return this.isReady.get();
   }
 
   private boundOpenDashboard = this.openDashboard.bind(this);

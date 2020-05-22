@@ -14,6 +14,7 @@ export class RpcBridge {
   ) {}
 
   handleMessage(msg: unknown) {
+    console.log('HandleMessage: ', msg);
     const result = castOr(msg, asRpcMessage, undefined);
     if (result) {
       this.handleRpc(result);
@@ -29,6 +30,7 @@ export class RpcBridge {
       isRequest: true,
       payload: msg,
     });
+    console.log('after sendRPC');
   }
 
   private getId() {
@@ -78,6 +80,7 @@ export class RpcBridge {
   }
 
   private sendRpc(rpc: RpcRequest | RpcResponse) {
+    console.log('Sending rpc...')
     this.sendMessage(rpc);
   }
 }

@@ -120,6 +120,7 @@ export class ULWeb3Provider implements Provider {
   private async handle(payload: JsonRPCRequest): Promise<any> {
     const method: string = payload.method;
     const params: unknown[] = payload.params;
+    console.log('handle web3', {method});
     switch (method) {
       case 'eth_sendTransaction':
         const tx = cast(params[0], asPartialMessage);

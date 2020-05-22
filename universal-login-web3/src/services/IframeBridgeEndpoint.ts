@@ -7,7 +7,7 @@ export class IframeBridgeEndpoint {
 
   constructor() {
     this.bridge = new RpcBridge(
-      msg => window.top.postMessage(msg, '*'),
+      msg => () => {console.log('Postmessage', window) ;return window.top.postMessage(msg, '*')},
       this.handle.bind(this),
     );
     window.addEventListener('message', e => this.bridge.handleMessage(e.data));
@@ -34,6 +34,7 @@ export class IframeBridgeEndpoint {
   }
 
   sendReadySignal() {
+    console.log('send READY SIGNAL');
     this.bridge.send({method: 'ul_ready'}, () => {});
   }
 }

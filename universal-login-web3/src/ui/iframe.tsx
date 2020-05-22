@@ -25,8 +25,9 @@ async function main() {
   const iframeInitializer = isPicker
     ? new PickerIframeInitializer(endpoint, sdkConfig, network)
     : new ProviderOnlyIframeInitializer(endpoint, network ?? raise(new TypeError()), sdkConfig);
-
+  console.log('Before start');
   await iframeInitializer.start();
+  console.log('After start');
 }
 
 main();

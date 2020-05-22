@@ -1,12 +1,18 @@
 /// <reference types="cypress" />
 
+import Web3 = require('web3');
+import ULIFrameProvider from '../../../universal-login-provider/src';
+
 describe('E2E: Dashboard', () => {
   ['macbook-13'].forEach((size) => {
     it(`Dashboard on ${size}`, () => {
       const ensName = Math.random().toString(36).substring(7);
       cy.viewport(size);
+      cy.window().then((win) => {
+        win.web3 = new Web3(ULIFrameProvider.createPicker('kovan'));
+      })
       cy.initApplication();
-      cy.clickReactButtonContainsText('Show dashboard');
+      cy.clickReactButtonContainsText('Show dashboard').then(() => {console.log('DZIALA ', (cy.window()))});
       // cy.wait(10000);
       // cy.get('#universal-login-web3-picker').find('.unilogin-component-modal').should('not.be.empty');
 
