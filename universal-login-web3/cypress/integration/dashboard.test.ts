@@ -13,6 +13,12 @@ describe('E2E: Dashboard', () => {
       })
       cy.initApplication();
       cy.clickReactButtonContainsText('Show dashboard').then(() => {console.log('DZIALA ', (cy.window()))});
+
+      cy.window() // get a reference to application's `window`
+      .then($window => {
+        const message = 'some data here'
+        $window.postMessage(message, '*')
+      })
       // cy.wait(10000);
       // cy.get('#universal-login-web3-picker').find('.unilogin-component-modal').should('not.be.empty');
 
