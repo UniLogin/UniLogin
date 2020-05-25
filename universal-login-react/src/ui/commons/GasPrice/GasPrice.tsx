@@ -136,7 +136,7 @@ export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGa
 
 const GasPriceTitle = () => (
   <div className="gas-price-top">
-    <p className="gas-price-title">FEE</p>
+    <p className="gas-price-title">fee</p>
     <div className="gas-price-hint">
       <p className="gas-price-tooltip">Choose transaction speed and token</p>
     </div>
