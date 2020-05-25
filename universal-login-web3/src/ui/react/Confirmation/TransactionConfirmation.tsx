@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
+import styled, {createGlobalStyle} from 'styled-components';
 import {utils} from 'ethers';
 import {GasModesWithPrices, Message, ensureNotFalsy, ensureNotNullish, GasParameters, PartialRequired, TokenDetails} from '@unilogin/commons';
 import {ModalWrapper, useAsync, Spinner, GasPrice, getTransactionInfo} from '@unilogin/react';
@@ -16,6 +16,7 @@ import {BoxFooter} from '../common/Layout/BoxFooter';
 import {Box} from '../common/Layout/Box';
 import {Row} from '../common/Layout/Row';
 import {ConfirmationResponse} from '../../../models/ConfirmationResponse';
+import {useClassFor} from '@unilogin/react';
 
 export interface ConfirmationTransactionProps {
   title: string;
@@ -50,8 +51,9 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
 
   return <>
     <GlobalStyle />
+    <TransactionGlobalStyles />
     <ModalWrapper message={message}>
-      <Box>
+      <Box className={useClassFor('transaction-confirmation')}>
         <BoxHeader>
           <UniLoginLogo />
           <CloseButton onClick={() => onConfirmationResponse({isConfirmed: false})} />
@@ -97,6 +99,31 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
     </ModalWrapper>
   </>;
 };
+
+const TransactionGlobalStyles = createGlobalStyle`
+  .unilogin-component-transaction-confirmation.unilogin-theme-unilogin .unilogin-component-gas-price.unilogin-theme-unilogin {
+    display: flex;
+    align-items: start;
+  }
+  .unilogin-component-transaction-confirmation.unilogin-theme-unilogin .gas-price-selector {
+    top: 324px;
+
+  }
+  .unilogin-component-transaction-confirmation.unilogin-theme-unilogin .gas-price-dropdown {
+    margin-top: unset;
+    margin-left: 46px;
+    width: 100%;
+  }
+  .unilogin-component-transaction-confirmation.unilogin-theme-unilogin .gas-price-title {
+    text-transform: capitalize;
+    font-size: 14px;
+    opacity: 1;
+    color: #7D7C9C;
+  }
+  .unilogin-component-transaction-confirmation.unilogin-theme-unilogin .gas-price-hint {
+    margin-top: 1px;
+  }
+`;
 
 const TransactionData = styled.div`
     margin-top: 45px;
