@@ -1,14 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {utils} from 'ethers';
-import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, PartialRequired, TokenDetails} from '@unilogin/commons';
-import {ModalWrapper, useAsync, Spinner, getTransactionInfo} from '@unilogin/react';
+import {GasModesWithPrices, Message, ensureNotFalsy, ensureNotNullish, GasParameters, PartialRequired, TokenDetails} from '@unilogin/commons';
+import {ModalWrapper, useAsync, Spinner, GasPrice, getTransactionInfo} from '@unilogin/react';
 import {WalletService, getValueInUsd} from '@unilogin/sdk';
 import {Title} from '../common/Text/Title';
 import {Text} from '../common/Text/Text';
 import {CloseButton} from '../common/Button/CloseButton';
-import {TransactionSpeed} from './TransactionSpeed';
-import {TransactionFee} from './TransactionFee';
 import {ButtonPrimary, ButtonSecondary} from '../common/Button/Button';
 import {UniLoginLogo} from '../common/UniLoginLogo';
 import {GlobalStyle} from '../common/GlobalStyle';
@@ -30,30 +28,13 @@ export interface ConfirmationTransactionProps {
 
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction, onError}: ConfirmationTransactionProps) => {
   const [modesAndPrices, error] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
-  const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount' | 'timeEstimation'>>({name: '', usdAmount: '0', timeEstimation: 0});
   const [transferDetails] = useAsync<{tokenDetails: TokenDetails, value: string, targetAddress: string}>(() => getTransactionInfo(walletService.getDeployedWallet(), transaction) as any, []);
-  const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
   const [valueInUSD] = useAsync<any>(async () =>
     transferDetails && getValueInUsd(transferDetails.tokenDetails.address, walletService, transferDetails.value),
   [transferDetails]);
 
-  const onModeChanged = (name: string) => {
-    const gasTokenAddress = gasOption.token.address;
-    const {usdAmount, gasOptions, timeEstimation} = findGasMode(modesAndPrices?.modes!, name);
-
-    setMode({name, usdAmount, timeEstimation});
-    setGasOption(findGasOption(gasOptions, gasTokenAddress));
-  };
-
-  useEffect(() => {
-    if (modesAndPrices) {
-      const {name, usdAmount, timeEstimation} = modesAndPrices.modes[FAST_GAS_MODE_INDEX];
-      const gasOption = findGasOption(modesAndPrices.modes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
-      setMode({name, usdAmount, timeEstimation});
-      setGasOption(gasOption);
-    }
-  }, [modesAndPrices]);
+  const [gasOption, setGasOption] = useState<GasParameters | undefined>(undefined);
 
   if (error) {
     if (onError) {
@@ -91,25 +72,26 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
                 <Value>{valueInUSD} USD</Value>
               </ValueRow>
             </Row>
-            <Row>
-              <DataLabel>Speed:</DataLabel>
-              <TransactionSpeed gasModes={modesAndPrices.modes} selectedValue={mode.name} onChange={onModeChanged} />
-            </Row>
-            <Row>
-              <DataLabel>Fee:</DataLabel>
-              <TransactionFee mode={mode} gasLimit={transaction.gasLimit} gasOption={gasOption} deployedWallet={walletService.getDeployedWallet()} />
-            </Row>
+            <GasPrice
+              isDeployed={true}
+              deployedWallet={walletService.getDeployedWallet()}
+              sdk={walletService.sdk}
+              gasLimit={transaction.gasLimit}
+              onGasParametersChanged={setGasOption}
+            />
           </TransactionData>
         </BoxContent>
         <BoxFooter>
           <ButtonSecondary onClick={() => onConfirmationResponse({isConfirmed: false})}>Back</ButtonSecondary>
-          <ButtonPrimary onClick={() => onConfirmationResponse({
-            isConfirmed: true,
-            gasParameters: {
-              gasPrice: gasOption.gasPrice,
-              gasToken: gasOption.token.address,
-            },
-          })}>Confirm</ButtonPrimary>
+          {gasOption &&
+            <ButtonPrimary onClick={() => onConfirmationResponse({
+              isConfirmed: true,
+              gasParameters: {
+                gasPrice: gasOption.gasPrice,
+                gasToken: gasOption.gasToken,
+              },
+            })}>Confirm</ButtonPrimary>
+          }
         </BoxFooter>
       </Box>
     </ModalWrapper>

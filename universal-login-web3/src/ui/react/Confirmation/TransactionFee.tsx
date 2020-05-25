@@ -12,25 +12,28 @@ export interface TransactionFeeProps {
   gasLimit: utils.BigNumberish;
   gasOption: GasOption;
   deployedWallet: DeployedWallet;
+  onClick: () => void;
 }
 
-export const TransactionFee = ({mode, gasLimit, gasOption, deployedWallet}: TransactionFeeProps) => {
+export const TransactionFee = ({onClick, mode, gasLimit, gasOption, deployedWallet}: TransactionFeeProps) => {
   const [, getBalanceBySymbol] = useBalances(deployedWallet);
   const balanceWithDetails = getBalanceBySymbol(gasOption.token.symbol);
   return (<FeeBlock>
-    <Logo src={ethereumIcon} alt="ethereum logo" />
-    <FeeRow>
-      <div>
-        <FeeAmount>{safeMultiplyAndFormatEther(gasOption.gasPrice, gasLimit)} {gasOption.token.symbol}</FeeAmount>
-        <FeeText>= {calculateTransactionFee(mode.usdAmount, gasLimit)} USD</FeeText>
-      </div>
-      <div>
-        <Text>Your balance</Text>
-        {balanceWithDetails
-          ? <FeeText>{ValueRounder.ceil(utils.formatEther(balanceWithDetails.balance))} {gasOption.token.symbol} </FeeText>
-          : <Spinner className='spinner-small' />}
-      </div>
-    </FeeRow>
+    <button onClick={onClick}>
+      <Logo src={ethereumIcon} alt="ethereum logo" />
+      <FeeRow>
+        <div>
+          <FeeAmount>{safeMultiplyAndFormatEther(gasOption.gasPrice, gasLimit)} {gasOption.token.symbol}</FeeAmount>
+          <FeeText>= {calculateTransactionFee(mode.usdAmount, gasLimit)} USD</FeeText>
+        </div>
+        <div>
+          <Text>Your balance</Text>
+          {balanceWithDetails
+            ? <FeeText>{ValueRounder.ceil(utils.formatEther(balanceWithDetails.balance))} {gasOption.token.symbol} </FeeText>
+            : <Spinner className='spinner-small' />}
+        </div>
+      </FeeRow>
+    </button>
   </FeeBlock>);
 };
 
