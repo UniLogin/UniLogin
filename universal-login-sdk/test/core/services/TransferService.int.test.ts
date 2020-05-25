@@ -10,6 +10,7 @@ import {TransferService} from '../../../src/core/services/TransferService';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
 import {createAndSetWallet, createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
+import {IERC20Interface} from '@unilogin/contracts';
 
 chai.use(solidity);
 chai.use(chaiAsPromised);
@@ -160,6 +161,19 @@ describe('INT: TransferService', () => {
     const {address} = Wallet.createRandom();
     const balance = await provider.getBalance(address);
     expect(transferService.getMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.0');
+  });
+
+  it('getTransferCurrency returns ETH', async () => {
+    const {address} = Wallet.createRandom();
+    const amount = utils.parseEther('5').toString();
+    expect(await transferService.getTransferCurrency({to: address, amount, data: '0x0'})).to.eq('ETH');
+  });
+
+  it('getTransferCurrency returns token symbol', async () => {
+    const {address} = Wallet.createRandom();
+    const amount = utils.parseEther('5').toString();
+    const data = IERC20Interface.functions.transfer.encode([address, amount]);
+    expect(await transferService.getTransferCurrency({to: mockTokenContract.address, amount: '0', data})).to.eq('DAI');
   });
 
   after(async () => {

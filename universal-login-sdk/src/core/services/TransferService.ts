@@ -1,4 +1,4 @@
-import {ensureNotFalsy, GasParameters, Nullable, TransferDetails, SEND_TRANSACTION_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {ensureNotFalsy, GasParameters, Nullable, TransferDetails, SEND_TRANSACTION_GAS_LIMIT, ETHER_NATIVE_TOKEN, isDataForFunctionCall} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {bigNumberMax} from '../utils/bigNumberMax';
@@ -9,6 +9,7 @@ import {AmountValidator} from './validations/AmountValidator';
 import {RecipientValidator} from './validations/RecipientValidator';
 import {ChainValidator} from './validations/ChainValidator';
 import {OnBalanceChange} from '../observers/BalanceObserver';
+import {IERC20Interface} from '@unilogin/contracts';
 
 export type TransferErrors = Record<string, string[]>;
 
@@ -61,5 +62,12 @@ export class TransferService {
 
   subscribeToBalances(callback: OnBalanceChange) {
     return this.deployedWallet.subscribeToBalances(callback);
+  }
+
+  getTransferCurrency(transferDetails: {to: string, data: string, amount: string}) {
+    if (isDataForFunctionCall(transferDetails.data, IERC20Interface, 'transfer')) {
+      return this.getTokenDetails(transferDetails.to).symbol;
+    }
+    return ETHER_NATIVE_TOKEN.symbol;
   }
 }
