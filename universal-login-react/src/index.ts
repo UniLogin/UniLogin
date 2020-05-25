@@ -53,3 +53,4 @@ export {OnboardingWaitForDeployment} from './ui/Onboarding/OnboardingWaitForDepl
 export {ChooseTopUpToken} from './ui/TopUp/ChooseTopUpToken';
 export {getTransactionInfo} from './app/getTransactionInfo';
 export {TransactionFeeChoose} from './ui/commons/GasPrice/TransactionFeeChoose';
+export {useClassFor} from './ui/utils/classFor';
