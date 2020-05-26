@@ -36,8 +36,28 @@
   .udashboard-tab-text
     color: #7D7C9C
 
+  .udashboard-tab-funds.active .udashboard-tab-text::before
+    @media only screen and (max-width: 600px)
+      background: url('../../../assets/icons/dollar.svg') center no-repeat
+
+  .udashboard-tab-devices.active .udashboard-tab-text::before
+    @media only screen and (max-width: 600px)
+      background: url('../../../assets/ucomponent/devices.svg') center no-repeat
+
+  .udashboard-tab-backup.active .udashboard-tab-text::before
+    @media only screen and (max-width: 600px)
+      background: url('../../../assets/icons/backup.svg') center no-repeat
+
+  .active .udashboard-tab-text::before
+    filter: invert(51%) sepia(89%) saturate(954%) hue-rotate(204deg) brightness(100%) contrast(95%)
+
   .new-notifications::after
     background: linear-gradient(91.66deg, #0ADBC2 0%, #07D1D1 100%)
+
+  .udashboard-navbar
+    @media only screen and (max-width: 600px)
+      background-color: #fff
+      margin-bottom: 41px
 
   input
     @media only screen and (max-width: 600px)
@@ -48,6 +68,10 @@
   background: #fff
   border-bottom-left-radius: 8px
   border-bottom-right-radius: 8px
+
+  @media only screen and (max-width: 600px)
+    border-bottom-left-radius: unset
+    border-bottom-right-radius: unset
 
   .universal-login-emojis
     flex: 1
