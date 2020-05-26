@@ -78,7 +78,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 onGasParametersChanged={setGasParameters}
                 sdk={deployedWallet.sdk}
               />
-              <div className="footer-buttons-row">
+              <div className="footer-buttons-row two">
                 <button onClick={() => deployedWallet.denyRequests()} className="footer-deny-btn">Deny</button>
                 <button onClick={() => onConnectClick(gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
               </div>
