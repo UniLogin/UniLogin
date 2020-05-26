@@ -56,6 +56,8 @@ const CentralizedText = styled(Text)`
   border: 1px solid rgba(190, 207, 217, 0.6);
   border-radius: 4px;
   padding: 15px;
+  overflow: overlay;
+  text-overflow: ellipsis;
 
   @media(max-width: 600px) {
     margin-top: 24px;
