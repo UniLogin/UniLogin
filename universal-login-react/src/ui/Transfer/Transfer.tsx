@@ -67,7 +67,7 @@ export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferPr
           onGasParametersChanged={(gasParameters: GasParameters) => updateField('gasParameters')(gasParameters)}
           sdk={sdk}
         />
-        <div className="footer-buttons-row">
+        <div className="footer-buttons-row one">
           <button id="send-button" onClick={onTransferClick} className="footer-approve-btn" disabled={!transferDetails.gasParameters || !balance}>Send</button>
         </div>
       </FooterSection>
