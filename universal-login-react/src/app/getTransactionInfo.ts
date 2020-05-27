@@ -20,4 +20,4 @@ export const getTransactionInfo = async (deployedWallet: DeployedWallet, transfe
     value: transferDetails.value,
     tokenDetails: ETHER_NATIVE_TOKEN,
   };
-}
+};

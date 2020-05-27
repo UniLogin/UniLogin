@@ -11,7 +11,6 @@ import {getTransactionInfo} from '../../src/app/getTransactionInfo';
 chai.use(solidity);
 chai.use(chaiAsPromised);
 
-
 describe('INT: getTransactionInfo', () => {
   let relayer: any;
   let sdk: UniLoginSdk;
