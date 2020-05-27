@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {utils} from 'ethers';
-import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, ensureNotFalsy, ensureNotNullish, Message} from '@unilogin/commons';
-import {ModalWrapper, useAsync, Spinner} from '@unilogin/react';
-import {WalletService, TransferService, getValueInUsd} from '@unilogin/sdk';
+import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, ensureNotFalsy, Message, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
+import {ModalWrapper, useAsync, Spinner, getTransactionInfo} from '@unilogin/react';
+import {WalletService, getValueInUsd} from '@unilogin/sdk';
 import {Title} from '../common/Text/Title';
 import {Text} from '../common/Text/Text';
 import {CloseButton} from '../common/Button/CloseButton';
@@ -29,13 +29,10 @@ export interface ConfirmationTransactionProps {
 }
 
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction, onError}: ConfirmationTransactionProps) => {
-  ensureNotNullish(transaction.value, Error, 'Missing parameter of Transaction: value');
-  ensureNotFalsy(transaction.gasLimit, Error, 'Missing parameter of Transaction: gasLimit');
   ensureNotFalsy(transaction.to, Error, 'Missing parameter of Transaction: to');
   const [modesAndPrices, error] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
   const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount' | 'timeEstimation'>>({name: '', usdAmount: '0', timeEstimation: 0});
-  const transferService = new TransferService(walletService.getDeployedWallet());
-  const [transferDetails] = useAsync<{currencySymbol: string, targetAddress: string, value: string} | undefined | any>(() => transferService.getTransferDetails(transaction) as any, []);
+  const [transferDetails] = useAsync<{currencySymbol: string, targetAddress: string, value: string} | undefined | any>(() => getTransactionInfo(walletService.getDeployedWallet(), transaction) as any, []);
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
   const [valueInUSD] = useAsync<any>(async () =>
@@ -101,7 +98,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
             </Row>
             <Row>
               <DataLabel>Fee:</DataLabel>
-              <TransactionFee mode={mode} gasLimit={transaction.gasLimit} gasOption={gasOption} deployedWallet={walletService.getDeployedWallet()} />
+              <TransactionFee mode={mode} gasLimit={transaction.gasLimit || DEFAULT_GAS_LIMIT} gasOption={gasOption} deployedWallet={walletService.getDeployedWallet()} />
             </Row>
           </TransactionData>
         </BoxContent>
