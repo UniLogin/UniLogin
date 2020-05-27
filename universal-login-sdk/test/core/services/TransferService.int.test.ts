@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService, TEST_GAS_PRICE} from '@unilogin/commons';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService, TEST_GAS_PRICE, TEST_DAI_TOKEN} from '@unilogin/commons';
 import {deployMockToken} from '@unilogin/commons/testutils';
 import UniLoginSdk from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
@@ -163,17 +163,18 @@ describe('INT: TransferService', () => {
     expect(transferService.getMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.0');
   });
 
-  it('getTransferCurrency returns ETH', async () => {
+  it('getTransferDetails returns ETH', async () => {
     const {address} = Wallet.createRandom();
-    const amount = utils.parseEther('5').toString();
-    expect(await transferService.getTransferCurrency({to: address, amount, data: '0x0'})).to.eq('ETH');
+    const value = utils.parseEther('5').toString();
+    expect(await transferService.getTransferDetails({to: address, value, data: '0x0'})).to.deep.eq({tokenDetails: ETHER_NATIVE_TOKEN, value, targetAddress: address});
   });
 
-  it('getTransferCurrency returns token symbol', async () => {
+  it('getTransferDetails returns token symbol', async () => {
     const {address} = Wallet.createRandom();
-    const amount = utils.parseEther('5').toString();
-    const data = IERC20Interface.functions.transfer.encode([address, amount]);
-    expect(await transferService.getTransferCurrency({to: mockTokenContract.address, amount: '0', data})).to.eq('DAI');
+    const value = utils.parseEther('0.01').toString();
+    const data = IERC20Interface.functions.transfer.encode([address, value]);
+    console.log(data);
+    expect(await transferService.getTransferDetails({to: mockTokenContract.address, value: '0', data})).to.deep.eq({tokenDetails: {symbol: 'DAI', name: 'Dai Stablecoin v1.0', address: mockTokenContract.address}, value, targetAddress: address});
   });
 
   after(async () => {
