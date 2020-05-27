@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {utils} from 'ethers';
-import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, safeMultiply, ensureNotFalsy, ensureNotNullish, Message} from '@unilogin/commons';
+import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, ensureNotFalsy, ensureNotNullish, Message} from '@unilogin/commons';
 import {ModalWrapper, useAsync, Spinner} from '@unilogin/react';
 import {WalletService, TransferService, getValueInUsd} from '@unilogin/sdk';
 import {Title} from '../common/Text/Title';

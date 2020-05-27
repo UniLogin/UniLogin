@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils, providers, Contract, Wallet} from 'ethers';
 import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService, TEST_GAS_PRICE, TEST_DAI_TOKEN} from '@unilogin/commons';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService, TEST_GAS_PRICE} from '@unilogin/commons';
 import {deployMockToken} from '@unilogin/commons/testutils';
 import UniLoginSdk from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
@@ -173,7 +173,6 @@ describe('INT: TransferService', () => {
     const {address} = Wallet.createRandom();
     const value = utils.parseEther('0.01').toString();
     const data = IERC20Interface.functions.transfer.encode([address, value]);
-    console.log(data);
     expect(await transferService.getTransferDetails({to: mockTokenContract.address, value: '0', data})).to.deep.eq({tokenDetails: {symbol: 'DAI', name: 'Dai Stablecoin v1.0', address: mockTokenContract.address}, value, targetAddress: address});
   });
 

@@ -5,7 +5,7 @@ import {utils} from 'ethers';
 
 describe('UNIT: getValueInUsd', () => {
   const mockGetTokenPriceInEth = (tokenDetails: TokenDetails) => {
-    if(tokenDetails.address === ETHER_NATIVE_TOKEN.address) {
+    if (tokenDetails.address === ETHER_NATIVE_TOKEN.address) {
       return 1;
     }
     return TEST_TOKEN_PRICE_IN_ETH;
@@ -16,7 +16,7 @@ describe('UNIT: getValueInUsd', () => {
   const mockGetEtherPriceInCurrency = () => etherPriceInUsd;
 
   const mockGetTokenDetails = (tokenAddress: string) => {
-    if(tokenAddress === ETHER_NATIVE_TOKEN.address) {
+    if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
       return ETHER_NATIVE_TOKEN;
     }
     return TEST_DAI_TOKEN;
@@ -30,8 +30,8 @@ describe('UNIT: getValueInUsd', () => {
       },
       tokenDetailsService: {
         getTokenDetails: mockGetTokenDetails,
-      }
-    }
+      },
+    },
   };
 
   const test = (currency: string) => (expectedUsdAmount: string, ethValue: string) => {
@@ -39,10 +39,10 @@ describe('UNIT: getValueInUsd', () => {
       expect(await getValueInUsd(
         currency === ETHER_NATIVE_TOKEN.symbol ? ETHER_NATIVE_TOKEN.address : TEST_DAI_TOKEN.address,
         walletService as any,
-        utils.parseEther(ethValue).toString()
+        utils.parseEther(ethValue).toString(),
       )).to.eq(expectedUsdAmount);
     });
-  }
+  };
 
   const testETH = test('ETH');
   const testDAI = test('DAI');
