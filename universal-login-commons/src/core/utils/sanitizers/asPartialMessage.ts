@@ -15,7 +15,4 @@ export const asPartialMessage = asObject<PartialRequired<Message, 'to'>>({
   value: asOptional(asBigNumber),
   gasLimit: asOptional(asBigNumber),
   gasPrice: asOptional(asBigNumber),
-  operationType: asOptional(asOperationType),
-  gasToken: asOptional(asString),
-  refundReceiver: asOptional(asString),
 });
