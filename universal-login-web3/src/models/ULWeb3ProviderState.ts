@@ -10,7 +10,7 @@ export type ULWeb3ProviderState = {
   props: {
     onConfirmationResponse: (response: ConfirmationResponse) => void;
     title: string;
-    transaction: Partial<Message>;
+    transaction: Pick<Message, 'to' | 'value' | 'gasLimit' | 'data'>;
   };
 } | {
   kind: 'SIGN_CONFIRMATION';

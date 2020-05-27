@@ -25,7 +25,7 @@ export class UIController {
     this.hideModal();
   }
 
-  confirmRequest(title: string, transaction: Partial<Message>): Promise<ConfirmationResponse> {
+  confirmRequest(title: string, transaction: Pick<Message, 'to' | 'value' | 'gasLimit' | 'data'>): Promise<ConfirmationResponse> {
     return new Promise<ConfirmationResponse>((resolve) => {
       this.activeModal.set({
         kind: 'TRANSACTION_CONFIRMATION',
