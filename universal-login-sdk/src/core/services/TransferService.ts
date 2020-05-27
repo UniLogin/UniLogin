@@ -1,4 +1,4 @@
-import {ensureNotFalsy, GasParameters, Nullable, TransferDetails, SEND_TRANSACTION_GAS_LIMIT, ETHER_NATIVE_TOKEN, isDataForFunctionCall, Message} from '@unilogin/commons';
+import {ensureNotFalsy, GasParameters, Nullable, TransferDetails, SEND_TRANSACTION_GAS_LIMIT, ETHER_NATIVE_TOKEN, isDataForFunctionCall, Message, PartialRequired} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {bigNumberMax} from '../utils/bigNumberMax';
@@ -68,7 +68,7 @@ export class TransferService {
     return this.deployedWallet.sdk.tokenDetailsService.getTokenDetails(tokenAddress);
   }
 
-  async getTransferDetails(transferDetails: Pick<Message, 'to' | 'value' | 'data'>) {
+  async getTransferDetails(transferDetails: PartialRequired<Pick<Message, 'to' | 'value' | 'data'>, 'to' | 'value'>) {
     if (transferDetails.data && isDataForFunctionCall(transferDetails.data.toString(), IERC20Interface, 'transfer')) {
       const tokenTransfer = new utils.AbiCoder((_, value) => value).decode(
         ['address', 'uint256'],
