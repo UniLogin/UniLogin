@@ -1,4 +1,4 @@
-import {asAnyOf, asArray, asExactly, asNumber, asString, Sanitizer, asObject, asOptional} from '@restless/sanitizers';
+import {asAnyOf, asArray, asExactly, asNumber, asString, Sanitizer, asOptional, asPartialObject} from '@restless/sanitizers';
 import {asBigNumber, asEthAddress} from '@restless/ethereum';
 import {OperationType, Message, PartialRequired} from '../../..';
 
@@ -7,7 +7,7 @@ export const asOperationType: Sanitizer<OperationType> = asAnyOf([
   asExactly(OperationType.externalCall),
 ], 'OperationType');
 
-export const asPartialMessage = asObject<PartialRequired<Message, 'to'>>({
+export const asPartialMessage = asPartialObject<PartialRequired<Message, 'to' | 'from'>>({
   to: asEthAddress,
   from: asEthAddress,
   nonce: asOptional(asAnyOf([asString, asNumber], 'string or number')),
