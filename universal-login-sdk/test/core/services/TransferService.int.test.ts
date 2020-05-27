@@ -10,7 +10,6 @@ import {TransferService} from '../../../src/core/services/TransferService';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
 import {createAndSetWallet, createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
-import {IERC20Interface} from '@unilogin/contracts';
 
 chai.use(solidity);
 chai.use(chaiAsPromised);
@@ -161,19 +160,6 @@ describe('INT: TransferService', () => {
     const {address} = Wallet.createRandom();
     const balance = await provider.getBalance(address);
     expect(transferService.getMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.0');
-  });
-
-  it('getTransferDetails returns ETH', async () => {
-    const {address} = Wallet.createRandom();
-    const value = utils.parseEther('5').toString();
-    expect(await transferService.getTransferDetails({to: address, value, data: '0x0'})).to.deep.eq({tokenDetails: ETHER_NATIVE_TOKEN, value, targetAddress: address});
-  });
-
-  it('getTransferDetails returns token symbol', async () => {
-    const {address} = Wallet.createRandom();
-    const value = utils.parseEther('0.01').toString();
-    const data = IERC20Interface.functions.transfer.encode([address, value]);
-    expect(await transferService.getTransferDetails({to: mockTokenContract.address, value: '0', data})).to.deep.eq({tokenDetails: {symbol: 'DAI', name: 'Dai Stablecoin v1.0', address: mockTokenContract.address}, value, targetAddress: address});
   });
 
   after(async () => {

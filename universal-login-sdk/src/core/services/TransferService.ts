@@ -9,7 +9,6 @@ import {AmountValidator} from './validations/AmountValidator';
 import {RecipientValidator} from './validations/RecipientValidator';
 import {ChainValidator} from './validations/ChainValidator';
 import {OnBalanceChange} from '../observers/BalanceObserver';
-import {IERC20Interface} from '@unilogin/contracts';
 
 export type TransferErrors = Record<string, string[]>;
 
@@ -62,28 +61,5 @@ export class TransferService {
 
   subscribeToBalances(callback: OnBalanceChange) {
     return this.deployedWallet.subscribeToBalances(callback);
-  }
-
-  fetchTokenDetails(tokenAddress: string) {
-    return this.deployedWallet.sdk.tokenDetailsService.getTokenDetails(tokenAddress);
-  }
-
-  async getTransferDetails(transferDetails: PartialRequired<Pick<Message, 'to' | 'value' | 'data'>, 'to' | 'value'>) {
-    if (transferDetails.data && isDataForFunctionCall(transferDetails.data.toString(), IERC20Interface, 'transfer')) {
-      const tokenTransfer = new utils.AbiCoder((_, value) => value).decode(
-        ['address', 'uint256'],
-        `0x${transferDetails.data.toString().slice(10)}`,
-      );
-      return {
-        tokenDetails: await this.fetchTokenDetails(transferDetails.to),
-        targetAddress: tokenTransfer[0],
-        value: tokenTransfer[1].toString(),
-      };
-    }
-    return {
-      targetAddress: transferDetails.to,
-      value: transferDetails.value,
-      tokenDetails: ETHER_NATIVE_TOKEN,
-    };
   }
 }
