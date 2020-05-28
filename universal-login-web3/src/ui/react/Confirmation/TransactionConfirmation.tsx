@@ -80,13 +80,13 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
           <TransactionData>
             <Row>
               <DataLabel>Send to:</DataLabel>
-              <Address>{transferDetails && transferDetails.targetAddress}</Address>
+              <Address>{transferDetails?.targetAddress}</Address>
             </Row>
             <Row>
               <DataLabel>Value:</DataLabel>
               <ValueRow>
                 <Highlighted>
-                  <Value>{transferDetails && utils.formatEther(transferDetails.value)} {transferDetails && transferDetails.tokenDetails.symbol}</Value>
+                  <Value>{transferDetails && utils.formatEther(transferDetails.value)} {transferDetails?.tokenDetails.symbol}</Value>
                 </Highlighted>
                 <Value>{valueInUSD} USD</Value>
               </ValueRow>
