@@ -123,7 +123,7 @@ export class ULWeb3Provider implements Provider {
     switch (method) {
       case 'eth_sendTransaction':
         const tx = cast(params[0], asPartialMessage);
-        return this.sendTransaction(tx as any);
+        return this.sendTransaction(tx as PartialRequired<Message, 'to' | 'from'>);
       case 'eth_accounts':
       case 'eth_requestAccounts':
         return {result: this.getAccounts()};
@@ -171,7 +171,7 @@ export class ULWeb3Provider implements Provider {
     }
   }
 
-  async sendTransaction(transaction: PartialRequired<Message, 'to'| 'value' | 'data'>): Promise<{result?: string, error?: string}> {
+  async sendTransaction(transaction: PartialRequired<Message, 'to'| 'from'>): Promise<{result?: string, error?: string}> {
     const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, value: '0', ...transaction};
     const confirmationResponse = await this.uiController.confirmRequest('Confirm transaction', transactionWithDefaults);
     if (!confirmationResponse.isConfirmed) {

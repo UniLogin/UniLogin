@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {utils} from 'ethers';
-import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, ensureNotFalsy, Message, DEFAULT_GAS_LIMIT, ensureNotNullish} from '@unilogin/commons';
+import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, ensureNotFalsy, Message, DEFAULT_GAS_LIMIT, ensureNotNullish, PartialRequired} from '@unilogin/commons';
 import {ModalWrapper, useAsync, Spinner, getTransactionInfo} from '@unilogin/react';
 import {WalletService, getValueInUsd} from '@unilogin/sdk';
 import {Title} from '../common/Text/Title';
@@ -24,7 +24,7 @@ export interface ConfirmationTransactionProps {
   message: string;
   onConfirmationResponse: (response: ConfirmationResponse) => void;
   walletService: WalletService;
-  transaction: Pick<Message, 'to' | 'value' | 'gasLimit' | 'data'>;
+  transaction: PartialRequired<Message, 'to' | 'from' | 'gasLimit' | 'value'>;
   onError?: (errorMessage: string) => void;
 }
 
