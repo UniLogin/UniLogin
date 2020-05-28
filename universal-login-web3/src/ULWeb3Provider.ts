@@ -20,12 +20,13 @@ export interface ULWeb3ProviderOptions extends Config {
 }
 
 export class ULWeb3Provider implements Provider {
-  static getDefaultProvider(networkOrConfig: Network | Config, overrides: any) {
+  static getDefaultProvider(networkOrConfig: Network | Config, showWaitingForTransaction?: boolean, sdkConfigOverrides?: Partial<SdkConfig>) {
     const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
 
     return new ULWeb3Provider({
-      ...overrides,
+      showWaitingForTransaction,
       ...config,
+      ...sdkConfigOverrides,
     });
   }
 

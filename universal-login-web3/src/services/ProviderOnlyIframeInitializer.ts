@@ -15,7 +15,7 @@ export class ProviderOnlyIframeInitializer extends IframeInitializerBase {
     overrides: {sdkConfig?: Partial<SdkConfig>, showWaitingForTransaction?: boolean},
   ) {
     super(endpoint);
-    this.provider = ULWeb3Provider.getDefaultProvider(network, overrides);
+    this.provider = ULWeb3Provider.getDefaultProvider(network, overrides.showWaitingForTransaction, overrides.sdkConfig);
     endpoint.setHandler(this.provider);
   }
 
