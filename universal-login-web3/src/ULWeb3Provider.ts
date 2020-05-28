@@ -47,6 +47,7 @@ export class ULWeb3Provider implements Provider {
     provider,
     relayerUrl,
     ensDomains,
+    showTransactionDialog,
     sdkConfigOverrides,
     uiInitializer = initUi,
     observedTokensAddresses,
@@ -68,7 +69,7 @@ export class ULWeb3Provider implements Provider {
     this.browserChecker = browserChecker;
     this.walletService = new WalletService(this.sdk, walletFromBrain, sdkConfig.storageService);
 
-    this.uiController = new UIController(this.walletService);
+    this.uiController = new UIController(this.walletService, showTransactionDialog);
 
     this.isLoggedIn = this.walletService.walletDeployed;
     this.isUiVisible = this.uiController.isUiVisible;

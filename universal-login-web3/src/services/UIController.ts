@@ -14,6 +14,7 @@ export class UIController {
 
   constructor(
     private walletService: WalletService,
+    private showTransactionDialog: boolean,
   ) {
     this.isUiVisible = combine(
       [this.activeModal, this.dashboardVisible, this.isLoading],
@@ -58,7 +59,9 @@ export class UIController {
   }
 
   showWaitForTransaction(transactionHash?: string) {
-    this.activeModal.set({kind: 'WAIT_FOR_TRANSACTION', props: {transactionHash}});
+    if(this.showTransactionDialog){
+      this.activeModal.set({kind: 'WAIT_FOR_TRANSACTION', props: {transactionHash}});
+    }
   }
 
   isWaitForTransaction() {
@@ -67,7 +70,7 @@ export class UIController {
 
   showTransactionHash(transactionHash: string) {
     if (this.isWaitForTransaction()) {
-      this.showWaitForTransaction(transactionHash);
+        this.showWaitForTransaction(transactionHash);
     }
   }
 
@@ -82,7 +85,7 @@ export class UIController {
   }
 
   showError(errorMessage?: string) {
-    if (isRandomInfuraError(errorMessage)) {
+    if (isRandomInfuraError(errorMessage) || !this.showTransactionDialog) {
       return;
     }
     this.activeModal.set({kind: 'ERROR', props: {errorMessage}});

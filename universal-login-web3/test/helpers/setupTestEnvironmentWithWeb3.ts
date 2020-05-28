@@ -26,6 +26,7 @@ function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider
       services = props;
     },
     browserChecker: mockedBrowserChecker,
+    showTransactionDialog: true,
   });
   return [ulProvider, services!];
 }
