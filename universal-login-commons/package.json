@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@restless/ethereum": "^0.2.2",
-    "@restless/sanitizers": "^0.2.4",
+    "@restless/sanitizers": "^0.2.5",
     "deep-equal": "^1.1.0",
     "ethers": "^4.0.39",
     "lodash.clonedeep": "^4.5.0",
