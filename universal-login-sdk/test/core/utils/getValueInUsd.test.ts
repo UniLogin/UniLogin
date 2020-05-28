@@ -51,6 +51,7 @@ describe('UNIT: getValueInUsd', () => {
   testETH('200', '1');
   testETH('4', '0.02');
   testETH('2', '0.01');
+  testETH('0.2', '0.001');
   testETH('0.1', '0.0005');
   testETH('0.01', '0.00005');
   testETH('0.001', '0.000005');
