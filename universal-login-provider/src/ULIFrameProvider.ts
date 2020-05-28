@@ -32,7 +32,7 @@ export class ULIFrameProvider {
       applicationInfo: getApplicationInfoFromDocument(),
       ...config.sdkConfig,
     } as any;
-    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, config.enablePicker, sdkConfig, config.network));
+    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, config.showTransactionDialogs, config.enablePicker, sdkConfig, config.network));
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
       this.handleRpc.bind(this),

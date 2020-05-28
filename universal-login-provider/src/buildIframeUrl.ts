@@ -2,11 +2,13 @@ import {Network} from './models/network';
 
 export function buildIframeUrl(
   iframeUrl: string,
+  transactionDialogs: boolean,
   picker: boolean,
   sdkConfig: Record<string, any>,
   network?: Network,
 ): string {
   const query = encodeQuery({
+    transactionDialogs,
     picker,
     network,
     sdkConfig: JSON.stringify(sdkConfig),
