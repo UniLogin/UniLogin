@@ -59,7 +59,7 @@ export class UIController {
   }
 
   showWaitForTransaction(transactionHash?: string) {
-    if(this.showTransactionDialog){
+    if (this.showTransactionDialog) {
       this.activeModal.set({kind: 'WAIT_FOR_TRANSACTION', props: {transactionHash}});
     }
   }
@@ -70,7 +70,7 @@ export class UIController {
 
   showTransactionHash(transactionHash: string) {
     if (this.isWaitForTransaction()) {
-        this.showWaitForTransaction(transactionHash);
+      this.showWaitForTransaction(transactionHash);
     }
   }
 

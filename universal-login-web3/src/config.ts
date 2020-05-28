@@ -53,7 +53,7 @@ export function getConfigForNetwork(network: Network): Config {
         relayerUrl: 'https://relayer-kovan.herokuapp.com',
         ensDomains: ['unilogin.test'],
         observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0x08ae34860fbfe73e223596e65663683973c72dd3'],
-        showTransactionDialog
+        showTransactionDialog,
       };
     case '8545':
     case 'ganache':
@@ -63,7 +63,7 @@ export function getConfigForNetwork(network: Network): Config {
         relayerUrl: 'http://localhost:3311',
         ensDomains: ['mylogin.eth', 'universal-id.eth', 'popularapp.eth'],
         observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, DEV_DAI_ADDRESS],
-        showTransactionDialog
+        showTransactionDialog,
       };
     default:
       throw new Error(`Invalid network: ${network}`);
