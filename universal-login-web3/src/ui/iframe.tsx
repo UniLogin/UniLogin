@@ -18,14 +18,14 @@ const getSdkConfig = (applicationInfo?: string, sdkConfig?: string): Partial<Sdk
 
 async function main() {
   const parsedQuery = parseQuery(window.location.search);
-  const showTransactionDialogs = cast(parsedQuery.transactionDialogs, asBoolean);
+  const showWaitingForTransaction = cast(parsedQuery.transactionDialogs, asBoolean);
   const isPicker = cast(parsedQuery.picker, asBoolean);
   const network = parsedQuery.network ? cast(parsedQuery.network, asNetwork) : undefined;
   const sdkConfig = getSdkConfig(parsedQuery.applicationInfo, parsedQuery.sdkConfig);
   const endpoint = new IframeBridgeEndpoint();
   const iframeInitializer = isPicker
-    ? new PickerIframeInitializer(endpoint, showTransactionDialogs, sdkConfig, network)
-    : new ProviderOnlyIframeInitializer(endpoint, network ?? raise(new TypeError()), showTransactionDialogs, sdkConfig);
+    ? new PickerIframeInitializer(endpoint, showWaitingForTransaction, sdkConfig, network)
+    : new ProviderOnlyIframeInitializer(endpoint, network ?? raise(new TypeError()), showWaitingForTransaction, sdkConfig);
 
   await iframeInitializer.start();
 }

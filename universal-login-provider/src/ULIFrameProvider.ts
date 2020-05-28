@@ -9,7 +9,7 @@ import {Network} from './models/network';
 import {Provider} from './models/provider';
 
 export interface ExtendedConfig extends ProviderConfig {
-  showTransactionDialogs: boolean;
+  showWaitingForTransaction: boolean;
   enablePicker: boolean;
   upstream?: Provider;
   network?: Network;
@@ -32,7 +32,7 @@ export class ULIFrameProvider {
       applicationInfo: getApplicationInfoFromDocument(),
       ...config.sdkConfig,
     } as any;
-    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, config.showTransactionDialogs, config.enablePicker, sdkConfig, config.network));
+    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, config.showWaitingForTransaction, config.enablePicker, sdkConfig, config.network));
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
       this.handleRpc.bind(this),
@@ -107,7 +107,7 @@ export class ULIFrameProvider {
 
   static create(network: Network, sdkConfig?: Record<string, any>, config = DEFAULT_CONFIG) {
     return ULIFrameProvider.getInstance({
-      showTransactionDialogs: false,
+      showWaitingForTransaction: false,
       enablePicker: false,
       network: network.toString() as Network,
       sdkConfig,
@@ -117,7 +117,7 @@ export class ULIFrameProvider {
 
   static createPicker(upstream: Provider | Network, sdkConfig?: Record<string, any>, config = DEFAULT_CONFIG) {
     return ULIFrameProvider.getInstance({
-      showTransactionDialogs: false,
+      showWaitingForTransaction: false,
       enablePicker: true,
       ...normalizeUpstream(upstream),
       sdkConfig,

@@ -14,27 +14,28 @@ export interface SetupUniLoginOverrides {
   browserChecker?: BrowserChecker;
 }
 
-export const setupUniLogin = (provider: Provider, showTransactionDialogs: boolean, overrides?: SetupUniLoginOverrides) => ({
+export const setupUniLogin = (provider: Provider, showWaitingForTransaction: boolean, overrides?: SetupUniLoginOverrides) => ({
   name: 'UniLogin',
   icon: UniLoginLogo,
   create: async () => {
     const networkVersion = await getNetworkId(provider) as Network;
     const uniLoginConfig = getConfigForNetwork(networkVersion);
     return new ULWeb3Provider({
+      showWaitingForTransaction,
       ...uniLoginConfig,
       sdkConfigOverrides: overrides?.sdkConfig,
       browserChecker: overrides?.browserChecker,
-    }, showTransactionDialogs);
+    });
   },
 });
 
 export type Strategy = 'UniLogin' | 'Metamask' | Web3ProviderFactory;
 
-export const setupStrategies = (provider: Provider, strategies: Strategy[], showTransactionDialogs: boolean, overrides?: SetupUniLoginOverrides) => {
+export const setupStrategies = (provider: Provider, strategies: Strategy[], showWaitingForTransaction: boolean, overrides?: SetupUniLoginOverrides) => {
   return strategies.map(strategy => {
     switch (strategy) {
       case 'UniLogin':
-        return setupUniLogin(provider, showTransactionDialogs, overrides);
+        return setupUniLogin(provider, showWaitingForTransaction, overrides);
       case 'Metamask':
         const defaultStrategy: Web3ProviderFactory = {icon: MetamaskLogo, name: 'Metamask', create: () => provider};
         return defaultStrategy;

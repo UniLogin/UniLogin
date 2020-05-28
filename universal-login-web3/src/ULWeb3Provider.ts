@@ -13,19 +13,21 @@ import {renderLogoButton} from './ui/logoButton';
 import {asBoolean, asString, cast} from '@restless/sanitizers';
 
 export interface ULWeb3ProviderOptions extends Config {
+  showWaitingForTransaction: boolean;
   sdkConfigOverrides?: Partial<SdkConfig>;
   uiInitializer?: (services: ULWeb3RootProps) => void;
   browserChecker?: BrowserChecker;
 }
 
 export class ULWeb3Provider implements Provider {
-  static getDefaultProvider(networkOrConfig: Network | Config, showTransactionDialogs: boolean, sdkConfigOverrides?: Partial<SdkConfig>) {
+  static getDefaultProvider(networkOrConfig: Network | Config, showWaitingForTransaction: boolean, sdkConfigOverrides?: Partial<SdkConfig>) {
     const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
 
     return new ULWeb3Provider({
+      showWaitingForTransaction,
       ...config,
       sdkConfigOverrides,
-    }, showTransactionDialogs);
+    });
   }
 
   readonly isUniLogin = true;
@@ -37,13 +39,13 @@ export class ULWeb3Provider implements Provider {
   private readonly uiController: UIController;
   private readonly browserChecker: BrowserChecker;
   private readonly network: Network;
-  private readonly showTransactionDialogs: boolean;
 
   readonly isLoggedIn: Property<boolean>;
   readonly isUiVisible: Property<boolean>;
   readonly hasNotifications: Property<boolean>;
 
   constructor({
+    showWaitingForTransaction,
     network,
     provider,
     relayerUrl,
@@ -52,7 +54,7 @@ export class ULWeb3Provider implements Provider {
     uiInitializer = initUi,
     observedTokensAddresses,
     browserChecker = new BrowserChecker(),
-  }: ULWeb3ProviderOptions, showTransactionDialogs: boolean) {
+  }: ULWeb3ProviderOptions) {
     const sdkConfig = {
       network,
       observedTokensAddresses,
@@ -69,8 +71,7 @@ export class ULWeb3Provider implements Provider {
     this.browserChecker = browserChecker;
     this.walletService = new WalletService(this.sdk, walletFromBrain, sdkConfig.storageService);
 
-    this.showTransactionDialogs = showTransactionDialogs;
-    this.uiController = new UIController(this.walletService, this.showTransactionDialogs);
+    this.uiController = new UIController(this.walletService, showWaitingForTransaction);
 
     this.isLoggedIn = this.walletService.walletDeployed;
     this.isUiVisible = this.uiController.isUiVisible;
