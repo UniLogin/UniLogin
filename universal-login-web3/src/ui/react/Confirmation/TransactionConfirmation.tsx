@@ -74,7 +74,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
           {gasParameters &&
             <ButtonPrimary onClick={() => onConfirmationResponse({
               isConfirmed: true,
-              gasParameters: gasParameters,
+              gasParameters,
             })}>Confirm</ButtonPrimary>
           }
         </BoxFooter>
