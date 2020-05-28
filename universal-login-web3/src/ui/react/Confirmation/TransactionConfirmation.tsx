@@ -33,7 +33,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
     transferDetails && getValueInUsd(transferDetails.tokenDetails.address, walletService, transferDetails.value),
   [transferDetails]);
 
-  const [gasOption, setGasOption] = useState<GasParameters | undefined>(undefined);
+  const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
 
   return <>
     <GlobalStyle />
@@ -65,19 +65,16 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
               deployedWallet={walletService.getDeployedWallet()}
               sdk={walletService.sdk}
               gasLimit={transaction.gasLimit}
-              onGasParametersChanged={setGasOption}
+              onGasParametersChanged={setGasParameters}
             />
           </TransactionData>
         </BoxContent>
         <BoxFooter>
           <ButtonSecondary onClick={() => onConfirmationResponse({isConfirmed: false})}>Back</ButtonSecondary>
-          {gasOption &&
+          {gasParameters &&
             <ButtonPrimary onClick={() => onConfirmationResponse({
               isConfirmed: true,
-              gasParameters: {
-                gasPrice: gasOption.gasPrice,
-                gasToken: gasOption.gasToken,
-              },
+              gasParameters: gasParameters,
             })}>Confirm</ButtonPrimary>
           }
         </BoxFooter>
