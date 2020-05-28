@@ -24,8 +24,8 @@ async function main() {
   const sdkConfig = getSdkConfig(parsedQuery.applicationInfo, parsedQuery.sdkConfig);
   const endpoint = new IframeBridgeEndpoint();
   const iframeInitializer = isPicker
-    ? new PickerIframeInitializer(endpoint, {showWaitingForTransaction, sdkConfig}, network)
-    : new ProviderOnlyIframeInitializer(endpoint, network ?? raise(new TypeError()), {showWaitingForTransaction, sdkConfig});
+    ? new PickerIframeInitializer(endpoint, {sdkConfig, showWaitingForTransaction}, network)
+    : new ProviderOnlyIframeInitializer(endpoint, network ?? raise(new TypeError()), {sdkConfig, showWaitingForTransaction});
 
   await iframeInitializer.start();
 }

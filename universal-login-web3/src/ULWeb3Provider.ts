@@ -44,7 +44,7 @@ export class ULWeb3Provider implements Provider {
   readonly hasNotifications: Property<boolean>;
 
   constructor({
-    showWaitingForTransaction = true,
+    showWaitingForTransaction,
     network,
     provider,
     relayerUrl,

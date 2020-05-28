@@ -14,7 +14,7 @@ export class UIController {
 
   constructor(
     private walletService: WalletService,
-    private showWaitingForTransaction: boolean,
+    private showWaitingForTransaction: boolean = true,
   ) {
     this.isUiVisible = combine(
       [this.activeModal, this.dashboardVisible, this.isLoading],

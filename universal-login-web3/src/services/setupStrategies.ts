@@ -10,8 +10,8 @@ import MetamaskLogo from '../ui/assets/MetaMaskLogoTitle.svg';
 import {getNetworkId} from '../utils/getNetworkId';
 
 export interface SetupUniLoginOverrides {
-  showWaitingForTransaction?: boolean;
   sdkConfig?: Partial<SdkConfig>;
+  showWaitingForTransaction?: boolean;
   browserChecker?: BrowserChecker;
 }
 
