@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {utils} from 'ethers';
-import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, PartialRequired} from '@unilogin/commons';
+import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, PartialRequired, TokenDetails} from '@unilogin/commons';
 import {ModalWrapper, useAsync, Spinner, getTransactionInfo} from '@unilogin/react';
 import {WalletService, getValueInUsd} from '@unilogin/sdk';
 import {Title} from '../common/Text/Title';
@@ -31,11 +31,11 @@ export interface ConfirmationTransactionProps {
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction, onError}: ConfirmationTransactionProps) => {
   const [modesAndPrices, error] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
   const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount' | 'timeEstimation'>>({name: '', usdAmount: '0', timeEstimation: 0});
-  const [transferDetails] = useAsync<{currencySymbol: string, targetAddress: string, value: string} | undefined | any>(() => getTransactionInfo(walletService.getDeployedWallet(), transaction) as any, []);
+  const [transferDetails] = useAsync<{tokenDetails: TokenDetails, value: string, targetAddress: string}>(() => getTransactionInfo(walletService.getDeployedWallet(), transaction) as any, []);
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
   const [valueInUSD] = useAsync<any>(async () =>
-    getValueInUsd(transferDetails.tokenAddress, walletService, transferDetails.value),
+    transferDetails && getValueInUsd(transferDetails.tokenDetails.address, walletService, transferDetails.value),
   [transferDetails]);
 
   const onModeChanged = (name: string) => {
