@@ -9,6 +9,7 @@ import {Network} from './models/network';
 import {Provider} from './models/provider';
 
 export interface ExtendedConfig extends ProviderConfig {
+  showTransactionDialogs: boolean;
   enablePicker: boolean;
   upstream?: Provider;
   network?: Network;
@@ -106,6 +107,7 @@ export class ULIFrameProvider {
 
   static create(network: Network, sdkConfig?: Record<string, any>, config = DEFAULT_CONFIG) {
     return ULIFrameProvider.getInstance({
+      showTransactionDialogs: false,
       enablePicker: false,
       network: network.toString() as Network,
       sdkConfig,
@@ -115,6 +117,7 @@ export class ULIFrameProvider {
 
   static createPicker(upstream: Provider | Network, sdkConfig?: Record<string, any>, config = DEFAULT_CONFIG) {
     return ULIFrameProvider.getInstance({
+      showTransactionDialogs: false,
       enablePicker: true,
       ...normalizeUpstream(upstream),
       sdkConfig,
