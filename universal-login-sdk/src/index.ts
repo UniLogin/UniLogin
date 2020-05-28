@@ -17,3 +17,4 @@ export {bigNumberMax} from './core/utils/bigNumberMax';
 export {encodeERC20Transfer} from './core/utils/encodeTransferToMessage';
 export {InvalidWalletState} from './core/utils/errors';
 export {IncomingTransactionObserver} from './integration/notifySdk/IncomingTransactionObserver';
+export {getValueInUsd} from './core/utils/getValueInUsd';

@@ -1,5 +1,5 @@
 import {ConfirmationResponse} from './ConfirmationResponse';
-import {Message} from '@unilogin/commons';
+import {Message, PartialRequired} from '@unilogin/commons';
 
 export type ULWeb3ProviderState = {
   kind: 'IDLE';
@@ -10,7 +10,7 @@ export type ULWeb3ProviderState = {
   props: {
     onConfirmationResponse: (response: ConfirmationResponse) => void;
     title: string;
-    transaction: Partial<Message>;
+    transaction: PartialRequired<Message, 'to' | 'from' | 'gasLimit' | 'value'>;
   };
 } | {
   kind: 'SIGN_CONFIRMATION';

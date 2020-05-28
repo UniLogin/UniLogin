@@ -1,7 +1,7 @@
 import {State, Property, combine} from 'reactive-properties';
 import {WalletService} from '@unilogin/sdk';
 import {ULWeb3ProviderState} from '../models/ULWeb3ProviderState';
-import {ensure, Message} from '@unilogin/commons';
+import {ensure, Message, PartialRequired} from '@unilogin/commons';
 import {UnexpectedWalletState, isRandomInfuraError} from '../ui/utils/errors';
 import {ConfirmationResponse} from '../models/ConfirmationResponse';
 
@@ -25,7 +25,7 @@ export class UIController {
     this.hideModal();
   }
 
-  confirmRequest(title: string, transaction: Partial<Message>): Promise<ConfirmationResponse> {
+  confirmRequest(title: string, transaction: PartialRequired<Message, 'to' | 'from' | 'gasLimit' | 'value'>): Promise<ConfirmationResponse> {
     return new Promise<ConfirmationResponse>((resolve) => {
       this.activeModal.set({
         kind: 'TRANSACTION_CONFIRMATION',

@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {utils} from 'ethers';
-import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, ensureNotFalsy, ensureNotNullish} from '@unilogin/commons';
-import {ModalWrapper, useAsync, Spinner} from '@unilogin/react';
-import {WalletService} from '@unilogin/sdk';
+import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, PartialRequired, TokenDetails} from '@unilogin/commons';
+import {ModalWrapper, useAsync, Spinner, getTransactionInfo} from '@unilogin/react';
+import {WalletService, getValueInUsd} from '@unilogin/sdk';
 import {Title} from '../common/Text/Title';
 import {Text} from '../common/Text/Text';
 import {CloseButton} from '../common/Button/CloseButton';
@@ -24,17 +24,19 @@ export interface ConfirmationTransactionProps {
   message: string;
   onConfirmationResponse: (response: ConfirmationResponse) => void;
   walletService: WalletService;
-  transaction: Partial<Message>;
+  transaction: PartialRequired<Message, 'to' | 'from' | 'gasLimit' | 'value'>;
   onError?: (errorMessage: string) => void;
 }
 
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction, onError}: ConfirmationTransactionProps) => {
-  ensureNotNullish(transaction.value, Error, 'Missing parameter of Transaction: value');
-  ensureNotFalsy(transaction.gasLimit, Error, 'Missing parameter of Transaction: gasLimit');
   const [modesAndPrices, error] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
   const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount' | 'timeEstimation'>>({name: '', usdAmount: '0', timeEstimation: 0});
-
+  const [transferDetails] = useAsync<{tokenDetails: TokenDetails, value: string, targetAddress: string}>(() => getTransactionInfo(walletService.getDeployedWallet(), transaction) as any, []);
   const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
+
+  const [valueInUSD] = useAsync<any>(async () =>
+    transferDetails && getValueInUsd(transferDetails.tokenDetails.address, walletService, transferDetails.value),
+  [transferDetails]);
 
   const onModeChanged = (name: string) => {
     const gasTokenAddress = gasOption.token.address;
@@ -78,15 +80,15 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
           <TransactionData>
             <Row>
               <DataLabel>Send to:</DataLabel>
-              <Address>{transaction.to}</Address>
+              <Address>{transferDetails?.targetAddress}</Address>
             </Row>
             <Row>
               <DataLabel>Value:</DataLabel>
               <ValueRow>
                 <Highlighted>
-                  <Value>{utils.formatEther(transaction.value)} ETH</Value>
+                  <Value>{transferDetails && utils.formatEther(transferDetails.value)} {transferDetails?.tokenDetails.symbol}</Value>
                 </Highlighted>
-                <Value>{walletService.sdk.gasModeService.getGasPriceInUSD(utils.bigNumberify(transaction.value), modesAndPrices.prices)} USD</Value>
+                <Value>{valueInUSD} USD</Value>
               </ValueRow>
             </Row>
             <Row>

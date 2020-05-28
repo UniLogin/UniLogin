@@ -51,3 +51,4 @@ export {SuggestionOperationType} from './core/models/SuggestionProps';
 export {OnboardingTopUp} from './ui/Onboarding/OnboardingTopUp';
 export {OnboardingWaitForDeployment} from './ui/Onboarding/OnboardingWaitForDeployment';
 export {ChooseTopUpToken} from './ui/TopUp/ChooseTopUpToken';
+export {getTransactionInfo} from './app/getTransactionInfo';
