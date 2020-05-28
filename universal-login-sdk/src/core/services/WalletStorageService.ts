@@ -1,7 +1,7 @@
 import {providers} from 'ethers';
-import {asAnyOf, asObject, asString, cast} from '@restless/sanitizers';
+import {asAnyOf, asObject, asString, cast, asExactly} from '@restless/sanitizers';
 import {BlockchainService} from '@unilogin/contracts';
-import {ApplicationWallet, asExactly, SerializableFutureWallet, Network} from '@unilogin/commons';
+import {ApplicationWallet, SerializableFutureWallet, Network} from '@unilogin/commons';
 import {WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';

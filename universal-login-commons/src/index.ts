@@ -60,7 +60,6 @@ export {GasDataComputation, NetworkVersion} from './core/utils/messages/computeG
 export {getSignatureFrom} from './core/utils/messages/signMessage';
 export {hashRelayerRequest, recoverFromRelayerRequest, signRelayerRequest, verifyRelayerRequest} from './core/utils/relayerRequest';
 export {safeMultiply, safeMultiplyAndFormatEther, safeDivide} from './core/utils/safeMultiply';
-export {asExactly} from './core/utils/sanitizers/asExactly';
 export {asApplicationInfo, asDeviceType} from './core/utils/sanitizers/asApplicationInfo';
 export {asDeploymentHash, asHexString} from './core/utils/sanitizers/asHexString';
 export {asTransferDetails} from './core/utils/sanitizers/asTransferDetails';
