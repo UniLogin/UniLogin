@@ -13,20 +13,19 @@ import {renderLogoButton} from './ui/logoButton';
 import {asBoolean, asString, cast} from '@restless/sanitizers';
 
 export interface ULWeb3ProviderOptions extends Config {
-  showWaitingForTransaction: boolean;
+  showWaitingForTransaction?: boolean;
   sdkConfigOverrides?: Partial<SdkConfig>;
   uiInitializer?: (services: ULWeb3RootProps) => void;
   browserChecker?: BrowserChecker;
 }
 
 export class ULWeb3Provider implements Provider {
-  static getDefaultProvider(networkOrConfig: Network | Config, showWaitingForTransaction: boolean, sdkConfigOverrides?: Partial<SdkConfig>) {
+  static getDefaultProvider(networkOrConfig: Network | Config, overrides: any) {
     const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
 
     return new ULWeb3Provider({
-      showWaitingForTransaction,
+      ...overrides,
       ...config,
-      sdkConfigOverrides,
     });
   }
 
@@ -45,7 +44,7 @@ export class ULWeb3Provider implements Provider {
   readonly hasNotifications: Property<boolean>;
 
   constructor({
-    showWaitingForTransaction,
+    showWaitingForTransaction = true,
     network,
     provider,
     relayerUrl,

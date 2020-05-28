@@ -10,32 +10,31 @@ import MetamaskLogo from '../ui/assets/MetaMaskLogoTitle.svg';
 import {getNetworkId} from '../utils/getNetworkId';
 
 export interface SetupUniLoginOverrides {
+  showWaitingForTransaction?: boolean;
   sdkConfig?: Partial<SdkConfig>;
   browserChecker?: BrowserChecker;
 }
 
-export const setupUniLogin = (provider: Provider, showWaitingForTransaction: boolean, overrides?: SetupUniLoginOverrides) => ({
+export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverrides) => ({
   name: 'UniLogin',
   icon: UniLoginLogo,
   create: async () => {
     const networkVersion = await getNetworkId(provider) as Network;
     const uniLoginConfig = getConfigForNetwork(networkVersion);
     return new ULWeb3Provider({
-      showWaitingForTransaction,
+      ...overrides,
       ...uniLoginConfig,
-      sdkConfigOverrides: overrides?.sdkConfig,
-      browserChecker: overrides?.browserChecker,
     });
   },
 });
 
 export type Strategy = 'UniLogin' | 'Metamask' | Web3ProviderFactory;
 
-export const setupStrategies = (provider: Provider, strategies: Strategy[], showWaitingForTransaction: boolean, overrides?: SetupUniLoginOverrides) => {
+export const setupStrategies = (provider: Provider, strategies: Strategy[], overrides?: SetupUniLoginOverrides) => {
   return strategies.map(strategy => {
     switch (strategy) {
       case 'UniLogin':
-        return setupUniLogin(provider, showWaitingForTransaction, overrides);
+        return setupUniLogin(provider, overrides);
       case 'Metamask':
         const defaultStrategy: Web3ProviderFactory = {icon: MetamaskLogo, name: 'Metamask', create: () => provider};
         return defaultStrategy;

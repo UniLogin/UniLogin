@@ -11,10 +11,10 @@ import {IframeBridgeEndpoint} from './IframeBridgeEndpoint';
 export class PickerIframeInitializer extends IframeInitializerBase {
   private readonly provider: Web3PickerProvider;
 
-  constructor(endpoint: IframeBridgeEndpoint, showWaitingForTransaction: boolean, sdkConfig: Partial<SdkConfig>, network?: Network) {
+  constructor(endpoint: IframeBridgeEndpoint, override: {showWaitingForTransaction: boolean, sdkConfig: Partial<SdkConfig>}, network?: Network) {
     super(endpoint);
     const upstream = this.getUpstream(network);
-    const web3ProviderFactories = setupStrategies(upstream, ['UniLogin', 'Metamask'], showWaitingForTransaction, {sdkConfig});
+    const web3ProviderFactories = setupStrategies(upstream, ['UniLogin', 'Metamask'], override);
     this.provider = new Web3PickerProvider(web3ProviderFactories, upstream);
     endpoint.setHandler(this.provider);
   }
