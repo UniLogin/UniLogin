@@ -25,7 +25,7 @@ export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverr
       ...overrides,
       ...uniLoginConfig,
       sdkConfigOverrides: overrides?.sdkConfig,
-      browserChecker: overrides?.browserChecker
+      browserChecker: overrides?.browserChecker,
     });
   },
 });
