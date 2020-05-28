@@ -22,8 +22,8 @@ export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverr
     const networkVersion = await getNetworkId(provider) as Network;
     const uniLoginConfig = getConfigForNetwork(networkVersion);
     return new ULWeb3Provider({
-      ...overrides,
       ...uniLoginConfig,
+      ...overrides,
     });
   },
 });
