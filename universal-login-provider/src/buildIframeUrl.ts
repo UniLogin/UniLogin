@@ -1,19 +1,16 @@
 import {Network} from './models/network';
 
 export function buildIframeUrl(
-  iframeUrl: string,
-  picker: boolean,
   sdkConfig: Record<string, any>,
-  transactionDialogs?: boolean,
+  configOverrides?: any,
   network?: Network,
 ): string {
   const query = encodeQuery({
-    transactionDialogs,
-    picker,
+    ...configOverrides,
     network,
     sdkConfig: JSON.stringify(sdkConfig),
   });
-  return `${iframeUrl}?${query}`;
+  return `${configOverrides.iframeUrl}?${query}`;
 }
 
 function encodeQuery(query: Record<string, string | number | boolean | undefined>) {

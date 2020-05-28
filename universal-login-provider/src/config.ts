@@ -2,7 +2,7 @@ export interface ProviderConfig {
   backendUrl: string;
   logoUrl: string;
   ulButtonId: string;
-  showWaitingForTransaction?: boolean;
+  showWaitingForTransaction: boolean;
 }
 
 const IS_DEV = false;
