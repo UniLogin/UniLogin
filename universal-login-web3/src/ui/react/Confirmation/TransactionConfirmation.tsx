@@ -1,14 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
+import React, {useState} from 'react';
+import styled, {createGlobalStyle} from 'styled-components';
 import {utils} from 'ethers';
-import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, PartialRequired, TokenDetails} from '@unilogin/commons';
-import {ModalWrapper, useAsync, Spinner, getTransactionInfo} from '@unilogin/react';
+import {Message, GasParameters, PartialRequired, TokenDetails} from '@unilogin/commons';
+import {ModalWrapper, useAsync, GasPrice, getTransactionInfo, useClassFor} from '@unilogin/react';
 import {WalletService, getValueInUsd} from '@unilogin/sdk';
 import {Title} from '../common/Text/Title';
 import {Text} from '../common/Text/Text';
 import {CloseButton} from '../common/Button/CloseButton';
-import {TransactionSpeed} from './TransactionSpeed';
-import {TransactionFee} from './TransactionFee';
 import {ButtonPrimary, ButtonSecondary} from '../common/Button/Button';
 import {UniLoginLogo} from '../common/UniLoginLogo';
 import {GlobalStyle} from '../common/GlobalStyle';
@@ -29,48 +27,19 @@ export interface ConfirmationTransactionProps {
 }
 
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction, onError}: ConfirmationTransactionProps) => {
-  const [modesAndPrices, error] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
-  const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount' | 'timeEstimation'>>({name: '', usdAmount: '0', timeEstimation: 0});
   const [transferDetails] = useAsync<{tokenDetails: TokenDetails, value: string, targetAddress: string}>(() => getTransactionInfo(walletService.getDeployedWallet(), transaction) as any, []);
-  const [gasOption, setGasOption] = useState<GasOption>(EMPTY_GAS_OPTION);
 
   const [valueInUSD] = useAsync<any>(async () =>
     transferDetails && getValueInUsd(transferDetails.tokenDetails.address, walletService, transferDetails.value),
   [transferDetails]);
 
-  const onModeChanged = (name: string) => {
-    const gasTokenAddress = gasOption.token.address;
-    const {usdAmount, gasOptions, timeEstimation} = findGasMode(modesAndPrices?.modes!, name);
-
-    setMode({name, usdAmount, timeEstimation});
-    setGasOption(findGasOption(gasOptions, gasTokenAddress));
-  };
-
-  useEffect(() => {
-    if (modesAndPrices) {
-      const {name, usdAmount, timeEstimation} = modesAndPrices.modes[FAST_GAS_MODE_INDEX];
-      const gasOption = findGasOption(modesAndPrices.modes[FAST_GAS_MODE_INDEX].gasOptions, ETHER_NATIVE_TOKEN.address);
-      setMode({name, usdAmount, timeEstimation});
-      setGasOption(gasOption);
-    }
-  }, [modesAndPrices]);
-
-  if (error) {
-    if (onError) {
-      onError(error.message);
-    } else {
-      console.error(error);
-    }
-  }
-
-  if (!modesAndPrices) {
-    return <Spinner className="spinner-center" />;
-  }
+  const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
 
   return <>
     <GlobalStyle />
+    <TransactionGlobalStyles />
     <ModalWrapper message={message}>
-      <Box>
+      <Box className={useClassFor('transaction-confirmation')}>
         <BoxHeader>
           <UniLoginLogo />
           <CloseButton onClick={() => onConfirmationResponse({isConfirmed: false})} />
@@ -91,30 +60,53 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
                 <Value>{valueInUSD} USD</Value>
               </ValueRow>
             </Row>
-            <Row>
-              <DataLabel>Speed:</DataLabel>
-              <TransactionSpeed gasModes={modesAndPrices.modes} selectedValue={mode.name} onChange={onModeChanged} />
-            </Row>
-            <Row>
-              <DataLabel>Fee:</DataLabel>
-              <TransactionFee mode={mode} gasLimit={transaction.gasLimit} gasOption={gasOption} deployedWallet={walletService.getDeployedWallet()} />
-            </Row>
+            <GasPrice
+              isDeployed={true}
+              deployedWallet={walletService.getDeployedWallet()}
+              sdk={walletService.sdk}
+              gasLimit={transaction.gasLimit}
+              onGasParametersChanged={setGasParameters}
+            />
           </TransactionData>
         </BoxContent>
         <BoxFooter>
           <ButtonSecondary onClick={() => onConfirmationResponse({isConfirmed: false})}>Back</ButtonSecondary>
-          <ButtonPrimary onClick={() => onConfirmationResponse({
-            isConfirmed: true,
-            gasParameters: {
-              gasPrice: gasOption.gasPrice,
-              gasToken: gasOption.token.address,
-            },
-          })}>Confirm</ButtonPrimary>
+          {gasParameters &&
+            <ButtonPrimary onClick={() => onConfirmationResponse({
+              isConfirmed: true,
+              gasParameters,
+            })}>Confirm</ButtonPrimary>
+          }
         </BoxFooter>
       </Box>
     </ModalWrapper>
   </>;
 };
+
+const TransactionGlobalStyles = createGlobalStyle`
+  .unilogin-component-transaction-confirmation.unilogin-theme-unilogin .unilogin-component-gas-price.unilogin-theme-unilogin {
+    display: flex;
+    align-items: start;
+  }
+  .unilogin-component-transaction-confirmation.unilogin-theme-unilogin .gas-price-selector {
+    top: 324px;
+
+  }
+  .unilogin-component-transaction-confirmation.unilogin-theme-unilogin .gas-price-dropdown {
+    margin-top: unset;
+    margin-left: 46px;
+    width: 100%;
+  }
+  .unilogin-component-transaction-confirmation.unilogin-theme-unilogin .gas-price-title {
+    text-transform: capitalize;
+    font-size: 14px;
+    opacity: 1;
+    color: #7D7C9C;
+  }
+  .unilogin-component-transaction-confirmation.unilogin-theme-unilogin .gas-price-hint {
+    margin-top: 1px;
+  }
+`;
 
 const TransactionData = styled.div`
     margin-top: 45px;
