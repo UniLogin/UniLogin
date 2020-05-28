@@ -22,7 +22,7 @@ describe('UNIT: ULWeb3Provider', () => {
         relayerUrl: 'http://relayer.url',
         ensDomains: ['uniweb3.eth'],
         observedTokensAddresses: [ETHER_NATIVE_TOKEN.address],
-      });
+      }, true);
 
       sinon.replace(ulProvider as any, '_init', initSpy);
       sinon.replace(ulProvider as any, '_finalizeAndStop', stopSpy);

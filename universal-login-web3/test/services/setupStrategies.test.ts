@@ -15,7 +15,7 @@ describe('UNIT: setupStrategies', () => {
       logo: 'https://kickback.events/favicon.ico',
       type: 'laptop' as DeviceType,
     };
-    const result = setupStrategies(mockProvider, ['UniLogin'], {sdkConfig: {applicationInfo, storageService: new MemoryStorageService()}, browserChecker: {isLocalStorageBlocked: () => false}});
+    const result = setupStrategies(mockProvider, ['UniLogin'], true, {sdkConfig: {applicationInfo, storageService: new MemoryStorageService()}, browserChecker: {isLocalStorageBlocked: () => false}});
     expect(result[0].name).to.eq('UniLogin');
     expect(result[0].icon).to.eq(UniLoginLogo);
     expect(result[0].create).to.not.be.null;
@@ -24,7 +24,7 @@ describe('UNIT: setupStrategies', () => {
   });
 
   it('return Metamask strategy for Metamask', () => {
-    const result = setupStrategies(mockProvider, ['Metamask']);
+    const result = setupStrategies(mockProvider, ['Metamask'], true);
     expect(result[0].name).to.eq('Metamask');
     expect(result[0].icon).to.eq(MetamaskLogo);
     expect(result[0].create()).to.eq(mockProvider);
@@ -32,7 +32,7 @@ describe('UNIT: setupStrategies', () => {
 
   it('return strategy if strategy was provided', async () => {
     const strategy: Web3ProviderFactory = {name: 'SomeStrategy', icon: 'Icon', create: () => mockProvider};
-    const result = setupStrategies(mockProvider, [strategy]);
+    const result = setupStrategies(mockProvider, [strategy], true);
     expect(result[0].name).to.deep.eq(strategy.name);
     expect(result[0].icon).to.deep.eq(strategy.icon);
     expect(result[0].create()).to.deep.eq(mockProvider);

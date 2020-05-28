@@ -19,13 +19,13 @@ export interface ULWeb3ProviderOptions extends Config {
 }
 
 export class ULWeb3Provider implements Provider {
-  static getDefaultProvider(networkOrConfig: Network | Config, sdkConfigOverrides?: Partial<SdkConfig>) {
+  static getDefaultProvider(networkOrConfig: Network | Config, showTransactionDialogs: boolean, sdkConfigOverrides?: Partial<SdkConfig>) {
     const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
 
     return new ULWeb3Provider({
       ...config,
       sdkConfigOverrides,
-    });
+    }, showTransactionDialogs);
   }
 
   readonly isUniLogin = true;
@@ -52,7 +52,7 @@ export class ULWeb3Provider implements Provider {
     uiInitializer = initUi,
     observedTokensAddresses,
     browserChecker = new BrowserChecker(),
-  }: ULWeb3ProviderOptions) {
+  }: ULWeb3ProviderOptions, showTransactionDialogs: boolean) {
     const sdkConfig = {
       network,
       observedTokensAddresses,
@@ -69,7 +69,7 @@ export class ULWeb3Provider implements Provider {
     this.browserChecker = browserChecker;
     this.walletService = new WalletService(this.sdk, walletFromBrain, sdkConfig.storageService);
 
-    this.showTransactionDialogs = true;
+    this.showTransactionDialogs = showTransactionDialogs;
     this.uiController = new UIController(this.walletService, this.showTransactionDialogs);
 
     this.isLoggedIn = this.walletService.walletDeployed;
