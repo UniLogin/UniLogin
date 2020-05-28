@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import styled, {createGlobalStyle} from 'styled-components';
 import {utils} from 'ethers';
-import {GasModesWithPrices, Message, ensureNotFalsy, ensureNotNullish, GasParameters, PartialRequired, TokenDetails} from '@unilogin/commons';
-import {ModalWrapper, useAsync, Spinner, GasPrice, getTransactionInfo} from '@unilogin/react';
+import {Message, GasParameters, PartialRequired, TokenDetails} from '@unilogin/commons';
+import {ModalWrapper, useAsync, GasPrice, getTransactionInfo, useClassFor} from '@unilogin/react';
 import {WalletService, getValueInUsd} from '@unilogin/sdk';
 import {Title} from '../common/Text/Title';
 import {Text} from '../common/Text/Text';
@@ -16,7 +16,6 @@ import {BoxFooter} from '../common/Layout/BoxFooter';
 import {Box} from '../common/Layout/Box';
 import {Row} from '../common/Layout/Row';
 import {ConfirmationResponse} from '../../../models/ConfirmationResponse';
-import {useClassFor} from '@unilogin/react';
 
 export interface ConfirmationTransactionProps {
   title: string;
@@ -28,7 +27,6 @@ export interface ConfirmationTransactionProps {
 }
 
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction, onError}: ConfirmationTransactionProps) => {
-  const [modesAndPrices, error] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
   const [transferDetails] = useAsync<{tokenDetails: TokenDetails, value: string, targetAddress: string}>(() => getTransactionInfo(walletService.getDeployedWallet(), transaction) as any, []);
 
   const [valueInUSD] = useAsync<any>(async () =>
@@ -36,18 +34,6 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
   [transferDetails]);
 
   const [gasOption, setGasOption] = useState<GasParameters | undefined>(undefined);
-
-  if (error) {
-    if (onError) {
-      onError(error.message);
-    } else {
-      console.error(error);
-    }
-  }
-
-  if (!modesAndPrices) {
-    return <Spinner className="spinner-center" />;
-  }
 
   return <>
     <GlobalStyle />
