@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {utils} from 'ethers';
-import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, ensureNotFalsy, Message, DEFAULT_GAS_LIMIT, ensureNotNullish, PartialRequired} from '@unilogin/commons';
+import {GasMode, GasModesWithPrices, findGasMode, findGasOption, GasOption, EMPTY_GAS_OPTION, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, Message, PartialRequired} from '@unilogin/commons';
 import {ModalWrapper, useAsync, Spinner, getTransactionInfo} from '@unilogin/react';
 import {WalletService, getValueInUsd} from '@unilogin/sdk';
 import {Title} from '../common/Text/Title';
@@ -29,9 +29,6 @@ export interface ConfirmationTransactionProps {
 }
 
 export const TransactionConfirmation = ({onConfirmationResponse, title, message, walletService, transaction, onError}: ConfirmationTransactionProps) => {
-  ensureNotFalsy(transaction.to, Error, 'Missing parameter of Transaction: to');
-  ensureNotFalsy(transaction.gasLimit, Error, 'Missing parameter of Transaction: gasLimit');
-  ensureNotNullish(transaction.value, Error, 'Missing parameter of Transaction: value');
   const [modesAndPrices, error] = useAsync<GasModesWithPrices>(() => walletService.sdk.gasModeService.getModesWithPrices(), []);
   const [mode, setMode] = useState<Pick<GasMode, 'name' | 'usdAmount' | 'timeEstimation'>>({name: '', usdAmount: '0', timeEstimation: 0});
   const [transferDetails] = useAsync<{currencySymbol: string, targetAddress: string, value: string} | undefined | any>(() => getTransactionInfo(walletService.getDeployedWallet(), transaction) as any, []);
@@ -100,7 +97,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
             </Row>
             <Row>
               <DataLabel>Fee:</DataLabel>
-              <TransactionFee mode={mode} gasLimit={transaction.gasLimit || DEFAULT_GAS_LIMIT} gasOption={gasOption} deployedWallet={walletService.getDeployedWallet()} />
+              <TransactionFee mode={mode} gasLimit={transaction.gasLimit} gasOption={gasOption} deployedWallet={walletService.getDeployedWallet()} />
             </Row>
           </TransactionData>
         </BoxContent>
