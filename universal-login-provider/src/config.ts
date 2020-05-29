@@ -4,7 +4,7 @@ export interface ProviderConfig {
   backendUrl: string;
   logoUrl: string;
   ulButtonId: string;
-  disabledDialogs: Array<Dialogs>;
+  disabledDialogs: Dialogs[];
 }
 
 const IS_DEV = false;
