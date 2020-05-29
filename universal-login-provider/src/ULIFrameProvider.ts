@@ -31,7 +31,7 @@ export class ULIFrameProvider {
       applicationInfo: getApplicationInfoFromDocument(),
       ...config.sdkConfig,
     } as any;
-    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, config.enablePicker, sdkConfig, config.network, config.disabledDialogs));
+    this.iframe = createIFrame(buildIframeUrl(config.backendUrl, config.enablePicker, sdkConfig, config.disabledDialogs, config.network));
     this.bridge = new RpcBridge(
       msg => this.iframe.contentWindow!.postMessage(msg, '*'),
       this.handleRpc.bind(this),
@@ -104,21 +104,23 @@ export class ULIFrameProvider {
     return ULIFrameProvider.instance;
   }
 
-  static create(network: Network, sdkConfig?: Record<string, any>, config = DEFAULT_CONFIG) {
+  static create(network: Network, sdkConfig?: Record<string, any>, configOverrides?: Partial<ProviderConfig>) {
     return ULIFrameProvider.getInstance({
       enablePicker: false,
       network: network.toString() as Network,
       sdkConfig,
-      ...config,
+      ...DEFAULT_CONFIG,
+      ...configOverrides,
     });
   }
 
-  static createPicker(upstream: Provider | Network, sdkConfig?: Record<string, any>, config = DEFAULT_CONFIG) {
+  static createPicker(upstream: Provider | Network, sdkConfig?: Record<string, any>, configOverrides?: Partial<ProviderConfig>) {
     return ULIFrameProvider.getInstance({
       enablePicker: true,
       ...normalizeUpstream(upstream),
       sdkConfig,
-      ...config,
+      ...DEFAULT_CONFIG,
+      ...configOverrides,
     });
   }
 
