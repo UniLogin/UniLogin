@@ -24,4 +24,4 @@ export const DialogsToDisable = {
   },
 };
 
-export const asDialogsToDisable = asEnum<DialogsToDisable>(['WAIT_FOR_TRANSACTION', 'WAIT_FOR_TRANSACTION'], 'DialogsToDisable')
+export const asDialogsToDisable = asEnum<DialogsToDisable>(['WAIT_FOR_TRANSACTION', 'WAIT_FOR_TRANSACTION'], 'DialogsToDisable');

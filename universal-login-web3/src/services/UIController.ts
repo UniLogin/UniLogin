@@ -59,7 +59,7 @@ export class UIController {
   }
 
   showWaitForTransaction(transactionHash?: string) {
-    if(!this.disabledDialogs.includes('WAIT_FOR_TRANSACTION')){
+    if (!this.disabledDialogs.includes('WAIT_FOR_TRANSACTION')) {
       this.activeModal.set({kind: 'WAIT_FOR_TRANSACTION', props: {transactionHash}});
     }
   }
