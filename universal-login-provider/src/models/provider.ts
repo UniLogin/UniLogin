@@ -4,5 +4,4 @@ export interface Provider {
 
 export enum Dialogs {
   WAITING_FOR_TRANSACTION = 'WAITING_FOR_TRANSACTION',
-  ERROR = 'ERROR',
 };
