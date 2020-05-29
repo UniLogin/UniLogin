@@ -1,11 +1,11 @@
 import {Network} from './models/network';
-import {Dialogs} from './models/provider';
+import {DialogToDisable} from './models/provider';
 
 export function buildIframeUrl(
   iframeUrl: string,
   picker: boolean,
   sdkConfig: Record<string, any>,
-  disabledDialogs: Dialogs[],
+  disabledDialogs: DialogToDisable[],
   network?: Network,
 ): string {
   const query = encodeQuery({

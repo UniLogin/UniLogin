@@ -1,10 +1,10 @@
-import {Dialogs} from './models/provider';
+import {DialogToDisable} from './models/provider';
 
 export interface ProviderConfig {
   backendUrl: string;
   logoUrl: string;
   ulButtonId: string;
-  disabledDialogs: Dialogs[];
+  disabledDialogs: DialogToDisable[];
 }
 
 const IS_DEV = false;

@@ -1,4 +1,4 @@
-import {asBoolean, cast, asString} from '@restless/sanitizers';
+import {asBoolean, cast, asString, asArray} from '@restless/sanitizers';
 import {raise, asNetwork, asApplicationInfo} from '@unilogin/commons';
 import {asSdkConfigOverrides, SdkConfig} from '@unilogin/sdk';
 import {parseQuery} from '@unilogin/react';
@@ -19,7 +19,7 @@ const getSdkConfig = (applicationInfo?: string, sdkConfig?: string): Partial<Sdk
 async function main() {
   const parsedQuery = parseQuery(window.location.search);
   const disabledDialogs = parsedQuery.disabledDialogs ? parsedQuery.disabledDialogs.split(',') : [];
-  console.log({disabledDialogs});
+  cast(disabledDialogs, asArray(asString));
   const isPicker = cast(parsedQuery.picker, asBoolean);
   const network = parsedQuery.network ? cast(parsedQuery.network, asNetwork) : undefined;
   const sdkConfig = getSdkConfig(parsedQuery.applicationInfo, parsedQuery.sdkConfig);
