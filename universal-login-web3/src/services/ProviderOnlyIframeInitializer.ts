@@ -12,10 +12,10 @@ export class ProviderOnlyIframeInitializer extends IframeInitializerBase {
   constructor(
     endpoint: IframeBridgeEndpoint,
     network: Network,
-    overrides: {sdkConfig?: Partial<SdkConfig>, showWaitingForTransaction?: boolean},
+    overrides?: {sdkConfig?: Partial<SdkConfig>, showWaitingForTransaction?: boolean},
   ) {
     super(endpoint);
-    this.provider = ULWeb3Provider.getDefaultProvider(network, overrides.showWaitingForTransaction, overrides.sdkConfig);
+    this.provider = ULWeb3Provider.getDefaultProvider(network, overrides?.showWaitingForTransaction, overrides?.sdkConfig);
     endpoint.setHandler(this.provider);
   }
 

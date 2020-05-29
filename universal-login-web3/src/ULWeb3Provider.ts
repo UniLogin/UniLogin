@@ -26,7 +26,7 @@ export class ULWeb3Provider implements Provider {
     return new ULWeb3Provider({
       showWaitingForTransaction,
       ...config,
-      ...sdkConfigOverrides,
+      sdkConfigOverrides,
     });
   }
 
