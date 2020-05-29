@@ -9,9 +9,9 @@ import {SdkConfig} from '@unilogin/sdk';
 export class ProviderOnlyIframeInitializer extends IframeInitializerBase {
   private readonly provider: ULWeb3Provider;
 
-  constructor(endpoint: IframeBridgeEndpoint, network: Network, sdkConfig?: Partial<SdkConfig>) {
+  constructor(endpoint: IframeBridgeEndpoint, network: Network, disabledDialogs: string[], sdkConfig?: Partial<SdkConfig>) {
     super(endpoint);
-    this.provider = ULWeb3Provider.getDefaultProvider(network, sdkConfig);
+    this.provider = ULWeb3Provider.getDefaultProvider(network, disabledDialogs, sdkConfig);
     endpoint.setHandler(this.provider);
   }
 

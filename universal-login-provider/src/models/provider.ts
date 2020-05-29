@@ -3,5 +3,5 @@ export interface Provider {
 }
 
 export enum DialogToDisable {
-  WAITING_FOR_TRANSACTION = 'WAITING_FOR_TRANSACTION',
+  WAIT_FOR_TRANSACTION = 'WAIT_FOR_TRANSACTION',
 };
