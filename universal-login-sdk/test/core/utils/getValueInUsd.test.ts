@@ -65,5 +65,6 @@ describe('UNIT: getValueInUsd', () => {
   testDAI('0.01', '0.01');
   testDAI('0.001', '0.001');
   testDAI('0.001', '0.0001');
-  testDAI('0.001', '0.000001');
+  testDAI('0.001', '0.00001');
+  testDAI('0.001', utils.formatEther('1'));
 });
