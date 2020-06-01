@@ -16,13 +16,15 @@ export interface ULWeb3ProviderOptions extends Config {
   sdkConfigOverrides?: Partial<SdkConfig>;
   uiInitializer?: (services: ULWeb3RootProps) => void;
   browserChecker?: BrowserChecker;
+  disabledDialogs?: string[];
 }
 
 export class ULWeb3Provider implements Provider {
-  static getDefaultProvider(networkOrConfig: Network | Config, sdkConfigOverrides?: Partial<SdkConfig>) {
+  static getDefaultProvider(networkOrConfig: Network | Config, disabledDialogs: string[], sdkConfigOverrides?: Partial<SdkConfig>) {
     const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
 
     return new ULWeb3Provider({
+      disabledDialogs,
       ...config,
       sdkConfigOverrides,
     });
@@ -51,6 +53,7 @@ export class ULWeb3Provider implements Provider {
     uiInitializer = initUi,
     observedTokensAddresses,
     browserChecker = new BrowserChecker(),
+    disabledDialogs,
   }: ULWeb3ProviderOptions) {
     const sdkConfig = {
       network,
@@ -68,7 +71,7 @@ export class ULWeb3Provider implements Provider {
     this.browserChecker = browserChecker;
     this.walletService = new WalletService(this.sdk, walletFromBrain, sdkConfig.storageService);
 
-    this.uiController = new UIController(this.walletService);
+    this.uiController = new UIController(this.walletService, disabledDialogs);
 
     this.isLoggedIn = this.walletService.walletDeployed;
     this.isUiVisible = this.uiController.isUiVisible;

@@ -12,6 +12,7 @@ import {getNetworkId} from '../utils/getNetworkId';
 export interface SetupUniLoginOverrides {
   sdkConfig?: Partial<SdkConfig>;
   browserChecker?: BrowserChecker;
+  disabledDialogs?: string[];
 }
 
 export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverrides) => ({
@@ -22,6 +23,7 @@ export const setupUniLogin = (provider: Provider, overrides?: SetupUniLoginOverr
     const uniLoginConfig = getConfigForNetwork(networkVersion);
     return new ULWeb3Provider({
       ...uniLoginConfig,
+      disabledDialogs: overrides?.disabledDialogs,
       sdkConfigOverrides: overrides?.sdkConfig,
       browserChecker: overrides?.browserChecker,
     });
