@@ -1,5 +1,14 @@
 import {asEnum} from '@restless/sanitizers';
 
-export type DialogsToDisable = 'WAIT_FOR_TRANSACTION';
+const dialogsToDisable = ['WAIT_FOR_TRANSACTION'];
 
-export const asDialogsToDisable = asEnum<DialogsToDisable>(['WAIT_FOR_TRANSACTION'], 'DialogsToDisable');
+export const DialogsToDisable = {
+  equals(dialog: string) {
+    if(dialogsToDisable.includes(dialog)){
+      return dialog;
+    }
+    throw new TypeError(`Invalid dialog: ${dialog}`);
+  }
+};
+
+export const asDialogsToDisable = asEnum(['WAIT_FOR_TRANSACTION'], 'DialogsToDisable');
