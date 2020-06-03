@@ -8,6 +8,7 @@ import {DisconnectAccount} from '../DisconnectAccount';
 import {ConnectionSuccessNotification} from '../../Notifications/ConnectionSuccessNotification';
 import {WaitingForTransaction} from '../../commons/WaitingForTransaction';
 import {ErrorMessage} from '../../commons/ErrorMessage';
+import {ConnectManually} from './ConnectManually';
 
 export interface DevicesProps {
   walletService: WalletService;
@@ -47,7 +48,7 @@ export const Devices = ({walletService, onAccountDisconnected, className, basePa
           <ErrorMessage
             title={'Connecting device failed'}
             message={location.state?.error}
-          /> }
+          />}
       />
       <Route path={join(basePath, 'disconnectAccount')} exact>
         <DisconnectAccount
@@ -73,6 +74,11 @@ export const Devices = ({walletService, onAccountDisconnected, className, basePa
         exact
         render={({location}) => <WaitingForTransaction action="Connecting device" relayerConfig={relayerConfig} transactionHash={location.state?.transactionHash} />}
       />
+      <Route
+        path={join(basePath, 'connectManually')}
+        exact >
+        <ConnectManually devicesBasePath={basePath} basePath={join(basePath, 'connectManually')} walletService={walletService} onConnect={() => history.replace(join(basePath, 'connectionSuccess'))} />
+      </Route>
     </Switch>
   );
 };

@@ -30,7 +30,7 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
   const history = useHistory();
 
   const onDeleteDevice = async () => {
-    ensureNotFalsy(gasParameters, MissingParameter, 'gas parameters');
+    ensureNotFalsy(gasParameters, TypeError);
     ensureNotFalsy(deviceToRemove, MissingParameter, 'device to remove');
     history.replace(join(devicesBasePath, '/waitingForRemovingDevice'));
     const {waitToBeSuccess, waitForTransactionHash} = await deployedWallet.removeKey(deviceToRemove, gasParameters);
@@ -57,6 +57,7 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
           />
           : <Spinner className="spinner-center"/>}
       </div>
+      <button onClick={() => history.push(join(devicesBasePath, 'connectManually'))} className="add-account-link">Connect manually</button>
       <button onClick={() => history.push(join(devicesBasePath, 'disconnectAccount'))} className="disconnect-account-link">Disconnect this device</button>
     </ThemedComponent>
     {deviceToRemove && <FooterSection>
