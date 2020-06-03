@@ -5,7 +5,7 @@ export interface ProviderConfig {
   disabledDialogs: string[];
 }
 
-const IS_DEV = true;
+const IS_DEV = false;
 
 export const DEFAULT_CONFIG: ProviderConfig = {
   backendUrl: IS_DEV ? 'http://localhost:8080' : 'https://universal-provider-backend.netlify.com',
