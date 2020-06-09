@@ -45,7 +45,7 @@ export {CATEGORIES, getBaseEmojiCode, getColoredEmojiCode, getEmojiColor, getEmo
 export {getEmojiCodePoint} from './core/utils/emojiCodePoint';
 export {isValidEnsName, parseDomain} from './core/utils/ens';
 export {ensure, ensureNotEmpty, ensureNotFalsy, ensureNotNullish} from './core/utils/errors/ensure';
-export {InvalidContract, NotEnoughTokens, PaymentError, ValidationError} from './core/utils/errors/errors';
+export {InvalidContract, NotEnoughTokens, PaymentError, ValidationError, InvalidNetwork} from './core/utils/errors/errors';
 export {onCritical} from './core/utils/errors/onCritical';
 export {findGasMode, findGasOption, getGasPriceFor, FAST_GAS_MODE_INDEX} from './core/utils/gasPriceMode';
 export {generateBackupCode} from './core/utils/generateBackupCode';
@@ -102,3 +102,5 @@ export {NodeEnv, asNodeEnv} from './core/models/NodeEnv';
 export {ProviderService} from './integration/ethereum/ProviderService';
 export {fetchHardforkVersion} from './integration/ethereum/fetchHardforkVersion';
 export {CoingeckoApi} from './integration/http/CoingeckoApi';
+export {IErc721Token, IBasicErc721Token as IBasicToken} from './core/models/Erc721Token';
+export {Erc721TokensService} from './core/services/Erc721TokensService';

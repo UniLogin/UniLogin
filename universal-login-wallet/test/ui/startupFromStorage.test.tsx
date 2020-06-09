@@ -56,7 +56,8 @@ describe('UI: Startup from stored wallet state', () => {
     appWrapper = mountWithContext(<App/>, services, ['/dashboard']);
     const appPage = new AppPage(appWrapper);
     await appPage.dashboard().waitForDashboard();
-    expect(appWrapper.text().includes('My Assets')).to.be.true;
+    expect(appWrapper.text().includes('Tokens')).to.be.true;
+    expect(appWrapper.text().includes('Collectables')).to.be.true;
   });
 
   afterEach(async () => {

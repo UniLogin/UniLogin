@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle, TokenPricesService, ProviderService} from '@unilogin/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle, TokenPricesService, ProviderService, Erc721TokensService} from '@unilogin/commons';
 import {ContractService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -26,6 +26,7 @@ import {GnosisSafeService} from '../integration/ethereum/GnosisSafeService';
 import {NotifySdk} from '../integration/notifySdk/NotifySdk';
 import {cast} from '@restless/sanitizers';
 import {INotifySdk} from '../integration/notifySdk/interfaces';
+import {OnErc721TokensChange, Erc721TokensObserver} from '../core/observers/Erc721TokensObserver';
 
 class UniLoginSdk {
   readonly provider: providers.Provider;
@@ -40,6 +41,7 @@ class UniLoginSdk {
   readonly tokenPricesService: TokenPricesService;
   readonly providerService: ProviderService;
   readonly contractService: ContractService;
+  readonly erc721TokensService: Erc721TokensService;
   readonly gasPriceOracle: GasPriceOracle;
   readonly gasModeService: GasModeService;
   readonly config: SdkConfig;
@@ -51,6 +53,7 @@ class UniLoginSdk {
   readonly walletContractService: WalletContractService;
   private readonly relayerConfig: Lazy<PublicRelayerConfig>;
   balanceObserver?: BalanceObserver;
+  erc721TokensObserver?: Erc721TokensObserver;
   aggregateBalanceObserver?: AggregateBalanceObserver;
   futureWalletFactory?: FutureWalletFactory;
   notifySdk?: INotifySdk;
@@ -76,6 +79,7 @@ class UniLoginSdk {
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.config.observedTokensAddresses);
     this.tokenPricesService = new TokenPricesService();
+    this.erc721TokensService = new Erc721TokensService(this.config.network);
     this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.tokenPricesService, this.config.priceObserverTick);
     this.gasPriceOracle = new GasPriceOracle();
     this.tokensValueConverter = new TokensValueConverter(this.config.observedCurrencies);
@@ -139,6 +143,15 @@ class UniLoginSdk {
     this.balanceObserver = new BalanceObserver(this.balanceChecker, contractAddress, this.tokensDetailsStore, this.config.balanceObserverTick);
   }
 
+  async fetchErc721TokensObserver(contractAddress: string) {
+    if (this.erc721TokensObserver) {
+      return;
+    }
+    ensureNotFalsy(contractAddress, InvalidContract);
+
+    this.erc721TokensObserver = new Erc721TokensObserver(contractAddress, this.erc721TokensService, this.config.erc721TokensObserverTick);
+  }
+
   async fetchAggregateBalanceObserver(contractAddress: string) {
     if (this.aggregateBalanceObserver) {
       return;
@@ -192,6 +205,11 @@ class UniLoginSdk {
   async subscribeToBalances(contractAddress: string, callback: OnBalanceChange) {
     await this.fetchBalanceObserver(contractAddress);
     return this.balanceObserver!.subscribe(callback);
+  }
+
+  async subscribeToErc721Tokens(contractAddress: string, callback: OnErc721TokensChange) {
+    await this.fetchErc721TokensObserver(contractAddress);
+    return this.erc721TokensObserver!.subscribe(callback);
   }
 
   async subscribeToAggregatedBalance(contractAddress: string, callback: OnAggregatedBalanceChange) {
