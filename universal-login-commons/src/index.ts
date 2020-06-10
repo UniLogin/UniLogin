@@ -74,6 +74,7 @@ export {withENS} from './integration/ethereum/ens';
 export {fetchHardforkVersion} from './integration/ethereum/fetchHardforkVersion';
 export {resolveName} from './integration/ethereum/resolveName';
 export {stringToWei} from './integration/ethereum/stringToWei';
+export {estimateGas} from './integration/ethereum/estimateGas';
 export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
 export {defaultDeployOptions, getDeployTransaction} from './integration/ethereum/transaction';
 export {SufficientBalanceValidator} from './integration/ethereum/validators/SufficientBalanceValidator';
