@@ -2,17 +2,19 @@ import {Message} from '../../core/models/message';
 import fetch from 'node-fetch';
 import {bigNumberify} from 'ethers/utils';
 import {http} from '../..';
+import {ensureNotFalsy} from '../../core/utils/errors/ensure';
 
-export const estimateGas = async (message: Message, network = 'mainnet') => {
-  const value = bigNumberify(message.value).toHexString();
-  const gasPrice = bigNumberify(message.gasPrice).toHexString();
+export const estimateGas = async (message: Partial<Message>, network = 'mainnet') => {
+  const value = message.value ? bigNumberify(message.value).toHexString() : undefined;
+  const gasPrice = message.gasPrice ? bigNumberify(message.gasPrice).toHexString() : undefined;
+  ensureNotFalsy(message.to, Error, 'message.to cannot be falsy');
   const body = {
     jsonrpc: '2.0',
     method: 'eth_estimateGas',
     params: [{from: message.from,
       to: message.to,
-      gasPrice: gasPrice.replace('x0', 'x'),
-      value: value.replace('x0', 'x'),
+      gasPrice: gasPrice?.replace('x0', 'x'),
+      value: value?.replace('x0', 'x'),
       data: message.data}],
     id: 1,
   };
