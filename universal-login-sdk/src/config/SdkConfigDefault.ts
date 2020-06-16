@@ -20,7 +20,7 @@ export const SdkConfigDefault: SdkConfig = {
   ],
   notice: '',
   authorizationsObserverTick: 1000,
-  balanceObserverTick: 1000 * 3,
+  balanceObserverTick: 1000 * 5,
   priceObserverTick: 1000 * 60 * 5,
   mineableFactoryTick: 500,
   mineableFactoryTimeout: 600000,
