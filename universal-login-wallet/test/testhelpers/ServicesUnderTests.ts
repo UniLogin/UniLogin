@@ -10,6 +10,7 @@ export const createPreconfiguredServices = async (provider: providers.Provider, 
   const storageService = new MemoryStorageService();
   const sdkConfig = TEST_SDK_CONFIG as SdkConfig;
   const services = createServices(config, {provider, storageService, sdkConfig});
+  (provider as any).pollingInterval = 10;
   services.sdk.gasPriceOracle.getGasPrices = () => {
     return Promise.resolve({
       cheap: {
