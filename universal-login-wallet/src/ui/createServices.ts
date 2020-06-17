@@ -55,6 +55,7 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     providerOrProviderUrl,
     sdkConfig,
   );
+  (sdk.provider as any).pollingInterval = 10 * 1000;
   const walletService = new WalletService(sdk, walletFromBrain, storageService);
   const walletPresenter = new WalletPresenter(walletService);
   sdk.featureFlagsService.enableAll(new URLSearchParams(window.location.search).getAll('feature'));
