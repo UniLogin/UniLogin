@@ -23,7 +23,8 @@ export class WalletEventsObserver {
   }
 
   async fetchEvents(lastBlock: number, types: WalletEventType[]) {
-    for (const type of types) {
+    const typesWithSubscriptions = types.filter(type => this.observableRecords[type].length > 0);
+    for (const type of typesWithSubscriptions) {
       const topics = [eventInterface[type].topic];
       const eventsFilter = {fromBlock: lastBlock, address: this.contractAddress, topics};
       const events: Log[] = await this.blockchainService.getLogs(eventsFilter);
