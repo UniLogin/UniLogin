@@ -6530,10 +6530,10 @@ ethereum-common@^0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
 
-ethereum-waffle@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.1.2.tgz#1ce4ef2a439056e37aed0d07d8ba4c9f699b1103"
-  integrity sha512-REdOUNOydNrQU05PFHkNMW0H/m/eQ+3VMatQgE/sTGyWNJ44cMFfpQxjJOdgZVIa1jVE3NTjuTDHVJ8TBDFeQQ==
+ethereum-waffle@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.2.0.tgz#14faef4c2304b1e8c979eed6a8f1c69027c31e17"
+  integrity sha512-HNWGcIab5hD3gNwieZa5Ggq08Ufa+biFBtNeklRdXmHy3MPtyCfu92vwH7sq0Ij+0GzcqjYEPRn5E30RXp4u8A==
   dependencies:
     "@resolver-engine/imports" "^0.3.3"
     "@resolver-engine/imports-fs" "^0.3.3"
