@@ -8,7 +8,7 @@
   "dependencies": {
     "@unilogin/commons": "0.5.21",
     "ens-builder": "^2.0.2",
-    "ethers": "^4.0.39"
+    "ethers": "^4.0.47"
   },
   "scripts": {
     "prebuild": "yarn clean",
@@ -32,7 +32,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "eslint": "^6.5.0",
-    "ethereum-waffle": "^2.1.2",
+    "ethereum-waffle": "2.2.0",
     "ethlint": "^1.2.3",
     "ganache-core": "^2.6.1",
     "mocha": "^5.2.0",

@@ -1,7 +1,7 @@
 import {providers, Contract, utils} from 'ethers';
 import {GnosisSafeInterface, signStringMessage, calculateGnosisStringHash, getPreviousOwner} from '@unilogin/contracts';
 import {IWalletContractServiceStrategy} from './WalletContractService';
-import {ensureNotFalsy, RelayerRequest} from '@unilogin/commons';
+import {ensureNotFalsy, RelayerRequest, ensure} from '@unilogin/commons';
 import {WalletNotFound} from '../../core/utils/errors';
 
 export class GnosisSafeService implements IWalletContractServiceStrategy {
@@ -41,16 +41,17 @@ export class GnosisSafeService implements IWalletContractServiceStrategy {
     switch (method) {
       case 'addKey':
         ensureNotFalsy(walletAddress, WalletNotFound);
-        ensureNotFalsy(args, TypeError, 'Public key not provided.');
+        ensureNotFalsy(args, TypeError, 'Public key is not provided');
         return GnosisSafeInterface.functions.addOwnerWithThreshold
           .encode([...args, await this.requiredSignatures(walletAddress)]);
       case 'removeKey':
         ensureNotFalsy(walletAddress, WalletNotFound);
-        ensureNotFalsy(args, TypeError, 'Public key not provided.');
+        ensureNotFalsy(args, TypeError, 'Public key is not provided');
         const owners = await this.getOwners(walletAddress);
         return GnosisSafeInterface.functions.removeOwner
           .encode([getPreviousOwner(owners, args[0]), args[0], await this.requiredSignatures(walletAddress)]);
       case 'setRequiredSignatures':
+        ensure(args?.length === 1, TypeError, 'Number of required signatures is not provided');
         return GnosisSafeInterface.functions.changeThreshold.encode(args);
       default:
         throw TypeError(`Invalid method: ${method}`);
