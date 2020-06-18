@@ -28,7 +28,7 @@
     "dotenv": "^8.1.0",
     "ens-builder": "^2.0.2",
     "ethereum-waffle": "2.2.0",
-    "ethers": "4.0.44",
+    "ethers": "^4.0.47",
     "ganache-cli": "^6.4.5",
     "ganache-core": "^2.6.1",
     "knex": "^0.20.0",
