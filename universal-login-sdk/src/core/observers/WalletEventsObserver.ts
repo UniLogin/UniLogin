@@ -1,8 +1,11 @@
 import {arrayRemove} from '@unilogin/commons';
 import {WalletEventType, WalletEventObservableRecord} from '../models/events';
-import {parseArgs, eventInterface, parseArgsGnosis} from '../utils/events';
+import {parseArgs, parseArgsGnosis} from '../utils/events';
 import {Log} from 'ethers/providers';
 import {BlockchainService} from '@unilogin/contracts';
+import {WalletContractInterface, GnosisSafeInterface} from '@unilogin/contracts';
+
+const eventInterface = {...WalletContractInterface.events, ...GnosisSafeInterface.events};
 
 export class WalletEventsObserver {
   private readonly observableRecords: Record<WalletEventType, WalletEventObservableRecord[]> = {

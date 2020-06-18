@@ -8,7 +8,7 @@
   "dependencies": {
     "@unilogin/commons": "0.5.21",
     "ens-builder": "^2.0.2",
-    "ethers": "4.0.42"
+    "ethers": "4.0.44"
   },
   "scripts": {
     "prebuild": "yarn clean",

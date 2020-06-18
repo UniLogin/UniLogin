@@ -51,7 +51,7 @@ export class GnosisSafeService implements IWalletContractServiceStrategy {
         return GnosisSafeInterface.functions.removeOwner
           .encode([getPreviousOwner(owners, args[0]), args[0], await this.requiredSignatures(walletAddress)]);
       case 'setRequiredSignatures':
-        return GnosisSafeInterface.functions.changeThreshold.encode(args);
+        return GnosisSafeInterface.functions.changeThreshold.encode(args || []);
       default:
         throw TypeError(`Invalid method: ${method}`);
     };
