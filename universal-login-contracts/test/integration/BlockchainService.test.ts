@@ -171,7 +171,8 @@ describe('INT: BlockchainService', async () => {
       const initialBlockNumber = await blockchainService.getBlockNumber();
       blockchainService.on('block', callback);
       await mineBlock(deployer);
-      expect(callback.calledOnceWithExactly(initialBlockNumber + 1)).to.be.true;
+      expect(callback.calledTwice).to.be.true;
+      expect(callback.getCall(1).calledWith(initialBlockNumber + 1)).to.be.true;
       blockchainService.removeListener('block', callback);
     });
 
