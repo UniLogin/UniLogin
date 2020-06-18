@@ -27,7 +27,7 @@
     "bem-components-react": "^0.1.2",
     "classnames": "^2.2.6",
     "dotenv": "^8.1.0",
-    "ethers": "^4.0.39",
+    "ethers": "4.0.40",
     "lodash.range": "^3.2.0",
     "node-sass": "^4.11.0",
     "react-qr-svg": "^2.2.1",
