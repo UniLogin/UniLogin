@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import React from 'react';
 import {mount, ReactWrapper} from 'enzyme';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {TEST_REFUND_PAYER} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {setupSdk} from '@unilogin/sdk/testutils';
@@ -17,7 +17,7 @@ describe('INT: Free Onboarding', () => {
   let relayer: any;
 
   before(async () => {
-    const [wallet] = getWallets(createMockProvider());
+    const [wallet] = new MockProvider().getWallets();
     ({sdk, relayer} = await setupSdk(wallet, '33113', {apiKey: TEST_REFUND_PAYER.apiKey}));
     const walletService = new WalletService(sdk);
 

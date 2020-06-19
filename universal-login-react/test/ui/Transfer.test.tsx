@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import React from 'react';
 import {mount, ReactWrapper} from 'enzyme';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {utils, Contract} from 'ethers';
 import {TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
@@ -31,7 +31,7 @@ describe('INT: Transfer with refund', () => {
   };
 
   before(async () => {
-    const [wallet] = getWallets(createMockProvider());
+    const [wallet] = new MockProvider().getWallets();
     ({deployedWallet, relayer, sdk, mockToken} = await setupDeployedWallet(wallet, 'jarek.mylogin.eth'));
     reactWrapper = mount(<Transfer
       transferService={new TransferService(deployedWallet)}
