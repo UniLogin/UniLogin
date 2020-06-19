@@ -1,5 +1,5 @@
 import {dirname, join} from 'path';
-import {getWallets, MockProvider, defaultAccounts} from 'ethereum-waffle';
+import {defaultAccounts} from 'ethereum-waffle';
 import {providers, Wallet} from 'ethers';
 import {start as startRelayer} from '@unilogin/relayer';
 import {deployDefaultCallbackHandler} from '@unilogin/contracts';
@@ -49,7 +49,6 @@ async function startDevelopment() {
   await deployENSRegistrar(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   await startRelayer('ganache');
-  console.log(provider.connection.url)
   return {jsonRpcUrl: provider.connection.url, deployWallet, walletContractAddress: address, saiTokenAddress, daiTokenAddress, ensAddress, ensDomains};
 }
 

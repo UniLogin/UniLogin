@@ -1,15 +1,6 @@
 import {promisify} from 'util';
 import Ganache from 'ganache-cli';
-import {defaultAccounts, getWallets} from 'ethereum-waffle';
-import {providers} from 'ethers';
-
-function printWallets(wallets) {
-  console.log('  Wallets:');
-  for (const wallet of wallets) {
-    console.log(`    ${wallet.address} - ${wallet.privateKey}`);
-  }
-  console.log('');
-}
+import {defaultAccounts} from 'ethereum-waffle';
 
 async function startGanache(port) {
   const options = {accounts: defaultAccounts, hardfork: 'constantinople', network_id: 8545};
