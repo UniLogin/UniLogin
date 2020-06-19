@@ -1,5 +1,5 @@
-import {fetch, InvalidNetwork, IErc721Token} from '../../../src';
-import {IBasicErc721Token} from '../models/Erc721Token';
+import {fetch, InvalidNetwork} from '../../../src';
+import {IBasicErc721Token, IErc721Token} from '../models/Erc721Token';
 
 const OPENSEA_API_URL = 'https://api.opensea.io/api/v1/asset';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {IErc721Token} from '../../core/models/Erc721Token';
+import {IErc721Token} from '@unilogin/commons';
 import {ThemedComponent} from './ThemedComponent';
 
 interface DisplayErc721TokensProps {
