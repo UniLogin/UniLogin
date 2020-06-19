@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {getWallets, loadFixture, MockProvider, solidity} from 'ethereum-waffle';
+import {loadFixture, MockProvider, solidity} from 'ethereum-waffle';
 import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../helpers/ExampleMessages';
 import {utils, Contract, Wallet} from 'ethers';
@@ -37,7 +37,7 @@ describe('CONTRACT: Executor - main', async () => {
     ({provider, walletContract, managementKeyPair, sortedKeys, mockToken, mockContract, wallet} = await loadFixture(basicExecutor));
     msg = {...transferMessage, from: walletContract.address};
     signature = calculateMessageSignature(managementKeyPair.privateKey, msg);
-    [anotherWallet] = getWallets(provider);
+    [anotherWallet] = provider.getWallets();
     invalidSignature = calculateMessageSignature(anotherWallet.privateKey, msg);
     relayerBalance = await wallet.getBalance();
     relayerTokenBalance = await mockToken.balanceOf(wallet.address);

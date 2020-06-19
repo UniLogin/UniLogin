@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
-import {Contract, providers, utils, Wallet} from 'ethers';
-import {deployContract, getWallets, loadFixture, solidity, MockProvider} from 'ethereum-waffle';
+import {Contract, utils, Wallet} from 'ethers';
+import {deployContract, loadFixture, solidity, MockProvider} from 'ethereum-waffle';
 import {createKeyPair, DEPLOYMENT_REFUND, ETHER_NATIVE_TOKEN, TEST_OVERRIDES_FOR_REVERT, signString} from '@unilogin/commons';
 import MockToken from '../../../dist/contracts/MockToken.json';
 import {encodeInitializeWithENSData} from '../../../src';

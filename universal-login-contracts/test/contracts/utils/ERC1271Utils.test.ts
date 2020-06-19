@@ -1,11 +1,11 @@
 import {expect} from 'chai';
 import ERC1271Utils from '../../../dist/contracts/ERC1271Utils.json';
 import {Contract} from 'ethers';
-import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 
 describe('Contract: ERC1271Utils', async () => {
   let erc1271Utils: Contract;
-  const [wallet] = getWallets(createMockProvider());
+  const [wallet] = new MockProvider().getWallets();
 
   before(async () => {
     erc1271Utils = await deployContract(wallet, ERC1271Utils);

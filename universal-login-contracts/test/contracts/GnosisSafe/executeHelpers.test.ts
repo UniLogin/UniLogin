@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {Wallet, Contract, providers} from 'ethers';
-import {getWallets, loadFixture, MockProvider} from 'ethereum-waffle';
+import {Wallet, Contract} from 'ethers';
+import {loadFixture, MockProvider} from 'ethereum-waffle';
 import {createKeyPair, KeyPair} from '@unilogin/commons';
 import {GnosisSafeInterface} from '../../../src/gnosis-safe@1.1.1/interfaces';
 import {executeAddKey, executeRemoveKey, setupGnosisSafeContractFixture} from '../../fixtures/gnosisSafe';

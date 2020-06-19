@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {getWallets, loadFixture, deployContract, MockProvider} from 'ethereum-waffle';
+import {loadFixture, deployContract, MockProvider} from 'ethereum-waffle';
 import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
 import {mockProviderWithBlockNumber} from '@unilogin/commons/testutils';
 import {deployWalletContract} from '../../src/beta2/deployMaster';
@@ -27,7 +27,7 @@ describe('INT: BlockchainService', async () => {
   beforeEach(async () => {
     ({provider, walletContractProxy} = await loadFixture(walletAndProxy));
     (provider as any).pollingInterval = 5;
-    [deployer] = getWallets(provider);
+    [deployer] = provider.getWallets();
     blockchainService = new BlockchainService(provider);
   });
 

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {loadFixture, deployContract, getWallets, MockProvider} from 'ethereum-waffle';
+import {loadFixture, deployContract, MockProvider} from 'ethereum-waffle';
 import {basicENS} from '@unilogin/commons/testutils';
 import {utils, Wallet, Contract} from 'ethers';
 import {createKeyPair, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, computeContractAddress, TEST_OVERRIDES_FOR_REVERT} from '@unilogin/commons';
@@ -24,7 +24,7 @@ describe('WalletImplementation', () => {
 
   beforeEach(async () => {
     ({provider, publicResolver, registrarAddress, ensAddress, wallet} = await loadFixture(basicENS));
-    [, , , otherWallet] = getWallets(provider);
+    [, , , otherWallet] = provider.getWallets();
     ensArgs = [hashLabel, name, node, ensAddress, registrarAddress, publicResolver];
     const transactionCount = await wallet.getTransactionCount();
     const futureAddress = computeContractAddress(wallet.address, transactionCount);
