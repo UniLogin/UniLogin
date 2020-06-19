@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import {Contract, providers, utils, Wallet} from 'ethers';
-import {deployContract, getWallets, loadFixture, solidity} from 'ethereum-waffle';
+import {deployContract, getWallets, loadFixture, solidity, MockProvider} from 'ethereum-waffle';
 import {createKeyPair, DEPLOYMENT_REFUND, ETHER_NATIVE_TOKEN, TEST_OVERRIDES_FOR_REVERT, signString} from '@unilogin/commons';
 import MockToken from '../../../dist/contracts/MockToken.json';
 import {encodeInitializeWithENSData} from '../../../src';
@@ -15,7 +15,7 @@ chai.use(solidity);
 
 describe('Counterfactual Factory', () => {
   const keyPair = createKeyPair();
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let wallet: Wallet;
   let anotherWallet: Wallet;
   let factoryContract: Contract;
@@ -29,7 +29,7 @@ describe('Counterfactual Factory', () => {
 
   beforeEach(async () => {
     ({ensDomainData, provider, factoryContract, walletContract} = await loadFixture(ensAndMasterFixture));
-    [wallet, anotherWallet] = getWallets(provider);
+    [wallet, anotherWallet] = provider.getWallets();
     createFutureDeploymentArgs = {keyPair, walletContractAddress: walletContract.address, ensDomainData, factoryContract, gasPrice, gasToken: ETHER_NATIVE_TOKEN.address};
     ({initializeData, futureAddress, signature} = createFutureDeploymentWithENS(createFutureDeploymentArgs));
   });

@@ -1,12 +1,12 @@
 import {expect} from 'chai';
-import {loadFixture, deployContract, getWallets} from 'ethereum-waffle';
+import {loadFixture, deployContract, getWallets, MockProvider} from 'ethereum-waffle';
 import {basicENS} from '@unilogin/commons/testutils';
-import {utils, Wallet, providers, Contract} from 'ethers';
+import {utils, Wallet, Contract} from 'ethers';
 import {createKeyPair, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, computeContractAddress, TEST_OVERRIDES_FOR_REVERT} from '@unilogin/commons';
 import WalletContract from '../../../dist/contracts/Wallet.json';
 
 describe('WalletImplementation', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let publicResolver: string;
   let registrarAddress: string;
   let ensAddress: string;

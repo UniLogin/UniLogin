@@ -1,9 +1,9 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {getWallets, loadFixture, solidity} from 'ethereum-waffle';
+import {getWallets, loadFixture, MockProvider, solidity} from 'ethereum-waffle';
 import basicExecutor from '../../fixtures/basicExecutor';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage} from '../../helpers/ExampleMessages';
-import {utils, providers, Contract, Wallet} from 'ethers';
+import {utils, Contract, Wallet} from 'ethers';
 import {calculateMessageHash, calculateMessageSignature, concatenateSignatures, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, KeyPair, ONE_SIGNATURE_GAS_COST} from '@unilogin/commons';
 import {getExecutionArgs} from '../../helpers/argumentsEncoding';
 import {calculateBaseGas} from '../../../src/estimateGas';
@@ -16,7 +16,7 @@ const {parseEther} = utils;
 const to = TEST_ACCOUNT_ADDRESS;
 
 describe('CONTRACT: Executor - main', async () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let walletContract: Contract;
   let signature: string;
   let msg: UnsignedMessage;

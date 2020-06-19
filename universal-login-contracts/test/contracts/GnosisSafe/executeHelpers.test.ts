@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Wallet, Contract, providers} from 'ethers';
-import {getWallets, loadFixture} from 'ethereum-waffle';
+import {getWallets, loadFixture, MockProvider} from 'ethereum-waffle';
 import {createKeyPair, KeyPair} from '@unilogin/commons';
 import {GnosisSafeInterface} from '../../../src/gnosis-safe@1.1.1/interfaces';
 import {executeAddKey, executeRemoveKey, setupGnosisSafeContractFixture} from '../../fixtures/gnosisSafe';
@@ -10,11 +10,11 @@ describe('INT: executeHelpers', async () => {
   let proxy: Contract;
   let proxyAsGnosisSafe: Contract;
   let keyPair: KeyPair;
-  let provider: providers.Provider;
+  let provider: MockProvider;
 
   beforeEach(async () => {
     ({proxy, keyPair, provider} = await loadFixture(setupGnosisSafeContractFixture));
-    [wallet] = getWallets(provider);
+    [wallet] = provider.getWallets();
     proxyAsGnosisSafe = new Contract(proxy.address, GnosisSafeInterface, wallet.provider);
   });
 

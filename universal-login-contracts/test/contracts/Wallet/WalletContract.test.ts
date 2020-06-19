@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {solidity, getWallets, loadFixture, deployContract} from 'ethereum-waffle';
-import {constants, utils, providers, Wallet, Contract} from 'ethers';
+import {solidity, loadFixture, deployContract, MockProvider} from 'ethereum-waffle';
+import {constants, utils, Wallet, Contract} from 'ethers';
 import {transferMessage, failedTransferMessage, callMessage, failedCallMessage, executeSetRequiredSignatures, executeAddKey, emptyMessage} from '../../helpers/ExampleMessages';
 import walletAndProxy from '../../fixtures/walletAndProxy';
 import {calculateMessageHash, calculateMessageSignature, DEFAULT_GAS_PRICE, TEST_ACCOUNT_ADDRESS, UnsignedMessage, signString, createKeyPair, SignedMessage, ONE_SIGNATURE_GAS_COST, sortPrivateKeysByAddress, concatenateSignatures, TEST_GAS_PRICE, Message, TEST_OVERRIDES_FOR_REVERT} from '@unilogin/commons';
@@ -22,7 +22,7 @@ const networkVersion = 'constantinople';
 const walletVersion = 'beta2';
 
 describe('WalletContract', async () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let walletContractProxy: Contract;
   let proxyAsWalletContract: Contract;
   let privateKey: string;
@@ -46,7 +46,7 @@ describe('WalletContract', async () => {
     msg = {...transferMessage, from: walletContractProxy.address};
     signature = calculateMessageSignature(privateKey, msg);
     data = executeSignedFunc.encode([...getExecutionArgs(msg), signature]);
-    [anotherWallet] = getWallets(provider);
+    [anotherWallet] = provider.getWallets();
     invalidSignature = calculateMessageSignature(anotherWallet.privateKey, msg);
     relayerBalance = await wallet.getBalance();
     relayerTokenBalance = await mockToken.balanceOf(wallet.address);
