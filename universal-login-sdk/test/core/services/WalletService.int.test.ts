@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {getWallets, createMockProvider, solidity} from 'ethereum-waffle';
+import {MockProvider, solidity} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {setupSdk} from '../../helpers/setupSdk';
 import UniLoginSdk from '../../../src/api/sdk';
@@ -19,7 +19,7 @@ describe('INT: WalletService', () => {
   let mockToken: Contract;
 
   before(async () => {
-    ([wallet] = getWallets(createMockProvider()));
+    ([wallet] = new MockProvider().getWallets());
     ({sdk, relayer, mockToken} = await setupSdk(wallet));
     await sdk.start();
   });

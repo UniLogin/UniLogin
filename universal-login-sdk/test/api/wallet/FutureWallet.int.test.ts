@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
-import {providers, Wallet, utils} from 'ethers';
-import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
+import {Wallet, utils} from 'ethers';
+import {solidity, MockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, getDeployedBytecode, TEST_ACCOUNT_ADDRESS, TEST_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG} from '@unilogin/commons';
 import {emptyMessage} from '@unilogin/contracts/testutils';
 import {gnosisSafe} from '@unilogin/contracts';
@@ -11,16 +11,16 @@ import {FutureWalletFactory} from '../../../src/api/FutureWalletFactory';
 chai.use(solidity);
 
 describe('INT: FutureWallet', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let relayer: RelayerUnderTest;
   let wallet: Wallet;
   const ensName = 'name.mylogin.eth';
   let futureWalletFactory: FutureWalletFactory;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
-    ({relayer, provider} = await RelayerUnderTest.createPreconfigured(wallet));
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
+    ({relayer} = await RelayerUnderTest.createPreconfigured(wallet));
     await relayer.start();
     const sdk = new UniLoginSdk(relayer.url(), provider, TEST_SDK_CONFIG);
     await sdk.fetchRelayerConfig();

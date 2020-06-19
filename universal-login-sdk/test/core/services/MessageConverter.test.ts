@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {utils, Contract} from 'ethers';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, KeyPair} from '@unilogin/commons';
 import {BlockchainService} from '@unilogin/contracts';
 import {setupWalletContract} from '@unilogin/contracts/testutils';
@@ -12,10 +12,10 @@ describe('MessageConverter', () => {
   let keyPair: KeyPair;
 
   before(async () => {
-    const provider = createMockProvider();
+    const provider = new MockProvider();
     const blockchainService = new BlockchainService(provider);
     messageConverter = new MessageConverter(blockchainService);
-    const [wallet] = getWallets(provider);
+    const [wallet] = provider.getWallets();
     ({proxyWallet, keyPair} = await setupWalletContract(wallet));
   });
 

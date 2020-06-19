@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {utils, Wallet, providers, Contract} from 'ethers';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {utils, Wallet, Contract} from 'ethers';
+import {MockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO, StoredFutureWallet, BalanceChecker} from '@unilogin/commons';
 import {gnosisSafe} from '@unilogin/contracts';
 import {RelayerUnderTest} from '@unilogin/relayer';
@@ -13,7 +13,7 @@ import {SavingFutureWalletFailed} from '../../src/core/utils/errors';
 chai.use(chaiHttp);
 
 describe('INT: FutureWalletFactory', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let wallet: Wallet;
   let futureWalletFactory: FutureWalletFactory;
   let relayer: RelayerUnderTest;
@@ -29,9 +29,9 @@ describe('INT: FutureWalletFactory', () => {
   const relayerUrl = `http://localhost:${relayerPort}`;
 
   before(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
-    ({relayer, factoryContract, supportedTokens, contractWhiteList, provider, ensAddress, ensRegistrar, walletContract, fallbackHandlerContract} = await RelayerUnderTest.createPreconfigured(wallet, relayerPort));
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
+    ({relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, ensRegistrar, walletContract, fallbackHandlerContract} = await RelayerUnderTest.createPreconfigured(wallet, relayerPort));
     await relayer.start();
     const futureWalletConfig = {
       factoryAddress: factoryContract.address,

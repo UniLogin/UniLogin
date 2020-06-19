@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {utils, Wallet, providers, Contract} from 'ethers';
-import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
+import {utils, Wallet, Contract} from 'ethers';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails, normalizeBigNumber} from '@unilogin/commons';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {BalanceObserver} from '../../../src/core/observers/BalanceObserver';
@@ -13,14 +13,14 @@ chai.use(sinonChai);
 describe('INT: BalanceObserver', () => {
   let balanceChecker: BalanceChecker;
   let balanceObserver: BalanceObserver;
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let wallet: Wallet;
   let mockToken: Contract;
 
   describe('BalanceObserver', () => {
     beforeEach(async () => {
-      provider = createMockProvider();
-      [wallet] = getWallets(provider);
+      provider = new MockProvider();
+      [wallet] = provider.getWallets();
       mockToken = await deployContract(wallet, mockContracts.MockToken);
       const supportedTokens: TokenDetails[] = [
         ETHER_NATIVE_TOKEN,
