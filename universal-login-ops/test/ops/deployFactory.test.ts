@@ -1,19 +1,19 @@
 import chai, {expect} from 'chai';
-import {providers, Wallet} from 'ethers';
-import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
+import {Wallet} from 'ethers';
+import {solidity, MockProvider} from 'ethereum-waffle';
 import deployFactory from '../../src/ops/deployFactory';
 import deployWalletContractOnDev from '../../src/dev/deployWalletContractOnDev';
 
 chai.use(solidity);
 
 describe('Counterfactual factory contract', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let wallet: Wallet;
   let walletContractAddress: string;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
     const {address} = await deployWalletContractOnDev(wallet);
     walletContractAddress = address;
   });
