@@ -1,19 +1,19 @@
 import {expect} from 'chai';
 import {SufficientBalanceValidator} from '../../../../src/integration/ethereum/validators/SufficientBalanceValidator';
-import {utils, providers} from 'ethers';
+import {utils} from 'ethers';
 import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '../../../../src/core/constants/test';
-import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 import MockToken from '../../../fixtures/MockToken.json';
 import {SignedMessage} from '../../../../src';
 import {getTestSignedMessage} from '../../../helpers/getTestMessage';
 
 describe('INT: SufficientBalanceValidator', () => {
-  const provider: providers.Provider = createMockProvider();
+  const provider = new MockProvider();
   const validator = new SufficientBalanceValidator(provider);
   let signedMessage: SignedMessage;
 
   before(async () => {
-    const [wallet] = getWallets(provider);
+    const [wallet] = provider.getWallets();
     const token = await deployContract(wallet, MockToken);
     await token.transfer(TEST_CONTRACT_ADDRESS, utils.parseEther('1'));
     await wallet.sendTransaction({to: TEST_CONTRACT_ADDRESS, value: utils.parseEther('1')});
