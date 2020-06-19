@@ -5,10 +5,10 @@ import {FutureWalletHandler} from '../../../src/core/services/FutureWalletHandle
 import {FutureWalletStore} from '../../../src/integration/sql/services/FutureWalletStore';
 import getKnexConfig from '../../testhelpers/knex';
 import {clearDatabase} from '../../../src/http/relayers/RelayerUnderTest';
-import {createMockProvider} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 
 describe('INT: FutureWalletHandler', () => {
-  const provider = createMockProvider();
+  const provider = new MockProvider();
   const knex = getKnexConfig();
   const futureWalletStore = new FutureWalletStore(knex);
   const tokenPricesService = new TokenPricesService();

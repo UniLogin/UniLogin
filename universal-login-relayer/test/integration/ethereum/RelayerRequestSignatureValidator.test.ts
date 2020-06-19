@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Wallet, utils} from 'ethers';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {signRelayerRequest, TEST_PRIVATE_KEY, recoverFromRelayerRequest} from '@unilogin/commons';
 import RelayerRequestSignatureValidator from '../../../src/integration/ethereum/validators/RelayerRequestSignatureValidator';
 import createGnosisSafeContract from '../../testhelpers/createGnosisSafeContract';
@@ -14,8 +14,8 @@ describe('INT: RelayerRequestSignatureValidator', () => {
   let provider;
 
   before(() => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
     const walletContractService = setupWalletContractService(provider);
     relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(walletContractService);
   });

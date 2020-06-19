@@ -6,7 +6,7 @@ import {WalletContractService} from '../../../src/integration/ethereum/WalletCon
 import {messageToSignedMessage, calculateGnosisStringHash, calculateMessageHash as calculateMessageHashGnosis, signStringMessage, GnosisSafeInterface, calculateMessageSignature, encodeDataForExecTransaction, encodeDataForExecuteSigned} from '@unilogin/contracts';
 import {ERC1271} from '@unilogin/contracts';
 import {setupGnosisSafeContract, executeAddKeyGnosis, executeRemoveKey} from '@unilogin/contracts/testutils';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {Contract, Wallet, utils} from 'ethers';
 import createWalletContract from '../../testhelpers/createWalletContract';
 import {getTestSignedMessage} from '../../testconfig/message';
@@ -25,9 +25,9 @@ describe('INT: WalletContractService', () => {
   let fetchWalletVersionSpy: sinon.SinonSpy;
 
   before(async () => {
-    const provider = createMockProvider();
+    const provider = new MockProvider();
     walletContractService = setupWalletContractService(provider);
-    [wallet] = getWallets(provider);
+    [wallet] = provider.getWallets();
     ({proxy: proxyContract, master} = await createWalletContract(wallet));
     const message = {
       to: TEST_ACCOUNT_ADDRESS,

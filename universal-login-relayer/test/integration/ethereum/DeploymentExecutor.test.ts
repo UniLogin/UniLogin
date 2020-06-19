@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import DeploymentExecutor from '../../../src/integration/ethereum/DeploymentExecutor';
 import {expect} from 'chai';
 import {utils, Wallet} from 'ethers';
-import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import SQLRepository from '../../../src/integration/sql/services/SQLRepository';
 import Deployment from '../../../src/core/models/Deployment';
 
@@ -19,7 +19,7 @@ describe('INT: Deployment Executor', () => {
   let wallet: Wallet;
 
   beforeEach(async () => {
-    [wallet] = getWallets(createMockProvider());
+    [wallet] = new MockProvider().getWallets();
     const {walletService, gnosisSafeMaster, factoryContract, ensRegistrar, ensService, fallbackHandler} = await setupWalletService(wallet);
     keyPair = createKeyPair();
     ({signature, contractAddress} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address, '1'));

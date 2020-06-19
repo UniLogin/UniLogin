@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
+import {MockProvider, solidity} from 'ethereum-waffle';
 import {
   decodeParametersFromData,
   getFunctionParametersData,
@@ -13,8 +13,8 @@ chai.use(chaiAsPromised);
 chai.use(solidity);
 
 describe('INT: Core tools test', () => {
-  const provider = createMockProvider();
-  const [wallet, otherWallet] = getWallets(provider);
+  const provider = new MockProvider();
+  const [wallet, otherWallet] = provider.getWallets();
 
   describe('getFunctionParametersData', () => {
     it('no params', () => {
