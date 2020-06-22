@@ -20,21 +20,21 @@ describe('Performance test', async () => {
   const gasCosts = {} as any;
   const keyPair = createKeyPair();
 
-  let providerWithENS: providers.Provider;
+  let provider: providers.Provider;
   let walletContract: Contract;
   let factoryContract: Contract;
   let ensDomainData: EnsDomainData;
   let deployer: Wallet;
 
   beforeEach(async () => {
-    ({ensDomainData, deployer, providerWithENS, factoryContract, walletContract} = await loadFixture(ensAndMasterFixture));
+    ({ensDomainData, deployer, provider, factoryContract, walletContract} = await loadFixture(ensAndMasterFixture));
   });
 
   it('Proxy deploy without ENS', async () => {
     const {futureAddress, initializeData, signature} = createFutureDeployment(keyPair, walletContract.address, factoryContract);
     await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     const transaction = await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
-    const {gasUsed} = await providerWithENS.getTransactionReceipt(transaction.hash!);
+    const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
     gasCosts['Proxy deploy without ENS'] = gasUsed;
     expect(gasUsed).to.be.below(deployProxyCost);
   });
@@ -43,7 +43,7 @@ describe('Performance test', async () => {
     const {futureAddress, initializeData, signature} = createFutureDeploymentWithENS({keyPair, walletContractAddress: walletContract.address, ensDomainData, factoryContract, gasPrice: '1000000', gasToken: ETHER_NATIVE_TOKEN.address});
     await deployer.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     const transaction = await factoryContract.createContract(keyPair.publicKey, initializeData, signature);
-    const {gasUsed} = await providerWithENS.getTransactionReceipt(transaction.hash!);
+    const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
     gasCosts['Proxy deploy with ENS'] = gasUsed;
     expect(gasUsed).to.be.below(deployProxyWithENSCost);
   });
@@ -51,7 +51,7 @@ describe('Performance test', async () => {
   it('Wallet deployment', async () => {
     const deployTransaction = getDeployTransaction(WalletContract as ContractJSON);
     const transaction = await deployer.sendTransaction(deployTransaction);
-    const {gasUsed} = await providerWithENS.getTransactionReceipt(transaction.hash!);
+    const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
     gasCosts['Wallet deployment'] = gasUsed;
     expect(gasUsed).to.be.below(deployWalletCost);
   });
