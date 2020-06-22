@@ -11,8 +11,8 @@ import {executeAddKey} from '../../helpers/ExampleMessages';
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-const deployProxyCost = '385000';
-const deployProxyWithENSCost = '570000';
+const deployProxyCost = '400000';
+const deployProxyWithENSCost = '595000';
 const deployWalletCost = '3400000';
 const executeAddKeyCost = '103000';
 

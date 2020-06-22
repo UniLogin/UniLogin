@@ -70,8 +70,10 @@ describe('Counterfactual Factory', () => {
     const {initializeData, futureAddress, signature} = createFutureDeploymentWithENS(createFutureDeploymentArgs);
     await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
     const initBalance = await wallet.getBalance();
-    await factoryContract.createContract(keyPair.publicKey, initializeData, signature, {gasPrice: utils.bigNumberify(createFutureDeploymentArgs.gasPrice)});
-    expect(await wallet.getBalance()).to.be.above(initBalance);
+    const {wait} = await factoryContract.createContract(keyPair.publicKey, initializeData, signature, {gasPrice: utils.bigNumberify(createFutureDeploymentArgs.gasPrice)});
+    const {gasUsed} = await wait();
+    const gasPrice = utils.bigNumberify(createFutureDeploymentArgs.gasPrice);
+    expect(await wallet.getBalance()).eq(initBalance.sub(gasPrice.mul(gasUsed)).add(gasPrice.mul(DEPLOYMENT_REFUND)));
   });
 
   it('should fail if signed ens name and passed in initialize data are different', async () => {
