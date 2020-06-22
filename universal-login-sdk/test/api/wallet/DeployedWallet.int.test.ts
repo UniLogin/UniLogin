@@ -153,7 +153,7 @@ describe('INT: DeployedWallet', () => {
       const baseGas = 88720;
       const notEnoughGasLimit = 100;
       message = {...message, gasLimit: baseGas + notEnoughGasLimit};
-      await expect(deployedWallet.execute(message)).to.be.eventually.rejectedWith(`Insufficient Gas. gasLimit should be greater than ${GAS_BASE}`);
+      await expect(deployedWallet.execute(message)).to.be.eventually.rejectedWith(`Insufficient Gas. Got safeTxGas 280 but should greater than ${GAS_BASE}`);
     });
 
     it('Throws when the gas limit is above the relayers maxGasLimit', async () => {

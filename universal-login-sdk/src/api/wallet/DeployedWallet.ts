@@ -10,6 +10,7 @@ import UniLoginSdk from '../sdk';
 import {Execution} from '../../core/services/ExecutionFactory';
 import {propertyFromSubscription} from '../../core/utils/propertyFromSubscription';
 import {OnErc721TokensChange} from '../../core/observers/Erc721TokensObserver';
+import {encodeDataForExecTransaction} from '@unilogin/contracts';
 
 export class DeployedWallet extends AbstractWallet {
   constructor(
@@ -29,16 +30,20 @@ export class DeployedWallet extends AbstractWallet {
     };
   }
 
-  addKey(publicKey: string, executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.selfExecute('addKey', [publicKey], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+  async addKey(publicKey: string, executionOptions: ExecutionOptions): Promise<Execution> {
+    return this.selfExecute('addKey', [publicKey], executionOptions, '17000');
   }
 
   addKeys(publicKeys: string[], executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.selfExecute('addKeys', [publicKeys], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+    return this.selfExecute('addKeys', [publicKeys], executionOptions, '30000');
   }
 
   removeKey(key: string, executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.selfExecute('removeKey', [key], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
+    return this.selfExecute('removeKey', [key], executionOptions, '35000');
+  }
+
+  setRequiredSignatures(requiredSignatures: number, executionOptions: ExecutionOptions): Promise<Execution> {
+    return this.selfExecute('setRequiredSignatures', [requiredSignatures], executionOptions, '50000');
   }
 
   removeCurrentKey(executionOptions: ExecutionOptions): Promise<Execution> {
@@ -52,11 +57,7 @@ export class DeployedWallet extends AbstractWallet {
     await this.sdk.relayerApi.denyConnection(authorisationRequest);
   }
 
-  setRequiredSignatures(requiredSignatures: number, executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.selfExecute('setRequiredSignatures', [requiredSignatures], {gasLimit: DEFAULT_GAS_LIMIT, ...executionOptions});
-  }
-
-  async execute(message: Partial<Message>): Promise<Execution> {
+  async getSignedMessage(message: Partial<Message>) {
     const relayerConfig = this.sdk.getRelayerConfig();
     const nonce = message.nonce || await this.getNonce();
     const partialMessage = {
@@ -68,8 +69,13 @@ export class DeployedWallet extends AbstractWallet {
       from: this.contractAddress,
       gasPrice: this.sdk.isRefundPaid() ? '0' : message.gasPrice,
     };
-    ensure(partialMessage.gasLimit! <= relayerConfig.maxGasLimit, InvalidGasLimit, `${partialMessage.gasLimit} provided, when relayer's max gas limit is ${relayerConfig.maxGasLimit}`);
-    const signedMessage: SignedMessage = await this.sdk.messageConverter.messageToSignedMessage(partialMessage, this.privateKey);
+    return this.sdk.messageConverter.messageToSignedMessage(partialMessage, this.privateKey);
+  }
+
+  async execute(message: Partial<Message>): Promise<Execution> {
+    const relayerConfig = this.sdk.getRelayerConfig();
+    ensure(message.gasLimit! <= relayerConfig.maxGasLimit, InvalidGasLimit, `${message.gasLimit} provided, when relayer's max gas limit is ${relayerConfig.maxGasLimit}`);
+    const signedMessage: SignedMessage = await this.getSignedMessage(message);
     await this.sdk.sufficientBalanceValidator.validate(signedMessage);
     ensureSufficientGas(signedMessage);
     return this.sdk.executionFactory.createExecution(signedMessage);
@@ -100,15 +106,18 @@ export class DeployedWallet extends AbstractWallet {
     return this.sdk.getGasModes();
   }
 
-  async selfExecute(method: string, args: any[], executionOptions: SdkExecutionOptions): Promise<Execution> {
+  async selfExecute(method: string, args: any[], executionOptions: ExecutionOptions, gasLimitMargin: utils.BigNumberish): Promise<Execution> {
     const data = await this.sdk.walletContractService.encodeFunction(this.contractAddress, method, args);
     const message: Partial<Message> = {
+      gasLimit: DEFAULT_GAS_LIMIT,
       ...executionOptions,
       to: this.contractAddress,
       from: this.contractAddress,
       data,
     };
-    return this.execute(message);
+    const signedMessage = await this.getSignedMessage(message);
+    const estimatedGas = await this.sdk.provider.estimateGas({to: this.contractAddress, from: this.sdk.getRelayerConfig().relayerAddress, data: encodeDataForExecTransaction(signedMessage)});
+    return this.execute({...message, gasLimit: estimatedGas.add(gasLimitMargin), ...executionOptions});
   }
 
   async generateBackupCodes(executionOptions: ExecutionOptions): Promise<BackupCodesWithExecution> {
