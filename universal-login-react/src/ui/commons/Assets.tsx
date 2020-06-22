@@ -10,6 +10,7 @@ import './../styles/themes/Jarvis/assetsListThemeJarvis.sass';
 import {getIconForToken} from '../../core/utils/getIconForToken';
 import {useBalances} from '../hooks/useBalances';
 import {ThemedComponent} from './ThemedComponent';
+import {filterTokensWithZeroBalance} from '../../app/filterTokensWithZeroBalance';
 
 export interface AssetsProps {
   deployedWallet: DeployedWallet;
@@ -23,7 +24,7 @@ export const Assets = ({deployedWallet}: AssetsProps) => {
       <div className="assets">
         <p className="assets-title">My Assets</p>
         <div className="assets-list">
-          {(tokenDetailsWithBalance.filter((token) => !token.balance.isZero())).map(({name, symbol, balance}: TokenDetailsWithBalance) => (
+          {filterTokensWithZeroBalance(tokenDetailsWithBalance).map(({name, symbol, balance}: TokenDetailsWithBalance) => (
             <Asset
               key={`${name}-${symbol}`}
               sdk={deployedWallet.sdk}
