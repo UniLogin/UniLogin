@@ -1,5 +1,5 @@
 import {DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
-import {BlockchainService} from '@unilogin/contracts';
+import {ContractService, ProviderService} from '@unilogin/contracts';
 import {setupWalletContract} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {MockProvider} from 'ethereum-waffle';
@@ -13,8 +13,9 @@ describe('GasComputation', () => {
 
   before(async () => {
     const provider = new MockProvider();
-    const blockchainService = new BlockchainService(provider);
-    gasComputation = new GasComputation(blockchainService);
+    const providerService = new ProviderService(provider)
+    const contractService = new ContractService(providerService);
+    gasComputation = new GasComputation(contractService);
     const [wallet] = provider.getWallets();
     ({proxyWallet} = await setupWalletContract(wallet));
   });

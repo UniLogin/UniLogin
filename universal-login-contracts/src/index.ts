@@ -4,8 +4,8 @@ export {deployWalletContract} from './beta2/deployMaster';
 export {calculateBaseGas} from './estimateGas';
 export {messageToUnsignedMessage, messageToSignedMessage, unsignedMessageToSignedMessage} from './message';
 export * from './interfaces';
-export {BlockchainService} from './integration/BlockchainService';
-
+export {ContractService} from './integration/ContractService';
+export {ProviderService} from './integration/ProviderService';
 export {deployGnosisSafe, deployProxyFactory, deployDefaultCallbackHandler} from './gnosis-safe@1.1.1/deployContracts';
 export {encodeDataForSetup, encodeDataForExecTransaction} from './gnosis-safe@1.1.1/encode';
 export {computeGnosisCounterfactualAddress, calculateMessageHash, signStringMessage, calculateGnosisStringHash, calculateMessageSignature, getPreviousOwner, isInvalidOwnerError} from './gnosis-safe@1.1.1/utils';

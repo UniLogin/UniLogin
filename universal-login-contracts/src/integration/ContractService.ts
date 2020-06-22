@@ -55,4 +55,8 @@ export class ContractService {
     ensureNotFalsy(walletMasterVersion, Error, 'Unsupported wallet master version');
     return walletMasterVersion;
   }
+
+  async fetchHardforkVersion() {
+    return this.providerService.fetchHardforkVersion();
+  }
 }

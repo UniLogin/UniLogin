@@ -1,5 +1,5 @@
 import {Beta2Service} from './Beta2Service';
-import {BlockchainService} from '@unilogin/contracts';
+import {ContractService} from '@unilogin/contracts';
 import {SignedMessage, RelayerRequest, WalletVersion, isProperAddress, ensure} from '@unilogin/commons';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GnosisSafeService} from './GnosisSafeService';
@@ -8,7 +8,7 @@ import {utils} from 'ethers';
 export class WalletContractService {
   private walletVersions: Record<string, WalletVersion | undefined> = {};
 
-  constructor(private blockchainService: BlockchainService, private beta2Service: Beta2Service, private gnosisSafeService: GnosisSafeService) {
+  constructor(private contractService: ContractService, private beta2Service: Beta2Service, private gnosisSafeService: GnosisSafeService) {
 
   }
 
@@ -30,7 +30,7 @@ export class WalletContractService {
       return this.walletVersions[walletAddress];
     } else {
       ensure(walletAddress !== undefined && isProperAddress(walletAddress), Error, 'Invalid address provided');
-      const walletVersion = await this.blockchainService.fetchWalletVersion(walletAddress);
+      const walletVersion = await this.contractService.fetchWalletVersion(walletAddress);
       this.walletVersions[walletAddress] = walletVersion;
       return walletVersion;
     }

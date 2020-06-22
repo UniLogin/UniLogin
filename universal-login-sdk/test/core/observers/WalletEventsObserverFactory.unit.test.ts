@@ -1,5 +1,5 @@
 import {TEST_CONTRACT_ADDRESS, TEST_KEY} from '@unilogin/commons';
-import {BlockchainService} from '@unilogin/contracts';
+import {ContractService, ProviderService} from '@unilogin/contracts';
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -20,12 +20,12 @@ describe('UNIT: WalletEventsObserverFactory', () => {
   let onKeyAdd: sinon.SinonSpy;
   let onKeyRemove: sinon.SinonSpy;
   let factory: WalletEventsObserverFactory;
-  let blockchainService: BlockchainService;
+  let contractService: ContractService;
   let blockNumberState: BlockNumberState;
   let storageService: IStorageService;
 
   beforeEach(async () => {
-    blockchainService = {
+    contractService = {
       getBlockNumber: sinon.fake.resolves(1),
     } as any;
     blockNumberState = {
@@ -38,7 +38,7 @@ describe('UNIT: WalletEventsObserverFactory', () => {
       set: sinon.fake(),
     } as any;
 
-    factory = new WalletEventsObserverFactory(blockchainService, blockNumberState, storageService);
+    factory = new WalletEventsObserverFactory(contractService, blockNumberState, storageService);
     onKeyAdd = sinon.spy();
     onKeyRemove = sinon.spy();
     await factory.start();
@@ -51,7 +51,7 @@ describe('UNIT: WalletEventsObserverFactory', () => {
   describe('fetchEventsOfType', () => {
     describe('KeyAdded', () => {
       it('callback is called', async () => {
-        blockchainService.getLogs = sinon.fake.resolves([keyAddedEvent]);
+        contractService.getLogs = sinon.fake.resolves([keyAddedEvent]);
         factory.subscribe('KeyAdded', filter, onKeyAdd);
         sinon.replace(blockNumberState, 'get', sinon.fake.returns(2));
         await factory.fetchEventsOfTypes(['KeyAdded']);
@@ -59,7 +59,7 @@ describe('UNIT: WalletEventsObserverFactory', () => {
       });
 
       it('callback does not called', async () => {
-        blockchainService.getLogs = sinon.fake.resolves([keyAddedEvent]);
+        contractService.getLogs = sinon.fake.resolves([keyAddedEvent]);
         factory.subscribe('KeyAdded', filter, onKeyAdd);
         await factory.fetchEventsOfTypes(['KeyAdded']);
         expect(onKeyAdd).to.not.have.been.called;
@@ -68,7 +68,7 @@ describe('UNIT: WalletEventsObserverFactory', () => {
 
     describe('KeyRemoved', () => {
       it('callback is called', async () => {
-        blockchainService.getLogs = sinon.fake.resolves([keyRemovedEvent]);
+        contractService.getLogs = sinon.fake.resolves([keyRemovedEvent]);
         factory.subscribe('KeyRemoved', filter, onKeyRemove);
         sinon.replace(blockNumberState, 'get', sinon.fake.returns(2));
         await factory.fetchEventsOfTypes(['KeyRemoved']);
@@ -76,7 +76,7 @@ describe('UNIT: WalletEventsObserverFactory', () => {
       });
 
       it('callback does not called', async () => {
-        blockchainService.getLogs = sinon.fake.resolves([keyRemovedEvent]);
+        contractService.getLogs = sinon.fake.resolves([keyRemovedEvent]);
         factory.subscribe('KeyRemoved', filter, onKeyRemove);
         await factory.fetchEventsOfTypes(['KeyRemoved']);
         expect(onKeyRemove).to.not.have.been.called;
@@ -101,7 +101,7 @@ describe('UNIT: WalletEventsObserverFactory', () => {
 
     beforeEach(() => {
       onKeyAdd2 = sinon.spy();
-      blockchainService.getLogs = async (filter) => filter.topics?.includes('0x654abba5d3170185ed25c9b41f7d2094db3643986b05e9e9cab37028b800ad7e') ? [keyAddedEvent] : [];
+      contractService.getLogs = async (filter) => filter.topics?.includes('0x654abba5d3170185ed25c9b41f7d2094db3643986b05e9e9cab37028b800ad7e') ? [keyAddedEvent] : [];
     });
 
     it('fetch after subscribe', () => {

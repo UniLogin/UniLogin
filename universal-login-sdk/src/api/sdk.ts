@@ -1,5 +1,5 @@
 import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle, TokenPricesService} from '@unilogin/commons';
-import {BlockchainService} from '@unilogin/contracts';
+import {ContractService, ProviderService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
@@ -38,7 +38,8 @@ class UniLoginSdk {
   readonly tokenDetailsService: TokenDetailsService;
   readonly tokensDetailsStore: TokensDetailsStore;
   readonly tokenPricesService: TokenPricesService;
-  readonly blockchainService: BlockchainService;
+  readonly providerService: ProviderService;
+  readonly contractService: ContractService;
   readonly gasPriceOracle: GasPriceOracle;
   readonly gasModeService: GasModeService;
   readonly config: SdkConfig;
@@ -66,9 +67,10 @@ class UniLoginSdk {
     this.relayerApi = new RelayerApi(relayerUrl, this.config.apiKey);
     this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.config.authorizationsObserverTick);
     this.executionFactory = new ExecutionFactory(this.relayerApi, this.config.mineableFactoryTick, this.config.mineableFactoryTimeout);
-    this.blockchainService = new BlockchainService(this.provider);
-    const blockNumberState = new BlockNumberState(this.blockchainService);
-    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.blockchainService, blockNumberState, this.config.storageService);
+    this.providerService = new ProviderService(this.provider);
+    this.contractService = new ContractService(this.providerService);
+    const blockNumberState = new BlockNumberState(this.contractService);
+    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.contractService, blockNumberState, this.config.storageService);
     this.balanceChecker = new BalanceChecker(this.provider);
     this.sufficientBalanceValidator = new SufficientBalanceValidator(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
@@ -79,10 +81,10 @@ class UniLoginSdk {
     this.tokensValueConverter = new TokensValueConverter(this.config.observedCurrencies);
     this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
     this.featureFlagsService = new FeatureFlagsService();
-    this.messageConverter = new MessageConverter(this.blockchainService);
+    this.messageConverter = new MessageConverter(this.contractService);
     const beta2Service = new Beta2Service(this.provider);
     const gnosisSafeService = new GnosisSafeService(this.provider);
-    this.walletContractService = new WalletContractService(this.blockchainService, beta2Service, gnosisSafeService);
+    this.walletContractService = new WalletContractService(this.contractService, beta2Service, gnosisSafeService);
     this.relayerConfig = new Lazy(() => this.loadRelayerConfigFromApi());
   }
 
@@ -159,13 +161,13 @@ class UniLoginSdk {
   async getWalletContractAddress(ensName: string): Promise<string> {
     const walletContractAddress = await this.resolveName(ensName);
     ensureNotFalsy(walletContractAddress, InvalidENSRecord, ensName);
-    ensure(await this.blockchainService.getCode(walletContractAddress) !== '0x', InvalidENSRecord, ensName);
+    ensure(await this.contractService.getCode(walletContractAddress) !== '0x', InvalidENSRecord, ensName);
     return walletContractAddress;
   }
 
   async walletContractExist(ensName: string) {
     const walletContractAddress = await this.resolveName(ensName);
-    return !!(walletContractAddress && await this.blockchainService.getCode(walletContractAddress));
+    return !!(walletContractAddress && await this.contractService.getCode(walletContractAddress));
   }
 
   async resolveName(ensName: string): Promise<Nullable<string>> {

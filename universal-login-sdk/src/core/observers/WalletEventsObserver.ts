@@ -2,7 +2,7 @@ import {arrayRemove} from '@unilogin/commons';
 import {WalletEventType, WalletEventObservableRecord} from '../models/events';
 import {parseArgs, parseArgsGnosis} from '../utils/events';
 import {Log} from 'ethers/providers';
-import {BlockchainService} from '@unilogin/contracts';
+import {ContractService} from '@unilogin/contracts';
 import {WalletContractInterface, GnosisSafeInterface} from '@unilogin/contracts';
 
 const eventInterface = {...WalletContractInterface.events, ...GnosisSafeInterface.events};
@@ -15,7 +15,7 @@ export class WalletEventsObserver {
     RemovedOwner: [],
   };
 
-  constructor(public readonly contractAddress: string, public readonly blockchainService: BlockchainService) {
+  constructor(public readonly contractAddress: string, public readonly contractService: ContractService) {
   }
 
   subscribe(type: WalletEventType, observableRecord: WalletEventObservableRecord) {
@@ -30,7 +30,7 @@ export class WalletEventsObserver {
     for (const type of typesWithSubscriptions) {
       const topics = [eventInterface[type].topic];
       const eventsFilter = {fromBlock: lastBlock, address: this.contractAddress, topics};
-      const events: Log[] = await this.blockchainService.getLogs(eventsFilter);
+      const events: Log[] = await this.contractService.getLogs(eventsFilter);
       this.processEvents(events, type);
     }
   }
