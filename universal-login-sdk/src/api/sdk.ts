@@ -79,8 +79,7 @@ class UniLoginSdk {
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.config.observedTokensAddresses);
     this.tokenPricesService = new TokenPricesService();
-    // this.erc721TokensService = new Erc721TokensService(this.config.network);
-    this.erc721TokensService = new Erc721TokensService('rinkeby');
+    this.erc721TokensService = new Erc721TokensService(this.config.network);
     this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.tokenPricesService, this.config.priceObserverTick);
     this.gasPriceOracle = new GasPriceOracle();
     this.tokensValueConverter = new TokensValueConverter(this.config.observedCurrencies);
