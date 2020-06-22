@@ -39,7 +39,9 @@ function getMigrationPath() {
 async function startDevelopment() {
   const jsonRpcUrl = await startGanache(ganachePort);
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
-  const [, , , , ensDeployer, deployWallet] = defaultAccounts.map((account) => new Wallet(account.secretKey, provider));
+  const wallets = defaultAccounts.map((account) => new Wallet(account.secretKey, provider));
+  printWallets(wallets);
+  const [, , , , ensDeployer, deployWallet] = wallets;
   const ensAddress = await deployENS(ensDeployer, ensDomains);
   const {address} = await deployGnosisSafe(deployWallet);
   await deployDefaultCallbackHandler(deployWallet);
@@ -56,5 +58,13 @@ export async function startDevAndCreateEnv() {
   const artifacts = await startDevelopment();
   return createEnv(artifacts);
 };
+
+function printWallets(wallets: Wallet[]) {
+  console.log('  Wallets:');
+  for (const wallet of wallets) {
+    console.log(`    ${wallet.address} - ${wallet.privateKey}`);
+  }
+  console.log('');
+}
 
 export default startDevelopment;
