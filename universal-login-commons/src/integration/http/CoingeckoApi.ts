@@ -1,4 +1,4 @@
-import {cast, Sanitizer, asNumber} from '@restless/sanitizers';
+import {cast, Sanitizer, asNumber, asObject} from '@restless/sanitizers';
 import {http} from './http';
 import {TokenDetails} from '../../core/models/TokenData';
 import {ObservedCurrency} from '../../core/models/CurrencyData';
@@ -36,6 +36,6 @@ export class CoingeckoApi {
     for (const key of keys) {
       schema[key] = valueSanitizer;
     }
-    return Object(schema);
+    return asObject(schema);
   }
 };
