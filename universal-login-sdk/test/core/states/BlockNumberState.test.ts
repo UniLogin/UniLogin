@@ -47,7 +47,7 @@ describe('INT: BlockNumberState', () => {
 
       unsubscribe();
       expect(state.get()).to.eq(1);
-    }).timeout(10000);
+    });
 
     it('2 blocks', async () => {
       const unsubscribe = state.subscribe(callback);
