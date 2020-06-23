@@ -1,17 +1,13 @@
 import {expect} from 'chai';
-import sinon from 'sinon';
 import {loadFixture, deployContract, MockProvider} from 'ethereum-waffle';
-import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS, getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
-import {mockProviderWithBlockNumber} from '@unilogin/commons/testutils';
-import {deployWalletContract} from '../../src/beta2/deployMaster';
+import {getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
 import MockContract from '../../dist/contracts/MockContract.json';
-import {providers, Contract, Wallet} from 'ethers';
+import {Contract, Wallet} from 'ethers';
 import walletAndProxy from '../fixtures/walletAndProxy';
 import basicWalletAndProxy from '../fixtures/basicWalletAndProxy';
 import {setupGnosisSafeContractFixture} from '../fixtures/gnosisSafe';
 import {computeGnosisCounterfactualAddress, ContractService, ProviderService} from '../../src';
 import {DEPLOY_CONTRACT_NONCE} from '../../src/gnosis-safe@1.1.1/constants';
-import {mineBlock} from '../helpers/mineBlock';
 import {beta2} from '../../src/index';
 
 const {WalletProxy, WalletContract} = beta2;
