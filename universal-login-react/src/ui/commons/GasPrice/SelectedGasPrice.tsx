@@ -2,7 +2,7 @@ import React from 'react';
 import {utils} from 'ethers';
 import {GasOption, safeMultiplyAndFormatEther, ValueRounder} from '@unilogin/commons';
 import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';
-import {getIconForToken} from '../../../core/utils/getIconForToken';
+import {Erc20Icon} from '../Erc20Icon';
 
 interface SelectedGasPriceProps {
   modeName: string;
@@ -17,7 +17,7 @@ export const SelectedGasPrice = ({modeName, gasLimit, gasOption, usdAmount, onCl
     <div className="gas-price-selected-row">
       <div>
         <div className="transaction-fee-details">
-          <img src={getIconForToken(gasOption.token.symbol)} alt="" className="transaction-fee-item-icon" />
+          <Erc20Icon symbol={gasOption.token.symbol} className="transaction-fee-item-icon" />
           <div>
             <p className="transaction-fee-amount-usd">{calculateTransactionFee(usdAmount, gasLimit)} USD</p>
             <p className="transaction-fee-amount">{ValueRounder.ceil(safeMultiplyAndFormatEther(gasOption.gasPrice, gasLimit))} {gasOption.token.symbol}</p>

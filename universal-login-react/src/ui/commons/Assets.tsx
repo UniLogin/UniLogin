@@ -7,7 +7,6 @@ import './../styles/base/assetsList.sass';
 import './../styles/themes/Legacy/assetsListThemeLegacy.sass';
 import './../styles/themes/UniLogin/assetsListThemeUnilogin.sass';
 import './../styles/themes/Jarvis/assetsListThemeJarvis.sass';
-import {getIconForToken} from '../../core/utils/getIconForToken';
 import {useBalances} from '../hooks/useBalances';
 import {ThemedComponent} from './ThemedComponent';
 import {filterTokensWithZeroBalance} from '../../app/filterTokensWithZeroBalance';
@@ -31,7 +30,6 @@ export const Assets = ({deployedWallet}: AssetsProps) => {
               name={name}
               symbol={symbol}
               balance={ValueRounder.ceil(utils.formatEther(balance))!}
-              icon={getIconForToken(symbol)}
             />
           ))}
         </div>
