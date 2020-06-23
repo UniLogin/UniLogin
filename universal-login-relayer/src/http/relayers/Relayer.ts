@@ -101,7 +101,7 @@ class Relayer {
     this.ensService = new ENSService(this.config.ensAddress, this.config.ensRegistrars, this.provider);
     const providerService = new ProviderService(this.provider);
     const contractService = new ContractService(providerService);
-    const gasComputation = new GasComputation(contractService);
+    const gasComputation = new GasComputation(contractService, providerService);
     const messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address, this.config.supportedTokens);
     const walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
     const balanceChecker = new BalanceChecker(this.provider);

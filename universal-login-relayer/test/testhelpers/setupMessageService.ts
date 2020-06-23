@@ -36,7 +36,7 @@ export default async function setupMessageService(knex: Knex) {
   const executionQueue = new QueueSQLStore(knex);
   const providerService = new ProviderService(provider);
   const contractService = new ContractService(providerService);
-  const gasComputation = new GasComputation(contractService);
+  const gasComputation = new GasComputation(contractService, providerService);
   const mockTokenNotOwned = await deployContract(wallet, mockContracts.MockToken as any);
   const messageHandlerValidator = new MessageHandlerValidator(MAX_GAS_LIMIT, gasComputation, wallet.address, [{address: ETHER_NATIVE_TOKEN.address}, {address: mockToken.address}, {address: mockTokenNotOwned.address}]);
   const walletContractService = setupWalletContractService(provider);

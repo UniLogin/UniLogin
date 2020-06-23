@@ -1,5 +1,5 @@
 import {GAS_FIXED, OperationType, SignedMessage} from '@unilogin/commons';
-import {ContractService} from '@unilogin/contracts';
+import {ContractService, ProviderService} from '@unilogin/contracts';
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils} from 'ethers';
@@ -11,11 +11,13 @@ chai.use(chaiAsPromised);
 
 describe('UNIT: GasValidator', () => {
   const MAX_GAS_LIMIT = 500000;
-  const mockedBlockchainService = {
+  const mockedContractService = {
     fetchWalletVersion: (address: string) => 'beta2',
-    fetchHardforkVersion: () => new Promise(resolve => resolve('constantinople')),
   } as any as ContractService;
-  const gasComputation = new GasComputation(mockedBlockchainService);
+  const mockedProviderService = {
+    fetchHardforkVersion: () => new Promise(resolve => resolve('constantinople')),
+  } as any as ProviderService;
+  const gasComputation = new GasComputation(mockedContractService, mockedProviderService);
   const gasValidator = new GasValidator(MAX_GAS_LIMIT, gasComputation);
   let message: SignedMessage;
   const baseGas = utils.bigNumberify(11408).add(GAS_FIXED);

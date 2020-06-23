@@ -1,6 +1,6 @@
 import {providers} from 'ethers';
 import {asAnyOf, asObject, asString, cast, asExactly} from '@restless/sanitizers';
-import {ContractService, ProviderService} from '@unilogin/contracts';
+import {ProviderService} from '@unilogin/contracts';
 import {ApplicationWallet, SerializableFutureWallet, Network} from '@unilogin/commons';
 import {WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
@@ -31,9 +31,8 @@ export class WalletStorageService implements WalletStorage {
         wallet: asApplicationWallet,
       }));
       for (const network of ['mainnet', 'kovan', 'rinkeby', 'ropsten']) {
-        const providerService = new ProviderService(getProviderForNetwork(network))
-        const contractService = new ContractService(providerService);
-        if (await contractService.isContract(wallet.contractAddress)) {
+        const providerService = new ProviderService(getProviderForNetwork(network));
+        if (await providerService.isContract(wallet.contractAddress)) {
           this.storageService.remove(DEPRECATED_STORAGE_KEY);
           this.storageService.set(`${DEPRECATED_STORAGE_KEY}-${network}`, data);
           return;

@@ -13,9 +13,9 @@ describe('GasComputation', () => {
 
   before(async () => {
     const provider = new MockProvider();
-    const providerService = new ProviderService(provider)
+    const providerService = new ProviderService(provider);
     const contractService = new ContractService(providerService);
-    gasComputation = new GasComputation(contractService);
+    gasComputation = new GasComputation(contractService, providerService);
     const [wallet] = provider.getWallets();
     ({proxyWallet} = await setupWalletContract(wallet));
   });

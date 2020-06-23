@@ -1,44 +1,25 @@
-import {utils, providers} from 'ethers';
-import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy} from '@unilogin/commons';
+import {utils, Contract} from 'ethers';
+import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, InvalidContract, ensure, PROXY_VERSIONS} from '@unilogin/commons';
 import {computeGnosisCounterfactualAddress} from '../gnosis-safe@1.1.1/utils';
 import {DEPLOY_CONTRACT_NONCE} from '../gnosis-safe@1.1.1/constants';
 import {ProviderService} from './ProviderService';
+import {interfaces} from '../beta2/contracts';
+import {IProxyInterface} from '../gnosis-safe@1.1.1/interfaces';
+
+const {WalletProxyFactoryInterface, WalletProxyInterface} = interfaces;
 
 export class ContractService {
   constructor(private providerService: ProviderService) {
   }
 
-  getCode(contractAddress: string) {
-    return this.providerService.getCode(contractAddress);
-  }
-
-  isContract(address: string) {
-    return this.providerService.isContract(address);
-  }
-
-  getBlockNumber() {
-    return this.providerService.getBlockNumber();
-  }
-
-  getLogs(filter: providers.Filter) {
-    return this.providerService.getLogs(filter);
-  }
-
-  on(eventType: providers.EventType, listener: providers.Listener) {
-    return this.providerService.on(eventType, listener);
-  }
-
-  removeListener(eventType: providers.EventType, listener: providers.Listener) {
-    return this.providerService.removeListener(eventType, listener);
-  }
-
   getInitCode = async (factoryAddress: string) => {
-    return this.providerService.getInitCode(factoryAddress);
+    const factoryContract = new Contract(factoryAddress, WalletProxyFactoryInterface, this.providerService.getProvider());
+    return factoryContract.initCode();
   };
 
   createFutureWallet = async (factoryAddress: string) => {
     const {privateKey, publicKey} = createKeyPair();
-    const futureContractAddress = computeCounterfactualAddress(factoryAddress, publicKey, await this.providerService.getInitCode(factoryAddress));
+    const futureContractAddress = computeCounterfactualAddress(factoryAddress, publicKey, await this.getInitCode(factoryAddress));
     return [privateKey, futureContractAddress, publicKey];
   };
 
@@ -49,14 +30,33 @@ export class ContractService {
   };
 
   async fetchWalletVersion(contractAddress: string) {
-    const walletMasterAddress = await this.providerService.fetchMasterAddress(contractAddress);
+    const walletMasterAddress = await this.fetchMasterAddress(contractAddress);
     const walletMasterBytecode = await this.providerService.getCode(walletMasterAddress);
     const walletMasterVersion = WALLET_MASTER_VERSIONS[utils.keccak256(walletMasterBytecode)];
     ensureNotFalsy(walletMasterVersion, Error, 'Unsupported wallet master version');
     return walletMasterVersion;
   }
 
-  async fetchHardforkVersion() {
-    return this.providerService.fetchHardforkVersion();
+  async fetchMasterAddress(contractAddress: string) {
+    const proxyVersion = await this.fetchProxyVersion(contractAddress);
+    const provider = this.providerService.getProvider();
+    switch (proxyVersion) {
+      case 'WalletProxy':
+        const walletProxyInstance = new Contract(contractAddress, WalletProxyInterface as any, provider);
+        return walletProxyInstance.implementation();
+      case 'GnosisSafe':
+        const gnosisSafeProxy = new Contract(contractAddress, IProxyInterface as any, provider);
+        return gnosisSafeProxy.masterCopy();
+      default:
+        throw TypeError('Unsupported proxy version');
+    }
+  }
+
+  async fetchProxyVersion(contractAddress: string) {
+    const proxyBytecode = await this.providerService.getCode(contractAddress);
+    ensure(proxyBytecode !== '0x', InvalidContract, contractAddress);
+    const proxyVersion = PROXY_VERSIONS[utils.keccak256(proxyBytecode)];
+    ensureNotFalsy(proxyVersion, Error, 'Unsupported proxy version');
+    return proxyVersion;
   }
 }

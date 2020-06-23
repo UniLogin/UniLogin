@@ -9,7 +9,6 @@ export class WalletContractService {
   private walletVersions: Record<string, WalletVersion | undefined> = {};
 
   constructor(private contractService: ContractService, private beta2Service: Beta2Service, private gnosisSafeService: GnosisSafeService) {
-
   }
 
   private async getWalletService(walletAddress: string): Promise<IWalletContractService> {

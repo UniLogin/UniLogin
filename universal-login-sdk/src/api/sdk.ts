@@ -69,8 +69,8 @@ class UniLoginSdk {
     this.executionFactory = new ExecutionFactory(this.relayerApi, this.config.mineableFactoryTick, this.config.mineableFactoryTimeout);
     this.providerService = new ProviderService(this.provider);
     this.contractService = new ContractService(this.providerService);
-    const blockNumberState = new BlockNumberState(this.contractService);
-    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.contractService, blockNumberState, this.config.storageService);
+    const blockNumberState = new BlockNumberState(this.providerService);
+    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.providerService, blockNumberState, this.config.storageService);
     this.balanceChecker = new BalanceChecker(this.provider);
     this.sufficientBalanceValidator = new SufficientBalanceValidator(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
@@ -81,7 +81,7 @@ class UniLoginSdk {
     this.tokensValueConverter = new TokensValueConverter(this.config.observedCurrencies);
     this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
     this.featureFlagsService = new FeatureFlagsService();
-    this.messageConverter = new MessageConverter(this.contractService);
+    this.messageConverter = new MessageConverter(this.contractService, this.providerService);
     const beta2Service = new Beta2Service(this.provider);
     const gnosisSafeService = new GnosisSafeService(this.provider);
     this.walletContractService = new WalletContractService(this.contractService, beta2Service, gnosisSafeService);
@@ -161,13 +161,13 @@ class UniLoginSdk {
   async getWalletContractAddress(ensName: string): Promise<string> {
     const walletContractAddress = await this.resolveName(ensName);
     ensureNotFalsy(walletContractAddress, InvalidENSRecord, ensName);
-    ensure(await this.contractService.getCode(walletContractAddress) !== '0x', InvalidENSRecord, ensName);
+    ensure(await this.providerService.getCode(walletContractAddress) !== '0x', InvalidENSRecord, ensName);
     return walletContractAddress;
   }
 
   async walletContractExist(ensName: string) {
     const walletContractAddress = await this.resolveName(ensName);
-    return !!(walletContractAddress && await this.contractService.getCode(walletContractAddress));
+    return !!(walletContractAddress && await this.providerService.getCode(walletContractAddress));
   }
 
   async resolveName(ensName: string): Promise<Nullable<string>> {

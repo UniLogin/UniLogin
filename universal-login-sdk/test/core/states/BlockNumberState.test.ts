@@ -4,7 +4,7 @@ import {Wallet} from 'ethers';
 import sinon from 'sinon';
 import {waitUntil} from '@unilogin/commons';
 import {mineBlock} from '@unilogin/contracts/testutils';
-import {ContractService, ProviderService} from '@unilogin/contracts';
+import {ProviderService} from '@unilogin/contracts';
 import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 
 describe('INT: BlockNumberState', () => {
@@ -15,7 +15,7 @@ describe('INT: BlockNumberState', () => {
 
   it('no subscriptions', () => {
     const providerService = new ProviderService(new MockProvider());
-    state = new BlockNumberState(new ContractService(providerService));
+    state = new BlockNumberState(providerService);
     expect(state.get()).to.eq(0);
   });
 
@@ -24,8 +24,7 @@ describe('INT: BlockNumberState', () => {
       provider = new MockProvider();
       [wallet] = provider.getWallets();
       provider.pollingInterval = 1;
-      const providerService = new ProviderService(provider);
-      state = new BlockNumberState(new ContractService(providerService));
+      state = new BlockNumberState(new ProviderService(provider));
       callback = sinon.spy();
     });
 
@@ -42,11 +41,18 @@ describe('INT: BlockNumberState', () => {
 
     it('1 block', async () => {
       const unsubscribe = state.subscribe(callback);
+      console.log('agfter get unsub');
       mineBlock(wallet);
-      await waitUntil(() => !!callback.secondCall);
+      console.log('agfter mine');
+
+      await waitUntil(() => !!callback.firstCall);
+      console.log('agfter wait');
+
       expect(state.get()).to.eq(1);
 
       unsubscribe();
+      console.log('agfter unsub');
+
       expect(state.get()).to.eq(1);
     });
 
@@ -71,7 +77,7 @@ describe('INT: BlockNumberState', () => {
       [wallet] = provider.getWallets();
       provider.pollingInterval = 1;
       const providerService = new ProviderService(provider);
-      state = new BlockNumberState(new ContractService(providerService));
+      state = new BlockNumberState(providerService);
       callback = sinon.spy();
     });
 

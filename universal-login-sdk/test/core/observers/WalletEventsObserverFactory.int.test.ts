@@ -1,5 +1,5 @@
 import {createKeyPair, TEST_EXECUTION_OPTIONS, KeyPair} from '@unilogin/commons';
-import {ContractService, ProviderService} from '@unilogin/contracts';
+import {ProviderService} from '@unilogin/contracts';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import chai, {expect} from 'chai';
 import {MockProvider, solidity} from 'ethereum-waffle';
@@ -34,10 +34,9 @@ describe('INT: WalletEventsObserverFactory', () => {
       ({relayer, sdk} = await setupSdk(deployer));
 
       const providerService = new ProviderService(sdk.provider);
-      const contractService = new ContractService(providerService);
-      const blockNumberState = new BlockNumberState(contractService);
+      const blockNumberState = new BlockNumberState(providerService);
       factory = new WalletEventsObserverFactory(
-        contractService,
+        providerService,
         blockNumberState,
       );
       await factory.start();
@@ -94,10 +93,9 @@ describe('INT: WalletEventsObserverFactory', () => {
     before(async () => {
       ({relayer, sdk} = await setupSdk(deployer));
       const providerService = new ProviderService(sdk.provider);
-      const contractService = new ContractService(providerService);
-      const blockNumberState = new BlockNumberState(contractService);
+      const blockNumberState = new BlockNumberState(providerService);
       factory = new WalletEventsObserverFactory(
-        contractService,
+        providerService,
         blockNumberState,
       );
       await factory.start();
