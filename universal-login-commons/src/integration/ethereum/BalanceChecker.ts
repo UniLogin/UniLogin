@@ -3,7 +3,7 @@ import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {ETHER_NATIVE_TOKEN} from '../../core/constants/constants';
 import {ensure} from '../../core/utils/errors/ensure';
 import {InvalidContract} from '../../core/utils/errors/errors';
-import {ProviderService} from './ProviderService'
+import {ProviderService} from './ProviderService';
 
 export class BalanceChecker {
   private providerService: ProviderService;
