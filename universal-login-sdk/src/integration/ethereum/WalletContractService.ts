@@ -1,4 +1,4 @@
-import {BlockchainService} from '@unilogin/contracts';
+import {ContractService} from '@unilogin/contracts';
 import {WalletVersion, RelayerRequest} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {GnosisSafeService} from './GnosisSafeService';
@@ -17,11 +17,11 @@ export interface IWalletContractServiceStrategy {
 export class WalletContractService {
   private memoizedWalletVersions: Record<string, WalletVersion> = {};
 
-  constructor(private blockchainService: BlockchainService, private beta2Service: IWalletContractServiceStrategy, private gnosisSafeService: GnosisSafeService) {
+  constructor(private contractService: ContractService, private beta2Service: IWalletContractServiceStrategy, private gnosisSafeService: GnosisSafeService) {
   }
 
   async getWalletService(walletAddress: string): Promise<IWalletContractServiceStrategy> {
-    this.memoizedWalletVersions[walletAddress] = this.memoizedWalletVersions[walletAddress] || await this.blockchainService.fetchWalletVersion(walletAddress);
+    this.memoizedWalletVersions[walletAddress] = this.memoizedWalletVersions[walletAddress] || await this.contractService.fetchWalletVersion(walletAddress);
     switch (this.memoizedWalletVersions[walletAddress]) {
       case 'beta1':
       case 'beta2':
