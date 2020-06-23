@@ -3,7 +3,7 @@ import {CoingeckoApi, TokenDetailsWithCoingeckoId} from '../../integration/http/
 const cryptocompare = require('cryptocompare');
 
 export class TokenPricesService {
-  private coingeckoApi = new CoingeckoApi();
+  constructor(private coingeckoApi = new CoingeckoApi()) {};
 
   async getPrices(tokensDetails: TokenDetails[]): Promise<TokensPrices> {
     const tokenDetailsWithCoingeckoId = tokensDetails.map(token => ({...token, coingeckoId: this.coingeckoApi.getCoingeckoId(token)}));
