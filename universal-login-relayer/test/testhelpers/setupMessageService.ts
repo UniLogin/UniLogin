@@ -1,6 +1,6 @@
 import Knex from 'knex';
 import {loadFixture} from 'ethereum-waffle';
-import {IMessageValidator, MAX_GAS_LIMIT, TokenDetailsService, ETHER_NATIVE_TOKEN, deployContract} from '@unilogin/commons';
+import {IMessageValidator, MAX_GAS_LIMIT, TokenDetailsService, ETHER_NATIVE_TOKEN, deployContract, ProviderService} from '@unilogin/commons';
 import MessageHandler from '../../src/core/services/execution/messages/MessageHandler';
 import QueueSQLStore from '../../src/integration/sql/services/QueueSQLStore';
 import AuthorisationStore from '../../src/integration/sql/services/AuthorisationStore';
@@ -20,7 +20,7 @@ import Deployment from '../../src/core/models/Deployment';
 import {MinedTransactionHandler} from '../../src/core/services/execution/MinedTransactionHandler';
 import setupWalletService from './setupWalletService';
 import {GasComputation} from '../../src/core/services/GasComputation';
-import {ContractService, ProviderService} from '@unilogin/contracts';
+import {ContractService} from '@unilogin/contracts';
 import MessageHandlerValidator from '../../src/core/services/validators/MessageHandlerValidator';
 import {setupWalletContractService} from './setupWalletContractService';
 import {GasTokenValidator} from '../../src/core/services/validators/GasTokenValidator';

@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {ensure} from '@unilogin/commons';
+import {ensure} from '../../core/utils/errors/ensure';
 
 export const ISTANBUL_BLOCK_NUMBER = 9069000;
 

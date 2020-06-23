@@ -1,5 +1,5 @@
-import {KeyPair, createKeyPair} from '@unilogin/commons';
-import {ContractService, ProviderService, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, SENTINEL_OWNERS} from '@unilogin/contracts';
+import {KeyPair, createKeyPair, ProviderService} from '@unilogin/commons';
+import {ContractService, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, SENTINEL_OWNERS} from '@unilogin/contracts';
 import {setupWalletContract, setupGnosisSafeContract, executeAddKeyGnosis} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {MockProvider} from 'ethereum-waffle';

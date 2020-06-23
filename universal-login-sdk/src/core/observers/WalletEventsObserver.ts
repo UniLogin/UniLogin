@@ -1,8 +1,7 @@
-import {arrayRemove} from '@unilogin/commons';
+import {arrayRemove, ProviderService} from '@unilogin/commons';
 import {WalletEventType, WalletEventObservableRecord} from '../models/events';
 import {parseArgs, parseArgsGnosis} from '../utils/events';
 import {Log} from 'ethers/providers';
-import {ProviderService} from '@unilogin/contracts';
 import {WalletContractInterface, GnosisSafeInterface} from '@unilogin/contracts';
 
 const eventInterface = {...WalletContractInterface.events, ...GnosisSafeInterface.events};

@@ -1,5 +1,4 @@
-import {TEST_CONTRACT_ADDRESS, TEST_KEY} from '@unilogin/commons';
-import {ProviderService} from '@unilogin/contracts';
+import {TEST_CONTRACT_ADDRESS, TEST_KEY, ProviderService} from '@unilogin/commons';
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';

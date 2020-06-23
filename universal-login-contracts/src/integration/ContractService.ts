@@ -1,6 +1,5 @@
 import {utils, Contract} from 'ethers';
-import {WALLET_MASTER_VERSIONS, ensureNotFalsy, InvalidContract, ensure, PROXY_VERSIONS} from '@unilogin/commons';
-import {ProviderService} from './ProviderService';
+import {WALLET_MASTER_VERSIONS, ensureNotFalsy, InvalidContract, ensure, PROXY_VERSIONS, ProviderService} from '@unilogin/commons';
 import {interfaces} from '../beta2/contracts';
 import {IProxyInterface} from '../gnosis-safe@1.1.1/interfaces';
 
