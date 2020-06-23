@@ -1,18 +1,20 @@
 import {expect} from 'chai';
 import {TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN} from '../../../src';
+import {CoingeckoApi} from '../../../src/integration/http/CoingeckoApi';
 
 describe('UNIT: TokenPricesService', () => {
-  const tokenPricesService = new TokenPricesService();
+  const coingeckoApi = new CoingeckoApi();
+  const tokenPricesService = new TokenPricesService(coingeckoApi);
 
   const ETHPrices = {eth: 1, usd: 213.69};
   const DAIPrices = {eth: 0.00483321, usd: 1.02};
 
   beforeEach(() => {
-    (tokenPricesService as any).fetchTokenInfo = () => Promise.resolve({ethereum: ETHPrices, dai: DAIPrices});
+    coingeckoApi.fetchTokenInfo = () => Promise.resolve({ethereum: ETHPrices, dai: DAIPrices});
   });
 
   it('return empty prices when empty tokenDetails array', async () => {
-    (tokenPricesService as any).fetchTokenInfo = () => {};
+    coingeckoApi.fetchTokenInfo = () => Promise.resolve({});
     const prices = await tokenPricesService.getPrices([]);
     expect(prices).be.deep.eq({});
   });
