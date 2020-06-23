@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Notification, GasParameters, ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
+import {Notification, GasParameters, ensureNotFalsy} from '@unilogin/commons';
 import {EmojiForm} from './EmojiForm';
 import {DeployedWallet} from '@unilogin/sdk';
 import '../styles/base/emoji.sass';
@@ -14,6 +14,8 @@ import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import {FooterSection} from '../commons/FooterSection';
 import Spinner from '../commons/Spinner';
 import {ThemedComponent} from '../commons/ThemedComponent';
+import {useAsync} from '../hooks/useAsync';
+import {utils} from 'ethers';
 
 interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;
@@ -28,6 +30,8 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
   const [publicKey, setPublicKey] = useState<string | undefined>(undefined);
 
   const history = useHistory();
+
+  const [estimatedGas] = useAsync(async () => gasParameters && deployedWallet.estimateGasFor('addKey', [publicKey], gasParameters), [gasParameters]);
 
   const updateNotifications = (notifications: Notification[]) => notifications.length === 0
     ? history.goBack()
@@ -74,7 +78,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
               <GasPrice
                 isDeployed={true}
                 deployedWallet={deployedWallet}
-                gasLimit={DEFAULT_GAS_LIMIT}
+                gasLimit={estimatedGas ? (estimatedGas as utils.BigNumberish).toString() as string : '0'}
                 onGasParametersChanged={setGasParameters}
                 sdk={deployedWallet.sdk}
               />

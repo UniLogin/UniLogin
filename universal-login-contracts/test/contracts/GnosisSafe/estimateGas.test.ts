@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {Wallet, Contract, providers, utils} from 'ethers';
-import {getWallets, loadFixture} from 'ethereum-waffle';
+import {Wallet, Contract, utils} from 'ethers';
+import {getWallets, MockProvider, createFixtureLoader} from 'ethereum-waffle';
 import {createKeyPair, KeyPair, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, OperationType, CURRENT_NETWORK_VERSION, Message, TEST_ACCOUNT_ADDRESS, deployContract} from '@unilogin/commons';
 import {GnosisSafeInterface} from '../../../src/gnosis-safe@1.1.1/interfaces';
 import {executeAddKey, setupGnosisSafeContractFixture} from '../../fixtures/gnosisSafe';
@@ -10,7 +10,12 @@ import {MockDai} from '../../helpers/mockContracts';
 const getData = (message: Partial<Message>, privateKey: string) => {
   const signedMsg = messageToSignedMessage(message, privateKey, CURRENT_NETWORK_VERSION, 'beta3');
   return encodeDataForExecTransaction(signedMsg);
-}
+};
+
+const ADD_KEY_COST_LIMIT = '120000';
+const REMOVE_KEY_COST_LIMIT = '90000';
+const TRANSFER_ETHER_COST_LIMIT = '90000';
+const TRANSFER_TOKEN_COST_LIMIT = '90000';
 
 describe('INT: estimate gas', async () => {
   let wallet: Wallet;
@@ -18,11 +23,10 @@ describe('INT: estimate gas', async () => {
   let proxyAsGnosisSafe: Contract;
   let proxyContract: Contract;
   let keyPair: KeyPair;
-  let provider: providers.Provider;
+  let provider: MockProvider;
 
   beforeEach(async () => {
-    ({proxy, keyPair, provider} = await loadFixture(setupGnosisSafeContractFixture));
-
+    ({proxy, keyPair, provider} = await createFixtureLoader(new MockProvider({hardfork: 'petersburg'}))(setupGnosisSafeContractFixture));
     [wallet] = getWallets(provider);
     proxyAsGnosisSafe = new Contract(proxy.address, GnosisSafeInterface, wallet.provider);
     proxyContract = new Contract(proxy.address, GnosisSafeInterface, wallet.provider);
@@ -43,6 +47,8 @@ describe('INT: estimate gas', async () => {
       refundReceiver: wallet.address,
     };
     const estimatedGas = await provider.estimateGas({data: getData(msg, keyPair.privateKey), to: proxy.address, from: wallet.address});
+    console.log(estimatedGas.toString())
+    expect(estimatedGas).to.be.below(ADD_KEY_COST_LIMIT);
     const newGasLimit = estimatedGas.add('17000');
     const dataWithEstimatedGas = getData({...msg, gasLimit: newGasLimit}, keyPair.privateKey)
     await wallet.sendTransaction({to: proxy.address, data: dataWithEstimatedGas, gasLimit: newGasLimit.add('10000')});
@@ -69,6 +75,8 @@ describe('INT: estimate gas', async () => {
     };
     const data = getData(msg, keyPair.privateKey);
     const estimatedGas = await provider.estimateGas({data, to: proxy.address, from: wallet.address});
+    console.log(estimatedGas.toString())
+    expect(estimatedGas).to.be.below(REMOVE_KEY_COST_LIMIT);
     const newGasLimit = estimatedGas.add('35000');
     const dataWithEstimatedGas = getData({...msg, gasLimit: newGasLimit}, keyPair.privateKey);
     await wallet.sendTransaction({to: proxy.address, data: dataWithEstimatedGas, gasLimit: newGasLimit.add('10000')});
@@ -77,7 +85,7 @@ describe('INT: estimate gas', async () => {
 
   it('transfer ether', async () => {
     const value = utils.parseEther('0.05');
-    await wallet.sendTransaction({to:TEST_ACCOUNT_ADDRESS, value})
+    await wallet.sendTransaction({to: TEST_ACCOUNT_ADDRESS, value});
     const msg = {
       to: TEST_ACCOUNT_ADDRESS,
       from: proxy.address,
@@ -92,12 +100,13 @@ describe('INT: estimate gas', async () => {
     };
     const data = getData(msg, keyPair.privateKey);
     const estimatedGas = await provider.estimateGas({data, to: proxy.address, from: wallet.address});
+    console.log(estimatedGas.toString())
+    expect(estimatedGas).to.be.below(TRANSFER_ETHER_COST_LIMIT);
     const newGasLimit = estimatedGas.add('10000');
     const dataWithEstimatedGas = getData({...msg, gasLimit: newGasLimit}, keyPair.privateKey);
     await wallet.sendTransaction({to: proxy.address, data: dataWithEstimatedGas, gasLimit: newGasLimit.add('30000')});
     const toBalance = await provider.getBalance(TEST_ACCOUNT_ADDRESS);
     expect(toBalance).to.eq(value.mul(2));
-
   });
 
   it('transfer token', async () => {
@@ -118,6 +127,8 @@ describe('INT: estimate gas', async () => {
     };
     const data = getData(msg, keyPair.privateKey);
     const estimatedGas = await provider.estimateGas({data, to: proxy.address, from: wallet.address});
+    console.log(estimatedGas.toString())
+    expect(estimatedGas).to.be.below(TRANSFER_TOKEN_COST_LIMIT);
     const newGasLimit = estimatedGas.add('20000');
     const dataWithEstimatedGas = getData({...msg, gasLimit: newGasLimit}, keyPair.privateKey);
     await wallet.sendTransaction({to: proxy.address, data: dataWithEstimatedGas, gasLimit: newGasLimit.add('30000')});
