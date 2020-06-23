@@ -4,7 +4,7 @@ import {Wallet} from 'ethers';
 import sinon from 'sinon';
 import {waitUntil} from '@unilogin/commons';
 import {mineBlock} from '@unilogin/contracts/testutils';
-import {BlockchainService} from '@unilogin/contracts';
+import {ProviderService} from '@unilogin/contracts';
 import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 
 describe('INT: BlockNumberState', () => {
@@ -14,7 +14,8 @@ describe('INT: BlockNumberState', () => {
   let callback: any;
 
   it('no subscriptions', () => {
-    state = new BlockNumberState(new BlockchainService(new MockProvider()));
+    const providerService = new ProviderService(new MockProvider());
+    state = new BlockNumberState(providerService);
     expect(state.get()).to.eq(0);
   });
 
@@ -23,7 +24,7 @@ describe('INT: BlockNumberState', () => {
       provider = new MockProvider();
       [wallet] = provider.getWallets();
       provider.pollingInterval = 1;
-      state = new BlockNumberState(new BlockchainService(provider));
+      state = new BlockNumberState(new ProviderService(provider));
       callback = sinon.spy();
     });
 
@@ -68,7 +69,7 @@ describe('INT: BlockNumberState', () => {
       provider = new MockProvider();
       [wallet] = provider.getWallets();
       provider.pollingInterval = 1;
-      state = new BlockNumberState(new BlockchainService(provider));
+      state = new BlockNumberState(new ProviderService(provider));
       callback = sinon.spy();
     });
 

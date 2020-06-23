@@ -33,7 +33,7 @@ import DeploymentExecutor from '../../integration/ethereum/DeploymentExecutor';
 import {MinedTransactionHandler} from '../../core/services/execution/MinedTransactionHandler';
 import {httpsRedirect} from '../middlewares/httpsRedirect';
 import {GasComputation} from '../../core/services/GasComputation';
-import {BlockchainService} from '@unilogin/contracts';
+import {ContractService, ProviderService} from '@unilogin/contracts';
 import {MessageHandlerValidator} from '../../core/services/validators/MessageHandlerValidator';
 import {WalletContractService} from '../../integration/ethereum/WalletContractService';
 import {GnosisSafeService} from '../../integration/ethereum/GnosisSafeService';
@@ -99,8 +99,9 @@ class Relayer {
     }
 
     this.ensService = new ENSService(this.config.ensAddress, this.config.ensRegistrars, this.provider);
-    const blockchainService = new BlockchainService(this.provider);
-    const gasComputation = new GasComputation(blockchainService);
+    const providerService = new ProviderService(this.provider);
+    const contractService = new ContractService(providerService);
+    const gasComputation = new GasComputation(contractService, providerService);
     const messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address, this.config.supportedTokens);
     const walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
     const balanceChecker = new BalanceChecker(this.provider);
@@ -112,7 +113,7 @@ class Relayer {
     const apiKeyHandler = new ApiKeyHandler(refundPayerValidator, refundPayerStore);
     this.gasPriceOracle = new GasPriceOracle();
     const transactionGasPriceComputator = new TransactionGasPriceComputator(this.gasPriceOracle);
-    this.walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider, transactionGasPriceComputator), new GnosisSafeService(this.provider, transactionGasPriceComputator));
+    this.walletContractService = new WalletContractService(contractService, new Beta2Service(this.provider, transactionGasPriceComputator), new GnosisSafeService(this.provider, transactionGasPriceComputator));
     const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(this.walletContractService);
     const authorisationStore = new AuthorisationStore(this.database);
     const authorisationService = new AuthorisationService(authorisationStore, relayerRequestSignatureValidator, this.walletContractService);

@@ -1,5 +1,5 @@
 import {KeyPair, createKeyPair} from '@unilogin/commons';
-import {BlockchainService, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, SENTINEL_OWNERS} from '@unilogin/contracts';
+import {ContractService, ProviderService, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, SENTINEL_OWNERS} from '@unilogin/contracts';
 import {setupWalletContract, setupGnosisSafeContract, executeAddKeyGnosis} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {MockProvider} from 'ethereum-waffle';
@@ -11,8 +11,9 @@ import {GnosisSafeService} from '../../../src/integration/ethereum/GnosisSafeSer
 describe('INT: WalletContractService', () => {
   const provider = new MockProvider();
   const [wallet] = provider.getWallets();
+  const providerService = new ProviderService(provider);
   const walletService = new WalletContractService(
-    new BlockchainService(provider),
+    new ContractService(providerService),
     new Beta2Service(provider),
     new GnosisSafeService(provider),
   );
