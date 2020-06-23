@@ -42,7 +42,7 @@ describe('INT: WalletContractService', () => {
       refundReceiver: TEST_ACCOUNT_ADDRESS,
     };
     signedMessage = messageToSignedMessage(message, wallet.privateKey, 'istanbul', 'beta2');
-    fetchWalletVersionSpy = sinon.spy((walletContractService as any).blockchainService, 'fetchWalletVersion');
+    fetchWalletVersionSpy = sinon.spy((walletContractService as any).contractService, 'fetchWalletVersion');
   });
 
   describe('version cache', () => {
