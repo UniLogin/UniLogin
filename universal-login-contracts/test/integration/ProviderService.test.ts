@@ -12,7 +12,7 @@ import {beta2} from '../../src/index';
 
 const {WalletContract} = beta2;
 
-describe('INT: BlockchainService', async () => {
+describe('INT: ProviderService', async () => {
   const expectedBytecode = `0x${getDeployedBytecode(WalletContract as any)}`;
   let providerService: ProviderService;
   let provider: MockProvider;
