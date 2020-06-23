@@ -1,8 +1,7 @@
 import {utils, Contract} from 'ethers';
-import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, InvalidContract, ensure, PROXY_VERSIONS} from '@unilogin/commons';
+import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, InvalidContract, ensure, PROXY_VERSIONS, ProviderService} from '@unilogin/commons';
 import {computeGnosisCounterfactualAddress} from '../gnosis-safe@1.1.1/utils';
 import {DEPLOY_CONTRACT_NONCE} from '../gnosis-safe@1.1.1/constants';
-import {ProviderService} from './ProviderService';
 import {interfaces} from '../beta2/contracts';
 import {IProxyInterface} from '../gnosis-safe@1.1.1/interfaces';
 

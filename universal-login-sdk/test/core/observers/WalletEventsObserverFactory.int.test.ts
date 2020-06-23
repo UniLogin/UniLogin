@@ -1,5 +1,4 @@
-import {createKeyPair, TEST_EXECUTION_OPTIONS, KeyPair} from '@unilogin/commons';
-import {ProviderService} from '@unilogin/contracts';
+import {createKeyPair, TEST_EXECUTION_OPTIONS, KeyPair, ProviderService} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import chai, {expect} from 'chai';
 import {MockProvider, solidity} from 'ethereum-waffle';

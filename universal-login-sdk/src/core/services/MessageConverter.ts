@@ -1,5 +1,5 @@
-import {Message, PartialRequired} from '@unilogin/commons';
-import {messageToSignedMessage, ContractService, ProviderService} from '@unilogin/contracts';
+import {Message, PartialRequired, ProviderService} from '@unilogin/commons';
+import {messageToSignedMessage, ContractService} from '@unilogin/contracts';
 
 export class MessageConverter {
   constructor(private contractService: ContractService, private providerService: ProviderService) {

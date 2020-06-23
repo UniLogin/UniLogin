@@ -1,5 +1,5 @@
-import {GAS_FIXED, OperationType, SignedMessage} from '@unilogin/commons';
-import {ContractService, ProviderService} from '@unilogin/contracts';
+import {GAS_FIXED, OperationType, SignedMessage, ProviderService} from '@unilogin/commons';
+import {ContractService} from '@unilogin/contracts';
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils} from 'ethers';

@@ -1,5 +1,5 @@
-import {DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
-import {ContractService, ProviderService} from '@unilogin/contracts';
+import {DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType, TEST_CONTRACT_ADDRESS, ProviderService} from '@unilogin/commons';
+import {ContractService} from '@unilogin/contracts';
 import {setupWalletContract} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
 import {MockProvider} from 'ethereum-waffle';
