@@ -1,7 +1,7 @@
 import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE, DEPLOY_GAS_LIMIT, multiplyBy150Percent, BalanceChecker} from '@unilogin/commons';
 import {expect} from 'chai';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {providers, utils, Wallet} from 'ethers';
+import {MockProvider} from 'ethereum-waffle';
+import {utils, Wallet} from 'ethers';
 import UniLoginSdk, {FutureWallet} from '../../../src';
 import {ENSService} from '../../../src/integration/ethereum/ENSService';
 import {AddressZero} from 'ethers/constants';
@@ -15,14 +15,14 @@ describe('UNIT: FutureWallet', () => {
     gasToken: ETHER_NATIVE_TOKEN.address,
   };
   const minimalAmount = utils.parseEther('0.5').toString();
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let wallet: Wallet;
   let futureWallet: FutureWallet;
   let mockSDK: UniLoginSdk;
 
   before(() => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
     mockSDK = {
       provider: provider,
     } as any;

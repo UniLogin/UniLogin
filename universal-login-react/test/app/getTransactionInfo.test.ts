@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {utils, Contract, Wallet} from 'ethers';
-import {getWallets, solidity, createMockProvider} from 'ethereum-waffle';
+import {solidity, MockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import UniLoginSdk, {WalletService} from '@unilogin/sdk';
 import {createAndSetWallet, setupSdk} from '@unilogin/sdk/testutils';
@@ -19,7 +19,7 @@ describe('INT: getTransactionInfo', () => {
   let walletService: WalletService;
 
   before(async () => {
-    [wallet] = getWallets(createMockProvider());
+    [wallet] = new MockProvider().getWallets();
     ({sdk, relayer, mockToken} = await setupSdk(wallet, '33113'));
     walletService = new WalletService(sdk);
     await createAndSetWallet('name.mylogin.eth', walletService, wallet, sdk);

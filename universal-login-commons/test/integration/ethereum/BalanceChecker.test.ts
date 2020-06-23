@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
-import {providers, Wallet, utils, Contract, ethers} from 'ethers';
-import {createMockProvider, getWallets, solidity, deployContract} from 'ethereum-waffle';
+import {Wallet, utils, Contract, ethers} from 'ethers';
+import {solidity, deployContract, MockProvider} from 'ethereum-waffle';
 import {BalanceChecker} from '../../../src/integration/ethereum/BalanceChecker';
 import {ETHER_NATIVE_TOKEN} from '../../../src/core/constants/constants';
 import MockToken from '../../fixtures/MockToken.json';
@@ -10,14 +10,14 @@ import {WeiPerEther} from 'ethers/constants';
 chai.use(solidity);
 
 describe('INT: BalanceChecker', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let balanceChecker: BalanceChecker;
   let wallet: Wallet;
   let mockToken: Contract;
 
   beforeEach(() => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
     balanceChecker = new BalanceChecker(provider);
   });
 

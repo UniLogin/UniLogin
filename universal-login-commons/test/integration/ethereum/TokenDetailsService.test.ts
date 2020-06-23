@@ -1,5 +1,5 @@
-import {providers, Wallet, Contract} from 'ethers';
-import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
+import {Wallet, Contract} from 'ethers';
+import {MockProvider, deployContract} from 'ethereum-waffle';
 import {expect} from 'chai';
 import {TokenDetailsService} from '../../../src/integration/ethereum/TokenDetailsService';
 import {ETHER_NATIVE_TOKEN} from '../../../src/core/constants/constants';
@@ -7,14 +7,14 @@ import MockToken from '../../fixtures/MockToken.json';
 import MockDai from '../../fixtures/MockDai.json';
 
 describe('INT: TokenDetailsService', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let tokenDetailsService: TokenDetailsService;
   let wallet: Wallet;
   let mockSai: Contract;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
     mockSai = await deployContract(wallet, MockDai, []);
     tokenDetailsService = new TokenDetailsService(provider, mockSai.address);
   });

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {createMockProvider, deployContract, getWallets} from 'ethereum-waffle';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 import Executor from '../../../dist/contracts/TestableExecutor.json';
 import {constants, Contract} from 'ethers';
 import {transferMessage} from '../../helpers/ExampleMessages';
@@ -7,15 +7,13 @@ import {getExecutionArgs} from '../../helpers/argumentsEncoding';
 import {calculateFinalGasLimit, estimateBaseGasForNoSignature} from '../../helpers/calculations';
 
 describe('Void Executor', () => {
-  let provider;
   let walletContractWithZeroKey: Contract;
   let signature: string [];
   let message;
   let wallet;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [, , , , , , , , , wallet] = getWallets(provider);
+    [, , , , , , , , , wallet] = new MockProvider().getWallets();
     walletContractWithZeroKey = await deployContract(wallet, Executor, [constants.AddressZero]);
   });
 

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {Wallet, providers, utils} from 'ethers';
-import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {Wallet, utils} from 'ethers';
+import {MockProvider} from 'ethereum-waffle';
 import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_PRICE,
@@ -20,15 +20,13 @@ describe('Login', () => {
   let sdk: UniLoginSdk;
   let relayer: Relayer;
   let wallet: Wallet;
-  let provider: providers.Provider;
   let name: string;
   let privateKey: string;
   let contractAddress: string;
 
   before(async () => {
-    [wallet] = getWallets(createMockProvider());
-    ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
-    [wallet] = getWallets(provider);
+    [wallet] = new MockProvider().getWallets();
+    ({sdk, relayer} = await setupSdk(wallet, '33113'));
     walletService = new WalletService(sdk);
     walletServiceForConnect = new WalletService(sdk);
     (sdk.walletEventsObserverFactory as any).lastBlock = 0;

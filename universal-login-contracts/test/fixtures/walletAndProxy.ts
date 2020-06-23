@@ -1,5 +1,5 @@
-import {utils, Contract, Wallet, providers} from 'ethers';
-import {deployContract} from 'ethereum-waffle';
+import {utils, Contract, Wallet} from 'ethers';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import WalletContract from '../../dist/contracts/Wallet.json';
 import Proxy from '../../dist/contracts/WalletProxy.json';
@@ -9,7 +9,7 @@ import {deployWalletContract} from '../../src';
 
 const {parseEther} = utils;
 
-export default async function walletAndProxy(unusedProvider: providers.Provider, [, , , , , , , , , wallet]: Wallet []) {
+export default async function walletAndProxy(provider: MockProvider, [, , , , , , , , , wallet]: Wallet []) {
   const keyPair = createKeyPair();
   const walletContractMaster = await deployWalletContract(wallet);
   const walletContractProxy = await deployContract(wallet, Proxy, [walletContractMaster.address]);
@@ -20,7 +20,7 @@ export default async function walletAndProxy(unusedProvider: providers.Provider,
   const mockContract = await deployContract(wallet, MockContract);
   await mockToken.transfer(walletContractProxy.address, parseEther('1.0'));
   return {
-    provider: wallet.provider,
+    provider,
     publicKey: keyPair.publicKey,
     privateKey: keyPair.privateKey,
     walletContractProxy,

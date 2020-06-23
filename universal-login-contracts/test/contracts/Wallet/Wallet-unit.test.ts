@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 import {utils, Contract, Wallet} from 'ethers';
 import WalletContract from '../../../dist/contracts/TestableWallet.json';
 import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, TEST_OVERRIDES_FOR_REVERT} from '@unilogin/commons';
@@ -9,7 +9,7 @@ describe('UNIT: WalletContract', () => {
   let wallet: Wallet;
 
   beforeEach(async () => {
-    [wallet] = getWallets(createMockProvider());
+    [wallet] = new MockProvider().getWallets();
     walletContract = await deployContract(wallet, WalletContract, []);
     await wallet.sendTransaction({to: walletContract.address, value: utils.parseEther('2')});
     await walletContract.initialize(wallet.address, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);

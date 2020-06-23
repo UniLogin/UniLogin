@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {providers, Wallet, utils} from 'ethers';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {Wallet, utils} from 'ethers';
+import {MockProvider} from 'ethereum-waffle';
 import {TokensValueConverter, BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil} from '@unilogin/commons';
 import {AggregateBalanceObserver} from '../../../src/core/observers/AggregateBalanceObserver';
 import {BalanceObserver} from '../../../src/core/observers/BalanceObserver';
@@ -13,7 +13,7 @@ import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore'
 chai.use(sinonChai);
 
 describe('INT: AggregateBalanceObserver', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let balanceChecker: BalanceChecker;
   let balanceObserver: BalanceObserver;
   let mockedAggregateBalanceObserver: AggregateBalanceObserver;
@@ -22,8 +22,8 @@ describe('INT: AggregateBalanceObserver', () => {
   const tokensValueConverter = new TokensValueConverter(SdkConfigDefault.observedCurrencies);
 
   beforeEach(() => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
 
     balanceChecker = new BalanceChecker(provider);
     const observedTokens: TokenDetails[] = [

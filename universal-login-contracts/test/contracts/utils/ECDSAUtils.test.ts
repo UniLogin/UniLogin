@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import ECDSAUtils from '../../../dist/contracts/ECDSAUtils.json';
 import {Contract, utils} from 'ethers';
-import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 import {calculateMessageHash, UnsignedMessage, TEST_MESSAGE_HASH, signHexString, concatenateSignatures} from '@unilogin/commons';
 import {transferMessage} from '../../helpers/ExampleMessages';
 
@@ -9,7 +9,7 @@ const hash = utils.hashMessage(TEST_MESSAGE_HASH);
 const invalidHash = utils.hashMessage(TEST_MESSAGE_HASH.replace('1', '2'));
 
 describe('Contract: ECDSAUtils', async () => {
-  const [wallet, wallet2] = getWallets(createMockProvider());
+  const [wallet, wallet2] = new MockProvider().getWallets();
   let ecdsaUtils: Contract;
   let msg: UnsignedMessage;
 

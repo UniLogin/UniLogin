@@ -2,8 +2,8 @@ import 'jsdom-global/register';
 import React from 'react';
 import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
-import {providers, utils} from 'ethers';
-import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {utils} from 'ethers';
+import {MockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {setupSdk} from '@unilogin/sdk/testutils';
 import App from '../../src/ui/react/App';
@@ -16,12 +16,13 @@ describe('UI: Creation flow', () => {
   let appWrapper: ReactWrapper;
   let services: Services;
   let relayer: any;
-  let provider: providers.Provider;
+  let provider: MockProvider;
   const expectedHomeBalance = '$1.98';
 
   before(async () => {
-    const [wallet] = getWallets(createMockProvider());
-    ({relayer, provider} = await setupSdk(wallet, '33113'));
+    provider = new MockProvider();
+    const [wallet] = provider.getWallets();
+    ({relayer} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
   });
 
@@ -34,7 +35,7 @@ describe('UI: Creation flow', () => {
     appPage.creation().chooseTopUpMethod();
     const address = appPage.creation().getAddress();
     expect(address).to.be.an('string');
-    const [wallet] = getWallets(provider);
+    const [wallet] = provider.getWallets();
     await wallet.sendTransaction({to: address as string, value: utils.parseEther('2.0')});
     await appPage.creation().waitAndGoToWallet(4000);
     await appPage.login().waitForHomeView(expectedHomeBalance);

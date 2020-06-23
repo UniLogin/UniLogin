@@ -1,8 +1,8 @@
 import {createKeyPair, EMPTY_DEVICE_INFO, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 import {GnosisSafeInterface} from '@unilogin/contracts';
 import chai, {expect} from 'chai';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {Contract, providers, Wallet} from 'ethers';
+import {MockProvider} from 'ethereum-waffle';
+import {Contract, Wallet} from 'ethers';
 import sinonChai from 'sinon-chai';
 import ENSService from '../../../src/integration/ethereum/ensService';
 import {WalletDeploymentService} from '../../../src/integration/ethereum/WalletDeploymentService';
@@ -13,7 +13,7 @@ chai.use(sinonChai);
 
 describe('INT: WalletService', () => {
   let walletService: WalletDeploymentService;
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let wallet: Wallet;
   let walletContract: Contract;
   let factoryContract: Contract;
@@ -26,8 +26,8 @@ describe('INT: WalletService', () => {
   let fakeDevicesService: any;
 
   before(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
     ({walletService, factoryContract, ensService, provider, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler} = await setupWalletService(wallet));
     const {contractAddress, signature} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
     await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);

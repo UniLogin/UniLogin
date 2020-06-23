@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {solidity, loadFixture, deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
+import {solidity, loadFixture, deployContract, MockProvider} from 'ethereum-waffle';
 import {utils, Contract, Wallet} from 'ethers';
 import KeyHolder from '../../../dist/contracts/KeyHolder.json';
 import MockContract from '../../../dist/contracts/MockContract.json';
@@ -25,7 +25,7 @@ describe('CONTRACT: KeyHolder', async () => {
 
   describe('onlyAuthorised', () => {
     it('only contract can make operations on itself', async () => {
-      const [wallet] = getWallets(createMockProvider());
+      const [wallet] = new MockProvider().getWallets();
       keyHolder = await deployContract(wallet, KeyHolder, [wallet.address]);
       await expect(keyHolder.addKey(createKeyPair().publicKey)).to.be.reverted;
     });

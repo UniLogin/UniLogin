@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
-import {providers, utils, Contract} from 'ethers';
-import {createFixtureLoader, getWallets, createMockProvider} from 'ethereum-waffle';
+import {utils, Contract} from 'ethers';
+import {createFixtureLoader, MockProvider} from 'ethereum-waffle';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {deployMockToken} from '@unilogin/commons/testutils';
 import {WalletService} from '@unilogin/sdk';
@@ -15,7 +15,7 @@ describe('UI: Transfer', () => {
   let services: Services;
   let relayer: any;
   let appPage: AppPage;
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let mockTokenContract: Contract;
   let receiverAddress: string;
   const receiverEnsName = 'receiver.mylogin.eth';
@@ -40,10 +40,11 @@ describe('UI: Transfer', () => {
   };
 
   beforeEach(async () => {
-    const [wallet] = getWallets(createMockProvider());
-    ({relayer, provider} = await setupSdk(wallet, '33113'));
-    ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
-    ({appWrapper, appPage, services} = await setupUI(relayer, mockTokenContract.address));
+    provider = new MockProvider();
+    const [wallet] = provider.getWallets();
+    ({relayer} = await setupSdk(wallet, '33113'));
+    ({mockTokenContract} = await createFixtureLoader(provider)(deployMockToken));
+    ({appWrapper, appPage, services} = await setupUI(relayer, wallet, mockTokenContract.address));
     ({contractAddress: receiverAddress} = await createAndSetWallet(receiverEnsName, new WalletService(services.sdk), wallet, services.sdk));
     initialReceiverEthBalance = await provider.getBalance(receiverAddress);
     senderAddress = services.walletService.state.kind === 'Deployed'

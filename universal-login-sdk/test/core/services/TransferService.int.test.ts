@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {utils, providers, Contract, Wallet} from 'ethers';
-import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
+import {utils, Contract, providers, Wallet} from 'ethers';
+import {createFixtureLoader, solidity, MockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService, TEST_GAS_PRICE} from '@unilogin/commons';
 import {deployMockToken} from '@unilogin/commons/testutils';
 import UniLoginSdk from '../../../src/api/sdk';
@@ -31,9 +31,10 @@ describe('INT: TransferService', () => {
   let balance: string;
 
   before(async () => {
-    [wallet] = getWallets(createMockProvider());
+    const mockProvider = new MockProvider();
+    [wallet] = mockProvider.getWallets();
     ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
-    ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
+    ({mockTokenContract} = await createFixtureLoader(mockProvider)(deployMockToken));
     const walletService = new WalletService(sdk);
     const {contractAddress} = await createAndSetWallet('name.mylogin.eth', walletService, wallet, sdk);
     await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'));

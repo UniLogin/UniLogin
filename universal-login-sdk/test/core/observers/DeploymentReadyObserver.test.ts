@@ -1,14 +1,14 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {utils, Wallet, providers, Contract} from 'ethers';
-import {deployContract, createMockProvider, getWallets} from 'ethereum-waffle';
+import {utils, Wallet, Contract} from 'ethers';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, sleep, waitUntil, BalanceChecker} from '@unilogin/commons';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {DeploymentReadyObserver} from '../../../src/core/observers/DeploymentReadyObserver';
 
 describe('INT: DeploymentReadyObserver', () => {
   let deploymentReadyObserver: DeploymentReadyObserver;
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let wallet: Wallet;
   let mockToken: Contract;
   const minimalAmount = '0.5';
@@ -17,8 +17,8 @@ describe('INT: DeploymentReadyObserver', () => {
   let balanceChecker: BalanceChecker;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
     callback = sinon.spy();
     balanceChecker = new BalanceChecker(provider);
   });

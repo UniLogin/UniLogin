@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {Beta2Service} from '../../../src/integration/ethereum/Beta2Service';
 import createWalletContract from '../../testhelpers/createWalletContract';
 
@@ -10,8 +10,8 @@ describe('INT: Beta2Service', () => {
   let wallet: Wallet;
 
   before(async () => {
-    const provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    const provider = new MockProvider();
+    [wallet] = provider.getWallets();
     ({proxy: proxyContract} = await createWalletContract(wallet));
     beta2Service = new Beta2Service(provider, {} as any);
   });

@@ -9,10 +9,10 @@ describe('WalletContract fixture test', () => {
   let proxyWallet: Contract;
   let keyPair: KeyPair;
   let deployer: Wallet;
-  let provider: providers.Provider;
+  let providerWithENS: providers.Provider;
 
   before(async () => {
-    ({proxyWallet, deployer, keyPair, provider} = await loadFixture(walletContractFixture));
+    ({proxyWallet, deployer, keyPair, providerWithENS} = await loadFixture(walletContractFixture));
   });
 
   it('should deploy wallet contract', () => {
@@ -29,7 +29,7 @@ describe('WalletContract fixture test', () => {
 
   it('has proper ens name', async () => {
     const defaultEnsName = 'name.mylogin.eth';
-    expect(await provider.resolveName(defaultEnsName)).to.eq(proxyWallet.address);
-    expect(await provider.lookupAddress(proxyWallet.address)).to.eq(defaultEnsName);
+    expect(await providerWithENS.resolveName(defaultEnsName)).to.eq(proxyWallet.address);
+    expect(await providerWithENS.lookupAddress(proxyWallet.address)).to.eq(defaultEnsName);
   });
 });

@@ -2,7 +2,7 @@ import {createKeyPair, TEST_EXECUTION_OPTIONS, KeyPair} from '@unilogin/commons'
 import {BlockchainService} from '@unilogin/contracts';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import chai, {expect} from 'chai';
-import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
+import {MockProvider, solidity} from 'ethereum-waffle';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import UniLoginSdk, {DeployedWallet, WalletEventFilter} from '../../../src';
@@ -18,8 +18,8 @@ chai.use(solidity);
 chai.use(sinonChai);
 
 describe('INT: WalletEventsObserverFactory', () => {
-  const provider = createMockProvider();
-  const [deployer] = getWallets(provider);
+  const provider = new MockProvider();
+  const [deployer] = provider.getWallets();
   const {publicKey} = createKeyPair();
   let relayer: RelayerUnderTest;
   let sdk: UniLoginSdk;

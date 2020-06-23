@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {providers, utils} from 'ethers';
-import {loadFixture, getWallets} from 'ethereum-waffle';
+import {utils} from 'ethers';
+import {loadFixture, MockProvider} from 'ethereum-waffle';
 import {basicENS} from '@unilogin/commons/testutils';
 import {ENSService} from '../../../src/integration/ethereum/ENSService';
 import {deployContract} from '@unilogin/commons';
@@ -9,7 +9,7 @@ import {gnosisSafe} from '@unilogin/contracts';
 describe('INT: ENSService', () => {
   let ensAddress: string;
   let ensService: ENSService;
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let registrarAddress: string;
   let publicResolver: string;
   const label = 'justyna';
@@ -18,7 +18,7 @@ describe('INT: ENSService', () => {
 
   before(async () => {
     ({ensAddress, provider, registrarAddress, publicResolver} = await loadFixture(basicENS));
-    const [wallet] = getWallets(provider);
+    const [wallet] = provider.getWallets();
     const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
     ensService = new ENSService(provider, ensAddress, ensRegistrar.address);
   });

@@ -2,7 +2,7 @@ import {DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, OperationType, TEST_CONTRACT_ADDR
 import {BlockchainService} from '@unilogin/contracts';
 import {setupWalletContract} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {Contract, utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
 import {GasComputation} from '../../../src/core/services/GasComputation';
@@ -12,10 +12,10 @@ describe('GasComputation', () => {
   let proxyWallet: Contract;
 
   before(async () => {
-    const provider = createMockProvider();
+    const provider = new MockProvider();
     const blockchainService = new BlockchainService(provider);
     gasComputation = new GasComputation(blockchainService);
-    const [wallet] = getWallets(provider);
+    const [wallet] = provider.getWallets();
     ({proxyWallet} = await setupWalletContract(wallet));
   });
 

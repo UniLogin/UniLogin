@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {mount, ReactWrapper} from 'enzyme';
 import React from 'react';
-import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {DeployedWallet} from '@unilogin/sdk';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {Wallet} from 'ethers';
@@ -19,7 +19,7 @@ describe('INT: BackupCodes', () => {
   let appWrapper: ReactWrapper;
 
   before(async () => {
-    ([wallet] = getWallets(createMockProvider()));
+    ([wallet] = new MockProvider().getWallets());
     ({deployedWallet, relayer} = await setupDeployedWallet(wallet, ensName));
     appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
     dashboard = new DashboardPage(appWrapper);

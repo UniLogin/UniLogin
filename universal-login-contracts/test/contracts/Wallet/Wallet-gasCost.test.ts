@@ -11,8 +11,8 @@ import {executeAddKey} from '../../helpers/ExampleMessages';
 chai.use(chaiAsPromised);
 chai.use(solidity);
 
-const deployProxyCost = '385000';
-const deployProxyWithENSCost = '570000';
+const deployProxyCost = '400000';
+const deployProxyWithENSCost = '595000';
 const deployWalletCost = '3400000';
 const executeAddKeyCost = '103000';
 
@@ -58,19 +58,19 @@ describe('Performance test', async () => {
 
   describe('Functions call', () => {
     let proxyWallet: Contract;
-    let provider: providers.Provider;
+    let providerWithENS: providers.Provider;
     let keyPair: KeyPair;
     let deployer: Wallet;
     let proxyWithSigner: Contract;
 
     before(async () => {
-      ({provider, proxyWallet, keyPair, deployer} = await loadFixture(walletContractFixture));
+      ({providerWithENS, proxyWallet, keyPair, deployer} = await loadFixture(walletContractFixture));
       proxyWithSigner = proxyWallet.connect(deployer);
     });
 
     it('Execute addKey function', async () => {
       const transaction = await executeAddKey(proxyWithSigner, createKeyPair().publicKey, keyPair.privateKey);
-      const {gasUsed} = await provider.getTransactionReceipt(transaction.hash!);
+      const {gasUsed} = await providerWithENS.getTransactionReceipt(transaction.hash!);
       gasCosts['Execute addKey function'] = gasUsed;
       expect(gasUsed).to.be.below(executeAddKeyCost);
     });

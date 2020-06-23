@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {Wallet} from 'ethers';
 import sinon from 'sinon';
 import {waitUntil} from '@unilogin/commons';
@@ -14,14 +14,14 @@ describe('INT: BlockNumberState', () => {
   let callback: any;
 
   it('no subscriptions', () => {
-    state = new BlockNumberState(new BlockchainService(createMockProvider()));
+    state = new BlockNumberState(new BlockchainService(new MockProvider()));
     expect(state.get()).to.eq(0);
   });
 
   describe('1 subscription', () => {
     beforeEach(() => {
-      provider = createMockProvider();
-      [wallet] = getWallets(provider);
+      provider = new MockProvider();
+      [wallet] = provider.getWallets();
       provider.pollingInterval = 1;
       state = new BlockNumberState(new BlockchainService(provider));
       callback = sinon.spy();
@@ -65,8 +65,8 @@ describe('INT: BlockNumberState', () => {
 
   describe('2 subscriptions', () => {
     beforeEach(() => {
-      provider = createMockProvider();
-      [wallet] = getWallets(provider);
+      provider = new MockProvider();
+      [wallet] = provider.getWallets();
       provider.pollingInterval = 1;
       state = new BlockNumberState(new BlockchainService(provider));
       callback = sinon.spy();

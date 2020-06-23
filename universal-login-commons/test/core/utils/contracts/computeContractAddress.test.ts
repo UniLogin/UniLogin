@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {createMockProvider, deployContract, getWallets} from 'ethereum-waffle';
+import {MockProvider, deployContract} from 'ethereum-waffle';
 import {MockToken} from '../../..';
 import {computeContractAddress} from '../../../../src';
 
@@ -29,7 +29,7 @@ describe('UNIT: computeContractAddress', () => {
 });
 
 describe('INT: computeContractAddress', () => {
-  const [wallet] = getWallets(createMockProvider());
+  const [wallet] = new MockProvider().getWallets();
 
   function test(nonce: number) {
     it(`deployed contract has computed address for nonce ${nonce}`, async () => {

@@ -1,6 +1,6 @@
 import {dirname, join} from 'path';
-import {getWallets} from 'ethereum-waffle';
-import {providers} from 'ethers';
+import {defaultAccounts} from 'ethereum-waffle';
+import {providers, Wallet} from 'ethers';
 import {start as startRelayer} from '@unilogin/relayer';
 import {deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
@@ -36,14 +36,12 @@ function getMigrationPath() {
   return join(dirname(packagePath), 'dist', 'cjs', 'src', 'integration', 'sql', 'migrations');
 }
 
-declare interface StartDevelopmentOverrides {
-  nodeUrl?: string;
-}
-
-async function startDevelopment({nodeUrl}: StartDevelopmentOverrides = {}) {
-  const jsonRpcUrl = nodeUrl || await startGanache(ganachePort);
+async function startDevelopment() {
+  const jsonRpcUrl = await startGanache(ganachePort);
   const provider = new providers.JsonRpcProvider(jsonRpcUrl);
-  const [, , , , ensDeployer, deployWallet] = getWallets(provider);
+  const wallets = defaultAccounts.map((account) => new Wallet(account.secretKey, provider));
+  printWallets(wallets);
+  const [, , , , ensDeployer, deployWallet] = wallets;
   const ensAddress = await deployENS(ensDeployer, ensDomains);
   const {address} = await deployGnosisSafe(deployWallet);
   await deployDefaultCallbackHandler(deployWallet);
@@ -53,12 +51,20 @@ async function startDevelopment({nodeUrl}: StartDevelopmentOverrides = {}) {
   await deployENSRegistrar(deployWallet);
   await ensureDatabaseExist(databaseConfig);
   await startRelayer('ganache');
-  return {jsonRpcUrl, deployWallet, walletContractAddress: address, saiTokenAddress, daiTokenAddress, ensAddress, ensDomains};
+  return {jsonRpcUrl: provider.connection.url, deployWallet, walletContractAddress: address, saiTokenAddress, daiTokenAddress, ensAddress, ensDomains};
 }
 
 export async function startDevAndCreateEnv() {
   const artifacts = await startDevelopment();
   return createEnv(artifacts);
 };
+
+function printWallets(wallets: Wallet[]) {
+  console.log('  Wallets:');
+  for (const wallet of wallets) {
+    console.log(`    ${wallet.address} - ${wallet.privateKey}`);
+  }
+  console.log('');
+}
 
 export default startDevelopment;
