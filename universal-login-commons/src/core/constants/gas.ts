@@ -12,7 +12,7 @@ export const DEFAULT_GAS_LIMIT_EXECUTION = 80000;
 
 export const DEPLOYMENT_REFUND = utils.bigNumberify(570000);
 
-export const GAS_BASE = 30000;
+export const GAS_BASE = 20000;
 
 export const MINIMAL_DEPLOYMENT_GAS_LIMIT = multiplyBy150Percent(DEPLOYMENT_REFUND);
 
