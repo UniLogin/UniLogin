@@ -7,7 +7,7 @@ import {getDeployedBytecode} from '../../../src/core/utils/contracts/contractHel
 import {TEST_ACCOUNT_ADDRESS} from '../../../src/core/constants/test';
 import sinon from 'sinon';
 import {mineBlock} from '../../helpers/mineBlock';
-import MockedTokens from '../../fixtures/MockToken.json'
+import MockedTokens from '../../fixtures/MockToken.json';
 import {MockToken} from '../..';
 
 describe('INT: ProviderService', () => {
@@ -40,7 +40,7 @@ describe('INT: ProviderService', () => {
       topics:
         ['0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
           '0x0000000000000000000000000000000000000000000000000000000000000000',
-          '0x00000000000000000000000017ec8597ff92c3f44523bdc65bf0f1be632917ff'
+          '0x00000000000000000000000017ec8597ff92c3f44523bdc65bf0f1be632917ff',
         ],
       logIndex: 0,
     };
