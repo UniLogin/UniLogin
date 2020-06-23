@@ -41,20 +41,13 @@ describe('INT: BlockNumberState', () => {
 
     it('1 block', async () => {
       const unsubscribe = state.subscribe(callback);
-      console.log('agfter get unsub');
       mineBlock(wallet);
-      console.log('agfter mine');
-
-      await waitUntil(() => !!callback.firstCall);
-      console.log('agfter wait');
-
+      await waitUntil(() => !!callback.secondCall);
       expect(state.get()).to.eq(1);
 
       unsubscribe();
-      console.log('agfter unsub');
-
       expect(state.get()).to.eq(1);
-    });
+    }).timeout(10000);
 
     it('2 blocks', async () => {
       const unsubscribe = state.subscribe(callback);
