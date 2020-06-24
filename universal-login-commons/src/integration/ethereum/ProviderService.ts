@@ -3,8 +3,7 @@ import {ensure} from '../../core/utils/errors/ensure';
 import {InvalidContract} from '../../core/utils/errors/errors';
 import {ETHER_NATIVE_TOKEN} from '../../core/constants/constants';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
-
-export const ISTANBUL_BLOCK_NUMBER = 9069000;
+import {fetchHardforkVersion} from './fetchHardforkVersion';
 
 export class ProviderService {
   constructor(private provider: providers.Provider) {
@@ -58,27 +57,6 @@ export class ProviderService {
   }
 
   async fetchHardforkVersion() {
-    const {name} = await this.provider.getNetwork();
-    switch (name) {
-      case 'kovan':
-        return 'istanbul';
-      case 'ropsten':
-        return 'istanbul';
-      case 'rinkeby':
-        return 'istanbul';
-      case 'unknown':
-        return 'constantinople';
-      case 'ganache':
-        return 'constantinople';
-      case 'homestead':
-      case 'mainnet':
-        const blockNumber = await this.provider.getBlockNumber();
-        if (blockNumber < ISTANBUL_BLOCK_NUMBER) {
-          return 'constantinople';
-        }
-        return 'istanbul';
-      default:
-        throw TypeError(`Invalid network: ${name}`);
-    }
+    return fetchHardforkVersion(this.provider);
   }
 }

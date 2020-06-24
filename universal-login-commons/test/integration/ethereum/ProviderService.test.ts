@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {providers, Wallet} from 'ethers';
-import {ProviderService, ISTANBUL_BLOCK_NUMBER} from '../../../src/integration/ethereum/ProviderService';
+import {ProviderService} from '../../../src/integration/ethereum/ProviderService';
 import {mockProviderWithBlockNumber} from '../../helpers/mockProvider';
 import {MockProvider, deployContract} from 'ethereum-waffle';
 import {getDeployedBytecode} from '../../../src/core/utils/contracts/contractHelpers';
@@ -133,33 +133,6 @@ describe('INT: ProviderService', () => {
       expect(callback.lastCall.calledWithExactly(await providerService.getBlockNumber()));
       expect(callback.callCount).to.eq(expectedCallbackCalls);
       expect(callback.firstCall.calledWithExactly(await providerService.getBlockNumber() - expectedCallbackCalls));
-    });
-  });
-
-  describe('fetchHardforkVersion', () => {
-    const itReturnsHardforkVersion = (network: string, hardfork: string, blockNumber?: number) =>
-      it(`returns ${hardfork} for ${network} ${blockNumber && `for block number equals ${blockNumber}`}`, async () => {
-        const provider = mockProviderWithBlockNumber(network, blockNumber || 0);
-        const providerService = new ProviderService(provider as providers.Provider);
-        expect(await providerService.fetchHardforkVersion()).to.eq(hardfork);
-      });
-
-    itReturnsHardforkVersion('kovan', 'istanbul');
-    itReturnsHardforkVersion('rinkeby', 'istanbul');
-    itReturnsHardforkVersion('ropsten', 'istanbul');
-    itReturnsHardforkVersion('homestead', 'constantinople', 1000);
-    itReturnsHardforkVersion('homestead', 'constantinople', ISTANBUL_BLOCK_NUMBER - 1);
-    itReturnsHardforkVersion('homestead', 'istanbul', ISTANBUL_BLOCK_NUMBER);
-    itReturnsHardforkVersion('homestead', 'istanbul', ISTANBUL_BLOCK_NUMBER + 1);
-    itReturnsHardforkVersion('mainnet', 'constantinople', 1000);
-    itReturnsHardforkVersion('mainnet', 'constantinople', ISTANBUL_BLOCK_NUMBER - 1);
-    itReturnsHardforkVersion('mainnet', 'istanbul', ISTANBUL_BLOCK_NUMBER);
-    itReturnsHardforkVersion('mainnet', 'istanbul', ISTANBUL_BLOCK_NUMBER + 1);
-
-    it('throws exception', async () => {
-      const provider = mockProviderWithBlockNumber('', 1);
-      const providerService = new ProviderService(provider as providers.Provider);
-      await expect(providerService.fetchHardforkVersion()).to.eventually.be.rejectedWith('Invalid network');
     });
   });
 });

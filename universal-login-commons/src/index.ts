@@ -100,3 +100,4 @@ export {GasPriceEstimation, GasPriceOption} from './core/models/GasPriceSuggesti
 export {fetch} from './integration/http/fetch';
 export {NodeEnv, asNodeEnv} from './core/models/NodeEnv';
 export {ProviderService} from './integration/ethereum/ProviderService';
+export {fetchHardforkVersion} from './integration/ethereum/fetchHardforkVersion';
