@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
 import {utils} from 'ethers';
 import {MockProvider} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, TEST_DAI_TOKEN} from '@unilogin/commons';
 import {setupSdk} from '@unilogin/sdk/testutils';
 import App from '../../src/ui/react/App';
 import {Services} from '../../src/ui/createServices';
@@ -23,7 +23,7 @@ describe('UI: Creation flow', () => {
     provider = new MockProvider();
     const [wallet] = provider.getWallets();
     ({relayer} = await setupSdk(wallet, '33113'));
-    services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
+    services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address, TEST_DAI_TOKEN.address]);
   });
 
   it('create wallet and disconnect roundtrip', async () => {
