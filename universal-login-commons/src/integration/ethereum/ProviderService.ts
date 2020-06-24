@@ -1,8 +1,5 @@
-import {providers, utils, Contract} from 'ethers';
+import {providers, utils} from 'ethers';
 import {ensure} from '../../core/utils/errors/ensure';
-import {InvalidContract} from '../../core/utils/errors/errors';
-import {ETHER_NATIVE_TOKEN} from '../../core/constants/constants';
-import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {fetchHardforkVersion} from './fetchHardforkVersion';
 import {NetworkVersion} from '../../core/utils/messages/computeGasData';
 
@@ -36,21 +33,8 @@ export class ProviderService {
     return this.provider.removeListener(eventType, listener);
   }
 
-  getBalance(walletAddress: string, tokenAddress: string): Promise<utils.BigNumber> {
-    if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
-      return this.getEthBalance(walletAddress);
-    }
-    return this.getTokenBalance(walletAddress, tokenAddress);
-  }
-
-  private getEthBalance(walletAddress: string): Promise<utils.BigNumber> {
+  getEthBalance(walletAddress: string): Promise<utils.BigNumber> {
     return this.provider.getBalance(walletAddress);
-  }
-
-  private async getTokenBalance(walletAddress: string, tokenAddress: string): Promise<utils.BigNumber> {
-    ensure(await this.isContract(tokenAddress), InvalidContract, tokenAddress);
-    const token = new Contract(tokenAddress, IERC20.abi, this.provider);
-    return token.balanceOf(walletAddress);
   }
 
   getProvider() {
