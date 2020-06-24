@@ -4,11 +4,11 @@ import {classForComponent, useClassFor} from '../utils/classFor';
 import {ModalTitle} from '../commons/Modal/ModalTitle';
 import {ModalProgressBar} from '../commons/ModalProgressBar';
 import {CompanyLogo} from '../..';
-import {getIconForToken} from '../../core/utils/getIconForToken';
 import Spinner from '../commons/Spinner';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {ensureNotFalsy} from '@unilogin/commons';
 import {UnsupportedToken} from '../../core/utils/errors';
+import {Erc20Icon} from '../commons/Erc20Icon';
 
 interface ChooseTopUpTokenProps {
   onClick: (tokenAddress: string) => void;
@@ -49,7 +49,7 @@ export const ChooseTopUpToken = ({supportedTokens = ['ETH'], onClick, hideModal,
                     disabled={isClicked}>
                     <div className={classForComponent('top-up-radio-inner')}>
                       <div className={classForComponent('top-up-method-icons')}>
-                        {selectedToken === token ? <Spinner/> : <img className={classForComponent('top-up-method-icon')} src={getIconForToken(token)} alt={token} />}
+                        {selectedToken === token ? <Spinner/> : <Erc20Icon symbol={token} className={classForComponent('top-up-method-icon')} />}
                       </div>
                       <p className={classForComponent('top-up-method-title')}>{token}</p>
                     </div>

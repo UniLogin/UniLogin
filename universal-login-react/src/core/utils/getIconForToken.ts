@@ -8,7 +8,9 @@ export const getIconForToken = (symbol: string) => {
       return daiIcon;
     case 'SAI':
       return saiIcon;
-    default:
+    case 'ETH':
       return ethIcon;
+    default:
+      return undefined;
   }
 };

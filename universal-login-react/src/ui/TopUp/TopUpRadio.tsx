@@ -3,7 +3,7 @@ import {Omit, isClassName} from '@unilogin/commons';
 import cardIcon from './../assets/icons/card.svg';
 import bankIcon from './../assets/icons/bank.svg';
 import {classForComponent} from '../utils/classFor';
-import {getIconForToken} from '../../core/utils/getIconForToken';
+import {Erc20Icon} from '../commons/Erc20Icon';
 
 export interface TopUpRadioProps {
   onClick: () => void;
@@ -37,7 +37,7 @@ export const TopUpRadio = ({id, onClick, checked, children, className, name}: To
 export const TopUpRadioCrypto = (props: Omit<TopUpRadioProps, 'children'>) => (
   <TopUpRadio {...props}>
     <div className={classForComponent('top-up-method-icons')}>
-      <img className={classForComponent('top-up-method-icon')} src={getIconForToken(props.topUpCurrency || 'ETH')} alt="Ethereum" />
+      <Erc20Icon symbol={props.topUpCurrency || 'ETH'} className={classForComponent('top-up-method-icon')} />
     </div>
     <p className={classForComponent('top-up-method-title')}>Crypto</p>
     <p className={classForComponent('top-up-method-text')}>Free-Deposit {props.topUpCurrency}</p>
