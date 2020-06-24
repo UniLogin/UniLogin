@@ -7,4 +7,3 @@ export {mockProviderWithBlockNumber} from './helpers/mockProvider';
 export {getMockedGasPriceOracle, mockGasPriceOracle} from './helpers/mocks/gasPriceOracle';
 export {getTokenPricesServiceMock} from './helpers/mocks/tokenPricesService';
 export {mineBlock} from './helpers/mineBlock';
-
