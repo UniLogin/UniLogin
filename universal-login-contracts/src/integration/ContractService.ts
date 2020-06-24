@@ -1,7 +1,5 @@
 import {utils, Contract} from 'ethers';
-import {computeCounterfactualAddress, createKeyPair, WALLET_MASTER_VERSIONS, ensureNotFalsy, InvalidContract, ensure, PROXY_VERSIONS} from '@unilogin/commons';
-import {computeGnosisCounterfactualAddress} from '../gnosis-safe@1.1.1/utils';
-import {DEPLOY_CONTRACT_NONCE} from '../gnosis-safe@1.1.1/constants';
+import {WALLET_MASTER_VERSIONS, ensureNotFalsy, InvalidContract, ensure, PROXY_VERSIONS} from '@unilogin/commons';
 import {ProviderService} from './ProviderService';
 import {interfaces} from '../beta2/contracts';
 import {IProxyInterface} from '../gnosis-safe@1.1.1/interfaces';
@@ -15,18 +13,6 @@ export class ContractService {
   getInitCode = async (factoryAddress: string) => {
     const factoryContract = new Contract(factoryAddress, WalletProxyFactoryInterface, this.providerService.getProvider());
     return factoryContract.initCode();
-  };
-
-  createFutureWallet = async (factoryAddress: string) => {
-    const {privateKey, publicKey} = createKeyPair();
-    const futureContractAddress = computeCounterfactualAddress(factoryAddress, publicKey, await this.getInitCode(factoryAddress));
-    return [privateKey, futureContractAddress, publicKey];
-  };
-
-  createFutureGnosis = (factoryAddress: string, gnosisAddress: string, initializeData: string) => {
-    const {privateKey, publicKey} = createKeyPair();
-    const futureAddress = computeGnosisCounterfactualAddress(factoryAddress, DEPLOY_CONTRACT_NONCE, initializeData, gnosisAddress);
-    return [privateKey, futureAddress, publicKey];
   };
 
   async fetchWalletVersion(contractAddress: string) {
