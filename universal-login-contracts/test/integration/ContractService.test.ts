@@ -1,13 +1,12 @@
 import {expect} from 'chai';
 import {loadFixture, deployContract, MockProvider} from 'ethereum-waffle';
-import {getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
+import {getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS} from '@unilogin/commons';
 import MockContract from '../../dist/contracts/MockContract.json';
 import {Contract, Wallet} from 'ethers';
 import walletAndProxy from '../fixtures/walletAndProxy';
 import basicWalletAndProxy from '../fixtures/basicWalletAndProxy';
 import {setupGnosisSafeContractFixture} from '../fixtures/gnosisSafe';
-import {computeGnosisCounterfactualAddress, ContractService, ProviderService} from '../../src';
-import {DEPLOY_CONTRACT_NONCE} from '../../src/gnosis-safe@1.1.1/constants';
+import {ContractService, ProviderService} from '../../src';
 import {beta2} from '../../src/index';
 
 const {WalletProxy, WalletContract} = beta2;
@@ -25,12 +24,6 @@ describe('INT: ContractService', async () => {
     [deployer] = provider.getWallets();
     providerService = new ProviderService(provider);
     contractService = new ContractService(providerService);
-  });
-
-  it('creates future gnosis', async () => {
-    const initializeData = '0x1234';
-    const expectedContractAddress = computeGnosisCounterfactualAddress(TEST_CONTRACT_ADDRESS, DEPLOY_CONTRACT_NONCE, initializeData, TEST_CONTRACT_ADDRESS);
-    expect(contractService.createFutureGnosis(TEST_CONTRACT_ADDRESS, TEST_CONTRACT_ADDRESS, initializeData)[1]).to.eq(expectedContractAddress);
   });
 
   describe('fetchProxyVersion', () => {
