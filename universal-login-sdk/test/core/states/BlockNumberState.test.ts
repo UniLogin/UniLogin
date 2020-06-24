@@ -2,7 +2,8 @@ import {expect} from 'chai';
 import {MockProvider} from 'ethereum-waffle';
 import {Wallet} from 'ethers';
 import sinon from 'sinon';
-import {waitUntil, ProviderService, mineBlock} from '@unilogin/commons';
+import {waitUntil, ProviderService} from '@unilogin/commons';
+import {mineBlock} from '@unilogin/commons/testutils'
 import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 
 describe('INT: BlockNumberState', () => {

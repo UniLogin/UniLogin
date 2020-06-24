@@ -7,7 +7,7 @@ import {NotEnoughBalance} from '../../../src/core/utils/errors';
 import {expect} from 'chai';
 
 describe('UNIT: BalanceValidator', () => {
-  const balanceChecker = new BalanceChecker(new ProviderService({} as Provider));
+  const balanceChecker = new BalanceChecker({} as ProviderService);
   (balanceChecker as any).getBalance = () => utils.bigNumberify('2');
 
   const deploymentBalanceChecker = new BalanceValidator(balanceChecker);
