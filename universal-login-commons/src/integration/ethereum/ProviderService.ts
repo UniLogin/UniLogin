@@ -57,7 +57,7 @@ export class ProviderService {
     return this.provider;
   }
 
-  async fetchHardforkVersion(): Promise<NetworkVersion>{
+  async fetchHardforkVersion(): Promise<NetworkVersion> {
     return fetchHardforkVersion(this.provider);
   }
 }
