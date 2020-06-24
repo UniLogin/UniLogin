@@ -1,8 +1,6 @@
 import {cast, Sanitizer, asNumber, asObject} from '@restless/sanitizers';
 import {http} from './http';
-import {TokenDetails} from '../../core/models/TokenData';
-import {ObservedCurrency} from '../../core/models/CurrencyData';
-import {ETHER_NATIVE_TOKEN} from '../..';
+import {fetch, ETHER_NATIVE_TOKEN, ObservedCurrency, TokenDetails} from '../..';
 
 export interface TokenDetailsWithCoingeckoId extends TokenDetails {
   coingeckoId: string;
