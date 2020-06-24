@@ -23,12 +23,11 @@ export const Assets = ({deployedWallet}: AssetsProps) => {
       <div className="assets">
         <p className="assets-title">My Assets</p>
         <div className="assets-list">
-          {filterTokensWithZeroBalance(tokenDetailsWithBalance).map(({name, symbol, balance}: TokenDetailsWithBalance) => (
+          {filterTokensWithZeroBalance(tokenDetailsWithBalance).map(({balance, ...token}: TokenDetailsWithBalance) => (
             <Asset
-              key={`${name}-${symbol}`}
+              key={`${token.name}-${token.symbol}`}
               sdk={deployedWallet.sdk}
-              name={name}
-              symbol={symbol}
+              token={token}
               balance={ValueRounder.ceil(utils.formatEther(balance))!}
             />
           ))}

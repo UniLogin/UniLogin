@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {TokensPrices} from '@unilogin/commons';
+import {TokensPrices, TokenDetails} from '@unilogin/commons';
 import UniLoginSdk from '@unilogin/sdk';
 import Spinner from './Spinner';
 import './../styles/base/assetsItem.sass';
@@ -12,12 +12,12 @@ import {Erc20Icon} from './Erc20Icon';
 
 export interface AssetProps {
   sdk: UniLoginSdk;
-  name: string;
-  symbol: string;
+  token: TokenDetails;
   balance: string | null;
 }
 
-export const Asset = ({sdk, name, symbol, balance}: AssetProps) => {
+export const Asset = ({sdk, token, balance}: AssetProps) => {
+  const {name, symbol} = token;
   const [usdAmount, setUsdAmount] = useState<string>('');
   const [usdPrice, setUsdPrice] = useState<string>('');
 
