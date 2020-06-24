@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {utils, Wallet, Contract} from 'ethers';
 import {deployContract, MockProvider} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, sleep, waitUntil, BalanceChecker} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, sleep, waitUntil, BalanceChecker, ProviderService} from '@unilogin/commons';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {DeploymentReadyObserver} from '../../../src/core/observers/DeploymentReadyObserver';
 
@@ -20,7 +20,7 @@ describe('INT: DeploymentReadyObserver', () => {
     provider = new MockProvider();
     [wallet] = provider.getWallets();
     callback = sinon.spy();
-    balanceChecker = new BalanceChecker(provider);
+    balanceChecker = new BalanceChecker(new ProviderService(provider));
   });
 
   describe('ether', () => {

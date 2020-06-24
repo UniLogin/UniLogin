@@ -6,10 +6,10 @@ import {InvalidContract} from '../../core/utils/errors/errors';
 import {ProviderService} from './ProviderService';
 
 export class BalanceChecker {
-  private providerService: ProviderService;
+  private provider: providers.Provider;
 
-  constructor(private provider: providers.Provider) {
-    this.providerService = new ProviderService(provider);
+  constructor(private providerService: ProviderService) {
+    this.provider = providerService.getProvider();
   }
 
   getBalance(walletAddress: string, tokenAddress: string): Promise<utils.BigNumber> {

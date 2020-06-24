@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {utils, Wallet, Contract} from 'ethers';
 import {deployContract, MockProvider} from 'ethereum-waffle';
-import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails, normalizeBigNumber} from '@unilogin/commons';
+import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, BalanceChecker, TokenDetails, normalizeBigNumber, ProviderService} from '@unilogin/commons';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {BalanceObserver} from '../../../src/core/observers/BalanceObserver';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
@@ -27,7 +27,7 @@ describe('INT: BalanceObserver', () => {
         {address: mockToken.address, symbol: 'MCK', name: 'Mock Token'},
       ];
 
-      balanceChecker = new BalanceChecker(provider);
+      balanceChecker = new BalanceChecker(new ProviderService(provider));
       balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: supportedTokens} as TokensDetailsStore, 100);
     });
 

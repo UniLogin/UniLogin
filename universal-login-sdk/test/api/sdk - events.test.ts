@@ -6,7 +6,7 @@ import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG, TEST_GAS_PRICE_IN_TOKEN} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
-import {mineBlock} from '@unilogin/contracts/testutils';
+import {mineBlock} from '@unilogin/commons';
 import basicSDK from '../fixtures/basicSDK';
 import UniLoginSdk from '../../src/api/sdk';
 import {DeployedWallet} from '../../src';

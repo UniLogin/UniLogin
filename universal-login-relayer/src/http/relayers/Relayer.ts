@@ -104,7 +104,7 @@ class Relayer {
     const gasComputation = new GasComputation(contractService, providerService);
     const messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address, this.config.supportedTokens);
     const walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
-    const balanceChecker = new BalanceChecker(this.provider);
+    const balanceChecker = new BalanceChecker(providerService);
     const messageRepository = new MessageSQLRepository(this.database);
     const deploymentRepository = new SQLRepository<Deployment>(this.database, 'deployments');
     const executionQueue = new QueueSQLStore(this.database);

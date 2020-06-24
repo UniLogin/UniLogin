@@ -1,4 +1,4 @@
-import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE, DEPLOY_GAS_LIMIT, multiplyBy150Percent, BalanceChecker} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE, DEPLOY_GAS_LIMIT, multiplyBy150Percent, BalanceChecker, ProviderService} from '@unilogin/commons';
 import {expect} from 'chai';
 import {MockProvider} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
@@ -26,7 +26,7 @@ describe('UNIT: FutureWallet', () => {
     mockSDK = {
       provider: provider,
     } as any;
-    futureWallet = new FutureWallet(serializableFutureWallet, mockSDK, {} as ENSService, TEST_CONTRACT_ADDRESS, AddressZero, new BalanceChecker(provider));
+    futureWallet = new FutureWallet(serializableFutureWallet, mockSDK, {} as ENSService, TEST_CONTRACT_ADDRESS, AddressZero, new BalanceChecker(new ProviderService(provider)));
   });
 
   it('waits for Balance', async () => {

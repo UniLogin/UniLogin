@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {Wallet, utils} from 'ethers';
 import {MockProvider} from 'ethereum-waffle';
-import {TokensValueConverter, BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil} from '@unilogin/commons';
+import {TokensValueConverter, BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, ProviderService} from '@unilogin/commons';
 import {AggregateBalanceObserver} from '../../../src/core/observers/AggregateBalanceObserver';
 import {BalanceObserver} from '../../../src/core/observers/BalanceObserver';
 import {createMockedPriceObserver} from '../../mock/PriceObserver';
@@ -25,7 +25,7 @@ describe('INT: AggregateBalanceObserver', () => {
     provider = new MockProvider();
     [wallet] = provider.getWallets();
 
-    balanceChecker = new BalanceChecker(provider);
+    balanceChecker = new BalanceChecker(new ProviderService(provider));
     const observedTokens: TokenDetails[] = [
       ETHER_NATIVE_TOKEN,
     ];

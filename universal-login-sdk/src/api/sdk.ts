@@ -71,7 +71,7 @@ class UniLoginSdk {
     this.contractService = new ContractService(this.providerService);
     const blockNumberState = new BlockNumberState(this.providerService);
     this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.providerService, blockNumberState, this.config.storageService);
-    this.balanceChecker = new BalanceChecker(this.provider);
+    this.balanceChecker = new BalanceChecker(this.providerService);
     this.sufficientBalanceValidator = new SufficientBalanceValidator(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.config.observedTokensAddresses);

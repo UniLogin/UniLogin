@@ -4,12 +4,13 @@ import {BalanceChecker} from '../BalanceChecker';
 import {getFeeCurrencyValueFrom} from '../../../core/utils/getFeeCurrencyValueFrom';
 import {getTransferCurrencyValueFrom} from '../../../core/utils/getTransferCurrencyValueFrom';
 import {CurrencyValue} from '../../../core/models/CurrencyValue';
+import {ProviderService} from '../ProviderService';
 
 export class SufficientBalanceValidator implements IMessageValidator {
   private balanceChecker: BalanceChecker;
 
   constructor(private provider: providers.Provider) {
-    this.balanceChecker = new BalanceChecker(this.provider);
+    this.balanceChecker = new BalanceChecker(new ProviderService(this.provider));
   }
 
   private async ensureEnoughBalance(address: string, currencyValue: CurrencyValue): Promise<void> {
