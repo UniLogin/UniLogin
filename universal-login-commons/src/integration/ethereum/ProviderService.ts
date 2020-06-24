@@ -4,6 +4,7 @@ import {InvalidContract} from '../../core/utils/errors/errors';
 import {ETHER_NATIVE_TOKEN} from '../../core/constants/constants';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {fetchHardforkVersion} from './fetchHardforkVersion';
+import {NetworkVersion} from '../../core/utils/messages/computeGasData';
 
 export class ProviderService {
   constructor(private provider: providers.Provider) {
@@ -56,7 +57,7 @@ export class ProviderService {
     return this.provider;
   }
 
-  async fetchHardforkVersion() {
+  async fetchHardforkVersion(): Promise<NetworkVersion>{
     return fetchHardforkVersion(this.provider);
   }
 }
