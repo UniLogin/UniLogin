@@ -39,7 +39,7 @@ export const Asset = ({sdk, token, balance}: AssetProps) => {
       <div className="assets-item-row">
         <div className="assets-item-left">
           <div className="assets-img-wrapper">
-            <Erc20Icon symbol={symbol} className="currency-accordion-img" />
+            <Erc20Icon token={token} className="currency-accordion-img" />
           </div>
           <div>
             <p className="assets-name">{name}</p>
