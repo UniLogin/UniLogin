@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
 import {utils, Wallet, Contract} from 'ethers';
 import {MockProvider} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO, StoredFutureWallet, BalanceChecker} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO, StoredFutureWallet, BalanceChecker, ProviderService} from '@unilogin/commons';
 import {gnosisSafe} from '@unilogin/contracts';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {FutureWalletFactory} from '../../src/api/FutureWalletFactory';
@@ -48,7 +48,7 @@ describe('INT: FutureWalletFactory', () => {
       futureWalletConfig,
       new ENSService(provider, futureWalletConfig.ensAddress, ensRegistrar.address),
       {config: {applicationInfo: TEST_APPLICATION_INFO}, provider, relayerApi} as any,
-      new BalanceChecker(provider),
+      new BalanceChecker(new ProviderService(provider)),
     );
   });
 

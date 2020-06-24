@@ -1,12 +1,12 @@
 import {expect} from 'chai';
 import {loadFixture, deployContract, MockProvider} from 'ethereum-waffle';
-import {getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS} from '@unilogin/commons';
+import {getContractHash, WALLET_MASTER_VERSIONS, PROXY_VERSIONS, ProviderService} from '@unilogin/commons';
 import MockContract from '../../dist/contracts/MockContract.json';
 import {Contract, Wallet} from 'ethers';
 import walletAndProxy from '../fixtures/walletAndProxy';
 import basicWalletAndProxy from '../fixtures/basicWalletAndProxy';
 import {setupGnosisSafeContractFixture} from '../fixtures/gnosisSafe';
-import {ContractService, ProviderService} from '../../src';
+import {ContractService} from '../../src';
 import {beta2} from '../../src/index';
 
 const {WalletProxy, WalletContract} = beta2;

@@ -1,5 +1,4 @@
-import {createKeyPair, TEST_EXECUTION_OPTIONS, KeyPair} from '@unilogin/commons';
-import {ProviderService} from '@unilogin/contracts';
+import {createKeyPair, TEST_EXECUTION_OPTIONS, KeyPair, ProviderService} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import chai, {expect} from 'chai';
 import {MockProvider, solidity} from 'ethereum-waffle';
@@ -10,9 +9,9 @@ import WalletEventsObserverFactory from '../../../src/core/observers/WalletEvent
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
 import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
-import {setupWalletContract, mineBlock} from '@unilogin/contracts/testutils';
+import {setupWalletContract} from '@unilogin/contracts/testutils';
 import {Contract} from 'ethers';
-import {waitExpect} from '@unilogin/commons/testutils';
+import {waitExpect, mineBlock} from '@unilogin/commons/testutils';
 
 chai.use(solidity);
 chai.use(sinonChai);

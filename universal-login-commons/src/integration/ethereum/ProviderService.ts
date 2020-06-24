@@ -1,5 +1,7 @@
-import {providers} from 'ethers';
-import {fetchHardforkVersion, isContract} from '@unilogin/commons';
+import {providers, utils} from 'ethers';
+import {ensure} from '../../core/utils/errors/ensure';
+import {fetchHardforkVersion} from './fetchHardforkVersion';
+import {NetworkVersion} from '../../core/utils/messages/computeGasData';
 
 export class ProviderService {
   constructor(private provider: providers.Provider) {
@@ -9,8 +11,10 @@ export class ProviderService {
     return this.provider.getCode(contractAddress);
   }
 
-  isContract(address: string) {
-    return isContract(this.provider, address);
+  async isContract(address: string) {
+    const bytecode = await this.getCode(address);
+    ensure(bytecode.length > 0, Error, 'Empty bytecode');
+    return bytecode !== '0x';
   }
 
   getBlockNumber() {
@@ -29,11 +33,15 @@ export class ProviderService {
     return this.provider.removeListener(eventType, listener);
   }
 
+  getEthBalance(walletAddress: string): Promise<utils.BigNumber> {
+    return this.provider.getBalance(walletAddress);
+  }
+
   getProvider() {
     return this.provider;
   }
 
-  async fetchHardforkVersion() {
+  async fetchHardforkVersion(): Promise<NetworkVersion> {
     return fetchHardforkVersion(this.provider);
   }
 }

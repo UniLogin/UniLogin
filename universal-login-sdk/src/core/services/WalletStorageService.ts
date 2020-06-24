@@ -1,7 +1,6 @@
 import {providers} from 'ethers';
 import {asAnyOf, asObject, asString, cast, asExactly} from '@restless/sanitizers';
-import {ProviderService} from '@unilogin/contracts';
-import {ApplicationWallet, SerializableFutureWallet, Network} from '@unilogin/commons';
+import {ApplicationWallet, SerializableFutureWallet, Network, ProviderService} from '@unilogin/commons';
 import {WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';

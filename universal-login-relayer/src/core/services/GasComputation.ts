@@ -1,5 +1,5 @@
-import {Message} from '@unilogin/commons';
-import {calculateBaseGas, ContractService, ProviderService} from '@unilogin/contracts';
+import {Message, ProviderService} from '@unilogin/commons';
+import {calculateBaseGas, ContractService} from '@unilogin/contracts';
 
 export class GasComputation {
   constructor(private contractService: ContractService, private providerService: ProviderService) {

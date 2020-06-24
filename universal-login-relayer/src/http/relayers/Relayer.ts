@@ -24,7 +24,7 @@ import {MessageStatusService} from '../../core/services/execution/messages/Messa
 import {Beta2Service} from '../../integration/ethereum/Beta2Service';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
-import {BalanceChecker, GasPriceOracle, PublicRelayerConfig, TokenPricesService, TokenDetailsService} from '@unilogin/commons';
+import {BalanceChecker, GasPriceOracle, PublicRelayerConfig, TokenPricesService, TokenDetailsService, ProviderService} from '@unilogin/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
@@ -33,7 +33,7 @@ import DeploymentExecutor from '../../integration/ethereum/DeploymentExecutor';
 import {MinedTransactionHandler} from '../../core/services/execution/MinedTransactionHandler';
 import {httpsRedirect} from '../middlewares/httpsRedirect';
 import {GasComputation} from '../../core/services/GasComputation';
-import {ContractService, ProviderService} from '@unilogin/contracts';
+import {ContractService} from '@unilogin/contracts';
 import {MessageHandlerValidator} from '../../core/services/validators/MessageHandlerValidator';
 import {WalletContractService} from '../../integration/ethereum/WalletContractService';
 import {GnosisSafeService} from '../../integration/ethereum/GnosisSafeService';
@@ -104,7 +104,7 @@ class Relayer {
     const gasComputation = new GasComputation(contractService, providerService);
     const messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address, this.config.supportedTokens);
     const walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
-    const balanceChecker = new BalanceChecker(this.provider);
+    const balanceChecker = new BalanceChecker(providerService);
     const messageRepository = new MessageSQLRepository(this.database);
     const deploymentRepository = new SQLRepository<Deployment>(this.database, 'deployments');
     const executionQueue = new QueueSQLStore(this.database);

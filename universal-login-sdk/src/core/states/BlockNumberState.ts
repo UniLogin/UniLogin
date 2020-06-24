@@ -1,4 +1,4 @@
-import {ProviderService} from '@unilogin/contracts';
+import {ProviderService} from '@unilogin/commons';
 import {ReferenceCountedState} from './ReferenceCountedState';
 
 export class BlockNumberState extends ReferenceCountedState<number> {

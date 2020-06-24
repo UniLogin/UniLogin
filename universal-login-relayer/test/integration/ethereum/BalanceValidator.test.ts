@@ -1,13 +1,12 @@
 import {BalanceValidator} from '../../../src/integration/ethereum/BalanceValidator';
-import {BalanceChecker, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {BalanceChecker, ETHER_NATIVE_TOKEN, ProviderService} from '@unilogin/commons';
 import {utils} from 'ethers';
-import {Provider} from 'ethers/providers';
 import {AddressZero} from 'ethers/constants';
 import {NotEnoughBalance} from '../../../src/core/utils/errors';
 import {expect} from 'chai';
 
 describe('UNIT: BalanceValidator', () => {
-  const balanceChecker = new BalanceChecker({} as Provider);
+  const balanceChecker = new BalanceChecker({} as ProviderService);
   (balanceChecker as any).getBalance = () => utils.bigNumberify('2');
 
   const deploymentBalanceChecker = new BalanceValidator(balanceChecker);

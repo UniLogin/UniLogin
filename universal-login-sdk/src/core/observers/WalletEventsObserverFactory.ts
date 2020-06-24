@@ -1,8 +1,7 @@
-import {ProviderService} from '@unilogin/contracts';
 import {WalletEventCallback, WalletEventFilter, WalletEventType} from '../models/events';
 import {WalletEventsObserver} from './WalletEventsObserver';
 import {Callback} from 'reactive-properties';
-import {ensureNotNullish, Nullable} from '@unilogin/commons';
+import {ensureNotNullish, Nullable, ProviderService} from '@unilogin/commons';
 import {InvalidObserverState, MissingParameter} from '../utils/errors';
 import {BlockNumberState} from '../states/BlockNumberState';
 import {IStorageService} from '../models/IStorageService';

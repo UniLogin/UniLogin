@@ -1,5 +1,5 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle, TokenPricesService} from '@unilogin/commons';
-import {ContractService, ProviderService} from '@unilogin/contracts';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle, TokenPricesService, ProviderService} from '@unilogin/commons';
+import {ContractService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
@@ -71,7 +71,7 @@ class UniLoginSdk {
     this.contractService = new ContractService(this.providerService);
     const blockNumberState = new BlockNumberState(this.providerService);
     this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.providerService, blockNumberState, this.config.storageService);
-    this.balanceChecker = new BalanceChecker(this.provider);
+    this.balanceChecker = new BalanceChecker(this.providerService);
     this.sufficientBalanceValidator = new SufficientBalanceValidator(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.config.observedTokensAddresses);

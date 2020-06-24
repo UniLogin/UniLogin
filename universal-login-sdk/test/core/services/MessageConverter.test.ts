@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {utils, Contract} from 'ethers';
 import {MockProvider} from 'ethereum-waffle';
-import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, KeyPair} from '@unilogin/commons';
-import {ContractService, ProviderService} from '@unilogin/contracts';
+import {TEST_CONTRACT_ADDRESS, DEFAULT_GAS_PRICE, ETHER_NATIVE_TOKEN, KeyPair, ProviderService} from '@unilogin/commons';
+import {ContractService} from '@unilogin/contracts';
 import {setupWalletContract} from '@unilogin/contracts/testutils';
 import {MessageConverter} from '../../../src/core/services/MessageConverter';
 

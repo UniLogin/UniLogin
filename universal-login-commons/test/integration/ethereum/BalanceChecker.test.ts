@@ -6,6 +6,7 @@ import {ETHER_NATIVE_TOKEN} from '../../../src/core/constants/constants';
 import MockToken from '../../fixtures/MockToken.json';
 import {TEST_ACCOUNT_ADDRESS} from '../../../src/core/constants/test';
 import {WeiPerEther} from 'ethers/constants';
+import {ProviderService} from '../../../src/integration/ethereum/ProviderService';
 
 chai.use(solidity);
 
@@ -18,7 +19,7 @@ describe('INT: BalanceChecker', () => {
   beforeEach(() => {
     provider = new MockProvider();
     [wallet] = provider.getWallets();
-    balanceChecker = new BalanceChecker(provider);
+    balanceChecker = new BalanceChecker(new ProviderService(provider));
   });
 
   describe('ETH', () => {

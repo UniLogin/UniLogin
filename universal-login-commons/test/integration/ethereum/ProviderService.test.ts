@@ -1,28 +1,57 @@
 import {expect} from 'chai';
-import sinon from 'sinon';
-import {loadFixture, MockProvider} from 'ethereum-waffle';
-import {getDeployedBytecode, TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
-import {mockProviderWithBlockNumber} from '@unilogin/commons/testutils';
-import {deployWalletContract} from '../../src/beta2/deployMaster';
 import {providers, Wallet} from 'ethers';
-import walletAndProxy from '../fixtures/walletAndProxy';
-import {ProviderService} from '../../src/integration/ProviderService';
-import {mineBlock} from '../helpers/mineBlock';
-import {beta2} from '../../src/index';
+import {ProviderService} from '../../../src/integration/ethereum/ProviderService';
+import {mockProviderWithBlockNumber} from '../../helpers/mockProvider';
+import {MockProvider, deployContract} from 'ethereum-waffle';
+import {getDeployedBytecode} from '../../../src/core/utils/contracts/contractHelpers';
+import {TEST_ACCOUNT_ADDRESS} from '../../../src/core/constants/test';
+import sinon from 'sinon';
+import {mineBlock} from '../../helpers/mineBlock';
+import MockedTokens from '../../fixtures/MockToken.json';
+import {MockToken} from '../..';
 
-const {WalletContract} = beta2;
-
-describe('INT: ProviderService', async () => {
-  const expectedBytecode = `0x${getDeployedBytecode(WalletContract as any)}`;
+describe('INT: ProviderService', () => {
+  const expectedBytecode = `0x${getDeployedBytecode(MockedTokens as any)}`;
   let providerService: ProviderService;
   let provider: MockProvider;
   let deployer: Wallet;
 
   beforeEach(async () => {
-    ({provider} = await loadFixture(walletAndProxy));
+    provider = new MockProvider();
     (provider as any).pollingInterval = 5;
     [deployer] = provider.getWallets();
     providerService = new ProviderService(provider);
+  });
+
+  it('getBlockNumber should return increased block number', async () => {
+    const blockNumber = await providerService.getBlockNumber();
+    expect(blockNumber).at.least(0);
+    await deployContract(deployer, MockToken);
+    const blockNumber2 = await providerService.getBlockNumber();
+    expect(blockNumber2).greaterThan(blockNumber);
+    expect(blockNumber2).to.eq(blockNumber + 1);
+  });
+
+  it('getLogs should return array of logs if match the logs', async () => {
+    const expectedPartOfLog = {
+      transactionIndex: 0,
+      address: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
+      data: '0x00000000000000000000000000000000000000000000021e19e0c9bab2400000',
+      topics:
+        ['0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
+          '0x00000000000000000000000017ec8597ff92c3f44523bdc65bf0f1be632917ff',
+        ],
+      logIndex: 0,
+    };
+    const {address} = await deployContract(deployer, MockToken);
+    const logs = await providerService.getLogs({address});
+    expect(logs).to.have.length(1);
+    expect(logs[0]).to.deep.include(expectedPartOfLog);
+  });
+
+  it('should return empty array if does not match the logs', async () => {
+    expect(await providerService.getLogs({address: TEST_ACCOUNT_ADDRESS})).to.deep.eq([]);
   });
 
   describe('getCode', () => {
@@ -32,7 +61,7 @@ describe('INT: ProviderService', async () => {
     });
 
     it('getCode returns bytecode of existing contract', async () => {
-      const {address} = await deployWalletContract(deployer);
+      const {address} = await deployContract(deployer, MockToken);
       expect(await providerService.getCode(address)).to.eq(expectedBytecode);
     });
   });
@@ -44,39 +73,10 @@ describe('INT: ProviderService', async () => {
     });
 
     it('isContract returns true if contract exists', async () => {
-      const {address} = await deployWalletContract(deployer);
+      const {address} = await deployContract(deployer, MockToken);
       const isContract = await providerService.isContract(address);
       expect(isContract).to.be.true;
     });
-  });
-
-  it('getBlockNumber should return increased block number', async () => {
-    const blockNumber = await providerService.getBlockNumber();
-    expect(blockNumber).at.least(0);
-    await deployWalletContract(deployer);
-    const blockNumber2 = await providerService.getBlockNumber();
-    expect(blockNumber2).greaterThan(blockNumber);
-    expect(blockNumber2).to.eq(blockNumber + 1);
-  });
-
-  it('getLogs should return array of logs if match the logs', async () => {
-    const expectedPartOfLog = {
-      transactionIndex: 0,
-      address: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
-      data: '0x',
-      topics:
-        ['0x654abba5d3170185ed25c9b41f7d2094db3643986b05e9e9cab37028b800ad7e',
-          '0x0000000000000000000000000000000000000000000000000000000000000000'],
-      logIndex: 0,
-    };
-    const {address} = await deployWalletContract(deployer);
-    const logs = await providerService.getLogs({address});
-    expect(logs).to.have.length(1);
-    expect(logs[0]).to.deep.include(expectedPartOfLog);
-  });
-
-  it('should return empty array if does not match the logs', async () => {
-    expect(await providerService.getLogs({address: TEST_ACCOUNT_ADDRESS})).to.deep.eq([]);
   });
 
   describe('fetchHardforkVersion', () => {
@@ -124,7 +124,7 @@ describe('INT: ProviderService', async () => {
 
     it('should call callback multiply times on new blocks', async () => {
       const callback = sinon.spy();
-      const expectedCallbackCalls = 3;
+      const expectedCallbackCalls = 4;
       providerService.on('block', callback);
       await mineBlock(deployer);
       await mineBlock(deployer);
