@@ -11,6 +11,7 @@ export interface SdkConfig {
   notice: string;
   authorizationsObserverTick: number;
   balanceObserverTick: number;
+  erc721TokensObserverTick: number;
   priceObserverTick: number;
   mineableFactoryTick: number;
   mineableFactoryTimeout: number;
@@ -30,6 +31,7 @@ export const asSdkConfigOverrides = asPartialObject<SdkOverrides>({
   notice: asString,
   authorizationsObserverTick: asNumber,
   balanceObserverTick: asNumber,
+  erc721TokensObserverTick: asNumber,
   priceObserverTick: asNumber,
   mineableFactoryTick: asNumber,
   mineableFactoryTimeout: asNumber,
