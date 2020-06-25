@@ -63,5 +63,7 @@ export class FutureWallet implements SerializableFutureWallet {
     return new IncomingTransactionObserver(this.sdk.getNotifySdk(), this.contractAddress);
   }
 
-  getTopUpCurrencySymbol = () => this.sdk.tokensDetailsStore.getTokenBy('address', this.gasToken).symbol;
+  getTopUpToken = () => this.sdk.tokensDetailsStore.getTokenBy('address', this.gasToken);
+
+  getTopUpCurrencySymbol = () => this.getTopUpToken().symbol;
 }

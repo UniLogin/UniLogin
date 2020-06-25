@@ -39,19 +39,20 @@ export const ChooseTopUpToken = ({supportedTokens = ['ETH'], onClick, hideModal,
           <div className={classForComponent('top-up-choose-token')}>
             <ModalTitle>How do you wanna pay for account creation?</ModalTitle>
             <div className={classForComponent('top-up-methods')}>
-              {supportedTokens && supportedTokens.map((token) => {
+              {supportedTokens && supportedTokens.map((tokenSymbol) => {
+                const token = walletService.sdk.tokensDetailsStore.getTokenBy('symbol', tokenSymbol);
                 return (
                   <button
-                    key={token}
+                    key={tokenSymbol}
                     className={`${classForComponent('top-up-method')}`}
-                    id={`top-up-token-${token}`}
-                    onClick={() => handleClick(token)}
+                    id={`top-up-token-${tokenSymbol}`}
+                    onClick={() => handleClick(tokenSymbol)}
                     disabled={isClicked}>
                     <div className={classForComponent('top-up-radio-inner')}>
                       <div className={classForComponent('top-up-method-icons')}>
-                        {selectedToken === token ? <Spinner/> : <Erc20Icon symbol={token} className={classForComponent('top-up-method-icon')} />}
+                        {selectedToken === tokenSymbol ? <Spinner/> : <Erc20Icon token={token} className={classForComponent('top-up-method-icon')} />}
                       </div>
-                      <p className={classForComponent('top-up-method-title')}>{token}</p>
+                      <p className={classForComponent('top-up-method-title')}>{tokenSymbol}</p>
                     </div>
                   </button>
                 );
