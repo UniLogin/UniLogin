@@ -1,9 +1,11 @@
 import React from 'react';
 import {IErc721Token} from '@unilogin/commons';
 import {ThemedComponent} from './ThemedComponent';
+import {Spinner} from './Spinner';
+import {classForComponent} from '../utils/classFor';
 
 interface DisplayErc721TokensProps {
-  tokens: IErc721Token[];
+  tokens?: IErc721Token[];
 }
 
 interface TokenProps {
@@ -28,6 +30,9 @@ const Erc721Token = ({token}: TokenProps, key: string) => (
 );
 
 const Erc721Tokens = ({tokens}: DisplayErc721TokensProps) => {
+  if (tokens === undefined) {
+    return <div className="assets-centered-box"><Spinner className={classForComponent('spinner-center')}/></div>;
+  }
   if (tokens.length <= 0) {
     return <div className="assets-centered-box">You don&apos;t have any tokens yet 🧐</div>;
   }

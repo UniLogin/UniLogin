@@ -12,8 +12,6 @@ import {ThemedComponent} from './ThemedComponent';
 import {filterTokensWithZeroBalance} from '../../app/filterTokensWithZeroBalance';
 import {useErc721Tokens} from '../hooks/useErc721Tokens';
 import Erc721Tokens from './Erc721Tokens';
-import {Spinner} from './Spinner';
-import {classForComponent} from '../utils/classFor';
 
 export type AssetState = 'COLLECTABLES' | 'TOKENS';
 
@@ -42,8 +40,7 @@ export const Assets = ({deployedWallet}: AssetsProps) => {
               balance={ValueRounder.ceil(utils.formatEther(balance))!}
             />
           ))}
-          {currentState === 'COLLECTABLES' && erc721Tokens === undefined && <div className="assets-centered-box"><Spinner className={classForComponent('spinner-center')}/></div>}
-          {currentState === 'COLLECTABLES' && erc721Tokens !== undefined && <Erc721Tokens tokens={erc721Tokens!}/>}
+          {currentState === 'COLLECTABLES' && <Erc721Tokens tokens={erc721Tokens!}/>}
         </div>
       </div>
     </ThemedComponent>
