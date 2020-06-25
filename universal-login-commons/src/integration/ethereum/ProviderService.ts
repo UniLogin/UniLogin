@@ -4,11 +4,14 @@ import {fetchHardforkVersion} from './fetchHardforkVersion';
 import {NetworkVersion} from '../../core/utils/messages/computeGasData';
 
 export class ProviderService {
+  private cachedContractCodes: Record<string, string> = {};
+
   constructor(private provider: providers.Provider) {
   }
 
-  getCode(contractAddress: string) {
-    return this.provider.getCode(contractAddress);
+  async getCode(contractAddress: string) {
+    this.cachedContractCodes[contractAddress] = this.cachedContractCodes[contractAddress] || await this.provider.getCode(contractAddress);
+    return this.cachedContractCodes[contractAddress];
   }
 
   async isContract(address: string) {
