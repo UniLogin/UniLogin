@@ -31,7 +31,7 @@ export class DeployedWallet extends AbstractWallet {
   }
 
   async addKey(publicKey: string, executionOptions: ExecutionOptions): Promise<Execution> {
-    return this.selfExecute('addKey', [publicKey], executionOptions, '17000');
+    return this.selfExecute('addKey', [publicKey], executionOptions, '20000');
   }
 
   addKeys(publicKeys: string[], executionOptions: ExecutionOptions): Promise<Execution> {
@@ -74,7 +74,6 @@ export class DeployedWallet extends AbstractWallet {
 
   async execute(message: Partial<Message>): Promise<Execution> {
     const relayerConfig = this.sdk.getRelayerConfig();
-    console.log(message.gasLimit);
     ensure(message.gasLimit! <= relayerConfig.maxGasLimit, InvalidGasLimit, `${message.gasLimit} provided, when relayer's max gas limit is ${relayerConfig.maxGasLimit}`);
     const signedMessage: SignedMessage = await this.getSignedMessage(message);
     await this.sdk.sufficientBalanceValidator.validate(signedMessage);
@@ -110,8 +109,7 @@ export class DeployedWallet extends AbstractWallet {
   async selfExecute(method: string, args: any[], executionOptions: ExecutionOptions, gasLimitMargin: utils.BigNumberish): Promise<Execution> {
     const message = await this.getMessageFor(method, args, executionOptions);
     const estimatedGas = await this.estimateGas(message, gasLimitMargin);
-    console.log(estimatedGas.toString())
-    return this.execute({...message, gasLimit: estimatedGas, ...executionOptions});
+    return this.execute({...message, ...executionOptions, gasLimit: estimatedGas});
   }
 
   async getMessageFor(method: string, args: any[], executionOptions: ExecutionOptions): Promise<Partial<Message>> {
@@ -126,12 +124,8 @@ export class DeployedWallet extends AbstractWallet {
   }
 
   async estimateGasFor(method: string, args: any[], overrides: ExecutionOptions) {
-    console.log('wgaaat');
     const message = await this.getMessageFor(method, args, overrides);
-    console.log('what2')
-    const gas = await this.estimateGas(message);
-    console.log(gas.toString());
-    return gas;
+    return this.estimateGas(message);
   }
 
   async estimateGas(partialMessage: Partial<Message>, gasLimitMargin: utils.BigNumberish = '50000') {
@@ -141,12 +135,8 @@ export class DeployedWallet extends AbstractWallet {
       ...partialMessage,
     };
     const signedMessage = await this.getSignedMessage(message);
-    console.log(signedMessage);
-    const estimatedGas = await this.sdk.provider.estimateGas({to: this.contractAddress, from: this.sdk.getRelayerConfig().relayerAddress, data: encodeDataForExecTransaction(signedMessage)});
-    console.log('in estimate gas:', estimatedGas.toString());
-    const added = estimatedGas.add(gasLimitMargin).toString();
-    console.log('added', added.toString());
-    return '250000';
+    const estimatedGas = await this.sdk.provider.estimateGas({to: this.contractAddress, from: this.sdk.getRelayerConfig().relayerAddress, data: await this.sdk.walletContractService.encodeExecute(this.contractAddress, signedMessage)});
+    return estimatedGas.add(gasLimitMargin).toString();
   }
 
   async generateBackupCodes(executionOptions: ExecutionOptions): Promise<BackupCodesWithExecution> {

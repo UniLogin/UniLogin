@@ -89,7 +89,7 @@ describe('INT: WalletEventsObserverFactory', () => {
   });
 
   describe('beta3', () => {
-    before(async () => {
+    beforeEach(async () => {
       ({relayer, sdk} = await setupSdk(deployer));
       const providerService = new ProviderService(sdk.provider);
       const blockNumberState = new BlockNumberState(providerService);
@@ -117,6 +117,8 @@ describe('INT: WalletEventsObserverFactory', () => {
 
     it('subscribe to RemovedOwner', async () => {
       const callbackRemoveGnosis = sinon.spy();
+      const {waitToBeSuccess} = await deployedWallet.addKey(publicKey, TEST_EXECUTION_OPTIONS);
+      await waitToBeSuccess();
       const unsubscribe = factory.subscribe('RemovedOwner', filter, callbackRemoveGnosis);
       const execution = await deployedWallet.removeKey(publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
@@ -141,7 +143,7 @@ describe('INT: WalletEventsObserverFactory', () => {
       unsubscribe();
     });
 
-    after(async () => {
+    afterEach(async () => {
       await relayer.stop();
       factory.stop();
     });
