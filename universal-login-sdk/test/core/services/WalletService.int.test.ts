@@ -18,13 +18,10 @@ describe('INT: WalletService', () => {
   let wallet: Wallet;
   let mockToken: Contract;
 
-  before(async () => {
+  beforeEach(async () => {
     ([wallet] = new MockProvider().getWallets());
     ({sdk, relayer, mockToken} = await setupSdk(wallet));
     await sdk.start();
-  });
-
-  beforeEach(() => {
     walletService = new WalletService(sdk);
   });
 
@@ -86,7 +83,7 @@ describe('INT: WalletService', () => {
     const ensName = 'name2.mylogin.eth';
     let existingDeployedWallet: DeployedWallet;
 
-    before(async () => {
+    beforeEach(async () => {
       existingDeployedWallet = await createWallet(ensName, sdk, wallet);
     });
 
@@ -141,7 +138,7 @@ describe('INT: WalletService', () => {
     });
   });
 
-  after(async () => {
+  afterEach(async () => {
     sdk.stop();
     await relayer.stop();
   });
