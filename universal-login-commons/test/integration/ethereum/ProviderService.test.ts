@@ -55,6 +55,10 @@ describe('INT: ProviderService', () => {
   });
 
   describe('getCode', () => {
+    beforeEach(() => {
+      (providerService as any).cachedContractCodes = {};
+    });
+
     it('getCode returns 0x if contract does not exist', async () => {
       const bytecode = await providerService.getCode(TEST_ACCOUNT_ADDRESS);
       expect(bytecode).to.eq('0x');
@@ -63,6 +67,14 @@ describe('INT: ProviderService', () => {
     it('getCode returns bytecode of existing contract', async () => {
       const {address} = await deployContract(deployer, MockToken);
       expect(await providerService.getCode(address)).to.eq(expectedBytecode);
+    });
+
+    it('getCode returns bytecode of existing contract, cache it, and then load it from cache', async () => {
+      const addProviderGetCodeSpy = sinon.spy(provider, 'getCode');
+      const {address} = await deployContract(deployer, MockToken);
+      expect(await providerService.getCode(address)).to.eq(expectedBytecode);
+      expect(await providerService.getCode(address)).to.eq(expectedBytecode);
+      expect(addProviderGetCodeSpy).to.be.calledOnce;
     });
   });
 
