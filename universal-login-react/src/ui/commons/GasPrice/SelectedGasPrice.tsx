@@ -17,7 +17,7 @@ export const SelectedGasPrice = ({modeName, gasLimit, gasOption, usdAmount, onCl
     <div className="gas-price-selected-row">
       <div>
         <div className="transaction-fee-details">
-          <Erc20Icon symbol={gasOption.token.symbol} className="transaction-fee-item-icon" />
+          <Erc20Icon token={gasOption.token} className="transaction-fee-item-icon" />
           <div>
             <p className="transaction-fee-amount-usd">{calculateTransactionFee(usdAmount, gasLimit)} USD</p>
             <p className="transaction-fee-amount">{ValueRounder.ceil(safeMultiplyAndFormatEther(gasOption.gasPrice, gasLimit))} {gasOption.token.symbol}</p>

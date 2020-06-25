@@ -5,14 +5,15 @@ import {ChooseTopUpMethodHeader} from './ChooseTopUpMethodHeader';
 import {ModalProgressBar} from '../commons/ModalProgressBar';
 import {classForComponent} from '../utils/classFor';
 import {CompanyLogo} from '../commons/CompanyLogo';
+import {TokenDetails} from '@unilogin/commons';
 
 export interface ChooseTopUpMethodProps {
   setTopUpMethod: (any: any) => void;
   topUpMethod: TopUpMethod;
-  topUpCurrency: string;
+  topUpToken?: TokenDetails;
 }
 
-export const ChooseTopUpMethod = ({topUpMethod, setTopUpMethod, topUpCurrency}: ChooseTopUpMethodProps) => {
+export const ChooseTopUpMethod = ({topUpMethod, setTopUpMethod, topUpToken}: ChooseTopUpMethodProps) => {
   return (
     <ChooseTopUpMethodWrapper topUpMethod={topUpMethod}>
       <CompanyLogo />
@@ -22,7 +23,7 @@ export const ChooseTopUpMethod = ({topUpMethod, setTopUpMethod, topUpCurrency}: 
       <ChooseTopUpMethodHeader
         topUpMethod={topUpMethod}
         setTopUpMethod={setTopUpMethod}
-        topUpCurrency={topUpCurrency}
+        topUpToken={topUpToken}
       />
     </ChooseTopUpMethodWrapper>
   );

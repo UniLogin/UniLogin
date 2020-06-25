@@ -16,8 +16,7 @@ export const TransferDropdownItem = ({sdk, tokenDetails, balance, onClick, dropd
     <button onClick={() => onClick(tokenDetails)} className={dropdownClassName}>
       <Asset
         sdk={sdk}
-        name={tokenDetails.name}
-        symbol={tokenDetails.symbol}
+        token={tokenDetails}
         balance={balance}
       />
     </button>

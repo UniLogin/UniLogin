@@ -36,7 +36,7 @@ export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, mo
               onClick={() => onGasOptionChanged(option)}
             >
               <div className="transaction-fee-row">
-                <Erc20Icon symbol={option.token.symbol} className="transaction-fee-item-icon" />
+                <Erc20Icon token={option.token} className="transaction-fee-item-icon" />
                 <div className="transaction-fee-details">
                   <div>
                     <p className="transaction-fee-amount-usd">{calculateTransactionFee(usdAmount, gasLimit)} USD</p>
