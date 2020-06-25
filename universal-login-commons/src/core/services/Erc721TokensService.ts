@@ -45,9 +45,7 @@ export class Erc721TokensService {
         ETHERSCAN_API_URL.replace('api', `api-${this.network}`),
         OPENSEA_API_URL.replace('api', `${this.network}-api`),
       ];
-    } else if (this.network === 'ganache') {
-      return ['', ''];
-    } else if (this.network !== 'mainnet') {
+    } else if (this.network !== 'mainnet' && this.network !== 'ganache') {
       throw new InvalidNetwork();
     }
     return [ETHERSCAN_API_URL, OPENSEA_API_URL];
