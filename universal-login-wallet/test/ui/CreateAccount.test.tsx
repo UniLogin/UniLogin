@@ -2,9 +2,9 @@ import 'jsdom-global/register';
 import React from 'react';
 import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
-import {utils} from 'ethers';
+import {utils, Contract} from 'ethers';
 import {MockProvider} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, TEST_DAI_TOKEN} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {setupSdk} from '@unilogin/sdk/testutils';
 import App from '../../src/ui/react/App';
 import {Services} from '../../src/ui/createServices';
@@ -15,6 +15,7 @@ import {AppPage} from '../pages/AppPage';
 describe('UI: Creation flow', () => {
   let appWrapper: ReactWrapper;
   let services: Services;
+  let mockToken: Contract;
   let relayer: any;
   let provider: MockProvider;
   const expectedHomeBalance = '$1.98';
@@ -22,8 +23,8 @@ describe('UI: Creation flow', () => {
   before(async () => {
     provider = new MockProvider();
     const [wallet] = provider.getWallets();
-    ({relayer} = await setupSdk(wallet, '33113'));
-    services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address, TEST_DAI_TOKEN.address]);
+    ({relayer, mockToken} = await setupSdk(wallet, '33113'));
+    services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address, mockToken.address]);
   });
 
   it('create wallet and disconnect roundtrip', async () => {
