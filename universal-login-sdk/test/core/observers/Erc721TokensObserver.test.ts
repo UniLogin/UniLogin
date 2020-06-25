@@ -112,21 +112,19 @@ describe('INT: Erc721TokensObserver', () => {
 
     const unsubscribe1 = erc721TokensObserver.subscribe(callback1);
     const unsubscribe2 = erc721TokensObserver.subscribe(callback2);
-    await waitUntil(() => !!callback1.firstCall);
-    await waitUntil(() => !!callback2.firstCall);
 
     detailedMockedTokens.push(newDetailedMockedToken);
 
-    await waitUntil(() => !!callback1.secondCall);
-    await waitUntil(() => !!callback2.secondCall);
+    await waitUntil(() => !!callback1.firstCall);
+    await waitUntil(() => !!callback2.firstCall);
 
     unsubscribe1();
     unsubscribe2();
 
-    expect(callback1).to.have.been.calledTwice;
-    expect(callback2).to.have.been.calledTwice;
-    expect(callback1.secondCall.args[0] as IBasicToken[]).to.deep.eq(expectedTokens);
-    expect(callback2.secondCall.args[0] as IBasicToken[]).to.deep.eq(expectedTokens);
+    expect(callback1).to.have.been.calledOnce;
+    expect(callback2).to.have.been.calledOnce;
+    expect(callback1.firstCall.args[0] as IBasicToken[]).to.deep.eq(expectedTokens);
+    expect(callback2.firstCall.args[0] as IBasicToken[]).to.deep.eq(expectedTokens);
   });
 
   afterEach(async () => {

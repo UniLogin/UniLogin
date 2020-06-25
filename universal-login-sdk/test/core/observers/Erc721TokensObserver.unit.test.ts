@@ -33,22 +33,6 @@ describe('UNIT: Erc721TokensObserver', () => {
     expect(callback).to.have.been.calledOnce;
   });
 
-  it('2 subscriptions', async () => {
-    const callback1 = sinon.spy();
-    const callback2 = sinon.spy();
-
-    const unsubscribe1 = await sdk.subscribeToErc721Tokens(contractAddress, callback1);
-    const unsubscribe2 = await sdk.subscribeToErc721Tokens(contractAddress, callback2);
-    await waitUntil(() => !!callback1.firstCall);
-    await waitUntil(() => !!callback2.firstCall);
-
-    unsubscribe1();
-    unsubscribe2();
-
-    expect(callback1).to.have.been.calledOnce;
-    expect(callback2).to.have.been.calledOnce;
-  });
-
   after(async () => {
     await relayer.stop();
   });
