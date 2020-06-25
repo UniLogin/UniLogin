@@ -1,7 +1,7 @@
 import {providers, Contract} from 'ethers';
-import {WalletContractInterface} from '@unilogin/contracts';
+import {WalletContractInterface, encodeDataForExecuteSigned} from '@unilogin/contracts';
 import {IWalletContractServiceStrategy} from './WalletContractService';
-import {sign, signRelayerRequest as signRequest, RelayerRequest} from '@unilogin/commons';
+import {sign, signRelayerRequest as signRequest, RelayerRequest, SignedMessage} from '@unilogin/commons';
 import {WalletEventType} from '../../core/models/events';
 
 export class Beta2Service implements IWalletContractServiceStrategy {
@@ -43,6 +43,10 @@ export class Beta2Service implements IWalletContractServiceStrategy {
       default:
         throw TypeError(`Invalid event: ${event}`);
     }
+  }
+
+  encodeExecute(message: SignedMessage) {
+    return encodeDataForExecuteSigned(message);
   }
 
   signRelayerRequest(privateKey: string, relayerRequest: RelayerRequest) {

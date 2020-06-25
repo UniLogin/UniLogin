@@ -1,7 +1,7 @@
 import {providers, Contract, utils} from 'ethers';
-import {GnosisSafeInterface, signStringMessage, calculateGnosisStringHash, getPreviousOwner} from '@unilogin/contracts';
+import {GnosisSafeInterface, signStringMessage, calculateGnosisStringHash, getPreviousOwner, encodeDataForExecTransaction} from '@unilogin/contracts';
 import {IWalletContractServiceStrategy} from './WalletContractService';
-import {ensureNotFalsy, RelayerRequest, ensure} from '@unilogin/commons';
+import {ensureNotFalsy, RelayerRequest, ensure, SignedMessage} from '@unilogin/commons';
 import {WalletNotFound} from '../../core/utils/errors';
 
 export class GnosisSafeService implements IWalletContractServiceStrategy {
@@ -56,6 +56,10 @@ export class GnosisSafeService implements IWalletContractServiceStrategy {
       default:
         throw TypeError(`Invalid method: ${method}`);
     };
+  }
+
+  encodeExecute(message: SignedMessage) {
+    return encodeDataForExecTransaction(message);
   }
 
   getEventNameFor(event: string) {
