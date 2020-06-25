@@ -42,7 +42,8 @@ export const Assets = ({deployedWallet}: AssetsProps) => {
               balance={ValueRounder.ceil(utils.formatEther(balance))!}
             />
           ))}
-          {currentState === 'COLLECTABLES' && erc721Tokens !== undefined ? <Erc721Tokens tokens={erc721Tokens!}/> : <div className="assets-centered-box"><Spinner className={classForComponent('spinner-center')}/></div>}
+          {currentState === 'COLLECTABLES' && erc721Tokens === undefined && <div className="assets-centered-box"><Spinner className={classForComponent('spinner-center')}/></div>}
+          {currentState === 'COLLECTABLES' && erc721Tokens !== undefined && <Erc721Tokens tokens={erc721Tokens!}/>}
         </div>
       </div>
     </ThemedComponent>
