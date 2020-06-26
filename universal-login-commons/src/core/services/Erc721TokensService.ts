@@ -5,8 +5,6 @@ const OPENSEA_API_URL = 'https://api.opensea.io/api/v1/asset';
 
 const ETHERSCAN_API_URL = 'http://api.etherscan.io/api?module=account&action=tokennfttx&startblock=0&endblock=999999999&sort=asc&apikey=51GC96WCST6YU1BKYWGGX3PIT21UJPTFTE';
 
-export const implementedNetworksForErc721 = ['mainnet', 'rinkeby'];
-
 export class Erc721TokensService {
   private etherscanApi?: string;
   private openseaApi?: string;
@@ -15,8 +13,8 @@ export class Erc721TokensService {
     [this.etherscanApi, this.openseaApi] = this.getApisUrls();
   }
 
-  static isNetworkSupported(network: string) {
-    return (implementedNetworksForErc721.indexOf(network) >= 0);
+  isServiceNetworkSupported() {
+    return (['mainnet', 'rinkeby'].indexOf(this.network) >= 0);
   }
 
   getTokensForAddress = async (walletAddress: string) => {

@@ -1,12 +1,12 @@
 import React from 'react';
-import {IErc721Token, Erc721TokensService} from '@unilogin/commons';
+import {IErc721Token} from '@unilogin/commons';
 import {ThemedComponent} from './ThemedComponent';
 import {Spinner} from './Spinner';
 import {classForComponent} from '../utils/classFor';
-import {DeployedWallet} from '@unilogin/sdk';
+import UniLoginSdk from '@unilogin/sdk';
 
 interface DisplayErc721TokensProps {
-  deployedWallet: DeployedWallet;
+  sdk: UniLoginSdk;
   tokens?: IErc721Token[];
 }
 
@@ -31,13 +31,13 @@ const Erc721Token = ({token}: TokenProps, key: string) => (
   </ThemedComponent>
 );
 
-const Erc721Tokens = ({deployedWallet, tokens}: DisplayErc721TokensProps) => {
+const Erc721Tokens = ({sdk, tokens}: DisplayErc721TokensProps) => {
   if (tokens === undefined) {
     return <div className="assets-centered-box"><Spinner className={classForComponent('spinner-center')}/></div>;
   }
   if (tokens.length <= 0) {
-    const network = deployedWallet.sdk.config.network;
-    const responseText = Erc721TokensService.isNetworkSupported(network) ? 'You don\'t have any tokens yet 🧐' : `ERC721 tokens are not supported on ${network}`;
+    const network = sdk.config.network;
+    const responseText = sdk.erc721TokensService.isServiceNetworkSupported() ? 'You don\'t have any tokens yet 🧐' : `ERC721 tokens are not supported on ${network}`;
     return <div className="assets-centered-box">{responseText}</div>;
   }
   return <>{tokens.map(token => (
