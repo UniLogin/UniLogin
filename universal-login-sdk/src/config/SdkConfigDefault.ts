@@ -20,7 +20,7 @@ export const SdkConfigDefault: SdkConfig = {
   ],
   notice: '',
   authorizationsObserverTick: 1000,
-  balanceObserverTick: 1000 * 5,
+  balanceObserverTick: 1000 * 8,
   erc721TokensObserverTick: 1000 * 5,
   priceObserverTick: 1000 * 60 * 5,
   mineableFactoryTick: 500,
