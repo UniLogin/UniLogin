@@ -40,7 +40,7 @@ export const Assets = ({deployedWallet}: AssetsProps) => {
               balance={ValueRounder.ceil(utils.formatEther(balance))!}
             />
           ))}
-          {currentState === 'COLLECTABLES' && <Erc721Tokens tokens={erc721Tokens!}/>}
+          {currentState === 'COLLECTABLES' && <Erc721Tokens deployedWallet={deployedWallet} tokens={erc721Tokens!}/>}
         </div>
       </div>
     </ThemedComponent>

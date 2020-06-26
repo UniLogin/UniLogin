@@ -103,4 +103,4 @@ export {ProviderService} from './integration/ethereum/ProviderService';
 export {fetchHardforkVersion} from './integration/ethereum/fetchHardforkVersion';
 export {CoingeckoApi} from './integration/http/CoingeckoApi';
 export {IErc721Token, IBasicErc721Token as IBasicToken} from './core/models/Erc721Token';
-export {Erc721TokensService} from './core/services/Erc721TokensService';
+export {Erc721TokensService, implementedNetworksForErc721} from './core/services/Erc721TokensService';
