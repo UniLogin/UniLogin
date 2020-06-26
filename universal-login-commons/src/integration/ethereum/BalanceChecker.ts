@@ -6,6 +6,8 @@ import {InvalidContract} from '../../core/utils/errors/errors';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 
 export class BalanceChecker {
+  private tokenContracts: Record<string, Contract> = {};
+
   constructor(private providerService: ProviderService) {
   }
 
@@ -18,7 +20,7 @@ export class BalanceChecker {
 
   private async getTokenBalance(walletAddress: string, tokenAddress: string): Promise<utils.BigNumber> {
     ensure(await this.providerService.isContract(tokenAddress), InvalidContract, tokenAddress);
-    const token = new Contract(tokenAddress, IERC20.abi, this.providerService.getProvider());
-    return token.balanceOf(walletAddress);
+    this.tokenContracts[tokenAddress] = this.tokenContracts[tokenAddress] || new Contract(tokenAddress, IERC20.abi, this.providerService.getProvider());
+    return this.tokenContracts[tokenAddress].balanceOf(walletAddress);
   }
 }
