@@ -29,12 +29,7 @@ export class CoingeckoApi {
   findIdBySymbol(tokensList: CoingeckoToken[], token: TokenDetails) {
     const symbol = token.symbol.toLowerCase();
     const matchedTokens = tokensList.filter(token => token.symbol === symbol);
-    switch (matchedTokens?.length) {
-      case 1:
-        return matchedTokens[0].id;
-      default:
-        return this.generateIdFromName(token.name);
-    }
+    return matchedTokens.length === 1 ? matchedTokens[0].id : this.generateIdFromName(token.name);
   }
 
   private generateIdFromName = (name: string) => name.split(' ').join('-').toLowerCase();
