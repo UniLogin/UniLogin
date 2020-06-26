@@ -6,7 +6,8 @@ export class TokenPricesService {
   constructor(private coingeckoApi = new CoingeckoApi()) {};
 
   async getPrices(tokensDetails: TokenDetails[]): Promise<TokensPrices> {
-    const tokenDetailsWithCoingeckoId = tokensDetails.map(token => ({...token, coingeckoId: this.coingeckoApi.getCoingeckoId(token)}));
+    const coingeckoTokensList = await this.coingeckoApi.lazyGetTokensList();
+    const tokenDetailsWithCoingeckoId = tokensDetails.map(token => ({...token, coingeckoId: this.coingeckoApi.findIdBySymbol(coingeckoTokensList, token)}));
     const pricesWithCoingeckoId = await this.coingeckoApi.fetchTokenInfo(tokenDetailsWithCoingeckoId, ['ETH', 'USD']);
     return this.getPricesFromPricesWithCoingeckoId(tokenDetailsWithCoingeckoId, pricesWithCoingeckoId);
   }
