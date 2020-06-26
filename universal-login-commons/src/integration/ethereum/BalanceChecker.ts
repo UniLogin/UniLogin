@@ -20,7 +20,7 @@ export class BalanceChecker {
 
   private async getTokenBalance(walletAddress: string, tokenAddress: string): Promise<utils.BigNumber> {
     ensure(await this.providerService.isContract(tokenAddress), InvalidContract, tokenAddress);
-    this.tokenContracts[tokenAddress] = this.tokenContracts[tokenAddress] || new Contract(tokenAddress, IERC20.abi, this.providerService.getProvider())
+    this.tokenContracts[tokenAddress] = this.tokenContracts[tokenAddress] || new Contract(tokenAddress, IERC20.abi, this.providerService.getProvider());
     return this.tokenContracts[tokenAddress].balanceOf(walletAddress);
   }
 }

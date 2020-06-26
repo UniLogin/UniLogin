@@ -1,6 +1,6 @@
 import {cast, Sanitizer, asNumber, asObject, asString, asArray} from '@restless/sanitizers';
 import {http} from './http';
-import {fetch, ObservedCurrency, TokenDetails, Lazy} from '../..';
+import {fetch, ObservedCurrency, TokenDetails} from '../..';
 
 export interface CoingeckoToken {
   id: string;
