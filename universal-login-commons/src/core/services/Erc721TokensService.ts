@@ -15,8 +15,12 @@ export class Erc721TokensService {
     [this.etherscanApi, this.openseaApi] = this.getApisUrls();
   }
 
+  static isNetworkSupported(network: string) {
+    return (implementedNetworksForErc721.indexOf(network) >= 0);
+  }
+
   getTokensForAddress = async (walletAddress: string) => {
-    return (!this.etherscanApi) ? [] : (await (await fetch(`${this.etherscanApi}&address=${walletAddress}`)).json()).result as IBasicErc721Token[];
+    return this.etherscanApi ? (await (await fetch(`${this.etherscanApi}&address=${walletAddress}`)).json()).result as IBasicErc721Token[] : [];
   };
 
   getTokensDetails = async (basicTokens: IBasicErc721Token[]) => {
