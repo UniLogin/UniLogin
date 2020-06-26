@@ -7,14 +7,79 @@
     @media only screen and (max-width: 600px)
       min-width: 100%
 
+  .assets-navigation
+    margin-bottom: 16px
+    width: max-content
+    position: relative
+
+  .assets-navigation > a
+    margin: 0 17px
+
   .assets-title
-    margin: 0 0 8px
-    font-size: 16px
-    font-weight: normal
-    text-transform: capitalize
-    color: #31405E
+    margin: 0 auto 8px
+    font-weight: 600
+    font-size: 10px
+    font-style: normal
+    text-transform: uppercase
+    line-height: 12px
+    text-align: center
+    text-decoration: none
+    cursor: pointer
+
+  .assets-navigation::after
+    content: ''
+    position: absolute
+    bottom: -5px
+    left: 0
+    width: 100%
+    border: 1px solid #E4F3F6
+    border-radius: 4px
+    z-index: 1
+
+    &:hover
+      opacity: 1 !important
+      color: #2EC9F5 !important
+
+    @media only screen and (max-width: 600px)
+      height: auto
+      padding: 0
+
+  .assets-selected-title
+    @extend .assets-title
+    color: #000000 !important
+    pointer-events: none !important
+    position: relative
+
+  .assets-selected-title::after
+    content: ''
+    position: absolute
+    bottom: -6px
+    left: -17px
+    width: calc(100% + 30px)
+    border: 2px solid #2EC9F5
+    border-radius: 4px
+    z-index: 2
 
   .assets-list
     background: #FFFFFF
     border: 1px solid #C7C7D4
     border-radius: 2px
+    overflow-y: scroll
+    max-height: 200px
+
+    @media only screen and (max-width: 600px)
+      padding: 0
+      border-radius: 3px
+      max-height: unset
+
+  .universal-login-assets-item + .universal-login-assets-item
+    border-top: 1px solid
+
+  .assets-centered-box
+    height: 200px
+    width: 100%
+    font-size: 15px
+    font-style: normal
+    display: flex
+    align-items: center
+    justify-content: center

@@ -128,11 +128,15 @@
     font-weight: normal
     font-size: 14px
     max-height: 30px
-    overflow-y: auto
     text-decoration: none
     color: #0F0C4A
     text-align: left
     margin: 0
+    display: -webkit-box
+    -webkit-box-orient: vertical
+    -webkit-line-clamp: 2
+    overflow: hidden
+    text-overflow: ellipsis
 
     &:visited
       color: #0F0C4A

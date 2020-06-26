@@ -22,7 +22,7 @@ const Erc721Token = ({token}: TokenProps, key: string) => (
       </div>
       <div className="assets-token-content">
         <div className="assets-token-title-section">
-          <h5 className="assets-one-line-paragraph assets-token-family-name">{token.tokenName}</h5>
+          <h4 className="assets-one-line-paragraph assets-token-family-name">{token.tokenName}</h4>
           <a className="assets-token-name" href={token.externalink} target="_blank" rel="noopener noreferrer">{token.name}</a>
         </div>
         <div className="assets-token-description">{token.description}</div>
