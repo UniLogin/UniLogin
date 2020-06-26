@@ -78,7 +78,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
               <GasPrice
                 isDeployed={true}
                 deployedWallet={deployedWallet}
-                gasLimit={estimatedGas ? (estimatedGas as utils.BigNumberish).toString() as string : '0'}
+                gasLimit={estimatedGas}
                 onGasParametersChanged={setGasParameters}
                 sdk={deployedWallet.sdk}
               />
