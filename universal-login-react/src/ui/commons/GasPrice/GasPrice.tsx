@@ -86,13 +86,13 @@ export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gas
     <>
       <GasPriceTitle />
       <div className="gas-price-dropdown">
-        {gasLimit ? <SelectedGasPrice
+        <SelectedGasPrice
           modeName={modeName}
           gasLimit={gasLimit}
           usdAmount={usdAmount}
           gasOption={gasOption}
           onClick={() => setContentVisibility(!contentVisibility)}
-        /> : <Spinner/>}
+        />
         {contentVisibility &&
           <div className="gas-price-selector">
             <GasPriceTitle />
