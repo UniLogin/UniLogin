@@ -37,7 +37,7 @@ const Erc721Tokens = ({sdk, tokens}: DisplayErc721TokensProps) => {
   }
   if (tokens.length <= 0) {
     const network = sdk.config.network;
-    const responseText = sdk.erc721TokensService.isServiceNetworkSupported() ? 'You don\'t have any tokens yet 🧐' : `ERC721 tokens are not supported on ${network}`;
+    const responseText = sdk.erc721TokensService.isOnSupportedNetwork() ? 'You don\'t have any tokens yet 🧐' : `ERC721 tokens are not supported on ${network}`;
     return <div className="assets-centered-box">{responseText}</div>;
   }
   return <>{tokens.map(token => (

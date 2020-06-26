@@ -13,7 +13,7 @@ export class Erc721TokensService {
     [this.etherscanApi, this.openseaApi] = this.getApisUrls();
   }
 
-  isServiceNetworkSupported() {
+  isOnSupportedNetwork() {
     return (['mainnet', 'rinkeby'].indexOf(this.network) >= 0);
   }
 
