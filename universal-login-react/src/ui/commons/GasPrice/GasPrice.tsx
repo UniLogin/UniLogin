@@ -20,7 +20,7 @@ export interface GasPriceProps {
   deployedWallet?: DeployedWallet;
   sdk: UniLoginSdk;
   isDeployed: boolean;
-  gasLimit: utils.BigNumberish;
+  gasLimit?: utils.BigNumberish;
   onGasParametersChanged: OnGasParametersChanged;
 }
 
@@ -86,13 +86,13 @@ export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gas
     <>
       <GasPriceTitle />
       <div className="gas-price-dropdown">
-        <SelectedGasPrice
+        {gasLimit ? <SelectedGasPrice
           modeName={modeName}
           gasLimit={gasLimit}
           usdAmount={usdAmount}
           gasOption={gasOption}
           onClick={() => setContentVisibility(!contentVisibility)}
-        />
+        /> : <Spinner/>}
         {contentVisibility &&
           <div className="gas-price-selector">
             <GasPriceTitle />
@@ -101,7 +101,7 @@ export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gas
               modeName={modeName}
               onModeChanged={onModeChanged}
             />
-            <TransactionFeeChoose
+            {gasLimit ? <TransactionFeeChoose
               gasModes={gasModes}
               modeName={modeName}
               tokenAddress={gasOption.token.address}
@@ -109,7 +109,7 @@ export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gas
               usdAmount={usdAmount}
               tokensDetailsWithBalance={tokenDetailsWithBalance}
               onGasOptionChanged={onGasOptionSelected}
-            />
+            /> : <Spinner/>}
           </div>
         }
       </div>
