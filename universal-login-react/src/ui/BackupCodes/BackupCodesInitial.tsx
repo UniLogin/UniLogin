@@ -23,7 +23,7 @@ export const BackupCodesInitial = ({gasParameters, generateBackupCodes, deployed
       <GasPrice
         isDeployed={true}
         deployedWallet={deployedWallet}
-        gasLimit={estimatedGas ? estimatedGas.toString() : '0'}
+        gasLimit={estimatedGas}
         onGasParametersChanged={setGasParameters}
         sdk={deployedWallet.sdk}
       />
