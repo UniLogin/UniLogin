@@ -7,7 +7,7 @@ import {baseConfig} from './baseConfig';
 export const getConfig = () => ({
   ...baseConfig,
   network: 'rinkeby',
-  jsonRpcUrl: `https://rinkeby.infura.io/v3/${getEnv('INFURA_API_KEY', '')}`,
+  jsonRpcUrl: `https://eth-rinkeby.alchemyapi.io/v2/${getEnv('ALCHEMY_API_KEY', '')}`,
   ensAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
   ensRegistrars: ['unilogin.test'],
   ensRegistrar: '0x1BA9B86331DDcD63c2AcA7a98886F7e7C2788cD4',
