@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN} from '../../../src';
+import {TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN, TEST_TOKEN_DETAILS} from '../../../src';
 import {CoingeckoApi} from '../../../src/integration/http/CoingeckoApi';
 
 describe('UNIT: TokenPricesService', () => {
@@ -40,6 +40,28 @@ describe('UNIT: TokenPricesService', () => {
     it('eth', async () => {
       const priceInEth = await tokenPricesService.getTokenPriceInEth(ETHER_NATIVE_TOKEN);
       expect(priceInEth).eq(ETHPrices.eth);
+    });
+  });
+
+  describe('updateAaveTokenDetails', () => {
+    it('aave token', () => {
+      const aUsdcAddress = '0x9bA00D6856a4eDF4665BcA2C2309936572473B7E';
+      const aaveToken = {
+        symbol: 'aUSDC',
+        name: 'Aave Interest bearing USDC',
+        address: aUsdcAddress,
+      } as TokenDetails;
+      const modifiedToken = tokenPricesService.updateAaveTokenDetails(aaveToken);
+      expect(modifiedToken).deep.eq({
+        symbol: 'USDC',
+        name: 'USDC',
+        address: aUsdcAddress,
+      });
+    });
+
+    it('not aave token', () => {
+      const modifiedToken = tokenPricesService.updateAaveTokenDetails(TEST_TOKEN_DETAILS);
+      expect(modifiedToken).deep.eq(TEST_TOKEN_DETAILS);
     });
   });
 });
