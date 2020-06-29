@@ -3,10 +3,11 @@ import {utils} from 'ethers';
 import {GasOption, safeMultiplyAndFormatEther, ValueRounder} from '@unilogin/commons';
 import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';
 import {Erc20Icon} from '../Erc20Icon';
+import Spinner from '../Spinner';
 
 interface SelectedGasPriceProps {
   modeName: string;
-  gasLimit: utils.BigNumberish;
+  gasLimit?: utils.BigNumberish;
   usdAmount: utils.BigNumberish;
   onClick: () => void;
   gasOption: GasOption;
@@ -18,10 +19,10 @@ export const SelectedGasPrice = ({modeName, gasLimit, gasOption, usdAmount, onCl
       <div>
         <div className="transaction-fee-details">
           <Erc20Icon token={gasOption.token} className="transaction-fee-item-icon" />
-          <div>
+          {gasLimit ? <div>
             <p className="transaction-fee-amount-usd">{calculateTransactionFee(usdAmount, gasLimit)} USD</p>
             <p className="transaction-fee-amount">{ValueRounder.ceil(safeMultiplyAndFormatEther(gasOption.gasPrice, gasLimit))} {gasOption.token.symbol}</p>
-          </div>
+          </div> : <Spinner/>}
         </div>
       </div>
       <hr className="gas-price-selected-divider" />
