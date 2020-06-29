@@ -12,7 +12,7 @@ import {useHistory} from 'react-router';
 import {join} from 'path';
 import {ThemedComponent} from '../../commons/ThemedComponent';
 import {GasPrice} from '../../commons/GasPrice';
-import {DEFAULT_GAS_LIMIT, ensureNotFalsy, GasParameters} from '@unilogin/commons';
+import {ensureNotFalsy, GasParameters, createFullHexString} from '@unilogin/commons';
 import {FooterSection} from '../../commons/FooterSection';
 import {MissingParameter} from '../../../core/utils/errors';
 
@@ -26,7 +26,7 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
   const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
   const [deviceToRemove, setDeviceToRemove] = useState<string | undefined>(undefined);
-
+  const [estimatedGas] = useAsync(async () => gasParameters && deployedWallet.estimateGasFor('removeKey', [deviceToRemove], gasParameters), [gasParameters]);
   const history = useHistory();
 
   const onDeleteDevice = async () => {
@@ -65,7 +65,7 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
         deployedWallet={deployedWallet}
         sdk={deployedWallet.sdk}
         onGasParametersChanged={setGasParameters}
-        gasLimit={DEFAULT_GAS_LIMIT}
+        gasLimit={estimatedGas ? estimatedGas.toString() : '0'}
       />
       <div className="footer-buttons-row one">
         <button id="send-button" onClick={onDeleteDevice} className="footer-approve-btn" disabled={!gasParameters}>Confirm delete</button>

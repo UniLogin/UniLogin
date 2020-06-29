@@ -37,6 +37,7 @@ export const BackupCodes = ({deployedWallet, className}: BackupProps) => {
           isButtonDisabled={!gasParameters}
           deployedWallet={deployedWallet}
           setGasParameters={setGasParameters}
+          gasParameters={gasParameters}
           className={className}
         />
       );
