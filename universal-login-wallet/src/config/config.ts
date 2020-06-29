@@ -29,5 +29,6 @@ export default Object.freeze({
     jsonRpcUrl: process.env.JSON_RPC_URL!,
     tokens: [ETHER_NATIVE_TOKEN.address, ...getListFromEnv(process.env.TOKENS)],
     rampApiKey: process.env.RAMP_API_KEY,
+    apiKey: process.env.API_KEY,
   },
 });
