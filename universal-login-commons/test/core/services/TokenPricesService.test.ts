@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN, TEST_TOKEN_DETAILS} from '../../../src';
+import {TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN, TEST_DAI_TOKEN} from '../../../src';
 import {CoingeckoApi} from '../../../src/integration/http/CoingeckoApi';
 
 describe('UNIT: TokenPricesService', () => {
@@ -60,8 +60,8 @@ describe('UNIT: TokenPricesService', () => {
     });
 
     it('not aave token', () => {
-      const modifiedToken = tokenPricesService.updateAaveTokenDetails(TEST_TOKEN_DETAILS);
-      expect(modifiedToken).deep.eq(TEST_TOKEN_DETAILS);
+      const modifiedToken = tokenPricesService.updateAaveTokenDetails(TEST_DAI_TOKEN);
+      expect(modifiedToken).deep.eq(TEST_DAI_TOKEN);
     });
   });
 });
