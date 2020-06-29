@@ -1,5 +1,5 @@
 import {ObservedCurrency, TokensPrices, TokenDetails, ETHER_NATIVE_TOKEN} from '../../';
-import {CoingeckoApi, TokenDetailsWithCoingeckoId} from '../../integration/http/CoingeckoApi';
+import {CoingeckoApi, TokenDetailsWithCoingeckoId, CoingeckoToken} from '../../integration/http/CoingeckoApi';
 const cryptocompare = require('cryptocompare');
 
 const aaveTokens = [
@@ -16,10 +16,17 @@ export class TokenPricesService {
     const coingeckoTokensList = await this.coingeckoApi.lazyGetTokensList();
     const tokenDetailsWithCoingeckoId = tokensDetails
       .map(this.updateAaveTokenDetails)
-      .map(token => ({...token, coingeckoId: this.coingeckoApi.findIdBySymbol(coingeckoTokensList, token)}))
+      .map(token => this.addCoingeckoId(token, coingeckoTokensList))
       .map(this.getOriginalAaveToken);
     const pricesWithCoingeckoId = await this.coingeckoApi.fetchTokenInfo(tokenDetailsWithCoingeckoId, ['ETH', 'USD']);
     return this.getPricesFromPricesWithCoingeckoId(tokenDetailsWithCoingeckoId, pricesWithCoingeckoId);
+  }
+
+  addCoingeckoId(token: TokenDetails, tokens: CoingeckoToken[]) {
+    return ({
+      ...token,
+      coingeckoId: this.coingeckoApi.findIdBySymbol(tokens, token),
+    });
   }
 
   updateAaveTokenDetails(token: TokenDetails) {
