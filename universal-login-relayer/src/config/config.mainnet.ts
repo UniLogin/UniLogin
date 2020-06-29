@@ -6,8 +6,8 @@ import {baseConfig} from './baseConfig';
 
 export const getConfig = () => ({
   ...baseConfig,
-  jsonRpcUrl: `https://mainnet.infura.io/v3/${getEnv('INFURA_API_KEY', '')}`,
   network: 'mainnet',
+  jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${getEnv('ALCHEMY_API_KEY', '')}`,
   ensAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
   ensRegistrars: ['unibeta.eth'],
   ensRegistrar: '0x93C83c499970F9DB8E795aD6b5f68CD137561008',
