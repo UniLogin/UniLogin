@@ -45,7 +45,9 @@ export class CoingeckoApi {
   };
 
   fetchTokenInfo = async (tokenDetails: TokenDetailsWithCoingeckoId[], currencies: ObservedCurrency[]) => {
-    const tokens = tokenDetails.map(token => token.coingeckoId);
+    const tokens = tokenDetails
+      .filter((token, index, tokens) => tokens.findIndex(t => t.symbol === token.symbol) === index)
+      .map(token => token.coingeckoId);
     const query = `ids=${tokens.join(',')}&vs_currencies=${currencies.join(',')}`;
     const result = await this._http('GET', `/simple/price?${query}`);
     const asTokenPrices = this.asRecord(tokens, this.asRecord(currencies.map(currency => currency.toLowerCase()), asNumber));

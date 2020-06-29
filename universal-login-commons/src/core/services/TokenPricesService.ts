@@ -7,9 +7,27 @@ export class TokenPricesService {
 
   async getPrices(tokensDetails: TokenDetails[]): Promise<TokensPrices> {
     const coingeckoTokensList = await this.coingeckoApi.lazyGetTokensList();
-    const tokenDetailsWithCoingeckoId = tokensDetails.map(token => ({...token, coingeckoId: this.coingeckoApi.findIdBySymbol(coingeckoTokensList, token)}));
+    const tokenDetailsWithCoingeckoId = tokensDetails
+      .map(this.updateAaveTokenDetails)
+      .map(token => ({...token, coingeckoId: this.coingeckoApi.findIdBySymbol(coingeckoTokensList, token)}));
     const pricesWithCoingeckoId = await this.coingeckoApi.fetchTokenInfo(tokenDetailsWithCoingeckoId, ['ETH', 'USD']);
-    return this.getPricesFromPricesWithCoingeckoId(tokenDetailsWithCoingeckoId, pricesWithCoingeckoId);
+    const originalTokenDetailsWithCoingeckoId = tokenDetailsWithCoingeckoId.map(this.getOriginalAaveToken);
+    return this.getPricesFromPricesWithCoingeckoId(originalTokenDetailsWithCoingeckoId, pricesWithCoingeckoId);
+  }
+
+  updateAaveTokenDetails(token: TokenDetails) {
+    if (['aUSDC', 'aUSDT', 'aBUSD', 'aSUSD'].includes(token.symbol)) {
+      return {...token, symbol: token.symbol.slice(1)};
+    }
+    return token;
+  }
+
+  getOriginalAaveToken(token: TokenDetailsWithCoingeckoId) {
+    if (token.name.toLowerCase().includes('aave') && token.symbol !== 'aTUSD') {
+      return {...token, symbol: `a${token.symbol}`};
+    } else {
+      return token;
+    }
   }
 
   async getTokenPriceInEth(tokenDetails: TokenDetails): Promise<number> {

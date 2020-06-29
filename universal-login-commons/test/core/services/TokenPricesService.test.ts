@@ -20,7 +20,7 @@ describe('UNIT: TokenPricesService', () => {
   });
 
   it('return prices for ETH and DAI', async () => {
-    const tokensDetails = [{symbol: 'ETH'}, {symbol: 'DAI'}] as TokenDetails[];
+    const tokensDetails = [{symbol: 'ETH', name: 'ethereum'}, {symbol: 'DAI', name: 'Dai stable coin'}] as TokenDetails[];
     const prices = await tokenPricesService.getPrices(tokensDetails);
     const ethPrices = prices['ETH'];
     expect(ethPrices.ETH).be.eq(ETHPrices.eth);
@@ -32,7 +32,7 @@ describe('UNIT: TokenPricesService', () => {
 
   describe('return token price in eth', () => {
     it('dai', async () => {
-      const tokenDetails = {symbol: 'DAI'} as TokenDetails;
+      const tokenDetails = {symbol: 'DAI', name: 'Dai stable coin'} as TokenDetails;
       const priceInEth = await tokenPricesService.getTokenPriceInEth(tokenDetails);
       expect(priceInEth).eq(DAIPrices.eth);
     });
