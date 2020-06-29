@@ -2,6 +2,13 @@ import {ObservedCurrency, TokensPrices, TokenDetails, ETHER_NATIVE_TOKEN} from '
 import {CoingeckoApi, TokenDetailsWithCoingeckoId} from '../../integration/http/CoingeckoApi';
 const cryptocompare = require('cryptocompare');
 
+const aaveTokens = [
+  '0x9bA00D6856a4eDF4665BcA2C2309936572473B7E',
+  '0x71fc860F7D3A592A4a98740e39dB31d25db65ae8',
+  '0x6Ee0f7BB50a54AB5253dA0667B0Dc2ee526C30a8',
+  '0x625aE63000f46200499120B906716420bd059240',
+];
+
 export class TokenPricesService {
   constructor(private coingeckoApi = new CoingeckoApi()) {};
 
@@ -9,22 +16,30 @@ export class TokenPricesService {
     const coingeckoTokensList = await this.coingeckoApi.lazyGetTokensList();
     const tokenDetailsWithCoingeckoId = tokensDetails
       .map(this.updateAaveTokenDetails)
-      .map(token => ({...token, coingeckoId: this.coingeckoApi.findIdBySymbol(coingeckoTokensList, token)}));
+      .map(token => ({...token, coingeckoId: this.coingeckoApi.findIdBySymbol(coingeckoTokensList, token)}))
+      .map(this.getOriginalAaveToken);
     const pricesWithCoingeckoId = await this.coingeckoApi.fetchTokenInfo(tokenDetailsWithCoingeckoId, ['ETH', 'USD']);
-    const originalTokenDetailsWithCoingeckoId = tokenDetailsWithCoingeckoId.map(this.getOriginalAaveToken);
-    return this.getPricesFromPricesWithCoingeckoId(originalTokenDetailsWithCoingeckoId, pricesWithCoingeckoId);
+    return this.getPricesFromPricesWithCoingeckoId(tokenDetailsWithCoingeckoId, pricesWithCoingeckoId);
   }
 
   updateAaveTokenDetails(token: TokenDetails) {
-    if (['aUSDC', 'aUSDT', 'aBUSD', 'aSUSD'].includes(token.symbol)) {
-      return {...token, symbol: token.symbol.slice(1)};
+    if (aaveTokens.includes(token.address)) {
+      return {
+        ...token,
+        symbol: token.symbol.slice(1),
+        name: token.name.replace('Aave Interest bearing ', ''),
+      };
     }
     return token;
   }
 
   getOriginalAaveToken(token: TokenDetailsWithCoingeckoId) {
-    if (token.name.toLowerCase().includes('aave') && token.symbol !== 'aTUSD') {
-      return {...token, symbol: `a${token.symbol}`};
+    if (aaveTokens.includes(token.address)) {
+      return {
+        ...token,
+        symbol: `a${token.symbol}`,
+        name: `Aave Interest Bearing ${token.name}`,
+      };
     } else {
       return token;
     }
