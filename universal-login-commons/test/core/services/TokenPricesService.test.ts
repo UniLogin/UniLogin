@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN} from '../../../src';
+import {TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN, TEST_DAI_TOKEN} from '../../../src';
 import {CoingeckoApi} from '../../../src/integration/http/CoingeckoApi';
 
 describe('UNIT: TokenPricesService', () => {
@@ -20,7 +20,7 @@ describe('UNIT: TokenPricesService', () => {
   });
 
   it('return prices for ETH and DAI', async () => {
-    const tokensDetails = [{symbol: 'ETH'}, {symbol: 'DAI'}] as TokenDetails[];
+    const tokensDetails = [{symbol: 'ETH', name: 'ethereum'}, {symbol: 'DAI', name: 'Dai stable coin'}] as TokenDetails[];
     const prices = await tokenPricesService.getPrices(tokensDetails);
     const ethPrices = prices['ETH'];
     expect(ethPrices.ETH).be.eq(ETHPrices.eth);
@@ -32,7 +32,7 @@ describe('UNIT: TokenPricesService', () => {
 
   describe('return token price in eth', () => {
     it('dai', async () => {
-      const tokenDetails = {symbol: 'DAI'} as TokenDetails;
+      const tokenDetails = {symbol: 'DAI', name: 'Dai stable coin'} as TokenDetails;
       const priceInEth = await tokenPricesService.getTokenPriceInEth(tokenDetails);
       expect(priceInEth).eq(DAIPrices.eth);
     });
@@ -40,6 +40,28 @@ describe('UNIT: TokenPricesService', () => {
     it('eth', async () => {
       const priceInEth = await tokenPricesService.getTokenPriceInEth(ETHER_NATIVE_TOKEN);
       expect(priceInEth).eq(ETHPrices.eth);
+    });
+  });
+
+  describe('updateAaveTokenDetails', () => {
+    it('aave token', () => {
+      const aUsdcAddress = '0x9bA00D6856a4eDF4665BcA2C2309936572473B7E';
+      const aaveToken = {
+        symbol: 'aUSDC',
+        name: 'Aave Interest bearing USDC',
+        address: aUsdcAddress,
+      } as TokenDetails;
+      const modifiedToken = tokenPricesService.updateAaveTokenDetails(aaveToken);
+      expect(modifiedToken).deep.eq({
+        symbol: 'USDC',
+        name: 'USDC',
+        address: aUsdcAddress,
+      });
+    });
+
+    it('not aave token', () => {
+      const modifiedToken = tokenPricesService.updateAaveTokenDetails(TEST_DAI_TOKEN);
+      expect(modifiedToken).deep.eq(TEST_DAI_TOKEN);
     });
   });
 });
