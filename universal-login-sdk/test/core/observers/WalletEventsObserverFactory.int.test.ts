@@ -12,6 +12,7 @@ import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 import {setupWalletContract} from '@unilogin/contracts/testutils';
 import {Contract} from 'ethers';
 import {waitExpect, mineBlock} from '@unilogin/commons/testutils';
+import {NewBlockObserver} from '../../../src/core/observers/NewBlockObserver';
 
 chai.use(solidity);
 chai.use(sinonChai);
@@ -34,9 +35,10 @@ describe('INT: WalletEventsObserverFactory', () => {
 
       const providerService = new ProviderService(sdk.provider);
       const blockNumberState = new BlockNumberState(providerService);
+      const newBlockObserver = new NewBlockObserver(providerService, blockNumberState);
       factory = new WalletEventsObserverFactory(
         providerService,
-        blockNumberState,
+        newBlockObserver,
       );
       await factory.start();
       ({proxyWallet, keyPair} = await setupWalletContract(deployer));
@@ -93,9 +95,10 @@ describe('INT: WalletEventsObserverFactory', () => {
       ({relayer, sdk} = await setupSdk(deployer));
       const providerService = new ProviderService(sdk.provider);
       const blockNumberState = new BlockNumberState(providerService);
+      const newBlockObserver = new NewBlockObserver(providerService, blockNumberState);
       factory = new WalletEventsObserverFactory(
         providerService,
-        blockNumberState,
+        newBlockObserver,
       );
       await factory.start();
       deployedWallet = await createdDeployedWallet('alex.mylogin.eth', sdk, deployer);

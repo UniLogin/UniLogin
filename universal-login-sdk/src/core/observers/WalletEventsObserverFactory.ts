@@ -2,55 +2,33 @@ import {WalletEventCallback, WalletEventFilter, WalletEventType} from '../models
 import {WalletEventsObserver} from './WalletEventsObserver';
 import {Callback} from 'reactive-properties';
 import {ensureNotNullish, Nullable, ProviderService} from '@unilogin/commons';
-import {InvalidObserverState, MissingParameter} from '../utils/errors';
-import {BlockNumberState} from '../states/BlockNumberState';
-import {IStorageService} from '../models/IStorageService';
-import {StorageEntry} from '../services/StorageEntry';
-import {MemoryStorageService} from '../services/MemoryStorageService';
-import {asNumber} from '@restless/sanitizers';
-
-const STORAGE_KEY = 'LAST_BLOCK_NUMBER';
+import {InvalidObserverState} from '../utils/errors';
+import {NewBlockObserver} from './NewBlockObserver';
 
 class WalletEventsObserverFactory {
   protected observers: Record<string, WalletEventsObserver> = {};
   private unsubscribe: Nullable<Callback> = null;
-  private blockNumberStorage: StorageEntry<number>;
 
   constructor(
     private providerService: ProviderService,
-    private currentBlock: BlockNumberState,
-    storageService: IStorageService = new MemoryStorageService(),
+    private newBlockObserver: NewBlockObserver,
   ) {
-    this.blockNumberStorage = new StorageEntry(STORAGE_KEY, asNumber, storageService);
   }
 
   async start() {
-    this.currentBlock.set(await this.providerService.getBlockNumber());
-    if (!this.blockNumberStorage.get()) {
-      this.blockNumberStorage.set(this.currentBlock.get());
-    }
-    this.unsubscribe = this.currentBlock.subscribe(() => this.fetchEvents());
+    this.unsubscribe = await this.newBlockObserver.subscribe((blockNumber: number) => this.fetchEvents(blockNumber));
   }
 
-  async fetchEvents() {
-    ensureNotNullish(this.currentBlock.get(), InvalidObserverState);
+  async fetchEvents(blockNumber: number) {
     if (Object.keys(this.observers).length === 0) {
       return;
     }
-    await this.fetchEventsOfTypes(['KeyAdded', 'KeyRemoved', 'AddedOwner', 'RemovedOwner']);
+    await this.fetchEventsOfTypes(['KeyAdded', 'KeyRemoved', 'AddedOwner', 'RemovedOwner'], blockNumber);
   }
 
-  async fetchEventsOfTypes(types: WalletEventType[]) {
-    const currentBlockNumber = this.currentBlock.get();
-    const storageBlockNumber = this.blockNumberStorage.get();
-    ensureNotNullish(currentBlockNumber, InvalidObserverState);
-    ensureNotNullish(storageBlockNumber, MissingParameter, 'storageBlockNumber');
-    if (currentBlockNumber === storageBlockNumber) {
-      return;
-    }
-    this.blockNumberStorage.set(currentBlockNumber);
+  async fetchEventsOfTypes(types: WalletEventType[], blockNumber: number) {
     for (const contractAddress of Object.keys(this.observers)) {
-      await this.observers[contractAddress].fetchEvents(storageBlockNumber + 1, types);
+      await this.observers[contractAddress].fetchEvents(blockNumber, types);
     }
   }
 
@@ -58,7 +36,7 @@ class WalletEventsObserverFactory {
     this.observers[filter.contractAddress] = this.observers[filter.contractAddress] || new WalletEventsObserver(filter.contractAddress, this.providerService);
     const observableRecord = {key: filter.key, callback};
     const unsubscribe = this.observers[filter.contractAddress].subscribe(eventType, observableRecord);
-    this.fetchEvents();
+    this.newBlockObserver.callCallbacks();
     return unsubscribe;
   }
 

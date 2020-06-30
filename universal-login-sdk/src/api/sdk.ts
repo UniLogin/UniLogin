@@ -27,6 +27,7 @@ import {NotifySdk} from '../integration/notifySdk/NotifySdk';
 import {cast} from '@restless/sanitizers';
 import {INotifySdk} from '../integration/notifySdk/interfaces';
 import {OnErc721TokensChange, Erc721TokensObserver} from '../core/observers/Erc721TokensObserver';
+import {NewBlockObserver} from '../core/observers/NewBlockObserver';
 
 class UniLoginSdk {
   readonly provider: providers.Provider;
@@ -73,7 +74,8 @@ class UniLoginSdk {
     this.providerService = new ProviderService(this.provider);
     this.contractService = new ContractService(this.providerService);
     const blockNumberState = new BlockNumberState(this.providerService);
-    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.providerService, blockNumberState, this.config.storageService);
+    const newBlockObserver = new NewBlockObserver(this.providerService, blockNumberState, this.config.storageService);
+    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.providerService, newBlockObserver);
     this.balanceChecker = new BalanceChecker(this.providerService);
     this.sufficientBalanceValidator = new SufficientBalanceValidator(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
