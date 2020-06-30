@@ -15,7 +15,6 @@ import {FooterSection} from '../commons/FooterSection';
 import Spinner from '../commons/Spinner';
 import {ThemedComponent} from '../commons/ThemedComponent';
 import {useAsync} from '../hooks/useAsync';
-import {utils} from 'ethers';
 
 interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;

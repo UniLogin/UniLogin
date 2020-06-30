@@ -12,7 +12,7 @@ import {useHistory} from 'react-router';
 import {join} from 'path';
 import {ThemedComponent} from '../../commons/ThemedComponent';
 import {GasPrice} from '../../commons/GasPrice';
-import {ensureNotFalsy, GasParameters, createFullHexString} from '@unilogin/commons';
+import {ensureNotFalsy, GasParameters} from '@unilogin/commons';
 import {FooterSection} from '../../commons/FooterSection';
 import {MissingParameter} from '../../../core/utils/errors';
 

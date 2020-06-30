@@ -161,7 +161,7 @@ describe('INT: DeployedWallet', () => {
       message.gasLimit = secondSdk.getRelayerConfig().maxGasLimit + 1;
       const secondDeployedWallet = new DeployedWallet(contractAddress, '', privateKey, secondSdk);
       await expect(secondDeployedWallet.execute(message)).to.be.eventually
-        .rejectedWith(`Invalid gas limit. ${secondSdk.getRelayerConfig().maxGasLimit + 1} provided, when relayer\'s max gas limit is ${secondSdk.getRelayerConfig().maxGasLimit}`);
+        .rejectedWith(`Invalid gas limit. ${secondSdk.getRelayerConfig().maxGasLimit + 1} provided, when relayer's max gas limit is ${secondSdk.getRelayerConfig().maxGasLimit}`);
     });
 
     it('Passes when the gas limit is equal to the relayers maxGasLimit', async () => {

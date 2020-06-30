@@ -43,7 +43,7 @@ describe('INT: estimate gas', async () => {
     };
     const estimatedGas = await provider.estimateGas({data: getData(msg, keyPair.privateKey), to: proxy.address, from: wallet.address});
     const newGasLimit = estimatedGas.add('17000');
-    const dataWithEstimatedGas = getData({...msg, gasLimit: newGasLimit}, keyPair.privateKey)
+    const dataWithEstimatedGas = getData({...msg, gasLimit: newGasLimit}, keyPair.privateKey);
     await wallet.sendTransaction({to: proxy.address, data: dataWithEstimatedGas, gasLimit: newGasLimit.add('10000')});
     expect(await proxyAsGnosisSafe.isOwner(keyToAdd)).to.be.true;
   });
