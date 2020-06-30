@@ -30,7 +30,7 @@ export class DeployedWallet extends AbstractWallet {
     };
   }
 
-  async addKey(publicKey: string, executionOptions: ExecutionOptions): Promise<Execution> {
+  addKey(publicKey: string, executionOptions: ExecutionOptions): Promise<Execution> {
     return this.selfExecute('addKey', [publicKey], executionOptions, '20000');
   }
 
@@ -57,7 +57,7 @@ export class DeployedWallet extends AbstractWallet {
     await this.sdk.relayerApi.denyConnection(authorisationRequest);
   }
 
-  async getSignedMessage(message: Partial<Message>) {
+  private async getSignedMessage(message: Partial<Message>) {
     const relayerConfig = this.sdk.getRelayerConfig();
     const nonce = message.nonce || await this.getNonce();
     const partialMessage = {
