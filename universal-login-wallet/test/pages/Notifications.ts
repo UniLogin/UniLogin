@@ -27,7 +27,8 @@ export default class NotificationsPage {
     }
   }
 
-  selectGasMode() {
+  async selectGasMode() {
+    await waitForUI(this.wrapper, () => !this.wrapper.exists('.spinner'));
     this.gasModePage.selectGasMode();
   }
 

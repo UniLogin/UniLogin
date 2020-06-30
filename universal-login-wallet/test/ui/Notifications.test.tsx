@@ -33,9 +33,9 @@ describe('UI: Notifications', () => {
     await appPage.dashboard().clickDevicesButton();
     await appPage.dashboard().clickManageDevicesButton();
     await appPage.notifications().inputSecurityCode(securityCode);
-    appPage.notifications().selectGasMode();
+    await appPage.notifications().selectGasMode();
     await appPage.notifications().clickConnectDeviceButton();
-    await waitExpect(() => expect(appPage.notifications().isNotificationAlert()).to.be.false, 2000);
+    await waitExpect(() => expect(appPage.notifications().isNotificationAlert()).to.be.false, 5000);
   });
 
   it('Should reject request', async () => {
