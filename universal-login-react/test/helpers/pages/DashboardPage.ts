@@ -1,6 +1,7 @@
 import {ReactWrapper} from 'enzyme';
 import {FundsPage} from './FundsPage';
 import {BackupCodesPage} from './BackupCodesPage';
+import {waitForUI} from '../waitForUI';
 
 export class DashboardPage {
   private fundsPage?: FundsPage;
@@ -28,7 +29,8 @@ export class DashboardPage {
     backupLink.simulate('click', {button: 0});
   }
 
-  getGasParameters() {
+  async getGasParameters() {
+    await waitForUI(this.wrapper, () => !this.wrapper.exists('.spinner'));
     return this.wrapper.find('.transaction-fee-amount');
   }
 }

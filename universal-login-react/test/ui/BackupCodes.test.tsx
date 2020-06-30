@@ -28,9 +28,9 @@ describe('INT: BackupCodes', () => {
   it('generate backupCodes', async () => {
     dashboard.clickInitButton();
     dashboard.clickBackupCodesTab();
-    await waitExpect(() => {
+    await waitExpect(async () => {
       expect(dashboard.backupCodes().isGenerateButtonActive()).to.be.true;
-      expect(dashboard.getGasParameters()).to.have.length(1);
+      expect(await dashboard.getGasParameters()).to.have.length(1);
     });
     dashboard.backupCodes().clickGenerate();
     await waitExpect(
