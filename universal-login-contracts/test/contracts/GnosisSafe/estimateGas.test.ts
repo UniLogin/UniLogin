@@ -12,11 +12,6 @@ const getData = (message: Partial<Message>, privateKey: string) => {
   return encodeDataForExecTransaction(signedMsg);
 };
 
-const ADD_KEY_COST_LIMIT = '120000';
-const REMOVE_KEY_COST_LIMIT = '90000';
-const TRANSFER_ETHER_COST_LIMIT = '90000';
-const TRANSFER_TOKEN_COST_LIMIT = '90000';
-
 describe('INT: estimate gas', async () => {
   let wallet: Wallet;
   let proxy: Contract;
@@ -47,7 +42,6 @@ describe('INT: estimate gas', async () => {
       refundReceiver: wallet.address,
     };
     const estimatedGas = await provider.estimateGas({data: getData(msg, keyPair.privateKey), to: proxy.address, from: wallet.address});
-    expect(estimatedGas).to.be.below(ADD_KEY_COST_LIMIT);
     const newGasLimit = estimatedGas.add('17000');
     const dataWithEstimatedGas = getData({...msg, gasLimit: newGasLimit}, keyPair.privateKey)
     await wallet.sendTransaction({to: proxy.address, data: dataWithEstimatedGas, gasLimit: newGasLimit.add('10000')});
@@ -74,7 +68,6 @@ describe('INT: estimate gas', async () => {
     };
     const data = getData(msg, keyPair.privateKey);
     const estimatedGas = await provider.estimateGas({data, to: proxy.address, from: wallet.address});
-    expect(estimatedGas).to.be.below(REMOVE_KEY_COST_LIMIT);
     const newGasLimit = estimatedGas.add('35000');
     const dataWithEstimatedGas = getData({...msg, gasLimit: newGasLimit}, keyPair.privateKey);
     await wallet.sendTransaction({to: proxy.address, data: dataWithEstimatedGas, gasLimit: newGasLimit.add('10000')});
@@ -98,7 +91,6 @@ describe('INT: estimate gas', async () => {
     };
     const data = getData(msg, keyPair.privateKey);
     const estimatedGas = await provider.estimateGas({data, to: proxy.address, from: wallet.address});
-    expect(estimatedGas).to.be.below(TRANSFER_ETHER_COST_LIMIT);
     const newGasLimit = estimatedGas.add('10000');
     const dataWithEstimatedGas = getData({...msg, gasLimit: newGasLimit}, keyPair.privateKey);
     await wallet.sendTransaction({to: proxy.address, data: dataWithEstimatedGas, gasLimit: newGasLimit.add('30000')});
@@ -124,7 +116,6 @@ describe('INT: estimate gas', async () => {
     };
     const data = getData(msg, keyPair.privateKey);
     const estimatedGas = await provider.estimateGas({data, to: proxy.address, from: wallet.address});
-    expect(estimatedGas).to.be.below(TRANSFER_TOKEN_COST_LIMIT);
     const newGasLimit = estimatedGas.add('20000');
     const dataWithEstimatedGas = getData({...msg, gasLimit: newGasLimit}, keyPair.privateKey);
     await wallet.sendTransaction({to: proxy.address, data: dataWithEstimatedGas, gasLimit: newGasLimit.add('30000')});
