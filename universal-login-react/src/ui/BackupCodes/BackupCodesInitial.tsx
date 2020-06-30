@@ -1,10 +1,11 @@
 import React from 'react';
 import {DeployedWallet} from '@unilogin/sdk';
-import {OnGasParametersChanged, createFullHexString, GasParameters} from '@unilogin/commons';
+import {OnGasParametersChanged, GasParameters} from '@unilogin/commons';
 import {BackupCodesWrapper} from './BackupCodesWrapper';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
 import {useAsync} from '../hooks/useAsync';
+import {GasEstimator} from '../../app/GasEstimator';
 
 interface BackupCodesInitialProps {
   generateBackupCodes: () => void;
@@ -16,7 +17,7 @@ interface BackupCodesInitialProps {
 }
 
 export const BackupCodesInitial = ({gasParameters, generateBackupCodes, deployedWallet, setGasParameters, className, isButtonDisabled}: BackupCodesInitialProps) => {
-  const [estimatedGas] = useAsync(async () => gasParameters && deployedWallet.estimateGasFor('addKey', [createFullHexString(20)], gasParameters), [gasParameters]);
+  const [estimatedGas] = useAsync(async () => GasEstimator.backupCodes(deployedWallet, gasParameters), [gasParameters]);
 
   return (<BackupCodesWrapper className={className}>
     <FooterSection>

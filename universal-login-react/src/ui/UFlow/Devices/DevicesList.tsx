@@ -15,6 +15,7 @@ import {GasPrice} from '../../commons/GasPrice';
 import {ensureNotFalsy, GasParameters} from '@unilogin/commons';
 import {FooterSection} from '../../commons/FooterSection';
 import {MissingParameter} from '../../../core/utils/errors';
+import {GasEstimator} from '../../../app/GasEstimator';
 
 export interface DevicesListProps {
   deployedWallet: DeployedWallet;
@@ -26,7 +27,7 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
   const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
   const [deviceToRemove, setDeviceToRemove] = useState<string | undefined>(undefined);
-  const [estimatedGas] = useAsync(async () => gasParameters && deployedWallet.estimateGasFor('removeKey', [deviceToRemove], gasParameters), [gasParameters]);
+  const [estimatedGas] = useAsync(async () => GasEstimator.removeKey(deployedWallet, gasParameters, deviceToRemove), [gasParameters]);
   const history = useHistory();
 
   const onDeleteDevice = async () => {

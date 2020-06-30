@@ -15,6 +15,7 @@ import {FooterSection} from '../commons/FooterSection';
 import Spinner from '../commons/Spinner';
 import {ThemedComponent} from '../commons/ThemedComponent';
 import {useAsync} from '../hooks/useAsync';
+import {GasEstimator} from '../../app/GasEstimator';
 
 interface ConnectNotificationProps {
   deployedWallet: DeployedWallet;
@@ -30,7 +31,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
 
   const history = useHistory();
 
-  const [estimatedGas] = useAsync(async () => gasParameters && deployedWallet.estimateGasFor('addKey', [publicKey], gasParameters), [gasParameters]);
+  const [estimatedGas] = useAsync(async () => GasEstimator.addKey(deployedWallet, gasParameters, publicKey), [gasParameters]);
 
   const updateNotifications = (notifications: Notification[]) => notifications.length === 0
     ? history.goBack()
