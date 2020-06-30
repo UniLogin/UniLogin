@@ -2,6 +2,7 @@ import {providers, utils} from 'ethers';
 import {ensure} from '../../core/utils/errors/ensure';
 import {fetchHardforkVersion} from './fetchHardforkVersion';
 import {NetworkVersion} from '../../core/utils/messages/computeGasData';
+import {TransactionRequest} from 'ethers/providers';
 
 export class ProviderService {
   private cachedContractCodes: Record<string, string> = {};
@@ -46,5 +47,9 @@ export class ProviderService {
 
   async fetchHardforkVersion(): Promise<NetworkVersion> {
     return fetchHardforkVersion(this.provider);
+  }
+
+  estimateGas(transactionRequest: TransactionRequest) {
+    return this.provider.estimateGas(transactionRequest);
   }
 }

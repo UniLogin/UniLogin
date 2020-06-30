@@ -129,12 +129,11 @@ export class DeployedWallet extends AbstractWallet {
 
   async estimateGas(partialMessage: Partial<Message>, gasLimitMargin: utils.BigNumberish = '50000') {
     const message: Partial<Message> = {
-      gasLimit: DEFAULT_GAS_LIMIT,
       from: this.contractAddress,
       ...partialMessage,
     };
     const signedMessage = await this.getSignedMessage(message);
-    const estimatedGas = await this.sdk.provider.estimateGas({to: this.contractAddress, from: this.sdk.getRelayerConfig().relayerAddress, data: await this.sdk.walletContractService.encodeExecute(this.contractAddress, signedMessage)});
+    const estimatedGas = await this.sdk.providerService.estimateGas({to: this.contractAddress, from: this.sdk.getRelayerConfig().relayerAddress, data: await this.sdk.walletContractService.encodeExecute(this.contractAddress, signedMessage)});
     return estimatedGas.add(gasLimitMargin).toString();
   }
 
