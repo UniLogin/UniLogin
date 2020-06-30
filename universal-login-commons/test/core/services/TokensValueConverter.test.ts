@@ -46,8 +46,8 @@ describe('UNIT: TokensValueConverter', () => {
 
     const tokenDetailsWithBalance: TokenDetailsWithBalance[] = [
       {...ETHER_NATIVE_TOKEN, balance: utils.parseEther(etherAmount.toString())},
-      {address: TEST_CONTRACT_ADDRESS, symbol: 'MockDAI', name: 'MockDAIToken', balance: utils.parseEther(mockTokenAmount.toString())},
-      {address: TEST_CONTRACT_ADDRESS, symbol: 'MockSAI', name: 'MockSAIToken', balance: utils.parseEther(mockTokenAmount.toString())},
+      {address: TEST_CONTRACT_ADDRESS, symbol: 'MockDAI', name: 'MockDAIToken', balance: utils.parseEther(mockTokenAmount.toString()), decimals: 18},
+      {address: TEST_CONTRACT_ADDRESS, symbol: 'MockSAI', name: 'MockSAIToken', balance: utils.parseEther(mockTokenAmount.toString()), decimals: 18},
     ];
 
     const tokensPrices = {

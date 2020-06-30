@@ -68,6 +68,7 @@ export const TEST_DAI_TOKEN = {
   address: TEST_TOKEN_ADDRESS,
   symbol: 'DAI',
   name: 'MockDAIToken',
+  decimals: 18,
 };
 
 export const TEST_TOKEN_DETAILS = [
@@ -76,6 +77,7 @@ export const TEST_TOKEN_DETAILS = [
     address: TEST_SAI_TOKEN_ADDRESS,
     symbol: 'SAI',
     name: 'MockSAIToken',
+    decimals: 18,
   },
   ETHER_NATIVE_TOKEN,
 ];

@@ -5,11 +5,13 @@ import {TokenDetails} from '../../core/models/TokenData';
 const tokenAbiString = [
   'function name() public view returns (string)',
   'function symbol() public view returns (string)',
+  'function decimals() public view returns (uint8)',
 ];
 
 const tokenAbiBytes32 = [
   'function name() public view returns (bytes32)',
   'function symbol() public view returns (bytes32)',
+  'function decimals() public view returns (uint8)',
 ];
 
 export class TokenDetailsService {
@@ -26,11 +28,25 @@ export class TokenDetailsService {
 
   async getTokenDetails(tokenAddress: string): Promise<TokenDetails> {
     if (tokenAddress === this.saiTokenAddress) {
-      return {address: this.saiTokenAddress, symbol: 'SAI', name: 'Sai Stablecoin v1.0'};
+      return {address: this.saiTokenAddress, symbol: 'SAI', name: 'Sai Stablecoin v1.0', decimals: 18};
     }
     const symbol = await this.getSymbol(tokenAddress);
     const name = await this.getName(tokenAddress);
-    return {address: tokenAddress, symbol, name};
+    const decimals = await this.getDecimals(tokenAddress);
+    return {address: tokenAddress, symbol, name, decimals};
+  }
+
+  async getDecimals(tokenAddress: string): Promise<number> {
+    if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
+      return ETHER_NATIVE_TOKEN.decimals;
+    }
+    try {
+      const token = new Contract(tokenAddress, tokenAbiString, this.provider);
+      return token.decimals();
+    } catch (error) {
+      const token = new Contract(tokenAddress, tokenAbiBytes32, this.provider);
+      return token.decimals();
+    }
   }
 
   async getSymbol(tokenAddress: string): Promise<string> {

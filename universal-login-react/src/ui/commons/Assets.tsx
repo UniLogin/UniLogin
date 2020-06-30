@@ -37,7 +37,7 @@ export const Assets = ({deployedWallet}: AssetsProps) => {
               key={`${token.name}-${token.symbol}`}
               sdk={deployedWallet.sdk}
               token={token}
-              balance={ValueRounder.ceil(utils.formatEther(balance))!}
+              balance={ValueRounder.ceil(utils.formatUnits(balance, token.decimals))!}
             />
           ))}
           {currentState === 'COLLECTABLES' && <Erc721Tokens sdk={deployedWallet.sdk} tokens={erc721Tokens!}/>}

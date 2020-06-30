@@ -24,7 +24,7 @@ describe('INT: BalanceObserver', () => {
       mockToken = await deployContract(wallet, mockContracts.MockToken);
       const supportedTokens: TokenDetails[] = [
         ETHER_NATIVE_TOKEN,
-        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token'},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', decimals: 18},
       ];
 
       balanceChecker = new BalanceChecker(new ProviderService(provider));
@@ -46,7 +46,7 @@ describe('INT: BalanceObserver', () => {
       const callback = sinon.spy();
       const expectedTokenBalances = [
         {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0')},
-        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: utils.parseEther('0')},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: utils.parseEther('0'), decimals: 18},
       ];
 
       const unsubscribe = balanceObserver.subscribe(callback);
@@ -63,7 +63,7 @@ describe('INT: BalanceObserver', () => {
       const callback = sinon.spy();
       const expectedTokenBalancesAfterTransaction = [
         {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0.5')},
-        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: normalizeBigNumber(utils.bigNumberify('0'))},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: normalizeBigNumber(utils.bigNumberify('0')), decimals: 18},
       ];
 
       const unsubscribe = balanceObserver.subscribe(callback);
@@ -84,7 +84,7 @@ describe('INT: BalanceObserver', () => {
       const callback2 = sinon.spy();
       const expectedTokenBalances = [
         {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0')},
-        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: utils.parseEther('0')},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: utils.parseEther('0'), decimals: 18},
       ];
 
       const unsubscribe1 = balanceObserver.subscribe(callback1);
@@ -112,7 +112,7 @@ describe('INT: BalanceObserver', () => {
       const callback2 = sinon.spy();
       const expectedTokenBalancesAfterTransaction = [
         {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0.5')},
-        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: utils.parseEther('0')},
+        {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: utils.parseEther('0'), decimals: 18},
       ];
 
       const unsubscribe1 = balanceObserver.subscribe(callback1);
