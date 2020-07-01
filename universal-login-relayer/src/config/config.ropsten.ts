@@ -12,8 +12,8 @@ export const getConfig = () => ({
   ensRegistrars: ['unilogin.test'],
   ensRegistrar: '0x223cE85C5A77086e4f0EAb59286c58299A7616B1',
   fallbackHandlerAddress: '0x414cDd8702Eeb7de39D8369fea2C32291ACeB9ae',
-  walletContractAddress: '0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F',
-  factoryAddress: '0x76E2cFc1F5Fa8F6a5b3fC4c8F4788F0116861F9B',
+  walletContractAddress: '0x689F188296D13F6389eCD83F0d5E1f872beb5c12',
+  factoryAddress: '0xB84513258F36F87183ecF42ebe5B85425A32A248',
   onRampProviders: {
     safello: {
       appId: getEnv('SAFELLO_APP_ID', ''),
