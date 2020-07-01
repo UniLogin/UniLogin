@@ -120,7 +120,6 @@ export const TEST_GAS_MODES = [{
 export const TEST_SDK_CONFIG = {
   network: 'ganache' as Network,
   authorizationsObserverTick: 3,
-  balanceObserverTick: 3,
   priceObserverTick: 3,
   mineableFactoryTick: 3,
   mineableFactoryTimeout: 2000,
