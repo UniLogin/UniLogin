@@ -1,9 +1,10 @@
 import deepEqual from 'deep-equal';
 import clonedeep from 'lodash.clonedeep';
-import {BalanceChecker, TokenDetailsWithBalance, Nullable} from '@unilogin/commons';
+import {BalanceChecker, TokenDetailsWithBalance, Nullable, ensureNotNullish} from '@unilogin/commons';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
 import {BlockNumberState} from '../states/BlockNumberState';
 import {Callback} from 'reactive-properties';
+import {InvalidObserverState} from '../utils/errors';
 
 export type OnBalanceChange = (data: TokenDetailsWithBalance[]) => void;
 
@@ -42,6 +43,7 @@ export class BalanceObserver {
 
   subscribe(callback: OnBalanceChange) {
     if (!this.unsubscribeBlockNumber) {
+      this.checkBalanceNow();
       this.unsubscribeBlockNumber = this.blockNumberState.subscribe(() => this.checkBalanceNow());
     }
     this.callbacks.push(callback);
@@ -51,11 +53,16 @@ export class BalanceObserver {
     const unsubscribe = () => {
       this.callbacks = this.callbacks.filter((element) => callback !== element);
       if (this.callbacks.length === 0) {
-        this.unsubscribeBlockNumber?.();
-        this.unsubscribeBlockNumber = null;
-        this.lastTokenBalances = [];
+        this.unsubscribe();
       }
     };
     return unsubscribe;
+  }
+
+  unsubscribe() {
+    ensureNotNullish(this.unsubscribeBlockNumber, InvalidObserverState);
+    this.unsubscribeBlockNumber();
+    this.unsubscribeBlockNumber = null;
+    this.lastTokenBalances = [];
   }
 }
