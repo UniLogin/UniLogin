@@ -20,11 +20,13 @@
   "dependencies": {
     "@restless/sanitizers": "^0.2.5",
     "@unilogin/commons": "0.6.1",
+    "@unilogin/provider": "^0.6.1",
     "@unilogin/react": "0.6.1",
     "@unilogin/sdk": "0.6.1",
     "create-react-context": "^0.2.3",
     "dotenv": "^8.1.0",
     "ethers": "^4.0.47",
+    "opensea-js": "^1.1.7",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router": "^5.1.2",

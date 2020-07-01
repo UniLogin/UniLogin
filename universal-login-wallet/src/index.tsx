@@ -1,41 +1,30 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {BrowserRouter} from 'react-router-dom';
-import {ErrorBoundary, useAsync, ThemeProvider} from '@unilogin/react';
-import App from './ui/react/App';
-import {createServices, ServiceContext} from './ui/createServices';
-import getConfig from './config/getConfig';
+import {ErrorBoundary, ThemeProvider} from '@unilogin/react';
 import './ui/styles/main.sass';
 import Logo from './ui/assets/logo.svg';
+import {OpenSeaPort, Network} from 'opensea-js';
+import ULIFrameProvider from '@unilogin/provider';
 
 const AppBootstrapper = () => {
-  const [services, err] = useAsync(async () => {
-    const config = getConfig();
-    const services = createServices(config);
-    await services.start();
-
-    await services.walletService.loadFromStorage();
-    return services;
-  }, []);
-
-  if (err) {
-    throw err;
-  }
-
-  if (!services) {
-    return (
-      <div id="preloader">
-        <img src={Logo} className="preloaderImg" />
-      </div>
-    );
-  }
+  const ulProvider = ULIFrameProvider.create('rinkeby');
+  const seaport = new OpenSeaPort(ulProvider, {networkName: Network.Rinkeby});
+  const expirationTime = Math.round(Date.now() / 1000 + 60 * 60 * 24)
+  const auctionPromise = seaport.createSellOrder({
+    asset: {
+      tokenId: '589',
+      tokenAddress: '0x16baf0de678e52367adc69fd067e5edd1d33e3bf',
+    },
+    accountAddress: '0x5A984bA07533440121ac5f54318539FfA9b69e31',
+    startAmount: 3,
+    // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
+    endAmount: 0.1,
+    expirationTime,
+  });
+  auctionPromise.then(console.log).catch(console.log)
 
   return (
-    <ServiceContext.Provider value={services}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ServiceContext.Provider>
+    <button id="unilogin-button" />
   );
 };
 
