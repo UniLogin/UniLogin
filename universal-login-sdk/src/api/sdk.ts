@@ -32,6 +32,7 @@ class UniLoginSdk {
   readonly provider: providers.Provider;
   readonly relayerApi: RelayerApi;
   readonly authorisationsObserver: AuthorisationsObserver;
+  readonly blockNumberState: BlockNumberState;
   readonly executionFactory: ExecutionFactory;
   readonly balanceChecker: BalanceChecker;
   readonly tokensValueConverter: TokensValueConverter;
@@ -72,8 +73,8 @@ class UniLoginSdk {
     this.executionFactory = new ExecutionFactory(this.relayerApi, this.config.mineableFactoryTick, this.config.mineableFactoryTimeout);
     this.providerService = new ProviderService(this.provider);
     this.contractService = new ContractService(this.providerService);
-    const blockNumberState = new BlockNumberState(this.providerService);
-    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.providerService, blockNumberState, this.config.storageService);
+    this.blockNumberState = new BlockNumberState(this.providerService);
+    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.providerService, this.blockNumberState, this.config.storageService);
     this.balanceChecker = new BalanceChecker(this.providerService);
     this.sufficientBalanceValidator = new SufficientBalanceValidator(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
@@ -140,7 +141,7 @@ class UniLoginSdk {
     ensureNotFalsy(contractAddress, InvalidContract);
 
     await this.tokensDetailsStore.fetchTokensDetails();
-    this.balanceObserver = new BalanceObserver(this.balanceChecker, contractAddress, this.tokensDetailsStore, this.config.balanceObserverTick);
+    this.balanceObserver = new BalanceObserver(this.balanceChecker, contractAddress, this.tokensDetailsStore, this.blockNumberState);
   }
 
   async fetchErc721TokensObserver(contractAddress: string) {

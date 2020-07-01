@@ -10,7 +10,6 @@ export interface SdkConfig {
   observedCurrencies: ObservedCurrency[];
   notice: string;
   authorizationsObserverTick: number;
-  balanceObserverTick: number;
   erc721TokensObserverTick: number;
   priceObserverTick: number;
   mineableFactoryTick: number;
@@ -30,7 +29,6 @@ export const asSdkConfigOverrides = asPartialObject<SdkOverrides>({
   saiTokenAddress: asString,
   notice: asString,
   authorizationsObserverTick: asNumber,
-  balanceObserverTick: asNumber,
   erc721TokensObserverTick: asNumber,
   priceObserverTick: asNumber,
   mineableFactoryTick: asNumber,
