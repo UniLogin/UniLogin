@@ -42,13 +42,13 @@ export class BalanceObserver {
   }
 
   subscribe(callback: OnBalanceChange) {
+    this.callbacks.push(callback);
+    callback(this.lastTokenBalances);
+
     if (!this.unsubscribeBlockNumber) {
       this.checkBalanceNow();
       this.unsubscribeBlockNumber = this.blockNumberState.subscribe(() => this.checkBalanceNow());
     }
-    callback(this.lastTokenBalances);
-
-    this.callbacks.push(callback);
 
     const unsubscribe = () => {
       this.callbacks = this.callbacks.filter((element) => callback !== element);
