@@ -28,6 +28,7 @@ export const EMPTY_GAS_OPTION = {
     name: '',
     symbol: '',
     address: '',
+    decimals: 0,
   },
   gasPrice: utils.bigNumberify('0'),
 };

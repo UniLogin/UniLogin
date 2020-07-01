@@ -4,6 +4,7 @@ export const ETHER_NATIVE_TOKEN = {
   address: constants.AddressZero,
   symbol: 'ETH',
   name: 'ether',
+  decimals: 18,
 };
 
 export const EMPTY_DATA = utils.formatBytes32String('0');

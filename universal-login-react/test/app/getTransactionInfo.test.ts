@@ -35,7 +35,7 @@ describe('INT: getTransactionInfo', () => {
     const {address} = Wallet.createRandom();
     const value = utils.parseEther('0.01').toString();
     const data = IERC20Interface.functions.transfer.encode([address, value]);
-    expect(await getTransactionInfo(walletService.getDeployedWallet(), {to: mockToken.address, value: '0', data})).to.deep.eq({tokenDetails: {symbol: 'DAI', name: 'Dai Stablecoin', address: mockToken.address}, value, targetAddress: address});
+    expect(await getTransactionInfo(walletService.getDeployedWallet(), {to: mockToken.address, value: '0', data})).to.deep.eq({tokenDetails: {symbol: 'DAI', name: 'Dai Stablecoin', address: mockToken.address, decimals: 18}, value, targetAddress: address});
   });
 
   after(async () => {

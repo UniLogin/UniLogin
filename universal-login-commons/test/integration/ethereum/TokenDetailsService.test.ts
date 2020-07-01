@@ -25,6 +25,7 @@ describe('INT: TokenDetailsService', () => {
     expect(details.symbol).to.eq(ETHER_NATIVE_TOKEN.symbol);
     expect(details.name).to.eq(ETHER_NATIVE_TOKEN.name);
     expect(details.address).to.eq(ETHER_NATIVE_TOKEN.address);
+    expect(details.decimals).to.eq(ETHER_NATIVE_TOKEN.decimals);
   });
 
   it('token', async () => {
@@ -65,6 +66,7 @@ describe('INT: TokenDetailsService', () => {
     expect(details.symbol).to.eq('DAI');
     expect(details.name).to.eq('Dai Stablecoin v1.0');
     expect(details.address).to.eq(mockDai.address);
+    expect(details.decimals).to.eq(18);
   });
 
   it('works for SAI', async () => {
