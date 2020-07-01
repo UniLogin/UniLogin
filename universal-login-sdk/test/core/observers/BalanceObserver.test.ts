@@ -7,6 +7,7 @@ import {TokenDetailsWithBalance, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitU
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {BalanceObserver} from '../../../src/core/observers/BalanceObserver';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
+import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 
 chai.use(sinonChai);
 
@@ -20,6 +21,7 @@ describe('INT: BalanceObserver', () => {
   describe('BalanceObserver', () => {
     beforeEach(async () => {
       provider = new MockProvider();
+      provider.pollingInterval = 10;
       [wallet] = provider.getWallets();
       mockToken = await deployContract(wallet, mockContracts.MockToken);
       const supportedTokens: TokenDetails[] = [
@@ -27,8 +29,10 @@ describe('INT: BalanceObserver', () => {
         {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', decimals: 18},
       ];
 
-      balanceChecker = new BalanceChecker(new ProviderService(provider));
-      balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: supportedTokens} as TokensDetailsStore, 100);
+      const providerService = new ProviderService(provider);
+      const blockNumberState = new BlockNumberState(providerService);
+      balanceChecker = new BalanceChecker(providerService);
+      balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: supportedTokens} as TokensDetailsStore, blockNumberState);
     });
 
     it('getBalances', async () => {
@@ -141,7 +145,7 @@ describe('INT: BalanceObserver', () => {
     });
 
     afterEach(async () => {
-      await balanceObserver.stop();
+      // await balanceObserver.stop();
     });
   });
 });

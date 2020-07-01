@@ -1,19 +1,23 @@
 import deepEqual from 'deep-equal';
 import clonedeep from 'lodash.clonedeep';
-import {BalanceChecker, TokenDetailsWithBalance} from '@unilogin/commons';
-import ObserverRunner from './ObserverRunner';
+import {BalanceChecker, TokenDetailsWithBalance, Nullable} from '@unilogin/commons';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
+import {BlockNumberState} from '../states/BlockNumberState';
+import {Callback} from 'reactive-properties';
 
 export type OnBalanceChange = (data: TokenDetailsWithBalance[]) => void;
 
-export class BalanceObserver extends ObserverRunner {
+export class BalanceObserver {
   private lastTokenBalances: TokenDetailsWithBalance[] = [];
   private callbacks: OnBalanceChange[] = [];
+  private unsubscribeBlockNumber: Nullable<Callback> = null;
 
-  constructor(private balanceChecker: BalanceChecker, private walletAddress: string, private tokenDetailsStore: TokensDetailsStore, tick: number) {
-    super();
-    this.tick = tick;
-  }
+  constructor(
+    private balanceChecker: BalanceChecker,
+    private walletAddress: string,
+    private tokenDetailsStore: TokensDetailsStore,
+    private blockNumberState: BlockNumberState,
+  ) {}
 
   async execute() {
     await this.checkBalanceNow();
@@ -37,16 +41,18 @@ export class BalanceObserver extends ObserverRunner {
   }
 
   subscribe(callback: OnBalanceChange) {
-    this.callbacks.push(callback);
-    if (this.isStopped()) {
-      this.start();
+    if (!this.unsubscribeBlockNumber) {
+      this.unsubscribeBlockNumber = this.blockNumberState.subscribe(() => this.checkBalanceNow());
     }
+    this.callbacks.push(callback);
+
     callback(this.lastTokenBalances);
 
     const unsubscribe = () => {
       this.callbacks = this.callbacks.filter((element) => callback !== element);
       if (this.callbacks.length === 0) {
-        this.stop();
+        this.unsubscribeBlockNumber?.();
+        this.unsubscribeBlockNumber = null;
         this.lastTokenBalances = [];
       }
     };
