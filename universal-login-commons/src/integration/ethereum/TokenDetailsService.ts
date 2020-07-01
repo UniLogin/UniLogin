@@ -11,7 +11,6 @@ const tokenAbiString = [
 const tokenAbiBytes32 = [
   'function name() public view returns (bytes32)',
   'function symbol() public view returns (bytes32)',
-  'function decimals() public view returns (uint8)',
 ];
 
 export class TokenDetailsService {
@@ -40,13 +39,8 @@ export class TokenDetailsService {
     if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
       return ETHER_NATIVE_TOKEN.decimals;
     }
-    try {
-      const token = new Contract(tokenAddress, tokenAbiString, this.provider);
-      return token.decimals();
-    } catch (error) {
-      const token = new Contract(tokenAddress, tokenAbiBytes32, this.provider);
-      return token.decimals();
-    }
+    const token = new Contract(tokenAddress, tokenAbiString, this.provider);
+    return token.decimals();
   }
 
   async getSymbol(tokenAddress: string): Promise<string> {
