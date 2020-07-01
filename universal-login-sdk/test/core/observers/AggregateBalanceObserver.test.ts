@@ -24,7 +24,7 @@ describe('INT: AggregateBalanceObserver', () => {
 
   beforeEach(() => {
     provider = new MockProvider();
-    provider.pollingInterval = 20;
+    provider.pollingInterval = 10;
     [wallet] = provider.getWallets();
 
     const observedTokens: TokenDetails[] = [
