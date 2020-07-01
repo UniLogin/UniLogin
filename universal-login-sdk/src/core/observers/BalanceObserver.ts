@@ -46,20 +46,20 @@ export class BalanceObserver {
       this.checkBalanceNow();
       this.unsubscribeBlockNumber = this.blockNumberState.subscribe(() => this.checkBalanceNow());
     }
-    this.callbacks.push(callback);
-
     callback(this.lastTokenBalances);
+
+    this.callbacks.push(callback);
 
     const unsubscribe = () => {
       this.callbacks = this.callbacks.filter((element) => callback !== element);
       if (this.callbacks.length === 0) {
-        this.unsubscribe();
+        this.stop();
       }
     };
     return unsubscribe;
   }
 
-  unsubscribe() {
+  stop() {
     ensureNotNullish(this.unsubscribeBlockNumber, InvalidObserverState);
     this.unsubscribeBlockNumber();
     this.unsubscribeBlockNumber = null;

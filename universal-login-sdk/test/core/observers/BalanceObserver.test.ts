@@ -143,9 +143,5 @@ describe('INT: BalanceObserver', () => {
       expect(callback2).to.have.been.calledThrice;
       expect((balanceObserver as any).lastTokenBalances).to.deep.eq([]);
     });
-
-    afterEach(async () => {
-      // await balanceObserver.stop();
-    });
   });
 });
