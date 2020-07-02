@@ -1,4 +1,4 @@
-type ErrorType = 'InvalidNumber' | 'InvalidTransferDetails' | 'IpGeolocationError' | 'MissingParameter' | 'UnexpectedWalletState';
+type ErrorType = 'InvalidNumber' | 'InvalidTransferDetails' | 'IpGeolocationError' | 'MissingParameter' | 'UnexpectedWalletState' | 'UnsupportedToken';
 
 export class ReactError extends Error {
   errorType: ErrorType;
@@ -50,5 +50,12 @@ export class IPGeolocationError extends ReactError {
     const reason = wrappedError instanceof Error ? wrappedError.message : JSON.stringify(wrappedError);
     super(`${message}. Reason: ${reason}`, 'IpGeolocationError');
     Object.setPrototypeOf(this, IPGeolocationError.prototype);
+  }
+}
+
+export class UnsupportedToken extends ValidationFailed {
+  constructor(token: string) {
+    super(`Token: ${token} is not supported.`, 'InvalidTransferDetails');
+    Object.setPrototypeOf(this, InvalidTransferDetails.prototype);
   }
 }

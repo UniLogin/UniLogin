@@ -12,7 +12,7 @@ const name = `${label}.${domain}`;
 const node = utils.namehash(name);
 
 describe('Contract: ENSUtils', async () => {
-  let provider: providers.Provider;
+  let providerWithENS: providers.Provider;
   let wallet: Wallet;
   let ensRegisteredContract: Contract;
   let publicResolver: string;
@@ -21,14 +21,14 @@ describe('Contract: ENSUtils', async () => {
   let args: string[];
 
   beforeEach(async () => {
-    ({provider, publicResolver, registrarAddress, ensAddress, wallet} = await loadFixture(basicENS));
+    ({providerWithENS, publicResolver, registrarAddress, ensAddress, wallet} = await loadFixture(basicENS));
     args = [hashLabel, name, node, ensAddress, registrarAddress, publicResolver];
     ensRegisteredContract = await deployContract(wallet, TestableENSUtils);
   });
 
   it('resolves to given address', async () => {
     await ensRegisteredContract.registerENSUnderTests(...args);
-    expect(await provider.resolveName(name)).to.eq(ensRegisteredContract.address);
-    expect(await lookupAddress(provider, ensRegisteredContract.address, publicResolver)).to.eq(name);
+    expect(await providerWithENS.resolveName(name)).to.eq(ensRegisteredContract.address);
+    expect(await lookupAddress(providerWithENS, ensRegisteredContract.address, publicResolver)).to.eq(name);
   });
 });

@@ -37,9 +37,7 @@ export async function setupTestEnvironment() {
   const overrideConfig: DeepPartial<Config> = {
     port: PORT,
     privateKey: deployer.privateKey,
-    chainSpec: {
-      ensAddress,
-    },
+    ensAddress,
     fallbackHandlerAddress: fallbackHandlerContract.address,
     ensRegistrar: ensRegistrar.address,
     ensRegistrars: ensDomains,

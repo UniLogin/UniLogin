@@ -2,7 +2,7 @@ import {WalletContractInterface, GnosisSafeInterface} from '@unilogin/contracts'
 import {Log} from 'ethers/providers';
 import {WalletEventArgs, WalletEventType} from '../models/events';
 
-export const eventInterface = {...WalletContractInterface.events, ...GnosisSafeInterface.events};
+const eventInterface = {...WalletContractInterface.events, ...GnosisSafeInterface.events};
 
 export function parseArgs(type: WalletEventType, event: Log): WalletEventArgs {
   if (event.topics[0] === eventInterface[type].topic) {

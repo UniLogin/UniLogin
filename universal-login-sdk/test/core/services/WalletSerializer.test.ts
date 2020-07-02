@@ -25,7 +25,6 @@ describe('UNIT: WalletSerializer', () => {
     gasToken: ETHER_NATIVE_TOKEN.address,
     deploy: (() => {}) as any,
     waitForBalance: (() => {}) as any,
-    setSupportedToken: (() => {}) as any,
   } as any;
 
   const TEST_APPLICATION_WALLET = {

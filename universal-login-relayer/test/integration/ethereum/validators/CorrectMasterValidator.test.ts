@@ -9,7 +9,7 @@ import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletCon
 import {WalletContractService} from '../../../../src/integration/ethereum/WalletContractService';
 import {setupWalletContractService} from '../../../testhelpers/setupWalletContractService';
 
-describe('INT: CorrectMasterValidator', async () => {
+describe('INT: CorrectMasterValidator', () => {
   let message: MessageWithFrom;
   let mockToken: Contract;
   let master: Contract;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {useClassFor, classForComponent} from '../utils/classFor';
-import '../styles/progress-bar.css';
+import '../styles/base/progress-bar.sass';
 import '../styles/themes/Jarvis/components/progressBarThemeJarvis.sass';
 
 interface ProgressBarProps {

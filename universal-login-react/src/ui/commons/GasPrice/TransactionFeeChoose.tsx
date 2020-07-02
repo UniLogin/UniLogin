@@ -2,9 +2,8 @@ import React from 'react';
 import {RadioButton} from './RadioButton';
 import {GasMode, GasOption, getBalanceOf, TokenDetailsWithBalance, safeMultiplyAndFormatEther, ValueRounder} from '@unilogin/commons';
 import {utils} from 'ethers';
-import {isGasTokenDisabled} from '../../../core/utils/isGasTokenDisabled';
 import {calculateTransactionFee} from '../../../core/utils/calculateTransactionFee';
-import {getIconForToken} from '../../../core/utils/getIconForToken';
+import {Erc20Icon} from '../Erc20Icon';
 
 interface TransactionFeeProps {
   gasModes: GasMode[];
@@ -31,14 +30,13 @@ export const TransactionFeeChoose = ({gasModes, gasLimit, onGasOptionChanged, mo
         {gasModes.filter(gasMode => gasMode.name === modeName)[0].gasOptions.map((option: GasOption) => (
           <li key={option.token.address} className="transaction-fee-item">
             <RadioButton
-              disabled={isGasTokenDisabled(option.token.symbol)}
               id={`token-${option.token.address}`}
               name="fee"
               checked={option.token.address === tokenAddress}
               onClick={() => onGasOptionChanged(option)}
             >
               <div className="transaction-fee-row">
-                <img src={getIconForToken(option.token.symbol)} alt={option.token.symbol} className="transaction-fee-item-icon" />
+                <Erc20Icon token={option.token} className="transaction-fee-item-icon" />
                 <div className="transaction-fee-details">
                   <div>
                     <p className="transaction-fee-amount-usd">{calculateTransactionFee(usdAmount, gasLimit)} USD</p>

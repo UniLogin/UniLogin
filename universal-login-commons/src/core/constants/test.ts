@@ -2,6 +2,8 @@ import {utils, constants} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from './constants';
 import {Network} from '../models/Network';
 import {DeviceType} from '../models/notifications';
+import {safeDivide} from '../utils/safeMultiply';
+import {GasPriceSuggestion} from '../models/GasPriceSuggestion';
 
 export const TEST_ACCOUNT_ADDRESS = '0x0000000000000000000000000000000000000001';
 
@@ -27,7 +29,11 @@ export const TEST_SIGNATURE_KEY_PAIRS = [{
 
 export const testJsonRpcUrl = 'http://localhost:8545';
 
-export const TEST_GAS_PRICE = '1';
+export const TEST_GAS_PRICE = utils.parseUnits('20', 'gwei').toString();
+
+export const TEST_TOKEN_PRICE_IN_ETH = 0.005;
+
+export const TEST_GAS_PRICE_IN_TOKEN = safeDivide(utils.bigNumberify(TEST_GAS_PRICE), TEST_TOKEN_PRICE_IN_ETH).toString();
 
 export const TEST_GAS_LIMIT = 200000;
 
@@ -58,16 +64,20 @@ export const TEST_TOKEN_ADDRESS = '0x490932174cc4B7a0f546924a070D151D156095f0';
 
 export const TEST_SAI_TOKEN_ADDRESS = '0x05b954633faf5ceeecdf945c13ad825faabbf66f';
 
+export const TEST_DAI_TOKEN = {
+  address: TEST_TOKEN_ADDRESS,
+  symbol: 'DAI',
+  name: 'MockDAIToken',
+  decimals: 18,
+};
+
 export const TEST_TOKEN_DETAILS = [
-  {
-    address: TEST_TOKEN_ADDRESS,
-    symbol: 'DAI',
-    name: 'MockDAIToken',
-  },
+  TEST_DAI_TOKEN,
   {
     address: TEST_SAI_TOKEN_ADDRESS,
     symbol: 'SAI',
     name: 'MockSAIToken',
+    decimals: 18,
   },
   ETHER_NATIVE_TOKEN,
 ];
@@ -94,11 +104,11 @@ export const TEST_GAS_MODES = [{
   usdAmount: '0.00004412424',
   timeEstimation: 30,
   gasOptions: [{
-    gasPrice: utils.bigNumberify('24000000000'),
+    gasPrice: utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN),
     token: TEST_TOKEN_DETAILS[0],
   },
   {
-    gasPrice: utils.bigNumberify('24000000000'),
+    gasPrice: utils.bigNumberify(TEST_GAS_PRICE_IN_TOKEN),
     token: TEST_TOKEN_DETAILS[1],
   },
   {
@@ -110,13 +120,25 @@ export const TEST_GAS_MODES = [{
 export const TEST_SDK_CONFIG = {
   network: 'ganache' as Network,
   authorizationsObserverTick: 3,
-  balanceObserverTick: 3,
   priceObserverTick: 3,
   mineableFactoryTick: 3,
-  mineableFactoryTimeout: 1000,
+  mineableFactoryTimeout: 2000,
 };
 
 export const TEST_REFUND_PAYER = {
   name: 'Alex',
   apiKey: 'aaaa-bbbb-cccc',
 };
+
+export const TEST_GAS_PRICE_CHEAP = utils.parseUnits('16', 'gwei');
+
+export const TEST_GAS_PRICES = {
+  cheap: {
+    gasPrice: TEST_GAS_PRICE_CHEAP,
+    timeEstimation: '114',
+  },
+  fast: {
+    gasPrice: utils.bigNumberify(TEST_GAS_PRICE),
+    timeEstimation: '30',
+  },
+} as unknown as GasPriceSuggestion;

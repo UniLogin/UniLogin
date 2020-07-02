@@ -1,18 +1,19 @@
-import {KeyPair, createKeyPair} from '@unilogin/commons';
-import {BlockchainService, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, SENTINEL_OWNERS} from '@unilogin/contracts';
+import {KeyPair, createKeyPair, ProviderService} from '@unilogin/commons';
+import {ContractService, calculateGnosisStringHash, signStringMessage, GnosisSafeInterface, SENTINEL_OWNERS} from '@unilogin/contracts';
 import {setupWalletContract, setupGnosisSafeContract, executeAddKeyGnosis} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {Contract, utils, Wallet} from 'ethers';
 import {WalletContractService} from '../../../src/integration/ethereum/WalletContractService';
 import {Beta2Service} from '../../../src/integration/ethereum/Beta2Service';
 import {GnosisSafeService} from '../../../src/integration/ethereum/GnosisSafeService';
 
 describe('INT: WalletContractService', () => {
-  const provider = createMockProvider();
-  const [wallet] = getWallets(provider);
+  const provider = new MockProvider();
+  const [wallet] = provider.getWallets();
+  const providerService = new ProviderService(provider);
   const walletService = new WalletContractService(
-    new BlockchainService(provider),
+    new ContractService(providerService),
     new Beta2Service(provider),
     new GnosisSafeService(provider),
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import {useThemeClassFor, classForComponent} from '../utils/classFor';
-import './../styles/warning.sass';
+import './../styles/base/warning.sass';
 import './../styles/themes/Jarvis/warningThemeJarvis.sass';
 import warnIcon from './../assets/icons/warn.svg';
 

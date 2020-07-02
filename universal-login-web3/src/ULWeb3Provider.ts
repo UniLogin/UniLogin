@@ -3,7 +3,7 @@ import {Config, getConfigForNetwork} from './config';
 import UniLoginSdk, {WalletService, SdkConfig} from '@unilogin/sdk';
 import {UIController} from './services/UIController';
 import {providers, utils} from 'ethers';
-import {DEFAULT_GAS_LIMIT, ensure, Message, walletFromBrain, asPartialMessage, Network, InitializationHandler, addressEquals} from '@unilogin/commons';
+import {DEFAULT_GAS_LIMIT, ensure, walletFromBrain, asPartialMessage, Network, InitializationHandler, addressEquals, Message, PartialRequired} from '@unilogin/commons';
 import {waitForTrue} from './ui/utils/utils';
 import {getOrCreateUlButton, initUi} from './ui/initUi';
 import {ULWeb3RootProps} from './ui/react/ULWeb3Root';
@@ -12,25 +12,20 @@ import {flatMap, map, Property, State} from 'reactive-properties';
 import {renderLogoButton} from './ui/logoButton';
 import {asBoolean, asString, cast} from '@restless/sanitizers';
 
-export interface ULWeb3ProviderOptions {
-  network: Network;
-  provider: Provider;
-  relayerUrl: string;
-  ensDomains: string[];
+export interface ULWeb3ProviderOptions extends Config {
   sdkConfigOverrides?: Partial<SdkConfig>;
   uiInitializer?: (services: ULWeb3RootProps) => void;
   browserChecker?: BrowserChecker;
+  disabledDialogs?: string[];
 }
 
 export class ULWeb3Provider implements Provider {
-  static getDefaultProvider(networkOrConfig: Network | Config, sdkConfigOverrides?: Partial<SdkConfig>) {
+  static getDefaultProvider(networkOrConfig: Network | Config, disabledDialogs: string[], sdkConfigOverrides?: Partial<SdkConfig>) {
     const config = typeof networkOrConfig === 'string' ? getConfigForNetwork(networkOrConfig) : networkOrConfig;
 
     return new ULWeb3Provider({
-      network: config.network,
-      provider: config.provider,
-      relayerUrl: config.relayerUrl,
-      ensDomains: config.ensDomains,
+      disabledDialogs,
+      ...config,
       sdkConfigOverrides,
     });
   }
@@ -56,10 +51,13 @@ export class ULWeb3Provider implements Provider {
     ensDomains,
     sdkConfigOverrides,
     uiInitializer = initUi,
+    observedTokensAddresses,
     browserChecker = new BrowserChecker(),
+    disabledDialogs,
   }: ULWeb3ProviderOptions) {
     const sdkConfig = {
       network,
+      observedTokensAddresses,
       storageService: new StorageService(),
       ...sdkConfigOverrides,
     };
@@ -73,7 +71,7 @@ export class ULWeb3Provider implements Provider {
     this.browserChecker = browserChecker;
     this.walletService = new WalletService(this.sdk, walletFromBrain, sdkConfig.storageService);
 
-    this.uiController = new UIController(this.walletService);
+    this.uiController = new UIController(this.walletService, disabledDialogs);
 
     this.isLoggedIn = this.walletService.walletDeployed;
     this.isUiVisible = this.uiController.isUiVisible;
@@ -128,7 +126,7 @@ export class ULWeb3Provider implements Provider {
     switch (method) {
       case 'eth_sendTransaction':
         const tx = cast(params[0], asPartialMessage);
-        return this.sendTransaction(tx);
+        return this.sendTransaction(tx as PartialRequired<Message, 'to' | 'from'>);
       case 'eth_accounts':
       case 'eth_requestAccounts':
         return {result: this.getAccounts()};
@@ -176,7 +174,7 @@ export class ULWeb3Provider implements Provider {
     }
   }
 
-  async sendTransaction(transaction: Partial<Message>): Promise<{result?: string, error?: string}> {
+  async sendTransaction(transaction: PartialRequired<Message, 'to'| 'from'>): Promise<{result?: string, error?: string}> {
     const transactionWithDefaults = {gasLimit: DEFAULT_GAS_LIMIT, value: '0', ...transaction};
     const confirmationResponse = await this.uiController.confirmRequest('Confirm transaction', transactionWithDefaults);
     if (!confirmationResponse.isConfirmed) {

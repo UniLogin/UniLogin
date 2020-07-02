@@ -5,6 +5,7 @@ import {MemoryStorageService} from '@unilogin/sdk';
 import {ULWeb3RootProps} from '../../src/ui/react/ULWeb3Root';
 import {ULWeb3Provider} from '../../src/ULWeb3Provider';
 import {BrowserChecker} from '@unilogin/react';
+import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 const mockedBrowserChecker = {
   isLocalStorageBlocked: () => false,
@@ -17,6 +18,7 @@ function createProvider(provider: Provider, relayerUrl: string): [ULWeb3Provider
     provider,
     relayerUrl,
     ensDomains: ['mylogin.eth'],
+    observedTokensAddresses: [ETHER_NATIVE_TOKEN.address],
     sdkConfigOverrides: {
       storageService: new MemoryStorageService(),
     },

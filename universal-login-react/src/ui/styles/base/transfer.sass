@@ -1,0 +1,190 @@
+@import ../helpers/breakpoints
+
+.unilogin-component-transfer
+  display: flex
+  flex-direction: column
+  flex: 1
+
+  .transfer-modal .transfer-amount-label
+    display: block
+    margin: 0
+    font-size: 15px
+    color: #31405E
+    text-transform: initial
+
+  .transfer
+    min-width: 500px
+    margin: 0 auto
+    padding-top: 30px
+
+    +media(s)
+      padding: 0 15px
+      min-width: unset
+      margin: 0
+
+  .transfer-amount-input-content
+    position: relative
+
+  .transfer-amount-input-wrapper
+    margin-bottom: 50px
+    height: 50px
+
+    @media only screen and (max-width: 600px)
+      margin-bottom: 15px
+
+  .transfer-amount-hint
+    padding: 10px
+    font-size: 13px
+
+  .transfer-amount-input
+    width: 100%
+    height: 100%
+
+  .transfer-amount-code
+    position: absolute
+    top: 50%
+    right: 20px
+    transform: translateY(-50%)
+    font-size: 12px
+    color: #A4A8B4
+    text-align: right
+
+  .transfer-amount-max
+    font-size: 16px
+    text-decoration: underline
+    cursor: pointer
+
+  .transfer-amount-btn
+    display: block
+    margin: 0 auto
+    cursor: pointer
+
+  .transfer-amount-btn span
+    font-size: 16px
+    color: #31405E
+    text-align: center
+
+  .currency-accordion
+    position: relative
+    margin-top: 15px
+    margin-bottom: 65px
+    z-index: 100
+
+    +media(s)
+      margin-bottom: 1.5rem
+
+  .currency-scrollable-list
+    position: absolute
+    bottom: -2px
+    width: 100%
+    height: 94px
+    margin: 0 auto
+    transform: translateY(100%)
+    overflow: auto
+
+  .currency-scrollable-list.one
+    height: 94px
+
+  .currency-scrollable-list.many
+    height: 138px
+
+  .currency-accordion-btn
+    border-radius: 2px
+    border: none
+    background: #362F6A
+
+  .currency-accordion-btn::after
+    content: ''
+    position: absolute
+    top: 50%
+    right: 15px
+    transform: translateY(-50%)
+    width: 13px
+    height: 11px
+    background: url('./../../assets/icons/angle.svg') center no-repeat
+
+  .currency-accordion-btn.expaned::after
+    transform: translateY(-50%) rotate(180deg)
+
+  .currency-accordion-item
+    position: relative
+    display: flex
+    align-items: center
+    justify-content: space-between
+    width: 100%
+    height: 92px
+    padding: 0 40px 0 10px
+    border: none
+    background: #362F6A
+
+  .currency-accordion-left
+    display: flex
+    align-items: center
+
+  .currency-accordion-name
+    font-size: 14px
+    color: #31405E
+
+  .currency-accordion-amount
+    font-size: 14px
+    color: #31405E
+    text-align: right
+
+  .currency-accordion-amount-usd
+    font-size: 14px
+    color: #A4A8B4
+    text-align: right
+
+  .currency-accordion-content
+    position: absolute
+    left: 0
+    bottom: -5px
+    transform: translateY(100%)
+    z-index: 10
+    width: 100%
+
+  .transfer-amount-row
+    display: flex
+    justify-content: space-between
+    margin-bottom: 10px
+
+  .transfer-recipient-row
+    margin-bottom: 10px
+
+  .transfer-recipient
+    min-height: 635px
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    padding-top: 30px
+
+  .transfer-recipient-input-wrapper
+    height: 50px
+    margin: 0 auto 105px
+
+    +media(s)
+      margin-bottom: 15px
+
+  .transfer-recipient-input-content
+    position: relative
+
+  .transfer-recipient-input
+    height: 32px
+    width: 100%
+    border: 1px solid #E1E1F0
+    padding-right: 25px
+    padding-left: 13px
+    font-size: 12px
+
+  .transfer-recipient-text
+    margin: 0 0 35px
+    font-size: 16px
+    font-weight: 600
+    color: #31405E
+    margin: 0 0 5px
+    text-align: center
+    text-transform: uppercase
+
+  .transfer-recipient-hint
+    padding: 10px
+    font-size: 13px

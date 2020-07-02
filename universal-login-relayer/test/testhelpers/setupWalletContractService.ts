@@ -1,20 +1,17 @@
 import {providers} from 'ethers';
-import {BlockchainService} from '@unilogin/contracts';
+import {ContractService} from '@unilogin/contracts';
+import {ProviderService} from '@unilogin/commons';
 import {Beta2Service} from '../../src/integration/ethereum/Beta2Service';
 import {GnosisSafeService} from '../../src/integration/ethereum/GnosisSafeService';
 import {WalletContractService} from '../../src/integration/ethereum/WalletContractService';
-import {TEST_GAS_PRICE} from '@unilogin/commons';
 import {TransactionGasPriceComputator} from '../../src/integration/ethereum/TransactionGasPriceComputator';
+import {getMockedGasPriceOracle} from '@unilogin/commons/testutils';
 
 export const setupWalletContractService = (provider: providers.Provider) => {
-  const blockchainService = new BlockchainService(provider);
-  const gasPriceOracle = {
-    getGasPrices: () => ({
-      fast: {gasPrice: TEST_GAS_PRICE},
-    }),
-  };
-  const transactionGasPriceComputator = new TransactionGasPriceComputator(gasPriceOracle as any);
+  const providerService = new ProviderService(provider);
+  const contractService = new ContractService(providerService);
+  const transactionGasPriceComputator = new TransactionGasPriceComputator(getMockedGasPriceOracle());
   const beta2Service = new Beta2Service(provider, transactionGasPriceComputator);
   const gnosisSafeService = new GnosisSafeService(provider, transactionGasPriceComputator);
-  return new WalletContractService(blockchainService, beta2Service, gnosisSafeService);
+  return new WalletContractService(contractService, beta2Service, gnosisSafeService);
 };

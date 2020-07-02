@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotFalsy, getMessageWithSignatures} from '@unilogin/commons';
+import {stringifySignedMessageFields, bignumberifySignedMessageFields, ensureNotFalsy, getSignatureFrom} from '@unilogin/commons';
 import IMessageRepository from '../../../core/models/messages/IMessagesRepository';
 import {InvalidMessage, MessageNotFound} from '../../../core/utils/errors';
 import MessageItem from '../../../core/models/messages/MessageItem';
@@ -19,23 +19,23 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
       state: 'AwaitSignature',
       message: stringifySignedMessageFields(messageItem.message),
       refundPayerId: messageItem.refundPayerId,
+      tokenPriceInEth: messageItem.tokenPriceInEth,
     } as MessageItem,
     );
   }
 
   // Override
   async get(messageHash: string) {
-    const message = await this.getMessageEntry(messageHash);
-    if (!message) {
-      throw new InvalidMessage(messageHash);
+    const messageEntry = await this.getMessageEntry(messageHash);
+    ensureNotFalsy(messageEntry, InvalidMessage, messageHash);
+    const collectedSignatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
+    if (messageEntry.message) {
+      const signature = await getSignatureFrom(collectedSignatureKeyPairs);
+      messageEntry.message = {...bignumberifySignedMessageFields(messageEntry.message), signature};
     }
-    if (message.message) {
-      message.message = bignumberifySignedMessageFields(message.message);
-    }
-    const signatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
-    const messageItem: MessageItem = message && {
-      ...message,
-      collectedSignatureKeyPairs: signatureKeyPairs,
+    const messageItem: MessageItem = messageEntry && {
+      ...messageEntry,
+      collectedSignatureKeyPairs,
     };
     return messageItem;
   }
@@ -43,7 +43,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   private async getMessageEntry(messageHash: string) {
     return this.knex(this.tableName)
       .where('hash', messageHash)
-      .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state', 'refundPayerId', 'gasPriceUsed', 'gasUsed'])
+      .columns(['transactionHash', 'error', 'walletAddress', 'message', 'state', 'refundPayerId', 'gasPriceUsed', 'gasUsed', 'tokenPriceInEth'])
       .first();
   }
 
@@ -92,8 +92,7 @@ export class MessageSQLRepository extends SQLRepository<MessageItem> implements 
   async getMessage(messageHash: string) {
     const message = (await this.get(messageHash)).message;
     ensureNotFalsy(message, MessageNotFound, messageHash);
-    const collectedSignatureKeyPairs = await this.getCollectedSignatureKeyPairs(messageHash);
-    return getMessageWithSignatures(message, collectedSignatureKeyPairs);
+    return message;
   }
 }
 

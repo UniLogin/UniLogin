@@ -1,6 +1,6 @@
 import {Router, Request} from 'express';
 import MessageHandler from '../../core/services/execution/messages/MessageHandler';
-import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash, StoredFutureWallet, asApplicationInfo} from '@unilogin/commons';
+import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash, asApplicationInfo, asStoredFutureWalletRequest, StoredFutureWalletRequest} from '@unilogin/commons';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject, asNumber, asOptional} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
@@ -41,7 +41,7 @@ const getDeploymentStatus = (deploymentHandler: DeploymentHandler) =>
   };
 
 const futureWalletHandling = (futureWalletHandler: FutureWalletHandler) =>
-  async (data: {body: StoredFutureWallet}) => {
+  async (data: {body: StoredFutureWalletRequest}) => {
     const [contractAddress] = await futureWalletHandler.handle(data.body);
     return responseOf({contractAddress}, 201);
   };
@@ -107,13 +107,7 @@ export default (
 
   router.post('/future', asyncHandler(
     sanitize({
-      body: asObject({
-        contractAddress: asEthAddress,
-        publicKey: asEthAddress,
-        ensName: asString,
-        gasPrice: asString,
-        gasToken: asString,
-      }),
+      body: asStoredFutureWalletRequest,
     }),
     futureWalletHandling(futureWalletHandler),
   ));

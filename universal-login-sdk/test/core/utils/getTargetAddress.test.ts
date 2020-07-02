@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Wallet} from 'ethers';
-import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import UniLoginSdk from '../../../src';
@@ -13,7 +13,7 @@ describe('getTargetAddress', () => {
   let wallet: Wallet;
 
   before(async () => {
-    [wallet] = getWallets(createMockProvider());
+    [wallet] = new MockProvider().getWallets();
     ({sdk, relayer} = await setupSdk(wallet));
   });
 

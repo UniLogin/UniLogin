@@ -1,12 +1,12 @@
 import {expect} from 'chai';
-import {loadFixture, getWallets} from 'ethereum-waffle';
+import {loadFixture, MockProvider} from 'ethereum-waffle';
 import {basicENS} from '../../fixtures/basicENS';
-import {utils, providers} from 'ethers';
+import {utils} from 'ethers';
 import {resolveName, createKeyPair} from '../../../src';
 import {registerName, setResolver, setAddress} from '../../../src/integration/ethereum/ens';
 
 describe('INT: resolveName', () => {
-  let provider: providers.JsonRpcProvider;
+  let provider: MockProvider;
   let ensAddress: string;
   let publicResolver: string;
   let registrarAddress: string;
@@ -27,7 +27,7 @@ describe('INT: resolveName', () => {
   });
 
   it('null if resolver is not resolved', async () => {
-    const [newWallet] = getWallets(provider);
+    const [newWallet] = provider.getWallets();
     const name = 'name';
     const ensName = `${name}.mylogin.eth`;
     const node = utils.namehash(ensName);

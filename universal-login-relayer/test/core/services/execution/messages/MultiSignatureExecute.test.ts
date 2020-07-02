@@ -1,20 +1,18 @@
 import {expect} from 'chai';
 import {utils, Wallet, Contract} from 'ethers';
 import {Provider} from 'ethers/providers';
-import {deployContract} from 'ethereum-waffle';
-import {calculateMessageHash, GAS_BASE, GAS_FIXED, Message} from '@unilogin/commons';
+import {calculateMessageHash, GAS_BASE, GAS_FIXED, Message, TEST_GAS_PRICE_IN_TOKEN} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
-import {executeSetRequiredSignatures, mockContracts} from '@unilogin/contracts/testutils';
+import {executeSetRequiredSignatures} from '@unilogin/contracts/testutils';
 import {transferMessage, addKeyMessage, removeKeyMessage} from '../../../../fixtures/basicWalletContract';
 import setupMessageService from '../../../../testhelpers/setupMessageService';
-import {getConfig} from '../../../../../src';
 import {getKnexConfig} from '../../../../testhelpers/knex';
 import {clearDatabase} from '../../../../../src/http/relayers/RelayerUnderTest';
 import {getTestSignedMessage} from '../../../../testconfig/message';
 import MessageHandler from '../../../../../src/core/services/execution/messages/MessageHandler';
 import ExecutionWorker from '../../../../../src/core/services/execution/ExecutionWorker';
 
-describe('INT: MultiSignatureExecute', async () => {
+describe('INT: MultiSignatureExecute', () => {
   let messageHandler: MessageHandler;
   let provider: Provider;
   let wallet: Wallet;
@@ -23,11 +21,11 @@ describe('INT: MultiSignatureExecute', async () => {
   let otherWallet: Wallet;
   let actionKey: string;
   let executionWorker: ExecutionWorker;
-  const config = getConfig('test');
+  let mockTokenNotOwned: Contract;
   const knex = getKnexConfig();
 
   beforeEach(async () => {
-    ({wallet, actionKey, provider, messageHandler, walletContract, otherWallet, executionWorker} = await setupMessageService(knex, config));
+    ({wallet, actionKey, provider, messageHandler, walletContract, otherWallet, executionWorker, mockTokenNotOwned} = await setupMessageService(knex));
     await executeSetRequiredSignatures(walletContract, 2, wallet.privateKey);
     msg = {...transferMessage, from: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
     executionWorker.start();
@@ -39,10 +37,7 @@ describe('INT: MultiSignatureExecute', async () => {
   });
 
   it('Error when not enough tokens', async () => {
-    const mockToken = await deployContract(wallet, mockContracts.MockToken);
-    await mockToken.transfer(walletContract.address, 1);
-
-    const message = {...msg, gasToken: mockToken.address, refundReceiver: wallet.address};
+    const message = {...msg, gasToken: mockTokenNotOwned.address, gasPrice: TEST_GAS_PRICE_IN_TOKEN, refundReceiver: wallet.address};
     const signedMessage0 = getTestSignedMessage(message, wallet.privateKey);
     const signedMessage1 = getTestSignedMessage(message, actionKey);
     await messageHandler.handle(signedMessage0);
@@ -65,22 +60,24 @@ describe('INT: MultiSignatureExecute', async () => {
     await expect(messageHandler.handle(signedMessage1)).to.be.rejectedWith(`Insufficient Gas. Got safeTxGas 1 but should greater than ${GAS_BASE}`);
   });
 
-  describe('Transfer', async () => {
+  describe('Transfer', () => {
     it('successful execution of transfer', async () => {
       const expectedBalance = (await provider.getBalance(msg.to)).add(msg.value);
       const signedMessage0 = getTestSignedMessage(msg, wallet.privateKey);
       const signedMessage1 = getTestSignedMessage(msg, actionKey);
-      await messageHandler.handle(signedMessage0);
+      const {state} = await messageHandler.handle(signedMessage0);
+      expect(state).eq('AwaitSignature');
       const {messageHash} = await messageHandler.handle(signedMessage1);
       await executionWorker.stopLater();
       expect(await provider.getBalance(msg.to)).to.eq(expectedBalance);
       const messageStatus = await messageHandler.getStatus(messageHash);
+      expect(messageStatus?.collectedSignatures).deep.eq([signedMessage0.signature, signedMessage1.signature]);
       expect(messageStatus?.transactionHash).to.not.be.null;
       expect(messageStatus?.state).to.eq('Success');
     });
   });
 
-  describe('Add Key', async () => {
+  describe('Add Key', () => {
     beforeEach(async () => {
       msg = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
     });
@@ -94,7 +91,7 @@ describe('INT: MultiSignatureExecute', async () => {
       expect(await walletContract.keyExist(otherWallet.address)).to.be.true;
     });
 
-    describe('Query message status', async () => {
+    describe('Query message status', () => {
       it('should get pending execution status', async () => {
         const signedMessage0 = getTestSignedMessage(msg, wallet.privateKey);
         const signedMessage1 = getTestSignedMessage(msg, actionKey);
@@ -114,7 +111,7 @@ describe('INT: MultiSignatureExecute', async () => {
     });
   });
 
-  describe('Remove key ', async () => {
+  describe('Remove key ', () => {
     beforeEach(async () => {
       const message = {...addKeyMessage, from: walletContract.address, to: walletContract.address, nonce: await walletContract.lastNonce(), refundReceiver: wallet.address};
       const signedMessage0 = getTestSignedMessage(message, wallet.privateKey);

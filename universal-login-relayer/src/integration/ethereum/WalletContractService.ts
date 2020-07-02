@@ -1,14 +1,14 @@
 import {Beta2Service} from './Beta2Service';
-import {BlockchainService} from '@unilogin/contracts';
+import {ContractService} from '@unilogin/contracts';
 import {SignedMessage, RelayerRequest, WalletVersion, isProperAddress, ensure} from '@unilogin/commons';
 import IWalletContractService from '../../core/models/IWalletContractService';
 import {GnosisSafeService} from './GnosisSafeService';
+import {utils} from 'ethers';
 
 export class WalletContractService {
   private walletVersions: Record<string, WalletVersion | undefined> = {};
 
-  constructor(private blockchainService: BlockchainService, private beta2Service: Beta2Service, private gnosisSafeService: GnosisSafeService) {
-
+  constructor(private contractService: ContractService, private beta2Service: Beta2Service, private gnosisSafeService: GnosisSafeService) {
   }
 
   private async getWalletService(walletAddress: string): Promise<IWalletContractService> {
@@ -29,7 +29,7 @@ export class WalletContractService {
       return this.walletVersions[walletAddress];
     } else {
       ensure(walletAddress !== undefined && isProperAddress(walletAddress), Error, 'Invalid address provided');
-      const walletVersion = await this.blockchainService.fetchWalletVersion(walletAddress);
+      const walletVersion = await this.contractService.fetchWalletVersion(walletAddress);
       this.walletVersions[walletAddress] = walletVersion;
       return walletVersion;
     }
@@ -75,9 +75,9 @@ export class WalletContractService {
     return service.recoverFromRelayerRequest(relayerRequest);
   }
 
-  async messageToTransaction(message: SignedMessage) {
+  async messageToTransaction(message: SignedMessage, tokenGasPriceInEth: utils.BigNumberish) {
     const service = await this.getWalletService(message.from);
-    return service.messageToTransaction(message);
+    return service.messageToTransaction(message, tokenGasPriceInEth);
   }
 
   async isAddKeyCall(walletAddress: string, data: string) {

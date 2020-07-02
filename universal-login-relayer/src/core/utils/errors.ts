@@ -4,6 +4,7 @@ type ErrorType =
   'InsufficientGas' |
   'StatusNotFound' |
   'MessageNotFound' |
+  'FutureWalletNotFound' |
   'TransactionHashNotFound' |
   'GasUsedNotFound' |
   'NodeEnvNotSpecified' |
@@ -21,10 +22,13 @@ type ErrorType =
   'NotEnoughSignatures' |
   'InvalidTransaction' |
   'InvalidHexData' |
+  'InvalidTolerance' |
+  'InvalidValue' |
   'InvalidApiKey' |
   'EnsNameTaken' |
   'UnauthorisedAddress' |
-  'InvalidRefundReceiver';
+  'InvalidRefundReceiver' |
+  'UnsupportedToken';
 
 export class RelayerError extends Error {
   errorType: ErrorType;
@@ -100,6 +104,20 @@ export class InvalidHexData extends ValidationFailed {
   }
 }
 
+export class InvalidValue extends ValidationFailed {
+  constructor(variableName: string, expectedValue: string, gottenValue: string) {
+    super(`Expected ${variableName} equals ${expectedValue}, but got ${gottenValue}`, 'InvalidValue');
+    Object.setPrototypeOf(this, InvalidValue.prototype);
+  }
+}
+
+export class InvalidTolerance extends ValidationFailed {
+  constructor(tolerance: number) {
+    super(`Tolerance should be between 0 and 1, but got: ${tolerance}`, 'InvalidTolerance');
+    Object.setPrototypeOf(this, InvalidTolerance.prototype);
+  }
+}
+
 export class InvalidApiKey extends ValidationFailed {
   constructor(apiKey: string) {
     super(`Invalid api key: ${apiKey}`, 'InvalidApiKey');
@@ -167,6 +185,13 @@ export class MessageNotFound extends NotFound {
   constructor(messageHash: string) {
     super(`Message not found for hash: ${messageHash}`, 'MessageNotFound');
     Object.setPrototypeOf(this, MessageNotFound.prototype);
+  }
+}
+
+export class FutureWalletNotFound extends NotFound {
+  constructor() {
+    super('Future wallet not found', 'FutureWalletNotFound');
+    Object.setPrototypeOf(this, FutureWalletNotFound.prototype);
   }
 }
 
@@ -239,5 +264,12 @@ export class DuplicatedExecution extends Conflict {
   constructor() {
     super('Execution request already processed', 'DuplicatedExecution');
     Object.setPrototypeOf(this, DuplicatedExecution.prototype);
+  }
+}
+
+export class UnsupportedToken extends ValidationFailed {
+  constructor(token: string) {
+    super(`Token: ${token} is not supported.`, 'UnsupportedToken');
+    Object.setPrototypeOf(this, UnsupportedToken.prototype);
   }
 }

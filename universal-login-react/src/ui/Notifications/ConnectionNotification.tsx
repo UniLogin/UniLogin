@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Notification, GasParameters, ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
 import {EmojiForm} from './EmojiForm';
 import {DeployedWallet} from '@unilogin/sdk';
-import '../styles/emoji.sass';
+import '../styles/base/emoji.sass';
 import '../styles/themes/Legacy/emojiThemeLegacy.sass';
 import '../styles/themes/UniLogin/emojiThemeUniLogin.sass';
 import '../styles/themes/Jarvis/emojiThemeJarvis.sass';
@@ -76,10 +76,9 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
                 deployedWallet={deployedWallet}
                 gasLimit={DEFAULT_GAS_LIMIT}
                 onGasParametersChanged={setGasParameters}
-                className={className}
                 sdk={deployedWallet.sdk}
               />
-              <div className="footer-buttons-row">
+              <div className="footer-buttons-row two">
                 <button onClick={() => deployedWallet.denyRequests()} className="footer-deny-btn">Deny</button>
                 <button onClick={() => onConnectClick(gasParameters)} className="footer-approve-btn" disabled={!gasParameters}>Connect device</button>
               </div>

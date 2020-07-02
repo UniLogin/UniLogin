@@ -1,8 +1,8 @@
 import {createKeyPair, EMPTY_DEVICE_INFO, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 import {GnosisSafeInterface} from '@unilogin/contracts';
 import chai, {expect} from 'chai';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {Contract, providers, Wallet} from 'ethers';
+import {MockProvider} from 'ethereum-waffle';
+import {Contract, Wallet} from 'ethers';
 import sinonChai from 'sinon-chai';
 import ENSService from '../../../src/integration/ethereum/ensService';
 import {WalletDeploymentService} from '../../../src/integration/ethereum/WalletDeploymentService';
@@ -11,9 +11,9 @@ import setupWalletService, {createFutureWalletUsingEnsService, getSetupDataUsing
 chai.use(require('chai-string'));
 chai.use(sinonChai);
 
-describe('INT: WalletService', async () => {
+describe('INT: WalletService', () => {
   let walletService: WalletDeploymentService;
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let wallet: Wallet;
   let walletContract: Contract;
   let factoryContract: Contract;
@@ -26,15 +26,15 @@ describe('INT: WalletService', async () => {
   let fakeDevicesService: any;
 
   before(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
     ({walletService, factoryContract, ensService, provider, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler} = await setupWalletService(wallet));
     const {contractAddress, signature} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
     await walletService.deploy({publicKey: keyPair.publicKey, ensName, gasPrice: TEST_GAS_PRICE, signature, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
     walletContract = new Contract(contractAddress, GnosisSafeInterface, provider);
   });
 
-  describe('Create', async () => {
+  describe('Create', () => {
     it('is initialized with management key', async () => {
       expect(await walletContract.getThreshold()).to.eq(1);
       expect(await walletContract.isOwner(keyPair.publicKey)).to.eq(true);
@@ -54,7 +54,7 @@ describe('INT: WalletService', async () => {
       const keyPair2 = createKeyPair();
       const ensName = 'jarek.mylogin.eth';
       const {contractAddress, signature} = await createFutureWalletUsingEnsService(keyPair2, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address);
-      const creationPromise = walletService.deploy({publicKey: keyPair2.publicKey, ensName, signature, gasPrice: '1', gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
+      const creationPromise = walletService.deploy({publicKey: keyPair2.publicKey, ensName, signature, gasPrice: TEST_GAS_PRICE, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
       await expect(creationPromise).to.be.fulfilled;
       expect(fakeDevicesService.addOrUpdate).be.calledOnceWithExactly(contractAddress, keyPair2.publicKey, EMPTY_DEVICE_INFO);
     });
@@ -64,7 +64,7 @@ describe('INT: WalletService', async () => {
       const gasPrice = '0';
       const {signature} = await createFutureWalletUsingEnsService(keyPair, ensName, factoryContract, wallet, ensService, ensRegistrar.address, gnosisSafeMaster.address, fallbackHandler.address, gasPrice);
       const transaction = await walletService.deploy({publicKey: keyPair.publicKey, ensName, signature, gasPrice, gasToken: ETHER_NATIVE_TOKEN.address}, EMPTY_DEVICE_INFO);
-      expect(transaction.gasPrice.toString()).deep.eq('9090');
+      expect(transaction.gasPrice.toString()).deep.eq('20000000000');
     });
 
     it('setup initialize data', async () => {

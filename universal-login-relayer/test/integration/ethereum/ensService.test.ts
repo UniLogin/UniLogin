@@ -1,21 +1,21 @@
 import chai, {expect} from 'chai';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {providers, Wallet} from 'ethers';
+import {MockProvider} from 'ethereum-waffle';
+import {Wallet} from 'ethers';
 import ENSService from '../../../src/integration/ethereum/ensService';
 import {buildEnsService, registerENSName} from '../../testhelpers/buildEnsService';
 
 chai.use(require('chai-string'));
 
-describe('INT: ENSService', async () => {
+describe('INT: ENSService', () => {
   let ensService: ENSService;
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let ensBuilder: any;
   let wallet: Wallet;
   const domain = 'mylogin.eth';
 
   before(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
     [ensService, provider, ensBuilder] = await buildEnsService(wallet, domain);
   });
 

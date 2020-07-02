@@ -1,0 +1,95 @@
+@import ../helpers/breakpoints
+
+.unilogin-component-assets
+  .assets
+    max-width: 570px
+    width: 100%
+    margin: 0 auto
+
+    @media only screen and (max-width: 600px)
+      min-width: 100%
+
+  .universal-login-funds .funds-btn
+    @media only screen and (max-width: 600px)
+      width: unset
+      padding: 0 3rem
+
+    @media only screen and (max-width: 600px)
+      padding: 0 2.5rem
+
+  .assets-navigation
+    margin-bottom: 16px
+    width: max-content
+    position: relative
+
+  .assets-navigation > a
+    margin: 0 17px
+
+  .assets-title
+    margin: 0 auto 8px
+    font-weight: 600
+    font-size: 10px
+    font-style: normal
+    text-transform: uppercase
+    line-height: 12px
+    text-align: center
+    text-decoration: none
+    cursor: pointer
+    color: #7D7C9C
+
+  .assets-navigation::after
+    content: ''
+    position: absolute
+    bottom: -5px
+    left: 0
+    width: 100%
+    border: 1px solid #E4F3F6
+    border-radius: 4px
+    z-index: 1
+
+    &:hover
+      opacity: 1 !important
+      color: #2EDACA !important
+
+    +media(s)
+      height: auto
+      padding: 0
+
+  .assets-selected-title
+    @extend .assets-title
+    color: #000000 !important
+    pointer-events: none !important
+    position: relative
+
+  .assets-selected-title::after
+    content: ''
+    position: absolute
+    bottom: -6px
+    left: -17px
+    width: calc(100% + 30px)
+    border: 2px solid #2EDACA
+    border-radius: 4px
+    z-index: 2
+
+  .assets-list
+    background: #fff
+    border-radius: 6px
+    overflow-y: scroll
+    max-height: 315px
+
+    +media(s)
+      padding: 0
+      border-radius: 3px
+      max-height: unset
+
+  .universal-login-assets-item + .universal-login-assets-item
+    border-top: 1px solid
+
+  .assets-centered-box
+    height: 315px
+    width: 100%
+    font-size: 15px
+    font-style: normal
+    display: flex
+    align-items: center
+    justify-content: center

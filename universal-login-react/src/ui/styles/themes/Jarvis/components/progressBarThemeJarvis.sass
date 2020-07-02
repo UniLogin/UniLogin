@@ -4,6 +4,10 @@
   height: 5px
   background: #fff
 
+  &::after,
+  &::before
+    display: none
+
   .unilogin-component-progress-bar-line
     position: absolute
     top: 0
@@ -14,6 +18,9 @@
     animation: gradient-animation 4s linear infinite
     background-size: 200% 200%
     animation-direction: reverse
+
+    &::after
+      display: none
 
   .unilogin-component-progress-bar-line.dual
     width: 50%

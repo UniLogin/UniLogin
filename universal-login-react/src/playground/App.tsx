@@ -5,11 +5,8 @@ import {WalletSelector} from '../ui/WalletSelector/WalletSelector';
 import {EmojiForm} from '../ui/Notifications/EmojiForm';
 import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH} from '@unilogin/commons';
 import {EmojiPanel} from '../ui/WalletSelector/EmojiPanel';
-import {Settings} from '../ui/Settings/Settings';
 import {Onboarding} from '../ui/Onboarding/Onboarding';
-import {LogoButton} from '../ui/UFlow/LogoButton';
 import {CreateRandomInstance} from './CreateRandomInstance';
-import '../ui/styles/playground.css';
 import UniLoginSdk, {DeployedWallet, DeployingWallet} from '@unilogin/sdk';
 import {Spinner} from '../ui/commons/Spinner';
 import {useAsync} from '../ui/hooks/useAsync';
@@ -24,7 +21,10 @@ import {ThemeProvider} from '../ui/themes/Theme';
 import {ErrorMessage} from '../ui/commons/ErrorMessage';
 import {AppPreloader} from '../ui/commons/AppPreloader';
 import {TopUpProvider} from '../core/models/TopUpProvider';
+import {ChooseTopUpToken} from '../ui/TopUp/ChooseTopUpToken';
 import config from './config';
+import {Dashboard} from '../ui/UFlow/Dashboard';
+import '../ui/styles/playground.sass';
 
 export const App = () => {
   const [sdk] = useState(() => {
@@ -55,7 +55,6 @@ export const App = () => {
     privateKey: TEST_PRIVATE_KEY,
     deploy: async () => deployingWallet,
     waitForBalance: (async () => {}) as any,
-    setSupportedToken: (() => {}) as any,
     getMinimalAmount: () => '1',
   } as any;
 
@@ -74,7 +73,7 @@ export const App = () => {
                   <hr />
                   <CreateRandomInstance walletService={walletService} />
                   <hr />
-                  <LogoButton walletService={walletService} />
+                  <Dashboard walletService={walletService} />
                 </div>
               </Route>
               <Route
@@ -100,6 +99,21 @@ export const App = () => {
                     onCreate={() => history.push('/onboarding/success')}
                     hideModal={() => history.push('/')}
                   />}
+              />
+              <Route
+                exact
+                path="/chooseToken"
+                render={({history}) =>
+                  <ModalWrapper hideModal={() => history.push('/waitForTransaction')} message="This is a test environment running on Ropsten network">
+                    <ChooseTopUpToken
+                      supportedTokens={['ETH', 'DAI']}
+                      onClick={() => {
+                        console.log('Clicked');
+                      }}
+                      walletService={walletService}
+                      hideModal={() => history.push('/')}
+                    />
+                  </ModalWrapper>}
               />
               <Route exact path="/walletSelector">
                 <WalletSelector
@@ -168,7 +182,6 @@ export const App = () => {
                   />;
                 }}
               />
-              <Route exact path="/settings" render={() => <Settings deployedWallet={new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk)} />} />
               <Route exact path="/recover" render={() => (<div><p>Recover</p></div>)} />
               <Route exact path="/waiting">
                 <WaitingForOnRampProvider onRampProviderName={TopUpProvider.RAMP} />

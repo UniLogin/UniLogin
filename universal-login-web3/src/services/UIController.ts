@@ -1,7 +1,7 @@
 import {State, Property, combine} from 'reactive-properties';
 import {WalletService} from '@unilogin/sdk';
 import {ULWeb3ProviderState} from '../models/ULWeb3ProviderState';
-import {ensure, Message} from '@unilogin/commons';
+import {ensure, Message, PartialRequired} from '@unilogin/commons';
 import {UnexpectedWalletState, isRandomInfuraError} from '../ui/utils/errors';
 import {ConfirmationResponse} from '../models/ConfirmationResponse';
 
@@ -14,6 +14,7 @@ export class UIController {
 
   constructor(
     private walletService: WalletService,
+    private disabledDialogs: string[] = [],
   ) {
     this.isUiVisible = combine(
       [this.activeModal, this.dashboardVisible, this.isLoading],
@@ -25,7 +26,7 @@ export class UIController {
     this.hideModal();
   }
 
-  confirmRequest(title: string, transaction: Partial<Message>): Promise<ConfirmationResponse> {
+  confirmRequest(title: string, transaction: PartialRequired<Message, 'to' | 'from' | 'gasLimit' | 'value'>): Promise<ConfirmationResponse> {
     return new Promise<ConfirmationResponse>((resolve) => {
       this.activeModal.set({
         kind: 'TRANSACTION_CONFIRMATION',
@@ -58,7 +59,9 @@ export class UIController {
   }
 
   showWaitForTransaction(transactionHash?: string) {
-    this.activeModal.set({kind: 'WAIT_FOR_TRANSACTION', props: {transactionHash}});
+    if (!this.disabledDialogs.includes('WAIT_FOR_TRANSACTION')) {
+      this.activeModal.set({kind: 'WAIT_FOR_TRANSACTION', props: {transactionHash}});
+    }
   }
 
   isWaitForTransaction() {

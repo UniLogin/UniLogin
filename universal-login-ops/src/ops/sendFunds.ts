@@ -1,6 +1,7 @@
 import {providers, utils} from 'ethers';
-import {ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, DEV_DAI_ADDRESS} from '@unilogin/commons';
 import {connectToEthereumNode} from '../cli/connectAndExecute';
+import {IERC20Interface} from '@unilogin/contracts';
 
 export interface SendFundsParameters {
   nodeUrl: string;
@@ -21,8 +22,14 @@ export const sendFunds = async ({nodeUrl, privateKey, to, amount, currency, prov
       console.log(`       Sent ${amount} ${currency} to ${to}`);
       return;
     }
+    case 'DAI': {
+      const data = IERC20Interface.functions.transfer.encode([to, value]);
+      await wallet.sendTransaction({to: DEV_DAI_ADDRESS, data});
+      console.log(`       Sent ${amount} ${currency} to ${to}`);
+      return;
+    }
     default: {
-      throw new Error(`${currency} is not supported yet. Supported currencies: ${ETHER_NATIVE_TOKEN.symbol}`);
+      throw new Error(`${currency} is not supported yet. Supported currencies: ${ETHER_NATIVE_TOKEN.symbol}, DAI`);
     }
   }
 };

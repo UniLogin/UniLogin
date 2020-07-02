@@ -1,0 +1,349 @@
+@import ../helpers/breakpoints
+
+.unilogin-component-devices
+  display: flex
+  flex: 1
+  flex-direction: column
+  align-items: center
+  position: relative
+  height: 630px
+  width: 100%
+  overflow: scroll
+  padding: 0 32px 30px
+
+  +media(s)
+    padding: 0 15px
+    height: initial
+
+  .devices-inner
+    max-width: 770px
+    min-width: 80%
+    min-height: 575px
+    padding: 50px 15px 0
+    margin-bottom: 1rem
+
+    +media(s)
+      min-height: initial
+      padding-bottom: 30px
+
+    .spinner
+      margin: 0 auto
+
+  .connected-devices-header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: 24px
+
+    +media(s)
+      flex-direction: column
+      align-items: flex-start
+      margin: 0
+
+  .connected-devices-title
+    margin: 0
+    font-weight: 500
+    font-size: 16px
+    line-height: 20px
+    text-align: left
+
+    +media(s)
+      margin-bottom: 25px
+
+  .devices-confirmation-wrapper
+    display: flex
+    align-items: center
+    justify-content: end
+
+    +media(s)
+      width: 100%
+
+  .devices-confirmation-text
+    font-weight: 300
+    font-size: 14px
+    margin: 0 10px 0 0
+
+  .devices-confirmation-input-wrapper
+    position: relative
+    margin-right: 10px
+    border: 1px solid
+
+    +media(s)
+      margin-left: auto
+      margin-left: auto
+      margin-right: 0
+      width: 96px
+      border-radius: 3px 0px 0px 3px
+      height: 45px
+
+  .devices-confirmation-input
+    width: 60px
+    height: 45px
+    padding-right: 20px
+    border-radius: 3px
+    font-weight: 500
+    font-size: 14px
+    text-align: center
+    border: none
+
+    +media(s)
+      padding: 0
+      width: 100%
+
+  .devices-amount-buttons
+    position: absolute
+    top: 0
+    right: 0
+    height: 100%
+    width: 20px
+    display: flex
+    flex-direction: column
+    border-left: 1px solid
+
+    +media(s)
+      width: 100%
+      flex-direction: row-reverse
+      top: 50%
+      transform: translateY(-50%)
+      border: none
+
+  .devices-amount-increase-btn,
+  .devices-amount-decrease-btn
+    position: relative
+    width: 100%
+    height: 50%
+    border: none
+    background: none
+
+    +media(s)
+      height: 100%
+      outline: none
+
+  .devices-amount-increase-btn:active,
+  .devices-amount-decrease-btn:active
+    opacity: 0.5
+
+  .devices-amount-decrease-btn
+    border-top: 1px solid
+
+    +media(s)
+      border: none
+
+  .devices-amount-increase-btn::before,
+  .devices-amount-decrease-btn::before
+    content: ''
+    position: absolute
+    top: 9px
+    left: 50%
+    transform: translate(-50%, 0)
+    width: 0
+    height: 0
+
+    +media(s)
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      display: flex
+      align-items: center
+      justify-content: center
+      font-size: 18px
+      color: #fff
+
+
+  .devices-amount-increase-btn::before
+    border-left: 4px solid transparent
+    border-right: 4px solid transparent
+    border-bottom: 4px solid #000
+
+    +media(s)
+      content: '+'
+
+  .devices-amount-decrease-btn::before
+    border-left: 4px solid transparent
+    border-right: 4px solid transparent
+    border-top: 4px solid #000
+
+    +media(s)
+      content: '-'
+
+  .devices-confirmation-edit-button, .devices-confirmation-save-button
+    width: 90px
+    height: 45px
+    border-radius: 3px
+    font-weight: 500
+    font-size: 14px
+    text-align: center
+
+    +media(s)
+      height: 45px
+      border-radius: 0 3px 3px 0
+
+  .connected-devices-list
+    padding: 0
+    list-style: none
+
+  .connected-devices-item
+    position: relative
+    display: flex
+    align-items: center
+    justify-content: flex-start
+    width: 100%
+    height: 80px
+
+  .connected-devices-img-wrapper
+    position: relative
+    min-width: 45px
+    max-width: 45px
+    margin: 0 27px 0 0
+
+  .connected-devices-img-wrapper::before
+    content: ''
+    position: absolute
+    bottom: 0
+    right: 0
+    width: 24px
+    height: 24px
+    transform: translateX(50%)
+    border-radius: 50%
+    z-index: 10
+
+  .connected-devices-img-wrapper.unknown::before
+    background: #261B44 url('../../assets/icons/browser.svg') center no-repeat
+    background-size: 20px 20px
+    border: 1px solid #292250
+
+  .connected-devices-img-wrapper.laptop::before
+    background: #261B44 url('../../assets/icons/laptop.svg') center no-repeat
+    border: 1px solid #292250
+
+  .connected-devices-img-wrapper.phone::before
+    background: #261B44 url('../../assets/icons/phone.svg') center no-repeat
+    border: 1px solid #292250
+
+  .connected-devices-img-wrapper.tablet::before
+    background: #261B44 url('../../assets/icons/tablet.svg') center no-repeat
+    border: 1px solid #292250
+
+  .connected-devices-img
+    display: block
+    max-height: 45px
+    width: 100%
+
+  .connected-devices-img.default
+    filter: grayscale(0.7)
+
+  .connected-devices-item + .connected-devices-item
+    margin-top: 24px
+
+  .connected-devices-item.highlighted
+    border: 1px solid
+
+  .connected-devices-type
+    margin: 0
+    font-weight: 500
+    font-size: 14px
+    line-height: 17px
+    text-align: left
+
+    @media only screen and (max-width: 600px)
+      font-size: 14px
+
+  .connected-devices-details
+    margin: 0
+    font-size: 12px
+    letter-spacing: 0
+    line-height: normal
+    text-align: left
+
+  .connected-devices-active
+    font-size: 12px
+    letter-spacing: 0
+
+  .connected-devices-trash-btn-wrapper
+    position: relative
+    width: 20px
+    height: 20px
+    margin-left: auto
+
+  .connected-devices-trash-btn
+    width: 20px
+    height: 20px
+    background: url('../../assets/icons/trash.svg') center no-repeat
+    background-size: contain
+    border: none
+    cursor: pointer
+
+  .connected-devices-buttons
+    display: flex
+    align-items: center
+    height: 100%
+    margin-left: auto
+
+  .connected-devices-cancel
+    margin-right: 25px
+    font-weight: 500
+    font-size: 12px
+    letter-spacing: 0
+    text-align: center
+    cursor: pointer
+
+  .connected-devices-delete
+    width: 108px
+    height: 100%
+    font-weight: 500
+    font-size: 12px
+    letter-spacing: 0
+    text-align: center
+    cursor: pointer
+
+  .warning-message
+    position: absolute
+    top: 50%
+    left: -10px
+    transform: translate(-100%, -50%)
+    margin: 0
+    width: 255px
+    padding: 10px 10px 10px 40px
+    font-size: 12px
+    line-height: 18px
+    color: #FC4B61
+    background: rgba(252,75,97,0.30)
+    border-radius: 3px
+
+  .warning-message::before
+    content: ''
+    position: absolute
+    top: 12px
+    left: 16px
+    width: 15px
+    height: 15px
+    background: url('../../assets/icons/warning.svg') center no-repeat
+
+  .warning-message::after
+    content: ''
+    position: absolute
+    top: 50%
+    right: 0
+    transform: translate(100%, -50%)
+    width: 0
+    height: 0
+    border-top: 5px solid transparent
+    border-bottom: 5px solid transparent
+    border-left: 5px solid rgba(252,75,97,0.30)
+
+  .disconnect-account-link
+    margin-left: 80px
+    font-weight: 600
+    font-size: 12px
+    border: none
+    background: none
+    cursor: pointer
+    margin-left: auto
+    padding-right: 2rem
+    color: #FF345C
+    margin-top: auto
+
+    +media(s)
+      font-size: 14px
+      line-height: 21px
+      padding-bottom: 40px

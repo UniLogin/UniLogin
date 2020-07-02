@@ -1,8 +1,7 @@
-import {BlockchainService} from '@unilogin/contracts';
 import {WalletEventCallback, WalletEventFilter, WalletEventType} from '../models/events';
 import {WalletEventsObserver} from './WalletEventsObserver';
 import {Callback} from 'reactive-properties';
-import {ensureNotNullish, Nullable} from '@unilogin/commons';
+import {ensureNotNullish, Nullable, ProviderService} from '@unilogin/commons';
 import {InvalidObserverState, MissingParameter} from '../utils/errors';
 import {BlockNumberState} from '../states/BlockNumberState';
 import {IStorageService} from '../models/IStorageService';
@@ -18,7 +17,7 @@ class WalletEventsObserverFactory {
   private blockNumberStorage: StorageEntry<number>;
 
   constructor(
-    private blockchainService: BlockchainService,
+    private providerService: ProviderService,
     private currentBlock: BlockNumberState,
     storageService: IStorageService = new MemoryStorageService(),
   ) {
@@ -26,7 +25,7 @@ class WalletEventsObserverFactory {
   }
 
   async start() {
-    this.currentBlock.set(await this.blockchainService.getBlockNumber());
+    this.currentBlock.set(await this.providerService.getBlockNumber());
     if (!this.blockNumberStorage.get()) {
       this.blockNumberStorage.set(this.currentBlock.get());
     }
@@ -56,7 +55,7 @@ class WalletEventsObserverFactory {
   }
 
   subscribe(eventType: WalletEventType, filter: WalletEventFilter, callback: WalletEventCallback) {
-    this.observers[filter.contractAddress] = this.observers[filter.contractAddress] || new WalletEventsObserver(filter.contractAddress, this.blockchainService);
+    this.observers[filter.contractAddress] = this.observers[filter.contractAddress] || new WalletEventsObserver(filter.contractAddress, this.providerService);
     const observableRecord = {key: filter.key, callback};
     const unsubscribe = this.observers[filter.contractAddress].subscribe(eventType, observableRecord);
     this.fetchEvents();

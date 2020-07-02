@@ -1,7 +1,8 @@
 import {expect} from 'chai';
 import {providers} from 'ethers';
-import {fetchHardforkVersion, ISTANBUL_BLOCK_NUMBER} from '../../../src/integration/ethereum/fetchHardforkVersion';
+import {ProviderService} from '../../../src/integration/ethereum/ProviderService';
 import {mockProviderWithBlockNumber} from '../../helpers/mockProvider';
+import {fetchHardforkVersion, ISTANBUL_BLOCK_NUMBER} from '../../../src/integration/ethereum/fetchHardforkVersion';
 
 describe('fetchHardforkVersion', () => {
   const itReturnsHardforkVersion = (network: string, hardfork: string, blockNumber?: number) =>
@@ -24,6 +25,7 @@ describe('fetchHardforkVersion', () => {
 
   it('throws exception', async () => {
     const provider = mockProviderWithBlockNumber('', 1);
-    await expect(fetchHardforkVersion(provider as providers.Provider)).to.eventually.be.rejectedWith('Invalid network');
+    const providerService = new ProviderService(provider as providers.Provider);
+    await expect(providerService.fetchHardforkVersion()).to.eventually.be.rejectedWith('Invalid network');
   });
 });

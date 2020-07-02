@@ -45,3 +45,10 @@ export class InvalidSignatureLength extends Error {
     Object.setPrototypeOf(this, InvalidSignatureLength.prototype);
   }
 }
+
+export class InvalidNetwork extends Error {
+  constructor() {
+    super('Invalid network');
+    Object.setPrototypeOf(this, InvalidNetwork.prototype);
+  }
+}

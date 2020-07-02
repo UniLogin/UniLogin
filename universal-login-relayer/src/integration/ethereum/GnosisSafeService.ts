@@ -18,7 +18,7 @@ export class GnosisSafeService implements IWalletContractService {
     return requiredSignatures;
   }
 
-  async keyExist(walletAddress: string, key: string) {
+  keyExist(walletAddress: string, key: string) {
     const walletContract = new Contract(walletAddress, GnosisSafeInterface, this.provider);
     return walletContract.isOwner(key);
   }
@@ -62,9 +62,9 @@ export class GnosisSafeService implements IWalletContractService {
     );
   }
 
-  async messageToTransaction(message: SignedMessage) {
+  async messageToTransaction(message: SignedMessage, tokenPriceInEth: utils.BigNumberish) {
     return Object({
-      gasPrice: await this.transactionGasPriceComputator.getGasPrice(message.gasPrice),
+      gasPrice: await this.transactionGasPriceComputator.getGasPriceInEth(message.gasPrice, tokenPriceInEth),
       gasLimit: utils.bigNumberify(message.safeTxGas).add(message.baseGas).add(GAS_LIMIT_MARGIN),
       to: message.from,
       value: 0,

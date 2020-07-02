@@ -1,7 +1,7 @@
 import chai from 'chai';
 import {Contract, utils, Wallet} from 'ethers';
 import {Provider} from 'ethers/providers';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {
   calculateInitializeSignature,
   ETHER_NATIVE_TOKEN,
@@ -20,7 +20,7 @@ export const createWalletCounterfactually = async (wallet: Wallet, relayerUrlOrS
   const futureAddress = getFutureAddress(walletContractAddress, factoryContractAddress, keyPair.publicKey);
   await wallet.sendTransaction({to: futureAddress, value: utils.parseEther('1.0')});
   const initData = await getInitData(keyPair, ensName, ensAddress, wallet.provider, TEST_GAS_PRICE);
-  const signature = await calculateInitializeSignature(initData, keyPair.privateKey);
+  const signature = calculateInitializeSignature(initData, keyPair.privateKey);
   const result = await chai.request(relayerUrlOrServer)
     .post('/wallet/deploy')
     .send({
@@ -37,8 +37,8 @@ export const createWalletCounterfactually = async (wallet: Wallet, relayerUrlOrS
 };
 
 export const startRelayer = async (port = '33111') => {
-  const provider = createMockProvider();
-  const [deployer, wallet, otherWallet] = getWallets(provider);
+  const provider = new MockProvider();
+  const [deployer, wallet, otherWallet] = provider.getWallets();
   const {relayer, factoryContract, ensAddress, walletContract, mockToken, ensRegistrar, fallbackHandlerContract} = await RelayerUnderTest.createPreconfigured(deployer, port);
   await relayer.start();
   return {provider, relayer, mockToken, factoryContract, walletContract, deployer, ensAddress, wallet, otherWallet, ensRegistrar, fallbackHandlerContract};

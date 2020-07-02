@@ -7,22 +7,17 @@ export interface DropdownItemProps {
   sdk: UniLoginSdk;
   tokenDetails: TokenDetails;
   balance: string | null;
-  icon: string;
   onClick: (transferToken: TokenDetails) => void;
   dropdownClassName: string;
-  className?: string;
 }
 
-export const TransferDropdownItem = ({sdk, tokenDetails, balance, icon, onClick, className, dropdownClassName}: DropdownItemProps) => {
+export const TransferDropdownItem = ({sdk, tokenDetails, balance, onClick, dropdownClassName}: DropdownItemProps) => {
   return (
     <button onClick={() => onClick(tokenDetails)} className={dropdownClassName}>
       <Asset
         sdk={sdk}
-        name={tokenDetails.name}
-        symbol={tokenDetails.symbol}
+        token={tokenDetails}
         balance={balance}
-        icon={icon}
-        className={className}
       />
     </button>
   );

@@ -1,21 +1,24 @@
 import {Wallet, providers} from 'ethers';
-import {SignedMessage, ensureNotFalsy, IMessageValidator} from '@unilogin/commons';
+import {ensureNotFalsy, IMessageValidator} from '@unilogin/commons';
 import {QueueItem} from '../../core/models/QueueItem';
 import {IExecutor} from '../../core/models/execution/IExecutor';
 import IMessageRepository from '../../core/models/messages/IMessagesRepository';
 import {TransactionHashNotFound, GasUsedNotFound} from '../../core/utils/errors';
 import {IMinedTransactionHandler} from '../../core/models/IMinedTransactionHandler';
 import {WalletContractService} from './WalletContractService';
+import {GasTokenValidator} from '../../core/services/validators/GasTokenValidator';
+import MessageItem from '../../core/models/messages/MessageItem';
 
 export type OnTransactionMined = (transaction: providers.TransactionResponse) => Promise<void>;
 
-export class MessageExecutor implements IExecutor<SignedMessage> {
+export class MessageExecutor implements IExecutor<MessageItem> {
   constructor(
     private wallet: Wallet,
     private messageValidator: IMessageValidator,
     private messageRepository: IMessageRepository,
     private minedTransactionHandler: IMinedTransactionHandler,
     private walletContractService: WalletContractService,
+    private gasTokenValidator: GasTokenValidator,
   ) {}
 
   canExecute(item: QueueItem): boolean {
@@ -24,8 +27,8 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
 
   async handleExecute(messageHash: string) {
     try {
-      const signedMessage = await this.messageRepository.getMessage(messageHash);
-      const transactionResponse = await this.execute(signedMessage);
+      const messageItem = await this.messageRepository.get(messageHash);
+      const transactionResponse = await this.execute(messageItem);
       const {hash, wait, gasPrice} = transactionResponse;
       ensureNotFalsy(hash, TransactionHashNotFound);
       await this.messageRepository.markAsPending(messageHash, hash!, gasPrice.toString());
@@ -39,9 +42,15 @@ export class MessageExecutor implements IExecutor<SignedMessage> {
     }
   }
 
-  async execute(signedMessage: SignedMessage): Promise<providers.TransactionResponse> {
+  async execute(messageItem: MessageItem): Promise<providers.TransactionResponse> {
+    const signedMessage = messageItem.message;
     await this.messageValidator.validate(signedMessage);
-    const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage);
+    await this.gasTokenValidator.validate({
+      gasPrice: signedMessage.gasPrice.toString(),
+      gasToken: signedMessage.gasToken,
+      tokenPriceInETH: messageItem.tokenPriceInEth.toString(),
+    }, 0.3, 'cheap');
+    const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage, messageItem.tokenPriceInEth);
     return this.wallet.sendTransaction(transactionReq);
   }
 }

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ensure, generateCode} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
 import {EmojiPanel} from '../WalletSelector/EmojiPanel';
-import './../styles/emoji.sass';
+import './../styles/base/emoji.sass';
 import './../styles/themes/Legacy/emojiThemeLegacy.sass';
 import './../styles/themes/UniLogin/emojiThemeUniLogin.sass';
 import Spinner from '../commons/Spinner';

@@ -1,4 +1,4 @@
-import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {ReactWrapper} from 'enzyme';
 import chai, {expect} from 'chai';
 import React from 'react';
@@ -30,7 +30,7 @@ describe('UI: Connection flow', () => {
   const name = 'name.mylogin.eth';
 
   beforeEach(async () => {
-    const [wallet] = getWallets(createMockProvider());
+    const [wallet] = new MockProvider().getWallets();
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [gasToken]);
     ({privateKey, contractAddress} = await createWallet(name, services.sdk, wallet));
@@ -49,7 +49,7 @@ describe('UI: Connection flow', () => {
     await waitExpect(() => expect(services.walletPresenter.getName()).to.eq(name));
     await appPage.login().waitForCongratulations();
     await appPage.login().goToHomeView();
-    expect(appPage.dashboard().getWalletBalance()).to.startWith('$1.99');
+    expect(appPage.dashboard().getWalletBalance()).to.startWith('$1.98');
   });
 
   it('Cancel connection', async () => {

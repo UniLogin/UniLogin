@@ -6,7 +6,7 @@ export class DevicesService {
   constructor(private devicesStore: DevicesStore, private relayerRequestSignatureValidator: RelayerRequestSignatureValidator) {
   }
 
-  async add(contractAddress: string, publicKey: string, deviceInfo: DeviceInfo) {
+  add(contractAddress: string, publicKey: string, deviceInfo: DeviceInfo) {
     return this.devicesStore.add(contractAddress, publicKey, deviceInfo);
   }
 
@@ -20,7 +20,7 @@ export class DevicesService {
     return this.devicesStore.get(devicesRequest.contractAddress);
   }
 
-  async remove(contractAddress: string, publicKey: string) {
+  remove(contractAddress: string, publicKey: string) {
     return this.devicesStore.remove(contractAddress, publicKey);
   }
 }

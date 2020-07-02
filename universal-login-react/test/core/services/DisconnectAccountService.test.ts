@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import {Wallet} from 'ethers';
-import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {DeployedWallet, WalletService} from '@unilogin/sdk';
 import RelayerUnderTest from '@unilogin/relayer';
 import {setupDeployedWallet} from '../../helpers/setupDeploymentWallet';
@@ -23,7 +23,7 @@ describe('DisconnectAccountService', () => {
   const ensName = 'test.mylogin.eth';
 
   before(async () => {
-    ([wallet] = getWallets(createMockProvider()));
+    ([wallet] = new MockProvider().getWallets());
     ({deployedWallet, relayer} = await setupDeployedWallet(wallet, ensName));
   });
 

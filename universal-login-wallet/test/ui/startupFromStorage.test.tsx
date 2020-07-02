@@ -1,6 +1,6 @@
 import React from 'react';
 import {providers} from 'ethers';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {ReactWrapper} from 'enzyme';
 import chai, {expect} from 'chai';
 import {createWallet, setupSdk, TEST_STORAGE_KEY} from '@unilogin/sdk/testutils';
@@ -24,7 +24,7 @@ describe('UI: Startup from stored wallet state', () => {
   const name = 'name.mylogin.eth';
 
   beforeEach(async () => {
-    const [wallet] = getWallets(createMockProvider());
+    const [wallet] = new MockProvider().getWallets();
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
     ({privateKey, contractAddress} = await createWallet(name, services.sdk, wallet));
@@ -56,7 +56,8 @@ describe('UI: Startup from stored wallet state', () => {
     appWrapper = mountWithContext(<App/>, services, ['/dashboard']);
     const appPage = new AppPage(appWrapper);
     await appPage.dashboard().waitForDashboard();
-    expect(appWrapper.text().includes('My Assets')).to.be.true;
+    expect(appWrapper.text().includes('Tokens')).to.be.true;
+    expect(appWrapper.text().includes('Collectables')).to.be.true;
   });
 
   afterEach(async () => {

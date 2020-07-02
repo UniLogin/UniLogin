@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Contract} from 'ethers';
-import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 import {ETHER_NATIVE_TOKEN, TokenDetailsService} from '@unilogin/commons';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
@@ -11,8 +11,8 @@ describe('INT: TokensDetailsStore', () => {
   let tokenDetailsService: TokenDetailsService;
 
   before(async () => {
-    const provider = createMockProvider();
-    const [wallet] = getWallets(provider);
+    const provider = new MockProvider();
+    const [wallet] = provider.getWallets();
     mockToken = await deployContract(wallet, mockContracts.MockToken, []);
     tokenDetailsService = new TokenDetailsService(provider);
     tokensDetailsStore = new TokensDetailsStore(tokenDetailsService, [mockToken.address, ETHER_NATIVE_TOKEN.address]);
@@ -43,6 +43,13 @@ describe('INT: TokensDetailsStore', () => {
     expect(tokensDetailsStore.getTokenAddress(symbol)).to.eq(mockToken.address);
   });
 
+  it('symbol -> token', async () => {
+    await tokensDetailsStore.fetchTokensDetails();
+    const expectedToken = tokensDetailsStore.tokensDetails[0];
+
+    expect(tokensDetailsStore.getTokenBy('symbol', expectedToken.symbol)).be.deep.eq(expectedToken);
+  });
+
   it('symbol -> undefined', async () => {
     await tokensDetailsStore.fetchTokensDetails();
 
@@ -52,12 +59,12 @@ describe('INT: TokensDetailsStore', () => {
   it('address -> token', async () => {
     await tokensDetailsStore.fetchTokensDetails();
     const expectedToken = tokensDetailsStore.tokensDetails[0];
-    expect(tokensDetailsStore.getTokenByAddress(expectedToken.address)).to.deep.eq(expectedToken);
+    expect(tokensDetailsStore.getTokenBy('address', expectedToken.address)).to.deep.eq(expectedToken);
   });
 
   it('address -> error', async () => {
     await tokensDetailsStore.fetchTokensDetails();
 
-    expect(() => tokensDetailsStore.getTokenByAddress('FAKE')).to.throw('Token not found (address = FAKE)');
+    expect(() => tokensDetailsStore.getTokenBy('address', 'FAKE')).to.throw('Token not found (address = FAKE)');
   });
 });

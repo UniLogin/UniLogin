@@ -1,13 +1,13 @@
 import sinon from 'sinon';
 import {Wallet, Contract, utils} from 'ethers';
-import {KeyPair, calculateInitializeSignature, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
+import {deployContract} from 'ethereum-waffle';
+import {getMockedGasPriceOracle} from '@unilogin/commons/testutils';
+import {KeyPair, calculateInitializeSignature, DEPLOY_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 import {encodeDataForSetup, computeGnosisCounterfactualAddress, deployGnosisSafe, deployProxyFactory, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {WalletDeploymentService} from '../../src/integration/ethereum/WalletDeploymentService';
 import {buildEnsService} from './buildEnsService';
 import {WalletDeployer} from '../../src/integration/ethereum/WalletDeployer';
 import ENSService from '../../src/integration/ethereum/ensService';
-import {deployContract} from 'ethereum-waffle';
-import {DEPLOY_GAS_LIMIT} from '@unilogin/commons';
 import {DEPLOY_CONTRACT_NONCE} from '@unilogin/contracts';
 import {getSetupData} from './http';
 import {TransactionGasPriceComputator} from '../../src/integration/ethereum/TransactionGasPriceComputator';
@@ -20,17 +20,17 @@ export default async function setupWalletService(wallet: Wallet) {
   const ensRegistrar = await deployContract(wallet, gnosisSafe.ENSRegistrar);
   const config = {walletContractAddress: gnosisSafeMaster.address, factoryAddress: factoryContract.address, supportedTokens: [], ensRegistrar: ensRegistrar.address, fallbackHandlerAddress: fallbackHandler.address};
   const walletDeployer = new WalletDeployer(factoryContract.address, wallet);
-  const fakeBalanceChecker: any = {
-    findTokenWithRequiredBalance: () => true,
+  const fakeBalanceValidator: any = {
+    validate: () => Promise.resolve(),
   };
   const fakeDevicesService: any = {
     addOrUpdate: sinon.spy(),
   };
-  const fakeGasPriceOracle: any = {
-    getGasPrices: () => ({fast: {gasPrice: utils.bigNumberify('9090')}}),
+  const fakeFutureWalletStore: any = {
+    get: () => ({tokenPriceInETH: '1'}),
   };
-  const transactionGasPriceComputator = new TransactionGasPriceComputator(fakeGasPriceOracle as any);
-  const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceChecker, fakeDevicesService, transactionGasPriceComputator);
+  const transactionGasPriceComputator = new TransactionGasPriceComputator(getMockedGasPriceOracle());
+  const walletService = new WalletDeploymentService(config as any, ensService, walletDeployer, fakeBalanceValidator, fakeDevicesService, transactionGasPriceComputator, fakeFutureWalletStore);
   return {provider, wallet, walletService, factoryContract, ensService, fakeDevicesService, ensRegistrar, gnosisSafeMaster, fallbackHandler};
 }
 
@@ -49,10 +49,10 @@ export const getSetupDataUsingEnsService = async (keyPair: KeyPair, ensName: str
   return encodeDataForSetup(deployment);
 };
 
-export const createFutureWalletUsingEnsService = async (keyPair: KeyPair, ensName: string, factoryContract: Contract, wallet: Wallet, ensService: ENSService, ensRegistrarAddress: string, gnosisSafeAddress: string, fallbackHandler: string, gasPrice = '1') => {
+export const createFutureWalletUsingEnsService = async (keyPair: KeyPair, ensName: string, factoryContract: Contract, wallet: Wallet, ensService: ENSService, ensRegistrarAddress: string, gnosisSafeAddress: string, fallbackHandler: string, gasPrice = TEST_GAS_PRICE) => {
   const setupData = await getSetupDataUsingEnsService(keyPair, ensName, ensService, gasPrice, wallet.address, ensRegistrarAddress, fallbackHandler, ETHER_NATIVE_TOKEN.address);
   const contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, gnosisSafeAddress);
-  const signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
+  const signature = calculateInitializeSignature(setupData, keyPair.privateKey);
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
   return {signature, contractAddress};
 };
@@ -60,6 +60,6 @@ export const createFutureWalletUsingEnsService = async (keyPair: KeyPair, ensNam
 export const createFutureWallet = async (keyPair: KeyPair, ensName: string, factoryContract: Contract, relayerWallet: Wallet, ensAddress: string, ensRegistrarAddress: string, gnosisSafeAddress: string, fallbackHandlerAddress: string, gasPrice = TEST_GAS_PRICE, gasToken?: string) => {
   const setupData = await getSetupData(keyPair, ensName, ensAddress, relayerWallet.provider, gasPrice, relayerWallet.address, ensRegistrarAddress, fallbackHandlerAddress, gasToken);
   const contractAddress = computeGnosisCounterfactualAddress(factoryContract.address, DEPLOY_CONTRACT_NONCE, setupData, gnosisSafeAddress);
-  const signature = await calculateInitializeSignature(setupData, keyPair.privateKey);
+  const signature = calculateInitializeSignature(setupData, keyPair.privateKey);
   return {signature, contractAddress};
 };

@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import Knex from 'knex';
 import {Wallet} from 'ethers';
-import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, EMPTY_DEVICE_INFO} from '@unilogin/commons';
 import setupWalletService, {createFutureWalletUsingEnsService} from '../../testhelpers/setupWalletService';
 import AuthorisationStore from '../../../src/integration/sql/services/AuthorisationStore';
@@ -10,7 +10,7 @@ import deviceInfo from '../../testconfig/defaults';
 
 chai.use(require('chai-string'));
 
-describe('INT: Authorisation Store', async () => {
+describe('INT: Authorisation Store', () => {
   let authorisationStore: AuthorisationStore;
   let wallet: Wallet;
   let provider;
@@ -22,8 +22,8 @@ describe('INT: Authorisation Store', async () => {
   const ensName = 'justyna.mylogin.eth';
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet, otherWallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet, otherWallet] = provider.getWallets();
     database = getKnexConfig();
     authorisationStore = new AuthorisationStore(database);
     const {walletService, factoryContract, ensService, ensRegistrar, gnosisSafeMaster: walletContract, fallbackHandler} = await setupWalletService(wallet);

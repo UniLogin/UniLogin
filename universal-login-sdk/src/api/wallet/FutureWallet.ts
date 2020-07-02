@@ -1,5 +1,4 @@
-import {BalanceDetails} from '../FutureWalletFactory';
-import {SerializableFutureWallet, ensure, isValidEnsName, calculateInitializeSignature, SupportedToken, DEPLOY_GAS_LIMIT, multiplyBy150Percent} from '@unilogin/commons';
+import {SerializableFutureWallet, ensure, isValidEnsName, calculateInitializeSignature, DEPLOY_GAS_LIMIT, multiplyBy150Percent, BalanceChecker} from '@unilogin/commons';
 import {DeployingWallet} from './DeployingWallet';
 import {DeploymentReadyObserver} from '../../core/observers/DeploymentReadyObserver';
 import {InvalidAddressOrEnsName} from '../../core/utils/errors';
@@ -24,6 +23,7 @@ export class FutureWallet implements SerializableFutureWallet {
     private ensService: ENSService,
     private relayerAddress: string,
     private fallbackHandlerAddress: string,
+    balanceChecker: BalanceChecker,
   ) {
     this.contractAddress = serializableFutureWallet.contractAddress;
     this.privateKey = serializableFutureWallet.privateKey;
@@ -31,15 +31,15 @@ export class FutureWallet implements SerializableFutureWallet {
     this.gasPrice = serializableFutureWallet.gasPrice;
     this.ensName = serializableFutureWallet.ensName;
     this.gasToken = serializableFutureWallet.gasToken;
-    this.deploymentReadyObserver = new DeploymentReadyObserver([{address: this.gasToken, minimalAmount: this.getMinimalAmount()}], this.sdk.provider);
+    this.deploymentReadyObserver = new DeploymentReadyObserver(this.gasToken, this.getMinimalAmount(), balanceChecker);
   }
 
-  waitForBalance = () => new Promise<BalanceDetails>(
+  waitForBalance = () => new Promise<string>(
     (resolve) => {
       try {
         this.deploymentReadyObserver.startAndSubscribe(
           this.contractAddress,
-          (tokenAddress, contractAddress) => resolve({tokenAddress, contractAddress}),
+          (contractAddress) => resolve(contractAddress),
         );
       } catch (e) {
         console.error(e);
@@ -55,10 +55,6 @@ export class FutureWallet implements SerializableFutureWallet {
     return new DeployingWallet({deploymentHash, contractAddress: this.contractAddress, name: this.ensName, privateKey: this.privateKey}, this.sdk);
   };
 
-  setSupportedToken = (supportedToken: SupportedToken) => {
-    this.deploymentReadyObserver.setSupportedToken(supportedToken);
-  };
-
   getMinimalAmount = () => utils.formatEther(
     multiplyBy150Percent(
       utils.bigNumberify(this.gasPrice).mul(DEPLOY_GAS_LIMIT)));
@@ -66,4 +62,8 @@ export class FutureWallet implements SerializableFutureWallet {
   createIncomingTransactionObserver() {
     return new IncomingTransactionObserver(this.sdk.getNotifySdk(), this.contractAddress);
   }
+
+  getTopUpToken = () => this.sdk.tokensDetailsStore.getTokenBy('address', this.gasToken);
+
+  getTopUpCurrencySymbol = () => this.getTopUpToken().symbol;
 }

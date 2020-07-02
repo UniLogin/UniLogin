@@ -1,5 +1,5 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle} from '@unilogin/commons';
-import {BlockchainService} from '@unilogin/contracts';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle, TokenPricesService, ProviderService, Erc721TokensService} from '@unilogin/commons';
+import {ContractService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
 import {SdkConfigDefault} from '../config/SdkConfigDefault';
@@ -26,18 +26,23 @@ import {GnosisSafeService} from '../integration/ethereum/GnosisSafeService';
 import {NotifySdk} from '../integration/notifySdk/NotifySdk';
 import {cast} from '@restless/sanitizers';
 import {INotifySdk} from '../integration/notifySdk/interfaces';
+import {OnErc721TokensChange, Erc721TokensObserver} from '../core/observers/Erc721TokensObserver';
 
 class UniLoginSdk {
   readonly provider: providers.Provider;
   readonly relayerApi: RelayerApi;
   readonly authorisationsObserver: AuthorisationsObserver;
+  readonly blockNumberState: BlockNumberState;
   readonly executionFactory: ExecutionFactory;
   readonly balanceChecker: BalanceChecker;
   readonly tokensValueConverter: TokensValueConverter;
   readonly priceObserver: PriceObserver;
   readonly tokenDetailsService: TokenDetailsService;
   readonly tokensDetailsStore: TokensDetailsStore;
-  readonly blockchainService: BlockchainService;
+  readonly tokenPricesService: TokenPricesService;
+  readonly providerService: ProviderService;
+  readonly contractService: ContractService;
+  readonly erc721TokensService: Erc721TokensService;
   readonly gasPriceOracle: GasPriceOracle;
   readonly gasModeService: GasModeService;
   readonly config: SdkConfig;
@@ -49,6 +54,7 @@ class UniLoginSdk {
   readonly walletContractService: WalletContractService;
   private readonly relayerConfig: Lazy<PublicRelayerConfig>;
   balanceObserver?: BalanceObserver;
+  erc721TokensObserver?: Erc721TokensObserver;
   aggregateBalanceObserver?: AggregateBalanceObserver;
   futureWalletFactory?: FutureWalletFactory;
   notifySdk?: INotifySdk;
@@ -65,29 +71,32 @@ class UniLoginSdk {
     this.relayerApi = new RelayerApi(relayerUrl, this.config.apiKey);
     this.authorisationsObserver = new AuthorisationsObserver(this.relayerApi, this.config.authorizationsObserverTick);
     this.executionFactory = new ExecutionFactory(this.relayerApi, this.config.mineableFactoryTick, this.config.mineableFactoryTimeout);
-    this.blockchainService = new BlockchainService(this.provider);
-    const blockNumberState = new BlockNumberState(this.blockchainService);
-    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.blockchainService, blockNumberState, this.config.storageService);
-    this.balanceChecker = new BalanceChecker(this.provider);
+    this.providerService = new ProviderService(this.provider);
+    this.contractService = new ContractService(this.providerService);
+    this.blockNumberState = new BlockNumberState(this.providerService);
+    this.walletEventsObserverFactory = new WalletEventsObserverFactory(this.providerService, this.blockNumberState, this.config.storageService);
+    this.balanceChecker = new BalanceChecker(this.providerService);
     this.sufficientBalanceValidator = new SufficientBalanceValidator(this.provider);
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.config.observedTokensAddresses);
-    this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.config.priceObserverTick);
+    this.tokenPricesService = new TokenPricesService();
+    this.erc721TokensService = new Erc721TokensService(this.config.network);
+    this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.tokenPricesService, this.config.priceObserverTick);
     this.gasPriceOracle = new GasPriceOracle();
     this.tokensValueConverter = new TokensValueConverter(this.config.observedCurrencies);
     this.gasModeService = new GasModeService(this.tokensDetailsStore, this.gasPriceOracle, this.priceObserver);
     this.featureFlagsService = new FeatureFlagsService();
-    this.messageConverter = new MessageConverter(this.blockchainService);
+    this.messageConverter = new MessageConverter(this.contractService, this.providerService);
     const beta2Service = new Beta2Service(this.provider);
     const gnosisSafeService = new GnosisSafeService(this.provider);
-    this.walletContractService = new WalletContractService(this.blockchainService, beta2Service, gnosisSafeService);
+    this.walletContractService = new WalletContractService(this.contractService, beta2Service, gnosisSafeService);
     this.relayerConfig = new Lazy(() => this.loadRelayerConfigFromApi());
   }
 
   private async loadRelayerConfigFromApi() {
     const config = await this.relayerApi.getConfig();
-    if (!Network.equals(cast(config.chainSpec.name, asNetwork), this.config.network)) {
-      throw new Error(`Relayer is configured to a different network. Expected: ${this.config.network}, got: ${config.chainSpec.name}`);
+    if (!Network.equals(cast(config.network, asNetwork), this.config.network)) {
+      throw new Error(`Relayer is configured to a different network. Expected: ${this.config.network}, got: ${config.network}`);
     }
     return config;
   }
@@ -132,7 +141,16 @@ class UniLoginSdk {
     ensureNotFalsy(contractAddress, InvalidContract);
 
     await this.tokensDetailsStore.fetchTokensDetails();
-    this.balanceObserver = new BalanceObserver(this.balanceChecker, contractAddress, this.tokensDetailsStore, this.config.balanceObserverTick);
+    this.balanceObserver = new BalanceObserver(this.balanceChecker, contractAddress, this.tokensDetailsStore, this.blockNumberState);
+  }
+
+  async fetchErc721TokensObserver(contractAddress: string) {
+    if (this.erc721TokensObserver) {
+      return;
+    }
+    ensureNotFalsy(contractAddress, InvalidContract);
+
+    this.erc721TokensObserver = new Erc721TokensObserver(contractAddress, this.erc721TokensService, this.config.erc721TokensObserverTick);
   }
 
   async fetchAggregateBalanceObserver(contractAddress: string) {
@@ -144,30 +162,31 @@ class UniLoginSdk {
   }
 
   private fetchFutureWalletFactory() {
-    const {supportedTokens, factoryAddress, contractWhiteList, chainSpec, ensRegistrar, walletContractAddress, relayerAddress, fallbackHandlerAddress} = this.getRelayerConfig();
-    const futureWalletConfig = {supportedTokens, factoryAddress, contractWhiteList, chainSpec, walletContractAddress, relayerAddress, fallbackHandlerAddress};
+    const {supportedTokens, factoryAddress, contractWhiteList, ensAddress, ensRegistrar, walletContractAddress, relayerAddress, fallbackHandlerAddress} = this.getRelayerConfig();
+    const futureWalletConfig = {supportedTokens, factoryAddress, contractWhiteList, ensAddress, walletContractAddress, relayerAddress, fallbackHandlerAddress};
     this.futureWalletFactory = this.futureWalletFactory || new FutureWalletFactory(
       futureWalletConfig,
-      new ENSService(this.provider, futureWalletConfig.chainSpec.ensAddress, ensRegistrar),
+      new ENSService(this.provider, futureWalletConfig.ensAddress, ensRegistrar),
       this,
+      this.balanceChecker,
     );
   }
 
   async getWalletContractAddress(ensName: string): Promise<string> {
     const walletContractAddress = await this.resolveName(ensName);
     ensureNotFalsy(walletContractAddress, InvalidENSRecord, ensName);
-    ensure(await this.blockchainService.getCode(walletContractAddress) !== '0x', InvalidENSRecord, ensName);
+    ensure(await this.providerService.getCode(walletContractAddress) !== '0x', InvalidENSRecord, ensName);
     return walletContractAddress;
   }
 
   async walletContractExist(ensName: string) {
     const walletContractAddress = await this.resolveName(ensName);
-    return !!(walletContractAddress && await this.blockchainService.getCode(walletContractAddress));
+    return !!(walletContractAddress && await this.providerService.getCode(walletContractAddress));
   }
 
   async resolveName(ensName: string): Promise<Nullable<string>> {
-    const {chainSpec} = await this.fetchRelayerConfig();
-    return resolveName(this.provider, chainSpec.ensAddress, ensName);
+    const {ensAddress} = await this.fetchRelayerConfig();
+    return resolveName(this.provider, ensAddress, ensName);
   }
 
   async connect(walletContractAddress: string) {
@@ -187,6 +206,11 @@ class UniLoginSdk {
   async subscribeToBalances(contractAddress: string, callback: OnBalanceChange) {
     await this.fetchBalanceObserver(contractAddress);
     return this.balanceObserver!.subscribe(callback);
+  }
+
+  async subscribeToErc721Tokens(contractAddress: string, callback: OnErc721TokensChange) {
+    await this.fetchErc721TokensObserver(contractAddress);
+    return this.erc721TokensObserver!.subscribe(callback);
   }
 
   async subscribeToAggregatedBalance(contractAddress: string, callback: OnAggregatedBalanceChange) {
@@ -220,7 +244,7 @@ class UniLoginSdk {
       const relayerConfig = this.getRelayerConfig();
       this.notifySdk = NotifySdk.createForNetwork(
         this.config.notifySdkApiKey,
-        cast(relayerConfig.chainSpec.name, asNetwork),
+        cast(relayerConfig.network, asNetwork),
       );
     }
     return this.notifySdk!;

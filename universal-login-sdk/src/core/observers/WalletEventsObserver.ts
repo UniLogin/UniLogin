@@ -1,8 +1,10 @@
-import {arrayRemove} from '@unilogin/commons';
+import {arrayRemove, ProviderService} from '@unilogin/commons';
 import {WalletEventType, WalletEventObservableRecord} from '../models/events';
-import {parseArgs, eventInterface, parseArgsGnosis} from '../utils/events';
+import {parseArgs, parseArgsGnosis} from '../utils/events';
 import {Log} from 'ethers/providers';
-import {BlockchainService} from '@unilogin/contracts';
+import {WalletContractInterface, GnosisSafeInterface} from '@unilogin/contracts';
+
+const eventInterface = {...WalletContractInterface.events, ...GnosisSafeInterface.events};
 
 export class WalletEventsObserver {
   private readonly observableRecords: Record<WalletEventType, WalletEventObservableRecord[]> = {
@@ -12,7 +14,7 @@ export class WalletEventsObserver {
     RemovedOwner: [],
   };
 
-  constructor(public readonly contractAddress: string, public readonly blockchainService: BlockchainService) {
+  constructor(public readonly contractAddress: string, public readonly providerService: ProviderService) {
   }
 
   subscribe(type: WalletEventType, observableRecord: WalletEventObservableRecord) {
@@ -23,10 +25,11 @@ export class WalletEventsObserver {
   }
 
   async fetchEvents(lastBlock: number, types: WalletEventType[]) {
-    for (const type of types) {
+    const typesWithSubscriptions = types.filter(type => this.observableRecords[type].length > 0);
+    for (const type of typesWithSubscriptions) {
       const topics = [eventInterface[type].topic];
       const eventsFilter = {fromBlock: lastBlock, address: this.contractAddress, topics};
-      const events: Log[] = await this.blockchainService.getLogs(eventsFilter);
+      const events: Log[] = await this.providerService.getLogs(eventsFilter);
       this.processEvents(events, type);
     }
   }

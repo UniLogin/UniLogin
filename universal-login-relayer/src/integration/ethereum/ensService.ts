@@ -37,7 +37,7 @@ class ENSService {
     return [hashLabel, ensName, node, this.ensAddress, registrarAddress, resolverAddress];
   }
 
-  async resolveName(ensName: string) {
+  resolveName(ensName: string) {
     return resolveName(this.provider, this.ensAddress, ensName);
   }
 }

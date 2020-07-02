@@ -1,11 +1,12 @@
-import {ContractWhiteList, SupportedToken, ChainSpec, LocalizationConfig, OnRampConfig, IPGeolocationApiConfig} from '@unilogin/commons';
+import {ContractWhiteList, SupportedToken, LocalizationConfig, OnRampConfig, IPGeolocationApiConfig} from '@unilogin/commons';
 import {KnexConfig} from './KnexConfig';
 
 export interface Config {
   jsonRpcUrl?: string;
   port?: string;
   privateKey: string;
-  chainSpec: ChainSpec;
+  ensAddress: string;
+  network: string;
   ensRegistrars: string[];
   ensRegistrar: string;
   fallbackHandlerAddress: string;

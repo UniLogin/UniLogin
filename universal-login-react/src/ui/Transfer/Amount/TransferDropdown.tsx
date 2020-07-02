@@ -3,7 +3,6 @@ import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@unilogin/com
 import UniLoginSdk from '@unilogin/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {useToggler} from '../../hooks/useToggler';
-import {getIconForToken} from '../../../core/utils/getIconForToken';
 import {useOutsideClick} from '../../hooks/useClickOutside';
 import '../../styles/themes/Jarvis/components/currencyDropdownThemeJarvis.sass';
 
@@ -12,10 +11,9 @@ interface TransferDropdownProps {
   tokenDetailsWithBalance: TokenDetailsWithBalance[];
   tokenDetails: TokenDetails;
   setToken: (token: TokenDetails) => void;
-  className?: string;
 }
 
-export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, setToken, className}: TransferDropdownProps) => {
+export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, setToken}: TransferDropdownProps) => {
   const {visible, toggle} = useToggler();
   const ref = useRef(null);
   useOutsideClick(ref, () => toggle(false));
@@ -35,9 +33,7 @@ export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, se
       key={`${tokenDetails.name}-${tokenDetails.symbol}`}
       sdk={sdk}
       dropdownClassName={dropdownClassName}
-      className={className}
       tokenDetails={tokenDetails}
-      icon={getIconForToken(tokenDetails.symbol)}
       balance={getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance)}
       onClick={onClick}
     />

@@ -12,8 +12,8 @@ import {getKnexConfig} from '../../testhelpers/knex';
 import MessageSQLRepository from '../../../src/integration/sql/services/MessageSQLRepository';
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {clearDatabase} from '../../../src/http/relayers/RelayerUnderTest';
-import {createMessageItem} from '../../../src/core/utils/messages/serialisation';
 import {RefundPayerStore} from '../../../src/integration/sql/services/RefundPayerStore';
+import {createTestMessageItem} from '../../testhelpers/createTestMessageItem';
 
 for (const config of [{
   Type: MessageSQLRepository,
@@ -21,7 +21,7 @@ for (const config of [{
   Type: MessageMemoryRepository,
 }]
 ) {
-  describe(`INT: IMessageRepository (${config.Type.name})`, async () => {
+  describe(`INT: IMessageRepository (${config.Type.name})`, () => {
     let messageRepository: IMessageRepository;
     let wallet: Wallet;
     let walletContract: Contract;
@@ -52,7 +52,7 @@ for (const config of [{
       signedMessage = unsignedMessageToSignedMessage(unsignedMessage, wallet.privateKey);
 
       const refundPayerId = await setupRefundPayerStore();
-      messageItem = createMessageItem(signedMessage, refundPayerId);
+      messageItem = createTestMessageItem(signedMessage, refundPayerId);
       messageHash = calculateMessageHash(signedMessage);
     });
 
@@ -60,7 +60,7 @@ for (const config of [{
       expect(await messageRepository.isPresent(messageHash)).to.eq(false, 'store is not initially empty');
       await messageRepository.add(messageHash, messageItem);
       expect(await messageRepository.isPresent(messageHash)).to.eq(true);
-      messageItem.message = bignumberifySignedMessageFields(stringifySignedMessageFields(messageItem.message));
+      messageItem.message = bignumberifySignedMessageFields(stringifySignedMessageFields({...unsignedMessage, signature: '0x'}));
       expect(await messageRepository.get(messageHash)).to.deep.eq(messageItem);
       expect(await messageRepository.isPresent(messageHash)).to.eq(true);
       const removedPendingExecution = await messageRepository.remove(messageHash);
@@ -92,7 +92,7 @@ for (const config of [{
       expect(signatures).to.contains(message2.signature);
     });
 
-    describe('markAsPending', async () => {
+    describe('markAsPending', () => {
       const mockedGasPrice = '2020';
 
       it('should mark message item as pending', async () => {

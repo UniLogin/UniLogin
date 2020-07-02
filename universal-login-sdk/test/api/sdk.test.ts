@@ -53,9 +53,9 @@ describe('INT: SDK', () => {
       });
 
       it('should return ens config', () => {
-        const expectedEnsAddress = relayer.getConfig().chainSpec.ensAddress;
+        const expectedEnsAddress = relayer.getConfig().ensAddress;
         const response = sdk.getRelayerConfig();
-        expect(response!.chainSpec.ensAddress).to.eq(expectedEnsAddress);
+        expect(response!.ensAddress).to.eq(expectedEnsAddress);
       });
     });
   });
@@ -64,7 +64,8 @@ describe('INT: SDK', () => {
     it('getRelayerConfig return config which should have properties', () => {
       const relayerConfig = sdk.getRelayerConfig();
       expect(relayerConfig).to.haveOwnProperty('supportedTokens');
-      expect(relayerConfig).to.haveOwnProperty('chainSpec');
+      expect(relayerConfig).to.haveOwnProperty('ensAddress');
+      expect(relayerConfig).to.haveOwnProperty('network');
       expect(relayerConfig).to.haveOwnProperty('factoryAddress');
       expect(relayerConfig).to.haveOwnProperty('contractWhiteList');
       expect(relayerConfig).to.haveOwnProperty('localization');

@@ -1,27 +1,26 @@
-import {providers, Contract, utils} from 'ethers';
-import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
+import {utils, Contract} from 'ethers';
+import {ProviderService} from './ProviderService';
 import {ETHER_NATIVE_TOKEN} from '../../core/constants/constants';
 import {ensure} from '../../core/utils/errors/ensure';
-import {isContract} from '../../core/utils/contracts/contractHelpers';
 import {InvalidContract} from '../../core/utils/errors/errors';
+import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 
 export class BalanceChecker {
-  constructor(private provider: providers.Provider) {}
+  private tokenContracts: Record<string, Contract> = {};
+
+  constructor(private providerService: ProviderService) {
+  }
 
   getBalance(walletAddress: string, tokenAddress: string): Promise<utils.BigNumber> {
     if (tokenAddress === ETHER_NATIVE_TOKEN.address) {
-      return this.getEthBalance(walletAddress);
+      return this.providerService.getEthBalance(walletAddress);
     }
     return this.getTokenBalance(walletAddress, tokenAddress);
   }
 
-  private getEthBalance(walletAddress: string): Promise<utils.BigNumber> {
-    return this.provider.getBalance(walletAddress);
-  }
-
   private async getTokenBalance(walletAddress: string, tokenAddress: string): Promise<utils.BigNumber> {
-    ensure(await isContract(this.provider, tokenAddress), InvalidContract, tokenAddress);
-    const token = new Contract(tokenAddress, IERC20.abi, this.provider);
-    return token.balanceOf(walletAddress);
+    ensure(await this.providerService.isContract(tokenAddress), InvalidContract, tokenAddress);
+    this.tokenContracts[tokenAddress] = this.tokenContracts[tokenAddress] || new Contract(tokenAddress, IERC20.abi, this.providerService.getProvider());
+    return this.tokenContracts[tokenAddress].balanceOf(walletAddress);
   }
 }

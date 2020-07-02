@@ -13,9 +13,9 @@ interface TopUpWithCryptoProps {
   walletService: WalletService;
 }
 
-const DeploymentWithCryptoInfo = ({minimalAmount}: {minimalAmount?: string}) =>
+const DeploymentWithCryptoInfo = ({minimalAmount, topUpCurrency}: {minimalAmount?: string, topUpCurrency?: string}) =>
   <>
-    <InfoText>Send at least {minimalAmount ? ValueRounder.ceil(minimalAmount) : '...'} ETH to this address</InfoText>
+    <InfoText>Send at least {minimalAmount ? ValueRounder.ceil(minimalAmount) : '...'} {topUpCurrency || '...'} to this address</InfoText>
     <InfoText>This screen will update itself as soon as we detect a mined transaction</InfoText>
   </>;
 
@@ -66,7 +66,10 @@ export const TopUpWithCrypto = ({walletService}: TopUpWithCryptoProps) => {
                 </div>
               }
               {walletService.isKind('Future')
-                ? <DeploymentWithCryptoInfo minimalAmount={walletService.getRequiredDeploymentBalance()}/>
+                ? <DeploymentWithCryptoInfo
+                  minimalAmount={walletService.getRequiredDeploymentBalance()}
+                  topUpCurrency={walletService.getFutureWallet().getTopUpCurrencySymbol()}
+                />
                 : <TopUpCryptoInfo/>
               }
               {walletService.isKind('Future') &&

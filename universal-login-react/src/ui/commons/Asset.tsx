@@ -1,24 +1,23 @@
 import React, {useState, useEffect} from 'react';
-import {TokensPrices} from '@unilogin/commons';
+import {TokensPrices, TokenDetails} from '@unilogin/commons';
 import UniLoginSdk from '@unilogin/sdk';
 import Spinner from './Spinner';
-import './../styles/assetsItem.sass';
+import './../styles/base/assetsItem.sass';
 import './../styles/themes/UniLogin/assetsItemThemeUnilogin.sass';
 import './../styles/themes/Jarvis/assetsItemThemeJarvis.sass';
 import './../styles/themes/Legacy/assetsItemThemeLegacy.sass';
 import {getTildeGivenAmount, formatCurrency} from '../../core/utils/formatCurrency';
 import {ThemedComponent} from './ThemedComponent';
+import {Erc20Icon} from './Erc20Icon';
 
 export interface AssetProps {
   sdk: UniLoginSdk;
-  name: string;
-  symbol: string;
+  token: TokenDetails;
   balance: string | null;
-  icon: string;
-  className?: string;
 }
 
-export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps) => {
+export const Asset = ({sdk, token, balance}: AssetProps) => {
+  const {name, symbol} = token;
   const [usdAmount, setUsdAmount] = useState<string>('');
   const [usdPrice, setUsdPrice] = useState<string>('');
 
@@ -40,7 +39,7 @@ export const Asset = ({sdk, name, symbol, balance, icon, className}: AssetProps)
       <div className="assets-item-row">
         <div className="assets-item-left">
           <div className="assets-img-wrapper">
-            <img src={icon} alt={symbol} className="currency-accordion-img" />
+            <Erc20Icon token={token} className="currency-accordion-img" />
           </div>
           <div>
             <p className="assets-name">{name}</p>

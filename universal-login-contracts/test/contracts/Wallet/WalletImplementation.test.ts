@@ -1,12 +1,12 @@
 import {expect} from 'chai';
-import {loadFixture, deployContract, getWallets} from 'ethereum-waffle';
+import {loadFixture, deployContract, MockProvider} from 'ethereum-waffle';
 import {basicENS} from '@unilogin/commons/testutils';
-import {utils, Wallet, providers, Contract} from 'ethers';
+import {utils, Wallet, Contract} from 'ethers';
 import {createKeyPair, ETHER_NATIVE_TOKEN, TEST_GAS_PRICE, computeContractAddress, TEST_OVERRIDES_FOR_REVERT} from '@unilogin/commons';
 import WalletContract from '../../../dist/contracts/Wallet.json';
 
 describe('WalletImplementation', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let publicResolver: string;
   let registrarAddress: string;
   let ensAddress: string;
@@ -24,7 +24,7 @@ describe('WalletImplementation', () => {
 
   beforeEach(async () => {
     ({provider, publicResolver, registrarAddress, ensAddress, wallet} = await loadFixture(basicENS));
-    [, , , otherWallet] = getWallets(provider);
+    [, , , otherWallet] = provider.getWallets();
     ensArgs = [hashLabel, name, node, ensAddress, registrarAddress, publicResolver];
     const transactionCount = await wallet.getTransactionCount();
     const futureAddress = computeContractAddress(wallet.address, transactionCount);
@@ -34,12 +34,12 @@ describe('WalletImplementation', () => {
 
   it('initializeWithENS', async () => {
     await walletContract.initializeWithENS(keyPair.publicKey, ...ensArgs, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
-    expect(utils.formatEther(await provider.getBalance(walletContract.address))).to.eq('0.99999999999943');
+    expect(utils.formatEther(await provider.getBalance(walletContract.address))).to.eq('0.9886');
   });
 
   it('initialize', async () => {
     await walletContract.initialize(keyPair.publicKey, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
-    expect(utils.formatEther(await provider.getBalance(walletContract.address))).to.eq('0.99999999999943');
+    expect(utils.formatEther(await provider.getBalance(walletContract.address))).to.eq('0.9886');
   });
 
   it('can`t initializeWithENS twice', async () => {

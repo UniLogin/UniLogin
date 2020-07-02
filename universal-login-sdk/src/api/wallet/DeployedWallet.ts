@@ -9,6 +9,7 @@ import {ensureSufficientGas} from '../../core/utils/validation';
 import UniLoginSdk from '../sdk';
 import {Execution} from '../../core/services/ExecutionFactory';
 import {propertyFromSubscription} from '../../core/utils/propertyFromSubscription';
+import {OnErc721TokensChange} from '../../core/observers/Erc721TokensObserver';
 
 export class DeployedWallet extends AbstractWallet {
   constructor(
@@ -135,6 +136,10 @@ export class DeployedWallet extends AbstractWallet {
 
   subscribeToBalances(callback: OnBalanceChange) {
     return this.sdk.subscribeToBalances(this.contractAddress, callback);
+  }
+
+  subscribeToErc721Tokens(callback: OnErc721TokensChange) {
+    return this.sdk.subscribeToErc721Tokens(this.contractAddress, callback);
   }
 
   async subscribeDisconnected(onDisconnected: Procedure) {

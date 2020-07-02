@@ -1,12 +1,12 @@
 import Executor from '../../dist/contracts/TestableExecutor.json';
 import MockToken from '../../dist/contracts/MockToken.json';
 import MockContract from '../../dist/contracts/MockContract.json';
-import {utils, Wallet, providers} from 'ethers';
-import {deployContract} from 'ethereum-waffle';
+import {utils, Wallet} from 'ethers';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 import {sortPrivateKeysByAddress, createKeyPair} from '@unilogin/commons';
 const {parseEther} = utils;
 
-export default async function basicExecutor(unusedProvider: providers.Provider, [, , , , , , , , , wallet]: Wallet []) {
+export default async function basicExecutor(provider: MockProvider, [, , , , , , , , , wallet]: Wallet []) {
   const managementKeyPair = {publicKey: wallet.address, privateKey: wallet.privateKey};
   const actionKeyPair = createKeyPair();
   const actionKeyPair2 = createKeyPair();
@@ -18,5 +18,5 @@ export default async function basicExecutor(unusedProvider: providers.Provider, 
   await mockToken.transfer(walletContract.address, parseEther('1.0'));
   await walletContract.addKey(actionKeyPair.publicKey);
   await walletContract.addKey(actionKeyPair2.publicKey);
-  return {provider: wallet.provider, managementKeyPair, sortedKeys, walletContract, mockToken, mockContract, wallet};
+  return {provider, managementKeyPair, sortedKeys, walletContract, mockToken, mockContract, wallet};
 }

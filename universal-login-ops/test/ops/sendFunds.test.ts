@@ -1,21 +1,21 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {sendFunds, SendFundsParameters} from '../../src/ops/sendFunds';
-import {providers, Wallet, utils} from 'ethers';
-import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
+import {Wallet, utils} from 'ethers';
+import {solidity, MockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 
 chai.use(solidity);
 chai.use(chaiAsPromised);
 
 describe('SendFunds', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let wallet: Wallet;
   let args: SendFundsParameters;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
     args = {
       nodeUrl: '',
       privateKey: wallet.privateKey,

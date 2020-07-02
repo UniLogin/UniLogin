@@ -44,7 +44,7 @@ export const Web3PickerComponent = ({factories, isVisibleProp, hideModal, setPro
 };
 
 const GlobalStyle = createGlobalStyle`
-  .universal-login-default .unilogin-component-modal-wrapper {
+  .unilogin-component-modal-wrapper {
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -57,7 +57,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Lato', sans-serif;
   }
 
-  .universal-login-default .modal-close-btn {
+  .modal-close-btn {
     z-index: 100;
     position: absolute;
     display: block;
@@ -96,7 +96,7 @@ const GlobalStyle = createGlobalStyle`
       top: 1.1rem;
       right: 1.6rem;
     }
-  .universal-login-default .modal {
+  .modal {
     overflow: visible;
     background: unset;
     overflow-y: auto;
@@ -105,7 +105,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   @media only screen and (max-width: 600px) {
-    .universal-login-default .unilogin-component-modal-wrapper {
+    .unilogin-component-modal-wrapper {
       height: 100%;
       overflow-y: auto;
       max-width: unset;
@@ -113,7 +113,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   @media only screen and (orientation: landscape) and (max-width: 1000px) {
-    .universal-login-default .unilogin-component-modal-wrapper {
+    .unilogin-component-modal-wrapper {
       max-width: unset;
     }
   }

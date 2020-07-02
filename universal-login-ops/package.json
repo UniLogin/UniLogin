@@ -1,12 +1,12 @@
 {
   "name": "@unilogin/ops",
-  "version": "0.5.21",
+  "version": "0.6.1",
   "description": "",
   "main": "dist/cjs/src/index.js",
   "types": "dist/esm/src/index.d.ts",
   "module": "dist/esm/src/index.js",
   "bin": {
-    "universal-login": "./bin/universal-login"
+    "unilogin": "./bin/unilogin"
   },
   "scripts": {
     "prebuild": "yarn clean",
@@ -21,14 +21,14 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@unilogin/commons": "0.5.21",
-    "@unilogin/contracts": "0.5.21",
-    "@unilogin/relayer": "0.5.21",
+    "@unilogin/commons": "0.6.1",
+    "@unilogin/contracts": "0.6.1",
+    "@unilogin/relayer": "0.6.1",
     "cross-spawn": "^6.0.5",
     "dotenv": "^8.1.0",
     "ens-builder": "^2.0.2",
-    "ethereum-waffle": "^2.1.2",
-    "ethers": "^4.0.39",
+    "ethereum-waffle": "2.5.1",
+    "ethers": "^4.0.47",
     "ganache-cli": "^6.4.5",
     "ganache-core": "^2.6.1",
     "knex": "^0.20.0",

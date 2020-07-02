@@ -1,6 +1,5 @@
 import UniLoginSdk from './api/sdk';
 export default UniLoginSdk;
-export {BalanceDetails} from './api/FutureWalletFactory';
 export {DeployedWallet} from './api/wallet/DeployedWallet';
 export {DeployingWallet} from './api/wallet/DeployingWallet';
 export {FutureWallet} from './api/wallet/FutureWallet';
@@ -17,5 +16,5 @@ export {MemoryStorageService} from './core/services/MemoryStorageService';
 export {bigNumberMax} from './core/utils/bigNumberMax';
 export {encodeERC20Transfer} from './core/utils/encodeTransferToMessage';
 export {InvalidWalletState} from './core/utils/errors';
-export {getEtherPriceInCurrency} from './integration/http/tokensPrices';
 export {IncomingTransactionObserver} from './integration/notifySdk/IncomingTransactionObserver';
+export {getValueInUsd} from './core/utils/getValueInUsd';

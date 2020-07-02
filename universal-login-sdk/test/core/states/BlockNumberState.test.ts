@@ -1,10 +1,9 @@
 import {expect} from 'chai';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {Wallet} from 'ethers';
 import sinon from 'sinon';
-import {waitUntil} from '@unilogin/commons';
-import {mineBlock} from '@unilogin/contracts/testutils';
-import {BlockchainService} from '@unilogin/contracts';
+import {waitUntil, ProviderService} from '@unilogin/commons';
+import {mineBlock} from '@unilogin/commons/testutils';
 import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 
 describe('INT: BlockNumberState', () => {
@@ -14,16 +13,17 @@ describe('INT: BlockNumberState', () => {
   let callback: any;
 
   it('no subscriptions', () => {
-    state = new BlockNumberState(new BlockchainService(createMockProvider()));
+    const providerService = new ProviderService(new MockProvider());
+    state = new BlockNumberState(providerService);
     expect(state.get()).to.eq(0);
   });
 
   describe('1 subscription', () => {
     beforeEach(() => {
-      provider = createMockProvider();
-      [wallet] = getWallets(provider);
+      provider = new MockProvider();
+      [wallet] = provider.getWallets();
       provider.pollingInterval = 1;
-      state = new BlockNumberState(new BlockchainService(provider));
+      state = new BlockNumberState(new ProviderService(provider));
       callback = sinon.spy();
     });
 
@@ -65,10 +65,10 @@ describe('INT: BlockNumberState', () => {
 
   describe('2 subscriptions', () => {
     beforeEach(() => {
-      provider = createMockProvider();
-      [wallet] = getWallets(provider);
+      provider = new MockProvider();
+      [wallet] = provider.getWallets();
       provider.pollingInterval = 1;
-      state = new BlockNumberState(new BlockchainService(provider));
+      state = new BlockNumberState(new ProviderService(provider));
       callback = sinon.spy();
     });
 

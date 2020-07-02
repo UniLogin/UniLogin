@@ -1,5 +1,5 @@
-import {providers, Wallet, Contract} from 'ethers';
-import {createMockProvider, getWallets, deployContract} from 'ethereum-waffle';
+import {Wallet, Contract} from 'ethers';
+import {MockProvider, deployContract} from 'ethereum-waffle';
 import {expect} from 'chai';
 import {TokenDetailsService} from '../../../src/integration/ethereum/TokenDetailsService';
 import {ETHER_NATIVE_TOKEN} from '../../../src/core/constants/constants';
@@ -7,14 +7,14 @@ import MockToken from '../../fixtures/MockToken.json';
 import MockDai from '../../fixtures/MockDai.json';
 
 describe('INT: TokenDetailsService', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let tokenDetailsService: TokenDetailsService;
   let wallet: Wallet;
   let mockSai: Contract;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
     mockSai = await deployContract(wallet, MockDai, []);
     tokenDetailsService = new TokenDetailsService(provider, mockSai.address);
   });
@@ -25,6 +25,7 @@ describe('INT: TokenDetailsService', () => {
     expect(details.symbol).to.eq(ETHER_NATIVE_TOKEN.symbol);
     expect(details.name).to.eq(ETHER_NATIVE_TOKEN.name);
     expect(details.address).to.eq(ETHER_NATIVE_TOKEN.address);
+    expect(details.decimals).to.eq(ETHER_NATIVE_TOKEN.decimals);
   });
 
   it('token', async () => {
@@ -65,6 +66,7 @@ describe('INT: TokenDetailsService', () => {
     expect(details.symbol).to.eq('DAI');
     expect(details.name).to.eq('Dai Stablecoin v1.0');
     expect(details.address).to.eq(mockDai.address);
+    expect(details.decimals).to.eq(18);
   });
 
   it('works for SAI', async () => {

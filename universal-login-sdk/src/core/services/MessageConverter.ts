@@ -1,13 +1,13 @@
-import {Message, PartialRequired} from '@unilogin/commons';
-import {messageToSignedMessage, BlockchainService} from '@unilogin/contracts';
+import {Message, PartialRequired, ProviderService} from '@unilogin/commons';
+import {messageToSignedMessage, ContractService} from '@unilogin/contracts';
 
 export class MessageConverter {
-  constructor(private blockchainService: BlockchainService) {
+  constructor(private contractService: ContractService, private providerService: ProviderService) {
   }
 
   async messageToSignedMessage(message: PartialRequired<Message, 'from'>, privateKey: string) {
-    const networkVersion = await this.blockchainService.fetchHardforkVersion();
-    const walletVersion = await this.blockchainService.fetchWalletVersion(message.from);
+    const networkVersion = await this.providerService.fetchHardforkVersion();
+    const walletVersion = await this.contractService.fetchWalletVersion(message.from);
     return messageToSignedMessage(message, privateKey, networkVersion, walletVersion);
   }
 }

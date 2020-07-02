@@ -7,7 +7,7 @@ import CorrectProxyValidator from '../../../../src/integration/ethereum/validato
 import {getTestSignedMessage} from '../../../testconfig/message';
 import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletContractWithMockToken';
 
-describe('INT: CorrectProxyValidator', async () => {
+describe('INT: CorrectProxyValidator', () => {
   let message: MessageWithFrom;
   let mockToken: Contract;
   let walletContract: Contract;

@@ -1,0 +1,176 @@
+@import ../helpers/breakpoints
+
+.unilogin-component-assets-item
+  width: 100%
+
+  .assets-item-row
+    display: flex
+    justify-content: space-between
+    padding: 18px
+    width: 100%
+
+    +media(s)
+      padding: 8px
+
+  .assets-token-item-row
+    display: flex
+    justify-content: space-between
+    width: 100%
+    max-height: 80px
+    height: 100%
+    padding: 8px
+
+    @media only screen and (max-width: 600px)
+      max-height: unset
+
+  .assets-token-content
+    display: flex
+    justify-content: space-between
+    width: 100%
+
+    @media only screen and (max-width: 600px)
+      flex-direction: column
+      justify-content: unset
+
+  .assets-item-left
+    display: flex
+
+    .assets-price
+      text-align: left
+
+  .assets-token-img-wrapper
+    width: 56px
+    height: 64px
+    border-radius: 3px
+
+    @media only screen and (max-width: 600px)
+      margin-top: 8px
+
+  .assets-token-img
+    display: flex
+    width: 56px
+    height: 100%
+    object-fit: contain
+    background-size: contain
+    background-position: center center
+    background-repeat: no-repeat
+
+  .assets-token-title-section
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+    margin-left: 16px
+    width: 140px
+
+  .assets-item-right
+    max-height: 36px
+
+    .assets-price
+      text-align: right
+
+  .assets-img-wrapper
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 30px
+    margin-right: 16px
+
+  .currency-accordion-img
+    height: 30px
+
+  .assets-img
+    max-width: 100%
+
+  .assets-token-description
+    font-family: Helvetica Neue
+    font-style: normal
+    font-weight: normal
+    font-size: 10px
+    line-height: 12px
+    max-height: 48px
+    color: #7D7C9C
+    overflow-y: auto
+    padding-left: 8px
+    width: 280px
+
+    @media only screen and (max-width: 600px)
+      width: 100%
+      max-height: unset
+      margin-top: 8px
+      padding-left: 16px
+
+  .assets-name
+    margin: 0 0 5px
+    font-size: 14px
+    line-height: 17px
+    text-align: left
+    text-transform: capitalize
+
+  .assets-one-line-paragraph
+    line-height: 17px
+    max-height: 17px
+    overflow: hidden
+    text-align: left
+
+  .assets-token-family-name
+    font-family: Helvetica Neue
+    font-style: normal
+    font-weight: normal
+    font-size: 8px
+    letter-spacing: 1px
+    text-transform: uppercase
+    color: #7D7C9C
+    margin: 3px 0 0
+
+  .assets-token-name
+    font-family: Helvetica Neue
+    font-style: normal
+    font-weight: normal
+    font-size: 14px
+    max-height: 30px
+    text-decoration: none
+    color: #0F0C4A
+    text-align: left
+    margin: 0
+    display: -webkit-box
+    -webkit-box-orient: vertical
+    -webkit-line-clamp: 2
+    overflow: hidden
+    text-overflow: ellipsis
+
+    &:visited
+      color: #0F0C4A
+
+    &:hover
+      color: #07D1D1
+
+    &:active
+      color: #0F0C4A
+
+  .assets-price
+    margin: 0
+    font-size: 12px
+    line-height: 14px
+    color: #7D7C9C
+
+    +media(s)
+      font-size: 14px
+
+    +media(s)
+      font-size: 14px
+
+  .assets-balance
+    margin: 0 0 5px
+    font-weight: bold
+    font-size: 14px
+    line-height: 17px
+    text-align: right
+
+  .assets-balance-converted
+    display: flex
+    justify-content: flex-end
+
+  .assets-price-tilde
+    margin: 0px 3px 0px
+    font-weight: bold
+    font-size: 12px

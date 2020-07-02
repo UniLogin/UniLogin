@@ -1,11 +1,10 @@
 
-import {UnsignedMessage, CollectedSignatureKeyPair, SignedMessage} from '../../models/message';
+import {CollectedSignatureKeyPair} from '../../models/message';
 import {concatenateSignatures} from './calculateMessageSignature';
 import {sortSignatureKeyPairsByKey} from '../signatures';
 
-export const getMessageWithSignatures = async (message: UnsignedMessage, collectedSignatureKeyPairs: CollectedSignatureKeyPair[]): Promise<SignedMessage> => {
+export const getSignatureFrom = async (collectedSignatureKeyPairs: CollectedSignatureKeyPair[]): Promise<string> => {
   const sortedSignatureKeyPairs = sortSignatureKeyPairsByKey([...collectedSignatureKeyPairs]);
   const sortedSignatures = sortedSignatureKeyPairs.map((value: CollectedSignatureKeyPair) => value.signature);
-  const signature = concatenateSignatures(sortedSignatures);
-  return {...message, signature};
+  return concatenateSignatures(sortedSignatures);
 };

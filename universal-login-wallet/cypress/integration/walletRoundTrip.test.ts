@@ -14,6 +14,17 @@ describe('E2E: Wallet roundtrip', () => {
       cy.ensureCorrectLocation('/creationSuccess');
       cy.goToDashboard();
       cy.checkLocalStorageTokenProp('wallet-ganache', 'kind', 'Deployed');
+      cy.goToTopUp();
+      cy.ensureCorrectLocation('/dashboard/topUp');
+      cy.selectFiat();
+      cy.waitForFiatDetails();
+      cy.selectCrypto();
+      cy.receiveCrypto();
+      cy.goToFunds();
+      cy.goToSend();
+      cy.sendEther();
+      cy.goToGenerateBackupCodes();
+      cy.generateBackupCodes();
       cy.goToDevices();
       cy.ensureCorrectLocation('/dashboard/devices');
       cy.goToDisconnectAccount();

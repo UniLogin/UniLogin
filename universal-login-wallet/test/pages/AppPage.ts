@@ -1,7 +1,6 @@
 import {ReactWrapper} from 'enzyme';
-import {GasModePage} from '@unilogin/react/testutils';
+import {GasModePage, TransferPage} from '@unilogin/react/testutils';
 import LoginPage from './LoginPage';
-import TransferPage from './TransferPage';
 import DashboardPage from './DashboardPage';
 import NotificationsPage from './Notifications';
 import CreationFlow from './CreationFlow';

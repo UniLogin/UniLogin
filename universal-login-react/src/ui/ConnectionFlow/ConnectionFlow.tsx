@@ -29,7 +29,7 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, wallet
 
   return <Switch>
     <Route exact path={join(basePath, 'chooseMethod')}>
-      <ConnectionFlowWrapper progress={2} steps={3}>
+      <ConnectionFlowWrapper progress={2} steps={4}>
         <ChooseConnectionMethod
           onConnectWithDeviceClick={onConnectWithDeviceClick}
           onConnectWithPassphraseClick={() => history.push(join(basePath, 'recover'), {ensName: name})}
@@ -38,19 +38,23 @@ export const ConnectionFlow = ({basePath = '', name, onCancel, onSuccess, wallet
       </ConnectionFlowWrapper>
     </Route>
     <Route exact path={join(basePath, 'recover')}>
-      <ConnectWithPassphrase
-        name={name}
-        walletService={walletService}
-        onRecover={onSuccess}
-        onCancel={() => history.goBack()}
-      />
+      <ConnectionFlowWrapper progress={3} steps={4}>
+        <ConnectWithPassphrase
+          name={name}
+          walletService={walletService}
+          onRecover={onSuccess}
+          onCancel={() => history.goBack()}
+        />
+      </ConnectionFlowWrapper>
     </Route>
     <Route exact path={join(basePath, 'emoji')}>
-      <ConnectWithEmoji
-        walletService={walletService}
-        onConnect={onSuccess}
-        onCancel={onCancel}
-      />
+      <ConnectionFlowWrapper progress={3} steps={4}>
+        <ConnectWithEmoji
+          walletService={walletService}
+          onConnect={onSuccess}
+          onCancel={onCancel}
+        />
+      </ConnectionFlowWrapper>
     </Route>
   </Switch>;
 };

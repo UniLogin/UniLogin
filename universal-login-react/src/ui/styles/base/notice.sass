@@ -1,0 +1,48 @@
+@import ../helpers/breakpoints
+
+.unilogin-component-notice-wrapper
+  position: relative
+  display: flex
+  align-items: center
+  justify-content: center
+  height: 32px
+  width: 100%
+  background: rgba(15, 12, 74, 0.5)
+  text-align: center
+  border-bottom-left-radius: 8px
+  border-bottom-right-radius: 8px
+
+  +media(s)
+    min-height: 41px
+    border-radius: 0
+
+.unilogin-component-notice-wrapper::before
+  content: ''
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 10px
+  background: rgba(15, 12, 74, 0.5)
+  transform: translateY(-100%)
+  z-index: -1
+
+.unilogin-component-notice
+  position: relative
+  margin: 0
+  padding-left: 18px
+  display: inline
+  font-size: 12px
+  line-height: 14px
+  color: #FFFFFF
+
+.unilogin-component-notice::before
+  content: ''
+  position: absolute
+  top: 50%
+  left: 0
+  width: 13px
+  height: 11px
+  transform: translateY(-50%)
+  background: url('../../assets/icons/warn.svg') center no-repeat
+  background-size: contain

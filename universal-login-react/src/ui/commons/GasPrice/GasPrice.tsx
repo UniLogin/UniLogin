@@ -14,22 +14,17 @@ import {SelectedGasPrice} from './SelectedGasPrice';
 import {useOutsideClick} from '../../hooks/useClickOutside';
 import {Spinner} from '../Spinner';
 import {useClassFor} from '../../utils/classFor';
+import {NoRefundGasPrice} from './NoRefundGasPrice';
 
-interface GasPriceProps {
+export interface GasPriceProps {
   deployedWallet?: DeployedWallet;
   sdk: UniLoginSdk;
   isDeployed: boolean;
-  gasLimit: utils.BigNumberish;
+  gasLimit?: utils.BigNumberish;
   onGasParametersChanged: OnGasParametersChanged;
-  className?: string;
 }
 
-const GAS_PRICE_FOR_NO_REFUND = {
-  gasPrice: utils.bigNumberify('0'),
-  gasToken: ETHER_NATIVE_TOKEN.address,
-};
-
-export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
+export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged}: GasPriceProps) => {
   const [tokenDetailsWithBalance, setTokenDetailsWithBalance] = useState<TokenDetailsWithBalance[]>([]);
 
   useAsyncEffect(async () => {
@@ -106,7 +101,7 @@ export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gas
               modeName={modeName}
               onModeChanged={onModeChanged}
             />
-            <TransactionFeeChoose
+            {gasLimit ? <TransactionFeeChoose
               gasModes={gasModes}
               modeName={modeName}
               tokenAddress={gasOption.token.address}
@@ -114,7 +109,7 @@ export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gas
               usdAmount={usdAmount}
               tokensDetailsWithBalance={tokenDetailsWithBalance}
               onGasOptionChanged={onGasOptionSelected}
-            />
+            /> : <Spinner/>}
           </div>
         }
       </div>
@@ -128,27 +123,20 @@ export const GasPriceWithOptions = ({isDeployed = true, deployedWallet, sdk, gas
   );
 };
 
-export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged, className}: GasPriceProps) => {
-  const classNameForGasPrice = useClassFor('gas-price');
-  useEffect(() => {
-    if (sdk.isRefundPaid()) {
-      onGasParametersChanged(GAS_PRICE_FOR_NO_REFUND);
-    }
-  });
-
-  return sdk.isRefundPaid() ? <div className={classNameForGasPrice}></div> : <GasPriceWithOptions
-    isDeployed={isDeployed}
-    deployedWallet={deployedWallet}
-    gasLimit={gasLimit}
-    onGasParametersChanged={onGasParametersChanged}
-    className={className}
-    sdk={sdk}
-  />;
-};
+export const GasPrice = ({isDeployed = true, deployedWallet, sdk, gasLimit, onGasParametersChanged}: GasPriceProps) =>
+  sdk.isRefundPaid()
+    ? <NoRefundGasPrice sdk={sdk} onGasParametersChanged={onGasParametersChanged} />
+    : <GasPriceWithOptions
+      isDeployed={isDeployed}
+      deployedWallet={deployedWallet}
+      gasLimit={gasLimit}
+      onGasParametersChanged={onGasParametersChanged}
+      sdk={sdk}
+    />;
 
 const GasPriceTitle = () => (
   <div className="gas-price-top">
-    <p className="gas-price-title">FEE</p>
+    <p className="gas-price-title">fee</p>
     <div className="gas-price-hint">
       <p className="gas-price-tooltip">Choose transaction speed and token</p>
     </div>

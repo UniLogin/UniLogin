@@ -1,0 +1,70 @@
+@import ../helpers/breakpoints
+
+.unilogin-component-footer-section
+  display: flex
+  justify-content: space-between
+  align-items: flex-end
+  padding: 7px 24px 24px
+  margin-top: auto
+
+  +media(s)
+    padding: 15px
+    flex-direction: column
+    justify-content: center
+    align-items: center
+
+  .universal-login-gas
+    +media(s)
+      width: 100%
+
+  .backup-btn.backup-btn-primary.generate-code-btn
+    +media(s)
+      width: 100%
+
+.unilogin-component-footer-section:empty
+  display: none
+
+.footer-deny-btn,
+.footer-approve-btn
+  max-width: 170px
+  width: 100%
+  height: 40px
+  border-radius: 3px
+  font-weight: 500
+  font-size: 14px
+  line-height: 17px
+  text-align: center
+
+  +media(s)
+    max-width: initial
+
+
+.footer-deny-btn
+  background:rgb(255, 108, 108)
+
+.footer-approve-btn
+ +media(s)
+    width: 100%
+
+.footer-buttons-row
+  display: grid
+  grid-template-rows: 1fr
+  grid-gap: 15px
+  align-items: center
+  max-width: 355px
+  width: 100%
+  margin-left: 15px
+
+  +media(s)
+    width: 100%
+    margin: 30px 0 10px
+    max-width: initial
+
+.footer-buttons-row > :only-child
+  margin-left: auto
+
+.footer-buttons-row.two
+  grid-template-columns: 1fr 1fr
+
+.footer-buttons-row.one
+  grid-template-columns: 1fr

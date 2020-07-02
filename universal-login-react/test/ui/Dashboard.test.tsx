@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import {mount} from 'enzyme';
+import {mount, ReactWrapper} from 'enzyme';
 import React from 'react';
-import {getWallets, createMockProvider} from 'ethereum-waffle';
+import {MockProvider} from 'ethereum-waffle';
 import {DeployedWallet} from '@unilogin/sdk';
 import {Dashboard} from '../../src/ui/UFlow/Dashboard';
 import {waitExpect} from '@unilogin/commons/testutils';
@@ -12,15 +12,16 @@ import {setupDeployedWallet} from '../helpers/setupDeploymentWallet';
 describe('INT: Dashboard', () => {
   let wallet: Wallet;
   const ensName = 'jarek.mylogin.eth';
-  const initialAmount = '199.99';
+  const initialAmount = '198.60';
   let deployedWallet: DeployedWallet;
   let dashboard: DashboardPage;
   let relayer: any;
+  let appWrapper: ReactWrapper;
 
   beforeEach(async () => {
-    ([wallet] = getWallets(createMockProvider()));
+    ([wallet] = new MockProvider().getWallets());
     ({deployedWallet, relayer} = await setupDeployedWallet(wallet, ensName));
-    const appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
+    appWrapper = mount(<Dashboard deployedWallet={deployedWallet} />);
     dashboard = new DashboardPage(appWrapper);
   });
 
@@ -34,11 +35,12 @@ describe('INT: Dashboard', () => {
       value: utils.parseEther('2'),
     });
     await waitExpect(() =>
-      expect(dashboard.funds().getUsdBalance()).to.eq('$399.99'),
+      expect(dashboard.funds().getUsdBalance()).to.eq('$398.60'),
     );
   });
 
   after(async () => {
+    appWrapper.unmount();
     deployedWallet.sdk.stop();
     await relayer.stop();
   });

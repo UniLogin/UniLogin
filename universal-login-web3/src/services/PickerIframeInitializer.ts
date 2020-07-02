@@ -11,10 +11,10 @@ import {IframeBridgeEndpoint} from './IframeBridgeEndpoint';
 export class PickerIframeInitializer extends IframeInitializerBase {
   private readonly provider: Web3PickerProvider;
 
-  constructor(endpoint: IframeBridgeEndpoint, sdkConfig: Partial<SdkConfig>, network?: Network) {
+  constructor(endpoint: IframeBridgeEndpoint, sdkConfig: Partial<SdkConfig>, disabledDialogs: string[], network?: Network) {
     super(endpoint);
     const upstream = this.getUpstream(network);
-    const web3ProviderFactories = setupStrategies(upstream, ['UniLogin', 'Metamask'], {sdkConfig});
+    const web3ProviderFactories = setupStrategies(upstream, ['UniLogin', 'Metamask'], {sdkConfig, disabledDialogs});
     this.provider = new Web3PickerProvider(web3ProviderFactories, upstream);
     endpoint.setHandler(this.provider);
   }

@@ -1,4 +1,4 @@
-import {GasPriceOracle} from '@unilogin/commons';
+import {bigNumberifyDecimal, GasPriceOracle, safeMultiply} from '@unilogin/commons';
 import {utils} from 'ethers';
 
 export class TransactionGasPriceComputator {
@@ -11,5 +11,10 @@ export class TransactionGasPriceComputator {
     } else {
       return utils.bigNumberify(gasPrice);
     }
+  }
+
+  async getGasPriceInEth(givenGasPrice: utils.BigNumberish, tokenPriceInEth: utils.BigNumberish) {
+    const gasPrice = await this.getGasPrice(givenGasPrice);
+    return bigNumberifyDecimal(safeMultiply(gasPrice, tokenPriceInEth));
   }
 }

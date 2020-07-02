@@ -1,6 +1,6 @@
 {
   "name": "@unilogin/provider",
-  "version": "0.5.21",
+  "version": "0.6.1",
   "main": "dist/cjs/index.js",
   "types": "dist/esm/index.d.ts",
   "module": "dist/esm/index.js",
@@ -28,7 +28,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@restless/sanitizers": "^0.2.4",
+    "@restless/sanitizers": "^0.2.5",
     "reactive-properties": "^0.1.11"
   }
 }

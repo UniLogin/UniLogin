@@ -1,4 +1,7 @@
-.unilogin-theme-jarvis
+.unilogin-theme-jarvis.unilogin-component-wallet-selector-wrapper
+  position: relative
+  margin-bottom: 25px
+
   .input
     width: 100%
     height: 50px
@@ -7,24 +10,20 @@
     font-size: 14px
     color: #31405E
 
-  .jarvis
-    position: relative
-    margin-bottom: 25px
+  .input-unilogin-component-input-wallet-selector
+    height: 50px
+    width: 100%
+    padding: 12px 12px 12px 42px
+    background: #FFFFFF
+    border: 1px solid #E1E1F0
+    border-radius: 0
+    font-size: 14px
+    color: #31405E
 
-    .input-unilogin-component-input-wallet-selector
-      height: 50px
-      width: 100%
-      padding: 12px 12px 12px 42px
-      background: #FFFFFF
-      border: 1px solid #E1E1F0
-      border-radius: 0
-      font-size: 14px
-      color: #31405E
-
-    .unilogin-component-suggestions-item-text
-      opacity: 0.7
-      font-size: 14px
-      color: #31405E
+  .unilogin-component-suggestions-item-text
+    opacity: 0.7
+    font-size: 14px
+    color: #31405E
 
   .jarvis-input-label
     display: block
@@ -59,18 +58,39 @@
   .unilogin-component-suggestions-item + .unilogin-component-suggestions-item
     border-top: 1px solid #E1E1F0
 
+  .unilogin-component-suggestions-item-btn.single
+    .unilogin-component-single-suggestion-hint
+      display: none
+
+    .unilogin-component-single-suggestion-btn:hover
+      background: #fbfbfd
+
+  .unilogin-component-suggestions-item-btn.multiple
+    .unilogin-component-suggestions-item-btn-text
+      padding-top: 6px
+      text-transform: uppercase
+      font-weight: 700
+      font-size: 11px
+
+    .unilogin-component-ens-name
+      font-size: 13px
+
   .unilogin-component-suggestions-item-btn-text
     display: none
+
+  .unilogin-component-suggestions-item-btn-text:focus,
+  .unilogin-component-suggestions-item-btn-text:active,
+  .unilogin-component-suggestions-item-btn:active,
+  .unilogin-component-suggestions-item-btn:focus,
+    outline: 0
+    border: none
 
   .unilogin-component-suggestions-ens-name,
   .unilogin-component-suggestions-hint
     padding-top: 6px
     color: #31405E
 
-  .unilogin-component-single-suggestion-hint
-    display: none
-
-  .unilogin-component-single-suggestion-btn
+  .unilogin-component-suggestions-item-btn-text
     color: #2EC9F5
 
   .unilogin-component-suggestions-item-btn
@@ -78,14 +98,6 @@
 
   .unilogin-component-suggestions-item-btn-text
     display: block
-
-  .unilogin-component-single-suggestion-btn:focus,
-  .unilogin-component-single-suggestion-btn:active
-    outline: 0
-    border: none
-
-  .unilogin-component-single-suggestion-btn:hover
-    background: #fbfbfd
 
   .unilogin-component-hint
     position: absolute

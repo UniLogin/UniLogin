@@ -1,5 +1,5 @@
 require('dotenv').config();
-import {ETHER_NATIVE_TOKEN, Network} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, Network, DEV_DAI_ADDRESS} from '@unilogin/commons';
 
 const getListFromEnv = (env?: string) => env?.split(',') || [];
 
@@ -10,7 +10,7 @@ export default Object.freeze({
     domains: ['mylogin.eth'],
     relayerUrl: 'http://localhost:3311',
     jsonRpcUrl: 'http://localhost:18545',
-    tokens: [ETHER_NATIVE_TOKEN.address, '0xd19Fbe8878507D0Aa9f2F6Acf40Ff6C21d6CecE8', '0x9Ad7E60487F3737ed239DAaC172A4a9533Bd9517'],
+    tokens: [ETHER_NATIVE_TOKEN.address, '0xd19Fbe8878507D0Aa9f2F6Acf40Ff6C21d6CecE8', DEV_DAI_ADDRESS],
     apiKey: 'aaaa-bbbb-cccc',
   },
 
@@ -29,5 +29,6 @@ export default Object.freeze({
     jsonRpcUrl: process.env.JSON_RPC_URL!,
     tokens: [ETHER_NATIVE_TOKEN.address, ...getListFromEnv(process.env.TOKENS)],
     rampApiKey: process.env.RAMP_API_KEY,
+    apiKey: process.env.API_KEY,
   },
 });

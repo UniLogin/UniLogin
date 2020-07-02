@@ -24,7 +24,7 @@ import {MessageStatusService} from '../../core/services/execution/messages/Messa
 import {Beta2Service} from '../../integration/ethereum/Beta2Service';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
-import {BalanceChecker, RequiredBalanceChecker, PublicRelayerConfig, GasPriceOracle} from '@unilogin/commons';
+import {BalanceChecker, GasPriceOracle, PublicRelayerConfig, TokenPricesService, TokenDetailsService, ProviderService} from '@unilogin/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
@@ -33,9 +33,8 @@ import DeploymentExecutor from '../../integration/ethereum/DeploymentExecutor';
 import {MinedTransactionHandler} from '../../core/services/execution/MinedTransactionHandler';
 import {httpsRedirect} from '../middlewares/httpsRedirect';
 import {GasComputation} from '../../core/services/GasComputation';
-import {BlockchainService} from '@unilogin/contracts';
+import {ContractService} from '@unilogin/contracts';
 import {MessageHandlerValidator} from '../../core/services/validators/MessageHandlerValidator';
-import PendingMessages from '../../core/services/execution/messages/PendingMessages';
 import {WalletContractService} from '../../integration/ethereum/WalletContractService';
 import {GnosisSafeService} from '../../integration/ethereum/GnosisSafeService';
 import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
@@ -46,6 +45,8 @@ import {ApiKeyHandler} from '../../core/services/execution/ApiKeyHandler';
 import {TransactionGasPriceComputator} from '../../integration/ethereum/TransactionGasPriceComputator';
 import SQLRepository from '../../integration/sql/services/SQLRepository';
 import Deployment from '../../core/models/Deployment';
+import {GasTokenValidator} from '../../core/services/validators/GasTokenValidator';
+import {BalanceValidator} from '../../integration/ethereum/BalanceValidator';
 
 const defaultPort = '3311';
 
@@ -60,10 +61,18 @@ class Relayer {
   private app: Application = {} as Application;
   protected server: Server = {} as Server;
   publicConfig: PublicRelayerConfig;
+  protected tokenPricesService: TokenPricesService = {} as TokenPricesService;
+  protected gasPriceOracle: GasPriceOracle = {} as GasPriceOracle;
+  protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
-    this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl, config.chainSpec);
+    this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl,
+      {
+        ensAddress: config.ensAddress,
+        name: config.network,
+        chainId: 0,
+      });
     this.wallet = new Wallet(config.privateKey, this.provider);
     this.database = Knex(config.database);
     this.publicConfig = getPublicConfig(this.config);
@@ -89,41 +98,45 @@ class Relayer {
       this.app.use(httpsRedirect);
     }
 
-    this.ensService = new ENSService(this.config.chainSpec.ensAddress, this.config.ensRegistrars, this.provider);
-    const blockchainService = new BlockchainService(this.provider);
-    const gasComputation = new GasComputation(blockchainService);
-    const messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address);
+    this.ensService = new ENSService(this.config.ensAddress, this.config.ensRegistrars, this.provider);
+    const providerService = new ProviderService(this.provider);
+    const contractService = new ContractService(providerService);
+    const gasComputation = new GasComputation(contractService, providerService);
+    const messageHandlerValidator = new MessageHandlerValidator(this.publicConfig.maxGasLimit, gasComputation, this.wallet.address, this.config.supportedTokens);
     const walletDeployer = new WalletDeployer(this.config.factoryAddress, this.wallet);
-    const balanceChecker = new BalanceChecker(this.provider);
-    const requiredBalanceChecker = new RequiredBalanceChecker(balanceChecker);
+    const balanceChecker = new BalanceChecker(providerService);
     const messageRepository = new MessageSQLRepository(this.database);
     const deploymentRepository = new SQLRepository<Deployment>(this.database, 'deployments');
     const executionQueue = new QueueSQLStore(this.database);
     const refundPayerStore = new RefundPayerStore(this.database);
     const refundPayerValidator = new RefundPayerValidator(refundPayerStore);
     const apiKeyHandler = new ApiKeyHandler(refundPayerValidator, refundPayerStore);
-    const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue);
-    const transactionGasPriceComputator = new TransactionGasPriceComputator(new GasPriceOracle());
-    this.walletContractService = new WalletContractService(blockchainService, new Beta2Service(this.provider, transactionGasPriceComputator), new GnosisSafeService(this.provider, transactionGasPriceComputator));
+    this.gasPriceOracle = new GasPriceOracle();
+    const transactionGasPriceComputator = new TransactionGasPriceComputator(this.gasPriceOracle);
+    this.walletContractService = new WalletContractService(contractService, new Beta2Service(this.provider, transactionGasPriceComputator), new GnosisSafeService(this.provider, transactionGasPriceComputator));
     const relayerRequestSignatureValidator = new RelayerRequestSignatureValidator(this.walletContractService);
     const authorisationStore = new AuthorisationStore(this.database);
     const authorisationService = new AuthorisationService(authorisationStore, relayerRequestSignatureValidator, this.walletContractService);
     const devicesStore = new DevicesStore(this.database);
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
-    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, requiredBalanceChecker, devicesService, transactionGasPriceComputator);
+    const futureWalletStore = new FutureWalletStore(this.database);
+    this.tokenPricesService = new TokenPricesService();
+    const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
+    const tokenDetailsService = new TokenDetailsService(this.provider);
+    this.futureWalletHandler = new FutureWalletHandler(futureWalletStore, this.tokenPricesService, tokenDetailsService, gasTokenValidator);
+    const deploymentHandler = new DeploymentHandler(deploymentRepository, executionQueue, gasTokenValidator, futureWalletStore);
+    const balanceValidator = new BalanceValidator(balanceChecker);
+    const walletService = new WalletDeploymentService(this.config, this.ensService, walletDeployer, balanceValidator, devicesService, transactionGasPriceComputator, futureWalletStore);
     const statusService = new MessageStatusService(messageRepository, this.walletContractService);
-    const pendingMessages = new PendingMessages(messageRepository, executionQueue, statusService, this.walletContractService);
-    const messageHandler = new MessageHandler(pendingMessages, messageHandlerValidator);
+    const messageHandler = new MessageHandler(messageRepository, executionQueue, statusService, this.walletContractService, this.tokenPricesService, tokenDetailsService, messageHandlerValidator, gasTokenValidator);
     const messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList, this.walletContractService);
     const minedTransactionHandler = new MinedTransactionHandler(authorisationStore, devicesService, this.walletContractService);
-    const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService);
+    const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService, gasTokenValidator);
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
-    const futureWalletStore = new FutureWalletStore(this.database);
-    const futureWalletHandler = new FutureWalletHandler(futureWalletStore);
 
     this.app.use(bodyParser.json());
-    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, futureWalletHandler, apiKeyHandler));
+    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, this.futureWalletHandler, apiKeyHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(authorisationService));
     this.app.use('/devices', DevicesRouter(devicesService));
@@ -132,15 +145,15 @@ class Relayer {
   }
 
   async stop() {
-    await this.executionWorker.stop();
+    this.executionWorker.stop();
     await this.database.destroy();
     await new Promise(resolve => this.server.close(resolve));
   }
 
   async stopLater() {
+    await new Promise(resolve => this.server.close(resolve));
     await this.executionWorker.stopLater();
     await this.database.destroy();
-    await new Promise(resolve => this.server.close(resolve));
   }
 }
 

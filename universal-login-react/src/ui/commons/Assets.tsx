@@ -1,40 +1,46 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {utils} from 'ethers';
 import {DeployedWallet} from '@unilogin/sdk';
 import {TokenDetailsWithBalance, ValueRounder} from '@unilogin/commons';
 import {Asset} from './Asset';
-import './../styles/assetsList.sass';
+import './../styles/base/assetsList.sass';
 import './../styles/themes/Legacy/assetsListThemeLegacy.sass';
 import './../styles/themes/UniLogin/assetsListThemeUnilogin.sass';
 import './../styles/themes/Jarvis/assetsListThemeJarvis.sass';
-import {getIconForToken} from '../../core/utils/getIconForToken';
 import {useBalances} from '../hooks/useBalances';
 import {ThemedComponent} from './ThemedComponent';
+import {filterTokensWithZeroBalance} from '../../app/filterTokensWithZeroBalance';
+import {useErc721Tokens} from '../hooks/useErc721Tokens';
+import Erc721Tokens from './Erc721Tokens';
+
+export type AssetState = 'COLLECTABLES' | 'TOKENS';
 
 export interface AssetsProps {
   deployedWallet: DeployedWallet;
-  className?: string;
 }
 
-export const Assets = ({deployedWallet, className}: AssetsProps) => {
+export const Assets = ({deployedWallet}: AssetsProps) => {
   const [tokenDetailsWithBalance] = useBalances(deployedWallet);
+  const [erc721Tokens] = useErc721Tokens(deployedWallet);
+  const [currentState, setCurrentState] = useState('TOKENS' as AssetState);
 
   return (
     <ThemedComponent name="assets">
       <div className="assets">
-        <p className="assets-title">My Assets</p>
+        <div className="assets-navigation">
+          <a className={`${currentState !== 'TOKENS' ? 'assets-title' : 'assets-selected-title'}`} onClick={() => setCurrentState('TOKENS')}>Tokens</a>
+          <a className={`${currentState === 'TOKENS' ? 'assets-title' : 'assets-selected-title'}`} onClick={() => setCurrentState('COLLECTABLES')}>Collectables</a>
+        </div>
         <div className="assets-list">
-          {tokenDetailsWithBalance.map(({name, symbol, balance}: TokenDetailsWithBalance) => (
+          {currentState === 'TOKENS' && filterTokensWithZeroBalance(tokenDetailsWithBalance).map(({balance, ...token}: TokenDetailsWithBalance) => (
             <Asset
-              key={`${name}-${symbol}`}
+              key={`${token.name}-${token.symbol}`}
               sdk={deployedWallet.sdk}
-              name={name}
-              symbol={symbol}
-              balance={ValueRounder.ceil(utils.formatEther(balance))!}
-              icon={getIconForToken(symbol)}
-              className={className}
+              token={token}
+              balance={ValueRounder.ceil(utils.formatUnits(balance, token.decimals))!}
             />
           ))}
+          {currentState === 'COLLECTABLES' && <Erc721Tokens sdk={deployedWallet.sdk} tokens={erc721Tokens!}/>}
         </div>
       </div>
     </ThemedComponent>

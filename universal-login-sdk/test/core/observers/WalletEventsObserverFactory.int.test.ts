@@ -1,8 +1,7 @@
-import {createKeyPair, TEST_EXECUTION_OPTIONS, KeyPair} from '@unilogin/commons';
-import {BlockchainService} from '@unilogin/contracts';
+import {createKeyPair, TEST_EXECUTION_OPTIONS, KeyPair, ProviderService} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import chai, {expect} from 'chai';
-import {createMockProvider, getWallets, solidity} from 'ethereum-waffle';
+import {MockProvider, solidity} from 'ethereum-waffle';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import UniLoginSdk, {DeployedWallet, WalletEventFilter} from '../../../src';
@@ -10,16 +9,16 @@ import WalletEventsObserverFactory from '../../../src/core/observers/WalletEvent
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
 import {setupSdk} from '../../helpers/setupSdk';
 import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
-import {setupWalletContract, mineBlock} from '@unilogin/contracts/testutils';
+import {setupWalletContract} from '@unilogin/contracts/testutils';
 import {Contract} from 'ethers';
-import {waitExpect} from '@unilogin/commons/testutils';
+import {waitExpect, mineBlock} from '@unilogin/commons/testutils';
 
 chai.use(solidity);
 chai.use(sinonChai);
 
 describe('INT: WalletEventsObserverFactory', () => {
-  const provider = createMockProvider();
-  const [deployer] = getWallets(provider);
+  const provider = new MockProvider();
+  const [deployer] = provider.getWallets();
   const {publicKey} = createKeyPair();
   let relayer: RelayerUnderTest;
   let sdk: UniLoginSdk;
@@ -32,10 +31,11 @@ describe('INT: WalletEventsObserverFactory', () => {
   describe('beta2', () => {
     before(async () => {
       ({relayer, sdk} = await setupSdk(deployer));
-      const blockchainService = new BlockchainService(sdk.provider);
-      const blockNumberState = new BlockNumberState(blockchainService);
+
+      const providerService = new ProviderService(sdk.provider);
+      const blockNumberState = new BlockNumberState(providerService);
       factory = new WalletEventsObserverFactory(
-        blockchainService,
+        providerService,
         blockNumberState,
       );
       await factory.start();
@@ -91,10 +91,10 @@ describe('INT: WalletEventsObserverFactory', () => {
   describe('beta3', () => {
     before(async () => {
       ({relayer, sdk} = await setupSdk(deployer));
-      const blockchainService = new BlockchainService(sdk.provider);
-      const blockNumberState = new BlockNumberState(blockchainService);
+      const providerService = new ProviderService(sdk.provider);
+      const blockNumberState = new BlockNumberState(providerService);
       factory = new WalletEventsObserverFactory(
-        blockchainService,
+        providerService,
         blockNumberState,
       );
       await factory.start();

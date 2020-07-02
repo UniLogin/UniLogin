@@ -1,19 +1,19 @@
 import {expect} from 'chai';
 import {SufficientBalanceValidator} from '../../../../src/integration/ethereum/validators/SufficientBalanceValidator';
-import {utils, providers} from 'ethers';
+import {utils} from 'ethers';
 import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '../../../../src/core/constants/test';
-import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 import MockToken from '../../../fixtures/MockToken.json';
 import {SignedMessage} from '../../../../src';
 import {getTestSignedMessage} from '../../../helpers/getTestMessage';
 
 describe('INT: SufficientBalanceValidator', () => {
-  const provider: providers.Provider = createMockProvider();
+  const provider = new MockProvider();
   const validator = new SufficientBalanceValidator(provider);
   let signedMessage: SignedMessage;
 
   before(async () => {
-    const [wallet] = getWallets(provider);
+    const [wallet] = provider.getWallets();
     const token = await deployContract(wallet, MockToken);
     await token.transfer(TEST_CONTRACT_ADDRESS, utils.parseEther('1'));
     await wallet.sendTransaction({to: TEST_CONTRACT_ADDRESS, value: utils.parseEther('1')});
@@ -30,7 +30,7 @@ describe('INT: SufficientBalanceValidator', () => {
     });
 
     it('passes when gas and value have different token addresses', async () => {
-      await expect(validator.validate({...signedMessage, value: utils.parseEther('1'), safeTxGas: utils.parseEther('1'), baseGas: 0})).to.be.eventually.fulfilled;
+      await expect(validator.validate({...signedMessage, value: utils.parseUnits('1'), safeTxGas: utils.parseUnits('0.05', 'gwei'), baseGas: 0})).to.be.eventually.fulfilled;
     });
 
     it('throws when not enough funds for transfer value', async () => {
@@ -38,26 +38,26 @@ describe('INT: SufficientBalanceValidator', () => {
     });
 
     it('throws when not enough tokens', async () => {
-      await expect(validator.validate({...signedMessage, safeTxGas: utils.parseEther('2.0')})).to.be.eventually.rejectedWith('Not enough tokens');
+      await expect(validator.validate({...signedMessage, safeTxGas: utils.parseUnits('0.1', 'gwei')})).to.be.eventually.rejectedWith('Not enough tokens');
     });
   });
 
   describe('Same tokens', () => {
     it('passes when gas and value have same token addresses', async () => {
       const signedMessage = getTestSignedMessage(TEST_PRIVATE_KEY);
-      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.5'), safeTxGas: utils.parseEther('0.5'), baseGas: 0})).to.be.eventually.fulfilled;
-      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.5'), safeTxGas: 0, baseGas: utils.parseEther('0.5')})).to.be.eventually.fulfilled;
-      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.3'), safeTxGas: utils.parseEther('0.2'), baseGas: utils.parseEther('0.5')})).to.be.eventually.fulfilled;
+      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.5'), safeTxGas: utils.parseUnits('0.025', 'gwei'), baseGas: 0})).to.be.eventually.fulfilled;
+      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.5'), safeTxGas: 0, baseGas: utils.parseUnits('0.025', 'gwei')})).to.be.eventually.fulfilled;
+      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.3'), safeTxGas: utils.parseUnits('0.01', 'gwei'), baseGas: utils.parseUnits('0.025', 'gwei')})).to.be.eventually.fulfilled;
     });
 
     it('throws when gas and value have same token addresses', async () => {
       const signedMessage = getTestSignedMessage(TEST_PRIVATE_KEY);
-      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.5'), safeTxGas: utils.parseEther('0.6'), baseGas: 0})).to.be.eventually.rejectedWith('Not enough tokens');
-      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.6'), safeTxGas: 0, baseGas: utils.parseEther('0.5')})).to.be.eventually.rejectedWith('Not enough tokens');
-      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.3'), safeTxGas: utils.parseEther('0.3'), baseGas: utils.parseEther('0.5')})).to.be.eventually.rejectedWith('Not enough tokens');
+      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.5'), safeTxGas: utils.parseUnits('0.03', 'gwei'), baseGas: 0})).to.be.eventually.rejectedWith('Not enough tokens');
+      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.6'), safeTxGas: 0, baseGas: utils.parseUnits('0.025', 'gwei')})).to.be.eventually.rejectedWith('Not enough tokens');
+      await expect(validator.validate({...signedMessage, value: utils.parseEther('0.3'), safeTxGas: utils.parseUnits('0.015', 'gwei'), baseGas: utils.parseUnits('0.025', 'gwei')})).to.be.eventually.rejectedWith('Not enough tokens');
       await expect(validator.validate({...signedMessage, value: utils.parseEther('1.3'), safeTxGas: 0, baseGas: 0})).to.be.eventually.rejectedWith('Not enough tokens');
-      await expect(validator.validate({...signedMessage, value: 0, safeTxGas: utils.parseEther('1.3'), baseGas: 0})).to.be.eventually.rejectedWith('Not enough tokens');
-      await expect(validator.validate({...signedMessage, value: 0, safeTxGas: 0, baseGas: utils.parseEther('1.3')})).to.be.eventually.rejectedWith('Not enough tokens');
+      await expect(validator.validate({...signedMessage, value: 0, safeTxGas: utils.parseUnits('0.065', 'gwei'), baseGas: 0})).to.be.eventually.rejectedWith('Not enough tokens');
+      await expect(validator.validate({...signedMessage, value: 0, safeTxGas: 0, baseGas: utils.parseUnits('0.065', 'gwei')})).to.be.eventually.rejectedWith('Not enough tokens');
     });
   });
 });

@@ -16,12 +16,15 @@ import {InfoText} from '../../commons/Text/InfoText';
 interface FiatFooterProps {
   walletService: WalletService;
   paymentMethod?: TopUpProvider;
+  selectedCurrency: string;
 }
-
-export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
+export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: FiatFooterProps) => {
+  const currencyDetails = walletService.sdk.tokensDetailsStore.getTokenBy('symbol', selectedCurrency);
   const [minimumAmount] = useAsync(async () => {
-    if (paymentMethod) {return getMinimalAmount(walletService, paymentMethod);}
-  }, [paymentMethod]);
+    if (paymentMethod) {
+      return getMinimalAmount(walletService, paymentMethod, walletService.sdk.tokenPricesService, currencyDetails);
+    }
+  }, [paymentMethod, selectedCurrency]);
 
   switch (paymentMethod) {
     case TopUpProvider.RAMP:
@@ -32,7 +35,7 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
             <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
           {minimumAmount && <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount} ETH</InfoText>
+            <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
           </div>}
         </>
       );
@@ -55,7 +58,7 @@ export const FiatFooter = ({paymentMethod, walletService}: FiatFooterProps) => {
       return <>
         <VisaMasterCardInfo />
         {minimumAmount && <div className="info-block info-row">
-          <InfoText>Minimum amount is {minimumAmount} ETH</InfoText>
+          <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
         </div>}
       </>;
     default:

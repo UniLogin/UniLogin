@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {utils, providers, Contract, Wallet} from 'ethers';
-import {createFixtureLoader, getWallets, solidity, createMockProvider} from 'ethereum-waffle';
-import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService} from '@unilogin/commons';
+import {utils, Contract, providers, Wallet} from 'ethers';
+import {createFixtureLoader, solidity, MockProvider} from 'ethereum-waffle';
+import {TEST_ACCOUNT_ADDRESS, ETHER_NATIVE_TOKEN, TokenDetailsService, TEST_GAS_PRICE} from '@unilogin/commons';
 import {deployMockToken} from '@unilogin/commons/testutils';
 import UniLoginSdk from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
@@ -15,7 +15,7 @@ chai.use(solidity);
 chai.use(chaiAsPromised);
 
 const gasParameters = {
-  gasPrice: utils.bigNumberify('1'),
+  gasPrice: utils.bigNumberify(TEST_GAS_PRICE),
   gasToken: ETHER_NATIVE_TOKEN.address,
 };
 
@@ -31,9 +31,10 @@ describe('INT: TransferService', () => {
   let balance: string;
 
   before(async () => {
-    [wallet] = getWallets(createMockProvider());
+    const mockProvider = new MockProvider();
+    [wallet] = mockProvider.getWallets();
     ({sdk, relayer, provider} = await setupSdk(wallet, '33113'));
-    ({mockTokenContract} = await createFixtureLoader(provider as providers.Web3Provider)(deployMockToken));
+    ({mockTokenContract} = await createFixtureLoader(mockProvider)(deployMockToken));
     const walletService = new WalletService(sdk);
     const {contractAddress} = await createAndSetWallet('name.mylogin.eth', walletService, wallet, sdk);
     await mockTokenContract.transfer(contractAddress, utils.parseEther('2.0'));
@@ -153,7 +154,7 @@ describe('INT: TransferService', () => {
     const {waitToBeSuccess} = await transferService.transfer({to: address, amount, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters});
     await waitToBeSuccess();
     const balance = await provider.getBalance(address);
-    expect(transferService.getMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.4999999999998');
+    expect(transferService.getMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.496');
   });
 
   it('get 0 if Ethereum max amount is below 0', async () => {

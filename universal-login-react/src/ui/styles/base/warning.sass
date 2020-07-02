@@ -1,0 +1,45 @@
+@import ../helpers/breakpoints
+
+.unilogin-component-warning-wrapper
+  position: relative
+  display: flex
+  align-items: center
+  justify-content: center
+  height: 32px
+  width: 100%
+  text-align: center
+  border-bottom-left-radius: 16px
+  border-bottom-right-radius: 16px
+
+  +media(s)
+  min-height: 41px
+  border-radius: 0
+
+.unilogin-component-warning-wrapper::before
+  content: ''
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 10px
+  transform: translateY(-100%)
+  z-index: -1
+
+.unilogin-component-warning
+  position: relative
+  margin: 0
+  padding-left: 18px
+  display: inline
+  font-size: 12px
+  line-height: 14px
+  color: #ff9a00
+
+.unilogin-component-warning-icon
+  position: absolute
+  top: 50%
+  left: 0
+  width: 13px
+  height: 11px
+  transform: translateY(-50%)
+  background: center no-repeat
+  background-size: contain

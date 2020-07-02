@@ -17,7 +17,7 @@ export class WalletSelectorPage {
   }
 
   selectSuggestion(action: SuggestionOperationType) {
-    const button = this.wrapper.find(`#${getSuggestionId(action)}`);
+    const button = this.wrapper.find(`#${getSuggestionId(action)}`).first();
     button.simulate('click');
   }
 }

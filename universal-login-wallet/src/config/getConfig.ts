@@ -1,9 +1,7 @@
+import {asNodeEnv} from '@unilogin/commons';
 import config from './config';
+import {cast} from '@restless/sanitizers';
 
-type NodeEnv = 'development' | 'test' | 'production';
-
-const getNodeEnv = () => (process.env.NODE_ENV || 'development') as NodeEnv;
-
-const getConfig = () => config[getNodeEnv()];
+const getConfig = () => config[cast(process.env.NODE_ENV, asNodeEnv)];
 
 export default getConfig;

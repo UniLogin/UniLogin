@@ -1,9 +1,9 @@
 import React, {ReactNode} from 'react';
-import {Omit, isClassName} from '@unilogin/commons';
-import EthereumIcon from './../assets/icons/ether.svg';
+import {Omit, isClassName, TokenDetails, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import cardIcon from './../assets/icons/card.svg';
 import bankIcon from './../assets/icons/bank.svg';
 import {classForComponent} from '../utils/classFor';
+import {Erc20Icon} from '../commons/Erc20Icon';
 
 export interface TopUpRadioProps {
   onClick: () => void;
@@ -12,6 +12,7 @@ export interface TopUpRadioProps {
   children: ReactNode;
   name: string;
   id?: string;
+  topUpToken?: TokenDetails;
 }
 
 export const TopUpRadio = ({id, onClick, checked, children, className, name}: TopUpRadioProps) => (
@@ -36,10 +37,10 @@ export const TopUpRadio = ({id, onClick, checked, children, className, name}: To
 export const TopUpRadioCrypto = (props: Omit<TopUpRadioProps, 'children'>) => (
   <TopUpRadio {...props}>
     <div className={classForComponent('top-up-method-icons')}>
-      <img className={classForComponent('top-up-method-icon')} src={EthereumIcon} alt="Ethereum" />
+      <Erc20Icon token={props.topUpToken || ETHER_NATIVE_TOKEN} className={classForComponent('top-up-method-icon')} />
     </div>
     <p className={classForComponent('top-up-method-title')}>Crypto</p>
-    <p className={classForComponent('top-up-method-text')}>Free-Deposit ETH</p>
+    <p className={classForComponent('top-up-method-text')}>Free-Deposit {props.topUpToken?.symbol || 'ETH or DAI'}</p>
   </TopUpRadio>
 );
 

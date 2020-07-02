@@ -66,7 +66,7 @@ const dataToMessageGnosis = (data: any): DecodedMessageGnosis => ({
   signature: data[9],
 });
 
-export const createMessageItem = (signedMessage: SignedMessage, refundPayerId: string | null = null): MessageItem => ({
+export const createMessageItem = (signedMessage: SignedMessage, tokenPriceInEth: string, refundPayerId: string | null = null): MessageItem => ({
   walletAddress: signedMessage.from,
   collectedSignatureKeyPairs: [],
   transactionHash: null,
@@ -76,4 +76,5 @@ export const createMessageItem = (signedMessage: SignedMessage, refundPayerId: s
   refundPayerId,
   gasPriceUsed: null,
   gasUsed: null,
+  tokenPriceInEth,
 });

@@ -1,0 +1,102 @@
+@import ../helpers/breakpoints
+
+.unilogin-component-funds
+
+  .balance-wrapper
+    max-width: 570px
+    margin: 24px auto 32px
+    padding: 20px 20px 28px
+    border-radius: 8px
+
+  .balance-text
+    margin: 0 auto 15px
+    font-weight: 500
+    font-size: 10px
+    line-height: 12px
+    text-align: center
+    text-transform: uppercase
+
+    +media(s)
+      margin-bottom: 8px
+
+  .balance-amount
+    margin: 0 auto
+    font-weight: 600
+    font-size: 44px
+    line-height: 53px
+    text-align: center
+
+    +media(s)
+      font-size: 32px
+      line-height: 48px
+
+    +media(s)
+      font-size: 32px
+      line-height: 48px
+
+  .balance-spinner-wrapper
+    height: 117px
+    display: flex
+    align-items: center
+    justify-content: center
+
+  .funds
+    margin: 0 auto
+    padding: 0 15px
+    width: 100%
+
+  .funds-buttons
+    display: flex
+    align-items: center
+    justify-content: center
+    margin: 25px 0 0
+
+    +media(s)
+      margin: 25px 0 0
+
+  .funds-btn
+    position: relative
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 45px
+    width: 110px
+    border-radius: 4px
+    font-weight: 700
+    font-size: 14px
+    cursor: pointer
+
+  .funds-btn + .funds-btn
+    margin-left: 15px
+
+  .funds-btn::before
+    content: ''
+    margin-right: 8px
+
+  .funds-topup::before
+    width: 17px
+    height: 17px
+    background:url('./../../assets/icons/plus.svg') center no-repeat
+    background-size: contain
+
+  .funds-send
+    border: 1px solid
+
+  .funds-send::before
+    height: 18px
+    width: 15px
+    background: url('./../../assets/icons/forward-arrow.svg') center no-repeat
+    background-size: contain
+
+  .ens-name-row
+    display: flex
+    align-items: center
+    justify-content: center
+    margin-bottom: 50px
+
+  .ens-name canvas
+    border-radius: 5px
+
+  .ens-name
+    color: #A4A8B4
+    margin: 0 0 0 15px

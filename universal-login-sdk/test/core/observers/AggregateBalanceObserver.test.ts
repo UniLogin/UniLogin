@@ -1,19 +1,20 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {providers, Wallet, utils} from 'ethers';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {TokensValueConverter, BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil} from '@unilogin/commons';
+import {Wallet, utils} from 'ethers';
+import {MockProvider} from 'ethereum-waffle';
+import {TokensValueConverter, BalanceChecker, TokenDetails, ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, waitUntil, ProviderService} from '@unilogin/commons';
 import {AggregateBalanceObserver} from '../../../src/core/observers/AggregateBalanceObserver';
 import {BalanceObserver} from '../../../src/core/observers/BalanceObserver';
 import {createMockedPriceObserver} from '../../mock/PriceObserver';
 import {SdkConfigDefault} from '../../../src/config/SdkConfigDefault';
 import {TokensDetailsStore} from '../../../src/core/services/TokensDetailsStore';
+import {BlockNumberState} from '../../../src/core/states/BlockNumberState';
 
 chai.use(sinonChai);
 
 describe('INT: AggregateBalanceObserver', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let balanceChecker: BalanceChecker;
   let balanceObserver: BalanceObserver;
   let mockedAggregateBalanceObserver: AggregateBalanceObserver;
@@ -22,14 +23,17 @@ describe('INT: AggregateBalanceObserver', () => {
   const tokensValueConverter = new TokensValueConverter(SdkConfigDefault.observedCurrencies);
 
   beforeEach(() => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
+    provider = new MockProvider();
+    provider.pollingInterval = 10;
+    [wallet] = provider.getWallets();
 
-    balanceChecker = new BalanceChecker(provider);
     const observedTokens: TokenDetails[] = [
       ETHER_NATIVE_TOKEN,
     ];
-    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: observedTokens} as TokensDetailsStore, 10);
+    const providerService = new ProviderService(provider);
+    const blockNumberState = new BlockNumberState(providerService);
+    balanceChecker = new BalanceChecker(providerService);
+    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: observedTokens} as TokensDetailsStore, blockNumberState);
 
     mockedAggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, mockedPriceObserver, tokensValueConverter);
     resetCallCount();
@@ -57,7 +61,6 @@ describe('INT: AggregateBalanceObserver', () => {
     const callback = sinon.spy();
 
     const unsubscribe = mockedAggregateBalanceObserver.subscribe(callback);
-
     await waitUntil(() => !!callback.firstCall);
     expect(callback).to.have.been.calledOnce;
 

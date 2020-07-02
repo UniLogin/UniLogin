@@ -1,14 +1,12 @@
 import Relayer from './relayers/Relayer';
-import {getConfig} from '../core/utils/config';
-import {getEnv} from '@unilogin/commons';
+import {Network} from '@unilogin/commons';
+import {getConfigForNetwork} from '../config/config';
 
-export const start = (nodeEnv: string) => {
-  const config = getConfig(nodeEnv);
+export const start = (network: Network) => {
+  const config = getConfigForNetwork(network);
   const relayer = new Relayer(config);
   relayer.start().then(
     () => console.log(`Server listening on port ${config.port}`),
     console.error,
   );
 };
-
-start(getEnv('NODE_ENV', 'production'));

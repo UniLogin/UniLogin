@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
-import {utils, Wallet, providers, Contract} from 'ethers';
-import {createMockProvider, getWallets} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO, StoredFutureWallet} from '@unilogin/commons';
+import {utils, Wallet, Contract} from 'ethers';
+import {MockProvider} from 'ethereum-waffle';
+import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO, StoredFutureWallet, BalanceChecker, ProviderService} from '@unilogin/commons';
 import {gnosisSafe} from '@unilogin/contracts';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {FutureWalletFactory} from '../../src/api/FutureWalletFactory';
@@ -13,7 +13,7 @@ import {SavingFutureWalletFailed} from '../../src/core/utils/errors';
 chai.use(chaiHttp);
 
 describe('INT: FutureWalletFactory', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let wallet: Wallet;
   let futureWalletFactory: FutureWalletFactory;
   let relayer: RelayerUnderTest;
@@ -29,9 +29,9 @@ describe('INT: FutureWalletFactory', () => {
   const relayerUrl = `http://localhost:${relayerPort}`;
 
   before(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
-    ({relayer, factoryContract, supportedTokens, contractWhiteList, provider, ensAddress, ensRegistrar, walletContract, fallbackHandlerContract} = await RelayerUnderTest.createPreconfigured(wallet, relayerPort));
+    provider = new MockProvider();
+    [wallet] = provider.getWallets();
+    ({relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, ensRegistrar, walletContract, fallbackHandlerContract} = await RelayerUnderTest.createPreconfigured(wallet, relayerPort));
     await relayer.start();
     const futureWalletConfig = {
       factoryAddress: factoryContract.address,
@@ -40,17 +40,15 @@ describe('INT: FutureWalletFactory', () => {
       fallbackHandlerAddress: fallbackHandlerContract.address,
       relayerAddress: wallet.address,
       contractWhiteList,
-      chainSpec: {
-        ensAddress,
-        chainId: 0,
-        name: '',
-      },
+      ensAddress,
+      network: '',
     };
     relayerApi = new RelayerApi(relayerUrl);
     futureWalletFactory = new FutureWalletFactory(
       futureWalletConfig,
-      new ENSService(provider, futureWalletConfig.chainSpec.ensAddress, ensRegistrar.address),
+      new ENSService(provider, futureWalletConfig.ensAddress, ensRegistrar.address),
       {config: {applicationInfo: TEST_APPLICATION_INFO}, provider, relayerApi} as any,
+      new BalanceChecker(new ProviderService(provider)),
     );
   });
 
@@ -59,8 +57,7 @@ describe('INT: FutureWalletFactory', () => {
     const {waitForBalance, contractAddress, deploy} = (await futureWalletFactory.createNew(ensName, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address));
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
     const result = await waitForBalance();
-    expect(result.contractAddress).be.eq(contractAddress);
-    expect(result.tokenAddress).be.eq(ETHER_NATIVE_TOKEN.address);
+    expect(result).be.eq(contractAddress);
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2')});
     const {waitToBeSuccess, deploymentHash} = await deploy();
     expect(deploymentHash).to.be.properHex(64);

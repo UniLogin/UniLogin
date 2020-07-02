@@ -5,8 +5,8 @@ import {GnosisSafeInterface} from '../../src/gnosis-safe@1.1.1/interfaces';
 import {encodeDataForSetup, encodeDataForExecTransaction} from '../../src/gnosis-safe@1.1.1/encode';
 import {deployGnosisSafe, deployProxyFactory, deployDefaultCallbackHandler} from '../../src/gnosis-safe@1.1.1/deployContracts';
 import {computeGnosisCounterfactualAddress, getPreviousOwner} from '../../src/gnosis-safe@1.1.1/utils';
-import {Provider} from 'ethers/providers';
 import {messageToSignedMessage, INITIAL_REQUIRED_CONFIRMATIONS} from '../../src';
+import {MockProvider} from 'ethereum-waffle';
 
 export async function setupGnosisSafeContract(wallet: Wallet) {
   const gnosisSafe = await deployGnosisSafe(wallet);
@@ -32,7 +32,6 @@ export async function setupGnosisSafeContract(wallet: Wallet) {
     proxy: proxyContract,
     proxyFactory,
     master: gnosisSafe,
-    provider: wallet.provider,
     keyPair,
   };
 }
@@ -75,6 +74,6 @@ export async function executeRemoveKey(wallet: Wallet, proxyAddress: string, key
   return wallet.sendTransaction({to: proxyAddress, data: encodeDataForExecTransaction(signedMessage), gasLimit: utils.bigNumberify(msg.gasLimit)});
 }
 
-export async function setupGnosisSafeContractFixture(provider: Provider, [wallet]: Wallet[]) {
-  return setupGnosisSafeContract(wallet);
+export async function setupGnosisSafeContractFixture(provider: MockProvider, [wallet]: Wallet[]) {
+  return {...await setupGnosisSafeContract(wallet), provider};
 }

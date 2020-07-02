@@ -4,9 +4,8 @@ import sinonChai from 'sinon-chai';
 import {Contract, Wallet, providers, utils} from 'ethers';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG} from '@unilogin/commons';
-import {waitExpect} from '@unilogin/commons/testutils';
-import {mineBlock} from '@unilogin/contracts/testutils';
+import {DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG, TEST_GAS_PRICE_IN_TOKEN} from '@unilogin/commons';
+import {waitExpect, mineBlock} from '@unilogin/commons/testutils';
 import basicSDK from '../fixtures/basicSDK';
 import UniLoginSdk from '../../src/api/sdk';
 import {DeployedWallet} from '../../src';
@@ -17,7 +16,7 @@ chai.use(sinonChai);
 
 const loadFixture = createFixtureLoader();
 
-const gasPrice = DEFAULT_GAS_PRICE;
+const gasPrice = TEST_GAS_PRICE_IN_TOKEN;
 const gasLimit = DEFAULT_GAS_LIMIT;
 
 describe('INT: Events', () => {

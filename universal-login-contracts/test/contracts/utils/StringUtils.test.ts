@@ -2,11 +2,11 @@ import {expect} from 'chai';
 import StringUtils from '../../../dist/contracts/StringUtils.json';
 import {Contract} from 'ethers';
 import {BigNumberish, bigNumberify} from 'ethers/utils';
-import {deployContract, getWallets, createMockProvider} from 'ethereum-waffle';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 
 describe('Contract: StringUtils', () => {
   let stringUtils: Contract;
-  const [wallet] = getWallets(createMockProvider());
+  const [wallet] = new MockProvider().getWallets();
 
   before(async () => {
     stringUtils = await deployContract(wallet, StringUtils);

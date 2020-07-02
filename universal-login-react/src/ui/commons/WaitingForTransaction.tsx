@@ -25,7 +25,7 @@ const Body = ({action, description, relayerConfig, transactionHash, info}: Waiti
     <div className={classForComponent('waitingfortransaction-modal-pending-section')}>
       <h3 className={classForComponent('waitingfortransaction-transaction-hash-title')}>Transaction hash</h3>
       <ExplorerLink
-        chainName={relayerConfig.chainSpec.name}
+        chainName={relayerConfig.network}
         transactionHash={transactionHash}
       />
       <div className={classForComponent('waitingfortransaction-pending-img')}></div>

@@ -34,7 +34,13 @@ export default class LoginPage {
   }
 
   async createNew(userName: string) {
-    await this.pickUsername(userName, 'create new', 'Choose a top-up method');
+    await this.pickUsername(userName, 'create new', 'How do you wanna pay for account creation');
+    await this.pickTopUpToken();
+  }
+
+  async pickTopUpToken(token = 'ETH') {
+    this.wrapper.find(`#top-up-token-${token}`).simulate('click', {button: 0});
+    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Choose a top-up method'));
   }
 
   async connect(userName: string) {
@@ -51,6 +57,6 @@ export default class LoginPage {
 
   async goToHomeView() {
     this.wrapper.find('a.modal-success-btn').simulate('click', {button: 0});
-    await this.waitForHomeView('$1.99');
+    await this.waitForHomeView('$1.98');
   }
 }

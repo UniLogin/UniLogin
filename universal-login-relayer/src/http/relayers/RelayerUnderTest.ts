@@ -2,19 +2,21 @@ import Knex from 'knex';
 import {Contract, providers, Wallet} from 'ethers';
 import {
   ContractJSON,
-  deepMerge,
   DeepPartial,
   deployContract,
   ETHER_NATIVE_TOKEN,
   getContractHash,
   withENS,
   TEST_REFUND_PAYER,
+  TEST_TOKEN_DETAILS,
+  TEST_TOKEN_PRICE_IN_ETH,
 } from '@unilogin/commons';
+import {mockGasPriceOracle} from '@unilogin/commons/testutils';
 import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {Config} from '../../config/relayer';
 import Relayer from './Relayer';
-import {getConfig} from '../../core/utils/config';
+import {getConfigForNetwork} from '../../config/config';
 import {addRefundPayer} from '../../core/utils/addRefundPayer';
 
 const ENSBuilder = require('ens-builder');
@@ -52,7 +54,7 @@ export class RelayerUnderTest extends Relayer {
     const ensAddress = await ensBuilder.bootstrapWith(DOMAIN_LABEL, DOMAIN_TLD);
     const providerWithENS = withENS(wallet.provider as providers.Web3Provider, ensAddress);
     const contractWhiteList = getContractWhiteList();
-    const mockToken = await deployContract(wallet, mockContracts.MockToken);
+    const mockToken = await deployContract(wallet, mockContracts.MockDai);
     const supportedTokens = [
       {
         address: mockToken.address,
@@ -66,9 +68,7 @@ export class RelayerUnderTest extends Relayer {
     const overrideConfig: DeepPartial<Config> = {
       port,
       privateKey: wallet.privateKey,
-      chainSpec: {
-        ensAddress: ensBuilder.ens.address,
-      },
+      ensAddress: ensBuilder.ens.address,
       ensRegistrars: [DOMAIN],
       fallbackHandlerAddress: fallbackHandlerContract.address,
       ensRegistrar: ensRegistrar.address,
@@ -82,7 +82,7 @@ export class RelayerUnderTest extends Relayer {
   }
 
   static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.Provider) {
-    const config: Config = deepMerge(getConfig('test'), overrideConfig);
+    const config = {...getConfigForNetwork('ganache'), ...overrideConfig} as Config;
     return new RelayerUnderTest(config, providerWithENS);
   }
 
@@ -96,18 +96,21 @@ export class RelayerUnderTest extends Relayer {
 
   async start() {
     await super.start();
+    mockGasPriceOracle(this.gasPriceOracle);
     await this.setupTestPartner();
+    (this.futureWalletHandler as any).tokenDetailsService.getTokenDetails = (address: string) => TEST_TOKEN_DETAILS.find(token => token.address === address);
+    this.tokenPricesService.getTokenPriceInEth = (tokenDetails: any) => Promise.resolve(tokenDetails?.address === ETHER_NATIVE_TOKEN.address ? 1 : TEST_TOKEN_PRICE_IN_ETH);
   }
 
   getServer() {
     return this.server;
   }
 
-  async clearDatabase() {
+  clearDatabase() {
     return clearDatabase(this.database);
   }
 
-  async setupTestPartner() {
+  setupTestPartner() {
     return addRefundPayer(this, TEST_REFUND_PAYER);
   }
 

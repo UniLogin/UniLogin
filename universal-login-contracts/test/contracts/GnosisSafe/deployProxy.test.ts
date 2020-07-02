@@ -19,7 +19,7 @@ describe('GnosisSafe', async () => {
   const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
   const name = `${label}.${domain}`;
   const node = utils.namehash(name);
-  let provider: providers.Provider;
+  let providerWithENS: providers.Provider;
   let wallet: Wallet;
   let gnosisSafe: Contract;
   let proxyFactory: Contract;
@@ -32,7 +32,7 @@ describe('GnosisSafe', async () => {
   const keyPair = createKeyPair();
 
   beforeEach(async () => {
-    ({wallet, publicResolver, registrarAddress, ensAddress, provider} = await loadFixture(basicENS));
+    ({wallet, publicResolver, registrarAddress, ensAddress, providerWithENS} = await loadFixture(basicENS));
     gnosisSafe = await deployGnosisSafe(wallet);
     proxyFactory = await deployProxyFactory(wallet);
     ensRegistrar = await deployContract(wallet, ENSRegistrar as any);
@@ -55,13 +55,13 @@ describe('GnosisSafe', async () => {
   });
 
   it('deploys proxy and registers ENS name', async () => {
-    const receipt = await provider.getTransactionReceipt(deploymentTransaction.hash!);
+    const receipt = await providerWithENS.getTransactionReceipt(deploymentTransaction.hash!);
     const addressFromEvent = receipt.logs && receipt.logs[0].data;
-    const contractAsProxy = new Contract(computedAddress, IProxyInterface, provider);
+    const contractAsProxy = new Contract(computedAddress, IProxyInterface, providerWithENS);
     expect(await contractAsProxy.masterCopy()).to.eq(gnosisSafe.address);
     expect(addressFromEvent).to.include(removeHexStringPrefix(computedAddress).toLowerCase());
-    expect(await provider.lookupAddress(computedAddress)).to.eq(name);
-    expect(await provider.resolveName('alex.mylogin.eth')).to.eq(computedAddress);
+    expect(await providerWithENS.lookupAddress(computedAddress)).to.eq(name);
+    expect(await providerWithENS.resolveName('alex.mylogin.eth')).to.eq(computedAddress);
   });
 
   it('sends ether', async () => {
@@ -79,6 +79,6 @@ describe('GnosisSafe', async () => {
     const signedMessage = messageToSignedMessage(message, keyPair.privateKey, 'istanbul', 'beta3');
     const dataToSend = encodeDataForExecTransaction(signedMessage);
     await wallet.sendTransaction({to: computedAddress, data: dataToSend});
-    expect(await provider.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(message.value);
+    expect(await providerWithENS.getBalance(TEST_ACCOUNT_ADDRESS)).to.eq(message.value);
   });
 });

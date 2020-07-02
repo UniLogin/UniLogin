@@ -1,14 +1,14 @@
 {
   "name": "@unilogin/contracts",
-  "version": "0.5.21",
+  "version": "0.6.1",
   "license": "MIT",
   "main": "dist/cjs/src/index.js",
   "types": "dist/esm/src/index.d.ts",
   "module": "dist/esm/src/index.js",
   "dependencies": {
-    "@unilogin/commons": "0.5.21",
+    "@unilogin/commons": "0.6.1",
     "ens-builder": "^2.0.2",
-    "ethers": "^4.0.39"
+    "ethers": "^4.0.47"
   },
   "scripts": {
     "prebuild": "yarn clean",
@@ -32,7 +32,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "eslint": "^6.5.0",
-    "ethereum-waffle": "^2.1.2",
+    "ethereum-waffle": "2.5.1",
     "ethlint": "^1.2.3",
     "ganache-core": "^2.6.1",
     "mocha": "^5.2.0",

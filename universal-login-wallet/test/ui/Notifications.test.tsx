@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {ReactWrapper} from 'enzyme';
-import {providers, Contract} from 'ethers';
-import {createFixtureLoader, createMockProvider, getWallets} from 'ethereum-waffle';
+import {Contract} from 'ethers';
+import {createFixtureLoader, MockProvider} from 'ethereum-waffle';
 import {deployMockToken} from '@unilogin/commons/testutils';
 import {Services} from '../../src/ui/createServices';
 import {AppPage} from '../pages/AppPage';
@@ -17,11 +17,12 @@ describe('UI: Notifications', () => {
   let mockTokenContract: Contract;
 
   beforeEach(async () => {
-    const [wallet] = getWallets(createMockProvider());
+    const provider = new MockProvider();
+    const [wallet] = provider.getWallets();
     ({relayer} = await RelayerUnderTest.createPreconfigured(wallet, '33113'));
     await relayer.start();
-    ({mockTokenContract} = await createFixtureLoader(relayer.provider as providers.Web3Provider)(deployMockToken));
-    ({appWrapper, appPage, services} = await setupUI(relayer, mockTokenContract.address));
+    ({mockTokenContract} = await createFixtureLoader(provider)(deployMockToken));
+    ({appWrapper, appPage, services} = await setupUI(relayer, wallet, mockTokenContract.address));
   });
 
   it('Should get notification when new device connect and confirm request', async () => {
