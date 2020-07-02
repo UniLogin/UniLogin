@@ -31,18 +31,23 @@ commands:
           path: universal-login-react/test/screenshots
           destination: screenshots
 jobs:
-  lint_test_contracts_commons_ops:
+  yarn_install_build:
     docker:
       - image: circleci/node:11.15
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: yarn lint
-      - run: cd universal-login-commons && yarn build && yarn test
-      - run: cd universal-login-contracts && yarn build && yarn test
-      - run: cd universal-login-relayer && yarn build
-      - run: cd universal-login-ops && yarn build && yarn test
-  test_sdk_relayer:
+      - run: yarn build
+
+  test_commons_contracts_ops:
+    docker:
+      - image: circleci/node:11.15
+    steps:
+      - checkout
+      - run: cd universal-login-commons && yarn test
+      - run: cd universal-login-contracts && yarn test
+      - run: cd universal-login-ops && yarn test
+  test_sdk_web3:
     docker:
       - image: circleci/node:11.15
         environment:
@@ -54,12 +59,23 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - checkout
-      - run: yarn install --frozen-lockfile
-      - run: cd universal-login-commons && yarn build
-      - run: cd universal-login-contracts && yarn build
-      - run: cd universal-login-relayer && yarn build && yarn test
-      - run: cd universal-login-sdk && yarn build && yarn test
-  test_react_wallet_web3:
+      - run: cd universal-login-sdk && yarn test
+      - run: cd universal-login-web3 && yarn test
+  lint_test_relayer:
+    docker:
+      - image: circleci/node:11.15
+        environment:
+          PG_HOST: localhost
+          PG_USER: postgres
+      - image: circleci/postgres:9.6-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: universal_login_relayer_test
+    steps:
+      - checkout
+      - run: yarn lint
+      - run: cd universal-login-relayer && yarn test
+  test_react_wallet:
     docker:
       - image: circleci/node:11.15
       - image: circleci/postgres:9.6-alpine
@@ -68,14 +84,23 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - checkout
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
       - run: cd universal-login-react && yarn test
       - run: cd universal-login-wallet && yarn test
-      - run: cd universal-login-web3 && yarn test
+
 workflows:
+  version: 2
   universal_login_all:
     jobs:
-      - lint_test_contracts_commons_ops
-      - test_sdk_relayer
-      - test_react_wallet_web3
+      - yarn_install_build
+      - test_commons_contracts_ops:
+          requires:
+            - yarn_install_build
+      - test_sdk_web3:
+          requires:
+            - yarn_install_build
+      - lint_test_relayer:
+          requires:
+            - yarn_install_build
+      - test_react_wallet:
+          requires:
+            - yarn_install_build
