@@ -31,22 +31,25 @@ commands:
           path: universal-login-react/test/screenshots
           destination: screenshots
 jobs:
-  yarn_install_build:
-    docker:
-      - image: circleci/node:11.15
-    steps:
-      - checkout
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
-
   test_commons_contracts_ops:
     docker:
       - image: circleci/node:11.15
     steps:
       - checkout
-      - run: cd universal-login-commons && yarn test
-      - run: cd universal-login-contracts && yarn test
-      - run: cd universal-login-ops && yarn test
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run: cd universal-login-commons && yarn build && yarn test
+      - run: cd universal-login-contracts && yarn build && yarn test
+      - run: cd universal-login-relayer && yarn build
+      - run: cd universal-login-ops && yarn build && yarn test
   test_sdk_web3:
     docker:
       - image: circleci/node:11.15
@@ -59,8 +62,22 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - checkout
-      - run: cd universal-login-sdk && yarn test
-      - run: cd universal-login-web3 && yarn test
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run: cd universal-login-commons && yarn build
+      - run: cd universal-login-contracts && yarn build
+      - run: cd universal-login-relayer && yarn build
+      - run: cd universal-login-sdk && yarn build && yarn test
+      - run: cd universal-login-react && yarn build
+      - run: cd universal-login-web3 && yarn build && yarn test
   lint_test_relayer:
     docker:
       - image: circleci/node:11.15
@@ -73,8 +90,20 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
       - run: yarn lint
-      - run: cd universal-login-relayer && yarn test
+      - run: cd universal-login-commons && yarn build
+      - run: cd universal-login-contracts && yarn build
+      - run: cd universal-login-relayer && yarn build && yarn test
   test_react_wallet:
     docker:
       - image: circleci/node:11.15
@@ -84,23 +113,27 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - checkout
-      - run: cd universal-login-react && yarn test
-      - run: cd universal-login-wallet && yarn test
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run: cd universal-login-commons && yarn build
+      - run: cd universal-login-contracts && yarn build
+      - run: cd universal-login-relayer && yarn build
+      - run: cd universal-login-sdk && yarn build
+      - run: cd universal-login-react && yarn build && yarn test
+      - run: cd universal-login-wallet && yarn build && yarn test
 
 workflows:
-  version: 2
   universal_login_all:
     jobs:
-      - yarn_install_build
-      - test_commons_contracts_ops:
-          requires:
-            - yarn_install_build
-      - test_sdk_web3:
-          requires:
-            - yarn_install_build
-      - lint_test_relayer:
-          requires:
-            - yarn_install_build
-      - test_react_wallet:
-          requires:
-            - yarn_install_build
+      - test_commons_contracts_ops
+      - test_sdk_web3
+      - lint_test_relayer
+      - test_react_wallet
