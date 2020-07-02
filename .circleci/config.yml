@@ -34,25 +34,6 @@ jobs:
   test_commons_contracts_ops:
     docker:
       - image: circleci/node:11.15
-    steps:
-      - checkout
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
-      - run: yarn install --immutable
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-      - run: cd universal-login-commons && yarn build && yarn test
-      - run: cd universal-login-contracts && yarn build && yarn test
-      - run: cd universal-login-relayer && yarn build
-      - run: cd universal-login-ops && yarn build && yarn test
-  test_sdk_web3:
-    docker:
-      - image: circleci/node:11.15
         environment:
           PG_HOST: localhost
           PG_USER: postgres
@@ -72,11 +53,32 @@ jobs:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
+      - run: cd universal-login-commons && yarn build && yarn test
+      - run: cd universal-login-contracts && yarn build && yarn test
+      - run: cd universal-login-relayer && yarn build
+      - run: cd universal-login-ops && yarn build && yarn test
+  test_sdk_web3:
+     docker:
+      - image: circleci/node:11.15
+        environment:
+          PG_HOST: localhost
+          PG_USER: postgres
+      - image: circleci/postgres:9.6-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: universal_login_relayer_test
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run: yarn install --immutable
       - run: cd universal-login-commons && yarn build
       - run: cd universal-login-contracts && yarn build
       - run: cd universal-login-relayer && yarn build
-      - run: cd universal-login-sdk && yarn build && yarn test
       - run: cd universal-login-react && yarn build
+      - run: cd universal-login-sdk && yarn build && yarn test
       - run: cd universal-login-web3 && yarn build && yarn test
   lint_test_relayer:
     docker:
@@ -95,11 +97,6 @@ jobs:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
       - run: yarn install --immutable
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
       - run: yarn lint
       - run: cd universal-login-commons && yarn build
       - run: cd universal-login-contracts && yarn build
@@ -107,6 +104,9 @@ jobs:
   test_react_wallet:
     docker:
       - image: circleci/node:11.15
+        environment:
+          PG_HOST: localhost
+          PG_USER: postgres
       - image: circleci/postgres:9.6-alpine
         environment:
           POSTGRES_USER: postgres
@@ -118,11 +118,6 @@ jobs:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
       - run: yarn install --immutable
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
       - run: cd universal-login-commons && yarn build
       - run: cd universal-login-contracts && yarn build
       - run: cd universal-login-relayer && yarn build
