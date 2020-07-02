@@ -30,6 +30,7 @@ commands:
       - store_artifacts:
           path: universal-login-react/test/screenshots
           destination: screenshots
+
 jobs:
   test_commons_contracts_ops:
     docker:
@@ -67,7 +68,7 @@ jobs:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: universal_login_relayer_test
-    steps:
+     steps:
       - checkout
       - restore_cache:
           name: Restore Yarn Package Cache
@@ -77,8 +78,8 @@ jobs:
       - run: cd universal-login-commons && yarn build
       - run: cd universal-login-contracts && yarn build
       - run: cd universal-login-relayer && yarn build
-      - run: cd universal-login-react && yarn build
       - run: cd universal-login-sdk && yarn build && yarn test
+      - run: cd universal-login-react && yarn build
       - run: cd universal-login-web3 && yarn build && yarn test
   lint_test_relayer:
     docker:
