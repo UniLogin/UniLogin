@@ -36,7 +36,16 @@ jobs:
       - image: circleci/node:11.15
     steps:
       - checkout
-      - run: yarn install --frozen-lockfile
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
       - run: yarn lint
       - run: cd universal-login-commons && yarn build && yarn test
       - run: cd universal-login-contracts && yarn build && yarn test
@@ -54,7 +63,11 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - checkout
-      - run: yarn install --frozen-lockfile
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run: yarn install --immutable
       - run: cd universal-login-commons && yarn build
       - run: cd universal-login-contracts && yarn build
       - run: cd universal-login-relayer && yarn build && yarn test
@@ -68,7 +81,11 @@ jobs:
           POSTGRES_DB: universal_login_relayer_test
     steps:
       - checkout
-      - run: yarn install --frozen-lockfile
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run: yarn install --immutable
       - run: yarn build
       - run: cd universal-login-react && yarn test
       - run: cd universal-login-wallet && yarn test
