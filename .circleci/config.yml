@@ -58,7 +58,9 @@ jobs:
       - run: cd universal-login-contracts && yarn build && yarn test
       - run: cd universal-login-relayer && yarn build
       - run: cd universal-login-ops && yarn build && yarn test
-  test_react_sdk:
+      - run: cd universal-login-sdk && yarn build
+      - run: cd universal-login-react && yarn build && yarn test
+  test_sdk_react:
      docker:
       - image: circleci/node:11.15
         environment:
@@ -126,6 +128,6 @@ workflows:
   universal_login_all:
     jobs:
       - test_commons_contracts_ops
-      - test_react_sdk
+      - test_sdk_react
       - lint_test_relayer
       - test_wallet_web3
