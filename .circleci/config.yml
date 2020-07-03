@@ -58,7 +58,7 @@ jobs:
       - run: cd universal-login-contracts && yarn build && yarn test
       - run: cd universal-login-relayer && yarn build
       - run: cd universal-login-ops && yarn build && yarn test
-  test_sdk:
+  test_react_sdk:
      docker:
       - image: circleci/node:11.15
         environment:
@@ -79,6 +79,7 @@ jobs:
       - run: cd universal-login-contracts && yarn build
       - run: cd universal-login-relayer && yarn build
       - run: cd universal-login-sdk && yarn build && yarn test
+      - run: cd universal-login-react && yarn build && yarn test
   lint_test_relayer:
     docker:
       - image: circleci/node:11.15
@@ -100,7 +101,7 @@ jobs:
       - run: cd universal-login-commons && yarn build
       - run: cd universal-login-contracts && yarn build
       - run: cd universal-login-relayer && yarn build && yarn test
-  test_react_wallet_web3:
+  test_wallet_web3:
     docker:
       - image: circleci/node:11.15
         environment:
@@ -118,7 +119,6 @@ jobs:
             - yarn-packages-{{ checksum "yarn.lock" }}
       - run: yarn install --immutable
       - run: yarn build
-      - run: cd universal-login-react && yarn test
       - run: cd universal-login-wallet && yarn test
       - run: cd universal-login-web3 && yarn test
 
@@ -126,6 +126,6 @@ workflows:
   universal_login_all:
     jobs:
       - test_commons_contracts_ops
-      - test_sdk
+      - test_react_sdk
       - lint_test_relayer
-      - test_react_wallet_web3
+      - test_wallet_web3
