@@ -27,6 +27,7 @@ export {Suggestions} from './core/models/Suggestions';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
 export {TransactionOverrides, TransferDetails} from './core/models/transactions';
 export {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from './core/models/WalletSuggestionAction';
+export {EmailConfirmation} from './core/models/EmailConfirmation';
 export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsService';
 export {TokenPricesService} from './core/services/TokenPricesService';
 export {SuggestionsService, WalletExistenceVerifier} from './core/services/SuggestionsService';
