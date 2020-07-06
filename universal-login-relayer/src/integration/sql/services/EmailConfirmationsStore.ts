@@ -7,9 +7,9 @@ export class EmailConfirmationsStore {
   constructor(private database: Knex) {
   }
 
-  add(email: string, ensName: string, code: string) {
+  add(emailConfirmation: EmailConfirmation) {
     return this.database
-      .insert({email, ensName, code})
+      .insert(emailConfirmation)
       .into(this.tableName)
       .returning('email');
   }
