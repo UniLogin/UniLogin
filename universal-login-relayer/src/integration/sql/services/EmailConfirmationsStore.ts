@@ -7,11 +7,11 @@ export class EmailConfirmationsStore {
   constructor(private database: Knex) {
   }
 
-  add(emailConfirmation: EmailConfirmation) {
+  async add(emailConfirmation: EmailConfirmation) {
     const {createdAt, ...rest} = emailConfirmation;
-    return this.database(this.tableName)
+    return (await this.database(this.tableName)
       .insert({...rest, created_at: createdAt})
-      .returning('email');
+      .returning('email'))[0];
   }
 
   async get(email: string): Promise<EmailConfirmation> {

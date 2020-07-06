@@ -17,7 +17,7 @@ describe('UNIT: EmailConfirmationsStore', () => {
       createdAt: new Date(),
     };
 
-    const [email] = await emailConfirmationsStore.add(emailConfirmation);
+    const email = await emailConfirmationsStore.add(emailConfirmation);
     expect(email).be.deep.eq(exampleEmail);
     expect(await emailConfirmationsStore.get(email)).be.deep.eq(emailConfirmation);
   });
@@ -33,7 +33,7 @@ describe('UNIT: EmailConfirmationsStore', () => {
       createdAt: currentDate,
     };
 
-    const [email] = await emailConfirmationsStore.add(emailConfirmation);
+    const email = await emailConfirmationsStore.add(emailConfirmation);
     expect(email).be.deep.eq(exampleEmail);
 
     const secondEmailConfirmation: EmailConfirmation = {
@@ -44,7 +44,7 @@ describe('UNIT: EmailConfirmationsStore', () => {
       createdAt: new Date(currentDate.getTime() + 10),
     };
 
-    const [email2] = await emailConfirmationsStore.add(secondEmailConfirmation);
+    const email2 = await emailConfirmationsStore.add(secondEmailConfirmation);
     expect(email2).be.deep.eq(exampleEmail);
     expect(await emailConfirmationsStore.get(email2)).be.deep.eq(secondEmailConfirmation);
   });
