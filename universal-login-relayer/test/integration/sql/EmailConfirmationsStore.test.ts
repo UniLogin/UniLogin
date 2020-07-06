@@ -1,6 +1,6 @@
 import {getKnexConfig} from '../../testhelpers/knex';
 import {EmailConfirmationsStore} from '../../../src/integration/sql/services/EmailConfirmationsStore';
-import {EmailConfirmation, sleep} from '@unilogin/commons';
+import {EmailConfirmation} from '@unilogin/commons';
 import {expect} from 'chai';
 
 describe('UNIT: EmailConfirmationsStore', () => {
