@@ -47,18 +47,26 @@ export class BalanceObserver {
     const isErc20BalancesChanged = await this.isErc20BalancesChanged();
 
     if (isErc20BalancesChanged || this.lastTokenBalances.length === 0) {
-      const tokenBalances: TokenDetailsWithBalance[] = [];
-      for (const token of this.tokenDetailsStore.tokensDetails) {
-        const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
-        tokenBalances.push({...token, balance});
-      }
-      return tokenBalances;
+      return this.updateAllBalances();
     } else {
-      const tokenBalances = this.lastTokenBalances.filter(({address}) => address !== ETHER_NATIVE_TOKEN.address);
-      const ethBalance = await this.balanceChecker.getBalance(this.walletAddress, ETHER_NATIVE_TOKEN.address);
-      tokenBalances.push({...ETHER_NATIVE_TOKEN, balance: ethBalance});
-      return tokenBalances;
+      return this.updateEthBalance();
     }
+  }
+
+  private async updateAllBalances() {
+    const tokenBalances: TokenDetailsWithBalance[] = [];
+    for (const token of this.tokenDetailsStore.tokensDetails) {
+      const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
+      tokenBalances.push({...token, balance});
+    }
+    return tokenBalances;
+  }
+
+  async updateEthBalance() {
+    const tokenBalances = this.lastTokenBalances.filter(({address}) => address !== ETHER_NATIVE_TOKEN.address);
+    const ethBalance = await this.balanceChecker.getBalance(this.walletAddress, ETHER_NATIVE_TOKEN.address);
+    tokenBalances.push({...ETHER_NATIVE_TOKEN, balance: ethBalance});
+    return tokenBalances;
   }
 
   async checkBalanceNow() {
