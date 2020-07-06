@@ -20,4 +20,11 @@ export class EmailService {
       }
     });
   }
+
+  sendConfirmationMail() {
+    const mailOptions = {
+
+    }
+    this.sendMail(mailOptions)
+  }
 }
