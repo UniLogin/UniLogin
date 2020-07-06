@@ -2,7 +2,7 @@ import {ProviderService} from '@unilogin/commons';
 import {ReferenceCountedState} from './ReferenceCountedState';
 
 export class BlockNumberState extends ReferenceCountedState<number> {
-  constructor(private readonly providerService: ProviderService) {
+  constructor(public readonly providerService: ProviderService) {
     super(0);
   }
 

@@ -1,11 +1,12 @@
 import {expect} from 'chai';
-import {providers, Wallet} from 'ethers';
+import sinon from 'sinon';
+import {providers, utils, Wallet} from 'ethers';
+import {MockProvider, deployContract} from 'ethereum-waffle';
+import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {ProviderService} from '../../../src/integration/ethereum/ProviderService';
 import {mockProviderWithBlockNumber} from '../../helpers/mockProvider';
-import {MockProvider, deployContract} from 'ethereum-waffle';
 import {getDeployedBytecode} from '../../../src/core/utils/contracts/contractHelpers';
 import {TEST_ACCOUNT_ADDRESS} from '../../../src/core/constants/test';
-import sinon from 'sinon';
 import {mineBlock} from '../../helpers/mineBlock';
 import MockedTokens from '../../fixtures/MockToken.json';
 import {MockToken} from '../..';
@@ -145,6 +146,35 @@ describe('INT: ProviderService', () => {
       expect(callback.lastCall.calledWithExactly(await providerService.getBlockNumber()));
       expect(callback.callCount).to.eq(expectedCallbackCalls);
       expect(callback.firstCall.calledWithExactly(await providerService.getBlockNumber() - expectedCallbackCalls));
+    });
+
+    it('recognize if iERC20 balances changed', async () => {
+      const tokenContract = await deployContract(deployer, MockToken);
+      const startBlockNumber = await providerService.getBlockNumber();
+      const [, wallet] = provider.getWallets();
+
+      const ierc20Interface = new utils.Interface(IERC20.abi);
+      const filter = {address: [tokenContract.address].toString(), fromBlock: startBlockNumber, toBlock: 'latest', topics: [ierc20Interface.events['Transfer'].topic]};
+
+      const contractTransactionResponse = await tokenContract.transfer(wallet.address, utils.bigNumberify('2'));
+      await contractTransactionResponse.wait();
+
+      const balance = await tokenContract.balanceOf(wallet.address);
+      expect(balance).eq(utils.bigNumberify('2'));
+
+      const {wait} = await wallet.sendTransaction({to: tokenContract.address, data: ierc20Interface.functions.transfer.encode([TEST_ACCOUNT_ADDRESS, utils.bigNumberify('1')])});
+      await wait();
+
+      const accountTransactionResponse = await tokenContract.transfer(TEST_ACCOUNT_ADDRESS, utils.bigNumberify('1'));
+      await accountTransactionResponse.wait();
+
+      const logs: providers.Log[] = await provider.getLogs(filter);
+
+      const filteredLogs = logs.filter(log => {
+        const {values} = ierc20Interface.parseLog(log);
+        return values.from === wallet.address || values.to === wallet.address;
+      });
+      expect(filteredLogs).length(2);
     });
   });
 });

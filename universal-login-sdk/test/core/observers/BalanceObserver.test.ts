@@ -66,8 +66,8 @@ describe('INT: BalanceObserver', () => {
     it('1 subscription - change balance', async () => {
       const callback = sinon.spy();
       const expectedTokenBalancesAfterTransaction = [
-        {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0.5')},
         {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: normalizeBigNumber(utils.bigNumberify('0')), decimals: 18},
+        {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0.5')},
       ];
 
       const unsubscribe = balanceObserver.subscribe(callback);
@@ -77,7 +77,7 @@ describe('INT: BalanceObserver', () => {
       unsubscribe();
 
       const actualTokenBalancesAfterTransaction = callback.thirdCall.args[0];
-      actualTokenBalancesAfterTransaction[0].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction[0].balance);
+      actualTokenBalancesAfterTransaction[1].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction[1].balance);
       expect(actualTokenBalancesAfterTransaction).to.deep.eq(expectedTokenBalancesAfterTransaction);
       expect(callback).to.have.been.calledThrice;
       expect((balanceObserver as any).lastTokenBalances).to.deep.eq([]);
@@ -115,8 +115,8 @@ describe('INT: BalanceObserver', () => {
       const callback1 = sinon.spy();
       const callback2 = sinon.spy();
       const expectedTokenBalancesAfterTransaction = [
-        {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0.5')},
         {address: mockToken.address, symbol: 'MCK', name: 'Mock Token', balance: utils.parseEther('0'), decimals: 18},
+        {...ETHER_NATIVE_TOKEN, balance: utils.parseEther('0.5')},
       ];
 
       const unsubscribe1 = balanceObserver.subscribe(callback1);
@@ -133,12 +133,12 @@ describe('INT: BalanceObserver', () => {
       unsubscribe2();
 
       const actualTokenBalancesAfterTransaction1 = callback1.thirdCall.args[0];
-      actualTokenBalancesAfterTransaction1[0].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction1[0].balance);
+      actualTokenBalancesAfterTransaction1[1].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction1[1].balance);
       expect(actualTokenBalancesAfterTransaction1).to.deep.eq(expectedTokenBalancesAfterTransaction);
       expect(callback1).to.have.been.calledThrice;
 
       const actualTokenBalancesAfterTransaction2 = callback2.thirdCall.args[0];
-      actualTokenBalancesAfterTransaction2[0].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction2[0].balance);
+      actualTokenBalancesAfterTransaction2[1].balance = normalizeBigNumber(actualTokenBalancesAfterTransaction2[1].balance);
       expect(actualTokenBalancesAfterTransaction2).to.deep.eq(expectedTokenBalancesAfterTransaction);
       expect(callback2).to.have.been.calledThrice;
       expect((balanceObserver as any).lastTokenBalances).to.deep.eq([]);

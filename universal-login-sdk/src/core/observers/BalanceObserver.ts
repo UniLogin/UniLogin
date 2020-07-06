@@ -1,9 +1,11 @@
 import deepEqual from 'deep-equal';
 import clonedeep from 'lodash.clonedeep';
-import {BalanceChecker, TokenDetailsWithBalance, Nullable, ensureNotNullish} from '@unilogin/commons';
+import {Callback} from 'reactive-properties';
+import {providers} from 'ethers';
+import {BalanceChecker, TokenDetailsWithBalance, Nullable, ensureNotNullish, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {IERC20Interface} from '@unilogin/contracts';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
 import {BlockNumberState} from '../states/BlockNumberState';
-import {Callback} from 'reactive-properties';
 import {InvalidObserverState} from '../utils/errors';
 
 export type OnBalanceChange = (data: TokenDetailsWithBalance[]) => void;
@@ -24,13 +26,36 @@ export class BalanceObserver {
     await this.checkBalanceNow();
   }
 
+  async isErc20BalancesChanged() {
+    const ierc20adresses = this.tokenDetailsStore.tokensDetails
+      .map(token => token.address)
+      .filter(address => address !== ETHER_NATIVE_TOKEN.address);
+
+    const filter = {address: ierc20adresses.toString(), fromBlock: this.blockNumberState.get(), toBlock: 'latest', topics: [IERC20Interface.events['Transfer'].topic]};
+    const logs: providers.Log[] = await this.blockNumberState.providerService.getLogs(filter);
+    const filteredLogs = logs.filter(log => {
+      const {values} = IERC20Interface.parseLog(log);
+      return values.from === this.walletAddress || values.to === this.walletAddress;
+    });
+    return filteredLogs.length > 0;
+  }
+
   async getBalances() {
-    const tokenBalances: TokenDetailsWithBalance[] = [];
-    for (const token of this.tokenDetailsStore.tokensDetails) {
-      const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
-      tokenBalances.push({...token, balance});
+    const isErc20BalancesChanged = await this.isErc20BalancesChanged();
+
+    if (isErc20BalancesChanged || this.lastTokenBalances.length === 0) {
+      const tokenBalances: TokenDetailsWithBalance[] = [];
+      for (const token of this.tokenDetailsStore.tokensDetails) {
+        const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
+        tokenBalances.push({...token, balance});
+      }
+      return tokenBalances;
+    } else {
+      const tokenBalances = this.lastTokenBalances.filter(({address}) => address !== ETHER_NATIVE_TOKEN.address);
+      const ethBalance = await this.balanceChecker.getBalance(this.walletAddress, ETHER_NATIVE_TOKEN.address);
+      tokenBalances.push({...ETHER_NATIVE_TOKEN, balance: ethBalance});
+      return tokenBalances;
     }
-    return tokenBalances;
   }
 
   async checkBalanceNow() {
