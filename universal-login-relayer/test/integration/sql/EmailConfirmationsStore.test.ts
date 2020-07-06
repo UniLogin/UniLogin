@@ -23,29 +23,29 @@ describe('UNIT: EmailConfirmationsStore', () => {
   });
 
   it('Should add two emailConfirmations to database and get the second one', async () => {
-    const storedEmail = 'newEmail@email.com';
-    const storedEmailConfirmation = {
-      email: storedEmail,
+    const exampleEmail = 'newEmail@email.com';
+    const emailConfirmation = {
+      email: exampleEmail,
       ensName: 'bob.unilogin.eth',
       code: '1234',
       isConfirmed: false,
       created_at: new Date(),
     } as EmailConfirmation;
 
-    let [email] = await emailConfirmationsStore.add(storedEmailConfirmation);
-    expect(email).be.deep.eq(storedEmail);
+    const [email] = await emailConfirmationsStore.add(emailConfirmation);
+    expect(email).be.deep.eq(exampleEmail);
 
     await sleep(1);
-    const secondStoredEmailConfirmation = {
-      email: storedEmail,
+    const secondEmailConfirmation = {
+      email: exampleEmail,
       ensName: 'bob2.unilogin.eth',
       code: '4321',
       isConfirmed: false,
       created_at: new Date(),
     } as EmailConfirmation;
 
-    [email] = await emailConfirmationsStore.add(secondStoredEmailConfirmation);
-    expect(email).be.deep.eq(storedEmail);
-    expect(await emailConfirmationsStore.get(email)).be.deep.eq(secondStoredEmailConfirmation);
+    const [email2] = await emailConfirmationsStore.add(secondEmailConfirmation);
+    expect(email2).be.deep.eq(exampleEmail);
+    expect(await emailConfirmationsStore.get(email2)).be.deep.eq(secondEmailConfirmation);
   });
 });
