@@ -36,11 +36,13 @@ export class BalanceObserver {
 
     const filter = {address: ierc20adresses.toString(), fromBlock: this.blockNumberState.get(), toBlock: 'latest', topics: [IERC20Interface.events['Transfer'].topic]};
     const logs: providers.Log[] = await this.providerService.getLogs(filter);
-    const filteredLogs = logs.filter(log => {
-      const {values} = IERC20Interface.parseLog(log);
-      return values.from === this.walletAddress || values.to === this.walletAddress;
-    });
+    const filteredLogs = logs.filter(log => this.isLogForAddress(log, this.walletAddress));
     return filteredLogs.length > 0;
+  }
+
+  async isLogForAddress(log: providers.Log, address: string) {
+    const {values} = IERC20Interface.parseLog(log);
+    return values.from === address || values.to === address;
   }
 
   async getBalances() {
