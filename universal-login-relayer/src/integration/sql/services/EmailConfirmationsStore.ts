@@ -16,7 +16,7 @@ export class EmailConfirmationsStore {
 
   async get(email: string): Promise<EmailConfirmation> {
     return this.database
-      .select(['email', 'ensName', 'code', 'isConfirmed'])
+      .select(['email', 'ensName', 'code', 'created_at', 'isConfirmed'])
       .from(this.tableName)
       .where('email', email)
       .orderBy('created_at', 'desc')
