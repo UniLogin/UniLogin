@@ -38,7 +38,7 @@ describe('UNIT: EmailConfirmationsStore', () => {
 
     const secondEmailConfirmation = {
       email: exampleEmail,
-      ensName: 'bob2.unilogin.eth',
+      ensName: 'bob.unilogin.eth',
       code: '4321',
       isConfirmed: false,
       created_at: new Date(currentDate.getTime() + 10),
