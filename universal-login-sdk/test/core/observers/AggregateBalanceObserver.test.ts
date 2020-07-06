@@ -33,7 +33,7 @@ describe('INT: AggregateBalanceObserver', () => {
     const providerService = new ProviderService(provider);
     const blockNumberState = new BlockNumberState(providerService);
     balanceChecker = new BalanceChecker(providerService);
-    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: observedTokens} as TokensDetailsStore, blockNumberState);
+    balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: observedTokens} as TokensDetailsStore, blockNumberState, providerService);
 
     mockedAggregateBalanceObserver = new AggregateBalanceObserver(balanceObserver, mockedPriceObserver, tokensValueConverter);
     resetCallCount();

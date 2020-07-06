@@ -2,7 +2,7 @@ import deepEqual from 'deep-equal';
 import clonedeep from 'lodash.clonedeep';
 import {Callback} from 'reactive-properties';
 import {providers} from 'ethers';
-import {BalanceChecker, TokenDetailsWithBalance, Nullable, ensureNotNullish, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {BalanceChecker, TokenDetailsWithBalance, Nullable, ensureNotNullish, ETHER_NATIVE_TOKEN, ProviderService} from '@unilogin/commons';
 import {IERC20Interface} from '@unilogin/contracts';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
 import {BlockNumberState} from '../states/BlockNumberState';
@@ -20,6 +20,7 @@ export class BalanceObserver {
     private walletAddress: string,
     private tokenDetailsStore: TokensDetailsStore,
     private blockNumberState: BlockNumberState,
+    private providerService: ProviderService,
   ) {}
 
   async execute() {
@@ -34,7 +35,7 @@ export class BalanceObserver {
     if (ierc20adresses.length === 0) return false;
 
     const filter = {address: ierc20adresses.toString(), fromBlock: this.blockNumberState.get(), toBlock: 'latest', topics: [IERC20Interface.events['Transfer'].topic]};
-    const logs: providers.Log[] = await this.blockNumberState.providerService.getLogs(filter);
+    const logs: providers.Log[] = await this.providerService.getLogs(filter);
     const filteredLogs = logs.filter(log => {
       const {values} = IERC20Interface.parseLog(log);
       return values.from === this.walletAddress || values.to === this.walletAddress;

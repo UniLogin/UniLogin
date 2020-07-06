@@ -141,7 +141,7 @@ class UniLoginSdk {
     ensureNotFalsy(contractAddress, InvalidContract);
 
     await this.tokensDetailsStore.fetchTokensDetails();
-    this.balanceObserver = new BalanceObserver(this.balanceChecker, contractAddress, this.tokensDetailsStore, this.blockNumberState);
+    this.balanceObserver = new BalanceObserver(this.balanceChecker, contractAddress, this.tokensDetailsStore, this.blockNumberState, this.providerService);
   }
 
   async fetchErc721TokensObserver(contractAddress: string) {

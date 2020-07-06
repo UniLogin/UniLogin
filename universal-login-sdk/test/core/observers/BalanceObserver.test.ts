@@ -32,7 +32,7 @@ describe('INT: BalanceObserver', () => {
       const providerService = new ProviderService(provider);
       const blockNumberState = new BlockNumberState(providerService);
       balanceChecker = new BalanceChecker(providerService);
-      balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: supportedTokens} as TokensDetailsStore, blockNumberState);
+      balanceObserver = new BalanceObserver(balanceChecker, TEST_ACCOUNT_ADDRESS, {tokensDetails: supportedTokens} as TokensDetailsStore, blockNumberState, providerService);
     });
 
     it('getBalances', async () => {
