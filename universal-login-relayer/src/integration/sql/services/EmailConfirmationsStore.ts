@@ -8,18 +8,18 @@ export class EmailConfirmationsStore {
   }
 
   add(emailConfirmation: EmailConfirmation) {
-    return this.database
-      .insert(emailConfirmation)
-      .into(this.tableName)
+    const {createdAt, ...rest} = emailConfirmation;
+    return this.database(this.tableName)
+      .insert({...rest, created_at: createdAt})
       .returning('email');
   }
 
   async get(email: string): Promise<EmailConfirmation> {
-    return this.database
+    const {created_at, ...rest} = await this.database(this.tableName)
       .select(['email', 'ensName', 'code', 'created_at', 'isConfirmed'])
-      .from(this.tableName)
       .where('email', email)
       .orderBy('created_at', 'desc')
       .first();
+    return {...rest, createdAt: created_at};
   }
 }
