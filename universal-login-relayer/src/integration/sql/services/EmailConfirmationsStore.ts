@@ -1,10 +1,10 @@
 import Knex from 'knex';
-import {EmailConfirmation} from '@unilogin/commons'
+import {EmailConfirmation} from '@unilogin/commons';
 
 export class EmailConfirmationsStore {
   private tableName = 'email_confirmations';
 
-  constructor (private database: Knex) {
+  constructor(private database: Knex) {
   }
 
   add(email: string, ensName: string, code: string) {
@@ -14,7 +14,7 @@ export class EmailConfirmationsStore {
       .returning('email');
   }
 
-  async get(email: string): Promise<EmailConfirmation>{
+  async get(email: string): Promise<EmailConfirmation> {
     return this.database
       .select(['email', 'ensName', 'code', 'isConfirmed'])
       .from(this.tableName)
