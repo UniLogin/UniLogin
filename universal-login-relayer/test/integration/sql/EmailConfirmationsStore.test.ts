@@ -1,6 +1,6 @@
 import {getKnexConfig} from '../../testhelpers/knex';
 import {EmailConfirmationsStore} from '../../../src/integration/sql/services/EmailConfirmationsStore';
-import {EmailConfirmation} from '@unilogin/commons';
+import {EmailConfirmation, sleep} from '@unilogin/commons';
 import {expect} from 'chai';
 
 describe('UNIT: EmailConfirmationsStore', () => {
@@ -35,6 +35,7 @@ describe('UNIT: EmailConfirmationsStore', () => {
     let [email] = await emailConfirmationsStore.add(storedEmailConfirmation);
     expect(email).be.deep.eq(storedEmail);
 
+    await sleep(1);
     const secondStoredEmailConfirmation = {
       email: storedEmail,
       ensName: 'bob2.unilogin.eth',
