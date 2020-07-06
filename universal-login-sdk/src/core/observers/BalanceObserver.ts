@@ -31,6 +31,8 @@ export class BalanceObserver {
       .map(token => token.address)
       .filter(address => address !== ETHER_NATIVE_TOKEN.address);
 
+    if (ierc20adresses.length === 0) return false;
+
     const filter = {address: ierc20adresses.toString(), fromBlock: this.blockNumberState.get(), toBlock: 'latest', topics: [IERC20Interface.events['Transfer'].topic]};
     const logs: providers.Log[] = await this.blockNumberState.providerService.getLogs(filter);
     const filteredLogs = logs.filter(log => {
