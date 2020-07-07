@@ -18,7 +18,7 @@ export class EmailService {
   sendMail(mailOptions: MailOptions) {
     this.transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-          throw new CannotSendEmail(error.message);
+        throw new CannotSendEmail(error.message);
       }
     });
   }
@@ -34,7 +34,7 @@ export class EmailService {
       Here is your confirmation code: ${code}<br>
       <button>Copy</button>`,
       replyTo: 'noreply.confirmation@unilogin.io',
-    }
-    this.sendMail(mailOptions)
+    };
+    this.sendMail(mailOptions);
   }
 }
