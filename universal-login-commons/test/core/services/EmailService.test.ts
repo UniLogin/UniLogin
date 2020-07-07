@@ -1,4 +1,4 @@
-import {fetch, sleep} from '../../../src';
+import {fetch, sleep, http} from '../../../src';
 import nodemailer from 'nodemailer';
 import {EmailService} from '../../../src/core/services/EmailService';
 import {MailOptions} from 'nodemailer/lib/json-transport';
@@ -8,6 +8,7 @@ const mailtrapApiToken = '03d3f8053c437653b11498a432030d0e';
 const inboxId = '981903';
 
 describe('INT: EmailService', async () => {
+  const _http = http(fetch)('https://mailtrap.io/api/v1');
   const emailService = new EmailService();
   (emailService as any).transporter = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
@@ -18,8 +19,8 @@ describe('INT: EmailService', async () => {
     }
   });
 
-  it('Should send email and receive it', async () => {
-    await fetch(`https://mailtrap.io/api/v1/inboxes/${inboxId}/clean?api_token=${mailtrapApiToken}`);
+  xit('Should send email and receive it', async () => {
+    _http('PATCH', `/inboxes/${inboxId}/clean?api_token=${mailtrapApiToken}`);
     const mailSubject = `EmailService test #${Math.random()}`
     const mailOptions = {
       from: '"Example Mail" <test@unilogin.io>',
@@ -34,5 +35,10 @@ describe('INT: EmailService', async () => {
 
     const messages = await (await fetch(`https://mailtrap.io/api/v1/inboxes/${inboxId}/messages?api_token=${mailtrapApiToken}`)).json();
     expect(messages[0].subject).be.deep.eq(mailSubject);
-  })
+  });
+
+  xit('Send confirmation email', () => {
+    const normalEmailService = new EmailService();
+    normalEmailService.sendConfirmationMail('szymon@ethworks.io', '123456');
+  });
 });
