@@ -156,8 +156,8 @@ describe('INT: ProviderService', () => {
       const ierc20Interface = new utils.Interface(IERC20.abi);
       const filter = {address: [tokenContract.address].toString(), fromBlock: initialBlockNumber, toBlock: 'latest', topics: [ierc20Interface.events['Transfer'].topic]};
 
-      const contractTransactionResponse = await tokenContract.transfer(wallet.address, utils.bigNumberify('2'));
-      await contractTransactionResponse.wait();
+      const sendTokenTransactionResponse = await tokenContract.transfer(wallet.address, utils.bigNumberify('2'));
+      await sendTokenTransactionResponse.wait();
 
       const balance = await tokenContract.balanceOf(wallet.address);
       expect(balance).eq(utils.bigNumberify('2'));
