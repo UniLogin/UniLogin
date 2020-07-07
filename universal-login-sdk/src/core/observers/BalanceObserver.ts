@@ -37,12 +37,12 @@ export class BalanceObserver {
       topics: [IERC20Interface.events['Transfer'].topic],
     };
     const logs: providers.Log[] = await this.providerService.getLogs(filter);
-    const filteredLogs = logs.filter(this.isLogForAddress(this.walletAddress));
+    const filteredLogs = logs.filter(this.isLogValuesIncludeAddress(this.walletAddress));
     const changedAddresses = filteredLogs.reduce((acc, current) => acc.includes(current.address) ? acc : [...acc, current.address], [] as string[]);
     return changedAddresses;
   }
 
-  isLogForAddress(address: string) {
+  isLogValuesIncludeAddress(address: string) {
     return (log: providers.Log) => {
       const {values} = IERC20Interface.parseLog(log);
       return values.from === address || values.to === address;
