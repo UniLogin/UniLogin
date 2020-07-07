@@ -2,7 +2,7 @@ import deepEqual from 'deep-equal';
 import clonedeep from 'lodash.clonedeep';
 import {Callback} from 'reactive-properties';
 import {providers} from 'ethers';
-import {BalanceChecker, TokenDetailsWithBalance, Nullable, ensureNotNullish, ETHER_NATIVE_TOKEN, ProviderService} from '@unilogin/commons';
+import {BalanceChecker, TokenDetailsWithBalance, Nullable, ensureNotNullish, ETHER_NATIVE_TOKEN, ProviderService, isAddressIncludedInLog} from '@unilogin/commons';
 import {IERC20Interface} from '@unilogin/contracts';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
 import {BlockNumberState} from '../states/BlockNumberState';
@@ -100,9 +100,3 @@ export class BalanceObserver {
     this.lastTokenBalances = [];
   }
 }
-
-const isAddressIncludedInLog = (address: string) =>
-  (log: providers.Log) => {
-    const {values} = IERC20Interface.parseLog(log);
-    return values.from === address || values.to === address;
-  };

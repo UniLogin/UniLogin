@@ -10,6 +10,7 @@ import {TEST_ACCOUNT_ADDRESS} from '../../../src/core/constants/test';
 import {mineBlock} from '../../helpers/mineBlock';
 import MockedTokens from '../../fixtures/MockToken.json';
 import {MockToken} from '../..';
+import {isAddressIncludedInLog} from '../../../src';
 
 describe('INT: ProviderService', () => {
   const expectedBytecode = `0x${getDeployedBytecode(MockedTokens as any)}`;
@@ -170,10 +171,7 @@ describe('INT: ProviderService', () => {
 
       const logs: providers.Log[] = await provider.getLogs(filter);
 
-      const filteredLogs = logs.filter(log => {
-        const {values} = ierc20Interface.parseLog(log);
-        return values.from === wallet.address || values.to === wallet.address;
-      });
+      const filteredLogs = logs.filter(isAddressIncludedInLog(wallet.address));
       expect(filteredLogs).length(2);
     });
   });
