@@ -150,11 +150,11 @@ describe('INT: ProviderService', () => {
 
     it('recognize if ERC20 balances changed', async () => {
       const tokenContract = await deployContract(deployer, MockToken);
-      const startBlockNumber = await providerService.getBlockNumber();
+      const initialBlockNumber = await providerService.getBlockNumber();
       const [, wallet] = provider.getWallets();
 
       const ierc20Interface = new utils.Interface(IERC20.abi);
-      const filter = {address: [tokenContract.address].toString(), fromBlock: startBlockNumber, toBlock: 'latest', topics: [ierc20Interface.events['Transfer'].topic]};
+      const filter = {address: [tokenContract.address].toString(), fromBlock: initialBlockNumber, toBlock: 'latest', topics: [ierc20Interface.events['Transfer'].topic]};
 
       const contractTransactionResponse = await tokenContract.transfer(wallet.address, utils.bigNumberify('2'));
       await contractTransactionResponse.wait();
