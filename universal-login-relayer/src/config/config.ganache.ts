@@ -44,6 +44,7 @@ export const getConfig = () => ({
   ...baseConfig,
   network: 'ganache',
   jsonRpcUrl: 'http://localhost:18545',
+  transporterEmailPassword: getEnv('EMAIL_TRANSPORTER_PASSWORD', ''),
   port: '3311',
   privateKey: '0x29f3edee0ad3abf8e2699402e0e28cd6492c9be7eaab00d732a791c33552f797',
   ensAddress: '0x67AC97e1088C332cBc7a7a9bAd8a4f7196D5a1Ce',

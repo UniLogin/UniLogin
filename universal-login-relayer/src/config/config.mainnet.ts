@@ -8,6 +8,7 @@ export const getConfig = () => ({
   ...baseConfig,
   network: 'mainnet',
   jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${getEnv('ALCHEMY_API_KEY', '')}`,
+  transporterEmailPassword: getEnv('EMAIL_TRANSPORTER_PASSWORD', ''),
   ensAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
   ensRegistrars: ['unibeta.eth'],
   ensRegistrar: '0x93C83c499970F9DB8E795aD6b5f68CD137561008',

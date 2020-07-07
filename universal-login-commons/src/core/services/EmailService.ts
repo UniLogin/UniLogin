@@ -5,12 +5,12 @@ import Mail from 'nodemailer/lib/mailer';
 
 export class EmailService {
   private transporter: Mail;
-  constructor() {
+  constructor(transporterEmailPassword: string) {
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: 'testowyunilogin@gmail.com',
-        pass: 'password :)',
+        pass: transporterEmailPassword,
       },
     });
   }

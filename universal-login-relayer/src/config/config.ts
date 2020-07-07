@@ -9,6 +9,7 @@ import {getConfig as getRopstenConfig} from './config.ropsten';
 export interface Config {
   jsonRpcUrl?: string;
   port?: string;
+  transporterEmailPassword: string;
   privateKey: string;
   ensAddress: string;
   network: string;
