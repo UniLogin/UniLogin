@@ -148,7 +148,7 @@ describe('INT: ProviderService', () => {
       expect(callback.firstCall.calledWithExactly(await providerService.getBlockNumber() - expectedCallbackCalls));
     });
 
-    it('recognize if iERC20 balances changed', async () => {
+    it('recognize if ERC20 balances changed', async () => {
       const tokenContract = await deployContract(deployer, MockToken);
       const startBlockNumber = await providerService.getBlockNumber();
       const [, wallet] = provider.getWallets();
