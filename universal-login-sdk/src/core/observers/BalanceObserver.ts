@@ -1,9 +1,11 @@
 import deepEqual from 'deep-equal';
 import clonedeep from 'lodash.clonedeep';
-import {BalanceChecker, TokenDetailsWithBalance, Nullable, ensureNotNullish} from '@unilogin/commons';
+import {Callback} from 'reactive-properties';
+import {providers} from 'ethers';
+import {BalanceChecker, TokenDetailsWithBalance, Nullable, ensureNotNullish, ETHER_NATIVE_TOKEN, ProviderService, isAddressIncludedInLog} from '@unilogin/commons';
+import {IERC20Interface} from '@unilogin/contracts';
 import {TokensDetailsStore} from '../services/TokensDetailsStore';
 import {BlockNumberState} from '../states/BlockNumberState';
-import {Callback} from 'reactive-properties';
 import {InvalidObserverState} from '../utils/errors';
 
 export type OnBalanceChange = (data: TokenDetailsWithBalance[]) => void;
@@ -18,15 +20,47 @@ export class BalanceObserver {
     private walletAddress: string,
     private tokenDetailsStore: TokensDetailsStore,
     private blockNumberState: BlockNumberState,
+    private providerService: ProviderService,
   ) {}
 
-  async execute() {
-    await this.checkBalanceNow();
+  async getErc20ContractsWithChangedBalances() {
+    const ierc20adresses = this.tokenDetailsStore.tokensDetails
+      .map(token => token.address)
+      .filter(address => address !== ETHER_NATIVE_TOKEN.address);
+
+    if (ierc20adresses.length === 0) return [];
+
+    const filter = {
+      address: ierc20adresses.toString(),
+      fromBlock: this.blockNumberState.get(),
+      toBlock: 'latest',
+      topics: [IERC20Interface.events['Transfer'].topic],
+    };
+    const logs: providers.Log[] = await this.providerService.getLogs(filter);
+    const filteredLogs = logs.filter(isAddressIncludedInLog(this.walletAddress));
+    const changedAddresses = filteredLogs.reduce((acc, current) => acc.includes(current.address) ? acc : [...acc, current.address], [] as string[]);
+    return changedAddresses;
   }
 
   async getBalances() {
+    if (this.isInitialCall()) {
+      return this.getTokensWithUpdatedBalances(this.tokenDetailsStore.tokensDetails.map(token => token.address));
+    }
+    const changedErc20contracts = await this.getErc20ContractsWithChangedBalances();
+    const addressesToUpdate = [...changedErc20contracts, ETHER_NATIVE_TOKEN.address];
+    const tokensWithoutChanges = this.lastTokenBalances.filter(token => !addressesToUpdate.includes(token.address));
+    const tokensWithUpdatedBalances = await this.getTokensWithUpdatedBalances(addressesToUpdate);
+    return [...tokensWithoutChanges, ...tokensWithUpdatedBalances];
+  }
+
+  private isInitialCall() {
+    return this.lastTokenBalances.length === 0;
+  }
+
+  private async getTokensWithUpdatedBalances(addresses: string[]) {
     const tokenBalances: TokenDetailsWithBalance[] = [];
-    for (const token of this.tokenDetailsStore.tokensDetails) {
+    const tokensToUpdate = this.tokenDetailsStore.tokensDetails.filter(token => addresses.includes(token.address));
+    for (const token of tokensToUpdate) {
       const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
       tokenBalances.push({...token, balance});
     }
