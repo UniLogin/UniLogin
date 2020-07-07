@@ -85,7 +85,7 @@ export class UIController {
   }
 
   showError(errorMessage?: string) {
-    if (isRandomInfuraError(errorMessage)) {
+    if (isRandomInfuraError(errorMessage) || this.disabledDialogs.includes('ERROR')) {
       return;
     }
     this.activeModal.set({kind: 'ERROR', props: {errorMessage}});
