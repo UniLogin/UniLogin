@@ -30,16 +30,23 @@ export class BalanceObserver {
 
     if (ierc20adresses.length === 0) return [];
 
-    const filter = {address: ierc20adresses.toString(), fromBlock: this.blockNumberState.get(), toBlock: 'latest', topics: [IERC20Interface.events['Transfer'].topic]};
+    const filter = {
+      address: ierc20adresses.toString(),
+      fromBlock: this.blockNumberState.get(),
+      toBlock: 'latest',
+      topics: [IERC20Interface.events['Transfer'].topic],
+    };
     const logs: providers.Log[] = await this.providerService.getLogs(filter);
-    const filteredLogs = logs.filter(log => this.isLogForAddress(log, this.walletAddress));
+    const filteredLogs = logs.filter(this.isLogForAddress(this.walletAddress));
     const changedAddresses = filteredLogs.reduce((acc, current) => acc.includes(current.address) ? acc : [...acc, current.address], [] as string[]);
     return changedAddresses;
   }
 
-  async isLogForAddress(log: providers.Log, address: string) {
-    const {values} = IERC20Interface.parseLog(log);
-    return values.from === address || values.to === address;
+  isLogForAddress(address: string) {
+    return (log: providers.Log) => {
+      const {values} = IERC20Interface.parseLog(log);
+      return values.from === address || values.to === address;
+    };
   }
 
   async getBalances() {
