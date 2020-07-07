@@ -2,7 +2,11 @@
 
 title Wallet States
 
-None --> Future: createFuture
+None --> Requested: createWallet
+Requested --> Requested: waiting for e-mail confirmation
+Requested --> ConfirmedEmail: confirmed
+ConfirmedEmail --> Future: createFuture
+Future --> Future: waiting for balance
 None --> Connecting: connect
 Connecting --> Deployed: waitForConnect
 Future --> Deploying: waitForDeploy
@@ -10,24 +14,29 @@ Deploying --> Deployed: waitForSuccess
 Deploying --> Deploying: waitForTransactionHash
 Deployed --> None: disconnect
 
-Future: FutureWallet
-Future: - contractAddress
-Future: - privateKey
+Requested: * e-mail
+Requested: * ensName
 
-Deploying: DeployingWallet
-Deploying: - contractAddress
-Deploying: - privateKey
-Deploying: - name
-Deploying: - deploymentHash
+ConfirmedEmail: * e-mail
+ConfirmedEmail: * ensName
 
-Connecting: ApplicationWallet
-Connecting: - contractAddress
-Connecting: - privateKey
-Connecting: - name
+Future: * contractAddress
+Future: * privateKey
+Future: * ensName
+Future: * e-mail
 
-Deployed: DeployedWallet
-Deployed: - contractAddress
-Deployed: - privateKey
-Deployed: - name
+Deploying: * contractAddress
+Deploying: * privateKey
+Deploying: * name
+Deploying: * deploymentHash
+
+Connecting: * contractAddress
+Connecting: * privateKey
+Connecting: * name
+
+Deployed: * contractAddress
+Deployed: * privateKey
+Deployed: * name
+
 
 @enduml
