@@ -165,8 +165,8 @@ describe('INT: ProviderService', () => {
       const {wait} = await wallet.sendTransaction({to: tokenContract.address, data: ierc20Interface.functions.transfer.encode([TEST_ACCOUNT_ADDRESS, utils.bigNumberify('1')])});
       await wait();
 
-      const accountTransactionResponse = await tokenContract.transfer(TEST_ACCOUNT_ADDRESS, utils.bigNumberify('1'));
-      await accountTransactionResponse.wait();
+      const sendTokenTransactionResponse2 = await tokenContract.transfer(TEST_ACCOUNT_ADDRESS, utils.bigNumberify('1'));
+      await sendTokenTransactionResponse2.wait();
 
       const logs: providers.Log[] = await provider.getLogs(filter);
 
