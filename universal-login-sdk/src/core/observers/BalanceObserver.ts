@@ -50,15 +50,16 @@ export class BalanceObserver {
     const changedErc20contracts = await this.getErc20ContractsWithChangedBalances();
 
     if (changedErc20contracts.length > 0 || this.lastTokenBalances.length === 0) {
-      return this.updateAllBalances();
+      return this.updateBalances(this.tokenDetailsStore.tokensDetails.map(token => token.address));
     } else {
       return this.updateEthBalance();
     }
   }
 
-  private async updateAllBalances() {
+  private async updateBalances(addresses: string[]) {
     const tokenBalances: TokenDetailsWithBalance[] = [];
-    for (const token of this.tokenDetailsStore.tokensDetails) {
+    const tokensToUpdate = this.tokenDetailsStore.tokensDetails.filter(token => addresses.includes(token.address));
+    for (const token of tokensToUpdate) {
       const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
       tokenBalances.push({...token, balance});
     }
