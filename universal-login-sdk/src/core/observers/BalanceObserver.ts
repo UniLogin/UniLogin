@@ -37,7 +37,7 @@ export class BalanceObserver {
     const filter = {address: ierc20adresses.toString(), fromBlock: this.blockNumberState.get(), toBlock: 'latest', topics: [IERC20Interface.events['Transfer'].topic]};
     const logs: providers.Log[] = await this.providerService.getLogs(filter);
     const filteredLogs = logs.filter(log => this.isLogForAddress(log, this.walletAddress));
-    const changedAddresses = filteredLogs.reduce((prev, current) => prev.includes(current.address) ? [...prev, current.address] : prev, [] as string[]);
+    const changedAddresses = filteredLogs.reduce((acc, current) => acc.includes(current.address) ? acc : [...acc, current.address], [] as string[]);
     return changedAddresses;
   }
 
