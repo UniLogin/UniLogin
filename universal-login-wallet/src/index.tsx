@@ -20,7 +20,7 @@ const AppBootstrapper = () => {
         accountAddress: '0x5A984bA07533440121ac5f54318539FfA9b69e31',
         startAmount: 3,
         // If `endAmount` is specified, the order will decline in value to that amount until `expirationTime`. Otherwise, it's a fixed-price order:
-        endAmount: 0.1,
+        endAmount: 2,
         expirationTime,
       });
       console.log({order})
