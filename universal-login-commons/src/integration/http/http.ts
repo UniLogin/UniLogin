@@ -3,7 +3,7 @@ export const COMMON_HEADERS = {
   'Content-Type': 'application/json',
 };
 
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 
 export const http = (fetch: (url: string, body?: any) => Promise<any>) => (baseUrl: string) =>
   (method: HttpMethod, url: string, body?: any, headers?: Record<string, string>) =>
