@@ -27,17 +27,18 @@ export class BalanceObserver {
     await this.checkBalanceNow();
   }
 
-  async isErc20BalancesChanged() {
+  async getErc20ContractsWithChangedBalances() {
     const ierc20adresses = this.tokenDetailsStore.tokensDetails
       .map(token => token.address)
       .filter(address => address !== ETHER_NATIVE_TOKEN.address);
 
-    if (ierc20adresses.length === 0) return false;
+    if (ierc20adresses.length === 0) return [];
 
     const filter = {address: ierc20adresses.toString(), fromBlock: this.blockNumberState.get(), toBlock: 'latest', topics: [IERC20Interface.events['Transfer'].topic]};
     const logs: providers.Log[] = await this.providerService.getLogs(filter);
     const filteredLogs = logs.filter(log => this.isLogForAddress(log, this.walletAddress));
-    return filteredLogs.length > 0;
+    const changedAddresses = filteredLogs.reduce((prev, current) => prev.includes(current.address) ? [...prev, current.address] : prev, [] as string[]);
+    return changedAddresses;
   }
 
   async isLogForAddress(log: providers.Log, address: string) {
@@ -46,9 +47,9 @@ export class BalanceObserver {
   }
 
   async getBalances() {
-    const isErc20BalancesChanged = await this.isErc20BalancesChanged();
+    const changedErc20contracts = await this.getErc20ContractsWithChangedBalances();
 
-    if (isErc20BalancesChanged || this.lastTokenBalances.length === 0) {
+    if (changedErc20contracts.length > 0 || this.lastTokenBalances.length === 0) {
       return this.updateAllBalances();
     } else {
       return this.updateEthBalance();
