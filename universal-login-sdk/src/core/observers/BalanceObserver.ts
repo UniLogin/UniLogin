@@ -47,9 +47,12 @@ export class BalanceObserver {
   }
 
   async getBalances() {
+    if (this.lastTokenBalances.length === 0) {
+      return this.updateBalances(this.tokenDetailsStore.tokensDetails.map(token => token.address));
+    }
     const changedErc20contracts = await this.getErc20ContractsWithChangedBalances();
 
-    if (changedErc20contracts.length > 0 || this.lastTokenBalances.length === 0) {
+    if (changedErc20contracts.length > 0) {
       return this.updateBalances(this.tokenDetailsStore.tokensDetails.map(token => token.address));
     } else {
       return this.updateEthBalance();
