@@ -9,7 +9,7 @@ const inboxId = '981903';
 
 describe('INT: EmailService', async () => {
   const _http = http(fetch)('https://mailtrap.io/api/v1');
-  const emailService = new EmailService('mockedPassword');
+  const emailService = new EmailService('mocked@mail.com', 'mockedPassword');
   (emailService as any).transporter = nodemailer.createTransport({
     host: 'smtp.mailtrap.io',
     port: 2525,
@@ -38,7 +38,7 @@ describe('INT: EmailService', async () => {
   });
 
   xit('Send confirmation email', () => {
-    const normalEmailService = new EmailService('Password');
+    const normalEmailService = new EmailService('testowyunilogin@gmail.com', 'password');
     normalEmailService.sendConfirmationMail('szymon@ethworks.io', '123456');
   });
 });

@@ -134,7 +134,7 @@ class Relayer {
     const minedTransactionHandler = new MinedTransactionHandler(authorisationStore, devicesService, this.walletContractService);
     const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService, gasTokenValidator);
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
-    const emailService = new EmailService(this.config.transporterEmailPassword);
+    const emailService = new EmailService(this.config.transporterEmail, this.config.transporterEmailPassword);
     const emailConfirmationStore = new EmailConfirmationsStore(this.database);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
 

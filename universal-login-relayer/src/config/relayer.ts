@@ -4,6 +4,7 @@ import {KnexConfig} from './KnexConfig';
 export interface Config {
   jsonRpcUrl?: string;
   port?: string;
+  transporterEmail: string;
   transporterEmailPassword: string;
   privateKey: string;
   ensAddress: string;
