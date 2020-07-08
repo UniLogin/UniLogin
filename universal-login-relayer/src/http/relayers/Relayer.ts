@@ -24,7 +24,7 @@ import {MessageStatusService} from '../../core/services/execution/messages/Messa
 import {Beta2Service} from '../../integration/ethereum/Beta2Service';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
-import {BalanceChecker, GasPriceOracle, PublicRelayerConfig, TokenPricesService, TokenDetailsService, ProviderService, EmailService} from '@unilogin/commons';
+import {BalanceChecker, GasPriceOracle, PublicRelayerConfig, TokenPricesService, TokenDetailsService, ProviderService} from '@unilogin/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
@@ -47,7 +47,6 @@ import SQLRepository from '../../integration/sql/services/SQLRepository';
 import Deployment from '../../core/models/Deployment';
 import {GasTokenValidator} from '../../core/services/validators/GasTokenValidator';
 import {BalanceValidator} from '../../integration/ethereum/BalanceValidator';
-import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
 
 const defaultPort = '3311';
 
@@ -134,8 +133,6 @@ class Relayer {
     const minedTransactionHandler = new MinedTransactionHandler(authorisationStore, devicesService, this.walletContractService);
     const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService, gasTokenValidator);
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
-    const emailService = new EmailService(this.config.transporterEmail, this.config.transporterEmailPassword);
-    const emailConfirmationStore = new EmailConfirmationsStore(this.database);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
 
     this.app.use(bodyParser.json());
