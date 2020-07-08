@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 import {MailOptions} from 'nodemailer/lib/json-transport';
-import {CannotSendEmail} from '../..';
 import Mail from 'nodemailer/lib/mailer';
+import {CannotSendEmail} from '@unilogin/commons';
 
 export class EmailService {
   private transporter: Mail;

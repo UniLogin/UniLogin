@@ -1,7 +1,7 @@
-import {fetch, sleep, http} from '../../../src';
 import nodemailer from 'nodemailer';
-import {EmailService} from '../../../src/core/services/EmailService';
 import {MailOptions} from 'nodemailer/lib/json-transport';
+import {fetch, sleep, http} from '@unilogin/commons';
+import {EmailService} from '../../../src/core/services/EmailService';
 import {expect} from 'chai';
 
 const mailtrapApiToken = '03d3f8053c437653b11498a432030d0e';
