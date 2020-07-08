@@ -1,8 +1,8 @@
 import nodemailer, {SentMessageInfo} from 'nodemailer';
 import {MailOptions} from 'nodemailer/lib/json-transport';
 import Mail from 'nodemailer/lib/mailer';
-import {CannotSendEmail} from '../utils/errors';
-import {confirmationEmailHtml} from '../utils/confirmationEmailHtml';
+import {CannotSendEmail} from '../../core/utils/errors';
+import {confirmationEmailHtml} from '../../core/utils/confirmationEmailHtml';
 
 export class EmailService {
   private transporter: Mail;
