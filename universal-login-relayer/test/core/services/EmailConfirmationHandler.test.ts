@@ -25,7 +25,7 @@ describe('UNIT: EmailConfirmationHandler', () => {
     const email = 'hello@unilogin.io';
     const ensName = 'hello.unilogin.eth';
 
-    await emailConfirmationHandler.handle(email, ensName);
+    await emailConfirmationHandler.request(email, ensName);
 
     expect(emailConfirmationStoreStub.add.calledOnce);
 

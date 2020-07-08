@@ -5,7 +5,7 @@ export class EmailConfirmationHandler {
     private emailConfirmationStore: EmailConfirmationsStore,
   ) {}
 
-  handle(email: string, ensName: string) {
+  request(email: string, ensName: string) {
     const emailConfirmation = {
       email,
       ensName,

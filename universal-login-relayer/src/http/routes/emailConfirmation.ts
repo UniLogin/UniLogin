@@ -6,7 +6,7 @@ import {EmailConfirmationHandler} from '../../core/services/EmailConfirmationHan
 const emailConfirmationHandling = (emailConfirmationHandler: EmailConfirmationHandler) =>
   async (data: {body: {email: string, ensName: string}}) => {
     const {email, ensName} = data.body;
-    const result = await emailConfirmationHandler.handle(email, ensName);
+    const result = await emailConfirmationHandler.request(email, ensName);
     return responseOf({response: result}, 201);
   };
 
