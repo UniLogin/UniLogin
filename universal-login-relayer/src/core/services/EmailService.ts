@@ -17,7 +17,7 @@ export class EmailService {
 
   async sendMail(mailOptions: MailOptions): Promise<SentMessageInfo> {
     try {
-      return this.transporter.sendMail(mailOptions);
+      return await this.transporter.sendMail(mailOptions);
     } catch (error) {
       throw new CannotSendEmail(error.message);
     }
