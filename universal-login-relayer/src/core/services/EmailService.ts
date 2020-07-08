@@ -17,7 +17,7 @@ export class EmailService {
 
   async sendMail(mailOptions: MailOptions): Promise<SentMessageInfo> {
     try{
-      return await this.transporter.sendMail(mailOptions);
+      return this.transporter.sendMail(mailOptions);
     } catch (error) {
       throw new CannotSendEmail(error.message);
     }
@@ -82,6 +82,6 @@ export class EmailService {
       `,
       replyTo: 'noreply.confirmation@unilogin.io',
     };
-    return await this.sendMail(mailOptions);
+    return this.sendMail(mailOptions);
   }
 }
