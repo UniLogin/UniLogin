@@ -26,7 +26,7 @@ export class EmailService {
 
   async sendConfirmationMail(email: string, code: string): Promise<SentMessageInfo> {
     const mailOptions = {
-      from: `UniLogin <noreply.${this.emailAddress}>`,
+      from: `UniLogin <${this.emailAddress}>`,
       to: email,
       subject: 'Email Confirmation',
       text: `To make sure your UniLogin account is safe and secure,
