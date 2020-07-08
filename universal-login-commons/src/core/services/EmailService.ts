@@ -39,7 +39,7 @@ export class EmailService {
             position: absolute;
             top: 50%;
             left: 50%;
-            font-size: 20px;
+            font-size: 15px;
           }
           .email {
             position: relative;
@@ -47,22 +47,34 @@ export class EmailService {
             height: 1021px;
             background: #fff
           }
-          a.button {
-            -webkit-appearance: button;
-            -moz-appearance: button;
-            appearance: button;
-
+          a {
+            background-color: #0E1F98;
+            box-shadow: 0 5px 0 darkred;
+            padding: 1em 1.5em;
+            position: relative;
             text-decoration: none;
-            color: initial;
+            text-transform: uppercase;
+            border-radius: 3px;
+          }
+
+          a:hover {
+            cursor: pointer;
+          }
+
+          a:active {
+            box-shadow: none;
+            top: 5px;
           }
         </style>
       </head>
       <body>
         <div class='email'>
-        <b>Hey there!</b><br><br>
+        <h1>Email Confirmation</h1><br>
         <div class='confirmationCode'>
-          ${code}<br>
-          <a class='button' href='http://localhost:2137/?code=${code}'>Copy</a>
+          To make sure your UniLogin account is safe and secure, we ask you to authenticate your email address by copying the code below and pasting it in UniLogin.
+
+          <br>Your code: ${code}<br><br>
+          <a href='http://localhost:2137/?code=${code}' color='#ffffff'>Copy</a>
         </div><br>
         </div>
       </body>
