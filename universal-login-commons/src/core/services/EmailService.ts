@@ -41,19 +41,30 @@ export class EmailService {
             left: 50%;
             font-size: 20px;
           }
-          body {
+          .email {
             position: relative;
             width: 600px;
             height: 1021px;
-            background-image: url('../../../confirmationMail.png');
+            background: #fff
+          }
+          a.button {
+            -webkit-appearance: button;
+            -moz-appearance: button;
+            appearance: button;
+
+            text-decoration: none;
+            color: initial;
           }
         </style>
       </head>
       <body>
+        <div class='email'>
         <b>Hey there!</b><br><br>
-
-        <div class='confirmationCode'>${code}</div><br>
-        <button>Copy</button>
+        <div class='confirmationCode'>
+          ${code}<br>
+          <a class='button' href='http://localhost:2137/?code=${code}'>Copy</a>
+        </div><br>
+        </div>
       </body>
       </html>
       `,
