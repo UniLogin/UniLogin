@@ -8,8 +8,6 @@ export const getConfig = () => ({
   ...baseConfig,
   network: 'ropsten',
   jsonRpcUrl: `https://eth-ropsten.alchemyapi.io/v2/${getEnv('ALCHEMY_API_KEY', '')}`,
-  transporterEmail: getEnv('TRANSPORTER_EMAIL', ''),
-  transporterEmailPassword: getEnv('TRANSPORTER_EMAIL_PASSWORD', ''),
   ensAddress: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
   ensRegistrars: ['unilogin.test'],
   ensRegistrar: '0x223cE85C5A77086e4f0EAb59286c58299A7616B1',

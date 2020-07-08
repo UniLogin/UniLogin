@@ -46,7 +46,7 @@ export {CATEGORIES, getBaseEmojiCode, getColoredEmojiCode, getEmojiColor, getEmo
 export {getEmojiCodePoint} from './core/utils/emojiCodePoint';
 export {isValidEnsName, parseDomain} from './core/utils/ens';
 export {ensure, ensureNotEmpty, ensureNotFalsy, ensureNotNullish} from './core/utils/errors/ensure';
-export {InvalidContract, NotEnoughTokens, PaymentError, ValidationError, InvalidNetwork, CannotSendEmail} from './core/utils/errors/errors';
+export {InvalidContract, NotEnoughTokens, PaymentError, ValidationError, InvalidNetwork} from './core/utils/errors/errors';
 export {onCritical} from './core/utils/errors/onCritical';
 export {findGasMode, findGasOption, getGasPriceFor, FAST_GAS_MODE_INDEX} from './core/utils/gasPriceMode';
 export {generateBackupCode} from './core/utils/generateBackupCode';

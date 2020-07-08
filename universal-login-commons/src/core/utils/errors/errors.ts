@@ -52,10 +52,3 @@ export class InvalidNetwork extends Error {
     Object.setPrototypeOf(this, InvalidNetwork.prototype);
   }
 }
-
-export class CannotSendEmail extends Error {
-  constructor(message: string) {
-    super(message);
-    Object.setPrototypeOf(this, CannotSendEmail.prototype);
-  }
-}
