@@ -3,7 +3,7 @@ import WalletRouter from '../routes/wallet';
 import ConfigRouter, {getPublicConfig} from '../routes/config';
 import RequestAuthorisationRouter from '../routes/authorisation';
 import DevicesRouter from '../routes/devices';
-import EmailConfirmationRouter from '../routes/emailConfirmation';
+import EmailRouter from '../routes/email';
 import {WalletDeploymentService} from '../../integration/ethereum/WalletDeploymentService';
 import ENSService from '../../integration/ethereum/ensService';
 import bodyParser from 'body-parser';
@@ -141,7 +141,7 @@ class Relayer {
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
 
     this.app.use(bodyParser.json());
-    this.app.use('/emailConfirmation', EmailConfirmationRouter(emailConfirmationHandler));
+    this.app.use('/email', EmailRouter(emailConfirmationHandler));
     this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, this.futureWalletHandler, apiKeyHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(authorisationService));

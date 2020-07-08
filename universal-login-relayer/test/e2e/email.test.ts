@@ -13,14 +13,14 @@ describe('E2E: Relayer - Email Confirmation', () => {
 
   it('returns 400, when missing parameter', async () => {
     const result = await chai.request(relayerUrl)
-      .post('/emailConfirmation');
+      .post('/email/request');
     expect(result.status).to.eq(400);
   });
 
   it('returns 201 if valid future wallet', async () => {
     const email = 'hello@unilogin.io';
     const result = await chai.request(relayerUrl)
-      .post('/emailConfirmation')
+      .post('/email/request')
       .send({email, ensName: 'hello.unilogin.eth'});
     expect(result.status).to.eq(201);
     expect(result.body).to.deep.eq({response: email});
