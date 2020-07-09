@@ -68,6 +68,7 @@ class Relayer {
   protected tokenPricesService: TokenPricesService = {} as TokenPricesService;
   protected gasPriceOracle: GasPriceOracle = {} as GasPriceOracle;
   protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
+  protected emailService: EmailService = {} as EmailService;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
@@ -125,8 +126,8 @@ class Relayer {
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const futureWalletStore = new FutureWalletStore(this.database);
     const emailConfirmationStore = new EmailConfirmationsStore(this.database);
-    const emailService = new EmailService(this.config.emailAddress, this.config.emailPassword);
-    const emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStore, emailService);
+    this.emailService = new EmailService(this.config.emailAddress, this.config.emailPassword);
+    const emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStore, this.emailService);
     this.tokenPricesService = new TokenPricesService();
     const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
     const tokenDetailsService = new TokenDetailsService(this.provider);
