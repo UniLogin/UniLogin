@@ -15,7 +15,7 @@ export class EncryptedWalletsStore {
 
   async get(email: string): Promise<EncryptedWallet> {
     return this.database(this.tableName)
-      .select(['walletJSON', 'email', 'ensName'])
+      .select(['email', 'ensName', 'walletJSON'])
       .where('email', email)
       .first();
   }
