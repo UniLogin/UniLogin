@@ -51,7 +51,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './src/ui/copyToClipboard.html',
-      filename: "./copyToClipboard.html",
+      filename: "./copyToClipboard",
     }),
   ],
   devServer: {
