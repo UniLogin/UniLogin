@@ -1,5 +1,5 @@
 type ErrorType =
-  'DuplicatedEmail' |
+  'DuplicatedEmailConfirmation' |
   'DuplicatedSignature' |
   'DuplicatedExecution' |
   'EnsNameTaken' |
@@ -88,7 +88,7 @@ export class InvalidCode extends ValidationFailed {
 
 export class CodeExpired extends ValidationFailed {
   constructor() {
-    super('Code is expired', 'InvalidCode');
+    super('Code expired', 'InvalidCode');
     Object.setPrototypeOf(this, InvalidCode.prototype);
   }
 }
@@ -163,10 +163,10 @@ export class InvalidRefundReceiver extends ValidationFailed {
   }
 }
 
-export class DuplicatedEmail extends ValidationFailed {
+export class DuplicatedEmailConfirmation extends ValidationFailed {
   constructor(email: string) {
-    super(`Email already is used: ${email}`, 'DuplicatedEmail');
-    Object.setPrototypeOf(this, DuplicatedEmail.prototype);
+    super(`Email already used: ${email}`, 'DuplicatedEmailConfirmation');
+    Object.setPrototypeOf(this, DuplicatedEmailConfirmation.prototype);
   }
 }
 

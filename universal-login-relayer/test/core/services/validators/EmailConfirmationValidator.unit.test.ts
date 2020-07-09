@@ -47,7 +47,7 @@ describe('UNIT: EmailConfirmationValidator', () => {
   });
 
   it('email is confirmed', async () => {
-    await expect(validator.validate(duplicatedEmail, code)).to.be.rejectedWith('Email already is used: test@unilogin.test');
+    await expect(validator.validate(duplicatedEmail, code)).to.be.rejectedWith('Email already used: test@unilogin.test');
   });
 
   it('email is not confirmed validate fails', async () => {
@@ -62,8 +62,8 @@ describe('UNIT: EmailConfirmationValidator', () => {
     await expect(validator.validate(email, '123456')).to.be.rejectedWith('Invalid code: 123456');
   });
 
-  it('code is expired', async () => {
-    await expect(validator.validate(expiredMail, code)).to.be.rejectedWith('Code is expired');
+  it('Code expired', async () => {
+    await expect(validator.validate(expiredMail, code)).to.be.rejectedWith('Code expired');
     (validator as any).codeDurationInMinutes = 60 * 24 * 5;
     await expect(validator.validate(expiredMail, code)).to.be.fulfilled;
   });
