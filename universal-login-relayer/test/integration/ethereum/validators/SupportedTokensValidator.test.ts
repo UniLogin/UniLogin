@@ -7,6 +7,8 @@ describe('UNIT: SupportedTokensValidator', () => {
 
   it('won`t throw if token is supported', () => {
     expect(supportedTokensValidator.validate({gasToken: ETHER_NATIVE_TOKEN.address} as SignedMessage)).to.not.throw;
+    expect(supportedTokensValidator.validate({gasToken: ETHER_NATIVE_TOKEN.address.toLowerCase()} as SignedMessage)).to.not.throw;
+    expect(supportedTokensValidator.validate({gasToken: ETHER_NATIVE_TOKEN.address.toUpperCase()} as SignedMessage)).to.not.throw;
   });
 
   it('throws UnsupportedToken error if token is not supported', () => {
