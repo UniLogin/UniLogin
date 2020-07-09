@@ -13,7 +13,7 @@ export class EmailConfirmationValidator {
     const emailConfirmation = await this.emailConfirmationsStore.get(email);
     ensureNotFalsy(emailConfirmation, EmailNotFound, email);
     ensure(!emailConfirmation.isConfirmed, DuplicatedEmail, email);
-    ensure(code === emailConfirmation.code, InvalidCode, code);
     ensure(moment(emailConfirmation.createdAt).add(this.codeDurationInMinutes, 'm').isAfter(), CodeExpired);
+    ensure(code === emailConfirmation.code, InvalidCode, code);
   }
 }

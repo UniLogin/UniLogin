@@ -59,7 +59,7 @@ describe('UNIT: EmailConfirmationValidator', () => {
   });
 
   it('code is wrong', async () => {
-  await expect(validator.validate(email, '123456')).to.be.rejectedWith('Invalid code: 123456');
+    await expect(validator.validate(email, '123456')).to.be.rejectedWith('Invalid code: 123456');
   });
 
   it('code is expired', async () => {
