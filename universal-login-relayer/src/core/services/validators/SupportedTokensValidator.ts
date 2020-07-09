@@ -1,4 +1,4 @@
-import {IMessageValidator, SignedMessage, SupportedToken, ensureNotFalsy} from '@unilogin/commons';
+import {IMessageValidator, SignedMessage, SupportedToken, ensureNotFalsy, addressEquals} from '@unilogin/commons';
 import {UnsupportedToken} from '../../utils/errors';
 
 export class SupportedTokensValidator implements IMessageValidator {
@@ -6,6 +6,6 @@ export class SupportedTokensValidator implements IMessageValidator {
   }
 
   validate(signedMessage: SignedMessage) {
-    ensureNotFalsy(this.supportedTokens.find((token) => token.address === signedMessage.gasToken), UnsupportedToken, signedMessage.gasToken);
+    ensureNotFalsy(this.supportedTokens.find((token) => addressEquals(token.address, signedMessage.gasToken)), UnsupportedToken, signedMessage.gasToken);
   }
 }

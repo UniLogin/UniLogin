@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import {ensure} from '../..';
+import {ensure, addressEquals} from '../..';
 import {BigNumberish} from 'ethers/utils';
 
 export class CurrencyValue<T extends string = string> {
@@ -23,12 +23,12 @@ export class CurrencyValue<T extends string = string> {
   }
 
   add(other: CurrencyValue<T>) {
-    ensure(this.address === other.address, TypeError);
+    ensure(addressEquals(this.address, other.address), TypeError);
     return new CurrencyValue(this.value.add(other.value), this.address);
   }
 
   sub(other: CurrencyValue<T>) {
-    ensure(this.address === other.address, TypeError);
+    ensure(addressEquals(this.address, other.address), TypeError);
     return new CurrencyValue(this.value.sub(other.value), this.address);
   }
 
@@ -41,7 +41,7 @@ export class CurrencyValue<T extends string = string> {
   }
 
   equals(other: CurrencyValue<T>) {
-    return this.value.eq(other.value) && this.address === other.address;
+    return this.value.eq(other.value) && addressEquals(this.address, other.address);
   }
 
   gt(other: CurrencyValue<T>) {
