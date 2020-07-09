@@ -50,6 +50,7 @@ import {GasTokenValidator} from '../../core/services/validators/GasTokenValidato
 import {BalanceValidator} from '../../integration/ethereum/BalanceValidator';
 import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
 import {EmailConfirmationHandler} from '../../core/services/EmailConfirmationHandler';
+import {EmailService} from '../../integration/ethereum/EmailService';
 
 const defaultPort = '3311';
 
@@ -124,7 +125,8 @@ class Relayer {
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const futureWalletStore = new FutureWalletStore(this.database);
     const emailConfirmationStore = new EmailConfirmationsStore(this.database);
-    const emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStore);
+    const emailService = new EmailService(this.config.emailAddress, this.config.emailPassword);
+    const emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStore, emailService);
     this.tokenPricesService = new TokenPricesService();
     const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
     const tokenDetailsService = new TokenDetailsService(this.provider);

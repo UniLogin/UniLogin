@@ -2,14 +2,17 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {EmailConfirmationHandler, generateValidationCode} from '../../../src/core/services/EmailConfirmationHandler';
 import {EmailConfirmationsStore} from '../../../src/integration/sql/services/EmailConfirmationsStore';
+import {EmailService} from '../../../src/integration/ethereum/EmailService';
 
 describe('UNIT: EmailConfirmationHandler', () => {
   let emailConfirmationStoreStub: sinon.SinonStubbedInstance<EmailConfirmationsStore>;
+  let emailServiceStub: sinon.SinonStubbedInstance<EmailService>;
   let emailConfirmationHandler: EmailConfirmationHandler;
 
   before(() => {
     emailConfirmationStoreStub = sinon.createStubInstance(EmailConfirmationsStore);
-    emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStoreStub as any);
+    emailServiceStub = sinon.createStubInstance(EmailService);
+    emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStoreStub as any, emailServiceStub as any);
   });
 
   it('generateValidationCode', () => {
@@ -21,7 +24,7 @@ describe('UNIT: EmailConfirmationHandler', () => {
     }
   });
 
-  it('should add email request to database', async () => {
+  it('should handle email request', async () => {
     const email = 'hello@unilogin.io';
     const ensName = 'hello.unilogin.eth';
 
@@ -34,5 +37,7 @@ describe('UNIT: EmailConfirmationHandler', () => {
     expect(addArgs).deep.eq({email, ensName, isConfirmed: false});
     expect(code).to.be.a('string').length(6);
     expect(createdAt).to.be.a('date').below(new Date());
+
+    expect(emailServiceStub.sendConfirmationMail).calledOnceWithExactly(email, code);
   });
 });

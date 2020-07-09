@@ -1,19 +1,23 @@
 import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
+import {EmailService} from '../../integration/ethereum/EmailService';
 
 export class EmailConfirmationHandler {
   constructor(
     private emailConfirmationStore: EmailConfirmationsStore,
+    private emailService: EmailService,
   ) {}
 
-  request(email: string, ensName: string) {
-    const emailConfirmation = {
+  async request(email: string, ensName: string) {
+    const code = generateValidationCode(6);
+    await this.emailConfirmationStore.add({
       email,
       ensName,
-      code: generateValidationCode(6),
+      code,
       createdAt: new Date(),
       isConfirmed: false,
-    };
-    return this.emailConfirmationStore.add(emailConfirmation);
+    });
+    await this.emailService.sendConfirmationMail(email, code);
+    return email;
   }
 }
 
