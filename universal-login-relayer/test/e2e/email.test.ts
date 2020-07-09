@@ -18,7 +18,7 @@ describe('E2E: Relayer - Email Confirmation', () => {
   });
 
   it('returns 201 if valid future wallet', async () => {
-    const email = 'hello@unilogin.io';
+    const email = 'account@unilogin.test';
     const result = await chai.request(relayerUrl)
       .post('/email/request')
       .send({email, ensName: 'hello.unilogin.eth'});

@@ -25,7 +25,7 @@ describe('UNIT: EmailConfirmationHandler', () => {
   });
 
   it('should handle email request', async () => {
-    const email = 'hello@unilogin.io';
+    const email = 'account@unilogin.test';
     const ensName = 'hello.unilogin.eth';
 
     await emailConfirmationHandler.request(email, ensName);
