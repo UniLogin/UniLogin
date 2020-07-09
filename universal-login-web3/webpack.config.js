@@ -49,6 +49,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/ui/index.html',
     }),
+    new HtmlWebpackPlugin({
+      template: './src/ui/copyToClipboard.html',
+      filename: "./copyToClipboard",
+    }),
   ],
   devServer: {
     historyApiFallback: true,
