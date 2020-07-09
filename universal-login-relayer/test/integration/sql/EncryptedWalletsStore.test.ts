@@ -1,6 +1,6 @@
 import {getKnexConfig} from '../../testhelpers/knex';
 import {EncryptedWalletsStore} from '../../../src/integration/sql/services/EncryptedWalletsStore';
-import {EncryptedWallets} from '@unilogin/commons';
+import {EncryptedWallet} from '@unilogin/commons';
 import {expect} from 'chai';
 
 describe('UNIT: EncryptedWalletsStore', () => {
@@ -9,7 +9,7 @@ describe('UNIT: EncryptedWalletsStore', () => {
 
   it('Should add encryptedWallet to database and get it from it', async () => {
     const exampleEmail = 'encryptedWallet@email.com';
-    const encryptedWallets: EncryptedWallets = {
+    const encryptedWallets: EncryptedWallet = {
       walletJSON: 'encryptedWalletJSON',
       email: exampleEmail,
       ensName: 'bob.unilogin.eth',
