@@ -6,9 +6,10 @@
 
 exports.up = async (knex) => {
   await knex.schema.createTable('encrypted_wallets', (table) => {
-    table.string('email').primary();
-    table.string('ensName').notNullable();
+    table.increments();
     table.string('walletJSON', 900).notNullable();
+    table.string('email').unique().notNullable();
+    table.string('ensName').notNullable();
   });
 };
 
