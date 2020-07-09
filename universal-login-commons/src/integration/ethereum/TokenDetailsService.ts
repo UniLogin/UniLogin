@@ -1,6 +1,7 @@
 import {providers, Contract, utils} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from '../../core/constants/constants';
 import {TokenDetails} from '../../core/models/TokenData';
+import {addressEquals} from '../..';
 
 const tokenAbiString = [
   'function name() public view returns (string)',
@@ -26,7 +27,7 @@ export class TokenDetailsService {
   }
 
   async getTokenDetails(tokenAddress: string): Promise<TokenDetails> {
-    if (tokenAddress === this.saiTokenAddress) {
+    if (this.saiTokenAddress && addressEquals(tokenAddress, this.saiTokenAddress)) {
       return {address: this.saiTokenAddress, symbol: 'SAI', name: 'Sai Stablecoin v1.0', decimals: 18};
     }
     const symbol = await this.getSymbol(tokenAddress);

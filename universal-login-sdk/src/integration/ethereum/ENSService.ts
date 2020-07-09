@@ -1,6 +1,6 @@
 import {Contract, providers, utils} from 'ethers';
 import {AddressZero} from 'ethers/constants';
-import {parseDomain, ENSDomainInfo} from '@unilogin/commons';
+import {parseDomain, ENSDomainInfo, addressEquals} from '@unilogin/commons';
 import {ENSInterface, gnosisSafe} from '@unilogin/contracts';
 
 export class ENSService {
@@ -24,7 +24,7 @@ export class ENSService {
   async argsFor(ensName: string) {
     const [label, domain] = parseDomain(ensName);
     const domainInfo = await this.getDomainInfo(domain);
-    if (domainInfo.registrarAddress === AddressZero || domainInfo.resolverAddress === AddressZero) {
+    if (addressEquals(domainInfo.registrarAddress, AddressZero) || addressEquals(domainInfo.resolverAddress, AddressZero)) {
       return null;
     }
     const hashLabel = utils.keccak256(utils.toUtf8Bytes(label));
