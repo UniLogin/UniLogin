@@ -1,47 +1,70 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
-import {EmailConfirmationValidator as EmailConfirmationValidator} from '../../../../src/core/services/validators/EmailConfirmationValidator';
+import {EmailConfirmationValidator} from '../../../../src/core/services/validators/EmailConfirmationValidator';
 import {EmailConfirmationsStore} from '../../../../src/integration/sql/services/EmailConfirmationsStore';
 
 chai.use(chaiAsPromised);
 
 describe('UNIT: EmailConfirmationValidator', () => {
   let validator: EmailConfirmationValidator;
-  const email1 = 'test@unilogin.test';
-  const email2 = 'account@unilogin.test';
+  const duplicatedEmail = 'test@unilogin.test';
+  const email = 'account@unilogin.test';
+  const expiredMail = 'expiredMail@unilogin.test';
+  const date = new Date();
+  const code = '012345';
+  const codeDuration = 5;
 
   before(() => {
     const emailConfirmationServiceStub = sinon.createStubInstance(EmailConfirmationsStore);
-    const emailConfirmation1 = {
-      email: email1,
+
+    const confirmedEmailConfirmation = {
+      email: duplicatedEmail,
+      code,
       ensName: 'account.unilogin.test',
-      code: '012345',
-      createdAt: new Date(),
+      createdAt: date,
       isConfirmed: true,
     };
-    const emailConfirmation2 = {
-      email: email2,
+    const emailConfirmation = {
+      email: email,
+      code,
       ensName: 'account.unilogin.test',
-      code: '012345',
-      createdAt: new Date(),
+      createdAt: date,
       isConfirmed: false,
     };
-    emailConfirmationServiceStub.get.withArgs(email1).resolves(emailConfirmation1);
-    emailConfirmationServiceStub.get.withArgs(email2).resolves(emailConfirmation2);
+    const expiredEmailConfirmation = {
+      email: expiredMail,
+      code,
+      ensName: 'account.unilogin.test',
+      createdAt: new Date('2020-07-09T13:00:00.000Z'),
+      isConfirmed: false,
+    };
+    emailConfirmationServiceStub.get.withArgs(duplicatedEmail).resolves(confirmedEmailConfirmation);
+    emailConfirmationServiceStub.get.withArgs(email).resolves(emailConfirmation);
+    emailConfirmationServiceStub.get.withArgs(expiredMail).resolves(expiredEmailConfirmation);
 
-    validator = new EmailConfirmationValidator(emailConfirmationServiceStub as any);
+    validator = new EmailConfirmationValidator(emailConfirmationServiceStub as any, codeDuration);
   });
 
-  it('fails because email is confirmed', async () => {
-    await expect(validator.validate(email1)).to.be.rejectedWith('Email already is used: test@unilogin.test');
+  it('email is confirmed', async () => {
+    await expect(validator.validate(duplicatedEmail, code)).to.be.rejectedWith('Email already is used: test@unilogin.test');
   });
 
-  it('fulfilled because email is not confirmed validate fails', async () => {
-    await expect(validator.validate(email2)).to.be.fulfilled;
+  it('email is not confirmed validate fails', async () => {
+    await expect(validator.validate(email, code)).to.be.fulfilled;
   });
 
-  it('fails because email is not request confirmation', async () => {
-    await expect(validator.validate('not-existed@unilogin.test')).to.be.rejectedWith('Email confirmation is not requested for not-existed@unilogin.test');
+  it('email is not request confirmation', async () => {
+    await expect(validator.validate('not-existed@unilogin.test', code)).to.be.rejectedWith('Email confirmation is not requested for not-existed@unilogin.test');
+  });
+
+  it('code is wrong', async () => {
+  await expect(validator.validate(email, '123456')).to.be.rejectedWith('Invalid code: 123456');
+  });
+
+  it('code is expired', async () => {
+    await expect(validator.validate(expiredMail, code)).to.be.rejectedWith('Code is expired');
+    (validator as any).codeDurationInMinutes = 60 * 24 * 5;
+    await expect(validator.validate(expiredMail, code)).to.be.fulfilled;
   });
 });

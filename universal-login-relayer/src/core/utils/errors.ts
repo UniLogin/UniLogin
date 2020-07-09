@@ -8,6 +8,7 @@ type ErrorType =
   'GasLimitTooHigh' |
   'GasUsedNotFound' |
   'InsufficientGas' |
+  'InvalidCode' |
   'InvalidENSDomain' |
   'InvalidExecution' |
   'InvalidMaster' |
@@ -75,6 +76,20 @@ export class InvalidProxy extends ValidationFailed {
   constructor(address: string, proxyHash: string, supportedProxyHashes: string[]) {
     super(`Invalid proxy at address '${address}'. Deployed contract bytecode hash: '${proxyHash}'. Supported bytecode hashes: [${supportedProxyHashes}]`, 'InvalidProxy');
     Object.setPrototypeOf(this, InvalidProxy.prototype);
+  }
+}
+
+export class InvalidCode extends ValidationFailed {
+  constructor(code: string) {
+    super(`Invalid code: ${code}`, 'InvalidCode');
+    Object.setPrototypeOf(this, InvalidCode.prototype);
+  }
+}
+
+export class CodeExpired extends ValidationFailed {
+  constructor() {
+    super('Code is expired', 'InvalidCode');
+    Object.setPrototypeOf(this, InvalidCode.prototype);
   }
 }
 
