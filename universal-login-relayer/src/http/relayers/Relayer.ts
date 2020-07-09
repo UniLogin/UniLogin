@@ -3,6 +3,7 @@ import WalletRouter from '../routes/wallet';
 import ConfigRouter, {getPublicConfig} from '../routes/config';
 import RequestAuthorisationRouter from '../routes/authorisation';
 import DevicesRouter from '../routes/devices';
+import EmailRouter from '../routes/email';
 import {WalletDeploymentService} from '../../integration/ethereum/WalletDeploymentService';
 import ENSService from '../../integration/ethereum/ensService';
 import bodyParser from 'body-parser';
@@ -47,6 +48,9 @@ import SQLRepository from '../../integration/sql/services/SQLRepository';
 import Deployment from '../../core/models/Deployment';
 import {GasTokenValidator} from '../../core/services/validators/GasTokenValidator';
 import {BalanceValidator} from '../../integration/ethereum/BalanceValidator';
+import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
+import {EmailConfirmationHandler} from '../../core/services/EmailConfirmationHandler';
+import {EmailService} from '../../integration/ethereum/EmailService';
 
 const defaultPort = '3311';
 
@@ -64,6 +68,7 @@ class Relayer {
   protected tokenPricesService: TokenPricesService = {} as TokenPricesService;
   protected gasPriceOracle: GasPriceOracle = {} as GasPriceOracle;
   protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
+  protected emailService: EmailService = {} as EmailService;
 
   constructor(protected config: Config, provider?: providers.Provider) {
     this.port = config.port || defaultPort;
@@ -120,6 +125,9 @@ class Relayer {
     const devicesStore = new DevicesStore(this.database);
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const futureWalletStore = new FutureWalletStore(this.database);
+    const emailConfirmationStore = new EmailConfirmationsStore(this.database);
+    this.emailService = new EmailService(this.config.emailAddress, this.config.emailPassword);
+    const emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStore, this.emailService);
     this.tokenPricesService = new TokenPricesService();
     const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
     const tokenDetailsService = new TokenDetailsService(this.provider);
@@ -136,6 +144,7 @@ class Relayer {
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
 
     this.app.use(bodyParser.json());
+    this.app.use('/email', EmailRouter(emailConfirmationHandler));
     this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, this.futureWalletHandler, apiKeyHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(authorisationService));
