@@ -1,33 +1,35 @@
 type ErrorType =
-  'NotFound' |
-  'GasLimitTooHigh' |
-  'InsufficientGas' |
-  'StatusNotFound' |
-  'MessageNotFound' |
+  'DuplicatedEmail' |
+  'DuplicatedSignature' |
+  'DuplicatedExecution' |
+  'EnsNameTaken' |
+  'EmailNotFound' |
   'FutureWalletNotFound' |
-  'TransactionHashNotFound' |
+  'GasLimitTooHigh' |
   'GasUsedNotFound' |
-  'NodeEnvNotSpecified' |
+  'InsufficientGas' |
   'InvalidENSDomain' |
-  'PaymentError' |
-  'NotEnoughGas' |
-  'NotEnoughBalance' |
   'InvalidExecution' |
   'InvalidMaster' |
   'InvalidProxy' |
   'InvalidSignature' |
-  'SignatureNotFound' |
-  'DuplicatedSignature' |
-  'DuplicatedExecution' |
-  'NotEnoughSignatures' |
   'InvalidTransaction' |
   'InvalidHexData' |
   'InvalidTolerance' |
   'InvalidValue' |
   'InvalidApiKey' |
-  'EnsNameTaken' |
-  'UnauthorisedAddress' |
   'InvalidRefundReceiver' |
+  'MessageNotFound' |
+  'NodeEnvNotSpecified' |
+  'NotFound' |
+  'NotEnoughGas' |
+  'NotEnoughBalance' |
+  'NotEnoughSignatures' |
+  'PaymentError' |
+  'SignatureNotFound' |
+  'StatusNotFound' |
+  'TransactionHashNotFound' |
+  'UnauthorisedAddress' |
   'UnsupportedToken';
 
 export class RelayerError extends Error {
@@ -146,11 +148,25 @@ export class InvalidRefundReceiver extends ValidationFailed {
   }
 }
 
+export class DuplicatedEmail extends ValidationFailed {
+  constructor(email: string) {
+    super(`Email already is used: ${email}`, 'DuplicatedEmail');
+    Object.setPrototypeOf(this, DuplicatedEmail.prototype);
+  }
+}
+
 export class NotFound extends RelayerError {
   constructor(message: string, errorType: ErrorType) {
     super(message, errorType);
     this.errorType = errorType;
     Object.setPrototypeOf(this, NotFound.prototype);
+  }
+}
+
+export class EmailNotFound extends NotFound {
+  constructor(email: string) {
+    super(`Email confirmation is not requested for ${email}`, 'EmailNotFound');
+    Object.setPrototypeOf(this, EmailNotFound.prototype);
   }
 }
 
