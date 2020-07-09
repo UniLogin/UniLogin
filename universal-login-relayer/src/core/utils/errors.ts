@@ -273,3 +273,10 @@ export class UnsupportedToken extends ValidationFailed {
     Object.setPrototypeOf(this, UnsupportedToken.prototype);
   }
 }
+
+export class CannotSendEmail extends Error {
+  constructor(message: string) {
+    super(message);
+    Object.setPrototypeOf(this, CannotSendEmail.prototype);
+  }
+}

@@ -29,4 +29,6 @@ export const baseConfig = {
   httpsRedirect: getEnv('HTTPS_REDIRECT', '') === 'true',
   port: getEnv('PORT', ''),
   privateKey: getEnv('PRIVATE_KEY', ''),
+  emailAddress: getEnv('EMAIL_ADDRESS', ''),
+  emailPassword: getEnv('EMAIL_PASSWORD', ''),
 };
