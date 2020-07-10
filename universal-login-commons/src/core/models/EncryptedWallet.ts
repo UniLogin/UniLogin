@@ -15,7 +15,7 @@ export interface Crypto {
   cipherparams: CipherParams;
   ciphertext: string;
   kdf: string;
-  kdfparams: Record<string, any>;
+  kdfparams: KdfParams;
   mac: string;
 }
 
