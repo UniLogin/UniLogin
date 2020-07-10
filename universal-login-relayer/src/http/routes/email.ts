@@ -10,6 +10,13 @@ const emailConfirmationRequest = (emailConfirmationHandler: EmailConfirmationHan
     return responseOf({response: result}, 201);
   };
 
+const emailConfirmationHandling = (emailConfirmationHandler: EmailConfirmationHandler) =>
+  async (data: {body: {email: string, code: string}}) => {
+    const {email, code} = data.body;
+    await emailConfirmationHandler.confirm(email, code);
+    return responseOf({response: email}, 201);
+  };
+
 export default (emailConfirmationHandler: EmailConfirmationHandler) => {
   const router = Router();
 
@@ -21,6 +28,16 @@ export default (emailConfirmationHandler: EmailConfirmationHandler) => {
       }),
     }),
     emailConfirmationRequest(emailConfirmationHandler),
+  ));
+
+  router.post('/confirmation', asyncHandler(
+    sanitize({
+      body: asObject({
+        email: asString,
+        code: asString,
+      }),
+    }),
+    emailConfirmationHandling(emailConfirmationHandler),
   ));
 
   return router;

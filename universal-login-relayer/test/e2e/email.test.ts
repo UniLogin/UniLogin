@@ -11,19 +11,46 @@ describe('E2E: Relayer - Email Confirmation', () => {
     ({relayer} = await startRelayer(relayerPort));
   });
 
-  it('returns 400, when missing parameter', async () => {
-    const result = await chai.request(relayerUrl)
-      .post('/email/request');
-    expect(result.status).to.eq(400);
+  describe('missing parameter', () => {
+    it('/request', async () => {
+      const result = await chai.request(relayerUrl)
+        .post('/email/request');
+      expect(result.status).to.eq(400);
+    });
+
+    it('/confirmation', async () => {
+      const result = await chai.request(relayerUrl)
+        .post('/email/confirmation');
+      expect(result.status).to.eq(400);
+    });
   });
 
-  it('returns 201 if valid future wallet', async () => {
+  it('roundtrip', async () => {
     const email = 'account@unilogin.test';
-    const result = await chai.request(relayerUrl)
+
+    const notExpectedConfirmationResult = await chai.request(relayerUrl)
+      .post('/email/confirmation')
+      .send({email, code: '123456'});
+    expect(notExpectedConfirmationResult.status).to.eq(404);
+    expect(notExpectedConfirmationResult.body).to.deep.eq({
+      error: 'Error: Email confirmation not found for email: account@unilogin.test',
+      type: 'EmailNotFound',
+    });
+
+    const confirmationRequestResult = await chai.request(relayerUrl)
       .post('/email/request')
       .send({email, ensName: 'hello.unilogin.eth'});
-    expect(result.status).to.eq(201);
-    expect(result.body).to.deep.eq({response: email});
+    expect(confirmationRequestResult.status).to.eq(201);
+    expect(confirmationRequestResult.body).to.deep.eq({response: email});
+
+    const confirmationResult = await chai.request(relayerUrl)
+      .post('/email/confirmation')
+      .send({email, code: '123456'});
+    expect(confirmationResult.status).to.eq(400);
+    expect(confirmationResult.body).to.deep.eq({
+      error: 'Error: Invalid code: 123456',
+      type: 'InvalidCode',
+    });
   });
 
   after(() => {
