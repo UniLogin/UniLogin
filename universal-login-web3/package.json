@@ -12,6 +12,7 @@
     "@unilogin/sdk": "0.6.1",
     "bem-components-react": "^0.1.2",
     "ethers": "^4.0.47",
+    "html-loader": "^1.1.0",
     "moment": "^2.24.0",
     "reactive-properties": "^0.1.11",
     "styled-components": "^5.0.0",
