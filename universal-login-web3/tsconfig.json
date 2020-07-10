@@ -3,6 +3,8 @@
   "compilerOptions": {
     "jsx": "react",
     "outDir": "dist",
+    "declaration": false,
+    "declarationMap": false
   },
   "include": [
     "shims",

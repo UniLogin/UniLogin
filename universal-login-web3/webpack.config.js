@@ -1,5 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -49,10 +51,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/ui/index.html',
     }),
-    new HtmlWebpackPlugin({
-      template: './src/ui/copyToClipboard.html',
-      filename: "./copyToClipboard",
-    }),
+    new CopyPlugin([{
+      from: './src/ui/copyToClipboard.html',
+      to: './copy/index.html',
+    }]),
+    new CleanWebpackPlugin(),
   ],
   devServer: {
     historyApiFallback: true,
