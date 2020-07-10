@@ -11,7 +11,7 @@ describe('INT: EmailConfirmationsStore', () => {
     await expect(emailConfirmationsStore.get('not-existed@unilogin.eth')).rejectedWith('Email confirmation not found for email: not-existed@unilogin.eth');
   });
 
-  it('add emailConfirmation to database and get it from it', async () => {
+  it('add emailConfirmation to database, get it from it and updateConfirmation status', async () => {
     const exampleEmail = 'newEmail@email.com';
     const emailConfirmation: EmailConfirmation = {
       email: exampleEmail,
@@ -23,7 +23,11 @@ describe('INT: EmailConfirmationsStore', () => {
 
     const email = await emailConfirmationsStore.add(emailConfirmation);
     expect(email).be.deep.eq(exampleEmail);
-    expect(await emailConfirmationsStore.get(email)).be.deep.eq(emailConfirmation);
+    const gottenEmailConfirmation = await emailConfirmationsStore.get(email);
+    expect(gottenEmailConfirmation).be.deep.eq(emailConfirmation);
+
+    await emailConfirmationsStore.updateIsConfirmed(gottenEmailConfirmation, true);
+    expect(await emailConfirmationsStore.get(email)).to.deep.eq({...gottenEmailConfirmation, isConfirmed: true});
   });
 
   it('add two emailConfirmations to database and get the second one', async () => {

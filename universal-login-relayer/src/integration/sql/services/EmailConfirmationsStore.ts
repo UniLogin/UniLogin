@@ -1,5 +1,6 @@
 import Knex from 'knex';
-import {EmailConfirmation} from '@unilogin/commons';
+import {EmailConfirmation, ensureNotFalsy} from '@unilogin/commons';
+import {EmailNotFound} from '../../../core/utils/errors';
 
 export class EmailConfirmationsStore {
   private tableName = 'email_confirmations';
@@ -15,7 +16,7 @@ export class EmailConfirmationsStore {
   }
 
   async get(email: string): Promise<EmailConfirmation> {
-    const {created_at, ...rest} = await this.database(this.tableName)
+    const emailConfirmation = await this.database(this.tableName)
       .select(['email', 'ensName', 'code', 'created_at', 'isConfirmed'])
       .where('email', email)
       .orderBy('created_at', 'desc')
@@ -23,5 +24,14 @@ export class EmailConfirmationsStore {
     ensureNotFalsy(emailConfirmation, EmailNotFound, email);
     const {created_at, ...rest} = emailConfirmation;
     return {...rest, createdAt: created_at};
+  }
+
+  async updateIsConfirmed({createdAt, email}: EmailConfirmation, isConfirmed: boolean) {
+    return this.database(this.tableName)
+      .update({isConfirmed})
+      .where({
+        email,
+        created_at: createdAt,
+      });
   }
 }
