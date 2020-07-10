@@ -55,7 +55,7 @@ describe('UNIT: EmailConfirmationValidator', () => {
   });
 
   it('email is not request confirmation', async () => {
-    await expect(validator.validate('not-existed@unilogin.test', code)).to.be.rejectedWith('Email confirmation is not requested for not-existed@unilogin.test');
+    await expect(validator.validate('not-existed@unilogin.test', code)).to.be.rejectedWith('Email confirmation not found for email: not-existed@unilogin.test');
   });
 
   it('code is wrong', async () => {

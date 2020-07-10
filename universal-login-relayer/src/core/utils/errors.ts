@@ -180,7 +180,7 @@ export class NotFound extends RelayerError {
 
 export class EmailNotFound extends NotFound {
   constructor(email: string) {
-    super(`Email confirmation is not requested for ${email}`, 'EmailNotFound');
+    super(`Email confirmation not found for email: ${email}`, 'EmailNotFound');
     Object.setPrototypeOf(this, EmailNotFound.prototype);
   }
 }
