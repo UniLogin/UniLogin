@@ -38,11 +38,10 @@ describe('UNIT: EmailConfirmationHandler', () => {
     }
   });
 
-  it('email confirmation request', async () => {
+  it('request', async () => {
     const ensName = 'hello.unilogin.eth';
 
     const result = await emailConfirmationHandler.request(email, ensName);
-
     expect(result).eq(email);
     expect(emailConfirmationStoreStub.add.calledOnce);
 
