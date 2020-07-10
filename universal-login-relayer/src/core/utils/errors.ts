@@ -311,3 +311,10 @@ export class CannotSendEmail extends Error {
     Object.setPrototypeOf(this, CannotSendEmail.prototype);
   }
 }
+
+export class EmailNotConfirmed extends Error {
+  constructor(email: string) {
+    super(`${email} is not confirmed`);
+    Object.setPrototypeOf(this, EmailNotConfirmed.prototype);
+  }
+}
