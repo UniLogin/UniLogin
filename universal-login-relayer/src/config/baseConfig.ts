@@ -31,4 +31,5 @@ export const baseConfig = {
   privateKey: getEnv('PRIVATE_KEY', ''),
   emailAddress: getEnv('EMAIL_ADDRESS', ''),
   emailPassword: getEnv('EMAIL_PASSWORD', ''),
+  copyToClipboardUrl: 'https://universal-provider-backend.netlify.app/copy/',
 };
