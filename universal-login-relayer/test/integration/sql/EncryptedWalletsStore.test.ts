@@ -2,6 +2,7 @@ import {expect} from 'chai';
 import {StoredEncryptedWallet, TEST_ENCRYPTED_WALLET_JSON} from '@unilogin/commons';
 import {getKnexConfig} from '../../testhelpers/knex';
 import {EncryptedWalletsStore} from '../../../src/integration/sql/services/EncryptedWalletsStore';
+import {waitExpect} from '@unilogin/commons/dist/esm/test';
 
 describe('INT: EncryptedWalletsStore', () => {
   const knex = getKnexConfig();
