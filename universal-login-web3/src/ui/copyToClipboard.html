@@ -2,21 +2,14 @@
 <html>
   <head>
   <title>Copy to clipboard</title>
-  <script>
-    const copyToClipboard = () => {
-      const params = {};
-      const parser = document.createElement('a');
-      parser.href = window.location.href;
-      const query = parser.search.substring(1);
-      const vars = query.split('&');
-      for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split('=');
-        params[pair[0]] = decodeURIComponent(pair[1]);
-      }
-      if(params['code']) navigator.clipboard.writeText(params['code']);
-    }
-  </script>
   </head>
-  <body onload='copyToClipboard()'>
+  <body>
+    <script>
+      const searchParams = new URLSearchParams(window.location.search);
+      const code = searchParams.get('code');
+      if (code) {
+        navigator.clipboard.writeText(code);
+      }
+    </script>
   </body>
 </html>
