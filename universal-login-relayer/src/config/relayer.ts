@@ -6,6 +6,7 @@ export interface Config {
   port?: string;
   emailAddress: string;
   emailPassword: string;
+  copyToClipboardUrl: string;
   privateKey: string;
   ensAddress: string;
   network: string;
