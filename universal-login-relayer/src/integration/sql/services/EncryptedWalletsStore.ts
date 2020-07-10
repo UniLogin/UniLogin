@@ -8,15 +8,18 @@ export class EncryptedWalletsStore {
   }
 
   async add(encryptedWallet: EncryptedWallet) {
+    const {walletJSON, ...rest} = encryptedWallet;
     return (await this.database(this.tableName)
-      .insert(encryptedWallet)
+      .insert({...rest, walletJSON: JSON.stringify(walletJSON)})
       .returning('email'))[0];
   }
 
   async get(email: string): Promise<EncryptedWallet> {
-    return this.database(this.tableName)
+    const encryptedWallet = await this.database(this.tableName)
       .select(['email', 'ensName', 'walletJSON'])
       .where('email', email)
       .first();
+    encryptedWallet.walletJSON = JSON.parse(encryptedWallet.walletJSON);
+    return encryptedWallet;
   }
 }
