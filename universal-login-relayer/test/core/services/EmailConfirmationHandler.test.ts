@@ -3,16 +3,19 @@ import sinon from 'sinon';
 import {EmailConfirmationHandler, generateValidationCode} from '../../../src/core/services/EmailConfirmationHandler';
 import {EmailConfirmationsStore} from '../../../src/integration/sql/services/EmailConfirmationsStore';
 import {EmailService} from '../../../src/integration/ethereum/EmailService';
+import {EmailConfirmationValidator} from '../../../src/core/services/validators/EmailConfirmationValidator';
 
 describe('UNIT: EmailConfirmationHandler', () => {
   let emailConfirmationStoreStub: sinon.SinonStubbedInstance<EmailConfirmationsStore>;
   let emailServiceStub: sinon.SinonStubbedInstance<EmailService>;
+  let emailConfirmationValidatorStub: sinon.SinonStubbedInstance<EmailConfirmationValidator>;
   let emailConfirmationHandler: EmailConfirmationHandler;
 
   before(() => {
     emailConfirmationStoreStub = sinon.createStubInstance(EmailConfirmationsStore);
     emailServiceStub = sinon.createStubInstance(EmailService);
-    emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStoreStub as any, emailServiceStub as any);
+    emailConfirmationValidatorStub = sinon.createStubInstance(EmailConfirmationValidator);
+    emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStoreStub as any, emailServiceStub as any, emailConfirmationValidatorStub as any);
   });
 
   it('generateValidationCode', () => {

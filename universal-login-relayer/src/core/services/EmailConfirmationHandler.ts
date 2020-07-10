@@ -1,10 +1,12 @@
 import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
 import {EmailService} from '../../integration/ethereum/EmailService';
+import {EmailConfirmationValidator} from './validators/EmailConfirmationValidator';
 
 export class EmailConfirmationHandler {
   constructor(
     private emailConfirmationStore: EmailConfirmationsStore,
     private emailService: EmailService,
+    private emailValidator: EmailConfirmationValidator,
   ) {}
 
   async request(email: string, ensName: string) {
