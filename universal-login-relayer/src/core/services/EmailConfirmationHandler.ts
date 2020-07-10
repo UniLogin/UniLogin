@@ -23,7 +23,9 @@ export class EmailConfirmationHandler {
   }
 
   async confirm(email: string, code: string) {
-    return this.emailValidator.validate(email, code);
+    const emailConfirmation = await this.emailConfirmationStore.get(email);
+    this.emailValidator.validate(emailConfirmation, email, code);
+    await this.emailConfirmationStore.updateIsConfirmed(emailConfirmation, true);
   }
 }
 

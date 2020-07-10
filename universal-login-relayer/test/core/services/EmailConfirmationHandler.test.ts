@@ -5,21 +5,27 @@ import {EmailConfirmationsStore} from '../../../src/integration/sql/services/Ema
 import {EmailService} from '../../../src/integration/ethereum/EmailService';
 import {EmailConfirmationValidator} from '../../../src/core/services/validators/EmailConfirmationValidator';
 import {InvalidCode} from '../../../src/core/utils/errors';
+import {createTestEmailConfirmation} from '../../testhelpers/createTestEmailConfirmation';
 
 describe('UNIT: EmailConfirmationHandler', () => {
   let emailConfirmationStoreStub: sinon.SinonStubbedInstance<EmailConfirmationsStore>;
   let emailServiceStub: sinon.SinonStubbedInstance<EmailService>;
   let emailConfirmationValidatorStub: sinon.SinonStubbedInstance<EmailConfirmationValidator>;
   let emailConfirmationHandler: EmailConfirmationHandler;
-  const email = 'account@unilogin.test';
-  const code = '012345';
+
+  const emailConfirmation = createTestEmailConfirmation();
   const invalidCode = '123456';
+  const {email, code} = emailConfirmation;
 
   before(() => {
     emailConfirmationStoreStub = sinon.createStubInstance(EmailConfirmationsStore);
+    emailConfirmationStoreStub.get.resolves(emailConfirmation);
+
     emailServiceStub = sinon.createStubInstance(EmailService);
+
     emailConfirmationValidatorStub = sinon.createStubInstance(EmailConfirmationValidator);
-    emailConfirmationValidatorStub.validate.throws(new InvalidCode(invalidCode)).withArgs(email, code).resolves();
+
+    emailConfirmationValidatorStub.validate.throws(new InvalidCode(invalidCode)).withArgs(emailConfirmation, emailConfirmation.email, emailConfirmation.code).resolves();
     emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStoreStub as any, emailServiceStub as any, emailConfirmationValidatorStub as any);
   });
 
@@ -52,10 +58,13 @@ describe('UNIT: EmailConfirmationHandler', () => {
   describe('confirm', () => {
     it('valid email confirmation', async () => {
       await expect(emailConfirmationHandler.confirm(email, code)).to.be.fulfilled;
+      expect(emailConfirmationStoreStub.get).calledOnceWithExactly(email);
+      expect(emailConfirmationValidatorStub.validate).calledOnceWithExactly(emailConfirmation, email, code);
+      expect(emailConfirmationStoreStub.updateIsConfirmed).calledOnceWithExactly(emailConfirmation, true);
     });
 
     it('valid email confirmation', async () => {
       await expect(emailConfirmationHandler.confirm(email, invalidCode)).rejectedWith(`Invalid code: ${invalidCode}`);
     });
-  })
+  });
 });
