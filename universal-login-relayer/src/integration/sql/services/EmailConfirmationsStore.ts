@@ -20,6 +20,8 @@ export class EmailConfirmationsStore {
       .where('email', email)
       .orderBy('created_at', 'desc')
       .first();
+    ensureNotFalsy(emailConfirmation, EmailNotFound, email);
+    const {created_at, ...rest} = emailConfirmation;
     return {...rest, createdAt: created_at};
   }
 }
