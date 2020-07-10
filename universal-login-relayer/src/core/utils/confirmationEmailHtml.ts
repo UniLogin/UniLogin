@@ -41,7 +41,7 @@ export const confirmationEmailHtml = (code: string) => `
       To make sure your UniLogin account is safe and secure, we ask you to authenticate your email address by copying the code below and pasting it in UniLogin.
 
       <br>Your code: ${code}<br><br>
-      <a href='https://universal-provider-backend.netlify.com/copyToClipboard?code=${code}' color='#ffffff'>Copy</a>
+      <a href='https://universal-provider-backend.netlify.app/copy/?code=${code}' color='#ffffff'>Copy</a>
     </div><br>
     </div>
   </body>
