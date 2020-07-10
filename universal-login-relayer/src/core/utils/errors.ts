@@ -1,33 +1,36 @@
 type ErrorType =
-  'NotFound' |
-  'GasLimitTooHigh' |
-  'InsufficientGas' |
-  'StatusNotFound' |
-  'MessageNotFound' |
+  'DuplicatedEmailConfirmation' |
+  'DuplicatedSignature' |
+  'DuplicatedExecution' |
+  'EnsNameTaken' |
+  'EmailNotFound' |
   'FutureWalletNotFound' |
-  'TransactionHashNotFound' |
+  'GasLimitTooHigh' |
   'GasUsedNotFound' |
-  'NodeEnvNotSpecified' |
+  'InsufficientGas' |
+  'InvalidCode' |
   'InvalidENSDomain' |
-  'PaymentError' |
-  'NotEnoughGas' |
-  'NotEnoughBalance' |
   'InvalidExecution' |
   'InvalidMaster' |
   'InvalidProxy' |
   'InvalidSignature' |
-  'SignatureNotFound' |
-  'DuplicatedSignature' |
-  'DuplicatedExecution' |
-  'NotEnoughSignatures' |
   'InvalidTransaction' |
   'InvalidHexData' |
   'InvalidTolerance' |
   'InvalidValue' |
   'InvalidApiKey' |
-  'EnsNameTaken' |
-  'UnauthorisedAddress' |
   'InvalidRefundReceiver' |
+  'MessageNotFound' |
+  'NodeEnvNotSpecified' |
+  'NotFound' |
+  'NotEnoughGas' |
+  'NotEnoughBalance' |
+  'NotEnoughSignatures' |
+  'PaymentError' |
+  'SignatureNotFound' |
+  'StatusNotFound' |
+  'TransactionHashNotFound' |
+  'UnauthorisedAddress' |
   'UnsupportedToken';
 
 export class RelayerError extends Error {
@@ -73,6 +76,20 @@ export class InvalidProxy extends ValidationFailed {
   constructor(address: string, proxyHash: string, supportedProxyHashes: string[]) {
     super(`Invalid proxy at address '${address}'. Deployed contract bytecode hash: '${proxyHash}'. Supported bytecode hashes: [${supportedProxyHashes}]`, 'InvalidProxy');
     Object.setPrototypeOf(this, InvalidProxy.prototype);
+  }
+}
+
+export class InvalidCode extends ValidationFailed {
+  constructor(code: string) {
+    super(`Invalid code: ${code}`, 'InvalidCode');
+    Object.setPrototypeOf(this, InvalidCode.prototype);
+  }
+}
+
+export class CodeExpired extends ValidationFailed {
+  constructor() {
+    super('Code expired', 'InvalidCode');
+    Object.setPrototypeOf(this, InvalidCode.prototype);
   }
 }
 
@@ -146,11 +163,25 @@ export class InvalidRefundReceiver extends ValidationFailed {
   }
 }
 
+export class DuplicatedEmailConfirmation extends ValidationFailed {
+  constructor(email: string) {
+    super(`Email already used: ${email}`, 'DuplicatedEmailConfirmation');
+    Object.setPrototypeOf(this, DuplicatedEmailConfirmation.prototype);
+  }
+}
+
 export class NotFound extends RelayerError {
   constructor(message: string, errorType: ErrorType) {
     super(message, errorType);
     this.errorType = errorType;
     Object.setPrototypeOf(this, NotFound.prototype);
+  }
+}
+
+export class EmailNotFound extends NotFound {
+  constructor(email: string) {
+    super(`Email confirmation not found for email: ${email}`, 'EmailNotFound');
+    Object.setPrototypeOf(this, EmailNotFound.prototype);
   }
 }
 
