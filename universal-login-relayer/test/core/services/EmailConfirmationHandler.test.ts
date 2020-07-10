@@ -4,17 +4,22 @@ import {EmailConfirmationHandler, generateValidationCode} from '../../../src/cor
 import {EmailConfirmationsStore} from '../../../src/integration/sql/services/EmailConfirmationsStore';
 import {EmailService} from '../../../src/integration/ethereum/EmailService';
 import {EmailConfirmationValidator} from '../../../src/core/services/validators/EmailConfirmationValidator';
+import {InvalidCode} from '../../../src/core/utils/errors';
 
 describe('UNIT: EmailConfirmationHandler', () => {
   let emailConfirmationStoreStub: sinon.SinonStubbedInstance<EmailConfirmationsStore>;
   let emailServiceStub: sinon.SinonStubbedInstance<EmailService>;
   let emailConfirmationValidatorStub: sinon.SinonStubbedInstance<EmailConfirmationValidator>;
   let emailConfirmationHandler: EmailConfirmationHandler;
+  const email = 'account@unilogin.test';
+  const code = '012345';
+  const invalidCode = '123456';
 
   before(() => {
     emailConfirmationStoreStub = sinon.createStubInstance(EmailConfirmationsStore);
     emailServiceStub = sinon.createStubInstance(EmailService);
     emailConfirmationValidatorStub = sinon.createStubInstance(EmailConfirmationValidator);
+    emailConfirmationValidatorStub.validate.throws(new InvalidCode(invalidCode)).withArgs(email, code).resolves();
     emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStoreStub as any, emailServiceStub as any, emailConfirmationValidatorStub as any);
   });
 
@@ -28,11 +33,11 @@ describe('UNIT: EmailConfirmationHandler', () => {
   });
 
   it('email confirmation request', async () => {
-    const email = 'account@unilogin.test';
     const ensName = 'hello.unilogin.eth';
 
-    await emailConfirmationHandler.request(email, ensName);
+    const result = await emailConfirmationHandler.request(email, ensName);
 
+    expect(result).eq(email);
     expect(emailConfirmationStoreStub.add.calledOnce);
 
     const {code, createdAt, ...addArgs} = emailConfirmationStoreStub.add.firstCall.lastArg;
@@ -43,4 +48,14 @@ describe('UNIT: EmailConfirmationHandler', () => {
 
     expect(emailServiceStub.sendConfirmationMail).calledOnceWithExactly(email, code);
   });
+
+  describe('confirm', () => {
+    it('valid email confirmation', async () => {
+      await expect(emailConfirmationHandler.confirm(email, code)).to.be.fulfilled;
+    });
+
+    it('valid email confirmation', async () => {
+      await expect(emailConfirmationHandler.confirm(email, invalidCode)).rejectedWith(`Invalid code: ${invalidCode}`);
+    });
+  })
 });

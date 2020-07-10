@@ -21,6 +21,10 @@ export class EmailConfirmationHandler {
     await this.emailService.sendConfirmationMail(email, code);
     return email;
   }
+
+  async confirm(email: string, code: string) {
+    return this.emailValidator.validate(email, code);
+  }
 }
 
 export const generateValidationCode = (codeLength: number) => {
