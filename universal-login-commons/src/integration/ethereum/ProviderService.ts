@@ -25,7 +25,7 @@ export class ProviderService {
   }
 
   getLogs(filter: providers.Filter) {
-    return this.provider.getLogs(filter);
+    return this.provider.send('eth_getLogs', filter);
   }
 
   on(eventType: providers.EventType, listener: providers.Listener) {
