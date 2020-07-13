@@ -31,12 +31,10 @@ describe('INT: EncryptedWalletHandler', () => {
   });
 
   it('Should handle wallet with confirmed email', async () => {
-    encryptedWallet.email = confirmedEmail;
-    expect(await encryptedWalletHandler.handle(encryptedWallet)).be.deep.eq(confirmedEmail);
+    expect(await encryptedWalletHandler.handle({...encryptedWallet, email: confirmedEmail})).be.deep.eq(confirmedEmail);
   });
 
   it('Should reject handling wallet with not confirmed email', async () => {
-    encryptedWallet.email = notConfirmedEmail;
     await expect(encryptedWalletHandler.handle(encryptedWallet)).to.be.rejectedWith(`${notConfirmedEmail} is not confirmed`);
   });
 
