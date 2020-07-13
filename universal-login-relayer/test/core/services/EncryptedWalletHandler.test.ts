@@ -36,6 +36,7 @@ describe('INT: EncryptedWalletHandler', () => {
   });
 
   it('Should reject handling wallet with not confirmed email', async () => {
+    encryptedWallet.email = notConfirmedEmail;
     await expect(encryptedWalletHandler.handle(encryptedWallet)).to.be.rejectedWith(`${notConfirmedEmail} is not confirmed`);
   });
 
