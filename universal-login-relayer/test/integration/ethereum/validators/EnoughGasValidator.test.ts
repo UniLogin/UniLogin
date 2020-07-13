@@ -2,7 +2,7 @@ import {Message, TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
 import {unsignedMessageToSignedMessage} from '@unilogin/contracts';
 import {emptyMessage} from '@unilogin/contracts/testutils';
 import {expect} from 'chai';
-import {loadFixture} from 'ethereum-waffle';
+import {loadFixture, MockProvider} from 'ethereum-waffle';
 import {Contract, utils, Wallet} from 'ethers';
 import EstimateGasValidator from '../../../../src/integration/ethereum/validators/EstimateGasValidator';
 import {getTestSignedMessage} from '../../../testconfig/message';
@@ -12,14 +12,15 @@ import {setupWalletContractService} from '../../../testhelpers/setupWalletContra
 describe('INT: EstimateGasValidator', () => {
   let message: Message;
   let mockToken: Contract;
+  let provider: MockProvider;
   let walletContract: Contract;
   let wallet: Wallet;
   let validator: EstimateGasValidator;
 
   beforeEach(async () => {
-    ({mockToken, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
+    ({mockToken, provider, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {...emptyMessage, from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS, gasLimit: '200000', nonce: 1};
-    const walletContractService = setupWalletContractService(wallet.provider);
+    const walletContractService = setupWalletContractService(provider);
     validator = new EstimateGasValidator(wallet, walletContractService);
   });
 

@@ -9,7 +9,7 @@ import {isValidCode, isProperSecurityCode, TEST_SDK_CONFIG} from '@unilogin/comm
 const loadFixture = createFixtureLoader();
 
 describe('INT: SDK connecting', () => {
-  let provider: providers.Provider;
+  let provider: providers.Web3Provider;
   let relayer: RelayerUnderTest;
   let sdk: UniLoginSdk;
   let contractAddress: string;

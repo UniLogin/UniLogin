@@ -7,7 +7,7 @@ import {WalletContractService} from '../../src/integration/ethereum/WalletContra
 import {TransactionGasPriceComputator} from '../../src/integration/ethereum/TransactionGasPriceComputator';
 import {getMockedGasPriceOracle} from '@unilogin/commons/testutils';
 
-export const setupWalletContractService = (provider: providers.Provider) => {
+export const setupWalletContractService = (provider: providers.JsonRpcProvider) => {
   const providerService = new ProviderService(provider);
   const contractService = new ContractService(providerService);
   const transactionGasPriceComputator = new TransactionGasPriceComputator(getMockedGasPriceOracle());

@@ -6,7 +6,7 @@ import {NetworkVersion} from '../../core/utils/messages/computeGasData';
 export class ProviderService {
   private cachedContractCodes: Record<string, string> = {};
 
-  constructor(private provider: providers.Provider) {
+  constructor(private provider: providers.JsonRpcProvider) {
   }
 
   async getCode(contractAddress: string) {

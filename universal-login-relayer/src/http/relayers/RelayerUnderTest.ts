@@ -81,7 +81,7 @@ export class RelayerUnderTest extends Relayer {
     return {relayer, factoryContract, supportedTokens, contractWhiteList, ensAddress, walletContract, mockToken, provider: providerWithENS, ensRegistrar, fallbackHandlerContract};
   }
 
-  static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.Provider) {
+  static createTestRelayer(overrideConfig: DeepPartial<Config>, providerWithENS: providers.JsonRpcProvider) {
     const config = {...getConfigForNetwork('ganache'), ...overrideConfig} as Config;
     return new RelayerUnderTest(config, providerWithENS);
   }

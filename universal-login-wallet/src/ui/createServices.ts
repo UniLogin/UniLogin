@@ -16,7 +16,7 @@ export interface Config {
 }
 
 export interface Overrides {
-  provider?: providers.Provider;
+  provider?: providers.JsonRpcProvider;
   storageService?: StorageService;
   sdkConfig?: DeepPartial<SdkConfig>;
 }

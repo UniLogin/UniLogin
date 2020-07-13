@@ -17,7 +17,7 @@ chai.use(require('chai-string'));
 describe('UI: Startup from stored wallet state', () => {
   let services: Services;
   let relayer: Relayer;
-  let provider: providers.Provider;
+  let provider: providers.JsonRpcProvider;
   let appWrapper: ReactWrapper;
   let privateKey: string;
   let contractAddress: string;
