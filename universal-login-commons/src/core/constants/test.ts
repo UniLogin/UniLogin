@@ -4,7 +4,7 @@ import {Network} from '../models/Network';
 import {DeviceType} from '../models/notifications';
 import {safeDivide} from '../utils/safeMultiply';
 import {GasPriceSuggestion} from '../models/GasPriceSuggestion';
-import {EncryptedWallet} from '../models/EncryptedWallet';
+import {EncryptedWallet} from '../models/StoredEncryptedWallet';
 
 export const TEST_ACCOUNT_ADDRESS = '0x0000000000000000000000000000000000000001';
 
