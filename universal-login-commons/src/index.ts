@@ -26,7 +26,7 @@ export {asStoredFutureWalletRequest, SerializableFutureWallet, StoredFutureWalle
 export {Suggestions} from './core/models/Suggestions';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
 export {TransactionOverrides, TransferDetails} from './core/models/transactions';
-export {EncryptedWallet} from './core/models/EncryptedWallet';
+export {StoredEncryptedWallet} from './core/models/EncryptedWallet';
 export {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from './core/models/WalletSuggestionAction';
 export {EmailConfirmation} from './core/models/EmailConfirmation';
 export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsService';

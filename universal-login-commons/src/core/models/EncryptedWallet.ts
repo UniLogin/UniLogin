@@ -19,15 +19,15 @@ export interface Crypto {
   mac: string;
 }
 
-export interface WalletJSON {
+export interface EncryptedWallet {
   address: string;
   id: string;
   version: number;
   Crypto: Crypto;
 }
 
-export interface EncryptedWallet {
+export interface StoredEncryptedWallet {
   email: string;
   ensName: string;
-  walletJSON: WalletJSON;
+  walletJSON: EncryptedWallet;
 }

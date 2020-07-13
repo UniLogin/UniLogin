@@ -4,7 +4,7 @@ import {Network} from '../models/Network';
 import {DeviceType} from '../models/notifications';
 import {safeDivide} from '../utils/safeMultiply';
 import {GasPriceSuggestion} from '../models/GasPriceSuggestion';
-import {WalletJSON} from '../models/EncryptedWallet';
+import {EncryptedWallet} from '../models/EncryptedWallet';
 
 export const TEST_ACCOUNT_ADDRESS = '0x0000000000000000000000000000000000000001';
 
@@ -144,7 +144,7 @@ export const TEST_GAS_PRICES = {
   },
 } as unknown as GasPriceSuggestion;
 
-export const TEST_ENCRYPTED_WALLET_JSON: WalletJSON = {
+export const TEST_ENCRYPTED_WALLET_JSON: EncryptedWallet = {
   address: '76010666821749b24145d6d792a3038a6de0cd71',
   id: 'dc134bc2-9d47-4e73-990f-c9abeee94c41',
   version: 3,
