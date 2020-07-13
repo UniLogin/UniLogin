@@ -32,4 +32,8 @@ describe('INT: EncryptedWalletsStore', () => {
     expect(email).be.deep.eq(exampleEmail);
     await expect(encryptedWalletsStore.add(encryptedWallets)).to.be.rejectedWith('duplicate key value violates unique constraint "encrypted_wallets_email_unique"');
   });
+
+  after(async () => {
+    await knex.destroy();
+  });
 });
