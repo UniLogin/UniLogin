@@ -1,6 +1,6 @@
 import Knex from 'knex';
 import {EmailConfirmation, ensureNotFalsy} from '@unilogin/commons';
-import {EmailNotFound} from '../../../core/utils/errors';
+import {EmailConfirmationNotFound} from '../../../core/utils/errors';
 
 export class EmailConfirmationsStore {
   private tableName = 'email_confirmations';
@@ -21,7 +21,7 @@ export class EmailConfirmationsStore {
       .where('email', email)
       .orderBy('created_at', 'desc')
       .first();
-    ensureNotFalsy(emailConfirmation, EmailNotFound, email);
+    ensureNotFalsy(emailConfirmation, EmailConfirmationNotFound, email);
     const {created_at, ...rest} = emailConfirmation;
     return {...rest, createdAt: created_at};
   }

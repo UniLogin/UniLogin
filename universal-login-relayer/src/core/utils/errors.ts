@@ -3,7 +3,7 @@ type ErrorType =
   'DuplicatedSignature' |
   'DuplicatedExecution' |
   'EnsNameTaken' |
-  'EmailNotFound' |
+  'EmailConfirmationNotFound' |
   'FutureWalletNotFound' |
   'GasLimitTooHigh' |
   'GasUsedNotFound' |
@@ -178,10 +178,10 @@ export class NotFound extends RelayerError {
   }
 }
 
-export class EmailNotFound extends NotFound {
+export class EmailConfirmationNotFound extends NotFound {
   constructor(email: string) {
-    super(`Email confirmation not found for email: ${email}`, 'EmailNotFound');
-    Object.setPrototypeOf(this, EmailNotFound.prototype);
+    super(`Email confirmation not found for email: ${email}`, 'EmailConfirmationNotFound');
+    Object.setPrototypeOf(this, EmailConfirmationNotFound.prototype);
   }
 }
 

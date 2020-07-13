@@ -34,7 +34,7 @@ describe('E2E: Relayer - Email Confirmation', () => {
     expect(notExpectedConfirmationResult.status).to.eq(404);
     expect(notExpectedConfirmationResult.body).to.deep.eq({
       error: 'Error: Email confirmation not found for email: account@unilogin.test',
-      type: 'EmailNotFound',
+      type: 'EmailConfirmationNotFound',
     });
 
     const confirmationRequestResult = await chai.request(relayerUrl)
