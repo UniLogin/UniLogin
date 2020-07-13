@@ -1,0 +1,83 @@
+body {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+.unilogin-logo-container {
+  position: absolute;
+  width: 204px;
+  height: 52.35px;
+  left: 5%;
+  top: 5%;
+  display: inline-block;
+  text-align: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.unilogin-logo-container img {
+  height: 52.35px;
+  float: left;
+}
+
+@media only screen and (min-width: 600px) and (min-height: 600px) {
+  .turquise-mist{
+    position: absolute;
+    width: 580px;
+    height: 477px;
+    top: -106.86px;
+    margin-left: 40%;
+
+    background: #41FCFF;
+    opacity: 0.15;
+    filter: blur(178px);
+    transform: rotate(-25.33deg);
+  }
+
+  .dark-blue-mist{
+    position: absolute;
+    width: 547px;
+    height: 432px;
+    left: 80%;
+    top: 50%;
+
+    background: #4C7AED;
+    opacity: 0.45;
+    filter: blur(178px);
+  }
+
+  .dialog-box{
+    position: absolute;
+    width: 80%;
+    height: 90%;
+    max-height: 668px;
+    /* left: 50%;
+    top: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
+    margin-left: 10%;
+    margin-right: 10%;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+    background: #FFFFFF;
+    box-shadow: 0px 24px 104px rgba(0, 131, 188, 0.1);
+    border-radius: 16px;
+  }
+}
+
+@media screen and (max-width: 600px), screen and (max-height: 600px) {
+  .dialog-box{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    background: #FFFFFF;
+    box-shadow: 0px 24px 104px rgba(0, 131, 188, 0.1);
+    border-radius: 16px;
+    align-content: center;
+  }
+}
