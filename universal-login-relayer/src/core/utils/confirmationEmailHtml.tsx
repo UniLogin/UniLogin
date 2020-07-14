@@ -1,11 +1,12 @@
 import React from 'react';
-import {BG_DATA_URL} from '../../../assets/dataURI/emailBackground';
+import {render} from 'mjml-react';
+import {BG_DATA_URI} from '../../../assets/dataURI/emailBackground';
+import {UNILOGIN_LOGO_URI} from '../../../assets/dataURI/uniloginLogo';
 
 import {
   Mjml,
   MjmlHead,
   MjmlTitle,
-  MjmlPreview,
   MjmlBody,
   MjmlSection,
   MjmlColumn,
@@ -16,10 +17,16 @@ import {
   MjmlFont,
   MjmlHero,
   MjmlSpacer,
-  MjmlAttributes
+  MjmlAttributes,
+  MjmlGroup,
+  MjmlWrapper
 } from 'mjml-react';
 
-export const generate = () => {
+interface ConfirmationEmailProps {
+  code: string;
+}
+
+export const confirmationEmail = (code = 'uni-login-291862') => {
   return (
     <Mjml>
       <MjmlHead>
@@ -27,40 +34,73 @@ export const generate = () => {
         <MjmlFont name="Tajawal" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;900&display=swap" />
         <MjmlFont name="Lato" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Tajawal:wght@500;900&display=swap" />
         <MjmlAttributes>
-          <MjmlSection padding={0}/>
+          <MjmlSection children="" padding="0"/>
         </MjmlAttributes>
+        <MjmlStyle>
+          {`
+            .card {
+              box-shadow: 0px 24px 104px rgba(0, 131, 188, 0.1);
+            }
+
+            .btn table {
+              box-shadow: 0px 16px 32px rgba(0, 61, 181, 0.2);
+
+            }
+
+            @media only screen and (max-width: 500px) {
+              .btn table {
+                width: 280px;
+              }
+            }
+
+            @media only screen and (max-width: 380px) {
+              .btn table {
+                width: 250px !important;
+              }
+            }
+          `}
+        </MjmlStyle>
       </MjmlHead>
-      <MjmlBody width={599}>
-      <MjmlHero backgroundSize="contain" backgroundRepeat="no-repeat" backgroundUrl={BG_DATA_URL}>
-        <MjmlSection border="2px solid red">
-        <MjmlColumn>
-          <MjmlImage width="128px" align="left" height="33px" src="https://unilogin.io/LogoTitle.14f50053.svg" />
-          <MjmlSpacer height={40}/>
-          <MjmlText font-size="52px" lineHeigh="72px" color="#0F0C4A" textAlign="left" margin="10px 0 0" font-family="Tajawal, sans-serif">Email Confirmation</MjmlText>
-          <MjmlSpacer height={4}/>
-          <MjmlText font-size="22px" lineHeight="36px" color="#7D7C9C" font-family="Lato, sans-serif" fontWeight="norml margin: 0">To make sure your UniLogin account is safe and secure, we ask you to <b>authenticate your email address</b> by copying the code below and pasting it in UniLogin.
-          </MjmlText>
-        </MjmlColumn>
-      </MjmlSection>
-      <MjmlSpacer height={110}/>
-      <MjmlSection>
-        <MjmlColumn backgroundColor="white" borderRadius={16} width="462px" padding="60px 0">
-          <MjmlText font-size="32px" fontWeight={900} lineHeigh="72px" align="center" color="#0F0C4A" font-family="Tajawal, sans-serif" lineHeight="36px" fontWeight="normal" letterSpacing="-o.5px" margin="0">uni-login-291862</MjmlText>
-          <MjmlSpacer height={20}/>
-          <MjmlButton class="button" width="368px" padding="19px 0 15px" height="56px" verticalAlign="middle" fontSize={18} fontWeight="bold" fontFamily="Tajawal, sans-serif" backgroundColor="#0E31B6" borderRadius="8px" color="white">COPY</MjmlButton>
-        </MjmlColumn>
-      </MjmlSection>
-      <MjmlSpacer height={208}/>
-      <MjmlSection backgroundColor="white">
-        <MjmlColumn>
-          <MjmlImage width="128px" align="left" height="33px" src="https://unilogin.io/LogoTitle.14f50053.svg"/>
-        </MjmlColumn>
-        <MjmlColumn>
-          <MjmlText font-size="16px" align="right" color="#7D7C9C" font-family="Tajawal, sans-serif" lineHeight="36px" fontWeight="normal" letterSpacing="-o.5px" margin="0">© 2019 UniLogin</MjmlText>
-        </MjmlColumn>
-      </MjmlSection>
-      </MjmlHero>
+      <MjmlBody width={600}>
+        <MjmlHero backgroundUrl={BG_DATA_URI}>
+          <MjmlSection>
+            <MjmlColumn>
+              <MjmlSpacer height={22}/>
+              <MjmlImage width="128px" align="left" height="33px" src={UNILOGIN_LOGO_URI} />
+              <MjmlSpacer height={40}/>
+              <MjmlText font-size="52px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Email Confirmation</MjmlText>
+              <MjmlSpacer height={4}/>
+              <MjmlText font-size="22px" lineHeight="36px" color="#7D7C9C" font-family="Lato, sans-serif" fontWeight={400}>To make sure your UniLogin account is safe and secure, we ask you to <b>authenticate your email address</b> by copying the code below and pasting it in UniLogin.
+              </MjmlText>
+            </MjmlColumn>
+          </MjmlSection>
+          <MjmlSpacer height={110} />
+          <MjmlSection>
+            <MjmlColumn cssClass="card" backgroundColor="white" borderRadius={16} width="402px" padding="60px 0">
+              <MjmlText cssClass="login" font-size="32px" fontWeight={900} line-heigh="72px" align="center" color="#0F0C4A" font-family="Tajawal, sans-serif" lineHeight="36px" letterSpacing="-o.5px">{code}</MjmlText>
+              <MjmlSpacer height={20}/>
+              <MjmlButton cssClass="btn" width="368px" height={56} innerPadding="19px 0 11px !important" verticalAlign="middle" fontSize={18} fontWeight={500} fontFamily="Tajawal, sans-serif" backgroundColor="#0E31B6" borderRadius="8px" color="white">COPY</MjmlButton>
+            </MjmlColumn>
+          </MjmlSection>
+          <MjmlSpacer height={208}/>
+          <MjmlSection backgroundColor="white">
+            <MjmlGroup>
+              <MjmlColumn>
+                <MjmlSpacer height={26}/>
+                <MjmlImage width="128px" align="left" height="33px" src={UNILOGIN_LOGO_URI} />
+                <MjmlSpacer height={26}/>
+              </MjmlColumn>
+              <MjmlColumn>
+                <MjmlSpacer height={26}/>
+                <MjmlText font-size="16px" align="right" color="#7D7C9C" font-family="Tajawal, sans-serif" lineHeight="36px" fontWeight={500} letterSpacing="-o.5px">© 2019 UniLogin</MjmlText>
+                <MjmlSpacer height={26}/>
+              </MjmlColumn>
+            </MjmlGroup>
+          </MjmlSection>
+        </MjmlHero>
       </MjmlBody>
     </Mjml>
   );
 };
+
+export const confirmationEmailHtml = (code: string) => render(confirmationEmail(code), {validationLevel: 'soft'}).html;
