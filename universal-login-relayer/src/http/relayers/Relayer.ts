@@ -149,7 +149,7 @@ class Relayer {
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
     const encryptedWalletsStore = new EncryptedWalletsStore(this.database);
-    const encryptedWalletHandler = new EncryptedWalletHandler(emailConfirmationHandler, encryptedWalletsStore);
+    const encryptedWalletHandler = new EncryptedWalletHandler(emailConfirmationStore, emailConfirmationValidator, encryptedWalletsStore);
 
     this.app.use(bodyParser.json());
     this.app.use('/email', EmailRouter(emailConfirmationHandler));
