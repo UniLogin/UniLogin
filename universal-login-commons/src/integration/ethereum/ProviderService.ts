@@ -3,6 +3,13 @@ import {ensure} from '../../core/utils/errors/ensure';
 import {fetchHardforkVersion} from './fetchHardforkVersion';
 import {NetworkVersion} from '../../core/utils/messages/computeGasData';
 
+type Filter = {
+  address?: string | string[];
+  fromBlock?: providers.BlockTag;
+  toBlock?: providers.BlockTag;
+  topics?: Array<string | Array<string>>;
+};
+
 export class ProviderService {
   private cachedContractCodes: Record<string, string> = {};
 
@@ -24,8 +31,11 @@ export class ProviderService {
     return this.provider.getBlockNumber();
   }
 
-  getLogs(filter: providers.Filter) {
-    return this.provider.send('eth_getLogs', filter);
+  getLogs(filter: Filter) {
+    if (typeof filter.fromBlock === 'number') {
+      filter.fromBlock = `0x${filter.fromBlock.toString(16)}`;
+    }
+    return this.provider.send('eth_getLogs', [filter]);
   }
 
   on(eventType: providers.EventType, listener: providers.Listener) {
