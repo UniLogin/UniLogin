@@ -1,13 +1,13 @@
 import {Wallet, providers} from 'ethers';
-import {SignedMessage, ensure, IMessageValidator} from '@unilogin/commons';
+import {SignedMessage, ensure} from '@unilogin/commons';
 import {NotEnoughGas} from '../../../core/utils/errors';
 import {WalletContractService} from '../WalletContractService';
 
-export default class EstimateGasValidator implements IMessageValidator {
+export default class EstimateGasValidator {
   constructor(private wallet: Wallet, private walletContractService: WalletContractService) {}
 
-  async validate(signedMessage: SignedMessage) {
-    const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage, '1');
+  async validate(signedMessage: SignedMessage, tokenPriceInEth: string) {
+    const transactionReq: providers.TransactionRequest = await this.walletContractService.messageToTransaction(signedMessage, tokenPriceInEth);
     let messageHash;
     try {
       messageHash = await this.wallet.provider.call({...transactionReq, from: this.wallet.address}); // TODO estimate gas

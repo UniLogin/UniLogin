@@ -8,6 +8,7 @@ import {IMinedTransactionHandler} from '../../core/models/IMinedTransactionHandl
 import {WalletContractService} from './WalletContractService';
 import {GasTokenValidator} from '../../core/services/validators/GasTokenValidator';
 import MessageItem from '../../core/models/messages/MessageItem';
+import EstimateGasValidator from './validators/EstimateGasValidator';
 
 export type OnTransactionMined = (transaction: providers.TransactionResponse) => Promise<void>;
 
@@ -19,6 +20,7 @@ export class MessageExecutor implements IExecutor<MessageItem> {
     private minedTransactionHandler: IMinedTransactionHandler,
     private walletContractService: WalletContractService,
     private gasTokenValidator: GasTokenValidator,
+    private estimateGasValidator: EstimateGasValidator,
   ) {}
 
   canExecute(item: QueueItem): boolean {
@@ -45,6 +47,7 @@ export class MessageExecutor implements IExecutor<MessageItem> {
   async execute(messageItem: MessageItem): Promise<providers.TransactionResponse> {
     const signedMessage = messageItem.message;
     await this.messageValidator.validate(signedMessage);
+    await this.estimateGasValidator.validate(signedMessage, messageItem.tokenPriceInEth.toString());
     await this.gasTokenValidator.validate({
       gasPrice: signedMessage.gasPrice.toString(),
       gasToken: signedMessage.gasToken,

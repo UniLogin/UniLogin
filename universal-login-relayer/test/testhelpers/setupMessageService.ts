@@ -26,6 +26,7 @@ import {setupWalletContractService} from './setupWalletContractService';
 import {GasTokenValidator} from '../../src/core/services/validators/GasTokenValidator';
 import {getTokenPricesServiceMock, getMockedGasPriceOracle} from '@unilogin/commons/testutils';
 import {mockContracts} from '@unilogin/contracts/testutils';
+import EstimateGasValidator from '../../src/integration/ethereum/validators/EstimateGasValidator';
 
 export default async function setupMessageService(knex: Knex) {
   const {wallet, actionKey, provider, mockToken, walletContract, otherWallet} = await loadFixture(basicWalletContractWithMockToken);
@@ -48,7 +49,8 @@ export default async function setupMessageService(knex: Knex) {
   const tokenDetailsService = new TokenDetailsService(provider);
   const gasTokenValidator = new GasTokenValidator(getMockedGasPriceOracle());
   const messageHandler = new MessageHandler(messageRepository, executionQueue, statusService, walletContractService, getTokenPricesServiceMock(), tokenDetailsService, messageHandlerValidator, gasTokenValidator);
-  const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, walletContractService, gasTokenValidator);
+  const estimateGasValidator = new EstimateGasValidator(wallet, walletContractService);
+  const messageExecutor = new MessageExecutor(wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, walletContractService, gasTokenValidator, estimateGasValidator);
   const {walletService} = await setupWalletService(wallet);
   const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
   const executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue, 2);

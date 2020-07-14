@@ -52,6 +52,7 @@ import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfi
 import {EmailConfirmationHandler} from '../../core/services/EmailConfirmationHandler';
 import {EmailService} from '../../integration/ethereum/EmailService';
 import {EmailConfirmationValidator} from '../../core/services/validators/EmailConfirmationValidator';
+import EstimateGasValidator from '../../integration/ethereum/validators/EstimateGasValidator';
 
 const defaultPort = '3311';
 
@@ -141,7 +142,8 @@ class Relayer {
     const messageHandler = new MessageHandler(messageRepository, executionQueue, statusService, this.walletContractService, this.tokenPricesService, tokenDetailsService, messageHandlerValidator, gasTokenValidator);
     const messageExecutionValidator = new MessageExecutionValidator(this.wallet, this.config.contractWhiteList, this.walletContractService);
     const minedTransactionHandler = new MinedTransactionHandler(authorisationStore, devicesService, this.walletContractService);
-    const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService, gasTokenValidator);
+    const estimateGasValidator = new EstimateGasValidator(this.wallet, this.walletContractService);
+    const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService, gasTokenValidator, estimateGasValidator);
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
 

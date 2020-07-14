@@ -11,6 +11,7 @@ import {basicWalletContractWithMockToken} from '../../fixtures/basicWalletContra
 import MessageMemoryRepository from '../../mock/MessageMemoryRepository';
 import {setupWalletContractService} from '../../testhelpers/setupWalletContractService';
 import {GasTokenValidator} from '../../../src/core/services/validators/GasTokenValidator';
+import EstimateGasValidator from '../../../src/integration/ethereum/validators/EstimateGasValidator';
 
 describe('INT: MessageExecutor', () => {
   let messageExecutor: MessageExecutor;
@@ -27,7 +28,9 @@ describe('INT: MessageExecutor', () => {
 
   beforeEach(async () => {
     ({wallet, walletContract, mockToken, provider} = await loadFixture(basicWalletContractWithMockToken));
-    messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any, setupWalletContractService(wallet.provider), gasTokenValidator);
+    const walletContractService = setupWalletContractService(wallet.provider);
+    const estimateGasValidator = new EstimateGasValidator(wallet, walletContractService);
+    messageExecutor = new MessageExecutor(wallet, validator as any, new MessageMemoryRepository(), {handle: async () => {}} as any, walletContractService, gasTokenValidator, estimateGasValidator);
     message = {...emptyMessage, gasPrice: TEST_GAS_PRICE, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, value: bigNumberify(2), nonce: await walletContract.lastNonce()};
     signedMessage = getTestSignedMessage(message, wallet.privateKey);
   });
