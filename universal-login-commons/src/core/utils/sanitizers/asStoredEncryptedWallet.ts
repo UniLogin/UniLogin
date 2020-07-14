@@ -1,5 +1,5 @@
 import {asObject, asString, asNumber} from '@restless/sanitizers';
-import {EncryptedWallet, WalletJSON, Crypto, CipherParams, KdfParams} from '../../models/EncryptedWallet';
+import {StoredEncryptedWallet, EncryptedWallet, Crypto, CipherParams, KdfParams} from '../../models/StoredEncryptedWallet';
 
 export const asKdfParams = asObject<KdfParams>({
   salt: asString,
@@ -22,15 +22,15 @@ export const asCrypto = asObject<Crypto>({
   mac: asString,
 });
 
-export const asWalletJSON = asObject<WalletJSON>({
+export const asEncryptedWallet = asObject<EncryptedWallet>({
   address: asString,
   id: asString,
   version: asNumber,
   Crypto: asCrypto,
 });
 
-export const asEncryptedWallet = asObject<EncryptedWallet>({
+export const asStoredEncryptedWallet = asObject<StoredEncryptedWallet>({
   email: asString,
   ensName: asString,
-  walletJSON: asWalletJSON,
+  walletJSON: asEncryptedWallet,
 });

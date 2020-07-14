@@ -1,6 +1,6 @@
 import {Router, Request} from 'express';
 import MessageHandler from '../../core/services/execution/messages/MessageHandler';
-import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash, asApplicationInfo, asStoredFutureWalletRequest, StoredFutureWalletRequest, EncryptedWallet, asEncryptedWallet} from '@unilogin/commons';
+import {SignedMessage, DeployArgs, ApplicationInfo, asDeploymentHash, asApplicationInfo, asStoredFutureWalletRequest, StoredFutureWalletRequest, StoredEncryptedWallet, asStoredEncryptedWallet} from '@unilogin/commons';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject, asNumber, asOptional} from '@restless/sanitizers';
 import {asEthAddress, asBigNumber} from '@restless/ethereum';
@@ -48,7 +48,7 @@ const futureWalletHandling = (futureWalletHandler: FutureWalletHandler) =>
   };
 
 const encryptedWalletHandling = (encryptedWalletHandler: EncryptedWalletHandler) =>
-  async (data: {body: EncryptedWallet}) => {
+  async (data: {body: StoredEncryptedWallet}) => {
     const email = await encryptedWalletHandler.handle(data.body);
     return responseOf({email}, 201);
   };
@@ -122,7 +122,7 @@ export default (
 
   router.post('/encrypted', asyncHandler(
     sanitize({
-      body: asEncryptedWallet,
+      body: asStoredEncryptedWallet,
     }),
     encryptedWalletHandling(encryptedWalletHandler),
   ));

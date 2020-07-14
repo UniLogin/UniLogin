@@ -63,7 +63,7 @@ export {getSignatureFrom} from './core/utils/messages/signMessage';
 export {hashRelayerRequest, recoverFromRelayerRequest, signRelayerRequest, verifyRelayerRequest} from './core/utils/relayerRequest';
 export {safeMultiply, safeMultiplyAndFormatEther, safeMultiplyDecimalsAndFormatEther, safeDivide} from './core/utils/safeMultiply';
 export {asApplicationInfo, asDeviceType} from './core/utils/sanitizers/asApplicationInfo';
-export {asEncryptedWallet} from './core/utils/sanitizers/asEncryptedWallet';
+export {asStoredEncryptedWallet} from './core/utils/sanitizers/asStoredEncryptedWallet';
 export {asDeploymentHash, asHexString} from './core/utils/sanitizers/asHexString';
 export {asTransferDetails} from './core/utils/sanitizers/asTransferDetails';
 export {asPartialMessage} from './core/utils/sanitizers/asPartialMessage';
