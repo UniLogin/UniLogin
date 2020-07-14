@@ -48,8 +48,8 @@ const futureWalletHandling = (futureWalletHandler: FutureWalletHandler) =>
   };
 
 const encryptedWalletHandling = (encryptedWalletHandler: EncryptedWalletHandler) =>
-  async (data: {body: StoredEncryptedWallet}) => {
-    const email = await encryptedWalletHandler.handle(data.body);
+  async (data: {headers: {code: string}, body: StoredEncryptedWallet}) => {
+    const email = await encryptedWalletHandler.handle(data.body, data.headers.code);
     return responseOf({email}, 201);
   };
 
@@ -122,6 +122,7 @@ export default (
 
   router.post('/encrypted', asyncHandler(
     sanitize({
+      headers: asObject({code: asString}),
       body: asStoredEncryptedWallet,
     }),
     encryptedWalletHandling(encryptedWalletHandler),

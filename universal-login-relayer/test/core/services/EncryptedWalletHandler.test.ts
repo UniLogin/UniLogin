@@ -5,20 +5,30 @@ import {EncryptedWalletHandler} from '../../../src/core/services/EncryptedWallet
 import {TEST_ENCRYPTED_WALLET_JSON, StoredEncryptedWallet} from '@unilogin/commons';
 import {expect} from 'chai';
 import {createTestEmailConfirmation} from '../../testhelpers/createTestEmailConfirmation';
+import {EmailConfirmationHandler} from '../../../src/core/services/EmailConfirmationHandler';
+import {EmailService} from '../../../src/integration/ethereum/EmailService';
+import {EmailConfirmationValidator} from '../../../src/core/services/validators/EmailConfirmationValidator';
 
 describe('INT: EncryptedWalletHandler', () => {
   const notConfirmedEmail = 'notConfirmed@email.com';
   const confirmedEmail = 'confirmed@email.com';
   let encryptedWalletHandler: EncryptedWalletHandler;
   let storedEncryptedWallet: StoredEncryptedWallet;
+  let confirmationCode: string;
   const knex = getKnexConfig();
 
   before(() => {
     const emailConfirmationsStore = new EmailConfirmationsStore(knex);
+    const emailService: EmailService = {} as EmailService;
+    emailService.sendConfirmationMail = async () => {};
+    emailService.sendMail = async () => {};
+    const emailValidator = new EmailConfirmationValidator();
+    const emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationsStore, emailService, emailValidator);
     const encryptedWalletsStore = new EncryptedWalletsStore(knex);
-    encryptedWalletHandler = new EncryptedWalletHandler(emailConfirmationsStore, encryptedWalletsStore);
+    encryptedWalletHandler = new EncryptedWalletHandler(emailConfirmationHandler, encryptedWalletsStore);
 
     const emailConfirmation = createTestEmailConfirmation(notConfirmedEmail);
+    confirmationCode = emailConfirmation.code;
 
     storedEncryptedWallet = {
       email: notConfirmedEmail,
@@ -31,11 +41,11 @@ describe('INT: EncryptedWalletHandler', () => {
   });
 
   it('Should handle wallet with confirmed email', async () => {
-    expect(await encryptedWalletHandler.handle({...storedEncryptedWallet, email: confirmedEmail})).be.deep.eq(confirmedEmail);
+    expect(await encryptedWalletHandler.handle({...storedEncryptedWallet, email: confirmedEmail}, confirmationCode)).be.deep.eq(confirmedEmail);
   });
 
   it('Should reject handling wallet with not confirmed email', async () => {
-    await expect(encryptedWalletHandler.handle(storedEncryptedWallet)).to.be.rejectedWith(`${notConfirmedEmail} is not confirmed`);
+    await expect(encryptedWalletHandler.handle(storedEncryptedWallet, confirmationCode)).to.be.rejectedWith(`${notConfirmedEmail} is not confirmed`);
   });
 
   after(async () => {
