@@ -2,7 +2,6 @@ import {expect} from 'chai';
 import {Contract, Wallet} from 'ethers';
 import {loadFixture, deployContract} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, ContractWhiteList, Message, IMessageValidator} from '@unilogin/commons';
-import {unsignedMessageToSignedMessage} from '@unilogin/contracts';
 import {emptyMessage, mockContracts} from '@unilogin/contracts/testutils';
 import {basicWalletContractWithMockToken} from '../../../fixtures/basicWalletContractWithMockToken';
 import MessageExecutionValidator from '../../../../src/integration/ethereum/validators/MessageExecutionValidator';
@@ -29,11 +28,6 @@ describe('INT: MessageExecutionValidator', () => {
   it('successfully pass the validation', async () => {
     const signedMessage = getTestSignedMessage({...message}, wallet.privateKey);
     await expect(messageExecutionValidator.validate(signedMessage)).to.not.be.rejected;
-  });
-
-  it('throws when not enough gas', async () => {
-    const signedMessage = unsignedMessageToSignedMessage({...message, safeTxGas: 100, baseGas: 100}, wallet.privateKey);
-    await expect(messageExecutionValidator.validate(signedMessage)).to.be.eventually.rejectedWith('Not enough gas');
   });
 
   it('throws when not enough tokens', async () => {
