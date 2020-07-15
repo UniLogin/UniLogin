@@ -1,4 +1,3 @@
-import {Wallet} from 'ethers';
 import {ContractWhiteList, ProviderService, SufficientBalanceValidator} from '@unilogin/commons';
 import {ComposeValidator} from '../../../core/services/validators/ComposeValidator';
 import CorrectProxyValidator from './CorrectProxyValidator';
@@ -6,7 +5,7 @@ import CorrectMasterValidator from './CorrectMasterValidator';
 import {WalletContractService} from '../WalletContractService';
 
 export class MessageExecutionValidator extends ComposeValidator {
-  constructor(wallet: Wallet, providerService: ProviderService, contractWhiteList: ContractWhiteList, walletContractService: WalletContractService) {
+  constructor(providerService: ProviderService, contractWhiteList: ContractWhiteList, walletContractService: WalletContractService) {
     super([
       new CorrectProxyValidator(providerService, contractWhiteList),
       new CorrectMasterValidator(providerService, contractWhiteList, walletContractService),

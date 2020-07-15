@@ -23,7 +23,7 @@ describe('INT: MessageExecutionValidator', () => {
     ({wallet, provider, master, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {...emptyMessage, ...transferMessage, from: walletContract.address, to: TEST_ACCOUNT_ADDRESS, nonce: 1, gasLimit: '200000'};
     const walletContractService = setupWalletContractService(provider);
-    messageExecutionValidator = new MessageExecutionValidator(wallet, new ProviderService(provider), contractWhiteList, walletContractService);
+    messageExecutionValidator = new MessageExecutionValidator(new ProviderService(provider), contractWhiteList, walletContractService);
   });
 
   it('successfully pass the validation', async () => {
@@ -41,7 +41,7 @@ describe('INT: MessageExecutionValidator', () => {
   });
 
   it('throws when invalid proxy', async () => {
-    const messageValidatorWithInvalidProxy = new MessageExecutionValidator(wallet, new ProviderService(provider), {
+    const messageValidatorWithInvalidProxy = new MessageExecutionValidator(new ProviderService(provider), {
       wallet: contractWhiteList.wallet,
       proxy: [TEST_ACCOUNT_ADDRESS],
     },
@@ -52,7 +52,7 @@ describe('INT: MessageExecutionValidator', () => {
   });
 
   it('throws when invalid master', async () => {
-    const messageValidatorWithInvalidMaster = new MessageExecutionValidator(wallet, new ProviderService(provider), {
+    const messageValidatorWithInvalidMaster = new MessageExecutionValidator(new ProviderService(provider), {
       wallet: [TEST_ACCOUNT_ADDRESS],
       proxy: contractWhiteList.proxy,
     },
