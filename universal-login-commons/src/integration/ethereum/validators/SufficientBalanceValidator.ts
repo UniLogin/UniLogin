@@ -1,4 +1,3 @@
-import {providers} from 'ethers';
 import {ensure, IMessageValidator, SignedMessage, NotEnoughTokens} from '../../..';
 import {BalanceChecker} from '../BalanceChecker';
 import {getFeeCurrencyValueFrom} from '../../../core/utils/getFeeCurrencyValueFrom';
@@ -9,8 +8,8 @@ import {ProviderService} from '../ProviderService';
 export class SufficientBalanceValidator implements IMessageValidator {
   private balanceChecker: BalanceChecker;
 
-  constructor(private provider: providers.Provider) {
-    this.balanceChecker = new BalanceChecker(new ProviderService(this.provider));
+  constructor(providerService: ProviderService) {
+    this.balanceChecker = new BalanceChecker(providerService);
   }
 
   private async ensureEnoughBalance(address: string, currencyValue: CurrencyValue): Promise<void> {

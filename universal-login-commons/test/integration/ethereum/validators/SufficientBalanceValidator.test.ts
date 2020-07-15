@@ -4,12 +4,12 @@ import {utils} from 'ethers';
 import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY} from '../../../../src/core/constants/test';
 import {deployContract, MockProvider} from 'ethereum-waffle';
 import MockToken from '../../../fixtures/MockToken.json';
-import {SignedMessage} from '../../../../src';
+import {SignedMessage, ProviderService} from '../../../../src';
 import {getTestSignedMessage} from '../../../helpers/getTestMessage';
 
 describe('INT: SufficientBalanceValidator', () => {
   const provider = new MockProvider();
-  const validator = new SufficientBalanceValidator(provider);
+  const validator = new SufficientBalanceValidator(new ProviderService(provider));
   let signedMessage: SignedMessage;
 
   before(async () => {
