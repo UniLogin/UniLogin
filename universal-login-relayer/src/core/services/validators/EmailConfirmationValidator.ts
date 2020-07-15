@@ -7,7 +7,7 @@ export class EmailConfirmationValidator {
     private codeDurationInMinutes: number = 5,
   ) {}
 
-  validateEmail(emailConfirmation: EmailConfirmation) {
+  isEmailConfirmed(emailConfirmation: EmailConfirmation) {
     ensure(emailConfirmation.isConfirmed, EmailNotConfirmed, emailConfirmation.email);
   }
 
