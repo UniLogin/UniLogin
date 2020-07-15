@@ -1,6 +1,6 @@
-import {ContractWhiteList, IMessageValidator, MessageWithFrom, TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
+import {ContractWhiteList, IMessageValidator, ProviderService, MessageWithFrom, TEST_ACCOUNT_ADDRESS} from '@unilogin/commons';
 import {expect} from 'chai';
-import {loadFixture} from 'ethereum-waffle';
+import {loadFixture, MockProvider} from 'ethereum-waffle';
 import {Contract, Wallet} from 'ethers';
 import {getContractWhiteList} from '../../../../src/http/relayers/RelayerUnderTest';
 import CorrectMasterValidator from '../../../../src/integration/ethereum/validators/CorrectMasterValidator';
@@ -13,6 +13,7 @@ describe('INT: CorrectMasterValidator', () => {
   let message: MessageWithFrom;
   let mockToken: Contract;
   let master: Contract;
+  let provider: MockProvider;
   let walletContract: Contract;
   let wallet: Wallet;
   let validator: IMessageValidator;
@@ -20,10 +21,10 @@ describe('INT: CorrectMasterValidator', () => {
   let walletContractService: WalletContractService;
 
   before(async () => {
-    ({mockToken, master, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
+    ({mockToken, provider, master, wallet, walletContract} = await loadFixture(basicWalletContractWithMockToken));
     message = {from: walletContract.address, gasToken: mockToken.address, to: TEST_ACCOUNT_ADDRESS};
-    walletContractService = setupWalletContractService(wallet.provider);
-    validator = new CorrectMasterValidator(wallet.provider, contractWhiteList, walletContractService);
+    walletContractService = setupWalletContractService(provider);
+    validator = new CorrectMasterValidator(new ProviderService(provider), contractWhiteList, walletContractService);
   });
 
   it('successfully pass the validation', async () => {
@@ -32,7 +33,7 @@ describe('INT: CorrectMasterValidator', () => {
   });
 
   it('passes when invalid proxy but valid master', async () => {
-    const validatorWithInvalidProxy = new CorrectMasterValidator(wallet.provider, {
+    const validatorWithInvalidProxy = new CorrectMasterValidator(new ProviderService(provider), {
       wallet: contractWhiteList.wallet,
       proxy: [TEST_ACCOUNT_ADDRESS],
     },
@@ -43,7 +44,7 @@ describe('INT: CorrectMasterValidator', () => {
   });
 
   it('throws when invalid master', async () => {
-    const validatorWithInvalidMaster = new CorrectMasterValidator(wallet.provider, {
+    const validatorWithInvalidMaster = new CorrectMasterValidator(new ProviderService(provider), {
       wallet: [TEST_ACCOUNT_ADDRESS],
       proxy: contractWhiteList.proxy,
     },
