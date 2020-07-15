@@ -107,4 +107,4 @@ export {CoingeckoApi} from './integration/http/CoingeckoApi';
 export {IErc721Token, IBasicErc721Token as IBasicToken} from './core/models/Erc721Token';
 export {Erc721TokensService} from './core/services/Erc721TokensService';
 export {isAddressIncludedInLog} from './core/utils/isAddressIncludedInLog';
-export {validateEmail} from './core/utils/validateEmail';
+export {isProperEmail} from './core/utils/isProperEmail';

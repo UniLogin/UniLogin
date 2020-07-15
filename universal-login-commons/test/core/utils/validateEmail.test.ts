@@ -1,9 +1,9 @@
-import {validateEmail} from '../../../src/core/utils/validateEmail';
+import {isProperEmail} from '../../../src/core/utils/isProperEmail';
 import {expect} from 'chai';
 
 describe('UNIT: ValidateEmail', () => {
   it('Should validate valid email', () => {
-    expect(validateEmail('valid@email.com')).be.eq(true);
+    expect(isProperEmail('valid@email.com')).be.eq(true);
   });
 
   describe('Should not validate invalid email', () => {
@@ -24,12 +24,12 @@ describe('UNIT: ValidateEmail', () => {
     ];
 
     it('Empty email', () => {
-      expect(validateEmail('')).be.eq(false);
+      expect(isProperEmail('')).be.eq(false);
     });
 
     invalidEmails.forEach((email) => {
       it(email, () => {
-        expect(validateEmail(email)).be.eq(false);
+        expect(isProperEmail(email)).be.eq(false);
       });
     });
   });
