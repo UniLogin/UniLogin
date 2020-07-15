@@ -1,7 +1,7 @@
 import {isProperEmail} from '../../../src/core/utils/isProperEmail';
 import {expect} from 'chai';
 
-describe('UNIT: ValidateEmail', () => {
+describe('UNIT: isProperMail', () => {
   it('Should validate valid email', () => {
     expect(isProperEmail('valid@email.com')).be.eq(true);
   });
