@@ -3,7 +3,7 @@ const minNumberOfCapitals = 1;
 const minNumberOfSpecials = 1;
 const minNumberOfDigits = 1;
 
-export const validatePassword = (password: string) => {
+export const isProperPassword = (password: string) => {
   const regExp = new RegExp(
     `^(?=.*[A-Z]{${minNumberOfCapitals},})(?=.*[!@#$&*]{${minNumberOfSpecials},})(?=.*[0-9]{${minNumberOfDigits},}).{${minLength},}$`,
   );
