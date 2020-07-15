@@ -26,6 +26,8 @@
     "moment": "^2.24.0",
     "nodemailer": "^6.4.10",
     "pg": "^7.7.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "ua-parser-js": "^0.7.20"
   },
   "scripts": {
