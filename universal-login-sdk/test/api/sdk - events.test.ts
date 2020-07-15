@@ -21,7 +21,7 @@ const gasLimit = DEFAULT_GAS_LIMIT;
 
 describe('INT: Events', () => {
   let relayer: RelayerUnderTest;
-  let provider: providers.Web3Provider;
+  let provider: providers.JsonRpcProvider;
   let sdk: UniLoginSdk;
   let deployedWallet: DeployedWallet;
   let contractAddress: string;
