@@ -99,20 +99,20 @@ describe('INT: ProviderService', () => {
     });
 
     it('mocked mainnet provider before istanbul', async () => {
-      const mockProvider = mockProviderWithBlockNumber('homestead', 1);
-      providerService = new ProviderService(mockProvider as providers.Provider);
+      const mockProvider = mockProviderWithBlockNumber('homestead', 1) as providers.JsonRpcProvider;
+      providerService = new ProviderService(mockProvider);
       expect(await providerService.fetchHardforkVersion()).to.eq('constantinople');
     });
 
     it('mocked mainnet provider after istanbul', async () => {
-      const mockProvider = mockProviderWithBlockNumber('homestead', 10000000000);
-      providerService = new ProviderService(mockProvider as providers.Provider);
+      const mockProvider = mockProviderWithBlockNumber('homestead', 10000000000) as providers.JsonRpcProvider;
+      providerService = new ProviderService(mockProvider);
       expect(await providerService.fetchHardforkVersion()).to.eq('istanbul');
     });
 
     it('mocked kovan provider', async () => {
-      const mockProvider = mockProviderWithBlockNumber('kovan', 1);
-      providerService = new ProviderService(mockProvider as providers.Provider);
+      const mockProvider = mockProviderWithBlockNumber('kovan', 1) as providers.JsonRpcProvider;
+      providerService = new ProviderService(mockProvider);
       expect(await providerService.fetchHardforkVersion()).to.eq('istanbul');
     });
   });

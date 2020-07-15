@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import {Contract, Wallet, providers, utils} from 'ethers';
+import {Contract, Wallet, utils, providers} from 'ethers';
 import {solidity, createFixtureLoader} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {DEFAULT_GAS_LIMIT, TEST_SDK_CONFIG, TEST_GAS_PRICE_IN_TOKEN} from '@unilogin/commons';
@@ -21,7 +21,7 @@ const gasLimit = DEFAULT_GAS_LIMIT;
 
 describe('INT: Events', () => {
   let relayer: RelayerUnderTest;
-  let provider: providers.Provider;
+  let provider: providers.JsonRpcProvider;
   let sdk: UniLoginSdk;
   let deployedWallet: DeployedWallet;
   let contractAddress: string;

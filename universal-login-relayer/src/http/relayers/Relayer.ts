@@ -58,7 +58,7 @@ const defaultPort = '3311';
 
 class Relayer {
   protected readonly port: string;
-  provider: providers.Provider;
+  provider: providers.JsonRpcProvider;
   protected readonly wallet: Wallet;
   readonly database: Knex;
   private ensService: ENSService = {} as ENSService;
@@ -72,7 +72,7 @@ class Relayer {
   protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
   protected emailService: EmailService = {} as EmailService;
 
-  constructor(protected config: Config, provider?: providers.Provider) {
+  constructor(protected config: Config, provider?: providers.JsonRpcProvider) {
     this.port = config.port || defaultPort;
     this.provider = provider || new providers.JsonRpcProvider(config.jsonRpcUrl,
       {

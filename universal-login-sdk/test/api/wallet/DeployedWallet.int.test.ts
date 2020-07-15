@@ -1,8 +1,8 @@
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
-import {createFixtureLoader, solidity} from 'ethereum-waffle';
-import {Contract, utils, providers, Wallet} from 'ethers';
+import {createFixtureLoader, solidity, MockProvider} from 'ethereum-waffle';
+import {Contract, utils, Wallet} from 'ethers';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import basicSDK, {transferMessage} from '../../fixtures/basicSDK';
 import {RelayerUnderTest} from '@unilogin/relayer';
@@ -19,7 +19,7 @@ const loadFixture = createFixtureLoader();
 const gasPrice = TEST_GAS_PRICE_IN_TOKEN;
 
 describe('INT: DeployedWallet', () => {
-  let provider: providers.Provider;
+  let provider: MockProvider;
   let relayer: RelayerUnderTest;
   let mockToken: Contract;
   let deployedWallet: DeployedWallet;

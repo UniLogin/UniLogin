@@ -4,7 +4,7 @@ import {TEST_SDK_CONFIG, TEST_GAS_PRICE} from '@unilogin/commons';
 import {SdkConfig, MemoryStorageService} from '@unilogin/sdk';
 import getConfig from '../../src/config/getConfig';
 
-export const createPreconfiguredServices = async (provider: providers.Provider, relayer: any, tokens: string[]) => {
+export const createPreconfiguredServices = async (provider: providers.JsonRpcProvider, relayer: any, tokens: string[]) => {
   const domains = relayer.config.ensRegistrars;
   const config = {...getConfig(), domains, tokens};
   const storageService = new MemoryStorageService();

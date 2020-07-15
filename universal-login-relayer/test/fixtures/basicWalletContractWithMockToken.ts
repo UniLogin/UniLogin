@@ -1,12 +1,12 @@
 import {utils, Wallet} from 'ethers';
-import {deployContract} from 'ethereum-waffle';
+import {deployContract, MockProvider} from 'ethereum-waffle';
 import {executeAddKey, mockContracts} from '@unilogin/contracts/testutils';
 import createWalletContract from '../testhelpers/createWalletContract';
 import {buildEnsService} from '../testhelpers/buildEnsService';
 
-export async function basicWalletContractWithMockToken(_: any, wallets: Wallet[]) {
+export async function basicWalletContractWithMockToken(provider: MockProvider, wallets: Wallet[]) {
   const [, otherWallet, wallet] = wallets;
-  const [, provider] = await buildEnsService(wallet, 'mylogin.eth');
+  await buildEnsService(wallet, 'mylogin.eth');
   const {master, proxy: walletContract} = await createWalletContract(wallet);
   const actionWallet = Wallet.createRandom();
   const actionKey = actionWallet.privateKey;
