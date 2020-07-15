@@ -17,7 +17,7 @@ describe('UNIT: ValidateEmail', () => {
       '@.',
       '@email.com',
       'email@email,com',
-    ]
+    ];
 
     it('Empty email', () => {
       expect(validateEmail('')).be.eq(false);
@@ -27,6 +27,6 @@ describe('UNIT: ValidateEmail', () => {
       it(email, () => {
         expect(validateEmail(email)).be.eq(false);
       });
-    })
-  })
+    });
+  });
 });
