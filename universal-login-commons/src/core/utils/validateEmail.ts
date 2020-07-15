@@ -1,3 +1,3 @@
 export const validateEmail = (email: string) => {
-  return !!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  return !!email.match(/^(?!(_|-|\.)).*^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 };

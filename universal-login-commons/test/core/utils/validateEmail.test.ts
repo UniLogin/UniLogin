@@ -17,6 +17,10 @@ describe('UNIT: ValidateEmail', () => {
       '@.',
       '@email.com',
       'email@email,com',
+      '-email@email.com',
+      '_email@email.com',
+      '.email@email.com',
+      'e mail@email.com',
     ];
 
     it('Empty email', () => {
