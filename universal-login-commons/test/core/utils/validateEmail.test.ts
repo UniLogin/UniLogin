@@ -6,11 +6,27 @@ describe('UNIT: ValidateEmail', () => {
     expect(validateEmail('valid@email.com')).be.eq(true);
   });
 
-  it('Should not validate invalid email', () => {
-    expect(validateEmail('e@email')).be.eq(false);
-  });
+  describe('Should not validate invalid email', () => {
+    const invalidEmails = [
+      'e@email',
+      '@email',
+      'somestring',
+      'email@.com',
+      'email@email.',
+      'email@.',
+      '@.',
+      '@email.com',
+      'email@email,com',
+    ]
 
-  it('Should not validate another invalid email', () => {
-    expect(validateEmail('@email.com')).be.eq(false);
-  });
+    it('Empty email', () => {
+      expect(validateEmail('')).be.eq(false);
+    });
+
+    invalidEmails.forEach((email) => {
+      it(email, () => {
+        expect(validateEmail(email)).be.eq(false);
+      });
+    })
+  })
 });
