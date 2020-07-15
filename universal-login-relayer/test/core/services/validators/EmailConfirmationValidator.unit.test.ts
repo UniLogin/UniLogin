@@ -32,7 +32,7 @@ describe('UNIT: EmailConfirmationValidator', () => {
   it('Code expired', async () => {
     const expiredEmailConfirmation = {...emailConfirmation, createdAt: new Date('2020-07-09T13:00:00.000Z')};
     expect(() => validator.validate(expiredEmailConfirmation, email, code)).throws('Code expired');
-    (validator as any).codeDurationInMinutes = 60 * 24 * 5;
+    (validator as any).codeDurationInMinutes = 60 * 24 * 1000;
     expect(validator.validate(expiredEmailConfirmation, email, code)).not.throws;
   });
 });
