@@ -5,7 +5,7 @@ const minNumberOfDigits = 1;
 
 export const validatePassword = (password: string) => {
   const regExp = new RegExp(
-    `^(?=.*[A-Z]{${minNumberOfCapitals},})(?=.*[!@#$&*]{${minNumberOfSpecials},})(?=.*[0-9]{${minNumberOfDigits},}).{${minLength},}$`
-    );
+    `^(?=.*[A-Z]{${minNumberOfCapitals},})(?=.*[!@#$&*]{${minNumberOfSpecials},})(?=.*[0-9]{${minNumberOfDigits},}).{${minLength},}$`,
+  );
   return !!password.match(regExp);
-}
+};
