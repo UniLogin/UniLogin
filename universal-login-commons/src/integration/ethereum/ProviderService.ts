@@ -3,7 +3,7 @@ import {ensure} from '../../core/utils/errors/ensure';
 import {fetchHardforkVersion} from './fetchHardforkVersion';
 import {NetworkVersion} from '../../core/utils/messages/computeGasData';
 
-type Filter = {
+interface Filter {
   address?: string | string[];
   fromBlock?: providers.BlockTag;
   toBlock?: providers.BlockTag;
