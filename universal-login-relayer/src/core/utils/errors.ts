@@ -24,6 +24,7 @@ type ErrorType =
   'NodeEnvNotSpecified' |
   'NotFound' |
   'NotEnoughGas' |
+  'NotEnoughGasPrice' |
   'NotEnoughBalance' |
   'NotEnoughSignatures' |
   'PaymentError' |
@@ -259,6 +260,13 @@ export class NotEnoughGas extends PaymentError {
   constructor() {
     super('Not enough gas', 'NotEnoughGas');
     Object.setPrototypeOf(this, NotEnoughGas.prototype);
+  }
+}
+
+export class NotEnoughGasPrice extends PaymentError {
+  constructor() {
+    super('Gas price is not enough', 'NotEnoughGasPrice');
+    Object.setPrototypeOf(this, NotEnoughGasPrice.prototype);
   }
 }
 
