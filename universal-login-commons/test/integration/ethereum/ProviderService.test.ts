@@ -36,15 +36,15 @@ describe('INT: ProviderService', () => {
 
   it('getLogs should return array of logs if match the logs', async () => {
     const expectedPartOfLog = {
-      transactionIndex: '0x0',
-      address: '0xa193e42526f1fea8c99af609dceabf30c1c29faa',
+      transactionIndex: 0,
+      address: '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA',
       data: '0x00000000000000000000000000000000000000000000021e19e0c9bab2400000',
       topics:
         ['0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
           '0x0000000000000000000000000000000000000000000000000000000000000000',
           '0x00000000000000000000000017ec8597ff92c3f44523bdc65bf0f1be632917ff',
         ],
-      logIndex: '0x0',
+      logIndex: 0,
     };
     const {address} = await deployContract(deployer, MockToken);
     const logs = await providerService.getLogs({address});

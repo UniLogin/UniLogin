@@ -2,6 +2,7 @@ import {providers, utils} from 'ethers';
 import {ensure} from '../../core/utils/errors/ensure';
 import {fetchHardforkVersion} from './fetchHardforkVersion';
 import {NetworkVersion} from '../../core/utils/messages/computeGasData';
+import {checkFilter, checkLog, arrayOf} from './ethersUtils';
 
 interface Filter {
   address?: string | string[];
@@ -13,8 +14,7 @@ interface Filter {
 export class ProviderService {
   private cachedContractCodes: Record<string, string> = {};
 
-  constructor(private provider: providers.JsonRpcProvider) {
-  }
+  constructor(private provider: providers.JsonRpcProvider) {}
 
   async getCode(contractAddress: string) {
     this.cachedContractCodes[contractAddress] = this.cachedContractCodes[contractAddress] || await this.provider.getCode(contractAddress);
@@ -31,11 +31,10 @@ export class ProviderService {
     return this.provider.getBlockNumber();
   }
 
-  getLogs(filter: Filter) {
-    if (typeof filter.fromBlock === 'number') {
-      filter.fromBlock = `0x${filter.fromBlock.toString(16)}`;
-    }
-    return this.provider.send('eth_getLogs', [filter]);
+  async getLogs(filter: Filter): Promise<providers.Log[]> {
+    const checkedFilter = checkFilter(filter);
+    const result = await this.provider.send('eth_getLogs', [checkedFilter]);
+    return arrayOf(checkLog)(result);
   }
 
   on(eventType: providers.EventType, listener: providers.Listener) {
