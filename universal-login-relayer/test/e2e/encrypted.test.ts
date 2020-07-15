@@ -16,7 +16,7 @@ describe('E2E: Relayer - encrypted wallet', () => {
     email,
     ensName: 'test@unilogin.io',
     walletJSON: TEST_ENCRYPTED_WALLET_JSON,
-  }
+  };
 
   before(async () => {
     ({relayer} = await startRelayer(relayerPort));
