@@ -6,7 +6,7 @@ import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
 import {ProviderService} from '../../../src/integration/ethereum/ProviderService';
 import {mockProviderWithBlockNumber} from '../../helpers/mockProvider';
 import {getDeployedBytecode} from '../../../src/core/utils/contracts/contractHelpers';
-import {TEST_ACCOUNT_ADDRESS} from '../../../src/core/constants/test';
+import {TEST_ACCOUNT_ADDRESS, TEST_DAI_TOKEN} from '../../../src/core/constants/test';
 import {mineBlock} from '../../helpers/mineBlock';
 import MockedTokens from '../../fixtures/MockToken.json';
 import {MockToken} from '../..';
@@ -155,7 +155,7 @@ describe('INT: ProviderService', () => {
       const [, wallet] = provider.getWallets();
 
       const ierc20Interface = new utils.Interface(IERC20.abi);
-      const filter = {address: [tokenContract.address].toString(), fromBlock: initialBlockNumber, toBlock: 'latest', topics: [ierc20Interface.events['Transfer'].topic]};
+      const filter = {address: [tokenContract.address, TEST_DAI_TOKEN.address], fromBlock: initialBlockNumber, toBlock: 'latest', topics: [ierc20Interface.events['Transfer'].topic]};
 
       const sendTokenTransactionResponse = await tokenContract.transfer(wallet.address, utils.bigNumberify('2'));
       await sendTokenTransactionResponse.wait();
@@ -169,7 +169,7 @@ describe('INT: ProviderService', () => {
       const sendTokenTransactionResponse2 = await tokenContract.transfer(TEST_ACCOUNT_ADDRESS, utils.bigNumberify('1'));
       await sendTokenTransactionResponse2.wait();
 
-      const logs: providers.Log[] = await provider.getLogs(filter);
+      const logs: providers.Log[] = await providerService.getLogs(filter);
 
       const filteredLogs = logs.filter(isAddressIncludedInLog(wallet.address));
       expect(filteredLogs).length(2);

@@ -31,7 +31,7 @@ export class BalanceObserver {
     if (ierc20adresses.length === 0) return [];
 
     const filter = {
-      address: ierc20adresses.toString(),
+      address: ierc20adresses,
       fromBlock: this.blockNumberState.get(),
       toBlock: 'latest',
       topics: [IERC20Interface.events['Transfer'].topic],
