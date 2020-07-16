@@ -32,7 +32,7 @@ export class EmailService {
       text: `To make sure your UniLogin account is safe and secure,
       we ask you to authenticate your email address by copying the code below and pasting it in UniLogin.
       Here is your confrimation code: ${code}`,
-      html: confirmationEmailHtml(this.copyToClipboardUrl, code),
+      html: confirmationEmailHtml({code: code, clipboardUrl: this.copyToClipboardUrl}),
       replyTo: `noreply.${this.emailAddress}`,
     };
     return this.sendMail(mailOptions);
