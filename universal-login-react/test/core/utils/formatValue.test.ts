@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {formatValue} from '../../src/app/formatValue';
+import {formatValue} from '../../../src/core/utils/formatValue';
 
 describe('UNIT: formatValue', () => {
   it('token with decimals eq 18', () => {

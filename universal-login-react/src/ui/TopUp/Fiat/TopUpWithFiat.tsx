@@ -11,7 +11,7 @@ import {Safello} from '../OnRamp/Safello';
 import {WaitingForOnRampProvider} from './WaitingForOnRampProvider';
 import Spinner from '../../commons/Spinner';
 import {OnRampSuccessInfo} from './OnRampSuccessInfo';
-import {formatValue} from '../../../app/formatValue';
+import {formatValue} from '../../../core/utils/formatValue';
 
 export interface TopUpWithFiatProps {
   walletService: WalletService;
