@@ -1,5 +1,5 @@
 
-// This file is copied from ethers@4.0.47 repository:
+// This file is copied and modified to support array of addresses when checking filters from ethers@4.0.47 repository :
 // https://raw.githubusercontent.com/ethers-io/ethers.js/427e16826eb15d52d25c4f01027f8db22b74b76c/src.ts/providers/base-provider.ts
 
 import {errors, providers, utils} from 'ethers';

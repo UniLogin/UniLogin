@@ -1,9 +1,13 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import {utils} from 'ethers';
 import IERC20 from 'openzeppelin-solidity/build/contracts/IERC20.json';
+import {MockProvider} from 'ethereum-waffle';
 import {TEST_PRIVATE_KEY} from '../../../src';
 import {Filter, FilterByBlock} from '../../../src/integration/ethereum/ProviderService';
 import {checkFilter} from '../../../src/integration/ethereum/ethersUtils';
+
+chai.use(chaiAsPromised);
 
 describe('UNIT: checkFilter', () => {
   const IErc20Interface = new utils.Interface(IERC20.abi);
@@ -24,10 +28,15 @@ describe('UNIT: checkFilter', () => {
     });
 
     it('single address', () => {
-      const filter = createFilter({address: address1})
+      const filter = createFilter({address: address1});
       const expectedFilter = createFilter({address: address1, fromBlock: '0x4'});
 
       expect(checkFilter(filter)).deep.eq(expectedFilter);
+    });
+
+    it('fails with original version', async () => {
+      const provider = new MockProvider();
+      await expect(provider.getLogs(createFilter() as any)).rejectedWith('invalid address - 0xe22da380ee6B445bb8273C81944ADEB6E8450422,0x1c4a937d171752e1313D70fb16Ae2ea02f86303e');
     });
   });
 
@@ -40,12 +49,12 @@ describe('UNIT: checkFilter', () => {
     });
 
     it('list of addresses', () => {
-      const filter = createFilterByBlock()
+      const filter = createFilterByBlock();
       expect(checkFilter(filter)).deep.eq(filter);
     });
 
     it('single address', () => {
-      const filter = createFilterByBlock({address: address1})
+      const filter = createFilterByBlock({address: address1});
       expect(checkFilter(filter)).deep.eq(filter);
     });
   });
