@@ -3,11 +3,10 @@ import {formatCurrency} from '../../core/utils/formatCurrency';
 import Spinner from './Spinner';
 
 export interface BalanceProps {
-  amount: number | undefined;
-  className?: string;
+  amount?: number;
 }
 
-export const Balance = ({amount, className}: BalanceProps) => {
+export const Balance = ({amount}: BalanceProps) => {
   return (
     <div className="universal-login-balance">
       <div className="balance">
