@@ -1,11 +1,12 @@
-import {utils, providers, Contract, Wallet} from 'ethers';
+import {utils, Contract, Wallet} from 'ethers';
+import {MockProvider} from 'ethereum-waffle';
 import {TEST_ACCOUNT_ADDRESS, DEFAULT_GAS_PRICE, DEFAULT_GAS_LIMIT, ETHER_NATIVE_TOKEN, TEST_SDK_CONFIG} from '@unilogin/commons';
 import {gnosisSafe} from '@unilogin/contracts';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import UniLoginSdk from '../../src/api/sdk';
 import {createdDeployedWallet} from '../helpers/createDeployedWallet';
 
-export default async function basicSDK(givenProvider: providers.Provider, wallets: Wallet[]) {
+export default async function basicSDK(mockProvider: MockProvider, wallets: Wallet[]) {
   const [wallet, otherWallet, otherWallet2, deployer] = wallets;
   const {relayer, provider, mockToken} = await RelayerUnderTest.createPreconfigured(deployer);
   await relayer.start();

@@ -4,7 +4,7 @@ import {RelayerUnderTest} from '@unilogin/relayer';
 import {setupSdk} from '../../helpers/setupSdk';
 import UniLoginSdk from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
-import {Wallet, utils, Contract} from 'ethers';
+import {Wallet, utils, Contract, providers} from 'ethers';
 import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {createWallet} from '../../helpers';
 import {DeployedWallet} from '../../../src';
@@ -15,12 +15,13 @@ describe('INT: WalletService', () => {
   let walletService: WalletService;
   let sdk: UniLoginSdk;
   let relayer: RelayerUnderTest;
+  let provider: providers.JsonRpcProvider;
   let wallet: Wallet;
   let mockToken: Contract;
 
   before(async () => {
     ([wallet] = new MockProvider().getWallets());
-    ({sdk, relayer, mockToken} = await setupSdk(wallet));
+    ({sdk, relayer, mockToken, provider} = await setupSdk(wallet));
     await sdk.start();
   });
 
@@ -71,7 +72,7 @@ describe('INT: WalletService', () => {
     });
 
     it('free deployment', async () => {
-      const refundPaidSdk = new UniLoginSdk(relayer.url(), wallet.provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
+      const refundPaidSdk = new UniLoginSdk(relayer.url(), provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
       walletService = new WalletService(refundPaidSdk);
       await refundPaidSdk.fetchRelayerConfig();
       await walletService.createWallet('meme.mylogin.eth');

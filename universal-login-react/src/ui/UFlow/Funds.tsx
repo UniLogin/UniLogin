@@ -34,10 +34,7 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, onD
           className={className}
         />
         <div className="balance-wrapper">
-          <Balance
-            amount={totalTokensValue['USD']}
-            className={className}
-          />
+          <Balance amount={totalTokensValue['USD']} />
           <div className="funds-buttons">
             <button className="funds-btn funds-topup" onClick={onTopUpClick}>Top-up</button>
             <button id="transferFunds" className="funds-btn funds-send" onClick={onSendClick}>Send</button>

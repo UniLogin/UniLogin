@@ -25,7 +25,7 @@ describe('fetchHardforkVersion', () => {
 
   it('throws exception', async () => {
     const provider = mockProviderWithBlockNumber('', 1);
-    const providerService = new ProviderService(provider as providers.Provider);
+    const providerService = new ProviderService(provider as providers.JsonRpcProvider);
     await expect(providerService.fetchHardforkVersion()).to.eventually.be.rejectedWith('Invalid network');
   });
 });

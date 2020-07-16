@@ -1,15 +1,17 @@
-import {ensure, StoredEncryptedWallet} from '@unilogin/commons';
-import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
+import {StoredEncryptedWallet} from '@unilogin/commons';
 import {EncryptedWalletsStore} from '../../integration/sql/services/EncryptedWalletsStore';
-import {EmailNotConfirmed} from '../utils/errors';
+import {EmailConfirmationValidator} from './validators/EmailConfirmationValidator';
+import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
 
 export class EncryptedWalletHandler {
-  constructor(private emailConfirmationsStore: EmailConfirmationsStore, private encryptedWalletsStore: EncryptedWalletsStore) {
+  constructor(private emailConfirmationStore: EmailConfirmationsStore, private emailConfirmationValidator: EmailConfirmationValidator, private encryptedWalletsStore: EncryptedWalletsStore) {
   }
 
-  async handle(encryptedWallet: StoredEncryptedWallet) {
-    const emailConfirmation = await this.emailConfirmationsStore.get(encryptedWallet.email);
-    ensure(emailConfirmation.isConfirmed, EmailNotConfirmed, encryptedWallet.email);
-    return this.encryptedWalletsStore.add(encryptedWallet);
+  async handle(storedEncryptedWallet: StoredEncryptedWallet, code: string) {
+    const email = storedEncryptedWallet.email;
+    const emailConfirmation = await this.emailConfirmationStore.get(email);
+    this.emailConfirmationValidator.isEmailConfirmed(emailConfirmation);
+    this.emailConfirmationValidator.validateCode(emailConfirmation, code);
+    return this.encryptedWalletsStore.add(storedEncryptedWallet);
   }
 }

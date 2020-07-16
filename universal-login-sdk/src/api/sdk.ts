@@ -29,7 +29,7 @@ import {INotifySdk} from '../integration/notifySdk/interfaces';
 import {OnErc721TokensChange, Erc721TokensObserver} from '../core/observers/Erc721TokensObserver';
 
 class UniLoginSdk {
-  readonly provider: providers.Provider;
+  readonly provider: providers.JsonRpcProvider;
   readonly relayerApi: RelayerApi;
   readonly authorisationsObserver: AuthorisationsObserver;
   readonly blockNumberState: BlockNumberState;
@@ -61,7 +61,7 @@ class UniLoginSdk {
 
   constructor(
     relayerUrl: string,
-    providerOrUrl: string | providers.Provider,
+    providerOrUrl: string | providers.JsonRpcProvider,
     config?: DeepPartial<SdkConfig>,
   ) {
     this.provider = typeof (providerOrUrl) === 'string'

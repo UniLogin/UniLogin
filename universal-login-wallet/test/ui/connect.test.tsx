@@ -23,7 +23,7 @@ const gasToken = ETHER_NATIVE_TOKEN.address;
 describe('UI: Connection flow', () => {
   let services: Services;
   let relayer: Relayer;
-  let provider: providers.Provider;
+  let provider: providers.JsonRpcProvider;
   let appWrapper: ReactWrapper;
   let privateKey: string;
   let contractAddress: string;

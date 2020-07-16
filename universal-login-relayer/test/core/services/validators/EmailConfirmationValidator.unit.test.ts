@@ -2,6 +2,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {EmailConfirmationValidator} from '../../../../src/core/services/validators/EmailConfirmationValidator';
 import {createTestEmailConfirmation} from '../../../testhelpers/createTestEmailConfirmation';
+import {getDateMinutesAgo} from '../../../testhelpers/getDateMinutesAgo';
 
 chai.use(chaiAsPromised);
 
@@ -30,9 +31,10 @@ describe('UNIT: EmailConfirmationValidator', () => {
   });
 
   it('Code expired', async () => {
-    const expiredEmailConfirmation = {...emailConfirmation, createdAt: new Date('2020-07-09T13:00:00.000Z')};
+    const createdAt = getDateMinutesAgo(codeDuration);
+    const expiredEmailConfirmation = {...emailConfirmation, createdAt};
     expect(() => validator.validate(expiredEmailConfirmation, email, code)).throws('Code expired');
-    (validator as any).codeDurationInMinutes = 60 * 24 * 1000;
+    (validator as any).codeDurationInMinutes = 60 * 24 * 5;
     expect(validator.validate(expiredEmailConfirmation, email, code)).not.throws;
   });
 });
