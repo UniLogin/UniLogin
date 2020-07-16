@@ -105,6 +105,7 @@ function checkTopics(topics: any): any {
   return topics;
 }
 
+// Modified by us to accept list of addresses (what is consistent with json rpc documentation)
 const formatFilter = {
   fromBlock: allowNull(checkBlockTag, undefined),
   toBlock: allowNull(checkBlockTag, undefined),
@@ -112,13 +113,15 @@ const formatFilter = {
   topics: allowNull(checkTopics, undefined),
 };
 
+// Modified by us to accept list of addresses (what is consistent with json rpc documentation)
 const formatFilterByBlock = {
   blockHash: allowNull(checkHash, undefined),
   address: allowNull(arrayOrTypeOf(getAddress), undefined),
   topics: allowNull(checkTopics, undefined),
 };
 
-export function arrayOrTypeOf(check: CheckFunc): CheckFunc {
+// This function is added by us to be adaptable to json rpc documentation.
+function arrayOrTypeOf(check: CheckFunc): CheckFunc {
   return function (arrayOrValue: any): Array<any> {
     if (!Array.isArray(arrayOrValue)) {
       return check(arrayOrValue);

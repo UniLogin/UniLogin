@@ -11,7 +11,7 @@ export interface Filter {
   topics?: Array<string | Array<string>>;
 };
 
-export declare type FilterByBlock = {
+export interface FilterByBlock {
   blockHash?: string;
   address?: string | string[];
   topics?: Array<string | Array<string>>;
