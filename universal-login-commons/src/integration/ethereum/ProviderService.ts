@@ -4,10 +4,16 @@ import {fetchHardforkVersion} from './fetchHardforkVersion';
 import {NetworkVersion} from '../../core/utils/messages/computeGasData';
 import {checkFilter, checkLog, arrayOf} from './ethersUtils';
 
-interface Filter {
+export interface Filter {
   address?: string | string[];
   fromBlock?: providers.BlockTag;
   toBlock?: providers.BlockTag;
+  topics?: Array<string | Array<string>>;
+};
+
+export declare type FilterByBlock = {
+  blockHash?: string;
+  address?: string | string[];
   topics?: Array<string | Array<string>>;
 };
 
@@ -31,7 +37,7 @@ export class ProviderService {
     return this.provider.getBlockNumber();
   }
 
-  async getLogs(filter: Filter): Promise<providers.Log[]> {
+  async getLogs(filter: Filter | FilterByBlock): Promise<providers.Log[]> {
     const checkedFilter = checkFilter(filter);
     const result = await this.provider.send('eth_getLogs', [checkedFilter]);
     return arrayOf(checkLog)(result);
