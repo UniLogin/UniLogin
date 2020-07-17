@@ -1,4 +1,4 @@
-import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus, Device, StoredFutureWalletRequest, fetch, COMMON_HEADERS} from '@unilogin/commons';
+import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus, Device, StoredFutureWalletRequest, fetch, COMMON_HEADERS, SerializableRequestedWallet} from '@unilogin/commons';
 
 export class RelayerApi {
   private readonly http: HttpFunction;
@@ -76,5 +76,9 @@ export class RelayerApi {
 
   addFutureWallet(storedFutureWallet: StoredFutureWalletRequest) {
     return this.http('POST', '/wallet/future', storedFutureWallet);
+  }
+
+  requestEmailConfirmation(serializableRequestedWallet: SerializableRequestedWallet) {
+    return this.http('POST', '/email/request', serializableRequestedWallet);
   }
 }
