@@ -8,7 +8,7 @@ export {testJsonRpcUrl, TEST_ACCOUNT_ADDRESS, TEST_APPLICATION_INFO, TEST_CONTRA
 export {DEFAULT_LOCATION, KEY_CODE_ESCAPE, UNIVERSAL_LOGIN_LOGO_URL, EMPTY_LOGO} from './core/constants/ui';
 export {WalletVersion, WALLET_MASTER_VERSIONS} from './core/constants/walletMasterVersions';
 export {PROXY_VERSIONS, ProxyVersion} from './core/constants/proxyVersions';
-export {ApplicationWallet} from './core/models/ApplicationWallet';
+export {ApplicationWallet} from './core/models/wallet/ApplicationWallet';
 export * from './core/models/ContractJSON';
 export {CurrencyToValue, ObservedCurrency, TokensPrices} from './core/models/CurrencyData';
 export {DeployArgs} from './core/models/deploy';
@@ -22,7 +22,7 @@ export {ApplicationInfo, Device, DeviceInfo, Notification, DeviceType} from './c
 export {LocalizationConfig, RampConfig, SafelloConfig, WyreConfig} from './core/models/onRamp';
 export {ContractWhiteList, OnRampConfig, PublicRelayerConfig, SupportedToken} from './core/models/relayer';
 export {RelayerRequest} from './core/models/relayerRequest';
-export {asStoredFutureWalletRequest, SerializableFutureWallet, StoredFutureWallet, StoredFutureWalletRequest} from './core/models/SerializableFutureWallet';
+export {asStoredFutureWalletRequest, SerializableFutureWallet, StoredFutureWallet, StoredFutureWalletRequest} from './core/models/wallet/SerializableFutureWallet';
 export {Suggestions} from './core/models/Suggestions';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
 export {TransactionOverrides, TransferDetails} from './core/models/transactions';
