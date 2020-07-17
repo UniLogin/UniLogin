@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+  <meta charset="UTF-8">
   <title>Copy to clipboard</title>
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="./src/ui/styles/copyToClipboard.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <script>
@@ -11,5 +17,19 @@
         navigator.clipboard.writeText(code);
       }
     </script>
+    <div class="dialog-background">
+      <div class='turquise-mist'></div>
+      <div class='dark-blue-mist'></div>
+      <div class="purple-mist"></div>
+    </div>
+    <div class='dialog-box'>
+      <img class="unilogin-logo" src='./src/ui/assets/U.svg' />
+      <div class='dialog-icon'></div>
+      <div class='info-box'>
+        <div class='title'>Code has been <b>copied</b><br>to your clipboard</div>
+        <div class='info-text'>You can go back to UniLogin and confirm your email with it</div>
+      </div>
+      <a class='unlock-btn' href='https://unilogin.io/'>Go to UniLogin</a>
+    </div>
   </body>
 </html>
