@@ -49,6 +49,7 @@ describe('INT: TokensDetailsStore', () => {
 
     expect(tokensDetailsStore.getTokenBy('symbol', expectedToken.symbol)).be.deep.eq(expectedToken);
     expect(tokensDetailsStore.getTokenBy('symbol', expectedToken.symbol.toLowerCase())).be.deep.eq(expectedToken);
+    expect(tokensDetailsStore.getTokenBy('symbol', expectedToken.symbol.toUpperCase())).be.deep.eq(expectedToken);
   });
 
   it('symbol -> undefined', async () => {
@@ -62,6 +63,7 @@ describe('INT: TokensDetailsStore', () => {
     const expectedToken = tokensDetailsStore.tokensDetails[0];
     expect(tokensDetailsStore.getTokenBy('address', expectedToken.address)).to.deep.eq(expectedToken);
     expect(tokensDetailsStore.getTokenBy('address', expectedToken.address.toLowerCase())).to.deep.eq(expectedToken);
+    expect(tokensDetailsStore.getTokenBy('address', expectedToken.address.toUpperCase())).to.deep.eq(expectedToken);
   });
 
   it('address -> error', async () => {
