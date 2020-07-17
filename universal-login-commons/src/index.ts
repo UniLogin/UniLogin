@@ -23,6 +23,7 @@ export {LocalizationConfig, RampConfig, SafelloConfig, WyreConfig} from './core/
 export {ContractWhiteList, OnRampConfig, PublicRelayerConfig, SupportedToken} from './core/models/relayer';
 export {RelayerRequest} from './core/models/relayerRequest';
 export {asStoredFutureWalletRequest, SerializableFutureWallet, StoredFutureWallet, StoredFutureWalletRequest} from './core/models/SerializableFutureWallet';
+export {asSerializableRequestedWallet, SerializableRequestedWallet} from './core/models/SerializableRequestedWallet';
 export {Suggestions} from './core/models/Suggestions';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
 export {TransactionOverrides, TransferDetails} from './core/models/transactions';
