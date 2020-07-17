@@ -1,5 +1,5 @@
 import React from 'react';
-import {providers} from 'ethers';
+import {providers, Wallet} from 'ethers';
 import {MockProvider} from 'ethereum-waffle';
 import {ReactWrapper} from 'enzyme';
 import chai, {expect} from 'chai';
@@ -19,15 +19,13 @@ describe('UI: Startup from stored wallet state', () => {
   let relayer: Relayer;
   let provider: providers.JsonRpcProvider;
   let appWrapper: ReactWrapper;
-  let privateKey: string;
-  let contractAddress: string;
+  let wallet: Wallet;
   const name = 'name.mylogin.eth';
 
   beforeEach(async () => {
-    const [wallet] = new MockProvider().getWallets();
+    [wallet] = new MockProvider().getWallets();
     ({relayer, provider} = await setupSdk(wallet, '33113'));
     services = await createPreconfiguredServices(provider, relayer, [ETHER_NATIVE_TOKEN.address]);
-    ({privateKey, contractAddress} = await createWallet(name, services.sdk, wallet));
   });
 
   it('starts when storage is empty', async () => {
@@ -44,6 +42,7 @@ describe('UI: Startup from stored wallet state', () => {
   });
 
   it('starts when storage is Future', async () => {
+    const {contractAddress, privateKey} = await services.sdk.createFutureWallet(name, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
     services.storageService.set(TEST_STORAGE_KEY, JSON.stringify({kind: 'Future', name, wallet: {contractAddress, privateKey, ensName: name, gasPrice: TEST_GAS_PRICE, gasToken: ETHER_NATIVE_TOKEN.address}}));
     await services.walletService.loadFromStorage();
     appWrapper = mountWithContext(<App/>, services, ['/create/topUp']);
@@ -51,6 +50,7 @@ describe('UI: Startup from stored wallet state', () => {
   });
 
   it('starts when storage is Deployed', async () => {
+    const {privateKey, contractAddress} = await createWallet(name, services.sdk, wallet);
     services.storageService.set(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: {name, privateKey, contractAddress}}));
     await services.walletService.loadFromStorage();
     appWrapper = mountWithContext(<App/>, services, ['/dashboard']);
