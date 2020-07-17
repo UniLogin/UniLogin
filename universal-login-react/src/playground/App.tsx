@@ -6,6 +6,7 @@ import {EmojiForm} from '../ui/Notifications/EmojiForm';
 import {generateCode, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_ACCOUNT_ADDRESS, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH} from '@unilogin/commons';
 import {EmojiPanel} from '../ui/WalletSelector/EmojiPanel';
 import {Onboarding} from '../ui/Onboarding/Onboarding';
+import {OnboardingNew} from '../ui/Onboarding/OnboardingNew';
 import {CreateRandomInstance} from './CreateRandomInstance';
 import UniLoginSdk, {DeployedWallet, DeployingWallet} from '@unilogin/sdk';
 import {Spinner} from '../ui/commons/Spinner';
@@ -93,6 +94,18 @@ export const App = () => {
                 path="/onboarding"
                 render={({history}) =>
                   <Onboarding
+                    walletService={walletService}
+                    domains={config.domains}
+                    onConnect={() => console.log('connected')}
+                    onCreate={() => history.push('/onboarding/success')}
+                    hideModal={() => history.push('/')}
+                  />}
+              />
+              <Route
+                exact
+                path="/onboardingNew"
+                render={({history}) =>
+                  <OnboardingNew
                     walletService={walletService}
                     domains={config.domains}
                     onConnect={() => console.log('connected')}

@@ -1,0 +1,44 @@
+.unilogin-component-select-flow
+  display: flex
+  flex-direction: column
+  flex: 1
+  position: relative
+
+  .unilogin-component-flow-wrapper
+    margin: 0 7.6rem
+
+  .unilogin-component-flow-content
+
+  .unilogin-component-user-tabs
+    display: flex
+    justify-content: space-between
+
+  .unilogin-component-user-tab
+    position: relative
+    width: 100%
+    height: 5.2rem
+
+  .unilogin-component-user-tab + .unilogin-component-user-tab
+    margin-left: 3rem
+
+  .unilogin-component-user-tab.active::after
+    content: ''
+    position: absolute
+    bottom: 0
+    left: 0
+    width: 100%
+    height: 3px
+    background: #aaB
+
+  .unilogin-component-confirm-btn
+    margin: auto 0 2.4rem auto
+    width: 10.2rem
+    height: 4rem
+
+.unilogin-component-onboarding-modal-wrapper.new
+  margin: 0 2.4rem
+
+  .unilogin-component-onboarding-modal-content
+    display: flex
+    flex-direction: column
+    flex: 1

@@ -1,0 +1,81 @@
+import React from 'react';
+import {WalletService} from '@unilogin/sdk';
+import {WalletSelector} from '../WalletSelector/WalletSelector';
+import {ApplicationWallet, WalletSuggestionAction} from '@unilogin/commons';
+import {ConnectionFlow, ModalWrapper} from '../..';
+import {OnboardingSteps} from './OnboardingSteps';
+import {Route, MemoryRouter} from 'react-router-dom';
+import {Switch} from 'react-router';
+import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocation';
+import {OnboardingStepsWrapperNew} from './OnboardingStepsWrapperNew';
+import {OnboardingSelectFlow} from './OnboardingSelectFlow';
+import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
+
+export interface OnboardingNewProps {
+  walletService: WalletService;
+  domains: string[];
+  onConnect?: () => void;
+  onCreate?: (arg: ApplicationWallet) => void;
+  hideModal?: () => void;
+  className?: string;
+  modalClassName?: string;
+}
+
+export const OnboardingNew = (props: OnboardingNewProps) => {
+  const onSuccess = () => props.onConnect?.();
+
+  return (
+    <MemoryRouter initialEntries={[getInitialOnboardingLocation(props.walletService.state)]}>
+      <Switch>
+        <Route
+          exact
+          path="/selector"
+          render={({history}) =>
+            <OnboardingStepsWrapperNew
+              hideModal={props.hideModal}
+              message={props.walletService.sdk.getNotice()}
+              steps={4}
+              progress={1}>
+              <div className="perspective">
+                <OnboardingSelectFlow
+                  sdk={props.walletService.sdk}
+                  onCreateClick={async (ensName) => {
+                    if (props.walletService.sdk.isRefundPaid()) {
+                      await props.walletService.createWallet(ensName);
+                    }
+                    history.push('/create', {ensName});
+                  }}
+                  onConnectClick={(ensName) => history.push('/connectFlow/chooseMethod', {ensName})}
+                  domains={props.domains}
+                  actions={[WalletSuggestionAction.connect, WalletSuggestionAction.create]}
+                />
+              </div>
+            </OnboardingStepsWrapperNew>}
+        />
+        <Route
+          exact
+          path="/create"
+          render={({location}) =>
+            <OnboardingSteps
+              walletService={props.walletService}
+              onCreate={props.onCreate}
+              ensName={location.state?.ensName}
+            />}
+        />
+        <Route
+          path="/connectFlow"
+          render={({history, location}) =>
+            <ModalWrapper message={props.walletService.sdk.getNotice()} hideModal={() => history.push('/selector')}>
+              <ConnectionFlow
+                basePath="/connectFlow"
+                onCancel={() => history.push('/selector')}
+                name={location.state.ensName}
+                walletService={props.walletService}
+                onSuccess={onSuccess}
+              />
+            </ModalWrapper>}
+        />
+      </Switch>
+    </MemoryRouter>
+  );
+};
