@@ -1,9 +1,10 @@
-import {expect} from 'chai';
+import {expect} from 'chai'; ;
+import sinon from 'sinon';
+import {MockProvider} from 'ethereum-waffle';
+import {RelayerUnderTest} from '@unilogin/relayer';
 import {RequestedWallet} from '../../../src/api/wallet/RequestedWallet';
 import UniLoginSdk from '../../../src';
 import {setupSdk} from '../../helpers';
-import {MockProvider} from 'ethereum-waffle';
-import {RelayerUnderTest} from '@unilogin/relayer';
 
 describe('INT: RequestedWallet', () => {
   let sdk: UniLoginSdk;
@@ -23,9 +24,13 @@ describe('INT: RequestedWallet', () => {
     expect(requestedWallet.asSerializableRequestedWallet).deep.eq({email, ensName});
   });
 
-  it('requestEmailConfirmation', async () => {
-    const result = await requestedWallet.requestEmailConfirmation();
-    expect(result).deep.eq({email});
+  it('roundtrip', async () => {
+    const sendConfirmationMailSpy = sinon.spy((relayer as any).emailService, 'sendConfirmationMail');
+    const requestEmailConfirmationResult = await requestedWallet.requestEmailConfirmation();
+    expect(requestEmailConfirmationResult).deep.eq({email});
+    const [, code] = sendConfirmationMailSpy.firstCall.args;
+    const confirmEmailResult = await requestedWallet.confirmEmail(code);
+    expect(confirmEmailResult).deep.eq({email});
   });
 
   afterEach(async () => {

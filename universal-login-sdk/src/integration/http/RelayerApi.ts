@@ -81,4 +81,8 @@ export class RelayerApi {
   requestEmailConfirmation(serializableRequestedWallet: SerializableRequestedWallet) {
     return this.http('POST', '/email/request', serializableRequestedWallet);
   }
+
+  confirmCode(code: string, email: string) {
+    return this.http('POST', '/email/confirmation', {code, email});
+  }
 }

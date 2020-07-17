@@ -18,4 +18,8 @@ export class RequestedWallet implements SerializableRequestedWallet {
   requestEmailConfirmation() {
     return this.sdk.relayerApi.requestEmailConfirmation(this.asSerializableRequestedWallet);
   }
+
+  confirmEmail(code: string) {
+    return this.sdk.relayerApi.confirmCode(code, this.email);
+  }
 }
