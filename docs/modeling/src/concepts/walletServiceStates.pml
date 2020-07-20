@@ -24,6 +24,7 @@ RequestedCreating: * ensName
 
 ConfirmedEmailCreating: * e-mail
 ConfirmedEmailCreating: * ensName
+ConfirmedEmailCreating: * code
 
 RequestedRestoring: * e-mail
 RequestedRestoring: * ensName
