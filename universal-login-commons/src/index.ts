@@ -23,6 +23,7 @@ export {LocalizationConfig, RampConfig, SafelloConfig, WyreConfig} from './core/
 export {ContractWhiteList, OnRampConfig, PublicRelayerConfig, SupportedToken} from './core/models/relayer';
 export {RelayerRequest} from './core/models/relayerRequest';
 export {asStoredFutureWalletRequest, SerializableFutureWallet, StoredFutureWallet, StoredFutureWalletRequest} from './core/models/SerializableFutureWallet';
+export {asSerializableRequestedWallet, SerializableRequestedWallet} from './core/models/SerializableRequestedWallet';
 export {Suggestions} from './core/models/Suggestions';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
 export {TransactionOverrides, TransferDetails} from './core/models/transactions';
@@ -75,7 +76,6 @@ export {BalanceChecker} from './integration/ethereum/BalanceChecker';
 export {deployContract, deployContractAndWait, DEPLOY_GAS_LIMIT, getDeployData} from './integration/ethereum/deployContract';
 export {withENS} from './integration/ethereum/ens';
 export {resolveName} from './integration/ethereum/resolveName';
-export {stringToWei} from './integration/ethereum/stringToWei';
 export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
 export {defaultDeployOptions, getDeployTransaction} from './integration/ethereum/transaction';
 export {SufficientBalanceValidator} from './integration/ethereum/validators/SufficientBalanceValidator';

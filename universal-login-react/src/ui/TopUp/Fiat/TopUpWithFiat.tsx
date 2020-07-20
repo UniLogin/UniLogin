@@ -4,13 +4,14 @@ import {LogoColor} from './FiatPaymentMethods';
 import {TopUpProvider} from '../../../core/models/TopUpProvider';
 import {TopUpDetails} from './TopUpDetails';
 import {Ramp} from '../OnRamp/Ramp';
-import {stringToWei, RampConfig} from '@unilogin/commons';
+import {RampConfig} from '@unilogin/commons';
 import {ThemedComponent} from '../../commons/ThemedComponent';
 import {Wyre} from '../OnRamp/Wyre';
 import {Safello} from '../OnRamp/Safello';
 import {WaitingForOnRampProvider} from './WaitingForOnRampProvider';
 import Spinner from '../../commons/Spinner';
 import {OnRampSuccessInfo} from './OnRampSuccessInfo';
+import {formatValue} from '../../../core/utils/formatValue';
 
 export interface TopUpWithFiatProps {
   walletService: WalletService;
@@ -64,7 +65,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, logoC
     case TopUpProvider.RAMP:
       return <Ramp
         address={contractAddress}
-        amount={stringToWei(amount)}
+        amount={formatValue(walletService.sdk, amount, currency)}
         currency={currency}
         config={getRampConfig(relayerConfig.onRampProviders.ramp, walletService.sdk.config.rampApiKey)}
         onSuccess={() => setModal('wait')}

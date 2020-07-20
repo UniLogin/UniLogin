@@ -59,7 +59,7 @@ describe('Login', () => {
       const callback = sinon.spy();
       const {unsubscribe, securityCode} = await walletServiceForConnect.connect(name, callback);
       const newPublicKey = utils.computeAddress((walletServiceForConnect.state as any).wallet.privateKey);
-      const expectedSecurityCode = await generateCode(newPublicKey);
+      const expectedSecurityCode = generateCode(newPublicKey);
       expect(unsubscribe).to.not.be.null;
       const deployedWallet = new DeployedWallet(contractAddress, '', privateKey, sdk);
       const {waitToBeSuccess} = await deployedWallet.addKey(newPublicKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
@@ -75,7 +75,7 @@ describe('Login', () => {
   });
 
   after(async () => {
-    await sdk.stop();
+    await sdk.finalizeAndStop();
     await relayer.stop();
   });
 });

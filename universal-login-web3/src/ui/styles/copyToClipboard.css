@@ -1,0 +1,252 @@
+body {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.unilogin-logo {
+  position: absolute;
+  top: 47px;
+  left: 55px;
+  width: 204px;
+  height: 52.35px;
+  display: inline-block;
+  text-align: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.dialog-box{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1016px;
+  max-height: 668px;
+  width: 80%;
+  height: 90%;
+  padding: 209px 60px 0;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background: #FFFFFF;
+  box-shadow: 0px 24px 104px rgba(0, 131, 188, 0.1);
+  border-radius: 16px;
+  z-index: 10;
+}
+
+.dialog-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.info-box {
+  height: auto;
+  width: auto;
+  display: inline-block;
+  text-align: center;
+  justify-content: center;
+  margin-bottom: 100px;
+}
+
+.title {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 56px;
+  line-height: 129%;
+  text-align: center;
+  color: #0F0C4A;
+}
+
+.info-text {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 22px;
+  line-height: 164%;
+  color: #7D7C9C;
+  padding-top: 5%;
+}
+
+.dialog-icon {
+  position: absolute;
+  top: 0;
+  height: 0;
+  width: 28.92px;
+  height: 15.47px;
+  background: url('/src/ui/assets/success.svg') no-repeat;
+  top: 132px;
+}
+
+.dialog-icon::before {
+  content: '';
+  position: absolute;
+  width: 76.11px;
+  height: 59.04px;
+  background: #41FCFF;
+  opacity: 0.45;
+  filter: blur(50px);
+  transform: translate(-32%, -33%) rotate(-25.33deg);
+  border: 2px solid red;
+}
+
+.unlock-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0 0;
+  height: 56px;
+  min-height: 56px;
+  max-width: 368px;
+  width: 100%;
+  margin: auto 0 100px;
+  background: linear-gradient(97.27deg, #1F46C4 0%, #0E1F98 100%);
+  box-shadow: 0px 16px 32px rgba(0, 61, 181, 0.2);
+  border-radius: 8px;
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.unlock-btn:hover {
+  background: linear-gradient(97.38deg, #3158D7 0%, #182AA9 100%);
+}
+
+.unlock-btn:active {
+  background: linear-gradient(97.38deg, #1239B7 0%, #061895 100%);
+  box-shadow: unset;
+}
+
+.turquise-mist{
+  position: absolute;
+  width: 580px;
+  height: 477px;
+  top: -106.86px;
+  right: 20%;
+  background: #41FCFF;
+  opacity: 0.15;
+  filter: blur(178px);
+  transform: rotate(-25.33deg);
+  z-index: 1;
+}
+
+.dark-blue-mist{
+  position: absolute;
+  width: 547px;
+  height: 432px;
+  right: -5%;
+  top: 70%;
+  background: #4C7AED;
+  opacity: 0.45;
+  filter: blur(178px);
+  z-index: 1;
+}
+
+.purple-mist {
+  position: absolute;
+  width: 770px;
+  height: 634px;
+  bottom: -350px;
+  left: -557px;
+  background: #CFA4FE;
+  opacity: 0.3;
+  filter: blur(178px);
+  transform: rotate(-25.33deg);
+  z-index: 1;
+}
+
+@media only screen and (max-width: 950px) {
+  .title {
+    font-size: 40px;
+    line-height: 117%;
+  }
+
+  .info-text {
+    font-size: 18px;
+    line-height: 135%;
+  }
+
+  .unilogin-logo {
+    top: 12px;
+    left: 24px;
+    width: 150px;
+  }
+}
+
+@media only screen and (max-width: 600px), screen and (max-height: 600px) {
+  .dialog-box{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    max-height: unset;
+    background: #FFFFFF;
+    box-shadow: 0px 24px 104px rgba(0, 131, 188, 0.1);
+    border-radius: 16px;
+    padding: 209px 24px 0;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    border-radius: unset;
+  }
+
+  .dialog-background {
+    display: none;
+  }
+
+  .unilogin-logo {
+    width: 128px;
+  }
+
+  .unlock-btn {
+    font-size: 16px;
+  }
+
+  .unlock-btn {
+    margin: auto 0 24px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .title {
+    font-size: 30px;
+  }
+
+  .info-text {
+    font-size: 16px;
+    line-height: 150%;
+    margin: 0 20px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .title {
+    font-size: 25px;
+  }
+
+  .info-text {
+    font-size: 14px;
+    line-height: 150%;
+  }
+
+  .unlock-btn {
+    font-size: 14px;
+  }
+}

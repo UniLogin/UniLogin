@@ -41,7 +41,7 @@ describe('E2E: Relayer - Email Confirmation', () => {
       .post('/email/request')
       .send({email, ensName: 'hello.unilogin.eth'});
     expect(confirmationRequestResult.status).to.eq(201);
-    expect(confirmationRequestResult.body).to.deep.eq({response: email});
+    expect(confirmationRequestResult.body).to.deep.eq({email});
 
     const invalidCode = '123456';
     const confirmationResult = await chai.request(relayerUrl)
