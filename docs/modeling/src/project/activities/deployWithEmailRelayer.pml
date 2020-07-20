@@ -26,8 +26,9 @@ deactivate EmailConfirmationHandler
 EmailConfirmationHandler -> SDK: OK
 
 == Store encrypted ==
-SDK -> WalletHandler: addEncryptedWallet(wallet JSON, e-mail)
+SDK -> WalletHandler: addEncryptedWallet(wallet JSON, e-mail, code)
 WalletHandler -> EmailValidator: isConfirmed(e-mail)
+WalletHandler -> EmailValidator: validate(code)
 WalletHandler -> WalletsStore: store(wallet JSON, e-mail, ensName)
 
 
