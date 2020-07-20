@@ -19,7 +19,7 @@ export function getConfigForNetwork(network: Network): Config {
         provider: new HttpProvider('https://eth-mainnet.alchemyapi.io/v2/3ieYU1sRgYk5UzTug4ZTH4gDceJUQM5b'),
         relayerUrl: 'https://relayer-mainnet.herokuapp.com',
         ensDomains: ['unibeta.eth', 'unitest.eth'],
-        observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0x6b175474e89094c44da98b954eedeac495271d0f'],
+        observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0x6b175474e89094c44da98b954eedeac495271d0f', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'],
       };
     case '3':
     case 'ropsten':

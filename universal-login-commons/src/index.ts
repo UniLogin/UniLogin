@@ -75,7 +75,6 @@ export {BalanceChecker} from './integration/ethereum/BalanceChecker';
 export {deployContract, deployContractAndWait, DEPLOY_GAS_LIMIT, getDeployData} from './integration/ethereum/deployContract';
 export {withENS} from './integration/ethereum/ens';
 export {resolveName} from './integration/ethereum/resolveName';
-export {stringToWei} from './integration/ethereum/stringToWei';
 export {TokenDetailsService} from './integration/ethereum/TokenDetailsService';
 export {defaultDeployOptions, getDeployTransaction} from './integration/ethereum/transaction';
 export {SufficientBalanceValidator} from './integration/ethereum/validators/SufficientBalanceValidator';

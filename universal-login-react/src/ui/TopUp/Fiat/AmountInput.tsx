@@ -11,14 +11,13 @@ export interface AmountInputProps {
   setCurrency: (currency: string) => void;
   onChange: (amount: string) => void;
   walletService: WalletService;
+  regularCurrenciesList: string[];
 }
 
-const REGULAR_CURRENCIES_LIST = ['ETH', 'DAI'];
-
-export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange, walletService}: AmountInputProps) => {
+export const AmountInput = ({amount, selectedCurrency, setCurrency, onChange, walletService, regularCurrenciesList}: AmountInputProps) => {
   const [expanded, setExpanded] = useState(false);
   const isDeployment = !walletService.walletDeployed.get();
-  const currenciesList = isDeployment ? [walletService.getFutureWallet().getTopUpCurrencySymbol()] : REGULAR_CURRENCIES_LIST;
+  const currenciesList = isDeployment ? [walletService.getFutureWallet().getTopUpCurrencySymbol()] : regularCurrenciesList;
   const disabled = currenciesList.length < 2;
 
   const onCurrencyItemClick = (currency: string) => {
