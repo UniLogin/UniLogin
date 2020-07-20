@@ -80,7 +80,7 @@ export const TopUpDetails = ({walletService, onPayClick, logoColor, amount, onAm
               amount={amount}
               onChange={onAmountChange}
               walletService={walletService}
-              regularCurrenciesList={['ETH', 'DAI']}
+              regularCurrenciesList={['ETH', 'DAI', 'USDC']}
             />
           }
           <div className={classForComponent('fiat-bottom')}>
