@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {CompanyLogo} from '../commons/CompanyLogo';
 import {useClassFor, classForComponent} from '../utils/classFor';
-// import '../styles/base/onboardingModal.sass';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
-import {ModalWrapperProps, ModalWrapper} from '../Modals/ModalWrapper';
 import {WalletSelector, WalletSelectorProps} from '../WalletSelector/WalletSelector';
+import Input from '../commons/Input';
+import {Label} from '../commons/Form/Label';
 
 interface OnboardingSelectFlowProps extends WalletSelectorProps {
 }
@@ -17,9 +16,18 @@ export const OnboardingSelectFlow = ({
   domains,
   actions,
   placeholder,
-  className
+  className,
 }: OnboardingSelectFlowProps) => {
   const [flow, setFlow] = useState('create');
+
+  const handleConfirmClick = () => {
+    const ensName = 'satoshi93.unilogin.eth';
+    if (flow === 'create') {
+      onCreateClick!(ensName);
+    } else if (flow === 'connect') {
+      onConnectClick!(ensName);
+    }
+  };
 
   return (
     <div className={useClassFor('select-flow')}>
@@ -33,7 +41,7 @@ export const OnboardingSelectFlow = ({
             className={`${classForComponent('user-tab')} ${flow == 'connect' ? 'active': ''}`}>Existing user</button>
         </div>
         <div className={useClassFor('flow-content')}>
-          {flow == 'create' && <CreationFlow
+          {flow === 'create' && <CreationFlow
             onCreateClick={onCreateClick}
             onConnectClick={onConnectClick}
             sdk={sdk}
@@ -42,7 +50,7 @@ export const OnboardingSelectFlow = ({
             placeholder={placeholder}
             className={className}
           />}
-          {flow == 'connect' && <ConnectionFlow
+          {flow === 'connect' && <ConnectionFlow
             onCreateClick={onCreateClick}
             onConnectClick={onConnectClick}
             sdk={sdk}
@@ -53,7 +61,7 @@ export const OnboardingSelectFlow = ({
           />}
         </div>
       </div>
-      <button className={classForComponent('confirm-btn')}>Confirm</button>
+      <button onClick={handleConfirmClick} className={classForComponent('confirm-btn')}>Confirm</button>
     </div>
   );
 }
@@ -65,11 +73,11 @@ const CreationFlow = ({
   domains,
   actions,
   placeholder,
-  className
+  className,
 }: WalletSelectorProps) => {
   return (
-    <div>
-      <p>Creation</p>
+    <>
+      <Label>Type a username you want:</Label>
       <WalletSelector
         onCreateClick={onCreateClick}
         onConnectClick={onConnectClick}
@@ -79,9 +87,13 @@ const CreationFlow = ({
         placeholder={placeholder}
         className={className}
       />
-    </div>
+      <p className={`${useClassFor('input-description')} ${classForComponent('username-suggestion')}`}>our suggestion: <b>satoshi93.unilogin.eth</b></p>
+      <Label>Your e-mail</Label>
+      <Input className={` ${useClassFor('input')} ${classForComponent('input-email')}}`} id='email-input' onChange={() => console.log('email')}/>
+      <p className={useClassFor('input-description')}>We wil use your email and a password to help you recover your account. We do not hold custody of your funds. If you’d rather not share an email, <a href='#' className={classForComponent('description-link')}>download an app.</a></p>
+    </>
   );
-}
+};
 
 const ConnectionFlow = ({
   onCreateClick,
@@ -90,11 +102,11 @@ const ConnectionFlow = ({
   domains,
   actions,
   placeholder,
-  className
+  className,
 }: WalletSelectorProps) => {
   return (
-    <div>
-      <p>Connection</p>
+    <>
+      <Label>Type a username or e-mail to search:</Label>
       <WalletSelector
         onCreateClick={onCreateClick}
         onConnectClick={onConnectClick}
@@ -104,6 +116,6 @@ const ConnectionFlow = ({
         placeholder={placeholder}
         className={className}
       />
-    </div>
+    </>
   );
-}
+};

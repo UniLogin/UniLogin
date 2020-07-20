@@ -6,6 +6,7 @@ import './../styles/base/modal.sass';
 import './../styles/themes/UniLogin/modalThemeUniLogin.sass';
 import './../styles/themes/Legacy/modalThemeLegacy.sass';
 import './../styles/themes/Jarvis/modalThemeJarvis.sass';
+import './../styles/themes/UniLogin/components/inputsThemeUniLogin.sass';
 
 export interface ModalWrapperProps extends NoticeProps {
   children: ReactNode;

@@ -7,11 +7,17 @@
   .unilogin-component-flow-wrapper
     margin: 0 7.6rem
 
+    @media only screen and (max-width: 600px)
+      margin: 0
+
   .unilogin-component-flow-content
+    display: flex
+    flex-direction: column
 
   .unilogin-component-user-tabs
     display: flex
     justify-content: space-between
+    margin-bottom: 42px
 
   .unilogin-component-user-tab
     position: relative
@@ -20,6 +26,9 @@
 
   .unilogin-component-user-tab + .unilogin-component-user-tab
     margin-left: 3rem
+
+    @media only screen and (max-width: 600px)
+      margin-left: 1.5rem
 
   .unilogin-component-user-tab.active::after
     content: ''
@@ -34,6 +43,24 @@
     margin: auto 0 2.4rem auto
     width: 10.2rem
     height: 4rem
+
+    @media only screen and (max-width: 600px)
+      max-width: 25rem
+      width: 100%
+      margin: auto auto 6.4rem
+
+  .unilogin-component-label
+    text-align: left
+
+  .unilogin-component-input-description
+    font-size: 1.4rem
+    line-height: 140%
+    margin: .8rem 0 0
+
+  .unilogin-component-input-description.unilogin-component-username-suggestion
+    font-size: 1.2rem
+    line-height: 1.8rem
+    margin: .8rem 0 4rem
 
 .unilogin-component-onboarding-modal-wrapper.new
   margin: 0 2.4rem
