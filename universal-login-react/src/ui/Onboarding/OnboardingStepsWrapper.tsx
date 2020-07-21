@@ -7,11 +7,14 @@ import '../styles/themes/UniLogin/onboardingModalThemeUniLogin.sass';
 import {ModalWrapperProps, ModalWrapper} from '../Modals/ModalWrapper';
 
 interface OnboardingStepsWrapperProps extends ModalWrapperProps {
+  title?: string;
+  description?: string;
+  contentLabel?: string;
   steps?: number;
   progress?: number;
 }
 
-export const OnboardingStepsWrapper = ({children, hideModal, message, steps, progress}: OnboardingStepsWrapperProps) =>
+export const OnboardingStepsWrapper = ({children, hideModal, message, title, description, contentLabel, steps, progress}: OnboardingStepsWrapperProps) =>
   <ModalWrapper hideModal={hideModal} message={message}>
     <div className={useClassFor('onboarding-modal')}>
       <CompanyLogo />
@@ -19,14 +22,10 @@ export const OnboardingStepsWrapper = ({children, hideModal, message, steps, pro
         <ModalProgressBar steps={steps} progress={progress} />
       </div>
       <div className={classForComponent('onboarding-modal-wrapper')}>
-        <h1 className={classForComponent('onboarding-modal-title')}>
-          Create or connect account
-        </h1>
-        <p className={classForComponent('onboarding-modal-description')}>
-          Type a nickname to create account or your current username to login.
-        </p>
-        <div className={classForComponent('onboarding-modal-input-section')}>
-          <p className={classForComponent('onboarding-modal-label')}>Your nickname:</p>
+        {title && <h1 className={classForComponent('onboarding-modal-title')}>{title}</h1>}
+        {description && <p className={classForComponent('onboarding-modal-description')}>{description}</p>}
+        <div className={classForComponent('onboarding-modal-content')}>
+          {contentLabel && <p className={classForComponent('onboarding-modal-label')}>Your nickname:</p>}
           {children}
         </div>
       </div>

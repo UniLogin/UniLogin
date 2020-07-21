@@ -31,6 +31,9 @@ export const Onboarding = (props: OnboardingProps) => {
           path="/selector"
           render={({history}) =>
             <OnboardingStepsWrapper
+              title='Create or connect account'
+              description='Type a nickname to create account or your current username to login.'
+              contentLabel='Your nickname:'
               hideModal={props.hideModal}
               message={props.walletService.sdk.getNotice()}
               steps={4}
