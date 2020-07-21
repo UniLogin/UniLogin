@@ -7,7 +7,7 @@ import {baseConfig} from './baseConfig';
 export const getConfig = () => ({
   ...baseConfig,
   network: 'kovan',
-  jsonRpcUrl: `https://eth-kovan.alchemyapi.io/v2/${getEnv('ALCHEMY_API_KEY', '')}`,
+  jsonRpcUrl: `https://kovan.infura.io/v3/${getEnv('INFURA_API_KEY', '')}`,
   ensAddress: '0x4Ca9B09FE1CDC2C4b0B489b6f92b24fd27feBB40',
   ensRegistrars: ['unilogin.test', 'poppularapp.test'],
   ensRegistrar: '0xD79721fD1c007320cB443D4F7026b5B06f68ff97',

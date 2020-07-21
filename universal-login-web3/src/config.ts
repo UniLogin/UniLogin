@@ -16,7 +16,7 @@ export function getConfigForNetwork(network: Network): Config {
     case 'mainnet':
       return {
         network: 'mainnet',
-        provider: new HttpProvider('https://eth-mainnet.alchemyapi.io/v2/3ieYU1sRgYk5UzTug4ZTH4gDceJUQM5b'),
+        provider: new HttpProvider('https://mainnet.infura.io/v3/7dd9fc79d94f40ccbc0d8821551516dd'),
         relayerUrl: 'https://relayer-mainnet.herokuapp.com',
         ensDomains: ['unibeta.eth', 'unitest.eth'],
         observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0x6b175474e89094c44da98b954eedeac495271d0f', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'],
@@ -25,7 +25,7 @@ export function getConfigForNetwork(network: Network): Config {
     case 'ropsten':
       return {
         network: 'ropsten',
-        provider: new HttpProvider('https://eth-ropsten.alchemyapi.io/v2/_R4thjduHrjQduj0VDqo0s15yegdewzP'),
+        provider: new HttpProvider('https://ropsten.infura.io/v3/38473dae09c34dcb8c06bd0752944815'),
         relayerUrl: 'https://relayer-ropsten.herokuapp.com',
         ensDomains: ['unilogin.test'],
         observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0xcd472179470ece764b5a90da2e79bb16e500a85c'],
@@ -34,7 +34,7 @@ export function getConfigForNetwork(network: Network): Config {
     case 'rinkeby':
       return {
         network: 'rinkeby',
-        provider: new HttpProvider('https://eth-rinkeby.alchemyapi.io/v2/uuu-4ZbLoMQouPcL5Vf-7m8ifgHo5beg'),
+        provider: new HttpProvider('https://rinkeby.infura.io/v3/a7b3f39ac97a4f5ab4086410d2d27b30'),
         relayerUrl: 'https://relayer-rinkeby.herokuapp.com',
         ensDomains: ['unilogin.test'],
         observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0xef77ce798401dac8120f77dc2debd5455eddacf9'],
@@ -43,7 +43,7 @@ export function getConfigForNetwork(network: Network): Config {
     case 'kovan':
       return {
         network: 'kovan',
-        provider: new HttpProvider('https://eth-kovan.alchemyapi.io/v2/QRGk3mhWs67ZkT5hnjB_DZui4XJ3UpcS'),
+        provider: new HttpProvider('https://kovan.infura.io/v3/ddbb59bc09094dd4ae516d6ce95c37a0'),
         relayerUrl: 'https://relayer-kovan.herokuapp.com',
         ensDomains: ['unilogin.test'],
         observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0x08ae34860fbfe73e223596e65663683973c72dd3'],
