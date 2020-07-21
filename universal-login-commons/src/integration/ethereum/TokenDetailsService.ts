@@ -14,8 +14,6 @@ const tokenAbiBytes32 = [
   'function symbol() public view returns (bytes32)',
 ];
 
-const tokensWithSymbolAsName = ['USDC'];
-
 export class TokenDetailsService {
   constructor(private provider: providers.Provider, private saiTokenAddress?: string) {}
 
@@ -33,7 +31,7 @@ export class TokenDetailsService {
       return {address: this.saiTokenAddress, symbol: 'SAI', name: 'Sai Stablecoin v1.0', decimals: 18};
     }
     const symbol = await this.getSymbol(tokenAddress);
-    const name = tokensWithSymbolAsName.findIndex(tokenSymbol => tokenSymbol === symbol) > -1 ? symbol : await this.getName(tokenAddress);
+    const name = await this.getName(tokenAddress);
     const decimals = await this.getDecimals(tokenAddress);
     return {address: tokenAddress, symbol, name, decimals};
   }
