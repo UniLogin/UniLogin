@@ -1,4 +1,4 @@
-import {ObservedCurrency, ApplicationInfo, Network, asNetwork, asApplicationInfo, Omit, RampConfig, RampOverrides, asRampOverrides} from '@unilogin/commons';
+import {ObservedCurrency, ApplicationInfo, Network, asNetwork, asApplicationInfo, Omit, RampOverrides, asRampOverrides} from '@unilogin/commons';
 import {IStorageService} from '../core/models/IStorageService';
 import {asArray, asString, asNumber, asPartialObject} from '@restless/sanitizers';
 

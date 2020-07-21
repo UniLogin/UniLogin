@@ -1,6 +1,7 @@
 import {asPartialObject, asString} from '@restless/sanitizers';
-import {RampConfig} from '../../..';
+import {RampOverrides} from '../../models/onRamp';
 
-export const asRampOverrides = asPartialObject<Pick<RampConfig, 'rampApiKey'>>({
+export const asRampOverrides = asPartialObject<RampOverrides>({
   rampApiKey: asString,
+  logoUrl: asString,
 });
