@@ -6,20 +6,16 @@ import Input from '../commons/Input';
 import {Label} from '../commons/Form/Label';
 
 type EmailFlow = {
-  kind: 'create',
+  kind: 'create';
   onClick: () => void;
 } | {
-  kind: 'connect',
-  onClick: () => void,
-}
+  kind: 'connect';
+  onClick: () => void;
+};
 
 interface EmailFlowChooserProps {
   onCreateClick: () => void;
   onConnectClick: () => void;
-}
-
-interface EmailInputProps {
-  domainName: string;
 }
 
 export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChooserProps) => {
@@ -44,7 +40,7 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
       <button onClick={flow.onClick} className={classForComponent('confirm-btn')}>Confirm</button>
     </div>
   );
-}
+};
 
 const CreationContent = () => {
   return (

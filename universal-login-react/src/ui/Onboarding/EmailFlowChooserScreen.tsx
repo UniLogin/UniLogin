@@ -1,17 +1,22 @@
 import React from 'react';
 import {EmailFlowChooser} from './EmailFlowChooser';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
-import {OnboardingProps} from './Onboarding';
+import {WalletService} from '@unilogin/sdk';
 
-export const EmailFlowChooserScreen = (props: OnboardingProps) => {
+interface EmailFlowChooserScreen {
+  hideModal: () => void;
+  walletService: WalletService;
+}
+
+export const EmailFlowChooserScreen = ({hideModal, walletService}: EmailFlowChooserScreen) => {
   return (
     <OnboardingStepsWrapper
-    title='Create or connect account'
-    className='onboarding-select-flow'
-    hideModal={props.hideModal}
-    message={props.walletService.sdk.getNotice()}
-    steps={4}
-    progress={1}>
+      title='Create or connect account'
+      className='onboarding-select-flow'
+      hideModal={hideModal}
+      message={walletService.sdk.getNotice()}
+      steps={4}
+      progress={1}>
       <div className="perspective">
         <EmailFlowChooser
           onCreateClick={() => console.log('create')}
@@ -19,5 +24,5 @@ export const EmailFlowChooserScreen = (props: OnboardingProps) => {
         />
       </div>
     </OnboardingStepsWrapper>
-  )
-}
+  );
+};

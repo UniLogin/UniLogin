@@ -107,9 +107,6 @@ export const App = () => {
                 render={({history}) =>
                   <EmailFlowChooserScreen
                     walletService={walletService}
-                    domains={config.domains}
-                    onConnect={() => console.log('connected')}
-                    onCreate={() => history.push('/onboarding/success')}
                     hideModal={() => history.push('/')}
                   />}
               />
