@@ -46,7 +46,7 @@ const CreationContent = () => {
   return (
     <>
       <Label>Type a username you want:</Label>
-      <Input className={` ${useClassFor('input')} ${classForComponent('input-ens-name')}}`} id='email-input' onChange={() => console.log('email')}/>
+      <Input className={` ${useClassFor('input')} ${classForComponent('input-ens-name')}}`} id='ens-name-input' onChange={() => console.log('email')}/>
       <p className={`${useClassFor('input-description')} ${classForComponent('username-suggestion')}`}>our suggestion: <b>satoshi93.unilogin.eth</b></p>
       <Label>Your e-mail</Label>
       <Input className={` ${useClassFor('input')} ${classForComponent('input-email')}}`} id='email-input' onChange={() => console.log('email')}/>
