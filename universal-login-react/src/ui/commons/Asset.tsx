@@ -9,7 +9,7 @@ import './../styles/themes/Legacy/assetsItemThemeLegacy.sass';
 import {getTildeGivenAmount, formatCurrency} from '../../core/utils/formatCurrency';
 import {ThemedComponent} from './ThemedComponent';
 import {Erc20Icon} from './Erc20Icon';
-import {getProperTokenName} from '../../app/getProperTokenName';
+import {formatTokenName} from '../../app/formatTokenName';
 
 export interface AssetProps {
   sdk: UniLoginSdk;
@@ -18,7 +18,7 @@ export interface AssetProps {
 }
 
 export const Asset = ({sdk, token, balance}: AssetProps) => {
-  const {symbol} = token;
+  const {name, symbol} = token;
   const [usdAmount, setUsdAmount] = useState<string>('');
   const [usdPrice, setUsdPrice] = useState<string>('');
 
@@ -43,7 +43,7 @@ export const Asset = ({sdk, token, balance}: AssetProps) => {
             <Erc20Icon token={token} className="currency-accordion-img" />
           </div>
           <div>
-            <p className="assets-name">{getProperTokenName(token)}</p>
+            <p className="assets-name">{formatTokenName(name)}</p>
             <p className="assets-price">1 {symbol} = ${usdPrice}</p>
           </div>
         </div>
