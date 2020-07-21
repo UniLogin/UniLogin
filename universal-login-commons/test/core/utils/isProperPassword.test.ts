@@ -11,14 +11,6 @@ describe('UNIT: isProperPassword', () => {
   });
 
   it('Not enought capitals', () => {
-    expect(isProperPassword('not$o$hort1')).be.eq(false);
-  });
-
-  it('Not enought specials', () => {
-    expect(isProperPassword('notSoShort1')).be.eq(false);
-  });
-
-  it('Not enought digits', () => {
-    expect(isProperPassword('not$o$hort')).be.eq(false);
+    expect(isProperPassword('notsoshort1')).be.eq(false);
   });
 });
