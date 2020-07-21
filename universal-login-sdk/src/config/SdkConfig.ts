@@ -16,7 +16,7 @@ export interface SdkConfig {
   mineableFactoryTimeout: number;
   storageService: IStorageService;
   notifySdkApiKey: string;
-  rampConfig?: RampOverrides;
+  rampOverrides?: RampOverrides;
   apiKey?: string;
 }
 
@@ -34,6 +34,6 @@ export const asSdkConfigOverrides = asPartialObject<SdkOverrides>({
   mineableFactoryTick: asNumber,
   mineableFactoryTimeout: asNumber,
   notifySdkApiKey: asString,
-  rampConfig: asRampOverrides,
+  rampOverrides: asRampOverrides,
   apiKey: asString,
 });
