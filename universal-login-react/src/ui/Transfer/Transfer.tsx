@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import UniLoginSdk, {TransferService, TransferErrors, Execution} from '@unilogin/sdk';
-import {TransferDetails, TokenDetails, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN, SEND_TRANSACTION_GAS_LIMIT} from '@unilogin/commons';
+import {TransferDetails, TokenDetails, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN, SEND_TRANSACTION_GAS_LIMIT, INITIAL_GAS_PARAMETERS} from '@unilogin/commons';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
 import {TransferAmount} from './Amount/TransferAmount';
@@ -21,7 +21,7 @@ export interface TransferProps {
 }
 
 export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferProps) => {
-  const [transferDetails, setTransferDetails] = useState({transferToken: ETHER_NATIVE_TOKEN.address} as TransferDetails);
+  const [transferDetails, setTransferDetails] = useState<TransferDetails>({transferToken: ETHER_NATIVE_TOKEN.address, amount: '', to: '', gasParameters: INITIAL_GAS_PARAMETERS});
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
   const [tokenDetailsWithBalance] = useBalances(transferService.deployedWallet);
   const selectedToken = transferService.getTokenDetails(transferDetails.transferToken);
