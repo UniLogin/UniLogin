@@ -10,13 +10,14 @@ interface OnboardingStepsWrapperProps extends ModalWrapperProps {
   title?: string;
   description?: string;
   contentLabel?: string;
+  className?: string;
   steps?: number;
   progress?: number;
 }
 
-export const OnboardingStepsWrapper = ({children, hideModal, message, title, description, contentLabel, steps, progress}: OnboardingStepsWrapperProps) =>
+export const OnboardingStepsWrapper = ({children, hideModal, message, title, description, contentLabel, className, steps, progress}: OnboardingStepsWrapperProps) =>
   <ModalWrapper hideModal={hideModal} message={message}>
-    <div className={useClassFor('onboarding-modal')}>
+    <div className={`${useClassFor('onboarding-modal')} ${className && classForComponent(className)}`}>
       <CompanyLogo />
       <div className={classForComponent('onboarding-progress-wrapper')}>
         <ModalProgressBar steps={steps} progress={progress} />
