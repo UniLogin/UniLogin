@@ -2,15 +2,30 @@ import {expect} from 'chai';
 import {isProperPassword} from '../../../src/core/utils/isProperPassword';
 
 describe('UNIT: isProperPassword', () => {
-  it('Correct password', () => {
-    expect(isProperPassword('$uperPassword123')).be.eq(true);
+  describe('Correct passwords', () => {
+    const correctPasswords = [
+      '$uperPassword123',
+      'CorrectPass',
+      '10Digits10',
+      'WhatACorrectPass',
+    ];
+
+    correctPasswords.forEach(password => it(password, () => {
+      expect(isProperPassword(password)).be.eq(true);
+    }));
   });
 
-  it('Too short password', () => {
-    expect(isProperPassword('$Hort1')).be.eq(false);
-  });
+  describe('Incorrect passwords', () => {
+    const incorrectPasswords = [
+      'superpassword',
+      'pass',
+      'Pass',
+      '$uperpassword',
+      'withdigits123',
+    ];
 
-  it('Not enought capitals', () => {
-    expect(isProperPassword('notsoshort1')).be.eq(false);
+    incorrectPasswords.forEach(password => it(password, () => {
+      expect(isProperPassword(password)).be.eq(false);
+    }));
   });
 });
