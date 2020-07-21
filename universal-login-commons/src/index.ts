@@ -19,7 +19,8 @@ export {IPGeolocationApiConfig} from './core/models/IPGeolocationApiConfig';
 export {KeyPair} from './core/models/keyPair';
 export {CollectedSignatureKeyPair, DecodedMessage, DecodedMessageWithFrom, DeploymentState, DeploymentStatus, ExecutionOptions, Message, MessageState, MessageStatus, MessageWithFrom, MessageWithoutFrom, MineableState, MineableStatus, OperationType, PaymentOptions, SdkExecutionOptions, SignedMessage, SignedMessagePaymentOptions, UnsignedMessage, DecodedMessageGnosis} from './core/models/message';
 export {ApplicationInfo, Device, DeviceInfo, Notification, DeviceType} from './core/models/notifications';
-export {LocalizationConfig, RampConfig, SafelloConfig, WyreConfig} from './core/models/onRamp';
+export {LocalizationConfig, RampConfig, RampOverrides, SafelloConfig, WyreConfig} from './core/models/onRamp';
+export {asRampOverrides} from './core/utils/sanitizers/asRampOverrides';
 export {ContractWhiteList, OnRampConfig, PublicRelayerConfig, SupportedToken} from './core/models/relayer';
 export {RelayerRequest} from './core/models/relayerRequest';
 export {asStoredFutureWalletRequest, SerializableFutureWallet, StoredFutureWallet, StoredFutureWalletRequest} from './core/models/SerializableFutureWallet';
@@ -109,3 +110,4 @@ export {IErc721Token, IBasicErc721Token as IBasicToken} from './core/models/Erc7
 export {Erc721TokensService} from './core/services/Erc721TokensService';
 export {isAddressIncludedInLog} from './core/utils/isAddressIncludedInLog';
 export {isProperEmail} from './core/utils/isProperEmail';
+export {isProperPassword} from './core/utils/isProperPassword';

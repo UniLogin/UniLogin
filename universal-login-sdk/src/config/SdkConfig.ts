@@ -1,4 +1,4 @@
-import {ObservedCurrency, ApplicationInfo, Network, asNetwork, asApplicationInfo, Omit} from '@unilogin/commons';
+import {ObservedCurrency, ApplicationInfo, Network, asNetwork, asApplicationInfo, Omit, RampOverrides, asRampOverrides} from '@unilogin/commons';
 import {IStorageService} from '../core/models/IStorageService';
 import {asArray, asString, asNumber, asPartialObject} from '@restless/sanitizers';
 
@@ -16,7 +16,7 @@ export interface SdkConfig {
   mineableFactoryTimeout: number;
   storageService: IStorageService;
   notifySdkApiKey: string;
-  rampApiKey?: string;
+  rampOverrides?: RampOverrides;
   apiKey?: string;
 }
 
@@ -34,6 +34,6 @@ export const asSdkConfigOverrides = asPartialObject<SdkOverrides>({
   mineableFactoryTick: asNumber,
   mineableFactoryTimeout: asNumber,
   notifySdkApiKey: asString,
-  rampApiKey: asString,
+  rampOverrides: asRampOverrides,
   apiKey: asString,
 });

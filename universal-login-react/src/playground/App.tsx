@@ -25,6 +25,7 @@ import {ChooseTopUpToken} from '../ui/TopUp/ChooseTopUpToken';
 import config from './config';
 import {Dashboard} from '../ui/UFlow/Dashboard';
 import '../ui/styles/playground.sass';
+import {EmailFlowChooserScreen} from '../ui/Onboarding/EmailFlowChooserScreen';
 
 export const App = () => {
   const [sdk] = useState(() => {
@@ -97,6 +98,15 @@ export const App = () => {
                     domains={config.domains}
                     onConnect={() => console.log('connected')}
                     onCreate={() => history.push('/onboarding/success')}
+                    hideModal={() => history.push('/')}
+                  />}
+              />
+              <Route
+                exact
+                path="/onboardingEmail"
+                render={({history}) =>
+                  <EmailFlowChooserScreen
+                    walletService={walletService}
                     hideModal={() => history.push('/')}
                   />}
               />

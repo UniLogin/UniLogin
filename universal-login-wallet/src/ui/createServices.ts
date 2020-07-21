@@ -4,6 +4,7 @@ import {walletFromBrain, DeepPartial, Network, DeviceType} from '@unilogin/commo
 import UniLoginSdk, {SdkConfig, WalletService} from '@unilogin/sdk';
 import {StorageService} from '@unilogin/react';
 import WalletPresenter from '../core/presenters/WalletPresenter';
+import UniloginJarvisLogo from './assets/uniLoginJarvisLogo.svg';
 
 export interface Config {
   network: Network;
@@ -46,7 +47,10 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     paymentOptions: {},
     observedTokensAddresses: config.tokens,
     storageService,
-    rampApiKey: config.rampApiKey,
+    rampOverrides: {
+      rampApiKey: config.rampApiKey,
+      logoUrl: 'https://beta.jarvis.network' + UniloginJarvisLogo,
+    },
     apiKey: config.apiKey,
   };
   const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
