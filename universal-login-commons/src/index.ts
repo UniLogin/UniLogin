@@ -109,3 +109,4 @@ export {IErc721Token, IBasicErc721Token as IBasicToken} from './core/models/Erc7
 export {Erc721TokensService} from './core/services/Erc721TokensService';
 export {isAddressIncludedInLog} from './core/utils/isAddressIncludedInLog';
 export {isProperEmail} from './core/utils/isProperEmail';
+export {isProperPassword} from './core/utils/isProperPassword';
