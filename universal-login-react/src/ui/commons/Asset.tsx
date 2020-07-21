@@ -18,7 +18,7 @@ export interface AssetProps {
 }
 
 export const Asset = ({sdk, token, balance}: AssetProps) => {
-  const {symbol} = token;
+  const {name, symbol} = token;
   const [usdAmount, setUsdAmount] = useState<string>('');
   const [usdPrice, setUsdPrice] = useState<string>('');
 
