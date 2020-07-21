@@ -46,7 +46,9 @@ export const createServices = (config: Config, overrides: Overrides = {}) => {
     paymentOptions: {},
     observedTokensAddresses: config.tokens,
     storageService,
-    rampApiKey: config.rampApiKey,
+    rampConfig: {
+      rampApiKey: config.rampApiKey,
+    },
     apiKey: config.apiKey,
   };
   const providerOrProviderUrl = overrides.provider ? overrides.provider : config.jsonRpcUrl;
