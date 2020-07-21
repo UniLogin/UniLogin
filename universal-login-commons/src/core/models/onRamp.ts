@@ -16,6 +16,8 @@ export interface RampConfig {
   rampApiKey?: string;
 }
 
+export type RampOverrides = Partial<Pick<RampConfig, 'rampApiKey'>>;
+
 export interface WyreConfig {
   wyreUrl: string;
 }
