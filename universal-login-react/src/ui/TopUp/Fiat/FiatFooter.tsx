@@ -34,15 +34,15 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
             <InfoText>You can pay with any UK bank or Revolut</InfoText>
             <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
-          {minimumAmounts && minimumAmounts.generalMinimalAmount === minimumAmounts.minimalAmountForRevolut && <div className="info-block info-row">
+          {minimumAmounts && (minimumAmounts.generalMinimalAmount === minimumAmounts.minimalAmountForRevolut ? <div className="info-block info-row">
             <InfoText>Minimum amount is {minimumAmounts} {selectedCurrency}</InfoText>
-          </div>}
-          {minimumAmounts && minimumAmounts.generalMinimalAmount !== minimumAmounts.minimalAmountForRevolut && <div className="info-block info-row">
-            <InfoText>
+          </div>
+            : <div className="info-block info-row">
+              <InfoText>
               Minimum amount is {minimumAmounts.generalMinimalAmount} {selectedCurrency} or {minimumAmounts.generalMinimalAmount} {selectedCurrency} if you pay with Revolut
-            </InfoText>
-            <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
-          </div>}
+              </InfoText>
+              <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
+            </div>)}
         </>
       );
 
