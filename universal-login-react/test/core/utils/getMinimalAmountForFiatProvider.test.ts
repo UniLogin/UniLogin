@@ -15,24 +15,24 @@ describe('getMinimalAmountForFiatProvider', () => {
 
     it('return provider minimal amount', async () => {
       const bigMinimalAmount = '2';
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService)).to.eq('2');
+      expect((await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService))[0]).to.eq('2');
     });
 
     it('return UniLogin minimal amount', async () => {
       const smallMinimalAmount = '0.0001';
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService)).to.eq('0.0067');
+      expect((await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService))[0]).to.eq('0.004');
     });
 
     it('return correct UniLogin minimal amount for DAI', async () => {
       const smallMinimalAmount = '0.0000002';
       (tokenPricesService.getTokenPriceInEth as any) = () => TEST_TOKEN_PRICE_IN_ETH;
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('1.3334');
+      expect((await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService, TEST_DAI_TOKEN))[0]).to.eq('0.8');
     });
 
     it('return correct minimal amount for DAI', async () => {
       const bigMinimalAmount = '1500.5';
       (tokenPricesService.getTokenPriceInEth as any) = () => TEST_TOKEN_PRICE_IN_ETH;
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('1500.5');
+      expect((await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, TEST_DAI_TOKEN))[0]).to.eq('1500.5');
     });
 
     it('return rounded provider minimal amount for Wyre', async () => {
@@ -60,7 +60,7 @@ describe('UNIT: getMinimalAmount', () => {
       isKind: (state: string) => state === 'Future',
     };
     const paymentMethod = TopUpProvider.RAMP;
-    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('2');
+    expect((await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService))[0]).to.eq('2');
   });
 
   it('returns 30 for Safello and future wallet', async () => {
@@ -80,12 +80,12 @@ describe('UNIT: getMinimalAmount', () => {
     expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('30');
   });
 
-  it('returns 1 for Ramp and deployed wallet', async () => {
+  it('returns 0.6 for Ramp and deployed wallet', async () => {
     const walletService = {
       isKind: (state: string) => state === 'Deployed',
     };
     const paymentMethod = TopUpProvider.RAMP;
-    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('1');
+    expect((await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService))[0]).to.eq('0.6');
   });
 
   it('Throw error if invalid wallet state', async () => {
