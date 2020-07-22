@@ -13,7 +13,7 @@ type EmailFlow = {
   onClick: () => void;
 };
 
-interface EmailFlowChooserProps {
+export interface EmailFlowChooserProps {
   onCreateClick: (email: string, ensName: string) => void;
   onConnectClick: (emailOrEnsName: string) => void;
 }

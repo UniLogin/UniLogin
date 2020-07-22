@@ -108,6 +108,8 @@ export const App = () => {
                   <EmailFlowChooserScreen
                     walletService={walletService}
                     hideModal={() => history.push('/')}
+                    onCreateClick={(ensName, email) => console.log('create', {ensName, email})}
+                    onConnectClick={(emailOrEnsName) => console.log('connect', {emailOrEnsName})}
                   />}
               />
               <Route
