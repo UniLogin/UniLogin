@@ -267,7 +267,8 @@ class UniLoginSdk {
   }
 
   async finalizeAndStop() {
-    await this.walletEventsObserverFactory.finalizeAndStop();
+    this.walletEventsObserverFactory.finalizeAndStop();
+    await this.authorisationsObserver.finalizeAndStop();
   }
 }
 
