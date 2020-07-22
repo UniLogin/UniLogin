@@ -44,21 +44,29 @@ export class BalanceObserver {
 
   async getBalances() {
     if (this.isInitialCall()) {
-      return this.getTokensWithUpdatedBalances(this.tokenDetailsStore.tokensDetails.map(token => token.address));
+      return this.getInitialTokenBalances();
     }
     const changedErc20contracts = await this.getErc20ContractsWithChangedBalances();
-    const addressesToUpdate = [...changedErc20contracts, ETHER_NATIVE_TOKEN.address];
-    const tokensWithoutChanges = this.lastTokenBalances.filter(token => !addressesToUpdate.includes(token.address));
-    const tokensWithUpdatedBalances = await this.getTokensWithUpdatedBalances(addressesToUpdate);
-    return [...tokensWithoutChanges, ...tokensWithUpdatedBalances];
+    const addressesToUpdate = [ETHER_NATIVE_TOKEN.address, ...changedErc20contracts];
+    const tokenBalances: TokenDetailsWithBalance[] = [];
+    for (const token of this.lastTokenBalances) {
+      tokenBalances.push(await this.lazyGetTokenWithBalance(token, addressesToUpdate));
+    }
+    return tokenBalances;
   }
 
   private isInitialCall() {
     return this.lastTokenBalances.length === 0;
   }
 
-  private async getTokensWithUpdatedBalances(addresses: string[]) {
+  private async lazyGetTokenWithBalance(token: TokenDetailsWithBalance, addressesToUpdate: string[]) {
+    const balance = addressesToUpdate.includes(token.address) ? await this.balanceChecker.getBalance(this.walletAddress, token.address) : token.balance;
+    return {...token, balance};
+  }
+
+  private async getInitialTokenBalances() {
     const tokenBalances: TokenDetailsWithBalance[] = [];
+    const addresses = this.tokenDetailsStore.tokensDetails.map(token => token.address);
     const tokensToUpdate = this.tokenDetailsStore.tokensDetails.filter(token => addresses.includes(token.address));
     for (const token of tokensToUpdate) {
       const balance = await this.balanceChecker.getBalance(this.walletAddress, token.address);
