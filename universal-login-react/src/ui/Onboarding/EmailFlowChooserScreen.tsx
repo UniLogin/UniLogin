@@ -20,7 +20,7 @@ export const EmailFlowChooserScreen = ({hideModal, walletService}: EmailFlowChoo
       <div className="perspective">
         <EmailFlowChooser
           onCreateClick={(ensName, email) => console.log('create', {ensName, email})}
-          onConnectClick={() => console.log('connect')}
+          onConnectClick={(emailOrEnsName) => console.log('connect', {emailOrEnsName})}
         />
       </div>
     </OnboardingStepsWrapper>
