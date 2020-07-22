@@ -27,12 +27,12 @@ RequestedWallet -> WalletService: confirmed
 WalletService -> user: confirmed
 user -> WalletService: password, ETH or DAI
 user -> WalletService: createFutureWallet(password, ETH)
-WalletService -> FutureWalletFactory: createFutureWallet(password, ETH)
+WalletService -> FutureWalletFactory: createFutureWallet(password, ETH, code)
 activate FutureWalletFactory
 FutureWalletFactory -> FutureWalletFactory: generate priv + public
 FutureWalletFactory -> FutureWalletFactory: encrypt priv + public with password
 FutureWalletFactory -> Relayer: addFutureWallet()
-FutureWalletFactory -> Relayer: addEncryptedWallet (wallet JSON)
+FutureWalletFactory -> Relayer: addEncryptedWallet (wallet JSON, code)
 FutureWalletFactory -> FutureWallet **: new Future(ETH or DAI)
 FutureWalletFactory -> WalletService: FutureWallet
 deactivate FutureWalletFactory
