@@ -20,7 +20,7 @@ interface FiatFooterProps {
 }
 export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: FiatFooterProps) => {
   const currencyDetails = walletService.sdk.tokensDetailsStore.getTokenBy('symbol', selectedCurrency);
-  const [minimumAmount] = useAsync(async () => {
+  const [minimumAmounts] = useAsync(async () => {
     if (paymentMethod) {
       return getMinimalAmount(walletService, paymentMethod, walletService.sdk.tokenPricesService, currencyDetails);
     }
@@ -34,12 +34,12 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
             <InfoText>You can pay with any UK bank or Revolut</InfoText>
             <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
-          {minimumAmount && minimumAmount[0] === minimumAmount[1] && <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount[0]} {selectedCurrency}</InfoText>
+          {minimumAmounts && minimumAmounts.generalMinimalAmount === minimumAmounts.minimalAmountForRevolut && <div className="info-block info-row">
+            <InfoText>Minimum amount is {minimumAmounts} {selectedCurrency}</InfoText>
           </div>}
-          {minimumAmount && minimumAmount[0] !== minimumAmount[1] && <div className="info-block info-row">
+          {minimumAmounts && minimumAmounts.generalMinimalAmount !== minimumAmounts.minimalAmountForRevolut && <div className="info-block info-row">
             <InfoText>
-              Minimum amount is {minimumAmount[0]} {selectedCurrency} or {minimumAmount[1]} {selectedCurrency} if you pay with Revolut
+              Minimum amount is {minimumAmounts.generalMinimalAmount} {selectedCurrency} or {minimumAmounts.generalMinimalAmount} {selectedCurrency} if you pay with Revolut
             </InfoText>
             <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>}
@@ -54,8 +54,8 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
             <InfoText>You have to install Yoti mobile app</InfoText>
             <img src={Yoti} srcSet={Yoti2x} className="yoti-logo" alt="Yoti" />
           </div>
-          {minimumAmount && <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount}€</InfoText>
+          {minimumAmounts && <div className="info-block info-row">
+            <InfoText>Minimum amount is {minimumAmounts.generalMinimalAmount}€</InfoText>
           </div>}
         </>
       );
@@ -63,8 +63,8 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
     case TopUpProvider.WYRE:
       return <>
         <VisaMasterCardInfo />
-        {minimumAmount && <div className="info-block info-row">
-          <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
+        {minimumAmounts && <div className="info-block info-row">
+          <InfoText>Minimum amount is {minimumAmounts.generalMinimalAmount} {selectedCurrency}</InfoText>
         </div>}
       </>;
     default:

@@ -4,12 +4,17 @@ import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {getPriceInEther} from './getPriceInEther';
 import {ValueRounder, TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN, safeDivide} from '@unilogin/commons';
 
+export interface MinimalAmounts {
+  generalMinimalAmount: string,
+  minimalAmountForRevolut?: string,
+};
+
 export const getMinimalAmountForFiatProvider = async (
   paymentMethod: TopUpProvider,
   requiredDeploymentBalance: string,
   tokenPricesService: TokenPricesService,
   currencyDetails = ETHER_NATIVE_TOKEN,
-) => {
+): Promise<MinimalAmounts> => {
   switch (paymentMethod) {
     case TopUpProvider.RAMP: {
       const currencyPriceInEth = await tokenPricesService.getTokenPriceInEth(currencyDetails);
@@ -21,22 +26,23 @@ export const getMinimalAmountForFiatProvider = async (
       const providerMinimalAmountForRevolut = getPriceInEther(providerMinimalAmountInFiatForRevolut, etherPriceInGBP);
       const providerMinimalAmountForRevolutInToken = safeDivide(providerMinimalAmountForRevolut, currencyPriceInEth);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
-      const biggerAmounts = [
-        bigNumberMax(
+      const biggerAmount = bigNumberMax(
           requiredDeploymentBalanceAsBigNumber,
           providerMinimalAmountInToken,
-        ),
-        bigNumberMax(
+        );
+      const biggerAmountForRevolut = bigNumberMax(
           requiredDeploymentBalanceAsBigNumber,
           providerMinimalAmountForRevolutInToken,
-        ),
-      ];
-      return [ValueRounder.ceil(utils.formatEther(biggerAmounts[0])), ValueRounder.ceil(utils.formatEther(biggerAmounts[1]))];
+        );
+      return {
+        generalMinimalAmount: ValueRounder.ceil(utils.formatEther(biggerAmount)),
+        minimalAmountForRevolut: ValueRounder.ceil(utils.formatEther(biggerAmountForRevolut))
+      } as MinimalAmounts;
     }
     case TopUpProvider.SAFELLO:
-      return '30';
+      return {generalMinimalAmount: '30'};
     default:
-      return ValueRounder.ceil(requiredDeploymentBalance);
+      return {generalMinimalAmount: ValueRounder.ceil(requiredDeploymentBalance)};
   }
 };
 
