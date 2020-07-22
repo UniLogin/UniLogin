@@ -52,15 +52,16 @@ const CreationContent = ({email, setEmail, ensName, setEnsName}: CreationContent
   <>
     <Label>Type a username you want:</Label>
     <Input
-      className={`${useClassFor('input')} ${classForComponent('input-ens-name')}`}
+      className={` ${useClassFor('input')}`}
       id='ens-name-input'
       onChange={(event) => setEnsName(event.target.value)}
       value={ensName}
     />
+    <p className={`${useClassFor('input-description')} ${classForComponent('username-suggestion')}`}>our suggestion: <b>satoshi93.unilogin.eth</b></p>
     <Label>Your e-mail</Label>
     <Input
       id='email-input'
-      className={`${useClassFor('input')} ${classForComponent('input-email')}}`}
+      className={` ${useClassFor('input')}`}
       onChange={(event) => setEmail(event.target.value)}
       value={email}
     />
@@ -77,7 +78,7 @@ const ConnectionContent = ({emailOrEnsName, setEmailOrEnsName}: ConnectionConten
     <Label>Type a username or e-mail to search:</Label>
     <Input
       className={`${useClassFor('input')} ${classForComponent('input-ens-name')}}`}
-      id='email-input'
+      id='email-or-ens-name-input'
       onChange={(event) => setEmailOrEnsName(event.target.value)}
       value={emailOrEnsName}
     />
