@@ -60,7 +60,6 @@ const CreationContent = ({email, setEmail, ensName, setEnsName}: CreationContent
       onChange={(event) => setEnsName(event.target.value)}
       value={ensName}
     />
-    <p className={`${useClassFor('input-description')} ${classForComponent('username-suggestion')}`}>our suggestion: <b>satoshi93.unilogin.eth</b></p>
     <Label>Your e-mail</Label>
     <Input
       id='email-input'
