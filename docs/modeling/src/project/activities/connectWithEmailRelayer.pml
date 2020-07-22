@@ -1,7 +1,8 @@
 @startuml
-title Create wallet with email process RELAYER SIDE
+title Connect wallet with email process RELAYER SIDE
 
 participant SDK
+participant RestoringWalletHandler
 participant EmailConfirmationHandler
 participant EmailValidator
 participant EmailConfirmationStore
@@ -16,20 +17,18 @@ EmailConfirmationHandler -> EmailService: sendEmail(e-mail, CODE, ensName)
 EmailService ->
 
 == Confirm e-mail ==
-SDK -> EmailConfirmationHandler: confirmEmail(e-mail, CODE)
+SDK -> RestoringWalletHandler: restoreWallet(e-mail, code, ensName)
+RestoringWalletHandler -> EmailConfirmationHandler: confirmEmail(e-mail, CODE)
 activate EmailConfirmationHandler
 EmailConfirmationHandler -> EmailConfirmationStore: getRequestedWallet
-EmailConfirmationHandler -> EmailValidator: validateEmail(e-mail, CODE, Date.now()) isUnique?
+EmailConfirmationHandler -> EmailValidator: validateEmail(e-mail, CODE, Date.now())
 EmailValidator -> EmailValidator: is CODE valid? date - now > MARGIN?
 EmailConfirmationHandler -> EmailConfirmationStore: update is confirmed
 deactivate EmailConfirmationHandler
-EmailConfirmationHandler -> SDK: OK
-
-== Store encrypted ==
-SDK -> WalletHandler: addEncryptedWallet(wallet JSON, e-mail, code)
-WalletHandler -> EmailValidator: isConfirmed(e-mail)
-WalletHandler -> EmailValidator: validate(code)
-WalletHandler -> WalletsStore: store(wallet JSON, e-mail, ensName)
+EmailConfirmationHandler -> RestoringWalletHandler: OK
+RestoringWalletHandler -> WalletsStore: getEncryptedWallet(ensName)
+WalletsStore -> RestoringWalletHandler: enrypted wallet
+RestoringWalletHandler -> SDK: encrypted wallet
 
 
 @enduml
