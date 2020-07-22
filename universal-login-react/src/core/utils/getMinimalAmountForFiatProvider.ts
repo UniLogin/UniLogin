@@ -40,7 +40,7 @@ const convertCurrencyToToken = async (amount: string, currencyPriceInEth: number
   const etherPriceInCurrency = (await tokenPricesService.getEtherPriceInCurrency(fiatCurrency)).toString();
   const providerMinimalAmount = getPriceInEther(amount, etherPriceInCurrency);
   return safeDivide(providerMinimalAmount, currencyPriceInEth);
-}
+};
 
 export const getMinimalAmount = (walletService: WalletService, paymentMethod: TopUpProvider, tokenPricesService: TokenPricesService, currencyDetails?: TokenDetails) => {
   if (walletService.isKind('Future')) {
