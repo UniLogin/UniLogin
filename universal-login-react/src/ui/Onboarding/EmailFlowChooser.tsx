@@ -5,14 +5,6 @@ import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
 import Input from '../commons/Input';
 import {Label} from '../commons/Form/Label';
 
-type EmailFlow = {
-  kind: 'create';
-  onClick: () => void;
-} | {
-  kind: 'connect';
-  onClick: () => void;
-};
-
 export interface EmailFlowChooserProps {
   onCreateClick: (email: string, ensName: string) => void;
   onConnectClick: (emailOrEnsName: string) => void;
@@ -22,26 +14,30 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
   const [email, setEmail] = useState('');
   const [ensName, setEnsName] = useState('');
   const [emailOrEnsName, setEmailOrEnsName] = useState('');
-  const [flow, setFlow] = useState<EmailFlow>({kind: 'create', onClick: () => onCreateClick(email, ensName)});
+  const [flow, setFlow] = useState<'create' | 'connect'>('create');
+
+  const handleClick = () => flow === 'connect'
+    ? onConnectClick(emailOrEnsName)
+    : onCreateClick(email, ensName);
 
   return (
     <div className={useClassFor('select-flow')}>
       <div className={useClassFor('flow-wrapper')}>
         <div className={useClassFor('user-tabs')}>
           <button
-            onClick={() => setFlow({kind: 'create', onClick: () => onCreateClick(email, ensName)})}
-            className={`${classForComponent('user-tab')} ${flow.kind === 'create' ? 'active' : ''}`}>New user</button>
+            onClick={() => setFlow('create')}
+            className={`${classForComponent('user-tab')} ${flow === 'create' ? 'active' : ''}`}>New user</button>
           <button
-            onClick={() => setFlow({kind: 'connect', onClick: () => onConnectClick(emailOrEnsName)})}
-            className={`${classForComponent('user-tab')} ${flow.kind === 'connect' ? 'active' : ''}`}>Existing user</button>
+            onClick={() => setFlow('connect')}
+            className={`${classForComponent('user-tab')} ${flow === 'connect' ? 'active' : ''}`}>Existing user</button>
         </div>
         <div className={useClassFor('flow-content')}>
-          {flow.kind === 'create' && <CreationContent email={email} setEmail={setEmail} ensName={ensName} setEnsName={setEnsName} />}
-          {flow.kind === 'connect' && <ConnectionContent emailOrEnsName={emailOrEnsName} setEmailOrEnsName={setEmailOrEnsName} />}
+          {flow === 'create' && <CreationContent email={email} setEmail={setEmail} ensName={ensName} setEnsName={setEnsName} />}
+          {flow === 'connect' && <ConnectionContent emailOrEnsName={emailOrEnsName} setEmailOrEnsName={setEmailOrEnsName} />}
         </div>
       </div>
-      <button onClick={() => flow.onClick()} className={classForComponent('confirm-btn')}>Confirm</button>
-    </div>
+      <button onClick={handleClick} className={classForComponent('confirm-btn')}>Confirm</button>
+    </div >
   );
 };
 
