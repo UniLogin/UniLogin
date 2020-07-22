@@ -13,16 +13,25 @@ export const getMinimalAmountForFiatProvider = async (
   switch (paymentMethod) {
     case TopUpProvider.RAMP: {
       const currencyPriceInEth = await tokenPricesService.getTokenPriceInEth(currencyDetails);
-      const providerMinimalAmountInFiat = '1';
+      const providerMinimalAmountInFiat = ['0.6', '2'];
       const etherPriceInGBP = (await tokenPricesService.getEtherPriceInCurrency('GBP')).toString();
-      const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat, etherPriceInGBP);
+      const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat[0], etherPriceInGBP);
       const providerMinimalAmountInToken = safeDivide(providerMinimalAmount, currencyPriceInEth);
+      const providerMinimalAmountForRevolut = getPriceInEther(providerMinimalAmountInFiat[1], etherPriceInGBP);
+      const providerMinimalAmountForRevolutInToken = safeDivide(providerMinimalAmountForRevolut, currencyPriceInEth);
+
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
-      const biggerAmount = bigNumberMax(
-        requiredDeploymentBalanceAsBigNumber,
-        providerMinimalAmountInToken,
-      );
-      return ValueRounder.ceil(utils.formatEther(biggerAmount));
+      const biggerAmounts = [
+        bigNumberMax(
+          requiredDeploymentBalanceAsBigNumber,
+          providerMinimalAmountInToken,
+        ),
+        bigNumberMax(
+          requiredDeploymentBalanceAsBigNumber,
+          providerMinimalAmountForRevolutInToken,
+        ),
+      ];
+      return [ValueRounder.ceil(utils.formatEther(biggerAmounts[0])), ValueRounder.ceil(utils.formatEther(biggerAmounts[1]))];
     }
     case TopUpProvider.SAFELLO:
       return '30';

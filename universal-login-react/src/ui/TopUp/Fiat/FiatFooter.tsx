@@ -34,8 +34,14 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
             <InfoText>You can pay with any UK bank or Revolut</InfoText>
             <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
-          {minimumAmount && <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
+          {minimumAmount && minimumAmount[0] === minimumAmount[1] && <div className="info-block info-row">
+            <InfoText>Minimum amount is {minimumAmount[0]} {selectedCurrency}</InfoText>
+          </div>}
+          {minimumAmount && minimumAmount[0] !== minimumAmount[1] && <div className="info-block info-row">
+            <InfoText>
+              Minimum amount is {minimumAmount[0]} {selectedCurrency} or {minimumAmount[1]} {selectedCurrency} if you pay with Revolut
+            </InfoText>
+            <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>}
         </>
       );
@@ -48,9 +54,9 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
             <InfoText>You have to install Yoti mobile app</InfoText>
             <img src={Yoti} srcSet={Yoti2x} className="yoti-logo" alt="Yoti" />
           </div>
-          <div className="info-block info-row">
+          {minimumAmount && <div className="info-block info-row">
             <InfoText>Minimum amount is {minimumAmount}€</InfoText>
-          </div>
+          </div>}
         </>
       );
 
