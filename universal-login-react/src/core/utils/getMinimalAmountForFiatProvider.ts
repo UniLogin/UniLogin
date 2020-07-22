@@ -17,23 +17,13 @@ export const getMinimalAmountForFiatProvider = async (
 ): Promise<MinimalAmounts> => {
   switch (paymentMethod) {
     case TopUpProvider.RAMP: {
+      const fiatCurrency = 'EUR';
       const currencyPriceInEth = await tokenPricesService.getTokenPriceInEth(currencyDetails);
-      const providerMinimalAmountInFiat = '0.6';
-      const etherPriceInGBP = (await tokenPricesService.getEtherPriceInCurrency('EUR')).toString();
-      const providerMinimalAmount = getPriceInEther(providerMinimalAmountInFiat, etherPriceInGBP);
-      const providerMinimalAmountInToken = safeDivide(providerMinimalAmount, currencyPriceInEth);
-      const providerMinimalAmountInFiatForRevolut = '2';
-      const providerMinimalAmountForRevolut = getPriceInEther(providerMinimalAmountInFiatForRevolut, etherPriceInGBP);
-      const providerMinimalAmountForRevolutInToken = safeDivide(providerMinimalAmountForRevolut, currencyPriceInEth);
+      const providerMinimalAmountInToken = await convertCurrencyToToken('0.6', currencyPriceInEth, fiatCurrency, tokenPricesService);
+      const providerMinimalAmountForRevolutInToken = await convertCurrencyToToken('2', currencyPriceInEth, fiatCurrency, tokenPricesService);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
-      const biggerAmount = bigNumberMax(
-        requiredDeploymentBalanceAsBigNumber,
-        providerMinimalAmountInToken,
-      );
-      const biggerAmountForRevolut = bigNumberMax(
-        requiredDeploymentBalanceAsBigNumber,
-        providerMinimalAmountForRevolutInToken,
-      );
+      const biggerAmount = bigNumberMax(requiredDeploymentBalanceAsBigNumber, providerMinimalAmountInToken);
+      const biggerAmountForRevolut = bigNumberMax(requiredDeploymentBalanceAsBigNumber, providerMinimalAmountForRevolutInToken);
       return {
         generalMinimalAmount: ValueRounder.ceil(utils.formatEther(biggerAmount)),
         minimalAmountForRevolut: ValueRounder.ceil(utils.formatEther(biggerAmountForRevolut)),
@@ -45,6 +35,12 @@ export const getMinimalAmountForFiatProvider = async (
       return {generalMinimalAmount: ValueRounder.ceil(requiredDeploymentBalance)};
   }
 };
+
+const convertCurrencyToToken = async (amount: string, currencyPriceInEth: number, fiatCurrency: 'EUR' | 'USD' | 'GBP', tokenPricesService: TokenPricesService) => {
+  const etherPriceInCurrency = (await tokenPricesService.getEtherPriceInCurrency(fiatCurrency)).toString();
+  const providerMinimalAmount = getPriceInEther(amount, etherPriceInCurrency);
+  return safeDivide(providerMinimalAmount, currencyPriceInEth);
+}
 
 export const getMinimalAmount = (walletService: WalletService, paymentMethod: TopUpProvider, tokenPricesService: TokenPricesService, currencyDetails?: TokenDetails) => {
   if (walletService.isKind('Future')) {
