@@ -7,18 +7,20 @@ import {Label} from '../commons/Form/Label';
 
 type EmailFlow = {
   kind: 'create';
-  onClick: () => void;
+  onClick: (email: string, ensName: string) => void;
 } | {
   kind: 'connect';
-  onClick: () => void;
+  onClick: (email: string) => void;
 };
 
 interface EmailFlowChooserProps {
-  onCreateClick: () => void;
-  onConnectClick: () => void;
+  onCreateClick: (email: string, ensName: string) => void;
+  onConnectClick: (email: string) => void;
 }
 
 export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChooserProps) => {
+  const [email, setEmail] = useState('');
+  const [ensName, setEnsName] = useState('');
   const [flow, setFlow] = useState<EmailFlow>({kind: 'create', onClick: onCreateClick});
 
   return (
@@ -27,39 +29,54 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
         <div className={useClassFor('user-tabs')}>
           <button
             onClick={() => setFlow({kind: 'create', onClick: onCreateClick})}
-            className={`${classForComponent('user-tab')} ${flow.kind === 'create' ? 'active' : ''}`}>New user</button>
+            className={` ${classForComponent('user-tab')} ${flow.kind === 'create' ? 'active' : ''}`}>New user</button>
           <button
             onClick={() => setFlow({kind: 'connect', onClick: onConnectClick})}
-            className={`${classForComponent('user-tab')} ${flow.kind === 'connect' ? 'active' : ''}`}>Existing user</button>
+            className={` ${classForComponent('user-tab')} ${flow.kind === 'connect' ? 'active' : ''}`}>Existing user</button>
         </div>
         <div className={useClassFor('flow-content')}>
-          {flow.kind === 'create' && <CreationContent/>}
-          {flow.kind === 'connect' && <ConnectionContent/>}
+          {flow.kind === 'create' && <CreationContent email={email} setEmail={setEmail} ensName={ensName} setEnsName={setEnsName} />}
+          {flow.kind === 'connect' && <ConnectionContent />}
         </div>
       </div>
-      <button onClick={flow.onClick} className={classForComponent('confirm-btn')}>Confirm</button>
+      <button onClick={() => flow.onClick(email, ensName)} className={classForComponent('confirm-btn')}>Confirm</button>
     </div>
   );
 };
 
-const CreationContent = () => {
-  return (
-    <>
-      <Label>Type a username you want:</Label>
-      <Input className={` ${useClassFor('input')} ${classForComponent('input-ens-name')}}`} id='ens-name-input' onChange={() => console.log('email')}/>
-      <p className={`${useClassFor('input-description')} ${classForComponent('username-suggestion')}`}>our suggestion: <b>satoshi93.unilogin.eth</b></p>
-      <Label>Your e-mail</Label>
-      <Input className={` ${useClassFor('input')} ${classForComponent('input-email')}}`} id='email-input' onChange={() => console.log('email')}/>
-      <p className={useClassFor('input-description')}>We wil use your email and a password to help you recover your account. We do not hold custody of your funds. If you’d rather not share an email, <a href='#' className={classForComponent('description-link')}>download an app.</a></p>
-    </>
-  );
-};
+interface CreationContentProps {
+  email: string;
+  setEmail: (email: string) => void;
+  ensName: string;
+  setEnsName: (ensName: string) => void;
+}
+
+const CreationContent = ({email, setEmail, ensName, setEnsName}: CreationContentProps) =>
+  <>
+    <Label>Type a username you want:</Label>
+    <Input
+      id='ens-name-input'
+      className={`${useClassFor('input')} ${classForComponent('input-ens-name')}`}
+      onChange={(event) => setEnsName(event.target.value)}
+      value={ensName}
+    />
+    <p className={`${useClassFor('input-description')} ${classForComponent('username-suggestion')}`}>our suggestion: <b>satoshi93.unilogin.eth</b></p>
+    <Label>Your e-mail</Label>
+    <Input
+      id='email-input'
+      className={`${useClassFor('input')} ${classForComponent('input-email')}}`}
+      onChange={(event) => setEmail(event.target.value)}
+      value={email}
+    />
+    <p className={useClassFor('input-description')}>We wil use your email and a password to help you recover your account. We do not hold custody of your funds. If you’d rather not share an email, <a href='#' className={classForComponent('description-link')}>download an app.</a></p>
+  </>
+
 
 const ConnectionContent = () => {
   return (
     <>
       <Label>Type a username or e-mail to search:</Label>
-      <Input className={` ${useClassFor('input')} ${classForComponent('input-ens-name')}}`} id='email-input' onChange={() => console.log('email')}/>
+      <Input className={`${useClassFor('input')} ${classForComponent('input-ens-name')}}`} id='email-input' onChange={() => console.log('email')} />
     </>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
+import {WalletService} from '@unilogin/sdk';
 import {EmailFlowChooser} from './EmailFlowChooser';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
-import {WalletService} from '@unilogin/sdk';
 
 interface EmailFlowChooserScreen {
   hideModal: () => void;
@@ -19,7 +19,7 @@ export const EmailFlowChooserScreen = ({hideModal, walletService}: EmailFlowChoo
       progress={1}>
       <div className="perspective">
         <EmailFlowChooser
-          onCreateClick={() => console.log('create')}
+          onCreateClick={(ensName, email) => console.log('create', {ensName, email})}
           onConnectClick={() => console.log('connect')}
         />
       </div>
