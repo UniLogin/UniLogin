@@ -3,6 +3,7 @@ import {bigNumberMax, WalletService, InvalidWalletState} from '@unilogin/sdk';
 import {TopUpProvider} from '../../core/models/TopUpProvider';
 import {getPriceInEther} from './getPriceInEther';
 import {ValueRounder, TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN, safeDivide} from '@unilogin/commons';
+import {BigNumber} from 'ethers/utils';
 
 export interface MinimalAmounts {
   generalMinimalAmount: string;
@@ -19,14 +20,10 @@ export const getMinimalAmountForFiatProvider = async (
     case TopUpProvider.RAMP: {
       const fiatCurrency = 'EUR';
       const currencyPriceInEth = await tokenPricesService.getTokenPriceInEth(currencyDetails);
-      const providerMinimalAmountInToken = await convertCurrencyToToken('0.6', currencyPriceInEth, fiatCurrency, tokenPricesService);
-      const providerMinimalAmountForRevolutInToken = await convertCurrencyToToken('2', currencyPriceInEth, fiatCurrency, tokenPricesService);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
-      const biggerAmount = bigNumberMax(requiredDeploymentBalanceAsBigNumber, providerMinimalAmountInToken);
-      const biggerAmountForRevolut = bigNumberMax(requiredDeploymentBalanceAsBigNumber, providerMinimalAmountForRevolutInToken);
       return {
-        generalMinimalAmount: ValueRounder.ceil(utils.formatEther(biggerAmount)),
-        minimalAmountForRevolut: ValueRounder.ceil(utils.formatEther(biggerAmountForRevolut)),
+        generalMinimalAmount: await getMinimalAmountForRamp('0.6', requiredDeploymentBalanceAsBigNumber, currencyPriceInEth, fiatCurrency, tokenPricesService),
+        minimalAmountForRevolut: await getMinimalAmountForRamp('2', requiredDeploymentBalanceAsBigNumber, currencyPriceInEth, fiatCurrency, tokenPricesService),
       } as MinimalAmounts;
     }
     case TopUpProvider.SAFELLO:
@@ -34,6 +31,12 @@ export const getMinimalAmountForFiatProvider = async (
     default:
       return {generalMinimalAmount: ValueRounder.ceil(requiredDeploymentBalance)};
   }
+};
+
+const getMinimalAmountForRamp = async (amount: string, requiredDeploymentBalanceAsBigNumber: BigNumber, currencyPriceInEth: number, fiatCurrency: 'EUR' | 'USD' | 'GBP', tokenPricesService: TokenPricesService) => {
+  const providerMinimalAmountInToken = await convertCurrencyToToken(amount, currencyPriceInEth, fiatCurrency, tokenPricesService);
+  const biggerAmount = bigNumberMax(requiredDeploymentBalanceAsBigNumber, providerMinimalAmountInToken);
+  return ValueRounder.ceil(utils.formatEther(biggerAmount));
 };
 
 const convertCurrencyToToken = async (amount: string, currencyPriceInEth: number, fiatCurrency: 'EUR' | 'USD' | 'GBP', tokenPricesService: TokenPricesService) => {
