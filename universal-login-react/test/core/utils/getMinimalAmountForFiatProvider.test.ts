@@ -30,7 +30,7 @@ describe('getMinimalAmountForFiatProvider', () => {
     it('return correct UniLogin minimal amount for DAI', async () => {
       const smallMinimalAmount = '0.0000002';
       (tokenPricesService.getTokenPriceInEth as any) = () => TEST_TOKEN_PRICE_IN_ETH;
-      const {generalMinimalAmount, minimalAmountForRevolut} = await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService);
+      const {generalMinimalAmount, minimalAmountForRevolut} = await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService, TEST_DAI_TOKEN);
       expect(generalMinimalAmount).to.eq('0.8');
       expect(minimalAmountForRevolut).to.eq('2.6667');
     });
@@ -38,7 +38,7 @@ describe('getMinimalAmountForFiatProvider', () => {
     it('return correct minimal amount for DAI', async () => {
       const bigMinimalAmount = '1500.5';
       (tokenPricesService.getTokenPriceInEth as any) = () => TEST_TOKEN_PRICE_IN_ETH;
-      const {generalMinimalAmount, minimalAmountForRevolut} = await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService);
+      const {generalMinimalAmount, minimalAmountForRevolut} = await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, TEST_DAI_TOKEN);
       expect(generalMinimalAmount).to.eq(bigMinimalAmount);
       expect(minimalAmountForRevolut).to.eq(bigMinimalAmount);
     });

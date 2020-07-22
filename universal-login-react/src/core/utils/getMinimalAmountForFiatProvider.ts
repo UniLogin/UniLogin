@@ -5,8 +5,8 @@ import {getPriceInEther} from './getPriceInEther';
 import {ValueRounder, TokenPricesService, TokenDetails, ETHER_NATIVE_TOKEN, safeDivide} from '@unilogin/commons';
 
 export interface MinimalAmounts {
-  generalMinimalAmount: string,
-  minimalAmountForRevolut?: string,
+  generalMinimalAmount: string;
+  minimalAmountForRevolut?: string;
 };
 
 export const getMinimalAmountForFiatProvider = async (
@@ -27,16 +27,16 @@ export const getMinimalAmountForFiatProvider = async (
       const providerMinimalAmountForRevolutInToken = safeDivide(providerMinimalAmountForRevolut, currencyPriceInEth);
       const requiredDeploymentBalanceAsBigNumber = utils.parseEther(requiredDeploymentBalance);
       const biggerAmount = bigNumberMax(
-          requiredDeploymentBalanceAsBigNumber,
-          providerMinimalAmountInToken,
-        );
+        requiredDeploymentBalanceAsBigNumber,
+        providerMinimalAmountInToken,
+      );
       const biggerAmountForRevolut = bigNumberMax(
-          requiredDeploymentBalanceAsBigNumber,
-          providerMinimalAmountForRevolutInToken,
-        );
+        requiredDeploymentBalanceAsBigNumber,
+        providerMinimalAmountForRevolutInToken,
+      );
       return {
         generalMinimalAmount: ValueRounder.ceil(utils.formatEther(biggerAmount)),
-        minimalAmountForRevolut: ValueRounder.ceil(utils.formatEther(biggerAmountForRevolut))
+        minimalAmountForRevolut: ValueRounder.ceil(utils.formatEther(biggerAmountForRevolut)),
       } as MinimalAmounts;
     }
     case TopUpProvider.SAFELLO:
