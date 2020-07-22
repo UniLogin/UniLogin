@@ -77,7 +77,7 @@ const ConnectionContent = ({emailOrEnsName, setEmailOrEnsName}: ConnectionConten
   <>
     <Label>Type a username or e-mail to search:</Label>
     <Input
-      className={`${useClassFor('input')} ${classForComponent('input-ens-name')}}`}
+      className={` ${useClassFor('input')}`}
       id='email-or-ens-name-input'
       onChange={(event) => setEmailOrEnsName(event.target.value)}
       value={emailOrEnsName}
