@@ -20,7 +20,7 @@ interface FiatFooterProps {
 }
 export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: FiatFooterProps) => {
   const currencyDetails = walletService.sdk.tokensDetailsStore.getTokenBy('symbol', selectedCurrency);
-  const [minimumAmount] = useAsync(async () => {
+  const [minimumAmounts] = useAsync(async () => {
     if (paymentMethod) {
       return getMinimalAmount(walletService, paymentMethod, walletService.sdk.tokenPricesService, currencyDetails);
     }
@@ -34,9 +34,15 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
             <InfoText>You can pay with any UK bank or Revolut</InfoText>
             <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
           </div>
-          {minimumAmount && <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
-          </div>}
+          {minimumAmounts && (minimumAmounts.generalMinimalAmount === minimumAmounts.minimalAmountForRevolut ? <div className="info-block info-row">
+            <InfoText>Minimum amount is {minimumAmounts.generalMinimalAmount} {selectedCurrency}</InfoText>
+          </div>
+            : <div className="info-block info-row">
+              <InfoText>
+              Minimum amount is {minimumAmounts.generalMinimalAmount} {selectedCurrency} or {minimumAmounts.minimalAmountForRevolut} {selectedCurrency} if you pay with Revolut
+              </InfoText>
+              <img src={RevolutLogo} srcSet={RevolutLogo2x} className="revolut-logo" alt="Revolut" />
+            </div>)}
         </>
       );
 
@@ -48,17 +54,17 @@ export const FiatFooter = ({paymentMethod, walletService, selectedCurrency}: Fia
             <InfoText>You have to install Yoti mobile app</InfoText>
             <img src={Yoti} srcSet={Yoti2x} className="yoti-logo" alt="Yoti" />
           </div>
-          <div className="info-block info-row">
-            <InfoText>Minimum amount is {minimumAmount}€</InfoText>
-          </div>
+          {minimumAmounts && <div className="info-block info-row">
+            <InfoText>Minimum amount is {minimumAmounts.generalMinimalAmount}€</InfoText>
+          </div>}
         </>
       );
 
     case TopUpProvider.WYRE:
       return <>
         <VisaMasterCardInfo />
-        {minimumAmount && <div className="info-block info-row">
-          <InfoText>Minimum amount is {minimumAmount} {selectedCurrency}</InfoText>
+        {minimumAmounts && <div className="info-block info-row">
+          <InfoText>Minimum amount is {minimumAmounts.generalMinimalAmount} {selectedCurrency}</InfoText>
         </div>}
       </>;
     default:
