@@ -14,14 +14,17 @@ interface InputFieldProps {
   description?: string;
 }
 
-export const InputField = ({value, setValue, label, description, id, error}: InputFieldProps) => <>
-  {label && <Label>{`${label}:`}</Label>}
-  <Input
-    className={` ${useClassFor('input')}`}
-    id={id}
-    onChange={(event) => setValue(event.target.value)}
-    value={value}
-  />
-  {description && <p className={useClassFor('input-description')}>We will use your email and password to help you recover your account. We do not hold custody of your funds. If you’d rather not share an email</p>}
-  {error && <div>{error}</div>}
-</>;
+export const InputField = ({value, setValue, label, description, id, error}: InputFieldProps) => {
+  const descriptionClassName = useClassFor('input-description');
+  return (<>
+    {label && <Label>{`${label}:`}</Label>}
+    <Input
+      className={` ${useClassFor('input')}`}
+      id={id}
+      onChange={(event) => setValue(event.target.value)}
+      value={value}
+    />
+    {description && <p className={descriptionClassName}>We will use your email and password to help you recover your account. We do not hold custody of your funds. If you’d rather not share an email</p>}
+    {error && <div>{error}</div>}
+  </>);
+};
