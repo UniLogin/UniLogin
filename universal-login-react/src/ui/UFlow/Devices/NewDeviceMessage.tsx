@@ -16,7 +16,7 @@ interface NewDeviceMessageProps {
 
 export const NewDeviceMessage = ({deployedWallet, onManageClick, className}: NewDeviceMessageProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
-  useAsyncEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
+  useAsyncEffect(() => {const unsub = deployedWallet.subscribeAuthorisations(setNotifications); console.log('subscribe in new device msg'); return unsub;}, []);
 
   const [isLoading, setIsLoading] = useState(false);
 

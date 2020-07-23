@@ -48,11 +48,13 @@ class AuthorisationsObserver extends ObserverRunner {
     }
 
     return () => {
+      console.log('unsubscribe');
       this.callbacks = this.callbacks.filter((element) => callback !== element);
       if (this.callbacks.length === 0) {
         this.authorisationRequest = undefined;
         this.lastAuthorisations = [];
         this.stop();
+        console.log('after stop in unsubscribe');
       }
     };
   }

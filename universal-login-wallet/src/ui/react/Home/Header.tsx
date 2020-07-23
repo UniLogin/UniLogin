@@ -11,7 +11,7 @@ export function Header() {
 
   const updateNotifications = (notifications: Notification[]) => setNewNotifications(notifications.length !== 0);
 
-  useAsyncEffect(() => sdk.subscribeAuthorisations(contractAddress, privateKey, updateNotifications), []);
+  useAsyncEffect(() => {const unsubscribe = sdk.subscribeAuthorisations(contractAddress, privateKey, updateNotifications); console.log('subscribe'); return unsubscribe;}, []);
 
   const {walletPresenter} = useServices();
 

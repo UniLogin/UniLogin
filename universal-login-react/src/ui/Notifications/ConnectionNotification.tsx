@@ -33,7 +33,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
     ? history.goBack()
     : setNotifications(notifications);
 
-  useAsyncEffect(() => deployedWallet.subscribeAuthorisations(updateNotifications), []);
+  useAsyncEffect(() => {const unsubscribe = deployedWallet.subscribeAuthorisations(updateNotifications); console.log('subscribe in connection notification'); return unsubscribe;}, []);
 
   const onConnectClick = async (gasParameters: GasParameters | undefined) => {
     try {

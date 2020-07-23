@@ -223,6 +223,7 @@ class UniLoginSdk {
   }
 
   async subscribeAuthorisations(contractAddress: string, privateKey: string, callback: Function) {
+    console.log('subscribe in sdk');
     return this.authorisationsObserver.subscribe(
       await this.walletContractService.signRelayerRequest(privateKey, {contractAddress}),
       (notifications: Notification[]) => callback(addCodesToNotifications(notifications)),
