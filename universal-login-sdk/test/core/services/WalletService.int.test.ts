@@ -143,7 +143,7 @@ describe('INT: WalletService', () => {
   });
 
   after(async () => {
-    sdk.stop();
+    await sdk.finalizeAndStop();
     await relayer.stop();
   });
 });

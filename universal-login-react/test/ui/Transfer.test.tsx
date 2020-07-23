@@ -63,7 +63,7 @@ describe('INT: Transfer with refund', () => {
 
   after(async () => {
     reactWrapper.unmount();
-    sdk.stop();
+    await sdk.finalizeAndStop();
     await relayer.stop();
   });
 });

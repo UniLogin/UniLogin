@@ -41,7 +41,7 @@ describe('INT: Dashboard', () => {
 
   after(async () => {
     appWrapper.unmount();
-    deployedWallet.sdk.stop();
+    await deployedWallet.sdk.finalizeAndStop();
     await relayer.stop();
   });
 });

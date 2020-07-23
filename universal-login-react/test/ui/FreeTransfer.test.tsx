@@ -56,7 +56,7 @@ describe('INT: Free Transfer', () => {
 
   after(async () => {
     reactWrapper.unmount();
-    sdk.stop();
+    await sdk.finalizeAndStop();
     await relayer.stop();
   });
 });

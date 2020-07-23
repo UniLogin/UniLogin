@@ -62,7 +62,7 @@ describe('DisconnectAccountService', () => {
   });
 
   after(async () => {
-    deployedWallet.sdk.stop();
+    await deployedWallet.sdk.finalizeAndStop();
     await relayer.stop();
   });
 });
