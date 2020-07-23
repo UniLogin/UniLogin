@@ -265,7 +265,8 @@ export class WalletService {
   }
 
   getContractAddress() {
-    ensure(this.state.kind !== 'None' && this.state.kind !== 'Confirmed', InvalidWalletState, 'not None or Confirmed', this.state.kind);
+    ensure(this.state.kind !== 'None', InvalidWalletState, 'not None', this.state.kind);
+    ensure(this.state.kind !== 'Confirmed', InvalidWalletState, 'not Confirmed', this.state.kind);
     return this.state.wallet.contractAddress;
   }
 }
