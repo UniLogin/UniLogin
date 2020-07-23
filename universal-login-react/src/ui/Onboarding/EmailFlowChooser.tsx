@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
+import {isProperEmail} from '@unilogin/commons';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
-import {InputField} from '../commons/InputField';
+import {InputField, useInputField} from '../commons/InputField';
 
 export interface EmailFlowChooserProps {
   onCreateClick: (email: string, ensName: string) => void;
@@ -10,7 +11,7 @@ export interface EmailFlowChooserProps {
 }
 
 export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChooserProps) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail, emailError] = useInputField(isProperEmail, 'Email is not valid');
   const [ensName, setEnsName] = useState('');
   const [emailOrEnsName, setEmailOrEnsName] = useState('');
   const [flow, setFlow] = useState<'create' | 'connect'>('create');
@@ -31,7 +32,10 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
             className={`${classForComponent('user-tab')} ${flow === 'connect' ? 'active' : ''}`}>Existing user</button>
         </div>
         <div className={useClassFor('flow-content')}>
-          {flow === 'create' && <CreationContent email={email} setEmail={setEmail} ensName={ensName} setEnsName={setEnsName} />}
+          {flow === 'create' && <CreationContent
+            email={email} setEmail={setEmail} emailError={emailError}
+            ensName={ensName} setEnsName={setEnsName}
+          />}
           {flow === 'connect' && <InputField
             id='email-or-ens-name-input'
             value={emailOrEnsName}
@@ -48,11 +52,12 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
 interface CreationContentProps {
   email: string;
   setEmail: (email: string) => void;
+  emailError?: string;
   ensName: string;
   setEnsName: (ensName: string) => void;
 }
 
-const CreationContent = ({email, setEmail, ensName, setEnsName}: CreationContentProps) =>
+const CreationContent = ({email, setEmail, emailError, ensName, setEnsName}: CreationContentProps) =>
   <>
     <InputField
       id='ens-name-input'
@@ -66,6 +71,7 @@ const CreationContent = ({email, setEmail, ensName, setEnsName}: CreationContent
       label='Your e-mail'
       setValue={setEmail}
       value={email}
-      description='We will use your email and password to help you recover your account. We do not hold custody of your funds. If you’d rather not share an email'
+      description='We will use your email and password to help you recover your account. We do not hold custody of your funds.'
+      error={emailError}
     />
   </>;

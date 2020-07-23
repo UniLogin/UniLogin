@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useClassFor} from '../..';
 import {Label} from './Form/Label';
 import Input from './Input';
@@ -27,4 +27,18 @@ export const InputField = ({value, setValue, label, description, id, error}: Inp
     {description && <p className={descriptionClassName}>{description}</p>}
     {error && <div>{error}</div>}
   </>);
+};
+
+export const useInputField = (validate: (value: string) => boolean, errorMessage: string): [string, (value: string) => void, string | undefined] => {
+  const [value, setValue] = useState('');
+  const [error, setError] = useState<string | undefined>(undefined);
+  const updateValue = (value: string) => {
+    setValue(value);
+    if (validate(value) && error) {
+      setError(undefined);
+    } else if (!validate(value) && !error) {
+      setError(errorMessage);
+    }
+  };
+  return [value, updateValue, error];
 };
