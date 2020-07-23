@@ -7,7 +7,7 @@ export class ConfirmedWallet implements SerializableConfirmedWallet {
     readonly code: string,
   ) {}
 
-  get asSerializableRequestedWallet(): SerializableConfirmedWallet {
+  get asSerializableConfirmedWallet(): SerializableConfirmedWallet {
     return {
       email: this.email,
       ensName: this.ensName,
