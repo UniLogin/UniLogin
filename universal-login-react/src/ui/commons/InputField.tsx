@@ -24,7 +24,7 @@ export const InputField = ({value, setValue, label, description, id, error}: Inp
       onChange={(event) => setValue(event.target.value)}
       value={value}
     />
-    {description && <p className={descriptionClassName}>We will use your email and password to help you recover your account. We do not hold custody of your funds. If you’d rather not share an email</p>}
+    {description && <p className={descriptionClassName}>{description}</p>}
     {error && <div>{error}</div>}
   </>);
 };
