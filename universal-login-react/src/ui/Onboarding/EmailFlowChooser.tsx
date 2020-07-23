@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
-import Input from '../commons/Input';
-import {Label} from '../commons/Form/Label';
+import {InputField} from '../commons/InputField';
 
 export interface EmailFlowChooserProps {
   onCreateClick: (email: string, ensName: string) => void;
@@ -33,7 +32,12 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
         </div>
         <div className={useClassFor('flow-content')}>
           {flow === 'create' && <CreationContent email={email} setEmail={setEmail} ensName={ensName} setEnsName={setEnsName} />}
-          {flow === 'connect' && <ConnectionContent emailOrEnsName={emailOrEnsName} setEmailOrEnsName={setEmailOrEnsName} />}
+          {flow === 'connect' && <InputField
+            id='email-or-ens-name-input'
+            value={emailOrEnsName}
+            setValue={setEmailOrEnsName}
+            label='Type a username or e-mail to search'
+          />}
         </div>
       </div>
       <button onClick={handleClick} className={classForComponent('confirm-btn')}>Confirm</button>
@@ -50,36 +54,18 @@ interface CreationContentProps {
 
 const CreationContent = ({email, setEmail, ensName, setEnsName}: CreationContentProps) =>
   <>
-    <Label>Type a username you want:</Label>
-    <Input
-      className={` ${useClassFor('input')}`}
+    <InputField
       id='ens-name-input'
-      onChange={(event) => setEnsName(event.target.value)}
+      label='Type a username you want'
+      setValue={setEnsName}
       value={ensName}
     />
     <p className={`${useClassFor('input-description')} ${classForComponent('username-suggestion')}`}>our suggestion: <b>satoshi93.unilogin.eth</b></p>
-    <Label>Your e-mail</Label>
-    <Input
+    <InputField
       id='email-input'
-      className={` ${useClassFor('input')}`}
-      onChange={(event) => setEmail(event.target.value)}
+      label='Your e-mail'
+      setValue={setEmail}
       value={email}
-    />
-    <p className={useClassFor('input-description')}>We will use your email and password to help you recover your account. We do not hold custody of your funds. If you’d rather not share an email, <a href='#' className={classForComponent('description-link')}>download an app.</a></p>
-  </>;
-
-interface ConnectionContentProps {
-  emailOrEnsName: string;
-  setEmailOrEnsName: (emailOrEnsName: string) => void;
-}
-
-const ConnectionContent = ({emailOrEnsName, setEmailOrEnsName}: ConnectionContentProps) =>
-  <>
-    <Label>Type a username or e-mail to search:</Label>
-    <Input
-      className={` ${useClassFor('input')}`}
-      id='email-or-ens-name-input'
-      onChange={(event) => setEmailOrEnsName(event.target.value)}
-      value={emailOrEnsName}
+      description='We will use your email and password to help you recover your account. We do not hold custody of your funds. If you’d rather not share an email'
     />
   </>;
