@@ -65,7 +65,7 @@ const CreationContent = ({email, setEmail, ensName, setEnsName}: CreationContent
       onChange={(event) => setEmail(event.target.value)}
       value={email}
     />
-    <p className={useClassFor('input-description')}>We wil use your email and a password to help you recover your account. We do not hold custody of your funds. If you’d rather not share an email, <a href='#' className={classForComponent('description-link')}>download an app.</a></p>
+    <p className={useClassFor('input-description')}>We will use your email and password to help you recover your account. We do not hold custody of your funds. If you’d rather not share an email, <a href='#' className={classForComponent('description-link')}>download an app.</a></p>
   </>;
 
 interface ConnectionContentProps {
