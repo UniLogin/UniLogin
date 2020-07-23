@@ -1,4 +1,4 @@
-import {ApplicationWallet, SerializableFutureWallet, SerializableConfirmedWallet} from '@unilogin/commons';
+import {ApplicationWallet, SerializableFutureWallet} from '@unilogin/commons';
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
@@ -11,7 +11,6 @@ export type WalletState = {
   kind: 'None';
 } | {
   kind: 'Confirmed';
-  name: string;
   wallet: ConfirmedWallet;
 } | {
   kind: 'Future';
