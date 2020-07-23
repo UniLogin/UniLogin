@@ -32,10 +32,6 @@ export type WalletState = {
 export type SerializedWalletState = {
   kind: 'None';
 } | {
-  kind: 'Confirmed';
-  name: string;
-  wallet: SerializableConfirmedWallet;
-} | {
   kind: 'Future';
   name: string;
   wallet: SerializableFutureWallet;
