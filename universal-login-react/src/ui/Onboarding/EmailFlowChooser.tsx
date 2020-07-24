@@ -20,6 +20,10 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
     ? onConnectClick(emailOrEnsName)
     : onCreateClick(email, ensName);
 
+  const isConfirmButtonDisabled = flow === 'connect'
+    ? !emailOrEnsName || !!emailOrEnsNameError
+    : !ensName || !email || !!ensError || !!emailError;
+
   return (
     <div className={useClassFor('select-flow')}>
       <div className={useClassFor('flow-wrapper')}>
@@ -45,7 +49,7 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
           />}
         </div>
       </div>
-      <button onClick={handleClick} className={classForComponent('confirm-btn')}>Confirm</button>
+      <button disabled={isConfirmButtonDisabled} onClick={handleClick} className={classForComponent('confirm-btn')}>Confirm</button>
     </div >
   );
 };
