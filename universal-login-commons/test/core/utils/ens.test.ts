@@ -137,6 +137,7 @@ describe('UNIT: ENS', () => {
     itValidatesEnsName('jaaaa-4.mylogin.pl', true);
     itValidatesEnsName('jaaaa-4.mylogin.ethudud', true);
     itValidatesEnsName('jaaaa-4.mylogin.comcom', true);
+    itValidatesEnsName('jaaaa.mylogin.', false);
     itValidatesEnsName('jj.mylogin.eth', false);
     itValidatesEnsName('jj-.mylogin.eth', false);
     itValidatesEnsName('-jj.mylogin.eth', false);
