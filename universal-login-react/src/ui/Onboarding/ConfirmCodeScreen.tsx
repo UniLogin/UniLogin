@@ -11,6 +11,8 @@ export const ConfirmCodeScreen = ({title, hideModal, onConfirm, onBack}: Confirm
   <OnboardingStepsWrapper
     title={title}
     hideModal={hideModal}
+    steps={4}
+    progress={2}
   >
     <ConfirmCode
       onConfirm={onConfirm}
