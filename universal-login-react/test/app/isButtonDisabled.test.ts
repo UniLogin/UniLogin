@@ -1,14 +1,14 @@
 import {expect} from 'chai';
-import {isButtonDisabled} from '../../src/app/isButtonDisabled';
+import {isConfirmPasswordButtonDisabled} from '../../src/app/isConfirmPasswordButtonDisabled';
 
-describe('UNIT: isButtonDisabled', () => {
-  const itIsButtonDisabled = (expected: boolean, password?: string, passwordConfirmation?: string) =>
+describe('UNIT: isConfirmPasswordButtonDisabled', () => {
+  const itIsConfirmPasswordButtonDisabled = (expected: boolean, password?: string, passwordConfirmation?: string) =>
     it(`Return ${expected} for '${password}' password and password confirmation '${passwordConfirmation}'`, () => {
-      expect(isButtonDisabled(password, passwordConfirmation)).to.eq(expected);
+      expect(isConfirmPasswordButtonDisabled(password, passwordConfirmation)).to.eq(expected);
     });
 
-  itIsButtonDisabled(false, 'CorrectPassword', 'CorrectPassword');
-  itIsButtonDisabled(true, 'CorrectPassword', 'IncorrectConfirmation');
-  itIsButtonDisabled(true, 'CorrectPassword');
-  itIsButtonDisabled(true);
+  itIsConfirmPasswordButtonDisabled(false, 'CorrectPassword', 'CorrectPassword');
+  itIsConfirmPasswordButtonDisabled(true, 'CorrectPassword', 'IncorrectConfirmation');
+  itIsConfirmPasswordButtonDisabled(true, 'CorrectPassword');
+  itIsConfirmPasswordButtonDisabled(true);
 });
