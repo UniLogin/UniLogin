@@ -13,13 +13,15 @@ interface InputFieldProps {
   label?: string;
   id: string;
   description?: string;
+  type?: string;
 }
 
-export const InputField = ({value, setValue, label, description, id, error}: InputFieldProps) => {
+export const InputField = ({value, setValue, label, description, id, error, type}: InputFieldProps) => {
   const descriptionClassName = useClassFor('input-description');
   return (<>
     {label && <Label>{`${label}:`}</Label>}
     <Input
+      type={type || 'text'}
       className={` ${useClassFor('input')}`}
       id={id}
       onChange={(event) => setValue(event.target.value)}
