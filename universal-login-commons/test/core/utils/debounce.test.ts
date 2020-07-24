@@ -56,6 +56,6 @@ describe('debounce', () => {
     args++;
     debounceCallback(args);
     await sleep(tick);
-    expect(callback).to.have.been.calledWith(args);
+    expect(callback.lastCall).to.have.been.calledWith(args);
   });
 });
