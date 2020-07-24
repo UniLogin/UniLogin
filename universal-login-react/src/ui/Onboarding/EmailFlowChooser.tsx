@@ -13,7 +13,7 @@ export interface EmailFlowChooserProps {
 export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChooserProps) => {
   const [email, setEmail, emailError] = useInputField(isProperEmail, 'Email is not valid');
   const [ensName, setEnsName, ensError] = useInputField(isValidEnsName, 'Ens name is not valid');
-  const [emailOrEnsName, setEmailOrEnsName] = useState('');
+  const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputField(value => isValidEnsName(value) || isProperEmail(value), 'Write correct ens name or email');
   const [flow, setFlow] = useState<'create' | 'connect'>('create');
 
   const handleClick = () => flow === 'connect'
@@ -40,6 +40,7 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
             id='email-or-ens-name-input'
             value={emailOrEnsName}
             setValue={setEmailOrEnsName}
+            error={emailOrEnsNameError}
             label='Type a username or e-mail to search'
           />}
         </div>
