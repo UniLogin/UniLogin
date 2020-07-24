@@ -60,21 +60,24 @@ interface CreationContentProps {
 }
 
 const CreationContent = ({email, setEmail, emailError, ensName, setEnsName, ensError}: CreationContentProps) =>
-  <>
-    <InputField
-      id='ens-name-input'
-      label='Type a username you want'
-      setValue={setEnsName}
-      value={ensName}
-      error={ensError}
-    />
-    <p className={`${useClassFor('input-description')} ${classForComponent('username-suggestion')}`}>our suggestion: <b>satoshi93.unilogin.eth</b></p>
-    <InputField
-      id='email-input'
-      label='Your e-mail'
-      setValue={setEmail}
-      value={email}
-      description='We will use your email and password to help you recover your account. We do not hold custody of your funds.'
-      error={emailError}
-    />
-  </>;
+  <div className={`${classForComponent('creation-content')}`}>
+    <div className={`${classForComponent('creation-item')}`}>
+      <InputField
+        id='ens-name-input'
+        label='Type a username you want'
+        setValue={setEnsName}
+        value={ensName}
+        error={ensError}
+      />
+    </div>
+    <div className={`${classForComponent('creation-item')}`}>
+      <InputField
+        id='email-input'
+        label='Your e-mail'
+        setValue={setEmail}
+        value={email}
+        description='We will use your email and password to help you recover your account. We do not hold custody of your funds.'
+        error={emailError}
+      />
+    </div>
+  </div>;
