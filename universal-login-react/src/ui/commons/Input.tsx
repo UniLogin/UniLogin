@@ -1,5 +1,5 @@
 import React from 'react';
-import {useClassFor, classForComponent} from '../utils/classFor';
+import {useClassFor} from '../utils/classFor';
 
 interface InputProps {
   onChange: (...args: any[]) => void;
@@ -14,12 +14,10 @@ interface InputProps {
 }
 
 export const Input = ({onChange, placeholder, autoFocus, onFocus, className, id, type, value, checkSpelling = true}: InputProps) => {
-  if (!className) className = '';
-
   return (
     <input
       id={id}
-      className={`${useClassFor('input')} ${className}`}
+      className={`${useClassFor('input')} ${className || ''}`}
       value={value}
       onChange={onChange}
       type={type || 'text'}
