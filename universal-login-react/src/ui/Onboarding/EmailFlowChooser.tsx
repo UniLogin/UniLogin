@@ -13,7 +13,8 @@ export interface EmailFlowChooserProps {
 export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChooserProps) => {
   const [email, setEmail, emailError] = useInputField(isProperEmail, 'Email is not valid');
   const [ensName, setEnsName, ensError] = useInputField(isValidEnsName, 'Ens name is not valid');
-  const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputField(value => isValidEnsName(value) || isProperEmail(value), 'Write correct ens name or email');
+  const isValidEmailOrEnsName = (value: string) => isValidEnsName(value) || isProperEmail(value);
+  const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputField(value => isValidEmailOrEnsName(value), 'Write correct ens name or email');
   const [flow, setFlow] = useState<'create' | 'connect'>('create');
 
   const handleClick = () => flow === 'connect'
@@ -21,8 +22,8 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
     : onCreateClick(email, ensName);
 
   const isConfirmButtonDisabled = flow === 'connect'
-    ? !emailOrEnsName || !!emailOrEnsNameError
-    : !ensName || !email || !!ensError || !!emailError;
+    ? !emailOrEnsName || !isValidEmailOrEnsName(emailOrEnsName)
+    : !ensName || !email || !isValidEnsName(ensName) || !isProperEmail(email);
 
   return (
     <div className={useClassFor('select-flow')}>
