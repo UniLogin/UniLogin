@@ -35,13 +35,13 @@ export const useInputField = (validate: (value: string) => boolean, errorMessage
   const [error, setError] = useState<string | undefined>(undefined);
   const handleError = (value: string) => {
     const isValid = validate(value);
-    if (isValid) {
+    if (value === '' || isValid) {
       setError('');
     } else if (!isValid) {
       setError(errorMessage);
     }
   };
-  const debouncedHandleError = useCallback(debounce(handleError, 1000), []);
+  const debouncedHandleError = useCallback(debounce(handleError, 500), []);
 
   const updateValue = (value: string) => {
     setValue(value);
