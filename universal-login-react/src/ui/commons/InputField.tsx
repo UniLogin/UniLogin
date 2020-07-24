@@ -5,6 +5,7 @@ import Input from './Input';
 import '../styles/base/inputField.sass';
 import '../styles/themes/UniLogin/inputFieldThemeUniLogin.sass';
 import {debounce} from '@unilogin/commons';
+import {classForComponent} from '../utils/classFor';
 
 interface InputFieldProps {
   value: string;
@@ -18,7 +19,7 @@ interface InputFieldProps {
 
 export const InputField = ({value, setValue, label, description, id, error, type}: InputFieldProps) => {
   const descriptionClassName = useClassFor('input-description');
-  return (<>
+  return (<div className={`${useClassFor('input-wrapper')}`}>
     {label && <Label>{`${label}:`}</Label>}
     <Input
       type={type || 'text'}
@@ -28,8 +29,8 @@ export const InputField = ({value, setValue, label, description, id, error, type
       value={value}
     />
     {description && <p className={descriptionClassName}>{description}</p>}
-    {error && <div>{error}</div>}
-  </>);
+    {error && <p className={`${classForComponent('input-error-hint')}`}>{error}</p>}
+  </div>);
 };
 
 export const useInputField = (validate: (value: string) => boolean, errorMessage: string): [string, (value: string) => void, string | undefined] => {
