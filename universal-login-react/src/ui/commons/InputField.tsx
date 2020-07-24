@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {useClassFor} from '../..';
 import {Label} from './Form/Label';
 import Input from './Input';
 import '../styles/base/inputField.sass';
 import '../styles/themes/UniLogin/inputFieldThemeUniLogin.sass';
+import {debounce} from '@unilogin/commons';
 
 interface InputFieldProps {
   value: string;
@@ -32,13 +33,19 @@ export const InputField = ({value, setValue, label, description, id, error}: Inp
 export const useInputField = (validate: (value: string) => boolean, errorMessage: string): [string, (value: string) => void, string | undefined] => {
   const [value, setValue] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
-  const updateValue = (value: string) => {
-    setValue(value);
-    if (validate(value) && error) {
-      setError(undefined);
-    } else if (!validate(value) && !error) {
+  const handleError = (value: string) => {
+    const isValid = validate(value);
+    if (isValid) {
+      setError('');
+    } else if (!isValid) {
       setError(errorMessage);
     }
+  };
+  const debouncedHandleError = useCallback(debounce(handleError, 1000), []);
+
+  const updateValue = (value: string) => {
+    setValue(value);
+    debouncedHandleError(value);
   };
   return [value, updateValue, error];
 };
