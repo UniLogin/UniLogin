@@ -15,30 +15,38 @@ describe('getMinimalAmountForFiatProvider', () => {
 
     it('return provider minimal amount', async () => {
       const bigMinimalAmount = '2';
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService)).to.eq('2');
+      const {generalMinimalAmount, minimalAmountForRevolut} = await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService);
+      expect(generalMinimalAmount).to.eq('2');
+      expect(minimalAmountForRevolut).to.eq('2');
     });
 
     it('return UniLogin minimal amount', async () => {
       const smallMinimalAmount = '0.0001';
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService)).to.eq('0.0067');
+      const {generalMinimalAmount, minimalAmountForRevolut} = await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService);
+      expect(generalMinimalAmount).to.eq('0.004');
+      expect(minimalAmountForRevolut).to.eq('0.0134');
     });
 
     it('return correct UniLogin minimal amount for DAI', async () => {
       const smallMinimalAmount = '0.0000002';
       (tokenPricesService.getTokenPriceInEth as any) = () => TEST_TOKEN_PRICE_IN_ETH;
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('1.3334');
+      const {generalMinimalAmount, minimalAmountForRevolut} = await getMinimalAmountForFiatProvider(paymentMethod, smallMinimalAmount, tokenPricesService, TEST_DAI_TOKEN);
+      expect(generalMinimalAmount).to.eq('0.8');
+      expect(minimalAmountForRevolut).to.eq('2.6667');
     });
 
     it('return correct minimal amount for DAI', async () => {
       const bigMinimalAmount = '1500.5';
       (tokenPricesService.getTokenPriceInEth as any) = () => TEST_TOKEN_PRICE_IN_ETH;
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, TEST_DAI_TOKEN)).to.eq('1500.5');
+      const {generalMinimalAmount, minimalAmountForRevolut} = await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService, TEST_DAI_TOKEN);
+      expect(generalMinimalAmount).to.eq(bigMinimalAmount);
+      expect(minimalAmountForRevolut).to.eq(bigMinimalAmount);
     });
 
     it('return rounded provider minimal amount for Wyre', async () => {
       const bigMinimalAmount = '2.000000156565';
       const paymentMethod = TopUpProvider.WYRE;
-      expect(await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService)).to.eq('2.0001');
+      expect((await getMinimalAmountForFiatProvider(paymentMethod, bigMinimalAmount, tokenPricesService)).generalMinimalAmount).to.eq('2.0001');
     });
 
     after(() => {
@@ -54,13 +62,15 @@ describe('UNIT: getMinimalAmount', () => {
     sinon.stub(tokenPricesService, 'getEtherPriceInCurrency').resolves('1');
   });
 
-  it('returns 2 for Ramp and future wallet', async () => {
+  it('returns 2 for Ramp and Revolut and future wallet', async () => {
     const walletService = {
       getRequiredDeploymentBalance: () => '2',
       isKind: (state: string) => state === 'Future',
     };
     const paymentMethod = TopUpProvider.RAMP;
-    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('2');
+    const {generalMinimalAmount, minimalAmountForRevolut} = await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService);
+    expect(generalMinimalAmount).to.eq('2');
+    expect(minimalAmountForRevolut).to.eq('2');
   });
 
   it('returns 30 for Safello and future wallet', async () => {
@@ -69,7 +79,7 @@ describe('UNIT: getMinimalAmount', () => {
       isKind: (state: string) => state === 'Future',
     };
     const paymentMethod = TopUpProvider.SAFELLO;
-    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('30');
+    expect((await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).generalMinimalAmount).to.eq('30');
   });
 
   it('returns 30 for Safello and deployed wallet', async () => {
@@ -77,15 +87,17 @@ describe('UNIT: getMinimalAmount', () => {
       isKind: (state: string) => state === 'Deployed',
     };
     const paymentMethod = TopUpProvider.SAFELLO;
-    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('30');
+    expect((await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).generalMinimalAmount).to.eq('30');
   });
 
-  it('returns 1 for Ramp and deployed wallet', async () => {
+  it('returns general 0.6 and Revolut 2 for Ramp and deployed wallet', async () => {
     const walletService = {
       isKind: (state: string) => state === 'Deployed',
     };
     const paymentMethod = TopUpProvider.RAMP;
-    expect(await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.eq('1');
+    const {generalMinimalAmount, minimalAmountForRevolut} = await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService);
+    expect(generalMinimalAmount).to.eq('0.6');
+    expect(minimalAmountForRevolut).to.eq('2');
   });
 
   it('Throw error if invalid wallet state', async () => {
