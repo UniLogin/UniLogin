@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {isProperEmail} from '@unilogin/commons';
+import {isProperEmail, isValidEnsName} from '@unilogin/commons';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
@@ -12,7 +12,7 @@ export interface EmailFlowChooserProps {
 
 export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChooserProps) => {
   const [email, setEmail, emailError] = useInputField(isProperEmail, 'Email is not valid');
-  const [ensName, setEnsName] = useState('');
+  const [ensName, setEnsName, ensError] = useInputField(isValidEnsName, 'Ens name is not valid');
   const [emailOrEnsName, setEmailOrEnsName] = useState('');
   const [flow, setFlow] = useState<'create' | 'connect'>('create');
 
@@ -34,7 +34,7 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
         <div className={useClassFor('flow-content')}>
           {flow === 'create' && <CreationContent
             email={email} setEmail={setEmail} emailError={emailError}
-            ensName={ensName} setEnsName={setEnsName}
+            ensName={ensName} setEnsName={setEnsName} ensError={ensError}
           />}
           {flow === 'connect' && <InputField
             id='email-or-ens-name-input'
@@ -55,15 +55,17 @@ interface CreationContentProps {
   emailError?: string;
   ensName: string;
   setEnsName: (ensName: string) => void;
+  ensError?: string;
 }
 
-const CreationContent = ({email, setEmail, emailError, ensName, setEnsName}: CreationContentProps) =>
+const CreationContent = ({email, setEmail, emailError, ensName, setEnsName, ensError}: CreationContentProps) =>
   <>
     <InputField
       id='ens-name-input'
       label='Type a username you want'
       setValue={setEnsName}
       value={ensName}
+      error={ensError}
     />
     <p className={`${useClassFor('input-description')} ${classForComponent('username-suggestion')}`}>our suggestion: <b>satoshi93.unilogin.eth</b></p>
     <InputField
