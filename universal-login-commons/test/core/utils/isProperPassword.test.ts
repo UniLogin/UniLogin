@@ -27,9 +27,5 @@ describe('UNIT: isProperPassword', () => {
     incorrectPasswords.forEach(password => it(password, () => {
       expect(isProperPassword(password)).be.eq(false);
     }));
-
-    it('works for no password', () => {
-      expect(isProperPassword()).to.be.false;
-    });
   });
 });
