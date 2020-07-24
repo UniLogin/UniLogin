@@ -16,12 +16,10 @@ export const EnterPassword = ({hideModal, walletService}: EnterPasswordProps) =>
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hint, setHint] = useState<string | undefined>(undefined);
   useEffect(() => {
-    if (password && confirmPassword && confirmPassword?.length >= password?.length) {
-      if (password !== confirmPassword) {
-        setHint('Password and password confirmation are different.');
-      } else {
-        setHint(undefined);
-      }
+    if (password !== confirmPassword) {
+      setHint('Password and password confirmation are different.');
+    } else {
+      setHint(undefined);
     }
   }, [password, confirmPassword]);
 
