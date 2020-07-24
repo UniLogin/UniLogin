@@ -13,12 +13,17 @@ export interface EmailFlowChooserProps {
 export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChooserProps) => {
   const [email, setEmail, emailError] = useInputField(isProperEmail, 'Email is not valid');
   const [ensName, setEnsName, ensError] = useInputField(isValidEnsName, 'Ens name is not valid');
-  const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputField(value => isValidEnsName(value) || isProperEmail(value), 'Write correct ens name or email');
+  const isValidEmailOrEnsName = (value: string) => isValidEnsName(value) || isProperEmail(value);
+  const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputField(value => isValidEmailOrEnsName(value), 'Write correct ens name or email');
   const [flow, setFlow] = useState<'create' | 'connect'>('create');
 
   const handleClick = () => flow === 'connect'
     ? onConnectClick(emailOrEnsName)
     : onCreateClick(email, ensName);
+
+  const isConfirmButtonDisabled = flow === 'connect'
+    ? !emailOrEnsName || !isValidEmailOrEnsName(emailOrEnsName)
+    : !ensName || !email || !isValidEnsName(ensName) || !isProperEmail(email);
 
   return (
     <div className={useClassFor('select-flow')}>
@@ -45,7 +50,7 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
           />}
         </div>
       </div>
-      <button onClick={handleClick} className={classForComponent('confirm-btn')}>Confirm</button>
+      <button disabled={isConfirmButtonDisabled} onClick={handleClick} className={classForComponent('confirm-btn')}>Confirm</button>
     </div >
   );
 };
