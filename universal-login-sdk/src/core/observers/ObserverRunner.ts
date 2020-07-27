@@ -1,47 +1,45 @@
-import {sleep} from '@unilogin/commons';
-
-type ObserverRunnerState = 'stop' | 'stopping' | 'running';
-
 abstract class ObserverRunner {
-  protected state: ObserverRunnerState = 'stop';
+  protected running = false;
   abstract async execute(): Promise<void>;
   tick = 1000;
   timeout: any = null;
+  private workCompleted: Promise<void> = Promise.resolve()
+  private markWorkCompleted: () => void = () => {}
 
   async loop() {
-    if (this.state === 'stop') {
-      return;
-    }
-    await this.execute();
-    if (this.state === 'stopping') {
-      this.state = 'stop';
-    } else if (this.state === 'running') {
+    await this.doWork().catch(console.error);
+    if (this.running) {
       this.timeout = setTimeout(() => this.loop(), this.tick);
     }
   }
 
+  private async doWork () {
+    this.workCompleted = new Promise(resolve => {
+      this.markWorkCompleted = resolve
+    })
+    await this.execute();
+    this.markWorkCompleted();
+  }
+
   start() {
-    if (this.state === 'stop') {
-      this.state = 'running';
-      this.loop()
-        .catch(console.error);
+    if (!this.running) {
+      this.running = true;
+      this.loop();
     }
   }
 
   stop() {
-    this.state = 'stop';
+    this.running = false;
     clearTimeout(this.timeout);
   }
 
   async finalizeAndStop() {
-    this.state = this.isStopped() ? 'stop' : 'stopping';
-    do {
-      await sleep(this.tick);
-    } while (!this.isStopped());
+    this.stop();
+    await this.workCompleted;
   }
 
   protected isStopped() {
-    return this.state === 'stop';
+    return !this.running;
   }
 }
 
