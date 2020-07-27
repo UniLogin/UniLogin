@@ -12,14 +12,15 @@ interface InputFieldProps {
   setValue: (value: string) => void;
   error?: string;
   label?: string;
+  className?: string;
   id: string;
   description?: string;
   type?: string;
 }
 
-export const InputField = ({value, setValue, label, description, id, error, type}: InputFieldProps) => {
+export const InputField = ({value, setValue, label, description, id, className, error, type}: InputFieldProps) => {
   const descriptionClassName = useClassFor('input-description');
-  return (<div className={`${useClassFor('input-wrapper')}`}>
+  return (<div className={`${useClassFor('input-wrapper')} ${className || ''}`}>
     {label && <Label>{`${label}:`}</Label>}
     <Input
       type={type || 'text'}
