@@ -4,8 +4,8 @@ import {Label} from './Form/Label';
 import Input from './Input';
 import '../styles/base/inputField.sass';
 import '../styles/themes/UniLogin/inputFieldThemeUniLogin.sass';
-import {debounce} from '@unilogin/commons';
 import {classForComponent} from '../utils/classFor';
+import {debounce} from '@unilogin/commons';
 
 interface InputFieldProps {
   value: string;
@@ -23,7 +23,6 @@ export const InputField = ({value, setValue, label, description, id, error, type
     {label && <Label>{`${label}:`}</Label>}
     <Input
       type={type || 'text'}
-      className={` ${useClassFor('input')}`}
       id={id}
       onChange={(event) => setValue(event.target.value)}
       value={value}

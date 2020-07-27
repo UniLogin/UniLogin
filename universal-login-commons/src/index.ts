@@ -84,7 +84,6 @@ export {SufficientBalanceValidator} from './integration/ethereum/validators/Suff
 export {sendAndWaitForTransaction, waitForContractDeploy, waitToBeMined} from './integration/ethereum/wait';
 export {walletFromBrain} from './integration/ethereum/walletFromBrain';
 export {COMMON_HEADERS, http, HttpFunction, handleApiResponse} from './integration/http/http';
-export {classesForElement} from './react/classesForElement';
 export {copy} from './react/copy';
 export {escapePressed} from './react/escapePressed';
 export {isDataForFunctionCall} from './core/utils/isDataForFunctionCall';
