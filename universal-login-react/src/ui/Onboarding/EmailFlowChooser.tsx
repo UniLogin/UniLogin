@@ -4,6 +4,7 @@ import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
 import {InputField, useInputField} from '../commons/InputField';
+import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 
 export interface EmailFlowChooserProps {
   onCreateClick: (email: string, ensName: string) => void;
@@ -50,7 +51,7 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
           />}
         </div>
       </div>
-      <button disabled={isConfirmButtonDisabled} onClick={handleClick} className={classForComponent('confirm-btn')}>Confirm</button>
+      <PrimaryButton text='Confirm' disabled={isConfirmButtonDisabled} onClick={handleClick} className={classForComponent('confirm-btn')}/>
     </div >
   );
 };

@@ -5,6 +5,7 @@ import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import {useClassFor} from '../utils/classFor';
 import {isConfirmPasswordButtonDisabled} from '../../app/isConfirmPasswordButtonDisabled';
 import {InputField, useInputField} from '../commons/InputField';
+import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import '../styles/base/enterPassword.sass';
 import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
 
@@ -56,12 +57,10 @@ export const EnterPassword = ({hideModal, walletService}: EnterPasswordProps) =>
       setValue={setConfirmPassword}
     />
     {hint && <Hint text={hint}/>}
-    <button
+    <PrimaryButton
       disabled={isConfirmPasswordButtonDisabled(password, confirmPassword)}
-      onClick={onConfirmClick}
-    >
-      Confirm
-    </button>
+      text='Confirm'
+      onClick={onConfirmClick}/>
   </OnboardingStepsWrapper>;
 };
 
