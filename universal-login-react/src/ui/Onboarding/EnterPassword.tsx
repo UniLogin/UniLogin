@@ -5,6 +5,8 @@ import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import {useClassFor} from '../utils/classFor';
 import {isConfirmPasswordButtonDisabled} from '../../app/isConfirmPasswordButtonDisabled';
 import {InputField, useInputField} from '../commons/InputField';
+import '../styles/base/enterPassword.sass';
+import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
 
 interface EnterPasswordProps {
   hideModal: () => void;
