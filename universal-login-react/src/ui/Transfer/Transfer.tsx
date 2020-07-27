@@ -69,7 +69,7 @@ export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferPr
           sdk={sdk}
         />
         <div className="footer-buttons-row one">
-          <PrimaryButton text='Sent' id="send-button" onClick={onTransferClick} className="footer-approve-btn" disabled={!transferDetails.gasParameters || !balance}/>
+          <PrimaryButton text='Send' id="send-button" onClick={onTransferClick} className="footer-approve-btn" disabled={!transferDetails.gasParameters || !balance}/>
         </div>
       </FooterSection>
     </div>
