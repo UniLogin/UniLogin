@@ -1,8 +1,8 @@
 import React from 'react';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
-import {ConfirmCodeProps, ConfirmCode} from './ConfirmCode';
+import {ConfirmCode} from './ConfirmCode';
 
-interface ConfirmCodeScreenProps extends ConfirmCodeProps{
+interface ConfirmCodeScreenProps {
   hideModal: () => void;
 }
 

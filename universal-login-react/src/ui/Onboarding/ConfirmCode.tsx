@@ -2,12 +2,9 @@ import React, {useState} from 'react'
 import {ReactCodeInput} from './ReactCodeInput';
 import {ensure, ensureNotFalsy} from '@unilogin/commons';
 
-export interface ConfirmCodeProps {
-}
-
 const CODE_LENGTH = 6;
 
-export const ConfirmCode = ({}: ConfirmCodeProps) => {
+export const ConfirmCode = () => {
   const [code, setCode] = useState<string | undefined>(undefined);
 
   const onConfirmClick = () => {
