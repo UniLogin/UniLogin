@@ -6,7 +6,7 @@ export default class DashboardPage {
   }
 
   goToTransferPage() {
-    this.wrapper.find('#transferFunds').simulate('click');
+    this.wrapper.find('#transferFunds.unilogin-component-primary-button').simulate('click');
     this.wrapper.update();
   }
 

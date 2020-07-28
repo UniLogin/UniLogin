@@ -4,13 +4,13 @@ export class BackupCodesPage {
   constructor(private wrapper: ReactWrapper) {}
 
   clickGenerate() {
-    const button = this.wrapper.find('.backup-btn');
+    const button = this.wrapper.find('.unilogin-component-primary-button.backup-btn');
     button.simulate('click');
   }
 
   isGenerateButtonActive() {
     this.wrapper.update();
-    const button = this.wrapper.find('.backup-btn');
+    const button = this.wrapper.find('.unilogin-component-primary-button.backup-btn');
     return !button.prop('disabled');
   }
 

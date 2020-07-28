@@ -4,6 +4,7 @@ import {OnGasParametersChanged, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
 import {BackupCodesWrapper} from './BackupCodesWrapper';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
+import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 
 interface BackupCodesInitialProps {
   generateBackupCodes: () => void;
@@ -23,13 +24,12 @@ export const BackupCodesInitial = ({generateBackupCodes, deployedWallet, setGasP
         onGasParametersChanged={setGasParameters}
         sdk={deployedWallet.sdk}
       />
-      <button
+      <PrimaryButton
+        text='Generate'
         disabled={isButtonDisabled}
         className="backup-btn backup-btn-primary generate-code-btn"
         onClick={generateBackupCodes}
-      >
-        Generate
-      </button>
+      />
     </FooterSection>
   </BackupCodesWrapper>
 );

@@ -8,6 +8,7 @@ import {TransferRecipient} from './Recipient/TransferRecipient';
 import {TransferDropdown} from './Amount/TransferDropdown';
 import {useBalances} from '../hooks/useBalances';
 import {useClassFor} from '../utils/classFor';
+import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import '../styles/base/transfer.sass';
 import '../styles/themes/Legacy/transferThemeLegacy.sass';
 import '../styles/themes/Jarvis/transferThemeJarvis.sass';
@@ -68,7 +69,7 @@ export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferPr
           sdk={sdk}
         />
         <div className="footer-buttons-row one">
-          <button id="send-button" onClick={onTransferClick} className="footer-approve-btn" disabled={!transferDetails.gasParameters || !balance}>Send</button>
+          <PrimaryButton text='Send' id="send-button" onClick={onTransferClick} className="footer-approve-btn" disabled={!transferDetails.gasParameters || !balance}/>
         </div>
       </FooterSection>
     </div>
