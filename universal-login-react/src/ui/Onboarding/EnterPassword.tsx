@@ -9,6 +9,7 @@ import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import '../styles/base/enterPassword.sass';
 import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
 import pinCodeIcon from '../assets/icons/pin-code.svg';
+import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 
 interface EnterPasswordProps {
   hideModal: () => void;
@@ -37,7 +38,7 @@ export const EnterPassword = ({hideModal, walletService}: EnterPasswordProps) =>
 
   return <OnboardingStepsWrapper
     title='Create'
-    className='onboarding-select-flow'
+    className='onboarding-enter-password'
     hideModal={hideModal}
     message={walletService.sdk.getNotice()}
     steps={4}
@@ -51,7 +52,7 @@ export const EnterPassword = ({hideModal, walletService}: EnterPasswordProps) =>
           label={'Enter the password'}
           type={'password'}
           id={'password-input'}
-          className={classForComponent('password-input-wrapper')}
+          className={classForComponent('password-input-wrapper first')}
           value={password}
           setValue={setPassword}
           error={passwordError}
@@ -62,17 +63,18 @@ export const EnterPassword = ({hideModal, walletService}: EnterPasswordProps) =>
           label={'Confirm the password'}
           type={'password'}
           id={'password-input'}
-          className={classForComponent('password-input-wrapper')}
+          className={classForComponent('password-input-wrapper second')}
           value={confirmPassword}
           setValue={setConfirmPassword}
         />
-        {hint && <Hint text={hint}/>}
+        {hint !== undefined ? <Hint text={hint} /> : <div className={classForComponent('info-text-hint-placeholder')} />}
       </div>
     </div>
     <div className={classForComponent('buttons-wrapper')}>
-      <button
+      <SecondaryButton
+        text='Back'
         onClick={() => console.log('click')}
-        className={classForComponent('back-btn')}>Back</button>
+        className={classForComponent('back-btn')}/>
       <PrimaryButton
         text='Confirm'
         disabled={isConfirmPasswordButtonDisabled(password, confirmPassword)}

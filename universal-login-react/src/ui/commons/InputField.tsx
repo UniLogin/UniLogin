@@ -5,7 +5,7 @@ import Input from './Input';
 import '../styles/base/inputField.sass';
 import '../styles/themes/UniLogin/inputFieldThemeUniLogin.sass';
 import {classForComponent} from '../utils/classFor';
-import {debounce} from '@unilogin/commons';
+import {debounce, isClassName} from '@unilogin/commons';
 
 interface InputFieldProps {
   value: string;
@@ -20,7 +20,7 @@ interface InputFieldProps {
 
 export const InputField = ({value, setValue, label, description, id, className, error, type}: InputFieldProps) => {
   const descriptionClassName = useClassFor('input-description');
-  return (<div className={`${useClassFor('input-wrapper')} ${className || ''}`}>
+  return (<div className={`${useClassFor('input-wrapper')} ${isClassName(className)}`}>
     {label && <Label>{`${label}:`}</Label>}
     <Input
       type={type || 'text'}
