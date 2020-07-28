@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import {ReactCodeInput} from './ReactCodeInput';
 import {ensure, ensureNotFalsy} from '@unilogin/commons';
 
