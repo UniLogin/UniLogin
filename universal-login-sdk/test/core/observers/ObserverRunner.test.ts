@@ -28,12 +28,14 @@ describe('UNIT: ObserverRunner', () => {
     expect(observerRunner.iterator).to.eq(2);
   });
 
-  it('stop doesn`t wait for execute to be finished', async () => {
+  it('after waiting for finalizeAndStop iterator won`t increase', async () => {
     expect(observerRunner.iterator).to.eq(0);
     observerRunner.start();
     expect(observerRunner.iterator).to.eq(1);
     observerRunner.finalizeAndStop();
     expect(observerRunner.iterator).to.eq(1);
+    await sleep(tick);
+    expect(observerRunner.iterator).to.eq(2);
     await sleep(tick);
     expect(observerRunner.iterator).to.eq(2);
   });
