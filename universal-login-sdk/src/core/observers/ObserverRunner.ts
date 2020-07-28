@@ -3,8 +3,8 @@ abstract class ObserverRunner {
   abstract async execute(): Promise<void>;
   tick = 1000;
   timeout: any = null;
-  private workCompleted: Promise<void> = Promise.resolve()
-  private markWorkCompleted: () => void = () => {}
+  private workCompleted: Promise<void> = Promise.resolve();
+  private markWorkCompleted: () => void = () => {};
 
   async loop() {
     await this.doWork().catch(console.error);
@@ -13,10 +13,10 @@ abstract class ObserverRunner {
     }
   }
 
-  private async doWork () {
+  private async doWork() {
     this.workCompleted = new Promise(resolve => {
-      this.markWorkCompleted = resolve
-    })
+      this.markWorkCompleted = resolve;
+    });
     await this.execute();
     this.markWorkCompleted();
   }
