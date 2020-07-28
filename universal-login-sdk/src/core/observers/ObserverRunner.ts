@@ -37,7 +37,9 @@ abstract class ObserverRunner {
   }
 
   async finalizeAndStop() {
-    this.state = 'stopping';
+    if (!this.isStopped()) {
+      this.state = 'stopping';
+    }
     clearTimeout(this.timeout);
     await this.workCompleted;
   }

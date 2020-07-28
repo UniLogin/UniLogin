@@ -69,4 +69,17 @@ describe('UNIT: ObserverRunner', () => {
     await observerRunner.finalizeAndStop();
     expect(observerRunner.iterator).to.eq(4);
   });
+
+  it('double stop', async () => {
+    expect(observerRunner.iterator).to.eq(0);
+    observerRunner.start();
+    expect(observerRunner.iterator).to.eq(1);
+    await observerRunner.finalizeAndStop();
+    expect(observerRunner.iterator).to.eq(2);
+    await sleep(tick);
+    expect(observerRunner.iterator).to.eq(2);
+    await observerRunner.finalizeAndStop();
+    expect(observerRunner.iterator).to.eq(2);
+    expect(observerRunner.isStopped()).to.be.true;
+  });
 });
