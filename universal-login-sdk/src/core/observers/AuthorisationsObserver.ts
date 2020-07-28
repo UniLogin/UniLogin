@@ -52,7 +52,7 @@ class AuthorisationsObserver extends ObserverRunner {
       if (this.callbacks.length === 0) {
         this.authorisationRequest = undefined;
         this.lastAuthorisations = [];
-        return this.finalizeAndStop();
+        this.finalizeAndStop();
       }
     };
   }

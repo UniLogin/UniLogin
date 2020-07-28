@@ -41,7 +41,7 @@ export class Erc721TokensObserver extends ObserverRunner {
       this.callbacks = this.callbacks.filter((element) => callback !== element);
       if (this.callbacks.length === 0) {
         this.lastBasicErc721Tokens = undefined;
-        return this.finalizeAndStop();
+        this.finalizeAndStop();
       }
     };
     return unsubscribe;

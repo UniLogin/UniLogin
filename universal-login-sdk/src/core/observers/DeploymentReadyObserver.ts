@@ -20,7 +20,7 @@ export class DeploymentReadyObserver extends ObserverRunner {
     this.start();
     return () => {
       this.contractAddress = undefined;
-      return this.finalizeAndStop();
+      this.finalizeAndStop();
     };
   }
 
@@ -40,6 +40,6 @@ export class DeploymentReadyObserver extends ObserverRunner {
   onDeploymentReady(contractAddress: string) {
     this.callback!(contractAddress);
     this.contractAddress = undefined;
-    return this.finalizeAndStop();
+    this.finalizeAndStop();
   }
 }
