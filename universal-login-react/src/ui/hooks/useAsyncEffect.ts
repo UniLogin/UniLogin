@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 
-type Unsubscribe = () => void | undefined;
+type Unsubscribe = () => void | undefined | Promise<void>;
 
 export const useAsyncEffect = (asyncCallback: () => Promise<Unsubscribe | void | undefined>, deps?: any[]) => {
   useEffect(() => {

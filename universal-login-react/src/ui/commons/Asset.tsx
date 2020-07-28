@@ -10,6 +10,7 @@ import {getTildeGivenAmount, formatCurrency} from '../../core/utils/formatCurren
 import {ThemedComponent} from './ThemedComponent';
 import {Erc20Icon} from './Erc20Icon';
 import {formatTokenName} from '../../app/formatTokenName';
+import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface AssetProps {
   sdk: UniLoginSdk;
@@ -22,7 +23,7 @@ export const Asset = ({sdk, token, balance}: AssetProps) => {
   const [usdAmount, setUsdAmount] = useState<string>('');
   const [usdPrice, setUsdPrice] = useState<string>('');
 
-  useEffect(() => {
+  useAsyncEffect(async () => {
     const unsubscribe = sdk.subscribeToPrices((tokensPrices: TokensPrices) => {
       const tokenPrice = tokensPrices[symbol] === undefined ? 0 : tokensPrices[symbol]['USD'];
       setUsdPrice(tokenPrice.toString());
