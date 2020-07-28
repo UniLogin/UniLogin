@@ -17,6 +17,7 @@ export const NavigationColumn = () => (
       Atomic components
       <li><Link to="/walletSelector">Wallet Selector</Link></li>
       <li><Link to="/enterPassword">Enter Password</Link></li>
+      <li><Link to="/confirmCode">Confirm Code</Link></li>
       <li><Link to="/keyboard">Keyboard</Link></li>
       <li><Link to="/topUp">Topup</Link></li>
       <li><Link to="/recover">Recover</Link></li>
