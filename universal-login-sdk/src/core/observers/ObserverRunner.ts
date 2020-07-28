@@ -6,7 +6,7 @@ abstract class ObserverRunner {
   private workCompleted: Promise<void> = Promise.resolve();
   private markWorkCompleted: () => void = () => {};
 
-  async loop() {
+  private async loop() {
     await this.doWork().catch(console.error);
     if (this.running) {
       this.timeout = setTimeout(() => this.loop(), this.tick);
@@ -28,13 +28,9 @@ abstract class ObserverRunner {
     }
   }
 
-  stop() {
+  async finalizeAndStop() {
     this.running = false;
     clearTimeout(this.timeout);
-  }
-
-  async finalizeAndStop() {
-    this.stop();
     await this.workCompleted;
   }
 

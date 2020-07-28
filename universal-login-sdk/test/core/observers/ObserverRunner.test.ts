@@ -32,9 +32,23 @@ describe('UNIT: ObserverRunner', () => {
     expect(observerRunner.iterator).to.eq(0);
     observerRunner.start();
     expect(observerRunner.iterator).to.eq(1);
-    observerRunner.stop();
+    observerRunner.finalizeAndStop();
     expect(observerRunner.iterator).to.eq(1);
     await sleep(tick);
     expect(observerRunner.iterator).to.eq(2);
+  });
+
+  it('works for multiple loops', async () => {
+    expect(observerRunner.iterator).to.eq(0);
+    observerRunner.start();
+    expect(observerRunner.iterator).to.eq(1);
+    await sleep(tick);
+    expect(observerRunner.iterator).to.eq(2);
+    await sleep(tick);
+    expect(observerRunner.iterator).to.eq(3);
+    const stopPromise = observerRunner.finalizeAndStop();
+    expect(observerRunner.iterator).to.eq(3);
+    await stopPromise;
+    expect(observerRunner.iterator).to.eq(4);
   });
 });
