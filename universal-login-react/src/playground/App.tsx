@@ -263,7 +263,11 @@ export const App = () => {
               <Route
                 exact
                 path="/confirmCode"
-                render={({history}) => <ConfirmCodeScreen hideModal={() => history.push('/')}/>}
+                render={({history}) =>
+                  <ConfirmCodeScreen
+                    hideModal={() => history.push('/')}
+                    walletService={walletService}
+                  />}
               />
               <Route component={() => (<p>not found</p>)} />
             </Switch>

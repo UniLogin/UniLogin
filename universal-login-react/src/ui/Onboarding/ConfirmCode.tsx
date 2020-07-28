@@ -4,7 +4,11 @@ import {ensure, ensureNotFalsy} from '@unilogin/commons';
 
 const CODE_LENGTH = 6;
 
-export const ConfirmCode = () => {
+interface ConfirmCodeProps {
+  email: string;
+}
+
+export const ConfirmCode = ({email}: ConfirmCodeProps) => {
   const [code, setCode] = useState<string | undefined>(undefined);
 
   const onConfirmClick = () => {
@@ -13,6 +17,12 @@ export const ConfirmCode = () => {
   };
 
   return <>
+    <p>
+      Please verify the code below
+    </p>
+    <p>
+      We sent an email to {email}
+    </p>
     <ReactCodeInput
       name='code-input'
       inputMode='numeric'
