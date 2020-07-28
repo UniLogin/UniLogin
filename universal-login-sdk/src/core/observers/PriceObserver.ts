@@ -27,7 +27,7 @@ export class PriceObserver extends ObserverRunner {
       this.callbacks = this.callbacks.filter((element) => callback !== element);
       if (this.callbacks.length === 0) {
         this.lastTokenPrices = {};
-        this.stop();
+        return this.finalizeAndStop();
       }
     };
     return unsubscribe;

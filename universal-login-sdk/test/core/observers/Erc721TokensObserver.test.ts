@@ -128,6 +128,6 @@ describe('INT: Erc721TokensObserver', () => {
   });
 
   afterEach(async () => {
-    await erc721TokensObserver.stop();
+    await erc721TokensObserver.finalizeAndStop();
   });
 });

@@ -134,7 +134,7 @@ describe('INT: DeployedWallet', () => {
       const {waitToBeSuccess} = await deployedWallet.execute(message);
       await waitToBeSuccess();
       expect(await provider.getBalance(message.from!)).to.eq(startingBalance.sub(utils.parseEther('0.5')));
-      refundPaidSdk.stop();
+      await refundPaidSdk.finalizeAndStop();
     });
 
     it('when not enough tokens ', async () => {
