@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {disconnectAccount, getInputClassName} from '../../core/services/DisconnectAccountService';
 import {WalletService} from '@unilogin/sdk';
+import {ThemedComponent} from '../commons/ThemedComponent';
+import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 import './../styles/base/disconnectAccount.sass';
 import './../styles/themes/UniLogin/disconnectAccountThemeUniLogin.sass';
 import './../styles/themes/Legacy/disconnectAccountThemeLegacy.sass';
 import './../styles/themes/Jarvis/disconnectAccountThemeJarvis.sass';
-import {ThemedComponent} from '../commons/ThemedComponent';
 
 export interface DisconnectAccountProps {
   walletService: WalletService;
@@ -60,7 +61,7 @@ export const DisconnectAccount = ({walletService, onDisconnectProgress, onAccoun
         </div>
       </div>
       <div className="disconnect-account-buttons">
-        <button onClick={onCancelClick} className="disconnect-account-cancel">Cancel</button>
+        <SecondaryButton text='Cancel' onClick={onCancelClick} className="disconnect-account-cancel"/>
         <button onClick={onDisconnectClick} className="disconnect-account-confirm">Delete account</button>
       </div>
     </ThemedComponent>
