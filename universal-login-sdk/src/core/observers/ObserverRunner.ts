@@ -40,7 +40,7 @@ abstract class ObserverRunner {
     } while (!this.isStopped());
   }
 
-  protected isStopped() {
+  isStopped() {
     return this.state === 'stop';
   }
 }
