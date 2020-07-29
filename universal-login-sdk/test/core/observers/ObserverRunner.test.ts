@@ -54,22 +54,6 @@ describe('UNIT: ObserverRunner', () => {
     expect(observerRunner.iterator).to.eq(4);
   });
 
-  it('won`t run double loop', async () => {
-    expect(observerRunner.iterator).to.eq(0);
-    observerRunner.start();
-    expect(observerRunner.iterator).to.eq(1);
-    const stopPromise = observerRunner.finalizeAndStop();
-    observerRunner.start();
-    expect(observerRunner.iterator).to.eq(1);
-    await stopPromise;
-    expect(observerRunner.iterator).to.eq(2);
-    expect(observerRunner.isStopped()).to.be.false;
-    await sleep(2 * tick);
-    expect(observerRunner.iterator).to.eq(3);
-    await observerRunner.finalizeAndStop();
-    expect(observerRunner.iterator).to.eq(4);
-  });
-
   it('double stop', async () => {
     expect(observerRunner.iterator).to.eq(0);
     observerRunner.start();
