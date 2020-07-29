@@ -1,45 +1,28 @@
 import {utils} from 'ethers';
-import {ensure, BalanceChecker} from '@unilogin/commons';
-import {ConcurrentDeployment} from '../utils/errors';
-import ObserverRunner from './ObserverRunner';
+import {BalanceChecker, sleep} from '@unilogin/commons';
 
 export type ReadyToDeployCallback = (contractAddress: string) => void;
 
-export class DeploymentReadyObserver extends ObserverRunner {
-  private contractAddress?: string;
-  private callback?: ReadyToDeployCallback;
-
-  constructor(private tokenAddress: string, private minimalAmount: string, private balanceChecker: BalanceChecker) {
-    super();
+export class DeploymentReadyObserver {
+  constructor(
+    private tokenAddress: string,
+    private minimalAmount: string,
+    private balanceChecker: BalanceChecker,
+    private tick = 1000,
+  ) {
   }
 
-  startAndSubscribe(contractAddress: string, callback: ReadyToDeployCallback) {
-    ensure(this.isStopped(), ConcurrentDeployment);
-    this.contractAddress = contractAddress;
-    this.callback = callback;
-    this.start();
-    return () => {
-      this.contractAddress = undefined;
-      this.stop();
-    };
-  }
-
-  execute() {
-    return this.checkDeploymentReadiness();
-  }
-
-  async checkDeploymentReadiness() {
-    if (this.contractAddress) {
-      const balance = await this.balanceChecker.getBalance(this.contractAddress, this.tokenAddress);
-      if (balance.gte(utils.parseEther(this.minimalAmount!))) {
-        this.onDeploymentReady(this.contractAddress);
+  async waitForBalance(contractAddress: string): Promise<void> {
+    while (true) {
+      if (await this.isDeploymentReady(contractAddress)) {
+        return;
       }
+      await sleep(this.tick);
     }
   }
 
-  onDeploymentReady(contractAddress: string) {
-    this.callback!(contractAddress);
-    this.contractAddress = undefined;
-    this.stop();
+  private async isDeploymentReady(contractAddress: string) {
+    const balance = await this.balanceChecker.getBalance(contractAddress, this.tokenAddress);
+    return balance.gte(utils.parseEther(this.minimalAmount!));
   }
 }
