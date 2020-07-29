@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import {utils, Wallet, Contract} from 'ethers';
+import {utils} from 'ethers';
 import {deployContract, MockProvider} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, sleep, waitUntil, BalanceChecker, ProviderService} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, TEST_ACCOUNT_ADDRESS, sleep, BalanceChecker, ProviderService} from '@unilogin/commons';
 import {mockContracts} from '@unilogin/contracts/testutils';
 import {DeploymentReadyObserver} from '../../../src/core/observers/DeploymentReadyObserver';
 
