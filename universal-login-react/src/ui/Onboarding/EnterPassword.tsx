@@ -2,12 +2,14 @@ import React, {useState, useEffect} from 'react';
 import {ensure, ensureNotFalsy, isProperPassword} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
-import {useClassFor} from '../utils/classFor';
+import {useClassFor, classForComponent} from '../utils/classFor';
 import {isConfirmPasswordButtonDisabled} from '../../app/isConfirmPasswordButtonDisabled';
 import {InputField, useInputField} from '../commons/InputField';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import '../styles/base/enterPassword.sass';
 import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
+import pinCodeIcon from '../assets/icons/pin-code.svg';
+import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 
 interface EnterPasswordProps {
   hideModal: () => void;
@@ -36,31 +38,50 @@ export const EnterPassword = ({hideModal, walletService}: EnterPasswordProps) =>
 
   return <OnboardingStepsWrapper
     title='Create'
-    className='onboarding-select-flow'
+    className='onboarding-enter-password'
     hideModal={hideModal}
     message={walletService.sdk.getNotice()}
     steps={4}
     progress={3}>
-    <InputField
-      label={'Enter the password'}
-      type={'password'}
-      id={'password-input'}
-      value={password}
-      setValue={setPassword}
-      error={passwordError}
-    />
-    <InputField
-      label={'Confirm the password'}
-      type={'password'}
-      id={'password-input'}
-      value={confirmPassword}
-      setValue={setConfirmPassword}
-    />
-    {hint && <Hint text={hint}/>}
-    <PrimaryButton
-      disabled={isConfirmPasswordButtonDisabled(password, confirmPassword)}
-      text='Confirm'
-      onClick={onConfirmClick}/>
+    <div className={`${classForComponent('onboarding-content-wrapper')}`}>
+      <div className={classForComponent('onboarding-icon-wrapper')}>
+        <img src={pinCodeIcon} alt="pin-code icon" className={classForComponent('oboarding-pin-code-icon')}/>
+      </div>
+      <div className={`${classForComponent('input-item')}`}>
+        <InputField
+          label={'Enter the password'}
+          type={'password'}
+          id={'password-input'}
+          className={classForComponent('password-input-wrapper first')}
+          value={password}
+          setValue={setPassword}
+          error={passwordError}
+        />
+      </div>
+      <div className={`${classForComponent('input-item')}`}>
+        <InputField
+          label={'Confirm the password'}
+          type={'password'}
+          id={'password-input'}
+          className={classForComponent('password-input-wrapper second')}
+          value={confirmPassword}
+          setValue={setConfirmPassword}
+        />
+        {hint !== undefined ? <Hint text={hint} /> : <div className={classForComponent('info-text-hint-placeholder')} />}
+      </div>
+    </div>
+    <div className={classForComponent('buttons-wrapper')}>
+      <SecondaryButton
+        text='Back'
+        onClick={() => console.log('click')}
+        className={classForComponent('back-btn')}/>
+      <PrimaryButton
+        text='Confirm'
+        disabled={isConfirmPasswordButtonDisabled(password, confirmPassword)}
+        onClick={onConfirmClick}
+        className={useClassFor('proceed-btn')}
+      />
+    </div>
   </OnboardingStepsWrapper>;
 };
 
