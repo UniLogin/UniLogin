@@ -11,11 +11,14 @@ interface ConfirmCodeScreenProps {
 export const ConfirmCodeScreen = ({hideModal, walletService}: ConfirmCodeScreenProps) => (
   <OnboardingStepsWrapper
     title={'Create account'}
+    className='onboarding-confirm-code'
     hideModal={hideModal}
     steps={4}
     progress={2}
     message={walletService.sdk.getNotice()}
   >
-    <ConfirmCode email={'email@address.com'}/>
+    <ConfirmCode
+      email={'email@address.com'}
+    />
   </OnboardingStepsWrapper>
 );
