@@ -267,7 +267,13 @@ class UniLoginSdk {
   }
 
   async finalizeAndStop() {
-    await this.walletEventsObserverFactory.finalizeAndStop();
+    // We need to ensure no background relayer calls are being made
+    await Promise.all([
+      this.priceObserver.finalizeAndStop(),
+      this.authorisationsObserver.finalizeAndStop(),
+      this.erc721TokensObserver?.finalizeAndStop(),
+    ]);
+    this.walletEventsObserverFactory.finalizeAndStop();
   }
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {classesForElement} from '@unilogin/commons';
+import {useClassFor} from '../utils/classFor';
 
 interface InputProps {
   onChange: (...args: any[]) => void;
@@ -13,13 +13,11 @@ interface InputProps {
   onFocus?: () => void;
 }
 
-const classesForInput = classesForElement('input', 'input');
-
 export const Input = ({onChange, placeholder, autoFocus, onFocus, className, id, type, value, checkSpelling = true}: InputProps) => {
   return (
     <input
       id={id}
-      className={classesForInput(className)}
+      className={`${useClassFor('input')} ${className || ''}`}
       value={value}
       onChange={onChange}
       type={type || 'text'}

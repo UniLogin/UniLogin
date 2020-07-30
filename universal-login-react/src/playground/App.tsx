@@ -26,6 +26,8 @@ import config from './config';
 import {Dashboard} from '../ui/UFlow/Dashboard';
 import '../ui/styles/playground.sass';
 import {EmailFlowChooserScreen} from '../ui/Onboarding/EmailFlowChooserScreen';
+import {EnterPassword} from '../ui/Onboarding/EnterPassword';
+import {ConfirmCodeScreen} from '../ui/Onboarding/ConfirmCodeScreen';
 
 export const App = () => {
   const [sdk] = useState(() => {
@@ -252,6 +254,20 @@ export const App = () => {
               <Route
                 exact path="/errorMessage"
                 render={() => <ErrorMessage />}
+              />
+              <Route
+                exact
+                path="/enterPassword"
+                render={({history}) => <EnterPassword hideModal={() => history.push('/')} walletService={walletService}/>}
+              />
+              <Route
+                exact
+                path="/confirmCode"
+                render={({history}) =>
+                  <ConfirmCodeScreen
+                    hideModal={() => history.push('/')}
+                    walletService={walletService}
+                  />}
               />
               <Route component={() => (<p>not found</p>)} />
             </Switch>

@@ -10,6 +10,7 @@ import './../styles/themes/UniLogin/fundsThemeUnilogin.sass';
 import './../styles/themes/Jarvis/fundsThemeJarvis.sass';
 import {NewDeviceMessage} from './Devices/NewDeviceMessage';
 import {ThemedComponent} from '../commons/ThemedComponent';
+import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 
 interface FundsProps {
   deployedWallet: DeployedWallet;
@@ -36,8 +37,8 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, onD
         <div className="balance-wrapper">
           <Balance amount={totalTokensValue['USD']} />
           <div className="funds-buttons">
-            <button className="funds-btn funds-topup" onClick={onTopUpClick}>Top-up</button>
-            <button id="transferFunds" className="funds-btn funds-send" onClick={onSendClick}>Send</button>
+            <PrimaryButton text='Top-up' className="funds-btn funds-topup" onClick={onTopUpClick}/>
+            <PrimaryButton text='Send' id="transferFunds" className="funds-btn funds-send" onClick={onSendClick}/>
           </div>
         </div>
         <Assets deployedWallet={deployedWallet} />
