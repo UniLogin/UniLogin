@@ -35,9 +35,10 @@ abstract class ObserverRunner {
 
   async finalizeAndStop() {
     this.state = this.isStopped() ? 'stop' : 'stopping';
-    do {
+    clearTimeout(this.timeout);
+    while (!this.isStopped()) {
       await sleep(this.tick);
-    } while (!this.isStopped());
+    }
   }
 
   isStopped() {
