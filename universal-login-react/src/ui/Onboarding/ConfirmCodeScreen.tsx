@@ -2,7 +2,6 @@ import React from 'react';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import {ConfirmCode} from './ConfirmCode';
 import {WalletService} from '@unilogin/sdk';
-import {classForComponent} from '../utils/classFor';
 
 interface ConfirmCodeScreenProps {
   hideModal: () => void;
@@ -18,6 +17,8 @@ export const ConfirmCodeScreen = ({hideModal, walletService}: ConfirmCodeScreenP
     progress={2}
     message={walletService.sdk.getNotice()}
   >
-    <ConfirmCode email={'email@address.com'}/>
+    <ConfirmCode
+      email={'email@address.com'}
+    />
   </OnboardingStepsWrapper>
 );

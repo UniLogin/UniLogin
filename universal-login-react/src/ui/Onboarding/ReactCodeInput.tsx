@@ -6,9 +6,10 @@
  * Some modifications made for UniLogin.
  */
 
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import '../styles/base/components/reactCodeInput.sass';
 
 const BACKSPACE_KEY = 8;
 const LEFT_ARROW_KEY = 37;
@@ -69,7 +70,6 @@ export interface ReactCodeInputProps {
   // Setting the className of each input
   inputClassName?: string;
 
-
   // Setting the styles of each input field.
   inputStyle?: React.CSSProperties;
 
@@ -121,20 +121,6 @@ export class ReactCodeInput extends Component<ReactCodeInputProps, any> {
       isValid,
       disabled,
       filterKeyCodes,
-      defaultInputStyle: {
-        fontFamily: 'monospace',
-        MozAppearance: 'textfield',
-        borderRadius: '6px',
-        border: '1px solid',
-        boxShadow: '0px 0px 10px 0px rgba(0,0,0,.10)',
-        margin: '4px',
-        paddingLeft: '8px',
-        paddingRight: 0,
-        width: '36px',
-        height: '42px',
-        fontSize: '32px',
-        boxSizing: 'border-box',
-      },
     };
 
     for (let i = 0; i < Number(this.state.fields); i += 1) {
@@ -314,47 +300,14 @@ export class ReactCodeInput extends Component<ReactCodeInputProps, any> {
   }
 
   render() {
-    const {className, style = {}, inputStyle = {}, inputStyleInvalid = {}, type, autoFocus, pattern, inputMode, inputClassName = '', wrapperClassName} = this.props;
-    const {disabled, input, isValid, defaultInputStyle} = this.state;
-    const styles = {
-      container: {display: 'inline-block', ...style},
-      input: isValid ? inputStyle : inputStyleInvalid,
-    };
-
-    if (!className && Object.keys(inputStyle).length === 0) {
-      Object.assign(inputStyle, {
-        ...defaultInputStyle,
-        color: 'black',
-        backgroundColor: 'white',
-        borderColor: 'lightgrey',
-      });
-    }
-
-    if (!className && Object.keys(inputStyleInvalid).length === 0) {
-      Object.assign(inputStyleInvalid, {
-        ...defaultInputStyle,
-        color: '#b94a48',
-        backgroundColor: '#f2dede',
-        borderColor: '#eed3d7',
-      });
-    }
-
-    if (disabled) {
-      Object.assign(styles.input, {
-        cursor: 'not-allowed',
-        color: 'lightgrey',
-        borderColor: 'lightgrey',
-        backgroundColor: '#efeff1',
-      });
-    }
+    const {className, type, autoFocus, style, pattern, inputMode, inputClassName = '', wrapperClassName} = this.props;
+    const {disabled, input, isValid} = this.state;
 
     return (
-      <div className={classNames(className, 'react-code-input')} style={styles.container}>
+      <div className={classNames(className, 'react-code-container')}>
         {input.map((value: any, i: number) => {
-
-
           return (
-            <div className={`${wrapperClassName || 'react-code-wrapper'}`} style={{display: 'inline-block'}} key={`input_${i}`}>
+            <div className={`${wrapperClassName || 'react-code-wrapper'} ${value && 'it-has-value'}`} style={{display: 'inline-block'}} key={`input_wrapper_${i}`}>
               <input
                 ref={(ref) => {
                   this.textInput[i] = ref!;
@@ -367,8 +320,8 @@ export class ReactCodeInput extends Component<ReactCodeInputProps, any> {
                 min={0}
                 max={9}
                 maxLength={input.length === i + 1 ? 1 : input.length}
-                className={inputClassName}
-                style={inputClassName !== '' ? {} : styles.input}
+                className={`${inputClassName} react-code-input ${!isValid && 'not-valid'} ${disabled && 'disabled'}`}
+                style={style}
                 autoComplete="off"
                 onFocus={(e) => e.target.select()}
                 onBlur={(e) => this.handleBlur(e)}
@@ -429,87 +382,3 @@ ReactCodeInput.propTypes = {
     'numeric', 'tel', 'email', 'url',
   ]),
 };
-
-interface ReactCodeInputItemProps {
-  autoComplete: string;
-  autoFocus?: boolean;
-  inputMode: InputModeTypes;
-  className?: string;
-  wrapperClassName?: string;
-  pattern?: string;
-  onFocus: (e: any) => void;
-  onBlur: (e: any) => void;
-  onChange: (e: any) => void;
-  onKeyDown: (e: any) => void;
-  ref?: (ref: any) => void;
-  id: string;
-  key: string;
-  dataId: number;
-  maxLength: number;
-  min: number;
-  max: number;
-  isValid?: boolean;
-  style?: React.CSSProperties | undefined;
-  value?: string | number;
-  disabled: boolean;
-  type?: 'text' | 'number' | 'password' | 'tel';
-}
-
-const InputItem = ({
-  autoComplete,
-  autoFocus,
-  className,
-  type,
-  min,
-  max,
-  value,
-  disabled,
-  isValid,
-  pattern,
-  inputMode,
-  maxLength,
-  id,
-  key,
-  dataId,
-  onChange,
-  onFocus,
-  onBlur,
-  onKeyDown,
-  style,
-  ref,
-  wrapperClassName
-}: ReactCodeInputItemProps) => {
-  const [inputIsNotEmptyClass, setInputIsNotEmptyClass] = useState('');
-  const handleChange = (e: any) => {
-    setInputIsNotEmptyClass('input-has-value')
-    // this.handleChange(e);
-  }
-
-  return (
-    <div className={`${wrapperClassName || 'react-code-wrapper'}`} style={{display: 'inline-block'}}>
-      <input
-        ref={ref}
-        id={id}
-        data-id={dataId}
-        autoFocus={autoFocus}
-        value={value}
-        key={key}
-        type={type}
-        min={min}
-        max={max}
-        maxLength={maxLength}
-        className={className}
-        style={style}
-        autoComplete={autoComplete}
-        onFocus={(e) => e.target.select()}
-        onBlur={(e) => onBlur(e)}
-        onChange={(e) => onChange(e)}
-        onKeyDown={(e) => onKeyDown(e)}
-        disabled={disabled}
-        data-valid={isValid}
-        pattern={pattern}
-        inputMode={inputMode}
-      />
-    </div>
-  );
-}
