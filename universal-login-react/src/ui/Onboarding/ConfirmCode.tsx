@@ -5,30 +5,36 @@ import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 import {classForComponent, useClassFor} from '../utils/classFor';
 import emailIcon from '../assets/icons/e-mail.svg';
+import emailSuccessIcon from '../assets/icons/e-mail-success.svg';
 import '../styles/base/confirmCode.sass';
 import '../styles/themes/UniLogin/confirmCodeThemeUniLogin.sass';
 
 const CODE_LENGTH = 6;
 
 interface ConfirmCodeProps {
+  subtitleText?: string;
   email: string;
 }
 
-export const ConfirmCode = ({email}: ConfirmCodeProps) => {
+export const ConfirmCode = ({email, subtitleText = ''}: ConfirmCodeProps) => {
   const [code, setCode] = useState<string | undefined>(undefined);
+  const [isValid, setIsValid] = useState(false);
+  const subText = !isValid ? subtitleText : 'Success!';
 
   const onConfirmClick = () => {
     ensureNotFalsy(code, Error, 'Code is missing');
     ensure(code?.length === CODE_LENGTH, Error, 'Code is incomplete.');
+    setIsValid(true);
   };
 
   return <div className={useClassFor('onboarding-confirm-code-wrapper')}>
     <div className={classForComponent('onboarding-confirm-code-content')}>
-      <div className={classForComponent('onboarding-icon-wrapper')}>
-        <img src={emailIcon} alt="Email icon" className={classForComponent('onboarding-icon')}/>
+      <div className={`${classForComponent('onboarding-icon-wrapper')} ${isValid ? 'success' : ''}`}>
+        <img src={!isValid ? emailIcon : emailSuccessIcon} alt="Email icon" className={classForComponent('onboarding-icon')}/>
       </div>
-      <h4 className={classForComponent('onboarding-subtitle')}>Please verify the code below</h4>
-      <p className={classForComponent('onboarding-description')}>We sent an email to <span className={classForComponent('span-email')}>{email}</span></p>
+      <h4 className={classForComponent('onboarding-subtitle')}>{subText}</h4>
+      {!isValid && <p className={classForComponent('onboarding-description')}>We sent an email to <span className={classForComponent('span-email')}>{email}</span></p>}
+      {isValid && <p className={classForComponent('onboarding-description')}>E-mail confirmed</p>}
       <ReactCodeInput
         name='code-input'
         inputMode='numeric'
@@ -38,13 +44,14 @@ export const ConfirmCode = ({email}: ConfirmCodeProps) => {
         fields={6}
         value={code}
         onChange={setCode}
+        disabled={isValid}
       />
     </div>
     <div className={classForComponent('buttons-wrapper')}>
-      <SecondaryButton
+      {!isValid && <SecondaryButton
         text='Back'
         onClick={() => console.log('Back')}
-      />
+      />}
       <PrimaryButton
         text='Confirm'
         disabled={!(code?.length === CODE_LENGTH)}
