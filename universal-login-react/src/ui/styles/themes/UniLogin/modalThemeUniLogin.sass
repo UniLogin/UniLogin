@@ -2,8 +2,16 @@
   max-width: 770px
   min-width: 770px
   margin: 0 auto
+  justify-content: center
+
+  @media only screen and (orientation: landscape) and (max-height: 720px)
+    height: 100vh
+    justify-content: unset
+
   @media only screen and (max-width: 770px)
     min-width: 100vw
+    height: 100vh
+    padding: 0
 
   @media only screen and (max-width: 600px)
     min-width: 100%
@@ -20,6 +28,12 @@
   .unilogin-component-modal
     overflow: auto
     min-height: 670px
+
+    @media only screen and (orientation: landscape) and (max-height: 720px)
+      min-height: unset
+
+    @media only screen and (max-height: 700px) and (max-width: 770px)
+      height: 100vh
 
     @media only screen and (max-width: 600px)
       border-radius: unset

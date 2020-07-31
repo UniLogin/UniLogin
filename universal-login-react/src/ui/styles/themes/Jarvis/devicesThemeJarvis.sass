@@ -6,6 +6,9 @@
   background: #fff
   height: 600px
 
+  @media only screen and (max-height: 700px) and (orientation: landscape)
+    height: min-content
+
   +media(s, 168px)
     padding-top: 10px
     height: initial

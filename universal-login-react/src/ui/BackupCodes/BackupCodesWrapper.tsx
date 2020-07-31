@@ -8,7 +8,7 @@ interface BackupCodesWrapperProps {
 
 export const BackupCodesWrapper = ({children, className}: BackupCodesWrapperProps) => (
   <ThemedComponent className={className} name="backup">
-    <div>
+    <div className='backup-content'>
       <h2 className="backup-title">Generate backup code</h2>
       <p className="backup-subtitle">
         If you lose all your devices you may not have other ways to recover your account.

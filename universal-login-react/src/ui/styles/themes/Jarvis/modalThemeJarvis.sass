@@ -37,6 +37,10 @@
     height: 100%
     padding: unset
 
+    @media only screen and (max-height: 700px) and (orientation: landscape)
+      height: 100vh
+      justify-content: unset
+
     @media only screen and (max-width: 770px)
       min-width: 100%
       justify-content: flex-start
