@@ -11,10 +11,10 @@ import {DeployedWallet} from '../../../src';
 
 chai.use(solidity);
 
-/* eslint-disable no-return-assign */
-const mockSendConfirmation = (relayer: RelayerUnderTest, cb: any) =>
+const mockSendConfirmation = (relayer: RelayerUnderTest, cb: any) => {
   relayer['emailService'].sendConfirmationMail = (email: string, code: string) =>
     new Promise((resolve) => {cb(code); resolve();});
+};
 
 describe('INT: WalletService', () => {
   let walletService: WalletService;
@@ -152,8 +152,7 @@ describe('INT: WalletService', () => {
       const email = 'name@gmail.com';
       expect(walletService.state).to.deep.eq({kind: 'None'});
       let sentCode: string;
-      /* eslint-disable no-return-assign */
-      mockSendConfirmation(relayer, (code: string) => sentCode = code);
+      mockSendConfirmation(relayer, (code: string) => {sentCode = code;});
       const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
       await promise;
@@ -166,8 +165,7 @@ describe('INT: WalletService', () => {
       const email = 'name@gmail.com';
       expect(walletService.state).to.deep.eq({kind: 'None'});
       let sentCode: string;
-      /* eslint-disable no-return-assign */
-      mockSendConfirmation(relayer, (code: string) => sentCode = code);
+      mockSendConfirmation(relayer, (code: string) => {sentCode = code;});
       await walletService.createRequestedWallet(email, 'name.unilogin.eth');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
       await expect(walletService.confirmCode('12345')).to.be.rejectedWith('Error: Invalid code: 12345');
@@ -184,8 +182,7 @@ describe('INT: WalletService', () => {
       await expect(promise).to.be.eventually.rejectedWith('Something happened');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
       let sentCode: string;
-      /* eslint-disable no-return-assign */
-      mockSendConfirmation(relayer, (code: string) => sentCode = code);
+      mockSendConfirmation(relayer, (code: string) => {sentCode = code;});
       await walletService.getRequestedWallet().requestEmailConfirmation();
       const confirmEmailResult = await walletService.confirmCode(sentCode!);
       expect(confirmEmailResult).deep.include({email, code: sentCode!});
