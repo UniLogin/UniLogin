@@ -156,20 +156,9 @@ describe('INT: WalletService', () => {
       const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
       await promise;
+      await expect(walletService.confirmCode('12345')).to.be.rejectedWith('Error: Invalid code: 12345');
       const confirmEmailResult = await walletService.confirmCode(sentCode!);
       expect(confirmEmailResult).deep.include({email, code: sentCode!});
-      expect(walletService.state).to.deep.include({kind: 'Confirmed'});
-    });
-
-    it('confirm return false if code is wrong', async () => {
-      const email = 'name@gmail.com';
-      expect(walletService.state).to.deep.eq({kind: 'None'});
-      let sentCode: string;
-      mockSendConfirmation(relayer, (code: string) => {sentCode = code;});
-      await walletService.createRequestedWallet(email, 'name.unilogin.eth');
-      expect(walletService.state).to.deep.include({kind: 'Requested'});
-      await expect(walletService.confirmCode('12345')).to.be.rejectedWith('Error: Invalid code: 12345');
-      await walletService.confirmCode(sentCode!);
       expect(walletService.state).to.deep.include({kind: 'Confirmed'});
     });
 
