@@ -1,6 +1,6 @@
 import {Provider} from 'web3/providers';
 import {HttpProvider} from './services/HttpProvider';
-import {Network, DAI_KOVAN, DAI_MAINNET, DAI_ROPSTEN, DEV_DAI_ADDRESS, ETHER_NATIVE_TOKEN, USDC_MAINNET} from '@unilogin/commons';
+import {Network, DAI_KOVAN, DAI_MAINNET, DAI_ROPSTEN, DAI_RINKEBY, DEV_DAI_ADDRESS, ETHER_NATIVE_TOKEN, LID_MAINNET, USDC_MAINNET} from '@unilogin/commons';
 
 export interface Config {
   network: Network;

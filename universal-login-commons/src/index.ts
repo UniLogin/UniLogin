@@ -111,9 +111,4 @@ export {Erc721TokensService} from './core/services/Erc721TokensService';
 export {isAddressIncludedInLog} from './core/utils/isAddressIncludedInLog';
 export {isProperEmail} from './core/utils/isProperEmail';
 export {isProperPassword} from './core/utils/isProperPassword';
-export {
-  DAI_MAINNET, LID_MAINNET, USDC_MAINNET,
-  DAI_ROPSTEN,
-  DAI_RINKEBY,
-  DAI_KOVAN,
-} from './core/constants/tokens';
+export {DAI_MAINNET, LID_MAINNET, USDC_MAINNET, DAI_ROPSTEN, DAI_RINKEBY, DAI_KOVAN} from './core/constants/tokens';
