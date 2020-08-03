@@ -144,18 +144,34 @@ describe('INT: WalletService', () => {
   });
 
   describe('Email', () => {
-    it('createRequestedWallet', async () => {
+    it('email onboarding roundtrip', async () => {
       const email = 'name@gmail.com';
       expect(walletService.state).to.deep.eq({kind: 'None'});
       const sendConfirmationMailSpy = sinon.spy((relayer as any).emailService, 'sendConfirmationMail');
-      await walletService.createRequestedWallet(email, 'name.unilogin.eth');
-      // console.log('???', walletService.state)
+      const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
-      // console.log('here')
-      // await requestPromise;
+      await promise;
       const [, code] = sendConfirmationMailSpy.firstCall.args;
       const confirmEmailResult = await walletService.confirmCode(code);
-      expect(confirmEmailResult).deep.eq({email});
+      expect(confirmEmailResult).deep.include({email, code});
+      expect(walletService.state).to.deep.include({kind: 'Confirmed'});
+    });
+
+    it('after send confirmation e-mail fails retry requestEmailConfirmation works', async () => {
+      const email = 'name@gmail.com';
+      expect(walletService.state).to.deep.eq({kind: 'None'});
+      relayer['emailService'].sendConfirmationMail = () => new Promise(() => {throw new Error('Something happened')});
+      const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
+      expect(walletService.state).to.deep.include({kind: 'Requested'});
+      await expect(promise).to.be.eventually.rejected;
+      expect(walletService.state).to.deep.include({kind: 'Requested'});
+      relayer['emailService'].sendConfirmationMail = () => new Promise((resolve) => {resolve()});
+      const sendConfirmationMailSpy = sinon.spy((relayer as any).emailService, 'sendConfirmationMail');
+      await walletService.requestEmailConfirmation();
+      const [, code] = sendConfirmationMailSpy.firstCall.args;
+      const confirmEmailResult = await walletService.confirmCode(code);
+      expect(confirmEmailResult).deep.include({email, code});
+      expect(walletService.state).to.deep.include({kind: 'Confirmed'});
     });
   });
 
