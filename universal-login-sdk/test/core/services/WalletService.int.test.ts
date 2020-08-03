@@ -1,4 +1,5 @@
 import chai, {expect} from 'chai';
+import sinon from 'sinon';
 import {MockProvider, solidity} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {setupSdk} from '../../helpers/setupSdk';
@@ -139,6 +140,22 @@ describe('INT: WalletService', () => {
       await walletService.waitForConnection();
       await walletService.cancelWaitForConnection();
       expect(walletService.state).to.deep.include({kind: 'Deployed'});
+    });
+  });
+
+  describe('Email', () => {
+    it('createRequestedWallet', async () => {
+      const email = 'name@gmail.com';
+      expect(walletService.state).to.deep.eq({kind: 'None'});
+      const sendConfirmationMailSpy = sinon.spy((relayer as any).emailService, 'sendConfirmationMail');
+      await walletService.createRequestedWallet(email, 'name.unilogin.eth');
+      // console.log('???', walletService.state)
+      expect(walletService.state).to.deep.include({kind: 'Requested'});
+      // console.log('here')
+      // await requestPromise;
+      const [, code] = sendConfirmationMailSpy.firstCall.args;
+      const confirmEmailResult = await walletService.confirmCode(code);
+      expect(confirmEmailResult).deep.eq({email});
     });
   });
 

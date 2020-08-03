@@ -12,6 +12,7 @@ import {WalletSerializer} from './WalletSerializer';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 import {NoopStorageService} from './NoopStorageService';
 import {WalletStorageService} from './WalletStorageService';
+import {RequestedWallet} from '../../api/wallet/RequestedWallet';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
@@ -65,6 +66,22 @@ export class WalletService {
   getConnectingWallet(): ConnectingWallet {
     ensure(this.state.kind === 'Connecting', Error, 'Invalid state: expected connecting wallet');
     return this.state.wallet;
+  }
+
+  async confirmCode(code: string) {
+    ensure(this.state.kind === 'Requested', InvalidWalletState, 'Requested', this.state.kind);
+    const confirmed = await this.state.wallet.confirmEmail(code);
+    console.log(confirmed);
+    return confirmed; // if code valid -> return ConfirmedWallet, if not -> return false
+  }
+
+  async createRequestedWallet(email: string, ensName: string) {
+    const requestedWallet = new RequestedWallet(this.sdk, email, ensName);
+    await requestedWallet.requestEmailConfirmation();
+    console.log('request wallet')
+    this.setRequested(requestedWallet);
+    console.log('return request promise')
+    return requestedWallet;
   }
 
   async createDeployingWallet(name: string): Promise<DeployingWallet> {
@@ -122,6 +139,11 @@ export class WalletService {
     await this.initDeploy();
     await this.waitForTransactionHash();
     return this.waitToBeSuccess();
+  }
+
+  setRequested(wallet: RequestedWallet) {
+    ensure(this.state.kind === 'None', WalletOverridden);
+    this.setState({kind: 'Requested', wallet});
   }
 
   setFutureWallet(wallet: FutureWallet, name: string) {
