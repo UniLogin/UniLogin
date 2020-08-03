@@ -179,7 +179,7 @@ describe('INT: WalletService', () => {
       mockSendConfirmation(relayer, () => {throw new Error('Something happened')});
       const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
-      await expect(promise).to.be.eventually.rejected;
+      await expect(promise).to.be.eventually.rejectedWith('Something happened');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
       let sentCode: string;
       mockSendConfirmation(relayer, (code: string) => sentCode = code);
