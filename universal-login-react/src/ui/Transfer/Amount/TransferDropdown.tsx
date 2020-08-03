@@ -1,5 +1,6 @@
 import React, {useRef} from 'react';
-import {TokenDetails, TokenDetailsWithBalance, getBalanceOf} from '@unilogin/commons';
+import {utils} from 'ethers';
+import {TokenDetails, TokenDetailsWithBalance, ValueRounder} from '@unilogin/commons';
 import UniLoginSdk from '@unilogin/sdk';
 import {TransferDropdownItem} from './TransferDropdownItem';
 import {useToggler} from '../../hooks/useToggler';
@@ -23,28 +24,28 @@ export const TransferDropdown = ({sdk, tokenDetailsWithBalance, tokenDetails, se
     setToken(token);
   };
 
-  const renderTransferDropdownItems = (tokensDetails: TokenDetails[], predicate: (tokenDetails: TokenDetails) => boolean, dropdownClassName: string) =>
+  const renderTransferDropdownItems = (tokensDetails: TokenDetailsWithBalance[], predicate: (tokenDetails: TokenDetails) => boolean, dropdownClassName: string) =>
     tokensDetails
       .filter(predicate)
-      .map((tokenDetails: TokenDetails) => renderTransferDropdownItem(tokenDetails, dropdownClassName));
+      .map((tokenDetails: TokenDetailsWithBalance) => renderTransferDropdownItem(tokenDetails, dropdownClassName));
 
-  const renderTransferDropdownItem = (tokenDetails: TokenDetails, dropdownClassName: string) => (
+  const renderTransferDropdownItem = (tokenDetails: TokenDetailsWithBalance, dropdownClassName: string) => (
     <TransferDropdownItem
       key={`${tokenDetails.name}-${tokenDetails.symbol}`}
       sdk={sdk}
       dropdownClassName={dropdownClassName}
       tokenDetails={tokenDetails}
-      balance={getBalanceOf(tokenDetails.symbol, tokenDetailsWithBalance)}
+      balance={ValueRounder.floor(utils.formatUnits(tokenDetails.balance, tokenDetails.decimals))}
       onClick={onClick}
     />
   );
 
   return (
     <div ref={ref} className="currency-accordion">
-      {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol === tokenDetails.symbol, `currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`)}
+      {renderTransferDropdownItems(tokenDetailsWithBalance, ({symbol}) => symbol === tokenDetails.symbol, `currency-accordion-btn currency-accordion-item ${visible ? 'expaned' : ''}`)}
       {visible &&
-        <div className={`currency-scrollable-list ${sdk.tokensDetailsStore.tokensDetails.length <= 2 ? 'one' : 'many'}`}>
-          {renderTransferDropdownItems(sdk.tokensDetailsStore.tokensDetails, ({symbol}) => symbol !== tokenDetails.symbol, 'currency-accordion-item currency-accordion-item-list')}
+        <div className={`currency-scrollable-list ${tokenDetailsWithBalance.length <= 2 ? 'one' : 'many'}`}>
+          {renderTransferDropdownItems(tokenDetailsWithBalance, ({symbol}) => symbol !== tokenDetails.symbol, 'currency-accordion-item currency-accordion-item-list')}
         </div>}
     </div>
   );
