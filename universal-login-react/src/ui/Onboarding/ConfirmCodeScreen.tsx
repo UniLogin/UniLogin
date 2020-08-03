@@ -19,7 +19,6 @@ export const ConfirmCodeScreen = ({hideModal, walletService}: ConfirmCodeScreenP
   >
     <ConfirmCode
       email={'email@address.com'}
-      subtitleText='Please verify the code below'
     />
   </OnboardingStepsWrapper>
 );

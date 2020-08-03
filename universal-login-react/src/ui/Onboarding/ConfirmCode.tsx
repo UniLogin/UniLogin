@@ -38,7 +38,7 @@ export const ConfirmCode = ({email}: ConfirmCodeProps) => {
 
   return <div className={useClassFor('onboarding-confirm-code-wrapper')}>
     <div className={classForComponent('onboarding-confirm-code-content')}>
-      <div className={`${classForComponent('onboarding-icon-wrapper')} ${isValid ? 'success' : ''}`}>
+      <div className={`${classForComponent('onboarding-icon-wrapper')} ${isValid && 'success'}`}>
         <img src={!isValid ? emailIcon : emailSuccessIcon} alt="Email icon" className={classForComponent('onboarding-icon')}/>
       </div>
       <h4 className={classForComponent('onboarding-subtitle')}>{getSubText(isValid)}</h4>
