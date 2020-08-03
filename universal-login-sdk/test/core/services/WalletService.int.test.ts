@@ -6,11 +6,15 @@ import {setupSdk} from '../../helpers/setupSdk';
 import UniLoginSdk from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, utils, Contract, providers} from 'ethers';
-import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG, ETHER_NATIVE_TOKEN, resolveName} from '@unilogin/commons';
 import {createWallet} from '../../helpers';
 import {DeployedWallet} from '../../../src';
 
 chai.use(solidity);
+
+const mockSendConfirmation = (relayer: RelayerUnderTest, cb: any) =>
+  relayer['emailService'].sendConfirmationMail = (email: string, code: string) =>
+    new Promise((resolve) => {cb(code); resolve();} );
 
 describe('INT: WalletService', () => {
   let walletService: WalletService;
@@ -147,30 +151,41 @@ describe('INT: WalletService', () => {
     it('email onboarding roundtrip', async () => {
       const email = 'name@gmail.com';
       expect(walletService.state).to.deep.eq({kind: 'None'});
-      const sendConfirmationMailSpy = sinon.spy((relayer as any).emailService, 'sendConfirmationMail');
+      let sentCode: string;
+      mockSendConfirmation(relayer, (code: string) => sentCode = code);
       const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
       await promise;
-      const [, code] = sendConfirmationMailSpy.firstCall.args;
-      const confirmEmailResult = await walletService.confirmCode(code);
-      expect(confirmEmailResult).deep.include({email, code});
+      const confirmEmailResult = await walletService.confirmCode(sentCode!);
+      expect(confirmEmailResult).deep.include({email, code: sentCode!});
+      expect(walletService.state).to.deep.include({kind: 'Confirmed'});
+    });
+
+    it('confirm return false if code is wrong', async () => {
+      const email = 'name@gmail.com';
+      expect(walletService.state).to.deep.eq({kind: 'None'});
+      let sentCode: string;
+      mockSendConfirmation(relayer, (code: string) => sentCode = code);
+      await walletService.createRequestedWallet(email, 'name.unilogin.eth');
+      expect(walletService.state).to.deep.include({kind: 'Requested'});
+      await expect(walletService.confirmCode('12345')).to.be.rejectedWith('Error: Invalid code: 12345');
+      await walletService.confirmCode(sentCode!);
       expect(walletService.state).to.deep.include({kind: 'Confirmed'});
     });
 
     it('after send confirmation e-mail fails retry requestEmailConfirmation works', async () => {
       const email = 'name@gmail.com';
       expect(walletService.state).to.deep.eq({kind: 'None'});
-      relayer['emailService'].sendConfirmationMail = () => new Promise(() => {throw new Error('Something happened');});
+      mockSendConfirmation(relayer, () => {throw new Error('Something happened')});
       const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
       await expect(promise).to.be.eventually.rejected;
       expect(walletService.state).to.deep.include({kind: 'Requested'});
-      relayer['emailService'].sendConfirmationMail = () => new Promise((resolve) => {resolve();});
-      const sendConfirmationMailSpy = sinon.spy((relayer as any).emailService, 'sendConfirmationMail');
+      let sentCode: string;
+      mockSendConfirmation(relayer, (code: string) => sentCode = code);
       await walletService.requestEmailConfirmation();
-      const [, code] = sendConfirmationMailSpy.firstCall.args;
-      const confirmEmailResult = await walletService.confirmCode(code);
-      expect(confirmEmailResult).deep.include({email, code});
+      const confirmEmailResult = await walletService.confirmCode(sentCode!);
+      expect(confirmEmailResult).deep.include({email, code: sentCode!});
       expect(walletService.state).to.deep.include({kind: 'Confirmed'});
     });
   });
