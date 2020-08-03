@@ -1,17 +1,19 @@
 import React, {useState} from 'react';
-import {isProperEmail, isValidEnsName} from '@unilogin/commons';
+import {isProperEmail, isValidEnsName, ensureNotFalsy} from '@unilogin/commons';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
 import {InputField, useInputField} from '../commons/InputField';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
+import {WalletService} from '@unilogin/sdk';
 
 export interface EmailFlowChooserProps {
   onCreateClick: (email: string, ensName: string) => void;
   onConnectClick: (emailOrEnsName: string) => void;
+  walletService: WalletService;
 }
 
-export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChooserProps) => {
+export const EmailFlowChooser = ({onCreateClick, onConnectClick, walletService}: EmailFlowChooserProps) => {
   const [email, setEmail, emailError] = useInputField(isProperEmail, 'Email is not valid');
   const [ensName, setEnsName, ensError] = useInputField(isValidEnsName, 'Ens name is not valid');
   const isValidEmailOrEnsName = (value: string) => isValidEnsName(value) || isProperEmail(value);

@@ -42,6 +42,8 @@ const getDatabaseForGanacheConfig = (env: NodeEnv) => {
 
 export const getConfig = () => ({
   ...baseConfig,
+  emailAddress: 'ul.relayer@gmail.com',
+  emailPassword: 'UniLoginRelayer1',
   network: 'ganache',
   jsonRpcUrl: 'http://localhost:18545',
   port: '3311',

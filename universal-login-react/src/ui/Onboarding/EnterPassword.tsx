@@ -12,11 +12,12 @@ import pinCodeIcon from '../assets/icons/pin-code.svg';
 import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 
 interface EnterPasswordProps {
-  hideModal: () => void;
+  hideModal?: () => void;
   walletService: WalletService;
+  onConfirm: (password: string) => void;
 }
 
-export const EnterPassword = ({hideModal, walletService}: EnterPasswordProps) => {
+export const EnterPassword = ({hideModal, walletService, onConfirm}: EnterPasswordProps) => {
   const [password, setPassword, passwordError] = useInputField(isProperPassword, 'Password must have more than 10 letters and one capital letter');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hint, setHint] = useState<string | undefined>(undefined);
@@ -34,6 +35,7 @@ export const EnterPassword = ({hideModal, walletService}: EnterPasswordProps) =>
     ensureNotFalsy(password, Error, 'Password missing');
     ensureNotFalsy(confirmPassword, Error, 'Password confirmation missing');
     ensure(password === confirmPassword, Error, 'Password and password confirmation are different');
+    onConfirm(password);
   };
 
   return <OnboardingStepsWrapper

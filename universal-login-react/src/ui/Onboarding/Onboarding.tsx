@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {WalletService} from '@unilogin/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import {ApplicationWallet, WalletSuggestionAction} from '@unilogin/commons';
@@ -9,6 +9,9 @@ import {Switch} from 'react-router';
 import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocation';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
+import {ConfirmCodeScreen} from './ConfirmCodeScreen';
+import {EmailFlowChooserScreen} from './EmailFlowChooserScreen';
+import {EnterPassword} from './EnterPassword';
 
 export interface OnboardingProps {
   walletService: WalletService;
@@ -22,9 +25,9 @@ export interface OnboardingProps {
 
 export const Onboarding = (props: OnboardingProps) => {
   const onSuccess = () => props.onConnect?.();
-
+  const emailTesting = true;
   return (
-    <MemoryRouter initialEntries={[getInitialOnboardingLocation(props.walletService.state)]}>
+    <MemoryRouter initialEntries={[emailTesting ? '/email' : getInitialOnboardingLocation(props.walletService.state)]}>
       <Switch>
         <Route
           exact
@@ -55,10 +58,30 @@ export const Onboarding = (props: OnboardingProps) => {
             </OnboardingStepsWrapper>}
         />
         <Route
+        path='/email'
+        exact
+        render={({history}) =>
+          <EmailFlowChooserScreen
+            walletService={props.walletService}
+            hideModal={props.hideModal}
+            onConnectClick={() => console.log('connect not supported yet!')}
+            onCreateClick={async (email, ensName) => {const requestPromise = props.walletService.createRequestedWallet(email, ensName); history.push('/code'); await requestPromise;}}
+          />}/>
+        <Route
+          path='/code'
+          exact
+          render={({history}) =>
+            <ConfirmCodeScreen
+              walletService={props.walletService}
+              hideModal={props.hideModal}
+              onConfirmCode={() => {history.push('/create')}}
+            />}/>
+        <Route
           exact
           path="/create"
           render={({location}) =>
             <OnboardingSteps
+              emailTesting={emailTesting}
               walletService={props.walletService}
               onCreate={props.onCreate}
               ensName={location.state?.ensName}

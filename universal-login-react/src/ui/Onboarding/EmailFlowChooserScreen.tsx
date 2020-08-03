@@ -4,7 +4,7 @@ import {EmailFlowChooser, EmailFlowChooserProps} from './EmailFlowChooser';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 
 interface EmailFlowChooserScreen extends EmailFlowChooserProps {
-  hideModal: () => void;
+  hideModal?: () => void;
   walletService: WalletService;
 }
 
@@ -19,6 +19,7 @@ export const EmailFlowChooserScreen = ({hideModal, walletService, onCreateClick,
       progress={1}>
       <div className="perspective">
         <EmailFlowChooser
+          walletService={walletService}
           onConnectClick={onConnectClick}
           onCreateClick={onCreateClick}
         />

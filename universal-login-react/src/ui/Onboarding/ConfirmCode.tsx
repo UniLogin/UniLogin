@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {ReactCodeInput} from './ReactCodeInput';
-import {ensure, ensureNotFalsy} from '@unilogin/commons';
+import {ensure, ensureNotFalsy, sleep} from '@unilogin/commons';
+import {WalletService} from '@unilogin/sdk';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 import {classForComponent, useClassFor} from '../utils/classFor';
@@ -13,6 +14,8 @@ const CODE_LENGTH = 6;
 
 interface ConfirmCodeProps {
   email: string;
+  onConfirmCode: () => void;
+  walletService: WalletService;
 }
 
 const getSubText = (isValid: undefined | boolean) => {
@@ -26,14 +29,18 @@ const getSubText = (isValid: undefined | boolean) => {
   }
 };
 
-export const ConfirmCode = ({email}: ConfirmCodeProps) => {
+export const ConfirmCode = ({email, onConfirmCode, walletService}: ConfirmCodeProps) => {
   const [code, setCode] = useState<string | undefined>(undefined);
   const [isValid, setIsValid] = useState<boolean | undefined>(undefined);
 
-  const onConfirmClick = () => {
+  const onConfirmClick = async () => {
     ensureNotFalsy(code, Error, 'Code is missing');
     ensure(code?.length === CODE_LENGTH, Error, 'Code is incomplete.');
+    console.log('on confirm click')
+    await walletService.confirmCode(code);
     setIsValid(true);
+    await sleep(1000);
+    onConfirmCode();
   };
 
   return <div className={useClassFor('onboarding-confirm-code-wrapper')}>

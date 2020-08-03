@@ -25,7 +25,7 @@ import {ChooseTopUpToken} from '../ui/TopUp/ChooseTopUpToken';
 import config from './config';
 import {Dashboard} from '../ui/UFlow/Dashboard';
 import '../ui/styles/playground.sass';
-import {EmailFlowChooserScreen} from '../ui/Onboarding/EmailFlowChooserScreen';
+import {EmailOnboarding} from '../ui/Onboarding/EmailOnboarding';
 import {EnterPassword} from '../ui/Onboarding/EnterPassword';
 import {ConfirmCodeScreen} from '../ui/Onboarding/ConfirmCodeScreen';
 
@@ -107,11 +107,11 @@ export const App = () => {
                 exact
                 path="/onboardingEmail"
                 render={({history}) =>
-                  <EmailFlowChooserScreen
+                  <EmailOnboarding
                     walletService={walletService}
                     hideModal={() => history.push('/')}
-                    onCreateClick={(ensName, email) => console.log('create', {ensName, email})}
-                    onConnectClick={(emailOrEnsName) => console.log('connect', {emailOrEnsName})}
+                    // onCreateClick={(ensName, email) => console.log('create', {ensName, email})}
+                    // onConnectClick={(emailOrEnsName) => console.log('connect', {emailOrEnsName})}
                   />}
               />
               <Route
@@ -258,7 +258,10 @@ export const App = () => {
               <Route
                 exact
                 path="/enterPassword"
-                render={({history}) => <EnterPassword hideModal={() => history.push('/')} walletService={walletService}/>}
+                render={({history}) => <EnterPassword
+                  hideModal={() => history.push('/')}
+                  walletService={walletService}
+                  onConfirm={(password) => console.log({password})}/>}
               />
               <Route
                 exact
@@ -267,6 +270,7 @@ export const App = () => {
                   <ConfirmCodeScreen
                     hideModal={() => history.push('/')}
                     walletService={walletService}
+                    onConfirmCode={() => {}}
                   />}
               />
               <Route component={() => (<p>not found</p>)} />
