@@ -11,6 +11,11 @@ import {DeployedWallet} from '../../../src';
 
 chai.use(solidity);
 
+const mockSendConfirmation = (relayer: RelayerUnderTest, cb: any) => {
+  relayer['emailService'].sendConfirmationMail = (email: string, code: string) =>
+    new Promise((resolve) => {cb(code); resolve();});
+};
+
 describe('INT: WalletService', () => {
   let walletService: WalletService;
   let sdk: UniLoginSdk;
@@ -139,6 +144,38 @@ describe('INT: WalletService', () => {
       await walletService.waitForConnection();
       await walletService.cancelWaitForConnection();
       expect(walletService.state).to.deep.include({kind: 'Deployed'});
+    });
+  });
+
+  describe('Email', () => {
+    it('email onboarding roundtrip', async () => {
+      const email = 'name@gmail.com';
+      expect(walletService.state).to.deep.eq({kind: 'None'});
+      let sentCode: string;
+      mockSendConfirmation(relayer, (code: string) => {sentCode = code;});
+      const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
+      expect(walletService.state).to.deep.include({kind: 'Requested'});
+      await promise;
+      await expect(walletService.confirmCode('12345')).to.be.rejectedWith('Error: Invalid code: 12345');
+      const confirmEmailResult = await walletService.confirmCode(sentCode!);
+      expect(confirmEmailResult).deep.include({email, code: sentCode!});
+      expect(walletService.state).to.deep.include({kind: 'Confirmed'});
+    });
+
+    it('after send confirmation e-mail fails retry requestEmailConfirmation works', async () => {
+      const email = 'name@gmail.com';
+      expect(walletService.state).to.deep.eq({kind: 'None'});
+      mockSendConfirmation(relayer, () => {throw new Error('Something happened');});
+      const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
+      expect(walletService.state).to.deep.include({kind: 'Requested'});
+      await expect(promise).to.be.eventually.rejectedWith('Something happened');
+      expect(walletService.state).to.deep.include({kind: 'Requested'});
+      let sentCode: string;
+      mockSendConfirmation(relayer, (code: string) => {sentCode = code;});
+      await walletService.getRequestedWallet().requestEmailConfirmation();
+      const confirmEmailResult = await walletService.confirmCode(sentCode!);
+      expect(confirmEmailResult).deep.include({email, code: sentCode!});
+      expect(walletService.state).to.deep.include({kind: 'Confirmed'});
     });
   });
 
