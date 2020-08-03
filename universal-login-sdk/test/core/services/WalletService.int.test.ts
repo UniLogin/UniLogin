@@ -186,7 +186,7 @@ describe('INT: WalletService', () => {
       let sentCode: string;
       /* eslint-disable no-return-assign */
       mockSendConfirmation(relayer, (code: string) => sentCode = code);
-      await walletService.requestEmailConfirmation();
+      await walletService.getRequestedWallet().requestEmailConfirmation();
       const confirmEmailResult = await walletService.confirmCode(sentCode!);
       expect(confirmEmailResult).deep.include({email, code: sentCode!});
       expect(walletService.state).to.deep.include({kind: 'Confirmed'});

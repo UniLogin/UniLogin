@@ -80,15 +80,15 @@ export class WalletService {
     return false;
   }
 
-  requestEmailConfirmation() {
+  getRequestedWallet() {
     ensure(this.state.kind === 'Requested', InvalidWalletState, 'Requested', this.state.kind);
-    return this.state.wallet.requestEmailConfirmation();
+    return this.state.wallet;
   }
 
   async createRequestedWallet(email: string, ensName: string) {
     const requestedWallet = new RequestedWallet(this.sdk, email, ensName);
     this.setRequested(requestedWallet);
-    return this.requestEmailConfirmation();
+    return this.getRequestedWallet().requestEmailConfirmation();
   }
 
   async createDeployingWallet(name: string): Promise<DeployingWallet> {
