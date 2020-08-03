@@ -19,7 +19,7 @@ export function getConfigForNetwork(network: Network): Config {
         provider: new HttpProvider('https://mainnet.infura.io/v3/7dd9fc79d94f40ccbc0d8821551516dd'),
         relayerUrl: 'https://relayer-mainnet.herokuapp.com',
         ensDomains: ['unibeta.eth', 'unitest.eth'],
-        observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0x6b175474e89094c44da98b954eedeac495271d0f', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'],
+        observedTokensAddresses: [ETHER_NATIVE_TOKEN.address, '0x6b175474e89094c44da98b954eedeac495271d0f', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', '0x0417912b3a7AF768051765040A55BB0925D4DDcF'],
       };
     case '3':
     case 'ropsten':
