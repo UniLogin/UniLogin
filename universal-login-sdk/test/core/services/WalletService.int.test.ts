@@ -1,20 +1,20 @@
 import chai, {expect} from 'chai';
-import sinon from 'sinon';
 import {MockProvider, solidity} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {setupSdk} from '../../helpers/setupSdk';
 import UniLoginSdk from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, utils, Contract, providers} from 'ethers';
-import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG, ETHER_NATIVE_TOKEN, resolveName} from '@unilogin/commons';
+import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {createWallet} from '../../helpers';
 import {DeployedWallet} from '../../../src';
 
 chai.use(solidity);
 
+/* eslint-disable no-return-assign */
 const mockSendConfirmation = (relayer: RelayerUnderTest, cb: any) =>
   relayer['emailService'].sendConfirmationMail = (email: string, code: string) =>
-    new Promise((resolve) => {cb(code); resolve();} );
+    new Promise((resolve) => {cb(code); resolve();});
 
 describe('INT: WalletService', () => {
   let walletService: WalletService;
@@ -152,6 +152,7 @@ describe('INT: WalletService', () => {
       const email = 'name@gmail.com';
       expect(walletService.state).to.deep.eq({kind: 'None'});
       let sentCode: string;
+      /* eslint-disable no-return-assign */
       mockSendConfirmation(relayer, (code: string) => sentCode = code);
       const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
@@ -165,6 +166,7 @@ describe('INT: WalletService', () => {
       const email = 'name@gmail.com';
       expect(walletService.state).to.deep.eq({kind: 'None'});
       let sentCode: string;
+      /* eslint-disable no-return-assign */
       mockSendConfirmation(relayer, (code: string) => sentCode = code);
       await walletService.createRequestedWallet(email, 'name.unilogin.eth');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
@@ -176,12 +178,13 @@ describe('INT: WalletService', () => {
     it('after send confirmation e-mail fails retry requestEmailConfirmation works', async () => {
       const email = 'name@gmail.com';
       expect(walletService.state).to.deep.eq({kind: 'None'});
-      mockSendConfirmation(relayer, () => {throw new Error('Something happened')});
+      mockSendConfirmation(relayer, () => {throw new Error('Something happened');});
       const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
       await expect(promise).to.be.eventually.rejectedWith('Something happened');
       expect(walletService.state).to.deep.include({kind: 'Requested'});
       let sentCode: string;
+      /* eslint-disable no-return-assign */
       mockSendConfirmation(relayer, (code: string) => sentCode = code);
       await walletService.requestEmailConfirmation();
       const confirmEmailResult = await walletService.confirmCode(sentCode!);
