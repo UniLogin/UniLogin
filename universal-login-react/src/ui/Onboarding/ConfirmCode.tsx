@@ -12,14 +12,23 @@ import '../styles/themes/UniLogin/confirmCodeThemeUniLogin.sass';
 const CODE_LENGTH = 6;
 
 interface ConfirmCodeProps {
-  subtitleText?: string;
   email: string;
 }
 
-export const ConfirmCode = ({email, subtitleText = ''}: ConfirmCodeProps) => {
+const getSubText = (isValid: undefined | boolean) => {
+  switch (isValid) {
+    case true:
+      return 'Success!';
+    case false:
+      return 'Try again!';
+    default:
+      return 'Please verify the code below';
+  }
+};
+
+export const ConfirmCode = ({email}: ConfirmCodeProps) => {
   const [code, setCode] = useState<string | undefined>(undefined);
-  const [isValid, setIsValid] = useState(false);
-  const subText = !isValid ? subtitleText : 'Success!';
+  const [isValid, setIsValid] = useState<boolean | undefined>(undefined);
 
   const onConfirmClick = () => {
     ensureNotFalsy(code, Error, 'Code is missing');
@@ -32,9 +41,12 @@ export const ConfirmCode = ({email, subtitleText = ''}: ConfirmCodeProps) => {
       <div className={`${classForComponent('onboarding-icon-wrapper')} ${isValid ? 'success' : ''}`}>
         <img src={!isValid ? emailIcon : emailSuccessIcon} alt="Email icon" className={classForComponent('onboarding-icon')}/>
       </div>
-      <h4 className={classForComponent('onboarding-subtitle')}>{subText}</h4>
-      {!isValid && <p className={classForComponent('onboarding-description')}>We sent an email to <span className={classForComponent('span-email')}>{email}</span></p>}
+      <h4 className={classForComponent('onboarding-subtitle')}>{getSubText(isValid)}</h4>
       {isValid && <p className={classForComponent('onboarding-description')}>E-mail confirmed</p>}
+      {!isValid &&
+      <div><p className={classForComponent('onboarding-description')}>
+        We sent an email to <span className={classForComponent('span-email')}>{email}</span>
+      </p>
       <ReactCodeInput
         name='code-input'
         inputMode='numeric'
@@ -45,18 +57,18 @@ export const ConfirmCode = ({email, subtitleText = ''}: ConfirmCodeProps) => {
         value={code}
         onChange={setCode}
         disabled={isValid}
-      />
+      /></div>}
     </div>
-    <div className={classForComponent('buttons-wrapper')}>
-      {!isValid && <SecondaryButton
+    {!isValid && <div className={classForComponent('buttons-wrapper')}>
+      <SecondaryButton
         text='Back'
         onClick={() => console.log('Back')}
-      />}
+      />
       <PrimaryButton
         text='Confirm'
         disabled={!(code?.length === CODE_LENGTH)}
         onClick={onConfirmClick}
       />
-    </div>
+    </div>}
   </div>;
 };
