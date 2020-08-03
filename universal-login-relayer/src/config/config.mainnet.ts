@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import {getEnv, UNIVERSAL_LOGIN_LOGO_URL, ETHER_NATIVE_TOKEN, DAI_MAINNET_ADDRESS} from '@unilogin/commons';
+import {getEnv, UNIVERSAL_LOGIN_LOGO_URL, ETHER_NATIVE_TOKEN, DAI_MAINNET} from '@unilogin/commons';
 import path from 'path';
 import {baseConfig} from './baseConfig';
 
@@ -42,6 +42,6 @@ export const getConfig = () => ({
     address: ETHER_NATIVE_TOKEN.address,
   },
   {
-    address: DAI_MAINNET_ADDRESS,
+    address: DAI_MAINNET,
   }],
 });
