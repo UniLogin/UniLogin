@@ -80,7 +80,6 @@ export const Onboarding = (props: OnboardingProps) => {
           path="/create"
           render={({location}) =>
             <OnboardingSteps
-              emailTesting={emailTesting}
               walletService={props.walletService}
               onCreate={props.onCreate}
               ensName={location.state?.ensName}

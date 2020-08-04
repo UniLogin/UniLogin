@@ -12,20 +12,17 @@ interface OnboardingStepsProps {
   walletService: WalletService;
   onCreate?: (arg: ApplicationWallet) => void;
   ensName: string;
-  emailTesting?: boolean;
 }
 
 interface CreateFutureWalletProps {
   walletService: WalletService;
   hideModal?: () => void;
-  emailTesting?: boolean;
-  ensName: string;
 }
 
-const CreateFutureWallet = ({walletService, hideModal, ensName, emailTesting}: CreateFutureWalletProps) => {
+const CreateFutureWallet = ({walletService, hideModal}: CreateFutureWalletProps) => {
   const [password, setPassword] = useState('');
-  const name = emailTesting ? walletService.getConfirmedWallet().ensName : ensName;
-  return !emailTesting || password
+  const name =walletService.getConfirmedWallet().ensName;
+  return password
     ? <ChooseTopUpToken
       supportedTokens={['ETH', 'DAI']}
       onClick={async (tokenAddress: string) => {
@@ -41,19 +38,25 @@ const CreateFutureWallet = ({walletService, hideModal, ensName, emailTesting}: C
     />;
 };
 
-export function OnboardingSteps({walletService, onCreate, ensName, emailTesting}: OnboardingStepsProps) {
+export function OnboardingSteps({walletService, onCreate, ensName}: OnboardingStepsProps) {
   const walletState = useProperty(walletService.stateProperty);
   const history = useHistory();
 
   switch (walletState.kind) {
     case 'None':
+      return <ChooseTopUpToken
+        supportedTokens={['ETH', 'DAI']}
+        onClick={async (tokenAddress: string) => {
+          await walletService.createWallet(ensName, tokenAddress);
+        }}
+        hideModal={() => history.push('/selector')}
+        walletService={walletService}
+        />
     case 'Confirmed':
       return (
         <CreateFutureWallet
-          emailTesting={emailTesting}
-          hideModal={() => history.push('/selector')}
+          hideModal={() => history.push('/email')}
           walletService={walletService}
-          ensName={ensName}
         />
       );
     case 'Future':
