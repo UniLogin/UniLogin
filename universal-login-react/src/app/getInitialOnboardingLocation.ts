@@ -37,19 +37,3 @@ export const getInitialEmailOnboardingLocation = (state: WalletState): string | 
       throw new UnexpectedWalletState(state.kind);
   }
 };
-
-export const getInitialEmailOnboardingLocation = (state: WalletState): string | LocationDescriptorObject => {
-  switch (state.kind) {
-    case 'None':
-      return '/selector';
-    case 'Requested':
-      return '/code';
-    case 'Confirmed':
-    case 'Future':
-    case 'Deploying':
-      return '/create';
-    case 'Deployed':
-    case 'Connecting':
-      throw new UnexpectedWalletState('Deployed');
-  }
-};
