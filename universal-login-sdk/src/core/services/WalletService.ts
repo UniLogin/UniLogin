@@ -65,7 +65,7 @@ export class WalletService {
   }
 
   getConnectingWallet(): ConnectingWallet {
-    ensure(this.state.kind === 'Connecting', Error, 'Invalid state: expected connecting wallet');
+    ensure(this.state.kind === 'Connecting', InvalidWalletState, 'Connecting', this.state.kind);
     return this.state.wallet;
   }
 
