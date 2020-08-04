@@ -21,12 +21,11 @@ interface CreateFutureWalletProps {
 
 const CreateFutureWallet = ({walletService, hideModal}: CreateFutureWalletProps) => {
   const [password, setPassword] = useState('');
-  const name =walletService.getConfirmedWallet().ensName;
   return password
     ? <ChooseTopUpToken
       supportedTokens={['ETH', 'DAI']}
       onClick={async (tokenAddress: string) => {
-        await walletService.createWallet(name, tokenAddress);
+        await walletService.createWallet(walletService.getConfirmedWallet().ensName, tokenAddress);
       }}
       hideModal={hideModal}
       walletService={walletService}
@@ -51,7 +50,7 @@ export function OnboardingSteps({walletService, onCreate, ensName}: OnboardingSt
         }}
         hideModal={() => history.push('/selector')}
         walletService={walletService}
-        />
+      />;
     case 'Confirmed':
       return (
         <CreateFutureWallet
