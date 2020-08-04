@@ -25,8 +25,8 @@ interface CreateFutureWalletProps {
 const CreateFutureWallet = ({walletService, hideModal, ensName, emailTesting}: CreateFutureWalletProps) => {
   const [password, setPassword] = useState('');
   const name = emailTesting ? walletService.getConfirmedWallet().ensName : ensName;
-  return !emailTesting || password ?
-    <ChooseTopUpToken
+  return !emailTesting || password
+    ? <ChooseTopUpToken
       supportedTokens={['ETH', 'DAI']}
       onClick={async (tokenAddress: string) => {
         console.log('name', name);
@@ -34,13 +34,13 @@ const CreateFutureWallet = ({walletService, hideModal, ensName, emailTesting}: C
       }}
       hideModal={hideModal}
       walletService={walletService}
-    /> :
-    <EnterPassword
+    />
+    : <EnterPassword
       walletService={walletService}
       hideModal={hideModal}
       onConfirm={setPassword}
-    />
-}
+    />;
+};
 
 export function OnboardingSteps({walletService, onCreate, ensName, emailTesting}: OnboardingStepsProps) {
   const walletState = useProperty(walletService.stateProperty);

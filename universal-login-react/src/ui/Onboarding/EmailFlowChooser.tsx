@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {isProperEmail, isValidEnsName, ensureNotFalsy} from '@unilogin/commons';
+import {isProperEmail, isValidEnsName} from '@unilogin/commons';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';

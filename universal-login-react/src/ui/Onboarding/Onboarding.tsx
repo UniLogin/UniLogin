@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {WalletService} from '@unilogin/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import {ApplicationWallet, WalletSuggestionAction} from '@unilogin/commons';
@@ -57,15 +57,15 @@ export const Onboarding = (props: OnboardingProps) => {
             </OnboardingStepsWrapper>}
         />
         <Route
-        path='/email'
-        exact
-        render={({history}) =>
-          <EmailFlowChooserScreen
-            walletService={props.walletService}
-            hideModal={props.hideModal}
-            onConnectClick={() => console.log('connect not supported yet!')}
-            onCreateClick={async (email, ensName) => {const requestPromise = props.walletService.createRequestedWallet(email, ensName); history.push('/code'); await requestPromise;}}
-          />}/>
+          path='/email'
+          exact
+          render={({history}) =>
+            <EmailFlowChooserScreen
+              walletService={props.walletService}
+              hideModal={props.hideModal}
+              onConnectClick={() => console.log('connect not supported yet!')}
+              onCreateClick={async (email, ensName) => {const requestPromise = props.walletService.createRequestedWallet(email, ensName); history.push('/code'); await requestPromise;}}
+            />}/>
         <Route
           path='/code'
           exact
@@ -73,7 +73,7 @@ export const Onboarding = (props: OnboardingProps) => {
             <ConfirmCodeScreen
               walletService={props.walletService}
               hideModal={props.hideModal}
-              onConfirmCode={() => {history.push('/create')}}
+              onConfirmCode={() => {history.push('/create');}}
             />}/>
         <Route
           exact
