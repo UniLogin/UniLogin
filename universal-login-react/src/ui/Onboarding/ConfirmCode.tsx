@@ -36,7 +36,6 @@ export const ConfirmCode = ({email, onConfirmCode, walletService}: ConfirmCodePr
   const onConfirmClick = async () => {
     ensureNotFalsy(code, Error, 'Code is missing');
     ensure(code?.length === CODE_LENGTH, Error, 'Code is incomplete.');
-    console.log('on confirm click');
     await walletService.confirmCode(code);
     setIsValid(true);
     await sleep(1000);
