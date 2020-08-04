@@ -103,7 +103,7 @@ export const App = () => {
                     hideModal={() => history.push('/')}
                   />}
               />
-               <Route
+              <Route
                 exact
                 path="/onboardingEmail"
                 render={({history}) =>
