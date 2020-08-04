@@ -51,10 +51,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/ui/index.html',
     }),
-    new CopyPlugin([{
-      from: './src/ui/copyToClipboard.html',
-      to: './copy/index.html',
-    }]),
+    new CopyPlugin([
+      {from: './src/ui/copyToClipboard.html', to: './copy/index.html'},
+      {from: './src/ui/styles/copyToClipboard.css', to: './copy/src/ui/styles/copyToClipboard.css'},
+      {from: './src/ui/assets/U.svg', to: './copy/src/ui/assets/U.svg'},
+    ]),
     new CleanWebpackPlugin(),
   ],
   devServer: {
