@@ -6,12 +6,11 @@ import {ConnectionFlow, ModalWrapper} from '../..';
 import {OnboardingSteps} from './OnboardingSteps';
 import {Route, MemoryRouter} from 'react-router-dom';
 import {Switch} from 'react-router';
-import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocation';
+import {getInitialOnboardingLocation, getInitialEmailOnboardingLocation} from '../../app/getInitialOnboardingLocation';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
 import {ConfirmCodeScreen} from './ConfirmCodeScreen';
 import {EmailFlowChooserScreen} from './EmailFlowChooserScreen';
-import {EnterPassword} from './EnterPassword';
 
 export interface OnboardingProps {
   walletService: WalletService;
@@ -25,9 +24,9 @@ export interface OnboardingProps {
 
 export const Onboarding = (props: OnboardingProps) => {
   const onSuccess = () => props.onConnect?.();
-  const emailTesting = true;
+  const emailTesting = false;
   return (
-    <MemoryRouter initialEntries={[emailTesting ? '/email' : getInitialOnboardingLocation(props.walletService.state)]}>
+    <MemoryRouter initialEntries={[emailTesting ? getInitialEmailOnboardingLocation(props.walletService.state) : getInitialOnboardingLocation(props.walletService.state)]}>
       <Switch>
         <Route
           exact
