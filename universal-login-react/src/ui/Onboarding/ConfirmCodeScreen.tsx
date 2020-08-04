@@ -4,11 +4,12 @@ import {ConfirmCode} from './ConfirmCode';
 import {WalletService} from '@unilogin/sdk';
 
 interface ConfirmCodeScreenProps {
-  hideModal: () => void;
+  hideModal?: () => void;
   walletService: WalletService;
+  onConfirmCode: () => void;
 }
 
-export const ConfirmCodeScreen = ({hideModal, walletService}: ConfirmCodeScreenProps) => (
+export const ConfirmCodeScreen = ({hideModal, walletService, onConfirmCode}: ConfirmCodeScreenProps) => (
   <OnboardingStepsWrapper
     title={'Create account'}
     className='onboarding-confirm-code'
@@ -18,7 +19,9 @@ export const ConfirmCodeScreen = ({hideModal, walletService}: ConfirmCodeScreenP
     message={walletService.sdk.getNotice()}
   >
     <ConfirmCode
-      email={'email@address.com'}
+      email={walletService.getRequestedWallet().email}
+      onConfirmCode={onConfirmCode}
+      walletService={walletService}
     />
   </OnboardingStepsWrapper>
 );

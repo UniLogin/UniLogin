@@ -4,7 +4,7 @@ import {EmailFlowChooser, EmailFlowChooserProps} from './EmailFlowChooser';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 
 interface EmailFlowChooserScreen extends EmailFlowChooserProps {
-  hideModal: () => void;
+  hideModal?: () => void;
   walletService: WalletService;
 }
 

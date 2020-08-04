@@ -6,9 +6,11 @@ import {ConnectionFlow, ModalWrapper} from '../..';
 import {OnboardingSteps} from './OnboardingSteps';
 import {Route, MemoryRouter} from 'react-router-dom';
 import {Switch} from 'react-router';
-import {getInitialOnboardingLocation} from '../../app/getInitialOnboardingLocation';
+import {getInitialOnboardingLocation, getInitialEmailOnboardingLocation} from '../../app/getInitialOnboardingLocation';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
+import {ConfirmCodeScreen} from './ConfirmCodeScreen';
+import {EmailFlowChooserScreen} from './EmailFlowChooserScreen';
 
 export interface OnboardingProps {
   walletService: WalletService;
@@ -18,13 +20,14 @@ export interface OnboardingProps {
   hideModal?: () => void;
   className?: string;
   modalClassName?: string;
+  emailFlow?: boolean;
 }
 
-export const Onboarding = (props: OnboardingProps) => {
+export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
   const onSuccess = () => props.onConnect?.();
 
   return (
-    <MemoryRouter initialEntries={[getInitialOnboardingLocation(props.walletService.state)]}>
+    <MemoryRouter initialEntries={[emailFlow ? getInitialEmailOnboardingLocation(props.walletService.state) : getInitialOnboardingLocation(props.walletService.state)]}>
       <Switch>
         <Route
           exact
@@ -54,6 +57,25 @@ export const Onboarding = (props: OnboardingProps) => {
               </div>
             </OnboardingStepsWrapper>}
         />
+        <Route
+          path='/email'
+          exact
+          render={({history}) =>
+            <EmailFlowChooserScreen
+              walletService={props.walletService}
+              hideModal={props.hideModal}
+              onConnectClick={() => console.log('connect not supported yet!')}
+              onCreateClick={async (email, ensName) => {const requestPromise = props.walletService.createRequestedWallet(email, ensName); history.push('/code'); await requestPromise;}}
+            />}/>
+        <Route
+          path='/code'
+          exact
+          render={({history}) =>
+            <ConfirmCodeScreen
+              walletService={props.walletService}
+              hideModal={props.hideModal}
+              onConfirmCode={() => {history.push('/create');}}
+            />}/>
         <Route
           exact
           path="/create"
