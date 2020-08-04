@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getInitialOnboardingLocation} from '../../src/app/getInitialOnboardingLocation';
+import {getInitialOnboardingLocation, getInitialEmailOnboardingLocation} from '../../src/app/getInitialOnboardingLocation';
 import {WalletState} from '@unilogin/sdk';
 
 describe('UNIT: getInitialOnboardingLocation', () => {
@@ -32,5 +32,44 @@ describe('UNIT: getInitialOnboardingLocation', () => {
   it('Deployed', () => {
     const walletState = createTestWalletState('Deployed');
     expect(() => getInitialOnboardingLocation(walletState)).to.throw('Unexpected wallet state: Deployed');
+  });
+});
+
+describe('UNIT: getInitialEmailOnboardingLocation', () => {
+  const createTestWalletState = (kind: string, wallet?: any) => ({kind, wallet} as WalletState);
+
+  it('None', () => {
+    const walletState = createTestWalletState('None');
+    expect(getInitialEmailOnboardingLocation(walletState)).to.eq('/email');
+  });
+
+  it('Requested', () => {
+    const walletState = createTestWalletState('Requested');
+    expect(getInitialEmailOnboardingLocation(walletState)).to.eq('/code');
+  });
+
+  it('Confirmed', () => {
+    const walletState = createTestWalletState('Confirmed');
+    expect(getInitialEmailOnboardingLocation(walletState)).to.eq('/create');
+  });
+
+  it('Future', () => {
+    const walletState = createTestWalletState('Future');
+    expect(getInitialEmailOnboardingLocation(walletState)).to.eq('/create');
+  });
+
+  it('Deploying', () => {
+    const walletState = createTestWalletState('Deploying');
+    expect(getInitialEmailOnboardingLocation(walletState)).to.eq('/create');
+  });
+
+  it('Connecting', () => {
+    const walletState = createTestWalletState('Connecting');
+    expect(() => getInitialEmailOnboardingLocation(walletState)).to.throw('Unexpected wallet state: Connecting');
+  });
+
+  it('Deployed', () => {
+    const walletState = createTestWalletState('Deployed');
+    expect(() => getInitialEmailOnboardingLocation(walletState)).to.throw('Unexpected wallet state: Deployed');
   });
 });
