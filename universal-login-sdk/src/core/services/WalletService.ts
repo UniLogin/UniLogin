@@ -90,11 +90,6 @@ export class WalletService {
     return this.state.wallet;
   }
 
-  getConfirmedWallet() {
-    ensure(this.state.kind === 'Confirmed', InvalidWalletState, 'Confirmed', this.state.kind);
-    return this.state.wallet;
-  }
-
   async createRequestedWallet(email: string, ensName: string) {
     const requestedWallet = new RequestedWallet(this.sdk, email, ensName);
     this.setRequested(requestedWallet);
