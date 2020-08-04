@@ -25,6 +25,7 @@ import {ChooseTopUpToken} from '../ui/TopUp/ChooseTopUpToken';
 import config from './config';
 import {Dashboard} from '../ui/UFlow/Dashboard';
 import '../ui/styles/playground.sass';
+import {EmailFlowChooserScreen} from '../ui/Onboarding/EmailFlowChooserScreen';
 import {EnterPassword} from '../ui/Onboarding/EnterPassword';
 import {ConfirmCodeScreen} from '../ui/Onboarding/ConfirmCodeScreen';
 
@@ -100,6 +101,17 @@ export const App = () => {
                     onConnect={() => console.log('connected')}
                     onCreate={() => history.push('/onboarding/success')}
                     hideModal={() => history.push('/')}
+                  />}
+              />
+               <Route
+                exact
+                path="/onboardingEmail"
+                render={({history}) =>
+                  <EmailFlowChooserScreen
+                    walletService={walletService}
+                    hideModal={() => history.push('/')}
+                    onCreateClick={(ensName, email) => console.log('create', {ensName, email})}
+                    onConnectClick={(emailOrEnsName) => console.log('connect', {emailOrEnsName})}
                   />}
               />
               <Route
