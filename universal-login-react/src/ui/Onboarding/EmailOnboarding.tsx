@@ -14,25 +14,7 @@ interface EmailOnboardingProps {
 export const EmailOnboarding = ({walletService, hideModal}: EmailOnboardingProps) => {
   return <MemoryRouter initialEntries={[getInitialEmailOnboardingLocation(walletService.state)]}>
     <Switch>
-      <Route
-        path='/selector'
-        exact
-        render={({history}) =>
-          <EmailFlowChooserScreen
-            walletService={walletService}
-            hideModal={hideModal}
-            onConnectClick={() => console.log('connect not supported yet!')}
-            onCreateClick={async (email, ensName) => {const requestPromise = walletService.createRequestedWallet(email, ensName); history.push('/code'); await requestPromise;}}
-          />}/>
-      <Route
-        path='/code'
-        exact
-        render={({history}) =>
-          <ConfirmCodeScreen
-            walletService={walletService}
-            hideModal={hideModal}
-            onConfirmCode={() => {history.push('/create')}}
-          />}/>
+
     </Switch>
   </MemoryRouter>
   ;
