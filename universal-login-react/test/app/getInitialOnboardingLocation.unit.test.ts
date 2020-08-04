@@ -40,7 +40,7 @@ describe('UNIT: getInitialEmailOnboardingLocation', () => {
 
   it('None', () => {
     const walletState = createTestWalletState('None');
-    expect(getInitialEmailOnboardingLocation(walletState)).to.eq('/selector');
+    expect(getInitialEmailOnboardingLocation(walletState)).to.eq('/email');
   });
 
   it('Requested', () => {
