@@ -69,6 +69,11 @@ export class WalletService {
     return this.state.wallet;
   }
 
+  getConfirmedWallet(): ConfirmedWallet {
+    ensure(this.state.kind === 'Confirmed', InvalidWalletState, 'Confirmed', this.state.kind);
+    return this.state.wallet;
+  }
+
   async confirmCode(code: string) {
     ensure(this.state.kind === 'Requested', InvalidWalletState, 'Requested', this.state.kind);
     const {email} = await this.state.wallet.confirmEmail(code);
@@ -159,7 +164,7 @@ export class WalletService {
   }
 
   setFutureWallet(wallet: FutureWallet, name: string) {
-    ensure(this.state.kind === 'None', WalletOverridden);
+    ensure(this.state.kind === 'None' || this.state.kind === 'Confirmed', WalletOverridden);
     this.setState({kind: 'Future', name, wallet});
   }
 
