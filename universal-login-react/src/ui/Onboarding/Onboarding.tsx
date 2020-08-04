@@ -20,13 +20,14 @@ export interface OnboardingProps {
   hideModal?: () => void;
   className?: string;
   modalClassName?: string;
+  emailFlow?: boolean;
 }
 
 export const Onboarding = (props: OnboardingProps) => {
   const onSuccess = () => props.onConnect?.();
-  const emailTesting = false;
+  const emailFlow = props.emailFlow || false;
   return (
-    <MemoryRouter initialEntries={[emailTesting ? getInitialEmailOnboardingLocation(props.walletService.state) : getInitialOnboardingLocation(props.walletService.state)]}>
+    <MemoryRouter initialEntries={[emailFlow ? getInitialEmailOnboardingLocation(props.walletService.state) : getInitialOnboardingLocation(props.walletService.state)]}>
       <Switch>
         <Route
           exact
