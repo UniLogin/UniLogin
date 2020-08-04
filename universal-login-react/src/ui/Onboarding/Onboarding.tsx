@@ -23,9 +23,9 @@ export interface OnboardingProps {
   emailFlow?: boolean;
 }
 
-export const Onboarding = (props: OnboardingProps) => {
+export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
   const onSuccess = () => props.onConnect?.();
-  const emailFlow = props.emailFlow || false;
+
   return (
     <MemoryRouter initialEntries={[emailFlow ? getInitialEmailOnboardingLocation(props.walletService.state) : getInitialOnboardingLocation(props.walletService.state)]}>
       <Switch>
