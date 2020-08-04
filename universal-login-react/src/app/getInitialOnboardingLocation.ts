@@ -11,9 +11,6 @@ export const getInitialOnboardingLocation = (state: WalletState): string | Locat
         pathname: '/connectFlow/emoji',
         state: {name: state.wallet.name},
       };
-    case 'Confirmed':
-      return '/password';
-    case 'Requested':
     case 'Future':
     case 'Deploying':
       return '/create';
