@@ -17,6 +17,7 @@ export const getInitialOnboardingLocation = (state: WalletState): string | Locat
     case 'Deploying':
       return '/create';
     case 'Deployed':
-      throw new UnexpectedWalletState('Deployed');
+    case 'Connecting':
+      throw new UnexpectedWalletState(state.kind);
   }
 };
