@@ -100,7 +100,7 @@ export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) 
           <MjmlColumn cssClass="card" backgroundColor="white" borderRadius={16} width="402px" padding="60px 0">
             <MjmlText cssClass="login" font-size="32px" fontWeight={900} line-heigh="72px" align="center" color="#0F0C4A" font-family="Tajawal, sans-serif" lineHeight="36px" letterSpacing="-o.5px">{code}</MjmlText>
             <MjmlSpacer height={20} />
-            <MjmlButton href={clipboardUrl} cssClass="btn" width="368px" height={56} innerPadding="19px 0 11px !important" verticalAlign="middle" fontSize={18} fontWeight={500} fontFamily="Tajawal, sans-serif" backgroundColor="#0E31B6" borderRadius="8px" color="white">COPY</MjmlButton>
+            <MjmlButton href={`${clipboardUrl}?code=${code}`} cssClass="btn" width="368px" height={56} innerPadding="19px 0 11px !important" verticalAlign="middle" fontSize={18} fontWeight={500} fontFamily="Tajawal, sans-serif" backgroundColor="#0E31B6" borderRadius="8px" color="white">COPY</MjmlButton>
           </MjmlColumn>
         </MjmlSection>
         <MjmlSpacer cssClass="spacer-3" height={208} />
