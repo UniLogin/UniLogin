@@ -73,6 +73,7 @@ class Relayer {
   protected gasPriceOracle: GasPriceOracle = {} as GasPriceOracle;
   protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
   protected emailService: EmailService = {} as EmailService;
+  protected emailConfirmationStore: EmailConfirmationsStore = {} as EmailConfirmationsStore;
 
   constructor(protected config: Config, provider?: providers.JsonRpcProvider) {
     this.port = config.port || defaultPort;
@@ -129,10 +130,10 @@ class Relayer {
     const devicesStore = new DevicesStore(this.database);
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const futureWalletStore = new FutureWalletStore(this.database);
-    const emailConfirmationStore = new EmailConfirmationsStore(this.database);
+    this.emailConfirmationStore = new EmailConfirmationsStore(this.database);
     this.emailService = new EmailService(this.config.copyToClipboardUrl, this.config.emailAddress, this.config.emailPassword, this.config.emailLogo);
     const emailConfirmationValidator = new EmailConfirmationValidator();
-    const emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStore, this.emailService, emailConfirmationValidator);
+    const emailConfirmationHandler = new EmailConfirmationHandler(this.emailConfirmationStore, this.emailService, emailConfirmationValidator);
     this.tokenPricesService = new TokenPricesService();
     const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
     const tokenDetailsService = new TokenDetailsService(this.provider);
@@ -149,7 +150,7 @@ class Relayer {
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
     const encryptedWalletsStore = new EncryptedWalletsStore(this.database);
-    const encryptedWalletHandler = new EncryptedWalletHandler(emailConfirmationStore, emailConfirmationValidator, encryptedWalletsStore);
+    const encryptedWalletHandler = new EncryptedWalletHandler(this.emailConfirmationStore, emailConfirmationValidator, encryptedWalletsStore);
 
     this.app.use(bodyParser.json());
     this.app.use('/email', EmailRouter(emailConfirmationHandler));

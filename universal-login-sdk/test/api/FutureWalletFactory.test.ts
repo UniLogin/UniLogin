@@ -1,14 +1,16 @@
 import chai, {expect} from 'chai';
 import chaiHttp from 'chai-http';
+import sinon from 'sinon';
 import {utils, Wallet, Contract} from 'ethers';
 import {MockProvider} from 'ethereum-waffle';
-import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO, StoredFutureWallet, BalanceChecker, ProviderService} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, ContractWhiteList, getDeployedBytecode, SupportedToken, ContractJSON, TEST_GAS_PRICE, TEST_APPLICATION_INFO, StoredFutureWallet, BalanceChecker, ProviderService, EmailConfirmation} from '@unilogin/commons';
 import {gnosisSafe} from '@unilogin/contracts';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {FutureWalletFactory} from '../../src/api/FutureWalletFactory';
 import {RelayerApi} from '../../src/integration/http/RelayerApi';
 import {ENSService} from '../../src/integration/ethereum/ENSService';
 import {SavingFutureWalletFailed} from '../../src/core/utils/errors';
+import {ConfirmedWallet} from '../../src/api/wallet/ConfirmedWallet';
 
 chai.use(chaiHttp);
 
@@ -27,6 +29,7 @@ describe('INT: FutureWalletFactory', () => {
   let relayerApi: RelayerApi;
   const relayerPort = '33511';
   const relayerUrl = `http://localhost:${relayerPort}`;
+  const contractCode = `0x${getDeployedBytecode(gnosisSafe.Proxy as ContractJSON)}`;
 
   before(async () => {
     provider = new MockProvider();
@@ -62,8 +65,26 @@ describe('INT: FutureWalletFactory', () => {
     const {waitToBeSuccess, deploymentHash} = await deploy();
     expect(deploymentHash).to.be.properHex(64);
     const deployedWallet = await waitToBeSuccess();
-    expect(await provider.getCode(contractAddress)).to.eq(`0x${getDeployedBytecode(gnosisSafe.Proxy as ContractJSON)}`);
+    expect(await provider.getCode(contractAddress)).to.eq(contractCode);
 
+    expect(deployedWallet.contractAddress).to.eq(contractAddress);
+    expect(deployedWallet.name).to.eq(ensName);
+  });
+
+  it('deploy with password', async () => {
+    const ensName = 'user.mylogin.eth';
+    const email = 'user@unlogin.test';
+    const code = '123456';
+    const emailConfirmation: EmailConfirmation = {email, ensName, code, isConfirmed: true, createdAt: new Date()};
+    (relayer as any).emailConfirmationStore.get = sinon.stub().onFirstCall().resolves(emailConfirmation);
+    const confirmedWallet = new ConfirmedWallet(email, ensName, code);
+    const password = 'password123!';
+    const {ensName: returnedEnsName, contractAddress, deploy} = await futureWalletFactory.createNewWithPassword(confirmedWallet, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address, password);
+    expect(returnedEnsName).eq(ensName);
+    await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
+    const {waitToBeSuccess} = await deploy();
+    const deployedWallet = await waitToBeSuccess();
+    expect(await provider.getCode(contractAddress)).to.eq(contractCode);
     expect(deployedWallet.contractAddress).to.eq(contractAddress);
     expect(deployedWallet.name).to.eq(ensName);
   });
