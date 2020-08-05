@@ -21,11 +21,10 @@ import {
 interface ConfirmationEmailProps {
   clipboardUrl: string;
   code: string;
+  logoUrl: string;
 }
 
-const UNILOGIN_PNG_LOGO_URL = 'https://universal-provider-backend.netlify.com/image/LogoTitle.png';
-
-export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) => {
+export const confirmationEmail = ({code, clipboardUrl, logoUrl}: ConfirmationEmailProps) => {
   return (
     <Mjml>
       <MjmlHead>
@@ -88,7 +87,7 @@ export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) 
         <MjmlSection>
           <MjmlColumn>
             <MjmlSpacer height={22} />
-            <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={UNILOGIN_PNG_LOGO_URL} />
+            <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={logoUrl} />
             <MjmlSpacer cssClass="spacer-1" height={40} />
             <MjmlText cssClass="title" font-size="52px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Email Confirmation</MjmlText>
             <MjmlSpacer height={4} />
@@ -109,7 +108,7 @@ export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) 
           <MjmlGroup>
             <MjmlColumn>
               <MjmlSpacer height={26} />
-              <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={UNILOGIN_PNG_LOGO_URL} />
+              <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={logoUrl} />
               <MjmlSpacer height={26} />
             </MjmlColumn>
             <MjmlColumn>
@@ -124,4 +123,4 @@ export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) 
   );
 };
 
-export const confirmationEmailHtml = ({code, clipboardUrl}: ConfirmationEmailProps) => render(confirmationEmail({code, clipboardUrl}), {validationLevel: 'soft'}).html;
+export const confirmationEmailHtml = ({code, clipboardUrl, logoUrl}: ConfirmationEmailProps) => render(confirmationEmail({code, clipboardUrl, logoUrl}), {validationLevel: 'soft'}).html;
