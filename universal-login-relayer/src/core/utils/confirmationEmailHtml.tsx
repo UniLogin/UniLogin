@@ -83,7 +83,6 @@ export const confirmationEmail = ({code, clipboardUrl, logoUrl, username}: Confi
         <MjmlSection>
           <MjmlColumn>
             <MjmlSpacer height={10} />
-            <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={logoUrl} />
             <MjmlText cssClass="title" font-size="42px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Hi {username} 🥳</MjmlText>
             <MjmlText cssClass="subtitle" font-size="20px" lineHeight="36px" color="#7D7C9C" font-family="Lato, sans-serif" fontWeight={400}>To make sure your UniLogin account is safe and secure, we ask you to <b>authenticate your email address</b> by copying the code below and pasting it in UniLogin.
             </MjmlText>
