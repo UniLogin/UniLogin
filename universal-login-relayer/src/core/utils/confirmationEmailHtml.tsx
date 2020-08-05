@@ -21,9 +21,10 @@ interface ConfirmationEmailProps {
   clipboardUrl: string;
   code: string;
   logoUrl: string;
+  userName: string;
 }
 
-export const confirmationEmail = ({code, clipboardUrl, logoUrl}: ConfirmationEmailProps) => {
+export const confirmationEmail = ({code, clipboardUrl, logoUrl, userName}: ConfirmationEmailProps) => {
   return (
     <Mjml>
       <MjmlHead>
@@ -87,7 +88,7 @@ export const confirmationEmail = ({code, clipboardUrl, logoUrl}: ConfirmationEma
             <MjmlSpacer height={22} />
             <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={logoUrl} />
             <MjmlSpacer cssClass="spacer-1" height={40} />
-            <MjmlText cssClass="title" font-size="52px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Hi {name} 🥳</MjmlText>
+            <MjmlText cssClass="title" font-size="52px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Hi {userName} 🥳</MjmlText>
             <MjmlSpacer height={4} />
             <MjmlText cssClass="subtitle" font-size="22px" lineHeight="36px" color="#7D7C9C" font-family="Lato, sans-serif" fontWeight={400}>To make sure your UniLogin account is safe and secure, we ask you to <b>authenticate your email address</b> by copying the code below and pasting it in UniLogin.
             </MjmlText>
@@ -121,4 +122,4 @@ export const confirmationEmail = ({code, clipboardUrl, logoUrl}: ConfirmationEma
   );
 };
 
-export const confirmationEmailHtml = ({code, clipboardUrl, logoUrl, name}: ConfirmationEmailProps) => render(confirmationEmail({code, clipboardUrl, logoUrl, name}), {validationLevel: 'soft'}).html;
+export const confirmationEmailHtml = ({code, clipboardUrl, logoUrl, userName}: ConfirmationEmailProps) => render(confirmationEmail({code, clipboardUrl, logoUrl, userName}), {validationLevel: 'soft'}).html;
