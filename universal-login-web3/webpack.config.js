@@ -55,6 +55,7 @@ module.exports = {
       {from: './src/ui/copyToClipboard.html', to: './copy/index.html'},
       {from: './src/ui/styles/copyToClipboard.css', to: './copy/src/ui/styles/copyToClipboard.css'},
       {from: './src/ui/assets/U.svg', to: './copy/src/ui/assets/U.svg'},
+      {from: './src/ui/assets/LogoTitle.png', to: './image/LogoTitle.png'},
     ]),
     new CleanWebpackPlugin(),
   ],

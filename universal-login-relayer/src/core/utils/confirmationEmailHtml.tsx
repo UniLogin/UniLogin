@@ -1,6 +1,5 @@
 import React from 'react';
 import {render} from 'mjml-react';
-import {UNILOGIN_LOGO_URI} from '../../dataURI/uniloginLogo';
 
 import {
   Mjml,
@@ -23,6 +22,8 @@ interface ConfirmationEmailProps {
   clipboardUrl: string;
   code: string;
 }
+
+const UNILOGIN_PNG_LOGO_URL = 'https://universal-provider-backend.netlify.com/image/LogoTitle.png';
 
 export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) => {
   return (
@@ -87,7 +88,7 @@ export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) 
         <MjmlSection>
           <MjmlColumn>
             <MjmlSpacer height={22} />
-            <MjmlImage width="128px" align="left" height="33px" src={UNILOGIN_LOGO_URI} />
+            <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={UNILOGIN_PNG_LOGO_URL} />
             <MjmlSpacer cssClass="spacer-1" height={40} />
             <MjmlText cssClass="title" font-size="52px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Email Confirmation</MjmlText>
             <MjmlSpacer height={4} />
@@ -108,7 +109,7 @@ export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) 
           <MjmlGroup>
             <MjmlColumn>
               <MjmlSpacer height={26} />
-              <MjmlImage width="128px" align="left" height="33px" src={UNILOGIN_LOGO_URI} />
+              <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={UNILOGIN_PNG_LOGO_URL} />
               <MjmlSpacer height={26} />
             </MjmlColumn>
             <MjmlColumn>
