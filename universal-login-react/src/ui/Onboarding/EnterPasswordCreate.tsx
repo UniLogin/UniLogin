@@ -17,7 +17,7 @@ interface EnterPasswordProps {
   onConfirm: (password: string) => void;
 }
 
-export const EnterPassword = ({hideModal, walletService, onConfirm}: EnterPasswordProps) => {
+export const EnterPasswordCreate = ({hideModal, walletService, onConfirm}: EnterPasswordProps) => {
   const [password, setPassword, passwordError] = useInputField(isProperPassword, 'Password must have more than 10 letters and one capital letter');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hint, setHint] = useState<string | undefined>(undefined);
