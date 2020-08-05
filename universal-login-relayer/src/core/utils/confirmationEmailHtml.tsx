@@ -4,7 +4,6 @@ import {render} from 'mjml-react';
 import {
   Mjml,
   MjmlHead,
-  MjmlTitle,
   MjmlBody,
   MjmlSection,
   MjmlColumn,
@@ -22,13 +21,13 @@ interface ConfirmationEmailProps {
   clipboardUrl: string;
   code: string;
   logoUrl: string;
+  username: string;
 }
 
-export const confirmationEmail = ({code, clipboardUrl, logoUrl}: ConfirmationEmailProps) => {
+export const confirmationEmail = ({code, clipboardUrl, logoUrl, username}: ConfirmationEmailProps) => {
   return (
     <Mjml>
       <MjmlHead>
-        <MjmlTitle>Email Confirmation</MjmlTitle>
         <MjmlFont name="Tajawal" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;900&display=swap" />
         <MjmlFont name="Lato" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Tajawal:wght@500;900&display=swap" />
         <MjmlAttributes>
@@ -89,7 +88,7 @@ export const confirmationEmail = ({code, clipboardUrl, logoUrl}: ConfirmationEma
             <MjmlSpacer height={22} />
             <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={logoUrl} />
             <MjmlSpacer cssClass="spacer-1" height={40} />
-            <MjmlText cssClass="title" font-size="52px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Email Confirmation</MjmlText>
+            <MjmlText cssClass="title" font-size="52px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Hi {username} 🥳</MjmlText>
             <MjmlSpacer height={4} />
             <MjmlText cssClass="subtitle" font-size="22px" lineHeight="36px" color="#7D7C9C" font-family="Lato, sans-serif" fontWeight={400}>To make sure your UniLogin account is safe and secure, we ask you to <b>authenticate your email address</b> by copying the code below and pasting it in UniLogin.
             </MjmlText>
@@ -123,4 +122,4 @@ export const confirmationEmail = ({code, clipboardUrl, logoUrl}: ConfirmationEma
   );
 };
 
-export const confirmationEmailHtml = ({code, clipboardUrl, logoUrl}: ConfirmationEmailProps) => render(confirmationEmail({code, clipboardUrl, logoUrl}), {validationLevel: 'soft'}).html;
+export const confirmationEmailHtml = ({code, clipboardUrl, logoUrl, username}: ConfirmationEmailProps) => render(confirmationEmail({code, clipboardUrl, logoUrl, username}), {validationLevel: 'soft'}).html;
