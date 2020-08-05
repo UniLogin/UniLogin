@@ -25,7 +25,7 @@ const CreateFutureWallet = ({walletService, hideModal}: CreateFutureWalletProps)
     ? <ChooseTopUpToken
       supportedTokens={['ETH', 'DAI']}
       onClick={async (tokenAddress: string) => {
-        await walletService.createWallet(walletService.getConfirmedWallet().ensName, tokenAddress);
+        await walletService.createFutureWallet(walletService.getConfirmedWallet().ensName, tokenAddress);
       }}
       hideModal={hideModal}
       walletService={walletService}
@@ -46,7 +46,7 @@ export function OnboardingSteps({walletService, onCreate, ensName}: OnboardingSt
       return <ChooseTopUpToken
         supportedTokens={['ETH', 'DAI']}
         onClick={async (tokenAddress: string) => {
-          await walletService.createWallet(ensName, tokenAddress);
+          await walletService.createFutureWallet(ensName, tokenAddress);
         }}
         hideModal={() => history.push('/selector')}
         walletService={walletService}

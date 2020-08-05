@@ -80,7 +80,7 @@ describe('INT: WalletService', () => {
       const refundPaidSdk = new UniLoginSdk(relayer.url(), provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
       walletService = new WalletService(refundPaidSdk);
       await refundPaidSdk.fetchRelayerConfig();
-      await walletService.createWallet('meme.mylogin.eth');
+      await walletService.createDeployingWallet('meme.mylogin.eth');
       await walletService.waitForTransactionHash();
       expect(walletService.state.kind).to.eq('Deploying');
       await walletService.waitToBeSuccess();

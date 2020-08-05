@@ -15,7 +15,7 @@ export const CreateAccount = () => {
 
   const onEnsNameChosen = async (ensName: string) => {
     if (walletService.sdk.isRefundPaid()) {
-      await walletService.createWallet(ensName);
+      await walletService.createDeployingWallet(ensName);
       history.push('/create/topUp');
     } else {
       setEnsName(ensName);
@@ -23,7 +23,7 @@ export const CreateAccount = () => {
   };
 
   const onTokenChosen = async (token: string) => {
-    await walletService.createWallet(ensName, token);
+    await walletService.createFutureWallet(ensName, token);
     history.push('/create/topUp');
   };
 
