@@ -2,7 +2,7 @@ import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions,
 import UniLoginSdk from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
-import {InvalidWalletState, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
+import {ApiKeyMissing, InvalidWalletState, InvalidPassphrase, WalletOverridden, TransactionHashNotFound} from '../utils/errors';
 import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';
 import {map, State, Property} from 'reactive-properties';
@@ -97,6 +97,7 @@ export class WalletService {
   }
 
   async createDeployingWallet(name: string): Promise<DeployingWallet> {
+    ensure(this.sdk.isRefundPaid(), ApiKeyMissing);
     const futureWallet = await this.sdk.createFutureWallet(name, '0', ETHER_NATIVE_TOKEN.address);
     const deployingWallet = await futureWallet.deploy();
     this.setDeploying(deployingWallet);
@@ -109,13 +110,6 @@ export class WalletService {
     const futureWallet = await this.sdk.createFutureWallet(name, gasOption.gasPrice.toString(), gasToken);
     this.setFutureWallet(futureWallet, name);
     return futureWallet;
-  }
-
-  async createWallet(name: string, gasToken?: string): Promise<FutureWallet | DeployingWallet> {
-    if (this.sdk.isRefundPaid()) {
-      return this.createDeployingWallet(name);
-    }
-    return this.createFutureWallet(name, gasToken);
   }
 
   async initDeploy() {
