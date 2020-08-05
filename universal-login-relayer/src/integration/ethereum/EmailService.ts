@@ -30,7 +30,7 @@ export class EmailService {
       from: `UniLogin <${this.emailAddress}>`,
       to: email,
       subject: '🎉 Verify your e-mail',
-      html: confirmationEmailHtml({code: code, clipboardUrl: this.copyToClipboardUrl, logoUrl: this.emailLogo, userName: getNameFromEmail(email)}),
+      html: confirmationEmailHtml({code: code, clipboardUrl: this.copyToClipboardUrl, logoUrl: this.emailLogo, username: getNameFromEmail(email)}),
       replyTo: 'noreply@unilogin.eth',
     };
     return this.sendMail(mailOptions);
