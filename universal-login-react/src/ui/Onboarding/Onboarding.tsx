@@ -46,7 +46,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
                   sdk={props.walletService.sdk}
                   onCreateClick={async (ensName) => {
                     if (props.walletService.sdk.isRefundPaid()) {
-                      await props.walletService.createWallet(ensName);
+                      await props.walletService.createDeployingWallet(ensName);
                     }
                     history.push('/create', {ensName});
                   }}

@@ -1,4 +1,5 @@
 type ErrorType =
+  'ApiKeyMissing' |
   'InsufficientGas' |
   'WalletNotFound' |
   'ConcurrentAuthorisation' |
@@ -12,7 +13,7 @@ type ErrorType =
   'MissingMessageHash' |
   'MissingParameter' |
   'InvalidPassphrase' |
-  'InvalidWalletState'|
+  'InvalidWalletState' |
   'TimeoutError' |
   'InvalidEvent' |
   'Overridden' |
@@ -161,6 +162,13 @@ export class MissingParameter extends NotFound {
   constructor(parameterName: string) {
     super(`Missing parameter: ${parameterName}`, 'MissingParameter');
     Object.setPrototypeOf(this, MissingParameter.prototype);
+  }
+}
+
+export class ApiKeyMissing extends NotFound {
+  constructor() {
+    super('Api key is missing in SDK configuration', 'ApiKeyMissing');
+    Object.setPrototypeOf(this, ApiKeyMissing.prototype);
   }
 }
 
