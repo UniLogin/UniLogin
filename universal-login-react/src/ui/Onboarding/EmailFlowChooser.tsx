@@ -9,9 +9,10 @@ import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 export interface EmailFlowChooserProps {
   onCreateClick: (email: string, ensName: string) => void;
   onConnectClick: (emailOrEnsName: string) => void;
+  domain?: string;
 }
 
-export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChooserProps) => {
+export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain = 'unilogin.io'}: EmailFlowChooserProps) => {
   const [email, setEmail, emailError] = useInputField(isProperEmail, 'Email is not valid');
   const [ensName, setEnsName, ensError] = useInputField(isValidEnsName, 'Ens name is not valid');
   const isValidEmailOrEnsName = (value: string) => isValidEnsName(value) || isProperEmail(value);
@@ -41,6 +42,7 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick}: EmailFlowChoos
           {flow === 'create' && <CreationContent
             email={email} setEmail={setEmail} emailError={emailError}
             ensName={ensName} setEnsName={setEnsName} ensError={ensError}
+            domain={domain}
           />}
           {flow === 'connect' && <InputField
             id='email-or-ens-name-input'
@@ -63,11 +65,12 @@ interface CreationContentProps {
   ensName: string;
   setEnsName: (ensName: string) => void;
   ensError?: string;
+  domain: string;
 }
 
-const CreationContent = ({email, setEmail, emailError, ensName, setEnsName, ensError}: CreationContentProps) =>
-  <div className={`${classForComponent('creation-content')}`}>
-    <div className={`${classForComponent('creation-item')}`}>
+const CreationContent = ({email, setEmail, emailError, ensName, setEnsName, ensError, domain}: CreationContentProps) =>
+  <div className={classForComponent('creation-content')}>
+    <div className={`${classForComponent('creation-item')} ${classForComponent('ens-name-input')}`}>
       <InputField
         id='ens-name-input'
         label='Type a username you want'
@@ -75,6 +78,9 @@ const CreationContent = ({email, setEmail, emailError, ensName, setEnsName, ensE
         value={ensName}
         error={ensError}
       />
+      <div className={classForComponent('input-indicator-wrapper')}>
+        <span className={classForComponent('input-ensname-indicator')}>{domain}</span>
+      </div>
     </div>
     <div className={`${classForComponent('creation-item')}`}>
       <InputField
