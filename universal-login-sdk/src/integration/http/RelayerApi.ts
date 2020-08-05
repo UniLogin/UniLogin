@@ -1,4 +1,4 @@
-import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus, Device, StoredFutureWalletRequest, fetch, COMMON_HEADERS, SerializableRequestedWallet} from '@unilogin/commons';
+import {http, HttpFunction, PublicRelayerConfig, RelayerRequest, ApplicationInfo, MessageStatus, DeploymentStatus, Device, StoredFutureWalletRequest, fetch, COMMON_HEADERS, SerializableRequestedWallet, StoredEncryptedWallet} from '@unilogin/commons';
 
 export class RelayerApi {
   private readonly http: HttpFunction;
@@ -82,13 +82,17 @@ export class RelayerApi {
     return this.http('POST', '/email/request', serializableRequestedWallet)
       .catch((e: any) => {
         throw new Error(e.error);
-      }); ;
+      });
   }
 
   confirmCode(code: string, email: string) {
     return this.http('POST', '/email/confirmation', {code, email})
       .catch((e: any) => {
         throw new Error(e.error);
-      }); ;
+      });
+  }
+
+  storeEncryptedWallet(storedEncryptedWallet: StoredEncryptedWallet, code: string) {
+    return this.http('POST', '/wallet/encrypted', storedEncryptedWallet, {...COMMON_HEADERS, code});
   }
 }
