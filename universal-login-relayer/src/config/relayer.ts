@@ -7,6 +7,7 @@ export interface Config {
   emailAddress: string;
   emailPassword: string;
   copyToClipboardUrl: string;
+  emailLogo: string;
   privateKey: string;
   ensAddress: string;
   network: string;

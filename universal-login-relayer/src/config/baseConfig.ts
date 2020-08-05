@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import {ETHER_NATIVE_TOKEN, getEnv} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, getEnv, UNILOGIN_LOGO_WITH_NAME_URL} from '@unilogin/commons';
 dotenv.config();
 
 export const baseConfig = {
@@ -32,4 +32,5 @@ export const baseConfig = {
   emailAddress: getEnv('EMAIL_ADDRESS', ''),
   emailPassword: getEnv('EMAIL_PASSWORD', ''),
   copyToClipboardUrl: 'https://universal-provider-backend.netlify.app/copy',
+  emailLogo: UNILOGIN_LOGO_WITH_NAME_URL,
 };

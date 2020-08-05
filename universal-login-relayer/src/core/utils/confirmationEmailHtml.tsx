@@ -1,6 +1,5 @@
 import React from 'react';
 import {render} from 'mjml-react';
-import {UNILOGIN_LOGO_URI} from '../../dataURI/uniloginLogo';
 
 import {
   Mjml,
@@ -22,9 +21,10 @@ import {
 interface ConfirmationEmailProps {
   clipboardUrl: string;
   code: string;
+  logoUrl: string;
 }
 
-export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) => {
+export const confirmationEmail = ({code, clipboardUrl, logoUrl}: ConfirmationEmailProps) => {
   return (
     <Mjml>
       <MjmlHead>
@@ -87,7 +87,7 @@ export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) 
         <MjmlSection>
           <MjmlColumn>
             <MjmlSpacer height={22} />
-            <MjmlImage width="128px" align="left" height="33px" src={UNILOGIN_LOGO_URI} />
+            <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={logoUrl} />
             <MjmlSpacer cssClass="spacer-1" height={40} />
             <MjmlText cssClass="title" font-size="52px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Email Confirmation</MjmlText>
             <MjmlSpacer height={4} />
@@ -100,7 +100,7 @@ export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) 
           <MjmlColumn cssClass="card" backgroundColor="white" borderRadius={16} width="402px" padding="60px 0">
             <MjmlText cssClass="login" font-size="32px" fontWeight={900} line-heigh="72px" align="center" color="#0F0C4A" font-family="Tajawal, sans-serif" lineHeight="36px" letterSpacing="-o.5px">{code}</MjmlText>
             <MjmlSpacer height={20} />
-            <MjmlButton href={clipboardUrl} cssClass="btn" width="368px" height={56} innerPadding="19px 0 11px !important" verticalAlign="middle" fontSize={18} fontWeight={500} fontFamily="Tajawal, sans-serif" backgroundColor="#0E31B6" borderRadius="8px" color="white">COPY</MjmlButton>
+            <MjmlButton href={`${clipboardUrl}?code=${code}`} cssClass="btn" width="368px" height={56} innerPadding="19px 0 11px !important" verticalAlign="middle" fontSize={18} fontWeight={500} fontFamily="Tajawal, sans-serif" backgroundColor="#0E31B6" borderRadius="8px" color="white">COPY</MjmlButton>
           </MjmlColumn>
         </MjmlSection>
         <MjmlSpacer cssClass="spacer-3" height={208} />
@@ -108,7 +108,7 @@ export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) 
           <MjmlGroup>
             <MjmlColumn>
               <MjmlSpacer height={26} />
-              <MjmlImage width="128px" align="left" height="33px" src={UNILOGIN_LOGO_URI} />
+              <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={logoUrl} />
               <MjmlSpacer height={26} />
             </MjmlColumn>
             <MjmlColumn>
@@ -123,4 +123,4 @@ export const confirmationEmail = ({code, clipboardUrl}: ConfirmationEmailProps) 
   );
 };
 
-export const confirmationEmailHtml = ({code, clipboardUrl}: ConfirmationEmailProps) => render(confirmationEmail({code, clipboardUrl}), {validationLevel: 'soft'}).html;
+export const confirmationEmailHtml = ({code, clipboardUrl, logoUrl}: ConfirmationEmailProps) => render(confirmationEmail({code, clipboardUrl, logoUrl}), {validationLevel: 'soft'}).html;
