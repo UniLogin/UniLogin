@@ -79,10 +79,16 @@ export class RelayerApi {
   }
 
   requestEmailConfirmation(serializableRequestedWallet: SerializableRequestedWallet) {
-    return this.http('POST', '/email/request', serializableRequestedWallet);
+    return this.http('POST', '/email/request', serializableRequestedWallet)
+      .catch((e: any) => {
+        throw new Error(e.error);
+      }); ;
   }
 
   confirmCode(code: string, email: string) {
-    return this.http('POST', '/email/confirmation', {code, email});
+    return this.http('POST', '/email/confirmation', {code, email})
+      .catch((e: any) => {
+        throw new Error(e.error);
+      }); ;
   }
 }

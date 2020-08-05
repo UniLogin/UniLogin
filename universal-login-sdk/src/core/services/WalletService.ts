@@ -12,6 +12,8 @@ import {WalletSerializer} from './WalletSerializer';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 import {NoopStorageService} from './NoopStorageService';
 import {WalletStorageService} from './WalletStorageService';
+import {RequestedWallet} from '../../api/wallet/RequestedWallet';
+import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
@@ -63,8 +65,35 @@ export class WalletService {
   }
 
   getConnectingWallet(): ConnectingWallet {
-    ensure(this.state.kind === 'Connecting', Error, 'Invalid state: expected connecting wallet');
+    ensure(this.state.kind === 'Connecting', InvalidWalletState, 'Connecting', this.state.kind);
     return this.state.wallet;
+  }
+
+  getConfirmedWallet(): ConfirmedWallet {
+    ensure(this.state.kind === 'Confirmed', InvalidWalletState, 'Confirmed', this.state.kind);
+    return this.state.wallet;
+  }
+
+  async confirmCode(code: string) {
+    ensure(this.state.kind === 'Requested', InvalidWalletState, 'Requested', this.state.kind);
+    const {email} = await this.state.wallet.confirmEmail(code);
+    if (email === this.state.wallet.email) {
+      const confirmedWallet = new ConfirmedWallet(this.state.wallet.email, this.state.wallet.ensName, code);
+      this.setConfirmed(confirmedWallet);
+      return confirmedWallet;
+    }
+    return false;
+  }
+
+  getRequestedWallet() {
+    ensure(this.state.kind === 'Requested', InvalidWalletState, 'Requested', this.state.kind);
+    return this.state.wallet;
+  }
+
+  async createRequestedWallet(email: string, ensName: string) {
+    const requestedWallet = new RequestedWallet(this.sdk, email, ensName);
+    this.setRequested(requestedWallet);
+    return this.getRequestedWallet().requestEmailConfirmation();
   }
 
   async createDeployingWallet(name: string): Promise<DeployingWallet> {
@@ -124,8 +153,18 @@ export class WalletService {
     return this.waitToBeSuccess();
   }
 
-  setFutureWallet(wallet: FutureWallet, name: string) {
+  setRequested(wallet: RequestedWallet) {
     ensure(this.state.kind === 'None', WalletOverridden);
+    this.setState({kind: 'Requested', wallet});
+  }
+
+  setConfirmed(wallet: ConfirmedWallet) {
+    ensure(this.state.kind === 'Requested', WalletOverridden);
+    this.setState({kind: 'Confirmed', wallet});
+  }
+
+  setFutureWallet(wallet: FutureWallet, name: string) {
+    ensure(this.state.kind === 'None' || this.state.kind === 'Confirmed', WalletOverridden);
     this.setState({kind: 'Future', name, wallet});
   }
 

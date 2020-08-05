@@ -69,6 +69,18 @@
   border-bottom-left-radius: 8px
   border-bottom-right-radius: 8px
 
+  @media only screen and (max-height: 700px) and (orientation: landscape)
+    min-height: calc(100vh - 104px)
+
+  @media only screen and (max-height: 700px) and (max-width: 770px)
+    min-height: calc(100vh - 73px)
+
+  @media only screen and (max-height: 700px) and (max-width: 600px)
+    min-height: unset
+
+  @media only screen and (max-width: 770px)
+    height: calc(100% - 89px)
+
   @media only screen and (max-width: 600px)
     border-bottom-left-radius: unset
     border-bottom-right-radius: unset

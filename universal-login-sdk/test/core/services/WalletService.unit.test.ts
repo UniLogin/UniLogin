@@ -8,6 +8,8 @@ import {DeployedWallet} from '../../../src/api/wallet/DeployedWallet';
 import {FutureWallet} from '../../../src/api/wallet/FutureWallet';
 import {DeployingWallet} from '../../../src';
 import {TEST_STORAGE_KEY} from '../../helpers/constants';
+import {RequestedWallet} from '../../../src/api/wallet/RequestedWallet';
+import {ConfirmedWallet} from '../../../src/api/wallet/ConfirmedWallet';
 
 chai.use(chaiAsPromised);
 
@@ -166,6 +168,18 @@ describe('UNIT: WalletService', () => {
   it('should throw if wallet is overridden', () => {
     walletService.setWallet(applicationWallet);
     expect(() => walletService.setFutureWallet(futureWallet, 'name.mylogin.eth')).to.throw('Wallet cannot be overridden');
+  });
+
+  it('e-mail flow roundtrip', () => {
+    expect(walletService.state).to.deep.eq({kind: 'None'});
+    walletService.setRequested(new RequestedWallet(sdk, 'name@gmail.com', 'name.myklogin.eth'));
+    expect(walletService.state.kind).to.eq('Requested');
+    const confirmedWallet = new ConfirmedWallet('name@gmail.com', 'name.myklogin.eth', '111111');
+    walletService.setConfirmed(confirmedWallet);
+    expect(walletService.state.kind).to.eq('Confirmed');
+    expect(walletService.getConfirmedWallet()).to.deep.eq(confirmedWallet);
+    walletService.setFutureWallet(futureWallet, 'justyna.mylogin.eth');
+    expect(walletService.state.kind).to.eq('Future');
   });
 
   it('should load from storage', async () => {

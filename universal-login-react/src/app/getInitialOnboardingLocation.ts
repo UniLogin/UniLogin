@@ -11,12 +11,28 @@ export const getInitialOnboardingLocation = (state: WalletState): string | Locat
         pathname: '/connectFlow/emoji',
         state: {name: state.wallet.name},
       };
+    case 'Future':
+    case 'Deploying':
+      return '/create';
     case 'Requested':
+    case 'Confirmed':
+    case 'Deployed':
+      throw new UnexpectedWalletState(state.kind);
+  }
+};
+
+export const getInitialEmailOnboardingLocation = (state: WalletState): string | LocationDescriptorObject => {
+  switch (state.kind) {
+    case 'None':
+      return '/email';
+    case 'Requested':
+      return '/code';
     case 'Confirmed':
     case 'Future':
     case 'Deploying':
       return '/create';
     case 'Deployed':
-      throw new UnexpectedWalletState('Deployed');
+    case 'Connecting':
+      throw new UnexpectedWalletState(state.kind);
   }
 };

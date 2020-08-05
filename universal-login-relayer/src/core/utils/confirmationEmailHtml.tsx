@@ -1,7 +1,5 @@
 import React from 'react';
 import {render} from 'mjml-react';
-import {BG_DATA_URI} from '../../dataURI/emailBackground';
-import {UNILOGIN_LOGO_URI} from '../../dataURI/uniloginLogo';
 
 import {
   Mjml,
@@ -15,19 +13,18 @@ import {
   MjmlStyle,
   MjmlText,
   MjmlFont,
-  MjmlHero,
   MjmlSpacer,
   MjmlAttributes,
   MjmlGroup,
-  MjmlWrapper
 } from 'mjml-react';
 
 interface ConfirmationEmailProps {
   clipboardUrl: string;
   code: string;
+  logoUrl: string;
 }
 
-export const confirmationEmail = ({code , clipboardUrl}: ConfirmationEmailProps) => {
+export const confirmationEmail = ({code, clipboardUrl, logoUrl}: ConfirmationEmailProps) => {
   return (
     <Mjml>
       <MjmlHead>
@@ -35,7 +32,7 @@ export const confirmationEmail = ({code , clipboardUrl}: ConfirmationEmailProps)
         <MjmlFont name="Tajawal" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;900&display=swap" />
         <MjmlFont name="Lato" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Tajawal:wght@500;900&display=swap" />
         <MjmlAttributes>
-          <MjmlSection children="" padding="0"/>
+          <MjmlSection children="" padding="0" />
         </MjmlAttributes>
         <MjmlStyle>
           {`
@@ -87,45 +84,43 @@ export const confirmationEmail = ({code , clipboardUrl}: ConfirmationEmailProps)
         </MjmlStyle>
       </MjmlHead>
       <MjmlBody width={600}>
-        <MjmlHero backgroundUrl={BG_DATA_URI}>
-          <MjmlSection>
+        <MjmlSection>
+          <MjmlColumn>
+            <MjmlSpacer height={22} />
+            <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={logoUrl} />
+            <MjmlSpacer cssClass="spacer-1" height={40} />
+            <MjmlText cssClass="title" font-size="52px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Email Confirmation</MjmlText>
+            <MjmlSpacer height={4} />
+            <MjmlText cssClass="subtitle" font-size="22px" lineHeight="36px" color="#7D7C9C" font-family="Lato, sans-serif" fontWeight={400}>To make sure your UniLogin account is safe and secure, we ask you to <b>authenticate your email address</b> by copying the code below and pasting it in UniLogin.
+            </MjmlText>
+          </MjmlColumn>
+        </MjmlSection>
+        <MjmlSpacer cssClass="spacer-2" height={110} />
+        <MjmlSection>
+          <MjmlColumn cssClass="card" backgroundColor="white" borderRadius={16} width="402px" padding="60px 0">
+            <MjmlText cssClass="login" font-size="32px" fontWeight={900} line-heigh="72px" align="center" color="#0F0C4A" font-family="Tajawal, sans-serif" lineHeight="36px" letterSpacing="-o.5px">{code}</MjmlText>
+            <MjmlSpacer height={20} />
+            <MjmlButton href={`${clipboardUrl}?code=${code}`} cssClass="btn" width="368px" height={56} innerPadding="19px 0 11px !important" verticalAlign="middle" fontSize={18} fontWeight={500} fontFamily="Tajawal, sans-serif" backgroundColor="#0E31B6" borderRadius="8px" color="white">COPY</MjmlButton>
+          </MjmlColumn>
+        </MjmlSection>
+        <MjmlSpacer cssClass="spacer-3" height={208} />
+        <MjmlSection backgroundColor="white">
+          <MjmlGroup>
             <MjmlColumn>
-              <MjmlSpacer height={22}/>
-              <MjmlImage width="128px" align="left" height="33px" src={UNILOGIN_LOGO_URI} />
-              <MjmlSpacer cssClass="spacer-1" height={40}/>
-              <MjmlText cssClass="title" font-size="52px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Email Confirmation</MjmlText>
-              <MjmlSpacer height={4}/>
-              <MjmlText cssClass="subtitle" font-size="22px" lineHeight="36px" color="#7D7C9C" font-family="Lato, sans-serif" fontWeight={400}>To make sure your UniLogin account is safe and secure, we ask you to <b>authenticate your email address</b> by copying the code below and pasting it in UniLogin.
-              </MjmlText>
+              <MjmlSpacer height={26} />
+              <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={logoUrl} />
+              <MjmlSpacer height={26} />
             </MjmlColumn>
-          </MjmlSection>
-          <MjmlSpacer cssClass="spacer-2" height={110} />
-          <MjmlSection>
-            <MjmlColumn cssClass="card" backgroundColor="white" borderRadius={16} width="402px" padding="60px 0">
-              <MjmlText cssClass="login" font-size="32px" fontWeight={900} line-heigh="72px" align="center" color="#0F0C4A" font-family="Tajawal, sans-serif" lineHeight="36px" letterSpacing="-o.5px">{code}</MjmlText>
-              <MjmlSpacer height={20}/>
-              <MjmlButton href={clipboardUrl} cssClass="btn" width="368px" height={56} innerPadding="19px 0 11px !important" verticalAlign="middle" fontSize={18} fontWeight={500} fontFamily="Tajawal, sans-serif" backgroundColor="#0E31B6" borderRadius="8px" color="white">COPY</MjmlButton>
+            <MjmlColumn>
+              <MjmlSpacer height={26} />
+              <MjmlText cssClass="copyright" font-size="16px" align="right" color="#7D7C9C" font-family="Tajawal, sans-serif" lineHeight="36px" fontWeight={500} letterSpacing="-o.5px">© 2019 UniLogin</MjmlText>
+              <MjmlSpacer height={26} />
             </MjmlColumn>
-          </MjmlSection>
-          <MjmlSpacer cssClass="spacer-3" height={208}/>
-          <MjmlSection backgroundColor="white">
-            <MjmlGroup>
-              <MjmlColumn>
-                <MjmlSpacer height={26}/>
-                <MjmlImage width="128px" align="left" height="33px" src={UNILOGIN_LOGO_URI} />
-                <MjmlSpacer height={26}/>
-              </MjmlColumn>
-              <MjmlColumn>
-                <MjmlSpacer height={26}/>
-                <MjmlText cssClass="copyright" font-size="16px" align="right" color="#7D7C9C" font-family="Tajawal, sans-serif" lineHeight="36px" fontWeight={500} letterSpacing="-o.5px">© 2019 UniLogin</MjmlText>
-                <MjmlSpacer height={26}/>
-              </MjmlColumn>
-            </MjmlGroup>
-          </MjmlSection>
-        </MjmlHero>
+          </MjmlGroup>
+        </MjmlSection>
       </MjmlBody>
     </Mjml>
   );
 };
 
-export const confirmationEmailHtml = ({code, clipboardUrl}: ConfirmationEmailProps) => render(confirmationEmail({code, clipboardUrl}), {validationLevel: 'soft'}).html;
+export const confirmationEmailHtml = ({code, clipboardUrl, logoUrl}: ConfirmationEmailProps) => render(confirmationEmail({code, clipboardUrl, logoUrl}), {validationLevel: 'soft'}).html;

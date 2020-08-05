@@ -258,7 +258,10 @@ export const App = () => {
               <Route
                 exact
                 path="/enterPassword"
-                render={({history}) => <EnterPassword hideModal={() => history.push('/')} walletService={walletService}/>}
+                render={({history}) => <EnterPassword
+                  hideModal={() => history.push('/')}
+                  walletService={walletService}
+                  onConfirm={(password) => console.log({password})}/>}
               />
               <Route
                 exact
@@ -267,6 +270,7 @@ export const App = () => {
                   <ConfirmCodeScreen
                     hideModal={() => history.push('/')}
                     walletService={walletService}
+                    onConfirmCode={() => {}}
                   />}
               />
               <Route component={() => (<p>not found</p>)} />
