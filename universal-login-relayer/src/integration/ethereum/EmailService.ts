@@ -3,6 +3,7 @@ import {MailOptions} from 'nodemailer/lib/json-transport';
 import Mail from 'nodemailer/lib/mailer';
 import {CannotSendEmail} from '../../core/utils/errors';
 import {confirmationEmailHtml} from '../../core/utils/confirmationEmailHtml';
+import {getNameFromEmail} from '../../core/utils/getNameFromEmail';
 
 export class EmailService {
   private transporter: Mail;
@@ -28,12 +29,9 @@ export class EmailService {
     const mailOptions = {
       from: `UniLogin <${this.emailAddress}>`,
       to: email,
-      subject: 'Email Confirmation',
-      text: `To make sure your UniLogin account is safe and secure,
-      we ask you to authenticate your email address by copying the code below and pasting it in UniLogin.
-      Here is your confrimation code: ${code}`,
-      html: confirmationEmailHtml({code: code, clipboardUrl: this.copyToClipboardUrl, logoUrl: this.emailLogo}),
-      replyTo: `noreply.${this.emailAddress}`,
+      subject: '🎉 Verify your e-mail',
+      html: confirmationEmailHtml({code: code, clipboardUrl: this.copyToClipboardUrl, logoUrl: this.emailLogo, username: getNameFromEmail(email)}),
+      replyTo: 'noreply@unilogin.eth',
     };
     return this.sendMail(mailOptions);
   }
