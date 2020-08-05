@@ -61,7 +61,7 @@ export const confirmationEmail = ({code, clipboardUrl, logoUrl, username}: Confi
                 line-height: 50px !important;
               }
               .copyright div {
-                font-size: 15px !important;
+                font-size: 14px !important;
               }
               .subtitle div {
                 font-size: 18px !important;
@@ -70,13 +70,10 @@ export const confirmationEmail = ({code, clipboardUrl, logoUrl, username}: Confi
                 font-size: 25px !important;
               }
               .spacer-1 div {
-                height: 15px !important;
+                height: 20px !important;
               }
               .spacer-2 div {
-                height: 60px !important;
-              }
-              .spacer-3 div {
-                height: 90px !important;
+                height: 20px !important;
               }
             }
           `}
@@ -85,35 +82,30 @@ export const confirmationEmail = ({code, clipboardUrl, logoUrl, username}: Confi
       <MjmlBody width={600}>
         <MjmlSection>
           <MjmlColumn>
-            <MjmlSpacer height={22} />
+            <MjmlSpacer height={10} />
             <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={logoUrl} />
-            <MjmlSpacer cssClass="spacer-1" height={40} />
-            <MjmlText cssClass="title" font-size="52px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Hi {username} 🥳</MjmlText>
-            <MjmlSpacer height={4} />
-            <MjmlText cssClass="subtitle" font-size="22px" lineHeight="36px" color="#7D7C9C" font-family="Lato, sans-serif" fontWeight={400}>To make sure your UniLogin account is safe and secure, we ask you to <b>authenticate your email address</b> by copying the code below and pasting it in UniLogin.
+            <MjmlText cssClass="title" font-size="42px" lineHeight="72px" color="#0F0C4A" text-align="left" font-family="Tajawal, sans-serif">Hi {username} 🥳</MjmlText>
+            <MjmlText cssClass="subtitle" font-size="20px" lineHeight="36px" color="#7D7C9C" font-family="Lato, sans-serif" fontWeight={400}>To make sure your UniLogin account is safe and secure, we ask you to <b>authenticate your email address</b> by copying the code below and pasting it in UniLogin.
             </MjmlText>
           </MjmlColumn>
         </MjmlSection>
-        <MjmlSpacer cssClass="spacer-2" height={110} />
+        <MjmlSpacer cssClass="spacer-1" height={10} />
         <MjmlSection>
-          <MjmlColumn cssClass="card" backgroundColor="white" borderRadius={16} width="402px" padding="60px 0">
+          <MjmlColumn cssClass="card" backgroundColor="white" borderRadius={16} width="402px" padding="20px 0">
             <MjmlText cssClass="login" font-size="32px" fontWeight={900} line-heigh="72px" align="center" color="#0F0C4A" font-family="Tajawal, sans-serif" lineHeight="36px" letterSpacing="-o.5px">{code}</MjmlText>
-            <MjmlSpacer height={20} />
+            <MjmlSpacer height={5} />
             <MjmlButton href={`${clipboardUrl}?code=${code}`} cssClass="btn" width="368px" height={56} innerPadding="19px 0 11px !important" verticalAlign="middle" fontSize={18} fontWeight={500} fontFamily="Tajawal, sans-serif" backgroundColor="#0E31B6" borderRadius="8px" color="white">COPY</MjmlButton>
           </MjmlColumn>
         </MjmlSection>
-        <MjmlSpacer cssClass="spacer-3" height={208} />
+        <MjmlSpacer cssClass="spacer-2" height={10} />
         <MjmlSection backgroundColor="white">
           <MjmlGroup>
             <MjmlColumn>
-              <MjmlSpacer height={26} />
               <MjmlImage width="128px" align="left" height="33px" alt="UniLogin" title="UniLogin" src={logoUrl} />
-              <MjmlSpacer height={26} />
+              <MjmlSpacer height={10} />
             </MjmlColumn>
             <MjmlColumn>
-              <MjmlSpacer height={26} />
               <MjmlText cssClass="copyright" font-size="16px" align="right" color="#7D7C9C" font-family="Tajawal, sans-serif" lineHeight="36px" fontWeight={500} letterSpacing="-o.5px">© 2019 UniLogin</MjmlText>
-              <MjmlSpacer height={26} />
             </MjmlColumn>
           </MjmlGroup>
         </MjmlSection>
