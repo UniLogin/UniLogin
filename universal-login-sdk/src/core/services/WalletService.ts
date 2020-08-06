@@ -105,10 +105,20 @@ export class WalletService {
   }
 
   async createFutureWallet(name: string, gasToken = ETHER_NATIVE_TOKEN.address): Promise<FutureWallet> {
+    ensure(this.state.kind === 'None', InvalidWalletState, 'None', this.state.kind);
     const gasModes = await this.sdk.getGasModes();
     const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, gasToken);
     const futureWallet = await this.sdk.createFutureWallet(name, gasOption.gasPrice.toString(), gasToken);
     this.setFutureWallet(futureWallet, name);
+    return futureWallet;
+  }
+
+  async createFutureWalletWithPassword(password: string, gasToken = ETHER_NATIVE_TOKEN.address): Promise<FutureWallet> {
+    ensure(this.state.kind === 'Confirmed', InvalidWalletState, 'Confirmed', this.state.kind);
+    const gasModes = await this.sdk.getGasModes();
+    const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, gasToken);
+    const futureWallet = await this.sdk.getFutureWalletFactory().createNewWithPassword(this.state.wallet.asSerializableConfirmedWallet, gasOption.gasPrice.toString(), gasToken, password);
+    this.setFutureWallet(futureWallet, futureWallet.ensName);
     return futureWallet;
   }
 
