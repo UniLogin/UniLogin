@@ -1,7 +1,7 @@
 import nodemailer, {SentMessageInfo} from 'nodemailer';
 import {MailOptions} from 'nodemailer/lib/json-transport';
 import Mail from 'nodemailer/lib/mailer';
-import mandrillTransport from 'nodemailer-mandrill-transport'
+import mandrillTransport from 'nodemailer-mandrill-transport';
 import {CannotSendEmail} from '../../core/utils/errors';
 import {confirmationEmailHtml} from '../../core/utils/confirmationEmailHtml';
 import {getNameFromEmail} from '../../core/utils/getNameFromEmail';
