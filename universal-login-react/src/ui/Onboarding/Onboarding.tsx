@@ -62,6 +62,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
           exact
           render={({history}) =>
             <EmailFlowChooserScreen
+              domain={props.domains[0]}
               walletService={props.walletService}
               hideModal={props.hideModal}
               onConnectClick={() => console.log('connect not supported yet!')}

@@ -108,6 +108,7 @@ export const App = () => {
                 path="/onboardingEmail"
                 render={({history}) =>
                   <EmailFlowChooserScreen
+                    domain={config.domains[0]}
                     walletService={walletService}
                     hideModal={() => history.push('/')}
                     onCreateClick={(ensName, email) => console.log('create', {ensName, email})}

@@ -8,7 +8,7 @@ interface EmailFlowChooserScreen extends EmailFlowChooserProps {
   walletService: WalletService;
 }
 
-export const EmailFlowChooserScreen = ({hideModal, walletService, onCreateClick, onConnectClick}: EmailFlowChooserScreen) => {
+export const EmailFlowChooserScreen = ({hideModal, walletService, onCreateClick, onConnectClick, domain}: EmailFlowChooserScreen) => {
   return (
     <OnboardingStepsWrapper
       title='Create or connect account'
@@ -19,6 +19,7 @@ export const EmailFlowChooserScreen = ({hideModal, walletService, onCreateClick,
       progress={1}>
       <div className="perspective">
         <EmailFlowChooser
+          domain={domain}
           onConnectClick={onConnectClick}
           onCreateClick={onCreateClick}
         />
