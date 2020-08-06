@@ -4,10 +4,13 @@ import {
   createKeyPair,
   ensure,
   BalanceChecker,
+  StoredEncryptedWallet,
+  SerializableConfirmedWallet,
 } from '@unilogin/commons';
 import {computeGnosisCounterfactualAddress} from '@unilogin/contracts';
 import {ENSService} from '../integration/ethereum/ENSService';
 import UniLoginSdk from './sdk';
+import {Wallet} from 'ethers';
 import {FutureWallet} from './wallet/FutureWallet';
 import {setupInitData} from '../core/utils/setupInitData';
 import {SavingFutureWalletFailed} from '../core/utils/errors';
@@ -41,5 +44,17 @@ export class FutureWalletFactory {
     const result = await this.sdk.relayerApi.addFutureWallet(storedFutureWallet);
     ensure(result.contractAddress === contractAddress, SavingFutureWalletFailed);
     return this.createFrom({privateKey, contractAddress, ensName, gasPrice, gasToken});
+  }
+
+  async createNewWithPassword({ensName, code, email}: SerializableConfirmedWallet, gasPrice: string, gasToken: string, password: string) {
+    const futureWallet = await this.createNew(ensName, gasPrice, gasToken);
+    const wallet = new Wallet(futureWallet.privateKey);
+    const storedEncryptedWallet: StoredEncryptedWallet = {
+      email,
+      ensName,
+      walletJSON: JSON.parse(await wallet.encrypt(password)),
+    };
+    await this.sdk.relayerApi.storeEncryptedWallet(storedEncryptedWallet, code);
+    return futureWallet;
   }
 }
