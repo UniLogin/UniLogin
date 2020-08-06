@@ -2,7 +2,7 @@ import {Router, Request, Response} from 'express';
 import {utils} from 'ethers';
 import {PublicRelayerConfig} from '@unilogin/commons';
 import asyncMiddleware from '../middlewares/async_middleware';
-import {Config} from '../../config/relayer';
+import {Config} from '../../config/config';
 
 export function getPublicConfig(config: Config): PublicRelayerConfig {
   const {
