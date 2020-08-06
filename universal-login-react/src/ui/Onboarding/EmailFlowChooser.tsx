@@ -21,7 +21,9 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain}: EmailF
   const [flow, setFlow] = useState<'create' | 'connect'>('create');
 
   useEffect(() => {
-    setEnsName(`${name}.${domain}`);
+    if (name) {
+      setEnsName(`${name}.${domain}`);
+    }
   }, [name]);
 
   const handleClick = () => flow === 'connect'
@@ -84,7 +86,7 @@ const CreationContent = ({email, setEmail, emailError, ensName, setEnsName, ensE
         error={ensError}
       />
       <div className={classForComponent('input-indicator-wrapper')}>
-        <span className={classForComponent('input-ensname-indicator')}>{domain}</span>
+        <span className={classForComponent('input-ensname-indicator')}>.{domain}</span>
       </div>
     </div>
     <div className={`${classForComponent('creation-item')}`}>
