@@ -1,3 +1,4 @@
+import {MandrillOptions} from 'nodemailer-mandrill-transport';
 import {ContractWhiteList, SupportedToken, LocalizationConfig, OnRampConfig, IPGeolocationApiConfig, Network} from '@unilogin/commons';
 import {KnexConfig} from './KnexConfig';
 import {getConfig as getGanacheConfig} from './config.ganache';
@@ -29,6 +30,16 @@ export interface Config {
   maxGasLimit: number;
   ipGeolocationApi: IPGeolocationApiConfig;
   httpsRedirect: boolean;
+  mailingCredentials: MailingCredentials;
+}
+
+export interface MailingCredentials {
+  transport: MandrillTransport;
+  from: string;
+}
+
+export interface MandrillTransport {
+  options: MandrillOptions;
 }
 
 export function getConfigForNetwork(network: Network): Config {

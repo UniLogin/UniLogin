@@ -33,4 +33,14 @@ export const baseConfig = {
   emailPassword: getEnv('EMAIL_PASSWORD', ''),
   copyToClipboardUrl: 'https://universal-provider-backend.netlify.app/copy',
   emailLogo: UNILOGIN_LOGO_WITH_NAME_URL,
+  mailingCredentials: {
+    transport: {
+      options: {
+        auth: {
+          apiKey: getEnv('MANDRILL_API_KEY', ''),
+        },
+      },
+    },
+    from: 'noreply@unilogin.io',
+  },
 };
