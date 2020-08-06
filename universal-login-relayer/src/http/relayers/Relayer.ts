@@ -74,6 +74,7 @@ class Relayer {
   protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
   protected emailService: EmailService = {} as EmailService;
   protected emailConfirmationStore: EmailConfirmationsStore = {} as EmailConfirmationsStore;
+  protected encryptedWalletsStore: EncryptedWalletsStore = {} as EncryptedWalletsStore;
 
   constructor(protected config: Config, provider?: providers.JsonRpcProvider) {
     this.port = config.port || defaultPort;
@@ -149,8 +150,8 @@ class Relayer {
     const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService, gasTokenValidator, estimateGasValidator);
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
-    const encryptedWalletsStore = new EncryptedWalletsStore(this.database);
-    const encryptedWalletHandler = new EncryptedWalletHandler(this.emailConfirmationStore, emailConfirmationValidator, encryptedWalletsStore);
+    this.encryptedWalletsStore = new EncryptedWalletsStore(this.database);
+    const encryptedWalletHandler = new EncryptedWalletHandler(this.emailConfirmationStore, emailConfirmationValidator, this.encryptedWalletsStore);
 
     this.app.use(bodyParser.json());
     this.app.use('/email', EmailRouter(emailConfirmationHandler));

@@ -77,10 +77,15 @@ describe('INT: FutureWalletFactory', () => {
     const code = '123456';
     const emailConfirmation: EmailConfirmation = {email, ensName, code, isConfirmed: true, createdAt: new Date()};
     (relayer as any).emailConfirmationStore.get = sinon.stub().onFirstCall().resolves(emailConfirmation);
+    const storeEncryptedWalletSpy = sinon.spy((relayer as any).encryptedWalletsStore, 'add');
     const confirmedWallet = new ConfirmedWallet(email, ensName, code);
     const password = 'password123!';
     const {ensName: returnedEnsName, contractAddress, deploy} = await futureWalletFactory.createNewWithPassword(confirmedWallet, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address, password);
     expect(returnedEnsName).eq(ensName);
+    expect(storeEncryptedWalletSpy.firstCall.args[0]).include({
+      ensName,
+      email,
+    });
     await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
     const {waitToBeSuccess} = await deploy();
     const deployedWallet = await waitToBeSuccess();
