@@ -12,7 +12,7 @@ import cors from 'cors';
 import useragent from 'express-useragent';
 import Knex from 'knex';
 import {Server} from 'http';
-import {Config} from '../../config/relayer';
+import {Config} from '../../config/config';
 import MessageHandler from '../../core/services/execution/messages/MessageHandler';
 import QueueSQLStore from '../../integration/sql/services/QueueSQLStore';
 import errorHandler from '../middlewares/errorHandler';

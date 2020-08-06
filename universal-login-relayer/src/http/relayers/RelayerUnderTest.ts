@@ -14,7 +14,7 @@ import {
 import {mockGasPriceOracle} from '@unilogin/commons/testutils';
 import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
-import {Config} from '../../config/relayer';
+import {Config} from '../../config/config';
 import Relayer from './Relayer';
 import {getConfigForNetwork} from '../../config/config';
 import {addRefundPayer} from '../../core/utils/addRefundPayer';
