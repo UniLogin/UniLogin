@@ -150,7 +150,7 @@ describe('INT: WalletService', () => {
   describe('Email', () => {
     it('email onboarding roundtrip', async () => {
       const email = 'name@gmail.com';
-      const ensName = 'name.mylogin.eth';
+      const ensName = 'user.mylogin.eth';
       expect(walletService.state).to.deep.eq({kind: 'None'});
       let sentCode: string;
       mockSendConfirmation(relayer, (code: string) => {sentCode = code;});
