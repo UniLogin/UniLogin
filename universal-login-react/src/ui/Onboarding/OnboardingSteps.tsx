@@ -25,7 +25,7 @@ const CreateFutureWallet = ({walletService, hideModal}: CreateFutureWalletProps)
     ? <ChooseTopUpToken
       supportedTokens={['ETH', 'DAI']}
       onClick={async (tokenAddress: string) => {
-        await walletService.createFutureWallet(walletService.getConfirmedWallet().ensName, tokenAddress);
+        await walletService.createFutureWalletWithPassword(password, tokenAddress);
       }}
       hideModal={hideModal}
       walletService={walletService}
