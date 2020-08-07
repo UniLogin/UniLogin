@@ -9,7 +9,6 @@ import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import '../styles/base/enterPassword.sass';
 import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
 import pinCodeIcon from '../assets/icons/pin-code.svg';
-import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 
 interface EnterPasswordProps {
   hideModal?: () => void;
@@ -51,9 +50,9 @@ export const EnterPasswordCreate = ({hideModal, walletService, onConfirm}: Enter
       </div>
       <div className={`${classForComponent('input-item')}`}>
         <InputField
-          label={'Enter the password'}
-          type={'password'}
-          id={'password-input'}
+          label='Enter the password'
+          type='password'
+          id='password-input'
           className={classForComponent('password-input-wrapper first')}
           value={password}
           setValue={setPassword}
@@ -62,9 +61,9 @@ export const EnterPasswordCreate = ({hideModal, walletService, onConfirm}: Enter
       </div>
       <div className={`${classForComponent('input-item')}`}>
         <InputField
-          label={'Confirm the password'}
-          type={'password'}
-          id={'password-input'}
+          label='Confirm the password'
+          type='password'
+          id='password-input-confirmation'
           className={classForComponent('password-input-wrapper second')}
           value={confirmPassword}
           setValue={setConfirmPassword}
@@ -73,10 +72,6 @@ export const EnterPasswordCreate = ({hideModal, walletService, onConfirm}: Enter
       </div>
     </div>
     <div className={classForComponent('buttons-wrapper')}>
-      <SecondaryButton
-        text='Back'
-        onClick={() => console.log('click')}
-        className={classForComponent('back-btn')}/>
       <PrimaryButton
         text='Confirm'
         disabled={isConfirmPasswordButtonDisabled(password, confirmPassword)}
