@@ -9,10 +9,6 @@ import {getConfig as getRopstenConfig} from './config.ropsten';
 export interface Config {
   jsonRpcUrl?: string;
   port?: string;
-  emailAddress: string;
-  emailPassword: string;
-  copyToClipboardUrl: string;
-  emailLogo: string;
   privateKey: string;
   ensAddress: string;
   network: string;
@@ -29,6 +25,14 @@ export interface Config {
   maxGasLimit: number;
   ipGeolocationApi: IPGeolocationApiConfig;
   httpsRedirect: boolean;
+  email: EmailConfig;
+}
+
+export interface EmailConfig {
+  from: string;
+  apiKey: string;
+  emailLogo: string;
+  copyToClipboardUrl: string;
 }
 
 export function getConfigForNetwork(network: Network): Config {

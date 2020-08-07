@@ -29,8 +29,10 @@ export const baseConfig = {
   httpsRedirect: getEnv('HTTPS_REDIRECT', '') === 'true',
   port: getEnv('PORT', ''),
   privateKey: getEnv('PRIVATE_KEY', ''),
-  emailAddress: getEnv('EMAIL_ADDRESS', ''),
-  emailPassword: getEnv('EMAIL_PASSWORD', ''),
-  copyToClipboardUrl: 'https://universal-provider-backend.netlify.app/copy',
-  emailLogo: UNILOGIN_LOGO_WITH_NAME_URL,
+  email: {
+    copyToClipboardUrl: 'https://universal-provider-backend.netlify.app/copy',
+    emailLogo: UNILOGIN_LOGO_WITH_NAME_URL,
+    apiKey: getEnv('MANDRILL_API_KEY', ''),
+    from: 'noreply@unilogin.io',
+  },
 };
