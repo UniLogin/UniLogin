@@ -3,7 +3,7 @@ import {DeployArgs, DEPLOY_GAS_LIMIT, ensure, getInitializeSigner, DeviceInfo} f
 import {computeGnosisCounterfactualAddress, encodeDataForSetup, gnosisSafe, INITIAL_REQUIRED_CONFIRMATIONS} from '@unilogin/contracts';
 import ENSService from './ensService';
 import {InvalidSignature} from '../../core/utils/errors';
-import {Config} from '../../config/relayer';
+import {Config} from '../../config/config';
 import {WalletDeployer} from './WalletDeployer';
 import {DevicesService} from '../../core/services/DevicesService';
 import {TransactionGasPriceComputator} from './TransactionGasPriceComputator';

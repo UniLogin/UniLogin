@@ -150,16 +150,23 @@ describe('INT: WalletService', () => {
   describe('Email', () => {
     it('email onboarding roundtrip', async () => {
       const email = 'name@gmail.com';
+      const ensName = 'user.mylogin.eth';
       expect(walletService.state).to.deep.eq({kind: 'None'});
       let sentCode: string;
       mockSendConfirmation(relayer, (code: string) => {sentCode = code;});
-      const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
+      const promise = walletService.createRequestedWallet(email, ensName);
       expect(walletService.state).to.deep.include({kind: 'Requested'});
       await promise;
       await expect(walletService.confirmCode('12345')).to.be.rejectedWith('Error: Invalid code: 12345');
       const confirmEmailResult = await walletService.confirmCode(sentCode!);
       expect(confirmEmailResult).deep.include({email, code: sentCode!});
       expect(walletService.state).to.deep.include({kind: 'Confirmed'});
+      const password = 'password123!';
+      const {contractAddress} = await walletService.createFutureWalletWithPassword(password, ETHER_NATIVE_TOKEN.address);
+      expect(walletService.state.kind).eq('Future');
+      await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
+      await walletService.deployFutureWallet();
+      expect(walletService.state.kind).eq('Deployed');
     });
 
     it('after send confirmation e-mail fails retry requestEmailConfirmation works', async () => {

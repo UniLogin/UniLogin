@@ -14,7 +14,7 @@ import {
 import {mockGasPriceOracle} from '@unilogin/commons/testutils';
 import {beta2, gnosisSafe, deployGnosisSafe, deployProxyFactory, deployDefaultCallbackHandler} from '@unilogin/contracts';
 import {mockContracts} from '@unilogin/contracts/testutils';
-import {Config} from '../../config/relayer';
+import {Config} from '../../config/config';
 import Relayer from './Relayer';
 import {getConfigForNetwork} from '../../config/config';
 import {addRefundPayer} from '../../core/utils/addRefundPayer';
@@ -123,6 +123,7 @@ export class RelayerUnderTest extends Relayer {
 }
 
 export async function clearDatabase(knex: Knex) {
+  await knex('encrypted_wallets').del();
   await knex('devices').del();
   await knex('future_wallets').del();
   await knex('queue_items').del();

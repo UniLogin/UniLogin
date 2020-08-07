@@ -12,7 +12,7 @@ import cors from 'cors';
 import useragent from 'express-useragent';
 import Knex from 'knex';
 import {Server} from 'http';
-import {Config} from '../../config/relayer';
+import {Config} from '../../config/config';
 import MessageHandler from '../../core/services/execution/messages/MessageHandler';
 import QueueSQLStore from '../../integration/sql/services/QueueSQLStore';
 import errorHandler from '../middlewares/errorHandler';
@@ -73,6 +73,8 @@ class Relayer {
   protected gasPriceOracle: GasPriceOracle = {} as GasPriceOracle;
   protected futureWalletHandler: FutureWalletHandler = {} as FutureWalletHandler;
   protected emailService: EmailService = {} as EmailService;
+  protected emailConfirmationStore: EmailConfirmationsStore = {} as EmailConfirmationsStore;
+  protected encryptedWalletsStore: EncryptedWalletsStore = {} as EncryptedWalletsStore;
 
   constructor(protected config: Config, provider?: providers.JsonRpcProvider) {
     this.port = config.port || defaultPort;
@@ -129,10 +131,10 @@ class Relayer {
     const devicesStore = new DevicesStore(this.database);
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const futureWalletStore = new FutureWalletStore(this.database);
-    const emailConfirmationStore = new EmailConfirmationsStore(this.database);
-    this.emailService = new EmailService(this.config.copyToClipboardUrl, this.config.emailAddress, this.config.emailPassword, this.config.emailLogo);
+    this.emailConfirmationStore = new EmailConfirmationsStore(this.database);
+    this.emailService = new EmailService(this.config.email);
     const emailConfirmationValidator = new EmailConfirmationValidator();
-    const emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStore, this.emailService, emailConfirmationValidator);
+    const emailConfirmationHandler = new EmailConfirmationHandler(this.emailConfirmationStore, this.emailService, emailConfirmationValidator);
     this.tokenPricesService = new TokenPricesService();
     const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
     const tokenDetailsService = new TokenDetailsService(this.provider);
@@ -148,8 +150,8 @@ class Relayer {
     const messageExecutor = new MessageExecutor(this.wallet, messageExecutionValidator, messageRepository, minedTransactionHandler, this.walletContractService, gasTokenValidator, estimateGasValidator);
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
-    const encryptedWalletsStore = new EncryptedWalletsStore(this.database);
-    const encryptedWalletHandler = new EncryptedWalletHandler(emailConfirmationStore, emailConfirmationValidator, encryptedWalletsStore);
+    this.encryptedWalletsStore = new EncryptedWalletsStore(this.database);
+    const encryptedWalletHandler = new EncryptedWalletHandler(this.emailConfirmationStore, emailConfirmationValidator, this.encryptedWalletsStore);
 
     this.app.use(bodyParser.json());
     this.app.use('/email', EmailRouter(emailConfirmationHandler));

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {isProperEmail, isValidEnsName} from '@unilogin/commons';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
@@ -9,15 +9,22 @@ import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 export interface EmailFlowChooserProps {
   onCreateClick: (email: string, ensName: string) => void;
   onConnectClick: (emailOrEnsName: string) => void;
-  domain?: string;
+  domain: string;
 }
 
-export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain = 'unilogin.io'}: EmailFlowChooserProps) => {
+export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain}: EmailFlowChooserProps) => {
   const [email, setEmail, emailError] = useInputField(isProperEmail, 'Email is not valid');
+  const [name, setName] = useState('');
   const [ensName, setEnsName, ensError] = useInputField(isValidEnsName, 'Ens name is not valid');
   const isValidEmailOrEnsName = (value: string) => isValidEnsName(value) || isProperEmail(value);
   const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputField(value => isValidEmailOrEnsName(value), 'Write correct ens name or email');
   const [flow, setFlow] = useState<'create' | 'connect'>('create');
+
+  useEffect(() => {
+    if (name) {
+      setEnsName(`${name}.${domain}`);
+    }
+  }, [name]);
 
   const handleClick = () => flow === 'connect'
     ? onConnectClick(emailOrEnsName)
@@ -41,7 +48,7 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain = 'unilo
         <div className={useClassFor('flow-content')}>
           {flow === 'create' && <CreationContent
             email={email} setEmail={setEmail} emailError={emailError}
-            ensName={ensName} setEnsName={setEnsName} ensError={ensError}
+            ensName={name} setEnsName={setName} ensError={ensError}
             domain={domain}
           />}
           {flow === 'connect' && <InputField
@@ -79,7 +86,7 @@ const CreationContent = ({email, setEmail, emailError, ensName, setEnsName, ensE
         error={ensError}
       />
       <div className={classForComponent('input-indicator-wrapper')}>
-        <span className={classForComponent('input-ensname-indicator')}>{domain}</span>
+        <span className={classForComponent('input-ensname-indicator')}>.{domain}</span>
       </div>
     </div>
     <div className={`${classForComponent('creation-item')}`}>

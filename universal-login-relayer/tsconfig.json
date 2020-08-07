@@ -3,7 +3,8 @@
   "compilerOptions": {
     "allowJs": true,
     "jsx": "react",
-    "outDir": "dist"
+    "outDir": "dist",
+    "typeRoots": ["shims"]
   },
   "include": [
     "src",
