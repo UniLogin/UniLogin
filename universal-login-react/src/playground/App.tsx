@@ -27,7 +27,7 @@ import {Dashboard} from '../ui/UFlow/Dashboard';
 import '../ui/styles/playground.sass';
 import {EmailFlowChooserScreen} from '../ui/Onboarding/EmailFlowChooserScreen';
 import {CreatePassword} from '../ui/Onboarding/CreatePassword';
-import {EnterPasswordConnect} from '../ui/Onboarding/EnterPasswordConnect';
+import {EnterPassword} from '../ui/Onboarding/EnterPassword';
 import {ConfirmCodeScreen} from '../ui/Onboarding/ConfirmCodeScreen';
 
 export const App = () => {
@@ -259,7 +259,7 @@ export const App = () => {
               />
               <Route
                 exact
-                path="/enterPasswordCreate"
+                path="/createPssword"
                 render={({history}) => <CreatePassword
                   hideModal={() => history.push('/')}
                   walletService={walletService}
@@ -267,8 +267,8 @@ export const App = () => {
               />
               <Route
                 exact
-                path="/enterPasswordConnect"
-                render={({history}) => <EnterPasswordConnect
+                path="/enterPassword"
+                render={({history}) => <EnterPassword
                   hideModal={() => history.push('/')}
                   walletService={walletService}
                   onConfirm={(password) => console.log({password})}/>}
