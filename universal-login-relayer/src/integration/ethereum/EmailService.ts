@@ -5,15 +5,19 @@ import mandrillTransport from 'nodemailer-mandrill-transport';
 import {CannotSendEmail} from '../../core/utils/errors';
 import {confirmationEmailHtml} from '../../core/utils/confirmationEmailHtml';
 import {getNameFromEmail} from '../../core/utils/getNameFromEmail';
-import {MailingCredentials} from '../../config/config';
+import {Email} from '../../config/config';
 
 export class EmailService {
   private from: string;
+  private copyToClipboardUrl: string;
+  private emailLogo: string;
   private transport: Mail;
 
-  constructor(private copyToClipboardUrl: string, mailingCredentials: MailingCredentials, private emailLogo: string) {
-    this.transport = nodemailer.createTransport(mandrillTransport(mailingCredentials.transport.options));
-    this.from = mailingCredentials.from;
+  constructor({copyToClipboardUrl, emailLogo, apiKey, from}: Email) {
+    this.transport = nodemailer.createTransport(mandrillTransport({auth: {apiKey}}));
+    this.from = from;
+    this.copyToClipboardUrl = copyToClipboardUrl;
+    this.emailLogo = emailLogo;
   }
 
   async sendMail(mailOptions: MailOptions): Promise<SentMessageInfo> {

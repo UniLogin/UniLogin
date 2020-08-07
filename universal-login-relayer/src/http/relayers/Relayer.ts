@@ -132,7 +132,7 @@ class Relayer {
     const devicesService = new DevicesService(devicesStore, relayerRequestSignatureValidator);
     const futureWalletStore = new FutureWalletStore(this.database);
     this.emailConfirmationStore = new EmailConfirmationsStore(this.database);
-    this.emailService = new EmailService(this.config.copyToClipboardUrl, this.config.mailingCredentials, this.config.emailLogo);
+    this.emailService = new EmailService(this.config.email);
     const emailConfirmationValidator = new EmailConfirmationValidator();
     const emailConfirmationHandler = new EmailConfirmationHandler(this.emailConfirmationStore, this.emailService, emailConfirmationValidator);
     this.tokenPricesService = new TokenPricesService();

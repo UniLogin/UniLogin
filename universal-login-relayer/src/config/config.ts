@@ -1,4 +1,3 @@
-import {MandrillOptions} from 'nodemailer-mandrill-transport';
 import {ContractWhiteList, SupportedToken, LocalizationConfig, OnRampConfig, IPGeolocationApiConfig, Network} from '@unilogin/commons';
 import {KnexConfig} from './KnexConfig';
 import {getConfig as getGanacheConfig} from './config.ganache';
@@ -10,10 +9,6 @@ import {getConfig as getRopstenConfig} from './config.ropsten';
 export interface Config {
   jsonRpcUrl?: string;
   port?: string;
-  emailAddress: string;
-  emailPassword: string;
-  copyToClipboardUrl: string;
-  emailLogo: string;
   privateKey: string;
   ensAddress: string;
   network: string;
@@ -30,16 +25,14 @@ export interface Config {
   maxGasLimit: number;
   ipGeolocationApi: IPGeolocationApiConfig;
   httpsRedirect: boolean;
-  mailingCredentials: MailingCredentials;
+  email: Email;
 }
 
-export interface MailingCredentials {
-  transport: MandrillTransport;
+export interface Email {
   from: string;
-}
-
-export interface MandrillTransport {
-  options: MandrillOptions;
+  apiKey: string;
+  emailLogo: string;
+  copyToClipboardUrl: string;
 }
 
 export function getConfigForNetwork(network: Network): Config {
