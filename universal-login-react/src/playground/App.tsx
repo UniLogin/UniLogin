@@ -259,7 +259,7 @@ export const App = () => {
               />
               <Route
                 exact
-                path="/createPssword"
+                path="/createPassword"
                 render={({history}) => <CreatePassword
                   hideModal={() => history.push('/')}
                   walletService={walletService}
