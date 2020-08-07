@@ -3,6 +3,10 @@
 SDK
 ===
 
+**This documentation is DEPRECATED.**
+
+**Some descriptions might be invalid.**
+
 An SDK is a JS library that helps to communicate with a relayer. The SDK makes it easy to manage a contract by creating basic contract-calling messages. It uses a private key to sign these messages and send them to the relayer, which propagates them to the network.
 
 .. _sdk_create:

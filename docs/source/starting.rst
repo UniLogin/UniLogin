@@ -3,6 +3,9 @@
 Getting started
 ===============
 
+**This documentation is DEPRECATED.**
+
+**Some descriptions might be invalid.**
 
 Universal Login helps you build user-friendly Ethereum based applications.
 

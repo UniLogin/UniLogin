@@ -5,8 +5,14 @@
 
 .. image:: static/logo.png
 
+This documentation is DEPRECATED.
+=================================
+
+Some descriptions might be invalid.
+***********************************
+
 Universal Login documentation
-=============================
+-----------------------------
 
 Universal Login is a design pattern for storing funds and connecting to Ethereum applications, aiming to simplify new users on-boarding.
 
