@@ -3,6 +3,10 @@
 Tutorial
 ========
 
+**This documentation is DEPRECATED.**
+
+**Some descriptions might be invalid.**
+
 .. _quickstart:
 
 Quickstart

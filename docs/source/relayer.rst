@@ -3,6 +3,10 @@
 Relayer
 =======
 
+**This documentation is DEPRECATED.**
+
+**Some descriptions might be invalid.**
+
 A relayer is a RESTful JSON API server written in node.js and express.js that allows interacting with a wallet contract using meta-transactions. The relayer gets a signed message and propagates it to the network. It pays for transactions and gets the refund from contracts.
 
 Below are the instructions on how to run the relayer.
