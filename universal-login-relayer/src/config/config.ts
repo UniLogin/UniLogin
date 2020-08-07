@@ -25,10 +25,10 @@ export interface Config {
   maxGasLimit: number;
   ipGeolocationApi: IPGeolocationApiConfig;
   httpsRedirect: boolean;
-  email: Email;
+  email: EmailConfig;
 }
 
-export interface Email {
+export interface EmailConfig {
   from: string;
   apiKey: string;
   emailLogo: string;

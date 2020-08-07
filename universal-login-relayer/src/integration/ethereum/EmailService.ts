@@ -5,7 +5,7 @@ import mandrillTransport from 'nodemailer-mandrill-transport';
 import {CannotSendEmail} from '../../core/utils/errors';
 import {confirmationEmailHtml} from '../../core/utils/confirmationEmailHtml';
 import {getNameFromEmail} from '../../core/utils/getNameFromEmail';
-import {Email} from '../../config/config';
+import {EmailConfig} from '../../config/config';
 
 export class EmailService {
   private from: string;
@@ -13,7 +13,7 @@ export class EmailService {
   private emailLogo: string;
   private transport: Mail;
 
-  constructor({copyToClipboardUrl, emailLogo, apiKey, from}: Email) {
+  constructor({copyToClipboardUrl, emailLogo, apiKey, from}: EmailConfig) {
     this.transport = nodemailer.createTransport(mandrillTransport({auth: {apiKey}}));
     this.from = from;
     this.copyToClipboardUrl = copyToClipboardUrl;
