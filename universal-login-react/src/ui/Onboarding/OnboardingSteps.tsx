@@ -6,7 +6,7 @@ import {useHistory} from 'react-router';
 import {OnboardingTopUp} from './OnboardingTopUp';
 import {OnboardingWaitForDeployment} from './OnboardingWaitForDeployment';
 import {ChooseTopUpToken} from '../TopUp/ChooseTopUpToken';
-import {EnterPasswordCreate} from './EnterPasswordCreate';
+import {CreatePassword} from './CreatePassword';
 
 interface OnboardingStepsProps {
   walletService: WalletService;
@@ -30,7 +30,7 @@ const CreateFutureWallet = ({walletService, hideModal}: CreateFutureWalletProps)
       hideModal={hideModal}
       walletService={walletService}
     />
-    : <EnterPasswordCreate
+    : <CreatePassword
       walletService={walletService}
       hideModal={hideModal}
       onConfirm={setPassword}

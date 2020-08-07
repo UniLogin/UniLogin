@@ -16,7 +16,7 @@ interface EnterPasswordProps {
   onConfirm: (password: string) => void;
 }
 
-export const EnterPasswordConnect = ({hideModal, walletService, onConfirm}: EnterPasswordProps) => {
+export const EnterPassword = ({hideModal, walletService, onConfirm}: EnterPasswordProps) => {
   const [password, setPassword] = useInputField(isProperPassword, '');
 
   const onConfirmClick = () => {

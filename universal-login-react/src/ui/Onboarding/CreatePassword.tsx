@@ -10,13 +10,13 @@ import '../styles/base/enterPassword.sass';
 import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
 import pinCodeIcon from '../assets/icons/pin-code.svg';
 
-interface EnterPasswordProps {
+interface CreatePasswordProps {
   hideModal?: () => void;
   walletService: WalletService;
   onConfirm: (password: string) => void;
 }
 
-export const EnterPasswordCreate = ({hideModal, walletService, onConfirm}: EnterPasswordProps) => {
+export const CreatePassword = ({hideModal, walletService, onConfirm}: CreatePasswordProps) => {
   const [password, setPassword, passwordError] = useInputField(isProperPassword, 'Password must have more than 10 letters and one capital letter');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hint, setHint] = useState<string | undefined>(undefined);
