@@ -10,8 +10,8 @@ export class EncryptedWalletHandler {
   async handle(storedEncryptedWallet: StoredEncryptedWallet, code: string) {
     const email = storedEncryptedWallet.email;
     const emailConfirmation = await this.emailConfirmationStore.get(email);
-    this.emailConfirmationValidator.isEmailConfirmed(emailConfirmation);
-    this.emailConfirmationValidator.validateCode(emailConfirmation, code);
+    this.emailConfirmationValidator.isEmailConfirmed(emailConfirmation.isConfirmed, emailConfirmation.email);
+    this.emailConfirmationValidator.validateCode(emailConfirmation.code, code);
     return this.encryptedWalletsStore.add(storedEncryptedWallet);
   }
 }
