@@ -1,19 +1,21 @@
-import {StoredEncryptedWallet} from '@unilogin/commons';
+import {StoredEncryptedWallet, EmailConfirmation} from '@unilogin/commons';
 import {EncryptedWalletsStore} from '../../integration/sql/services/EncryptedWalletsStore';
 import {EmailConfirmationValidator} from './validators/EmailConfirmationValidator';
 import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
+import {WalletHandlerBase} from './WalletHandlerBase';
 
-export class RestoringWalletHandler {
+export class RestoringWalletHandler extends WalletHandlerBase {
   constructor(
-    private emailConfirmationStore: EmailConfirmationsStore,
-    private emailConfirmationValidator: EmailConfirmationValidator,
+    emailConfirmationStore: EmailConfirmationsStore,
+    emailConfirmationValidator: EmailConfirmationValidator,
     private encryptedWalletsStore: EncryptedWalletsStore) {
+    super(emailConfirmationStore, emailConfirmationValidator);
   }
 
   async handle(email: string, code: string): Promise<StoredEncryptedWallet> {
-    const emailConfirmation = await this.emailConfirmationStore.get(email);
-    this.emailConfirmationValidator.validate(emailConfirmation, email, code);
-    this.emailConfirmationStore.updateIsConfirmed(emailConfirmation, true);
+    const emailConfirmation = await this.getEmailConfirmation(email);
+    this.validate(emailConfirmation, email, code);
+    this.updateIsConfirmed(emailConfirmation);
     return this.encryptedWalletsStore.get(email);
   }
 }
