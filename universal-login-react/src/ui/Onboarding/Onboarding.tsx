@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {WalletService} from '@unilogin/sdk';
 import {WalletSelector} from '../WalletSelector/WalletSelector';
 import {ApplicationWallet, WalletSuggestionAction} from '@unilogin/commons';
@@ -11,6 +11,7 @@ import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
 import {ConfirmCodeScreen} from './ConfirmCodeScreen';
 import {EmailFlowChooserScreen} from './EmailFlowChooserScreen';
+import {ErrorMessage} from '../commons/ErrorMessage';
 
 export interface OnboardingProps {
   walletService: WalletService;
@@ -25,6 +26,7 @@ export interface OnboardingProps {
 
 export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
   const onSuccess = () => props.onConnect?.();
+  const [errorMessage, setErrorMessage] = useState('');
 
   return (
     <MemoryRouter initialEntries={[emailFlow ? getInitialEmailOnboardingLocation(props.walletService.state) : getInitialOnboardingLocation(props.walletService.state)]}>
@@ -66,7 +68,17 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
               walletService={props.walletService}
               hideModal={props.hideModal}
               onConnectClick={() => console.log('connect not supported yet!')}
-              onCreateClick={async (email, ensName) => {const requestPromise = props.walletService.createRequestedWallet(email, ensName); history.push('/code'); await requestPromise;}}
+              onCreateClick={async (email: string, ensName: string) => {
+                try {
+                  const requestPromise = props.walletService.createRequestedWallet(email, ensName);
+                  history.push('/code');
+                  await requestPromise;
+                } catch (e) {
+                  setErrorMessage(e.message);
+                  history.push('/error');
+                  console.error(e);
+                }
+              }}
             />}/>
         <Route
           path='/code'
@@ -100,6 +112,16 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
               />
             </ModalWrapper>}
         />
+        <Route
+          path="/error"
+          render={({history}) =>
+            <ModalWrapper message={props.walletService.sdk.getNotice()} hideModal={() => history.push('/selector')}>
+              <ErrorMessage
+                title={'Something went wrong'}
+                message={errorMessage}
+              />
+            </ModalWrapper>
+          }/>
       </Switch>
     </MemoryRouter>
   );
