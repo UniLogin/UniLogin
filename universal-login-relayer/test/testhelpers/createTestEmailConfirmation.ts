@@ -3,6 +3,7 @@ interface CreateTestEmailConfirmationProps {
   code?: string;
   ensName?: string;
   isConfirmed?: boolean;
+  createdAt?: Date;
 }
 
 export const createTestEmailConfirmation = ({
@@ -10,10 +11,11 @@ export const createTestEmailConfirmation = ({
   code = '012345',
   ensName = 'account.unilogin.test',
   isConfirmed = false,
+  createdAt = new Date(),
 }: CreateTestEmailConfirmationProps) => ({
   email,
   code,
   ensName,
-  createdAt: new Date(),
+  createdAt,
   isConfirmed,
 });
