@@ -1,6 +1,6 @@
 import {ReactWrapper} from 'enzyme';
 
-export class BasePage {
+export abstract class BasePage {
   constructor(protected wrapper: ReactWrapper) {}
 
   protected type(id: string, value: string) {
