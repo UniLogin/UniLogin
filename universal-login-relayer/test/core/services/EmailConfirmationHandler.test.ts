@@ -13,7 +13,7 @@ describe('UNIT: EmailConfirmationHandler', () => {
   let emailConfirmationValidatorStub: sinon.SinonStubbedInstance<EmailConfirmationValidator>;
   let emailConfirmationHandler: EmailConfirmationHandler;
 
-  const emailConfirmation = createTestEmailConfirmation();
+  const emailConfirmation = createTestEmailConfirmation({});
   const invalidCode = '123456';
   const {email, code} = emailConfirmation;
 

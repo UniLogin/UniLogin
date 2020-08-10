@@ -21,7 +21,7 @@ describe('E2E: Relayer - encrypted wallet', () => {
   before(async () => {
     ({relayer} = await startRelayer(relayerPort));
     emailConfirmationsStore = new EmailConfirmationsStore(relayer.database);
-    const emailConfirmation = createTestEmailConfirmation(email);
+    const emailConfirmation = createTestEmailConfirmation({email});
     await emailConfirmationsStore.add({...emailConfirmation, isConfirmed: true});
     code = emailConfirmation.code;
   });
@@ -55,6 +55,15 @@ describe('E2E: Relayer - encrypted wallet', () => {
       .post('/wallet/encrypted')
       .set({code});
     expect(result.status).to.eq(400);
+  });
+
+  xit('returns 200 if encrypted wallet is valid', async () => {
+    const result = await chai.request(relayerUrl)
+      .post('/wallet/encrypted')
+      .set({code})
+      .send(storedEncryptedWallet);
+    expect(result.status).to.eq(201);
+    expect(result.body).to.deep.eq({email: storedEncryptedWallet.email});
   });
 
   after(() => {

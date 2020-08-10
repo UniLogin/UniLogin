@@ -1,7 +1,19 @@
-export const createTestEmailConfirmation = (email = 'account@unilogin.test') => ({
+interface CreateTestEmailConfirmationProps {
+  email?: string;
+  code?: string;
+  ensName?: string;
+  isConfirmed?: boolean;
+}
+
+export const createTestEmailConfirmation = ({
+  email = 'account@unilogin.test',
+  code = '012345',
+  ensName = 'account.unilogin.test',
+  isConfirmed = false,
+}: CreateTestEmailConfirmationProps) => ({
   email,
-  code: '012345',
-  ensName: 'account.unilogin.test',
+  code,
+  ensName,
   createdAt: new Date(),
-  isConfirmed: false,
+  isConfirmed,
 });
