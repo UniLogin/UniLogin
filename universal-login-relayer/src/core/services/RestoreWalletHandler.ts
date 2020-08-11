@@ -4,7 +4,7 @@ import {EmailConfirmationValidator} from './validators/EmailConfirmationValidato
 import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
 import {WalletHandlerBase} from './WalletHandlerBase';
 
-export class RestoringWalletHandler extends WalletHandlerBase {
+export class RestoreWalletHandler extends WalletHandlerBase {
   constructor(
     emailConfirmationStore: EmailConfirmationsStore,
     emailConfirmationValidator: EmailConfirmationValidator,
