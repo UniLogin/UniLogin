@@ -1,4 +1,4 @@
-import {StoredEncryptedWallet, EmailConfirmation} from '@unilogin/commons';
+import {StoredEncryptedWallet} from '@unilogin/commons';
 import {EncryptedWalletsStore} from '../../integration/sql/services/EncryptedWalletsStore';
 import {EmailConfirmationValidator} from './validators/EmailConfirmationValidator';
 import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';

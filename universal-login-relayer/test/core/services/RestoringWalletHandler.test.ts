@@ -34,7 +34,7 @@ describe('INT: RestoringWalletHandler', () => {
     emailConfirmationsStore = new EmailConfirmationsStore(knex);
     const encryptedWalletsStore = new EncryptedWalletsStore(knex);
     const validator = new EmailConfirmationValidator();
-    emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationsStore, mockEmailService((code: string) => sentCode = code), validator);
+    emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationsStore, mockEmailService((code: string) => {sentCode = code;}), validator);
     encryptedWalletHandler = new EncryptedWalletHandler(emailConfirmationsStore, validator, encryptedWalletsStore);
     restoringWalletHandler = new RestoringWalletHandler(emailConfirmationsStore, validator, encryptedWalletsStore);
   });
