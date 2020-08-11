@@ -15,7 +15,7 @@ describe('E2E: Relayer - restore wallet', () => {
     walletJSON: TEST_ENCRYPTED_WALLET_JSON,
   };
 
-  before(async () => {
+  beforeEach(async () => {
     ({relayer} = await startRelayer(relayerPort));
   });
 
@@ -48,7 +48,31 @@ describe('E2E: Relayer - restore wallet', () => {
     expect(restoreResult.body.storedEncryptedWallet).to.deep.eq({email, ensName, walletJSON: TEST_ENCRYPTED_WALLET_JSON});
   });
 
-  after(() => {
+  it('return 400 if confirmation code was not requested and previous code is used', async () => {
+    const confirmationRequestResult = await chai.request(relayerUrl)
+      .post('/email/request')
+      .send({email, ensName});
+    expect(confirmationRequestResult.status).to.eq(201);
+
+    const confirmationResult = await chai.request(relayerUrl)
+      .post('/email/confirmation')
+      .send({email, code: relayer.sentCodes[email]});
+    expect(confirmationResult.status).to.eq(201);
+
+    const result = await chai.request(relayerUrl)
+      .post('/wallet/encrypted')
+      .set({code: relayer.sentCodes[email]})
+      .send(storedEncryptedWallet);
+    expect(result.status).to.eq(201);
+
+    const restoreResult = await chai.request(relayerUrl)
+      .get(`/wallet/restore/${email}`)
+      .set({code: relayer.sentCodes[email]});
+    expect(restoreResult.status).to.eq(400);
+    expect(restoreResult.body.error).to.eq(`Error: Unexpected confirmation from email: ${email}`);
+  });
+
+  afterEach(() => {
     relayer.stop();
   });
 });
