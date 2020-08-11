@@ -10,7 +10,7 @@ import DeploymentHandler from '../../core/services/execution/deployment/Deployme
 import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
 import {ApiKeyHandler} from '../../core/services/execution/ApiKeyHandler';
 import {EncryptedWalletHandler} from '../../core/services/EncryptedWalletHandler';
-import {RestoringWalletHandler} from '../../core/services/RestoringWalletHandler';
+import {RestoreWalletHandler} from '../../core/services/RestoreWalletHandler';
 
 const messageHandling = (messageHandler: MessageHandler, apiKeyHandler: ApiKeyHandler) =>
   async (data: {headers: {api_key: string | undefined}, body: SignedMessage}) => {
@@ -54,9 +54,9 @@ const encryptedWalletHandling = (encryptedWalletHandler: EncryptedWalletHandler)
     return responseOf({email}, 201);
   };
 
-const restoringWalletHandling = (restoringWalletHandler: RestoringWalletHandler) =>
+const restoreWalletHandling = (restoreWalletHandler: RestoreWalletHandler) =>
   async (data: {email: string, headers: {code: string}}) => {
-    const storedEncryptedWallet = await restoringWalletHandler.handle(data.email, data.headers.code);
+    const storedEncryptedWallet = await restoreWalletHandler.handle(data.email, data.headers.code);
     return responseOf({storedEncryptedWallet}, 200);
   };
 
@@ -66,7 +66,7 @@ export default (
   futureWalletHandler: FutureWalletHandler,
   apiKeyHandler: ApiKeyHandler,
   encryptedWalletHandler: EncryptedWalletHandler,
-  restoringWalletHandler: RestoringWalletHandler,
+  restoreWalletHandler: RestoreWalletHandler,
 ) => {
   const router = Router();
 
@@ -141,7 +141,7 @@ export default (
       headers: asObject({code: asString}),
       email: asString,
     }),
-    restoringWalletHandling(restoringWalletHandler),
+    restoreWalletHandling(restoreWalletHandler),
   ));
 
   return router;
