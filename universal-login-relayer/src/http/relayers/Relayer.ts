@@ -55,6 +55,7 @@ import {EmailConfirmationValidator} from '../../core/services/validators/EmailCo
 import EstimateGasValidator from '../../integration/ethereum/validators/EstimateGasValidator';
 import {EncryptedWalletHandler} from '../../core/services/EncryptedWalletHandler';
 import {EncryptedWalletsStore} from '../../integration/sql/services/EncryptedWalletsStore';
+import {RestoringWalletHandler} from '../../core/services/RestoringWalletHandler';
 
 const defaultPort = '3311';
 
@@ -152,10 +153,11 @@ class Relayer {
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
     this.encryptedWalletsStore = new EncryptedWalletsStore(this.database);
     const encryptedWalletHandler = new EncryptedWalletHandler(this.emailConfirmationStore, emailConfirmationValidator, this.encryptedWalletsStore);
+    const restoringWalletHandler = new RestoringWalletHandler(this.emailConfirmationStore, emailConfirmationValidator, this.encryptedWalletsStore);
 
     this.app.use(bodyParser.json());
     this.app.use('/email', EmailRouter(emailConfirmationHandler));
-    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, this.futureWalletHandler, apiKeyHandler, encryptedWalletHandler));
+    this.app.use('/wallet', WalletRouter(deploymentHandler, messageHandler, this.futureWalletHandler, apiKeyHandler, encryptedWalletHandler, restoringWalletHandler));
     this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(authorisationService));
     this.app.use('/devices', DevicesRouter(devicesService));

@@ -36,6 +36,8 @@ type CreateRelayerArgs = {
 };
 
 export class RelayerUnderTest extends Relayer {
+  sentCodes: Record<string, string> = {};
+
   static async deployBaseContracts(wallet: Wallet) {
     const walletContract = await deployGnosisSafe(wallet);
     const factoryContract = await deployProxyFactory(wallet);
@@ -97,7 +99,7 @@ export class RelayerUnderTest extends Relayer {
   async start() {
     await super.start();
     mockGasPriceOracle(this.gasPriceOracle);
-    this.emailService.sendConfirmationMail = async () => {};
+    this.emailService.sendConfirmationMail = async (email: string, code: string) => {this.sentCodes[email] = code;};
     await this.setupTestPartner();
     (this.futureWalletHandler as any).tokenDetailsService.getTokenDetails = (address: string) => TEST_TOKEN_DETAILS.find(token => token.address === address);
     this.tokenPricesService.getTokenPriceInEth = (tokenDetails: any) => Promise.resolve(tokenDetails?.address === ETHER_NATIVE_TOKEN.address ? 1 : TEST_TOKEN_PRICE_IN_ETH);
