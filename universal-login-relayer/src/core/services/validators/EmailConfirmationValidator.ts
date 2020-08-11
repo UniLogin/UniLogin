@@ -7,17 +7,17 @@ export class EmailConfirmationValidator {
     private codeDurationInMinutes: number = 5,
   ) {}
 
-  isEmailConfirmed(emailConfirmation: EmailConfirmation) {
-    ensure(emailConfirmation.isConfirmed, EmailNotConfirmed, emailConfirmation.email);
+  isEmailConfirmed(isConfirmed: boolean, email: string) {
+    ensure(isConfirmed, EmailNotConfirmed, email);
   }
 
-  validateCode(emailConfirmation: EmailConfirmation, code: string) {
-    ensure(code === emailConfirmation.code, InvalidCode, code);
+  validateCode(givenCode: string, storedCode: string) {
+    ensure(storedCode === givenCode, InvalidCode, storedCode);
   }
 
   validate(emailConfirmation: EmailConfirmation, email: string, code: string) {
     ensure(!emailConfirmation.isConfirmed, DuplicatedEmailConfirmation, email);
     ensure(moment(emailConfirmation.createdAt).add(this.codeDurationInMinutes, 'm').isAfter(), CodeExpired);
-    this.validateCode(emailConfirmation, code);
+    this.validateCode(emailConfirmation.code, code);
   }
 }
