@@ -4,7 +4,7 @@ import {TEST_ENCRYPTED_WALLET_JSON, StoredEncryptedWallet} from '@unilogin/commo
 import {getKnexConfig} from '../../testhelpers/knex';
 import {EmailConfirmationsStore} from '../../../src/integration/sql/services/EmailConfirmationsStore';
 import {EncryptedWalletsStore} from '../../../src/integration/sql/services/EncryptedWalletsStore';
-import {RestoringWalletHandler} from '../../../src/core/services/RestoringWalletHandler';
+import {RestoreWalletHandler} from '../../../src/core/services/RestoreWalletHandler';
 import {EmailConfirmationValidator} from '../../../src/core/services/validators/EmailConfirmationValidator';
 import {EncryptedWalletHandler} from '../../../src/core/services/EncryptedWalletHandler';
 import {EmailConfirmationHandler} from '../../../src/core/services/EmailConfirmationHandler';
@@ -17,11 +17,11 @@ const mockEmailService = (cb: any): any => ({
   }),
 });
 
-describe('INT: RestoringWalletHandler', () => {
+describe('INT: RestoreWalletHandler', () => {
   const ensName = 'name.mylogin.eth';
   const email = 'name@gmail.com';
   let knex: Knex;
-  let restoringWalletHandler: RestoringWalletHandler;
+  let restoreWalletHandler: RestoreWalletHandler;
   let storedEncryptedWallet: StoredEncryptedWallet;
   let encryptedWalletHandler: EncryptedWalletHandler;
   let emailConfirmationHandler: EmailConfirmationHandler;
@@ -34,7 +34,7 @@ describe('INT: RestoringWalletHandler', () => {
     const validator = new EmailConfirmationValidator();
     emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationsStore, mockEmailService((code: string) => {sentCode = code;}), validator);
     encryptedWalletHandler = new EncryptedWalletHandler(emailConfirmationsStore, validator, encryptedWalletsStore);
-    restoringWalletHandler = new RestoringWalletHandler(emailConfirmationsStore, validator, encryptedWalletsStore);
+    restoreWalletHandler = new RestoreWalletHandler(emailConfirmationsStore, validator, encryptedWalletsStore);
   });
 
   it('restore wallet roundtrip', async () => {
@@ -45,7 +45,7 @@ describe('INT: RestoringWalletHandler', () => {
     await emailConfirmationHandler.confirm(email, sentCode);
     await encryptedWalletHandler.handle(storedEncryptedWallet, sentCode);
     await emailConfirmationHandler.request(email, ensName);
-    const result = await restoringWalletHandler.handle(email, sentCode);
+    const result = await restoreWalletHandler.handle(email, sentCode);
     expect(result.walletJSON).be.deep.eq(TEST_ENCRYPTED_WALLET_JSON);
   });
 
@@ -57,7 +57,7 @@ describe('INT: RestoringWalletHandler', () => {
     await emailConfirmationHandler.confirm(email, sentCode);
     await encryptedWalletHandler.handle(storedEncryptedWallet, sentCode);
     await emailConfirmationHandler.request(email, ensName);
-    await expect(restoringWalletHandler.handle(email, '000000')).to.be.rejectedWith('Invalid code');
+    await expect(restoreWalletHandler.handle(email, '000000')).to.be.rejectedWith('Invalid code');
   });
 
   afterEach(async () => {
