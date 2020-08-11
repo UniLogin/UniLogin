@@ -1,6 +1,6 @@
 import moment from 'moment';
 import {ensure, EmailConfirmation} from '@unilogin/commons';
-import {DuplicatedEmailConfirmation, InvalidCode, CodeExpired, EmailNotConfirmed} from '../../utils/errors';
+import {UnexpectedConfirmation, InvalidCode, CodeExpired, EmailNotConfirmed} from '../../utils/errors';
 
 export class EmailConfirmationValidator {
   constructor(
@@ -16,7 +16,7 @@ export class EmailConfirmationValidator {
   }
 
   validate(emailConfirmation: EmailConfirmation, email: string, code: string) {
-    ensure(!emailConfirmation.isConfirmed, DuplicatedEmailConfirmation, email);
+    ensure(!emailConfirmation.isConfirmed, UnexpectedConfirmation, email);
     ensure(moment(emailConfirmation.createdAt).add(this.codeDurationInMinutes, 'm').isAfter(), CodeExpired);
     this.validateCode(emailConfirmation.code, code);
   }
