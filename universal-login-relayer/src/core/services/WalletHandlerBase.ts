@@ -1,6 +1,6 @@
+import {EmailConfirmation} from '@unilogin/commons';
 import {EmailConfirmationValidator} from './validators/EmailConfirmationValidator';
 import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
-import {EmailConfirmation} from '@unilogin/commons';
 
 export abstract class WalletHandlerBase {
   constructor(
