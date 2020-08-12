@@ -24,6 +24,7 @@ export {ContractWhiteList, OnRampConfig, PublicRelayerConfig, SupportedToken, IP
 export {RelayerRequest} from './core/models/relayerRequest';
 export {asStoredFutureWalletRequest, SerializableFutureWallet, StoredFutureWallet, StoredFutureWalletRequest} from './core/models/wallets/SerializableFutureWallet';
 export {asSerializableRequestedCreatingWallet, SerializableRequestedCreatingWallet} from './core/models/wallets/SerializableRequestedCreatingWallet';
+export {asSerializableRequestedRestoringWallet, SerializableRequestedRestoringWallet} from './core/models/SerializableRequestedRestoringWallet';
 export {asSerializableConfirmedWallet, SerializableConfirmedWallet} from './core/models/wallets/SerializableConfirmedWallet';
 export {asSerializableRestoringWallet, SerializableRestoringWallet} from './core/models/wallets/SerializableRestoringWallet';
 export {EncryptedWallet} from './core/models/wallets/EncryptedWallet';
