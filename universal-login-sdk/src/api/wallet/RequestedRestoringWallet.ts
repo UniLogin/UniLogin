@@ -13,7 +13,7 @@ export class RequestedRestoringWallet implements SerializableRequestedRestoringW
     };
   }
 
-  requestEmailConfirmation(serializableRequestedRestoringWallet: SerializableRequestedRestoringWallet) {
-    return this.sdk.relayerApi.requestEmailConfirmationForRestoring(serializableRequestedRestoringWallet)
+  requestEmailConfirmation() {
+    return this.sdk.relayerApi.requestEmailConfirmationForRestoring(this.asSerializableRequestedRestoringWallet);
   };
 };

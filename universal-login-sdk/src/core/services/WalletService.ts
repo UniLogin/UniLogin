@@ -14,6 +14,7 @@ import {NoopStorageService} from './NoopStorageService';
 import {WalletStorageService} from './WalletStorageService';
 import {RequestedCreatingWallet} from '../../api/wallet/RequestedCreatingWallet';
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
+import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
@@ -90,10 +91,21 @@ export class WalletService {
     return this.state.wallet;
   }
 
+  getRequestedRestoringWallet() {
+    ensure(this.state.kind === 'RequestedRestoring', InvalidWalletState, 'RequestedCreating', this.state.kind);
+    return this.state.wallet;
+  }
+
   async createRequestedCreatingWallet(email: string, ensName: string) {
     const requestedWallet = new RequestedCreatingWallet(this.sdk, email, ensName);
     this.setRequested(requestedWallet);
     return this.getRequestedCreatingWallet().requestEmailConfirmation();
+  }
+
+  async createRequestedRestoringWallet(ensNameOrEmail: string) {
+    const requestedWallet = new RequestedRestoringWallet(this.sdk, ensNameOrEmail);
+    this.setRequestedRestoring(requestedWallet);
+    return this.getRequestedRestoringWallet().requestEmailConfirmation();
   }
 
   async createDeployingWallet(name: string): Promise<DeployingWallet> {
@@ -160,6 +172,11 @@ export class WalletService {
   setRequested(wallet: RequestedCreatingWallet) {
     ensure(this.state.kind === 'None', WalletOverridden);
     this.setState({kind: 'RequestedCreating', wallet});
+  }
+
+  setRequestedRestoring(wallet: RequestedRestoringWallet) {
+    ensure(this.state.kind === 'None', WalletOverridden);
+    this.setState({kind: 'RequestedRestoring', wallet});
   }
 
   setConfirmed(wallet: ConfirmedWallet) {
@@ -309,7 +326,8 @@ export class WalletService {
 
   getContractAddress() {
     ensure(this.state.kind !== 'None', InvalidWalletState, 'not None', this.state.kind);
-    ensure(this.state.kind !== 'RequestedCreating', InvalidWalletState, 'not Requested', this.state.kind);
+    ensure(this.state.kind !== 'RequestedCreating', InvalidWalletState, 'not RequestedCreating', this.state.kind);
+    ensure(this.state.kind !== 'RequestedRestoring', InvalidWalletState, 'not RequestedRestoring', this.state.kind);
     ensure(this.state.kind !== 'Confirmed', InvalidWalletState, 'not Confirmed', this.state.kind);
     return this.state.wallet.contractAddress;
   }
