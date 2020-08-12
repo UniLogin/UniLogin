@@ -1,6 +1,6 @@
 import {asObject, asString, asNumber} from '@restless/sanitizers';
 
-export interface KdfParams {
+interface KdfParams {
   salt: string;
   n: number;
   dklen: number;
@@ -8,11 +8,11 @@ export interface KdfParams {
   r: number;
 }
 
-export interface CipherParams {
+interface CipherParams {
   iv: string;
 }
 
-export interface Crypto {
+interface Crypto {
   cipher: string;
   cipherparams: CipherParams;
   ciphertext: string;
@@ -28,7 +28,7 @@ export interface EncryptedWallet {
   Crypto: Crypto;
 }
 
-export const asKdfParams = asObject<KdfParams>({
+const asKdfParams = asObject<KdfParams>({
   salt: asString,
   n: asNumber,
   dklen: asNumber,
@@ -36,11 +36,11 @@ export const asKdfParams = asObject<KdfParams>({
   r: asNumber,
 });
 
-export const asCipherParams = asObject<CipherParams>({
+const asCipherParams = asObject<CipherParams>({
   iv: asString,
 });
 
-export const asCrypto = asObject<Crypto>({
+const asCrypto = asObject<Crypto>({
   cipher: asString,
   cipherparams: asCipherParams,
   ciphertext: asString,
