@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet} from 'ethers';
 import {MockProvider} from 'ethereum-waffle';
-import {TEST_ENCRYPTED_WALLET_JSON, SerializableRestoringWallet, TEST_WALLET, TEST_PASSWORD, createKeyPair} from '@unilogin/commons';
+import {SerializableRestoringWallet, TEST_WALLET, createKeyPair} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {RestoringWallet} from '../../../src/api/wallet/RestoringWallet';
 import UniLoginSdk, {DeployedWallet} from '../../../src';
@@ -27,12 +27,12 @@ describe('INT: RestoringWallet', () => {
       await sdk['fetchFutureWalletFactory']();
       sdk['futureWalletFactory']!['getKeyPair'] = () => ({privateKey: TEST_WALLET.privateKey, publicKey: TEST_WALLET.address});
       deployedWallet = await createdDeployedWallet(ensName, sdk, wallet);
-      restoringWallet = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, deployedWallet.name, deployedWallet.contractAddress, sdk);
+      restoringWallet = new RestoringWallet(TEST_WALLET.encryptedWallet, deployedWallet.name, deployedWallet.contractAddress, sdk);
     });
 
     it('asSerializable returns proper wallet', () => {
       const expectedRestoringWallet: SerializableRestoringWallet = {
-        encryptedWallet: TEST_ENCRYPTED_WALLET_JSON,
+        encryptedWallet: TEST_WALLET.encryptedWallet,
         contractAddress: deployedWallet.contractAddress,
         ensName,
       };
@@ -40,7 +40,7 @@ describe('INT: RestoringWallet', () => {
     });
 
     it('restore returns deployed wallet', async () => {
-      const restoreResult = await restoringWallet.restore(TEST_PASSWORD);
+      const restoreResult = await restoringWallet.restore(TEST_WALLET.password);
       expect(restoreResult.asApplicationWallet).to.deep.eq(deployedWallet.asApplicationWallet);
     });
   });
@@ -52,11 +52,11 @@ describe('INT: RestoringWallet', () => {
       await sdk['fetchFutureWalletFactory']();
       sdk['futureWalletFactory']!['getKeyPair'] = createKeyPair;
       deployedWallet = await createdDeployedWallet(ensName, sdk, wallet);
-      restoringWallet = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, deployedWallet.name, deployedWallet.contractAddress, sdk);
+      restoringWallet = new RestoringWallet(TEST_WALLET.encryptedWallet, deployedWallet.name, deployedWallet.contractAddress, sdk);
     });
 
     it('throw error if key is not owner', async () => {
-      await expect(restoringWallet.restore(TEST_PASSWORD)).to.be.rejectedWith(`Private key is not contract's ${deployedWallet.contractAddress} owner`);
+      await expect(restoringWallet.restore(TEST_WALLET.password)).to.be.rejectedWith(`Private key is not contract's ${deployedWallet.contractAddress} owner`);
     });
 
     it('invalid password', async () => {
