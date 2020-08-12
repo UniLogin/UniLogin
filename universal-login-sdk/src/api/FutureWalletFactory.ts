@@ -30,8 +30,12 @@ export class FutureWalletFactory {
     return new FutureWallet(wallet, this.sdk, this.ensService, this.config.relayerAddress, this.config.fallbackHandlerAddress, this.balanceChecker);
   }
 
+  private getKeyPair() {
+    return createKeyPair();
+  }
+
   async createNew(ensName: string, gasPrice: string, gasToken: string): Promise<FutureWallet> {
-    const {privateKey, publicKey} = createKeyPair();
+    const {privateKey, publicKey} = this.getKeyPair();
     const initializeData = await setupInitData({publicKey, ensName, gasPrice, gasToken, ensService: this.ensService, relayerAddress: this.config.relayerAddress, fallbackHandler: this.config.fallbackHandlerAddress});
     const contractAddress = computeGnosisCounterfactualAddress(this.config.factoryAddress, 1, initializeData, this.config.walletContractAddress);
     const storedFutureWallet = {

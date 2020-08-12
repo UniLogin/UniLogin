@@ -21,7 +21,7 @@ describe('E2E: Relayer - encrypted wallet', () => {
   before(async () => {
     ({relayer} = await startRelayer(relayerPort));
     emailConfirmationsStore = new EmailConfirmationsStore(relayer.database);
-    const emailConfirmation = createTestEmailConfirmation(email);
+    const emailConfirmation = createTestEmailConfirmation({email});
     await emailConfirmationsStore.add({...emailConfirmation, isConfirmed: true});
     code = emailConfirmation.code;
   });
