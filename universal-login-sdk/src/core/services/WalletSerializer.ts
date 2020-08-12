@@ -23,6 +23,13 @@ export class WalletSerializer {
             ensName: state.wallet.ensName,
           },
         };
+      case 'RequestedRestoring':
+        return {
+          kind: 'RequestedRestoring',
+          wallet: {
+            ensNameOrEmail: state.wallet.ensNameOrEmail,
+          },
+        };
       case 'Confirmed':
         return {
           kind: 'Confirmed',
