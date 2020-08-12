@@ -1,18 +1,18 @@
-import {ApplicationWallet, SerializableFutureWallet, SerializableConfirmedWallet, SerializableRequestedWallet} from '@unilogin/commons';
+import {ApplicationWallet, SerializableFutureWallet, SerializableConfirmedWallet, SerializableRequestedCreatingWallet} from '@unilogin/commons';
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 import {DeployedWallet} from '../../api/wallet/DeployedWallet';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
-import {RequestedWallet} from '../../api/wallet/RequestedWallet';
+import {RequestedCreatingWallet} from '../../api/wallet/RequestedCreatingWallet';
 
 export type SerializedDeployingWallet = ApplicationWallet & {deploymentHash: string};
 
 export type WalletState = {
   kind: 'None';
 } | {
-  kind: 'Requested';
-  wallet: RequestedWallet;
+  kind: 'RequestedCreating';
+  wallet: RequestedCreatingWallet;
 } | {
   kind: 'Confirmed';
   wallet: ConfirmedWallet;
@@ -35,8 +35,8 @@ export type WalletState = {
 export type SerializedWalletState = {
   kind: 'None';
 } | {
-  kind: 'Requested';
-  wallet: SerializableRequestedWallet;
+  kind: 'RequestedCreating';
+  wallet: SerializableRequestedCreatingWallet;
 } | {
   kind: 'Confirmed';
   wallet: SerializableConfirmedWallet;

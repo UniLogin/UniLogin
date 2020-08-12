@@ -8,7 +8,7 @@ import {DeployedWallet} from '../../../src/api/wallet/DeployedWallet';
 import {FutureWallet} from '../../../src/api/wallet/FutureWallet';
 import {DeployingWallet} from '../../../src';
 import {TEST_STORAGE_KEY} from '../../helpers/constants';
-import {RequestedWallet} from '../../../src/api/wallet/RequestedWallet';
+import {RequestedCreatingWallet} from '../../../src/api/wallet/RequestedCreatingWallet';
 import {ConfirmedWallet} from '../../../src/api/wallet/ConfirmedWallet';
 
 chai.use(chaiAsPromised);
@@ -162,8 +162,8 @@ describe('UNIT: WalletService', () => {
 
   it('e-mail flow roundtrip', () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
-    walletService.setRequested(new RequestedWallet(sdk, 'name@gmail.com', 'name.myklogin.eth'));
-    expect(walletService.state.kind).to.eq('Requested');
+    walletService.setRequested(new RequestedCreatingWallet(sdk, 'name@gmail.com', 'name.myklogin.eth'));
+    expect(walletService.state.kind).to.eq('RequestedCreating');
     const confirmedWallet = new ConfirmedWallet('name@gmail.com', 'name.myklogin.eth', '111111');
     walletService.setConfirmed(confirmedWallet);
     expect(walletService.state.kind).to.eq('Confirmed');

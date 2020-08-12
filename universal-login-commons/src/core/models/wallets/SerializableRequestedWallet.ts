@@ -1,11 +1,11 @@
 import {asObject, asString} from '@restless/sanitizers';
 
-export interface SerializableRequestedWallet {
+export interface SerializableRequestedCreatingWallet {
   email: string;
   ensName: string;
 }
 
-export const asSerializableRequestedWallet = asObject<SerializableRequestedWallet>({
+export const asSerializableRequestedCreatingWallet = asObject<SerializableRequestedCreatingWallet>({
   email: asString,
   ensName: asString,
 });

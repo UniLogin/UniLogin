@@ -70,7 +70,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
               onConnectClick={() => console.log('connect not supported yet!')}
               onCreateClick={async (email: string, ensName: string) => {
                 try {
-                  const requestPromise = props.walletService.createRequestedWallet(email, ensName);
+                  const requestPromise = props.walletService.createRequestedCreatingWallet(email, ensName);
                   history.push('/code');
                   await requestPromise;
                 } catch (e) {
