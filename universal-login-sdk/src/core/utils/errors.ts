@@ -24,7 +24,8 @@ type ErrorType =
   'UnexpectedError' |
   'InvalidGasLimit' |
   'InvalidObserverState' |
-  'SavingFutureWalletFailed';
+  'SavingFutureWalletFailed' |
+  'InvalidPrivateKey';
 
 export class SDKError extends Error {
   errorType: ErrorType;
@@ -119,6 +120,13 @@ export class InvalidEvent extends ValidationFailed {
   constructor(eventType: string) {
     super(`Unknown event type: ${eventType}`, 'InvalidEvent');
     Object.setPrototypeOf(this, InvalidEvent.prototype);
+  }
+}
+
+export class InvalidPrivateKey extends ValidationFailed {
+  constructor(contractAddress: string) {
+    super(`Private key is not contract's ${contractAddress} owner`, 'InvalidPrivateKey');
+    Object.setPrototypeOf(this, InvalidPrivateKey.prototype);
   }
 }
 
