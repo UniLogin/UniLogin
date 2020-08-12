@@ -15,7 +15,7 @@ describe('INT: RestoringWallet', () => {
       encryptedWallet: TEST_ENCRYPTED_WALLET_JSON,
       contractAddress: TEST_CONTRACT_ADDRESS,
       ensName,
-    }
+    };
     expect(restoringWallet.asSerializableRestoringWallet).to.deep.eq(expectedRestoringWallet);
   });
 
