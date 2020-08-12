@@ -10,6 +10,7 @@ import DeploymentHandler from '../../core/services/execution/deployment/Deployme
 import {FutureWalletHandler} from '../../core/services/FutureWalletHandler';
 import {ApiKeyHandler} from '../../core/services/execution/ApiKeyHandler';
 import {EncryptedWalletHandler} from '../../core/services/EncryptedWalletHandler';
+import {RestoreWalletHandler} from '../../core/services/RestoreWalletHandler';
 
 const messageHandling = (messageHandler: MessageHandler, apiKeyHandler: ApiKeyHandler) =>
   async (data: {headers: {api_key: string | undefined}, body: SignedMessage}) => {
@@ -53,12 +54,19 @@ const encryptedWalletHandling = (encryptedWalletHandler: EncryptedWalletHandler)
     return responseOf({email}, 201);
   };
 
+const restoreWalletHandling = (restoreWalletHandler: RestoreWalletHandler) =>
+  async (data: {email: string, headers: {code: string}}) => {
+    const storedEncryptedWallet = await restoreWalletHandler.handle(data.email, data.headers.code);
+    return responseOf({storedEncryptedWallet}, 200);
+  };
+
 export default (
   deploymentHandler: DeploymentHandler,
   messageHandler: MessageHandler,
   futureWalletHandler: FutureWalletHandler,
   apiKeyHandler: ApiKeyHandler,
   encryptedWalletHandler: EncryptedWalletHandler,
+  restoreWalletHandler: RestoreWalletHandler,
 ) => {
   const router = Router();
 
@@ -126,6 +134,14 @@ export default (
       body: asStoredEncryptedWallet,
     }),
     encryptedWalletHandling(encryptedWalletHandler),
+  ));
+
+  router.get('/restore/:email', asyncHandler(
+    sanitize({
+      headers: asObject({code: asString}),
+      email: asString,
+    }),
+    restoreWalletHandling(restoreWalletHandler),
   ));
 
   return router;

@@ -19,7 +19,7 @@ describe('UNIT: EmailConfirmationValidator', () => {
 
   it('email is confirmed', async () => {
     const confirmedEmailConfirmation = {...emailConfirmation, isConfirmed: true};
-    expect(() => validator.validate(confirmedEmailConfirmation, email, code)).throws('Email already used: account@unilogin.test');
+    expect(() => validator.validate(confirmedEmailConfirmation, email, code)).throws('Unexpected confirmation from email: account@unilogin.test');
   });
 
   it('email is not confirmed validate fails', async () => {

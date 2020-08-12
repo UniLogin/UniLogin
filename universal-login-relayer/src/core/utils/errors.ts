@@ -1,5 +1,5 @@
 type ErrorType =
-  'DuplicatedEmailConfirmation' |
+  'UnexpectedConfirmation' |
   'DuplicatedSignature' |
   'DuplicatedExecution' |
   'EnsNameTaken' |
@@ -164,10 +164,10 @@ export class InvalidRefundReceiver extends ValidationFailed {
   }
 }
 
-export class DuplicatedEmailConfirmation extends ValidationFailed {
+export class UnexpectedConfirmation extends ValidationFailed {
   constructor(email: string) {
-    super(`Email already used: ${email}`, 'DuplicatedEmailConfirmation');
-    Object.setPrototypeOf(this, DuplicatedEmailConfirmation.prototype);
+    super(`Unexpected confirmation from email: ${email}`, 'UnexpectedConfirmation');
+    Object.setPrototypeOf(this, UnexpectedConfirmation.prototype);
   }
 }
 

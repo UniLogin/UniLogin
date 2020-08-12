@@ -6,6 +6,7 @@ import {TEST_ENCRYPTED_WALLET_JSON, StoredEncryptedWallet} from '@unilogin/commo
 import {expect} from 'chai';
 import {createTestEmailConfirmation} from '../../testhelpers/createTestEmailConfirmation';
 import {EmailConfirmationValidator} from '../../../src/core/services/validators/EmailConfirmationValidator';
+import {clearDatabase} from '../../../src/http/relayers/RelayerUnderTest';
 
 describe('INT: EncryptedWalletHandler', () => {
   const confirmedEmail = 'confirmed@email.com';
@@ -15,7 +16,7 @@ describe('INT: EncryptedWalletHandler', () => {
   let confirmationCode: string;
   const knex = getKnexConfig();
 
-  before(() => {
+  before(async () => {
     const emailConfirmationsStore = new EmailConfirmationsStore(knex);
     const encryptedWalletsStore = new EncryptedWalletsStore(knex);
     encryptedWalletHandler = new EncryptedWalletHandler(emailConfirmationsStore, new EmailConfirmationValidator(), encryptedWalletsStore);
@@ -29,8 +30,8 @@ describe('INT: EncryptedWalletHandler', () => {
       walletJSON: TEST_ENCRYPTED_WALLET_JSON,
     };
 
-    emailConfirmationsStore.add(emailConfirmation);
-    emailConfirmationsStore.add({...emailConfirmation, email: confirmedEmail, isConfirmed: true});
+    await emailConfirmationsStore.add(emailConfirmation);
+    await emailConfirmationsStore.add({...emailConfirmation, email: confirmedEmail, isConfirmed: true});
   });
 
   it('Should handle wallet with confirmed email', async () => {
@@ -46,6 +47,7 @@ describe('INT: EncryptedWalletHandler', () => {
   });
 
   after(async () => {
+    await clearDatabase(knex);
     await knex.destroy();
   });
 });
