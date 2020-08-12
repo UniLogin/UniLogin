@@ -2,14 +2,14 @@ import {expect} from 'chai'; ;
 import sinon from 'sinon';
 import {MockProvider} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@unilogin/relayer';
-import {RequestedWallet} from '../../../src/api/wallet/RequestedWallet';
+import {RequestedCreatingWallet} from '../../../src/api/wallet/RequestedCreatingWallet';
 import UniLoginSdk from '../../../src';
 import {setupSdk} from '../../helpers';
 
-describe('INT: RequestedWallet', () => {
+describe('INT: RequestedCreatingWallet', () => {
   let sdk: UniLoginSdk;
   let relayer: RelayerUnderTest;
-  let requestedWallet: RequestedWallet;
+  let requestedWallet: RequestedCreatingWallet;
 
   const email = 'account@unilogin.test';
   const ensName = 'account.unilogin.test';
@@ -17,11 +17,11 @@ describe('INT: RequestedWallet', () => {
   beforeEach(async () => {
     const [wallet] = new MockProvider().getWallets();
     ({relayer, sdk} = await setupSdk(wallet));
-    requestedWallet = new RequestedWallet(sdk, email, ensName);
+    requestedWallet = new RequestedCreatingWallet(sdk, email, ensName);
   });
 
-  it('asSerializableRequestedWallet', () => {
-    expect(requestedWallet.asSerializableRequestedWallet).deep.eq({email, ensName});
+  it('asSerializableRequestedCreatingWallet', () => {
+    expect(requestedWallet.asSerializableRequestedCreatingWallet).deep.eq({email, ensName});
   });
 
   it('roundtrip', async () => {

@@ -2,10 +2,10 @@ import {Router} from 'express';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject} from '@restless/sanitizers';
 import {EmailConfirmationHandler} from '../../core/services/EmailConfirmationHandler';
-import {asSerializableRequestedWallet, SerializableRequestedWallet} from '@unilogin/commons';
+import {asSerializableRequestedCreatingWallet, SerializableRequestedCreatingWallet} from '@unilogin/commons';
 
 const emailConfirmationRequest = (emailConfirmationHandler: EmailConfirmationHandler) =>
-  async (data: {body: SerializableRequestedWallet}) => {
+  async (data: {body: SerializableRequestedCreatingWallet}) => {
     const {email, ensName} = data.body;
     const result = await emailConfirmationHandler.request(email, ensName);
     return responseOf({email: result}, 201);
@@ -21,9 +21,9 @@ const emailConfirmationHandling = (emailConfirmationHandler: EmailConfirmationHa
 export default (emailConfirmationHandler: EmailConfirmationHandler) => {
   const router = Router();
 
-  router.post('/request', asyncHandler(
+  router.post('/request/creating', asyncHandler(
     sanitize({
-      body: asSerializableRequestedWallet,
+      body: asSerializableRequestedCreatingWallet,
     }),
     emailConfirmationRequest(emailConfirmationHandler),
   ));

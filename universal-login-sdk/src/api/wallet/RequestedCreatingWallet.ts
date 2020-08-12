@@ -1,14 +1,14 @@
-import {SerializableRequestedWallet} from '@unilogin/commons';
+import {SerializableRequestedCreatingWallet} from '@unilogin/commons';
 import UniLoginSdk from '../sdk';
 
-export class RequestedWallet implements SerializableRequestedWallet {
+export class RequestedCreatingWallet implements SerializableRequestedCreatingWallet {
   constructor(
     readonly sdk: UniLoginSdk,
     readonly email: string,
     readonly ensName: string,
   ) {}
 
-  get asSerializableRequestedWallet(): SerializableRequestedWallet {
+  get asSerializableRequestedCreatingWallet(): SerializableRequestedCreatingWallet {
     return {
       email: this.email,
       ensName: this.ensName,
@@ -16,7 +16,7 @@ export class RequestedWallet implements SerializableRequestedWallet {
   }
 
   requestEmailConfirmation() {
-    return this.sdk.relayerApi.requestEmailConfirmation(this.asSerializableRequestedWallet);
+    return this.sdk.relayerApi.requestEmailConfirmation(this.asSerializableRequestedCreatingWallet);
   }
 
   confirmEmail(code: string) {

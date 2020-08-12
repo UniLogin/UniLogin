@@ -101,13 +101,13 @@ describe('WalletStorageService', () => {
     expect(service.load()).to.deep.eq({kind: 'Deployed', wallet: applicationWallet});
   });
 
-  it('saves and loads RequestedWallet', () => {
+  it('saves and loads RequestedCreatingWallet', () => {
     const storage = new MemoryStorageService();
     const service = new WalletStorageService(storage, 'ganache');
     expect(service.load()).to.deep.eq({kind: 'None'});
 
-    service.save({kind: 'Requested', wallet: {email: 'name@gmail.com', ensName: 'name.unilogin.eth'}});
-    expect(service.load()).to.deep.eq({kind: 'Requested', wallet: {email: 'name@gmail.com', ensName: 'name.unilogin.eth'}});
+    service.save({kind: 'RequestedCreating', wallet: {email: 'name@gmail.com', ensName: 'name.unilogin.eth'}});
+    expect(service.load()).to.deep.eq({kind: 'RequestedCreating', wallet: {email: 'name@gmail.com', ensName: 'name.unilogin.eth'}});
   });
 
   it('saves and loads ConfirmedWallet', () => {

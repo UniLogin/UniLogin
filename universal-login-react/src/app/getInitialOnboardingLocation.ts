@@ -14,7 +14,7 @@ export const getInitialOnboardingLocation = (state: WalletState): string | Locat
     case 'Future':
     case 'Deploying':
       return '/create';
-    case 'Requested':
+    case 'RequestedCreating':
     case 'Confirmed':
     case 'Deployed':
       throw new UnexpectedWalletState(state.kind);
@@ -25,7 +25,7 @@ export const getInitialEmailOnboardingLocation = (state: WalletState): string | 
   switch (state.kind) {
     case 'None':
       return '/email';
-    case 'Requested':
+    case 'RequestedCreating':
       return '/code';
     case 'Confirmed':
     case 'Future':

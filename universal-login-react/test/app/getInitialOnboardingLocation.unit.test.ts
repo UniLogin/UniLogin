@@ -43,8 +43,8 @@ describe('UNIT: getInitialEmailOnboardingLocation', () => {
     expect(getInitialEmailOnboardingLocation(walletState)).to.eq('/email');
   });
 
-  it('Requested', () => {
-    const walletState = createTestWalletState('Requested');
+  it('RequestedCreating', () => {
+    const walletState = createTestWalletState('RequestedCreating');
     expect(getInitialEmailOnboardingLocation(walletState)).to.eq('/code');
   });
 
