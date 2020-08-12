@@ -1,5 +1,5 @@
 import {asObject, asString, asNumber} from '@restless/sanitizers';
-import {StoredEncryptedWallet, EncryptedWallet, Crypto, CipherParams, KdfParams} from '../../models/StoredEncryptedWallet';
+import {StoredEncryptedWallet, EncryptedWallet, Crypto, CipherParams, KdfParams} from '../../models/wallets/StoredEncryptedWallet';
 
 export const asKdfParams = asObject<KdfParams>({
   salt: asString,

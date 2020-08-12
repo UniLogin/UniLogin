@@ -8,7 +8,7 @@ export {testJsonRpcUrl, TEST_ACCOUNT_ADDRESS, TEST_APPLICATION_INFO, TEST_CONTRA
 export {DEFAULT_LOCATION, KEY_CODE_ESCAPE, UNIVERSAL_LOGIN_LOGO_URL, UNILOGIN_LOGO_WITH_NAME_URL, EMPTY_LOGO} from './core/constants/ui';
 export {WalletVersion, WALLET_MASTER_VERSIONS} from './core/constants/walletMasterVersions';
 export {PROXY_VERSIONS, ProxyVersion} from './core/constants/proxyVersions';
-export {ApplicationWallet} from './core/models/ApplicationWallet';
+export {ApplicationWallet} from './core/models/wallets/ApplicationWallet';
 export * from './core/models/ContractJSON';
 export {CurrencyToValue, ObservedCurrency, TokensPrices} from './core/models/CurrencyData';
 export {DeployArgs} from './core/models/deploy';
@@ -23,13 +23,13 @@ export {LocalizationConfig, RampConfig, RampOverrides, SafelloConfig, WyreConfig
 export {asRampOverrides} from './core/utils/sanitizers/asRampOverrides';
 export {ContractWhiteList, OnRampConfig, PublicRelayerConfig, SupportedToken} from './core/models/relayer';
 export {RelayerRequest} from './core/models/relayerRequest';
-export {asStoredFutureWalletRequest, SerializableFutureWallet, StoredFutureWallet, StoredFutureWalletRequest} from './core/models/SerializableFutureWallet';
-export {asSerializableRequestedWallet, SerializableRequestedWallet} from './core/models/SerializableRequestedWallet';
-export {asSerializableConfirmedWallet, SerializableConfirmedWallet} from './core/models/SerializableConfirmedWallet';
+export {asStoredFutureWalletRequest, SerializableFutureWallet, StoredFutureWallet, StoredFutureWalletRequest} from './core/models/wallets/SerializableFutureWallet';
+export {asSerializableRequestedWallet, SerializableRequestedWallet} from './core/models/wallets/SerializableRequestedWallet';
+export {asSerializableConfirmedWallet, SerializableConfirmedWallet} from './core/models/wallets/SerializableConfirmedWallet';
 export {Suggestions} from './core/models/Suggestions';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
 export {TransactionOverrides, TransferDetails} from './core/models/transactions';
-export {StoredEncryptedWallet} from './core/models/StoredEncryptedWallet';
+export {StoredEncryptedWallet} from './core/models/wallets/StoredEncryptedWallet';
 export {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from './core/models/WalletSuggestionAction';
 export {EmailConfirmation} from './core/models/EmailConfirmation';
 export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsService';
