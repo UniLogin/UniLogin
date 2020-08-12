@@ -21,7 +21,7 @@ describe('E2E: Relayer - restore wallet', () => {
 
   it('returns 201 if encrypted wallet is valid', async () => {
     const confirmationRequestResult = await chai.request(relayerUrl)
-      .post('/email/request')
+      .post('/email/request/creating')
       .send({email, ensName});
     expect(confirmationRequestResult.status).to.eq(201);
 
@@ -37,7 +37,7 @@ describe('E2E: Relayer - restore wallet', () => {
     expect(result.status).to.eq(201);
 
     const confirmationRequestResult2 = await chai.request(relayerUrl)
-      .post('/email/request')
+      .post('/email/request/creating')
       .send({email, ensName});
     expect(confirmationRequestResult2.status).to.eq(201);
 
@@ -50,7 +50,7 @@ describe('E2E: Relayer - restore wallet', () => {
 
   it('return 400 if confirmation code was not requested and previous code is used', async () => {
     const confirmationRequestResult = await chai.request(relayerUrl)
-      .post('/email/request')
+      .post('/email/request/creating')
       .send({email, ensName});
     expect(confirmationRequestResult.status).to.eq(201);
 

@@ -154,8 +154,8 @@ describe('INT: WalletService', () => {
       expect(walletService.state).to.deep.eq({kind: 'None'});
       let sentCode: string;
       mockSendConfirmation(relayer, (code: string) => {sentCode = code;});
-      const promise = walletService.createRequestedWallet(email, ensName);
-      expect(walletService.state).to.deep.include({kind: 'Requested'});
+      const promise = walletService.createRequestedCreatingWallet(email, ensName);
+      expect(walletService.state).to.deep.include({kind: 'RequestedCreating'});
       await promise;
       await expect(walletService.confirmCode('12345')).to.be.rejectedWith('Error: Invalid code: 12345');
       const confirmEmailResult = await walletService.confirmCode(sentCode!);
@@ -173,13 +173,13 @@ describe('INT: WalletService', () => {
       const email = 'name@gmail.com';
       expect(walletService.state).to.deep.eq({kind: 'None'});
       mockSendConfirmation(relayer, () => {throw new Error('Something happened');});
-      const promise = walletService.createRequestedWallet(email, 'name.unilogin.eth');
-      expect(walletService.state).to.deep.include({kind: 'Requested'});
+      const promise = walletService.createRequestedCreatingWallet(email, 'name.unilogin.eth');
+      expect(walletService.state).to.deep.include({kind: 'RequestedCreating'});
       await expect(promise).to.be.eventually.rejectedWith('Something happened');
-      expect(walletService.state).to.deep.include({kind: 'Requested'});
+      expect(walletService.state).to.deep.include({kind: 'RequestedCreating'});
       let sentCode: string;
       mockSendConfirmation(relayer, (code: string) => {sentCode = code;});
-      await walletService.getRequestedWallet().requestEmailConfirmation();
+      await walletService.getRequestedCreatingWallet().requestEmailConfirmation();
       const confirmEmailResult = await walletService.confirmCode(sentCode!);
       expect(confirmEmailResult).deep.include({email, code: sentCode!});
       expect(walletService.state).to.deep.include({kind: 'Confirmed'});

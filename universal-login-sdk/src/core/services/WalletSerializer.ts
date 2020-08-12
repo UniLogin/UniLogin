@@ -2,7 +2,7 @@ import {SerializedWalletState, WalletState} from '../models/WalletService';
 import UniLoginSdk, {DeployedWallet} from '../..';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
-import {RequestedWallet} from '../../api/wallet/RequestedWallet';
+import {RequestedCreatingWallet} from '../../api/wallet/RequestedCreatingWallet';
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 
 export class WalletSerializer {
@@ -14,9 +14,9 @@ export class WalletSerializer {
     switch (state.kind) {
       case 'None':
         return {kind: 'None'};
-      case 'Requested':
+      case 'RequestedCreating':
         return {
-          kind: 'Requested',
+          kind: 'RequestedCreating',
           wallet: {
             email: state.wallet.email,
             ensName: state.wallet.ensName,
@@ -70,10 +70,10 @@ export class WalletSerializer {
     switch (state.kind) {
       case 'None':
         return {kind: 'None'};
-      case 'Requested':
+      case 'RequestedCreating':
         return {
-          kind: 'Requested',
-          wallet: new RequestedWallet(this.sdk, state.wallet.email, state.wallet.ensName),
+          kind: 'RequestedCreating',
+          wallet: new RequestedCreatingWallet(this.sdk, state.wallet.email, state.wallet.ensName),
         };
       case 'Confirmed':
         return {

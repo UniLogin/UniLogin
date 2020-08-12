@@ -23,7 +23,7 @@ export {asRampOverrides} from './core/utils/sanitizers/asRampOverrides';
 export {ContractWhiteList, OnRampConfig, PublicRelayerConfig, SupportedToken, IPGeolocationApiConfig} from './core/models/relayer';
 export {RelayerRequest} from './core/models/relayerRequest';
 export {asStoredFutureWalletRequest, SerializableFutureWallet, StoredFutureWallet, StoredFutureWalletRequest} from './core/models/wallets/SerializableFutureWallet';
-export {asSerializableRequestedWallet, SerializableRequestedWallet} from './core/models/wallets/SerializableRequestedWallet';
+export {asSerializableRequestedCreatingWallet, SerializableRequestedCreatingWallet} from './core/models/wallets/SerializableRequestedCreatingWallet';
 export {asSerializableConfirmedWallet, SerializableConfirmedWallet} from './core/models/wallets/SerializableConfirmedWallet';
 export {Suggestions} from './core/models/Suggestions';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
