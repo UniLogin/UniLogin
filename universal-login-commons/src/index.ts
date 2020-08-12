@@ -28,7 +28,7 @@ export {asSerializableConfirmedWallet, SerializableConfirmedWallet} from './core
 export {Suggestions} from './core/models/Suggestions';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
 export {TransactionOverrides, TransferDetails} from './core/models/transactions';
-export {StoredEncryptedWallet} from './core/models/wallets/StoredEncryptedWallet';
+export {StoredEncryptedWallet, asStoredEncryptedWallet} from './core/models/wallets/StoredEncryptedWallet';
 export {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from './core/models/WalletSuggestionAction';
 export {EmailConfirmation} from './core/models/EmailConfirmation';
 export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsService';
@@ -65,7 +65,6 @@ export {getSignatureFrom} from './core/utils/messages/signMessage';
 export {hashRelayerRequest, recoverFromRelayerRequest, signRelayerRequest, verifyRelayerRequest} from './core/utils/relayerRequest';
 export {safeMultiply, safeMultiplyAndFormatEther, safeMultiplyDecimalsAndFormatEther, safeDivide} from './core/utils/safeMultiply';
 export {asApplicationInfo, asDeviceType} from './core/utils/sanitizers/asApplicationInfo';
-export {asStoredEncryptedWallet} from './core/utils/sanitizers/asStoredEncryptedWallet';
 export {asDeploymentHash, asHexString} from './core/utils/sanitizers/asHexString';
 export {asTransferDetails} from './core/utils/sanitizers/asTransferDetails';
 export {asPartialMessage} from './core/utils/sanitizers/asPartialMessage';
