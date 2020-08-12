@@ -21,7 +21,7 @@ describe('INT: EncryptedWalletHandler', () => {
     const encryptedWalletsStore = new EncryptedWalletsStore(knex);
     encryptedWalletHandler = new EncryptedWalletHandler(emailConfirmationsStore, new EmailConfirmationValidator(), encryptedWalletsStore);
 
-    const emailConfirmation = createTestEmailConfirmation(notConfirmedEmail);
+    const emailConfirmation = createTestEmailConfirmation({email: notConfirmedEmail});
     confirmationCode = emailConfirmation.code;
 
     storedEncryptedWallet = {

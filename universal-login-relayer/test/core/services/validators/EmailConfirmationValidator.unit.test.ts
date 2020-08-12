@@ -10,7 +10,7 @@ describe('UNIT: EmailConfirmationValidator', () => {
   let validator: EmailConfirmationValidator;
   const codeDuration = 5;
 
-  const emailConfirmation = createTestEmailConfirmation();
+  const emailConfirmation = createTestEmailConfirmation({});
   const {email, code} = emailConfirmation;
 
   before(() => {
