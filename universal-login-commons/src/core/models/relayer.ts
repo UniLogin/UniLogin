@@ -1,5 +1,4 @@
 import {LocalizationConfig, SafelloConfig, RampConfig, WyreConfig} from './onRamp';
-import {IPGeolocationApiConfig} from './IPGeolocationApiConfig';
 
 export interface SupportedToken {
   address: string;
@@ -15,6 +14,11 @@ export interface OnRampConfig {
   safello: SafelloConfig;
   ramp: RampConfig;
   wyre: WyreConfig;
+}
+
+export interface IPGeolocationApiConfig {
+  baseUrl: string;
+  accessKey: string;
 }
 
 export interface PublicRelayerConfig {
