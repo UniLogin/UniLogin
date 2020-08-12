@@ -7,6 +7,12 @@ export class RequestedRestoringWallet implements SerializableRequestedRestoringW
     readonly ensNameOrEmail: string,
   ) {};
 
+  get asSerializableRequestedRestoringWallet(): SerializableRequestedRestoringWallet {
+    return {
+      ensNameOrEmail: this.ensNameOrEmail,
+    };
+  }
+
   requestEmailConfirmation(serializableRequestedRestoringWallet: SerializableRequestedRestoringWallet) {
     return this.sdk.relayerApi.requestEmailConfirmationForRestoring(serializableRequestedRestoringWallet)
   };
