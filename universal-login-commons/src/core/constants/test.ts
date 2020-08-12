@@ -165,3 +165,10 @@ export const TEST_ENCRYPTED_WALLET_JSON: EncryptedWallet = {
 };
 
 export const TEST_PASSWORD = 'testPassword';
+
+export const TEST_WALLET = {
+  encryptedWallet: TEST_ENCRYPTED_WALLET_JSON,
+  password: TEST_PASSWORD,
+  privateKey: '0xbaecec27b151e3aace7cdded79a95cef51a0586689d9e8ea1ce52d54a2c26acc',
+  address: '0x76010666821749B24145D6d792a3038A6de0cD71',
+};
