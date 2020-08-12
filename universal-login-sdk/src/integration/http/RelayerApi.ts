@@ -79,7 +79,7 @@ export class RelayerApi {
   }
 
   requestEmailConfirmation(serializableRequestedWallet: SerializableRequestedWallet) {
-    return this.http('POST', '/email/request', serializableRequestedWallet)
+    return this.http('POST', '/email/request/creating', serializableRequestedWallet)
       .catch((e: any) => {
         throw new Error(e.error);
       });

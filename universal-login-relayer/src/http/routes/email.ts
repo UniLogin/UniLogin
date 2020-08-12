@@ -21,7 +21,7 @@ const emailConfirmationHandling = (emailConfirmationHandler: EmailConfirmationHa
 export default (emailConfirmationHandler: EmailConfirmationHandler) => {
   const router = Router();
 
-  router.post('/request', asyncHandler(
+  router.post('/request/creating', asyncHandler(
     sanitize({
       body: asSerializableRequestedWallet,
     }),

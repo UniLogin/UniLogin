@@ -14,7 +14,7 @@ describe('E2E: Relayer - Email Confirmation', () => {
   describe('missing parameter', () => {
     it('/request', async () => {
       const result = await chai.request(relayerUrl)
-        .post('/email/request');
+        .post('/email/request/creating');
       expect(result.status).to.eq(400);
     });
 
@@ -38,7 +38,7 @@ describe('E2E: Relayer - Email Confirmation', () => {
     });
 
     const confirmationRequestResult = await chai.request(relayerUrl)
-      .post('/email/request')
+      .post('/email/request/creating')
       .send({email, ensName: 'hello.unilogin.eth'});
     expect(confirmationRequestResult.status).to.eq(201);
     expect(confirmationRequestResult.body).to.deep.eq({email});
