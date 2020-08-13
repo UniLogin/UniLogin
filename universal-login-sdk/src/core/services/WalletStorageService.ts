@@ -1,6 +1,6 @@
 import {providers} from 'ethers';
 import {asAnyOf, asObject, asString, cast, asExactly} from '@restless/sanitizers';
-import {ApplicationWallet, SerializableFutureWallet, Network, ProviderService, asSerializableConfirmedWallet, asSerializableRequestedCreatingWallet} from '@unilogin/commons';
+import {ApplicationWallet, SerializableFutureWallet, Network, ProviderService, asSerializableConfirmedWallet, asSerializableRequestedCreatingWallet, asSerializableRestoringWallet} from '@unilogin/commons';
 import {WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';
@@ -81,6 +81,10 @@ const asSerializedState = asAnyOf([
   asObject<SerializedWalletState>({
     kind: asExactly('Confirmed'),
     wallet: asSerializableConfirmedWallet,
+  }),
+  asObject<SerializedWalletState>({
+    kind: asExactly('Restoring'),
+    wallet: asSerializableRestoringWallet,
   }),
   asObject<SerializedWalletState>({
     kind: asExactly('Future'),

@@ -6,9 +6,9 @@ import {InvalidPrivateKey} from '../../core/utils/errors';
 
 export class RestoringWallet {
   constructor(
-    private encryptedWallet: EncryptedWallet,
-    private ensName: string,
-    private contractAddress: string,
+    readonly encryptedWallet: EncryptedWallet,
+    readonly ensName: string,
+    readonly contractAddress: string,
     private sdk: UniLoginSdk) {}
 
   get asSerializableRestoringWallet(): SerializableRestoringWallet {
