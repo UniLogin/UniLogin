@@ -7,17 +7,19 @@ describe('INT: EncryptedWalletsStore', () => {
   const knex = getKnexConfig();
   const encryptedWalletsStore = new EncryptedWalletsStore(knex);
 
-  it('Should add encryptedWallet to database and get it from it', async () => {
+  it('Should add encryptedWallet to database and get it from it by email and ensName', async () => {
     const exampleEmail = 'encryptedWallet@email.com';
-    const encryptedWallets: StoredEncryptedWallet = {
+    const exampleEnsName = 'bob.unilogin.eth';
+    const encryptedWallet: StoredEncryptedWallet = {
       walletJSON: TEST_ENCRYPTED_WALLET_JSON,
       email: exampleEmail,
-      ensName: 'bob.unilogin.eth',
+      ensName: exampleEnsName,
     };
 
-    const email = await encryptedWalletsStore.add(encryptedWallets);
+    const email = await encryptedWalletsStore.add(encryptedWallet);
     expect(email).be.deep.eq(exampleEmail);
-    expect(await encryptedWalletsStore.get(email)).be.deep.eq(encryptedWallets);
+    expect(await encryptedWalletsStore.get(email)).be.deep.eq(encryptedWallet);
+    expect(await encryptedWalletsStore.get(exampleEnsName)).be.deep.eq(encryptedWallet);
   });
 
   it('Should fail when adding duplicated email', async () => {

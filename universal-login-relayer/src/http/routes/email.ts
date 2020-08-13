@@ -11,6 +11,13 @@ const emailConfirmationRequest = (emailConfirmationHandler: EmailConfirmationHan
     return responseOf({email: result}, 201);
   };
 
+const emailConfirmationForRestoreRequest = (emailConfirmationHandler: EmailConfirmationHandler) =>
+  async (data: {body: {ensNameOrEmail: string}}) => {
+    const {ensNameOrEmail} = data.body;
+    const result = await emailConfirmationHandler.requestRestore(ensNameOrEmail);
+    return responseOf({email: result}, 201);
+  };
+
 const emailConfirmationHandling = (emailConfirmationHandler: EmailConfirmationHandler) =>
   async (data: {body: {email: string, code: string}}) => {
     const {email, code} = data.body;
@@ -26,6 +33,15 @@ export default (emailConfirmationHandler: EmailConfirmationHandler) => {
       body: asSerializableRequestedCreatingWallet,
     }),
     emailConfirmationRequest(emailConfirmationHandler),
+  ));
+
+  router.post('/request/restoring', asyncHandler(
+    sanitize({
+      body: asObject({
+        ensNameOrEmail: asString,
+      }),
+    }),
+    emailConfirmationForRestoreRequest(emailConfirmationHandler),
   ));
 
   router.post('/confirmation', asyncHandler(
