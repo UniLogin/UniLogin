@@ -36,10 +36,10 @@ describe('E2E: Relayer - restore wallet', () => {
       .send(storedEncryptedWallet);
     expect(result.status).to.eq(201);
 
-    const confirmationRequestResult2 = await chai.request(relayerUrl)
-      .post('/email/request/creating')
-      .send({email, ensName});
-    expect(confirmationRequestResult2.status).to.eq(201);
+    const confirmationRequestResultForRestoring = await chai.request(relayerUrl)
+      .post('/email/request/restoring')
+      .send({ensNameOrEmail: ensName});
+    expect(confirmationRequestResultForRestoring.status).to.eq(201);
 
     const restoreResult = await chai.request(relayerUrl)
       .get(`/wallet/restore/${email}`)

@@ -135,7 +135,6 @@ class Relayer {
     this.emailConfirmationStore = new EmailConfirmationsStore(this.database);
     this.emailService = new EmailService(this.config.email);
     const emailConfirmationValidator = new EmailConfirmationValidator();
-    const emailConfirmationHandler = new EmailConfirmationHandler(this.emailConfirmationStore, this.emailService, emailConfirmationValidator);
     this.tokenPricesService = new TokenPricesService();
     const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
     const tokenDetailsService = new TokenDetailsService(this.provider);
@@ -152,6 +151,7 @@ class Relayer {
     const deploymentExecutor = new DeploymentExecutor(deploymentRepository, walletService);
     this.executionWorker = new ExecutionWorker([messageExecutor, deploymentExecutor], executionQueue);
     this.encryptedWalletsStore = new EncryptedWalletsStore(this.database);
+    const emailConfirmationHandler = new EmailConfirmationHandler(this.emailConfirmationStore, this.emailService, emailConfirmationValidator, this.encryptedWalletsStore);
     const encryptedWalletHandler = new EncryptedWalletHandler(this.emailConfirmationStore, emailConfirmationValidator, this.encryptedWalletsStore);
     const restoreWalletHandler = new RestoreWalletHandler(this.emailConfirmationStore, emailConfirmationValidator, this.encryptedWalletsStore);
 

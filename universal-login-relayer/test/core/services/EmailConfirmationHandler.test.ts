@@ -6,11 +6,13 @@ import {EmailService} from '../../../src/integration/ethereum/EmailService';
 import {EmailConfirmationValidator} from '../../../src/core/services/validators/EmailConfirmationValidator';
 import {InvalidCode} from '../../../src/core/utils/errors';
 import {createTestEmailConfirmation} from '../../testhelpers/createTestEmailConfirmation';
+import {EncryptedWalletsStore} from '../../../src/integration/sql/services/EncryptedWalletsStore';
 
 describe('UNIT: EmailConfirmationHandler', () => {
   let emailConfirmationStoreStub: sinon.SinonStubbedInstance<EmailConfirmationsStore>;
   let emailServiceStub: sinon.SinonStubbedInstance<EmailService>;
   let emailConfirmationValidatorStub: sinon.SinonStubbedInstance<EmailConfirmationValidator>;
+  let encryptedWalletStore: sinon.SinonStubbedInstance<EncryptedWalletsStore>;
   let emailConfirmationHandler: EmailConfirmationHandler;
 
   const emailConfirmation = createTestEmailConfirmation({});
@@ -26,7 +28,7 @@ describe('UNIT: EmailConfirmationHandler', () => {
     emailConfirmationValidatorStub = sinon.createStubInstance(EmailConfirmationValidator);
 
     emailConfirmationValidatorStub.validate.throws(new InvalidCode(invalidCode)).withArgs(emailConfirmation, emailConfirmation.email, emailConfirmation.code).resolves();
-    emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStoreStub as any, emailServiceStub as any, emailConfirmationValidatorStub as any);
+    emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStoreStub as any, emailServiceStub as any, emailConfirmationValidatorStub as any, encryptedWalletStore);
   });
 
   it('generateValidationCode', () => {
