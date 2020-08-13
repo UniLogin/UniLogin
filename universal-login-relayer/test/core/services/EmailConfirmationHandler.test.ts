@@ -28,7 +28,11 @@ describe('UNIT: EmailConfirmationHandler', () => {
     emailConfirmationValidatorStub = sinon.createStubInstance(EmailConfirmationValidator);
 
     emailConfirmationValidatorStub.validate.throws(new InvalidCode(invalidCode)).withArgs(emailConfirmation, emailConfirmation.email, emailConfirmation.code).resolves();
-    emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationStoreStub as any, emailServiceStub as any, emailConfirmationValidatorStub as any, encryptedWalletStore);
+    emailConfirmationHandler = new EmailConfirmationHandler(
+      emailConfirmationStoreStub as any,
+      emailServiceStub as any,
+      emailConfirmationValidatorStub as any,
+      encryptedWalletStore as any);
   });
 
   it('generateValidationCode', () => {
