@@ -5,6 +5,7 @@ import {DeployingWallet} from '../../api/wallet/DeployingWallet';
 import {RequestedCreatingWallet} from '../../api/wallet/RequestedCreatingWallet';
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 import {RestoringWallet} from '../../api/wallet/RestoringWallet';
+import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
 
 export class WalletSerializer {
   constructor(
@@ -26,9 +27,7 @@ export class WalletSerializer {
       case 'RequestedRestoring':
         return {
           kind: 'RequestedRestoring',
-          wallet: {
-            ensNameOrEmail: state.wallet.ensNameOrEmail,
-          },
+          wallet: state.wallet.asSerializableRequestedRestoringWallet,
         };
       case 'Confirmed':
         return {
@@ -91,6 +90,11 @@ export class WalletSerializer {
         return {
           kind: 'RequestedCreating',
           wallet: new RequestedCreatingWallet(this.sdk, state.wallet.email, state.wallet.ensName),
+        };
+      case 'RequestedRestoring':
+        return {
+          kind: 'RequestedRestoring',
+          wallet: new RequestedRestoringWallet(this.sdk, state.wallet.ensNameOrEmail),
         };
       case 'Confirmed':
         return {

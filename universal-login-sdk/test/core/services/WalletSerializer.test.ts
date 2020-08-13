@@ -6,9 +6,11 @@ import {DeployedWallet, DeployingWallet, FutureWallet} from '../../../src';
 import {Wallet} from 'ethers';
 import {ConnectingWallet} from '../../../src/api/wallet/ConnectingWallet';
 import {RestoringWallet} from '../../../src/api/wallet/RestoringWallet';
+import {RequestedRestoringWallet} from '../../../src/api/wallet/RequestedRestoringWallet';
 
 describe('UNIT: WalletSerializer', () => {
-  const mockSDK = {provider: Wallet.createRandom(),
+  const mockSDK = {
+    provider: Wallet.createRandom(),
     relayerApi: {
       getDeploymentHash: sinon.stub().resolves({transactionHash: TEST_TRANSACTION_HASH, state: 'Success'}),
     },
@@ -63,8 +65,14 @@ describe('UNIT: WalletSerializer', () => {
 
   const TEST_RESTORING_WALLET = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, 'name.mylogin.eth', TEST_CONTRACT_ADDRESS, mockSDK);
 
+  const TEST_REQUESTED_RESTORING = new RequestedRestoringWallet(mockSDK, 'name.mylogin.eth');
+
+  const TEST_SERIALIZED_REQUESTED_RESTORING_WALLET = {
+    ensNameOrEmail: 'name.mylogin.eth',
+  };
+
   describe('serialize', () => {
-    const walletSerializer = new WalletSerializer({} as any);
+    const walletSerializer = new WalletSerializer(mockSDK);
 
     it('for None returns None', () => {
       expect(walletSerializer.serialize({kind: 'None'})).to.deep.eq({kind: 'None'});
@@ -125,6 +133,16 @@ describe('UNIT: WalletSerializer', () => {
       })).to.deep.eq({
         kind: 'Restoring',
         wallet: TEST_SERIALIZED_RESTORING,
+      });
+    });
+
+    it('for RequestedRestoring state returns Restoring', () => {
+      expect(walletSerializer.serialize({
+        kind: 'RequestedRestoring',
+        wallet: TEST_REQUESTED_RESTORING,
+      })).to.deep.eq({
+        kind: 'RequestedRestoring',
+        wallet: TEST_SERIALIZED_REQUESTED_RESTORING_WALLET,
       });
     });
   });
@@ -194,7 +212,18 @@ describe('UNIT: WalletSerializer', () => {
         wallet: TEST_SERIALIZED_RESTORING,
       });
       expect(state.kind).to.eq('Restoring');
+      expect((state as any).wallet).to.to.be.an.instanceof(RestoringWallet);
       expect((state as any).wallet).to.deep.include(TEST_SERIALIZED_RESTORING);
+    });
+
+    it('for RequestedRestoring returns RequestedRestoring', () => {
+      const state = walletSerializer.deserialize({
+        kind: 'RequestedRestoring',
+        wallet: TEST_SERIALIZED_REQUESTED_RESTORING_WALLET,
+      });
+      expect(state.kind).to.eq('RequestedRestoring');
+      expect((state as any).wallet).to.to.be.an.instanceof(RequestedRestoringWallet);
+      expect((state as any).wallet).to.deep.include(TEST_SERIALIZED_REQUESTED_RESTORING_WALLET);
     });
   });
 });
