@@ -1,13 +1,20 @@
 import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
 import {EmailService} from '../../integration/ethereum/EmailService';
 import {EmailConfirmationValidator} from './validators/EmailConfirmationValidator';
+import {EncryptedWalletsStore} from '../../integration/sql/services/EncryptedWalletsStore';
 
 export class EmailConfirmationHandler {
   constructor(
     private emailConfirmationStore: EmailConfirmationsStore,
     private emailService: EmailService,
     private emailValidator: EmailConfirmationValidator,
+    private encryptedWalletStore: EncryptedWalletsStore,
   ) {}
+
+  async requestRestore(ensNameOrEmail: string) {
+    const {email, ensName} = await this.encryptedWalletStore.get(ensNameOrEmail);
+    return this.request(email, ensName);
+  };
 
   async request(email: string, ensName: string) {
     const code = generateValidationCode(6);
