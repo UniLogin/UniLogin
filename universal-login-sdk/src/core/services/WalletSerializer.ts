@@ -4,6 +4,7 @@ import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
 import {RequestedCreatingWallet} from '../../api/wallet/RequestedCreatingWallet';
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
+import {RestoringWallet} from '../../api/wallet/RestoringWallet';
 
 export class WalletSerializer {
   constructor(
@@ -29,6 +30,15 @@ export class WalletSerializer {
             email: state.wallet.email,
             ensName: state.wallet.ensName,
             code: state.wallet.code,
+          },
+        };
+      case 'Restoring':
+        return {
+          kind: 'Restoring',
+          wallet: {
+            encryptedWallet: state.wallet.encryptedWallet,
+            ensName: state.wallet.ensName,
+            contractAddress: state.wallet.contractAddress,
           },
         };
       case 'Future':
@@ -79,6 +89,11 @@ export class WalletSerializer {
         return {
           kind: 'Confirmed',
           wallet: new ConfirmedWallet(state.wallet.email, state.wallet.ensName, state.wallet.code),
+        };
+      case 'Restoring':
+        return {
+          kind: 'Restoring',
+          wallet: new RestoringWallet(state.wallet.encryptedWallet, state.wallet.ensName, state.wallet.contractAddress, this.sdk),
         };
       case 'Future':
         return {

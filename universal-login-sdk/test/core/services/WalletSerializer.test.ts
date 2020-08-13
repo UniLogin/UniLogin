@@ -1,10 +1,11 @@
 import {AssertionError, expect} from 'chai';
 import sinon from 'sinon';
 import {WalletSerializer} from '../../../src/core/services/WalletSerializer';
-import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure, TEST_TRANSACTION_HASH, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ensure, TEST_TRANSACTION_HASH, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, TEST_ENCRYPTED_WALLET_JSON} from '@unilogin/commons';
 import {DeployedWallet, DeployingWallet, FutureWallet} from '../../../src';
 import {Wallet} from 'ethers';
 import {ConnectingWallet} from '../../../src/api/wallet/ConnectingWallet';
+import {RestoringWallet} from '../../../src/api/wallet/RestoringWallet';
 
 describe('UNIT: WalletSerializer', () => {
   const mockSDK = {provider: Wallet.createRandom(),
@@ -53,6 +54,14 @@ describe('UNIT: WalletSerializer', () => {
   );
 
   const TEST_CONNECTING_WALLET = new ConnectingWallet(TEST_CONTRACT_ADDRESS, 'name.mylogin.eth', TEST_PRIVATE_KEY, {} as any);
+
+  const TEST_SERIALIZED_RESTORING = {
+    encryptedWallet: TEST_ENCRYPTED_WALLET_JSON,
+    contractAddress: TEST_CONTRACT_ADDRESS,
+    ensName: 'name.mylogin.eth',
+  };
+
+  const TEST_RESTORING_WALLET = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, 'name.mylogin.eth', TEST_CONTRACT_ADDRESS, mockSDK);
 
   describe('serialize', () => {
     const walletSerializer = new WalletSerializer({} as any);
@@ -106,6 +115,16 @@ describe('UNIT: WalletSerializer', () => {
       })).to.deep.eq({
         kind: 'Connecting',
         wallet: TEST_APPLICATION_WALLET,
+      });
+    });
+
+    it('for Restoring state returns Restoring', () => {
+      expect(walletSerializer.serialize({
+        kind: 'Restoring',
+        wallet: TEST_RESTORING_WALLET,
+      })).to.deep.eq({
+        kind: 'Restoring',
+        wallet: TEST_SERIALIZED_RESTORING,
       });
     });
   });
@@ -167,6 +186,15 @@ describe('UNIT: WalletSerializer', () => {
 
       expect(state.kind).to.eq('Deployed');
       expect((state as any).wallet).to.deep.include(TEST_APPLICATION_WALLET);
+    });
+
+    it('for Restoring returns Restoring', () => {
+      const state = walletSerializer.deserialize({
+        kind: 'Restoring',
+        wallet: TEST_SERIALIZED_RESTORING,
+      });
+      expect(state.kind).to.eq('Restoring');
+      expect((state as any).wallet).to.deep.include(TEST_SERIALIZED_RESTORING);
     });
   });
 });
