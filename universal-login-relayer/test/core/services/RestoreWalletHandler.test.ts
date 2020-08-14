@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import Knex from 'knex';
-import {TEST_ENCRYPTED_WALLET_JSON, StoredEncryptedWallet} from '@unilogin/commons';
+import {TEST_ENCRYPTED_WALLET_JSON, StoredEncryptedWallet, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
 import {getKnexConfig} from '../../testhelpers/knex';
 import {EmailConfirmationsStore} from '../../../src/integration/sql/services/EmailConfirmationsStore';
 import {EncryptedWalletsStore} from '../../../src/integration/sql/services/EncryptedWalletsStore';
@@ -40,7 +40,7 @@ describe('INT: RestoreWalletHandler', () => {
   it('restore wallet roundtrip', async () => {
     await emailConfirmationHandler.request(email, ensName);
     storedEncryptedWallet = {
-      email, ensName, walletJSON: TEST_ENCRYPTED_WALLET_JSON,
+      email, ensName, walletJSON: TEST_ENCRYPTED_WALLET_JSON, contractAddress: TEST_CONTRACT_ADDRESS,
     };
     await emailConfirmationHandler.confirm(email, sentCode);
     await encryptedWalletHandler.handle(storedEncryptedWallet, sentCode);
@@ -52,7 +52,7 @@ describe('INT: RestoreWalletHandler', () => {
   it('negative scenario of restoring wallet', async () => {
     await emailConfirmationHandler.request(email, ensName);
     storedEncryptedWallet = {
-      email, ensName, walletJSON: TEST_ENCRYPTED_WALLET_JSON,
+      email, ensName, walletJSON: TEST_ENCRYPTED_WALLET_JSON, contractAddress: TEST_CONTRACT_ADDRESS,
     };
     await emailConfirmationHandler.confirm(email, sentCode);
     await encryptedWalletHandler.handle(storedEncryptedWallet, sentCode);

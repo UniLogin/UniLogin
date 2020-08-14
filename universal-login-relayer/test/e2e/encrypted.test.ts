@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {TEST_ENCRYPTED_WALLET_JSON, StoredEncryptedWallet} from '@unilogin/commons';
+import {TEST_ENCRYPTED_WALLET_JSON, StoredEncryptedWallet, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
 import {RelayerUnderTest} from '../../src';
 import {startRelayer} from '../testhelpers/http';
 import {createTestEmailConfirmation} from '../testhelpers/createTestEmailConfirmation';
@@ -16,6 +16,7 @@ describe('E2E: Relayer - encrypted wallet', () => {
     email,
     ensName: 'test@unilogin.io',
     walletJSON: TEST_ENCRYPTED_WALLET_JSON,
+    contractAddress: TEST_CONTRACT_ADDRESS,
   };
 
   before(async () => {

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {StoredEncryptedWallet, TEST_ENCRYPTED_WALLET_JSON} from '@unilogin/commons';
+import {StoredEncryptedWallet, TEST_ENCRYPTED_WALLET_JSON, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
 import {getKnexConfig} from '../../testhelpers/knex';
 import {EncryptedWalletsStore} from '../../../src/integration/sql/services/EncryptedWalletsStore';
 
@@ -14,6 +14,7 @@ describe('INT: EncryptedWalletsStore', () => {
       walletJSON: TEST_ENCRYPTED_WALLET_JSON,
       email: exampleEmail,
       ensName: exampleEnsName,
+      contractAddress: TEST_CONTRACT_ADDRESS,
     };
 
     const email = await encryptedWalletsStore.add(encryptedWallet);
@@ -28,6 +29,7 @@ describe('INT: EncryptedWalletsStore', () => {
       walletJSON: TEST_ENCRYPTED_WALLET_JSON,
       email: exampleEmail,
       ensName: 'bob2.unilogin.eth',
+      contractAddress: TEST_CONTRACT_ADDRESS,
     };
 
     const email = await encryptedWalletsStore.add(storedEncryptedWallet);
