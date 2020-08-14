@@ -56,7 +56,7 @@ describe('INT: RestoringWallet', () => {
     });
 
     it('throw error if key is not owner', async () => {
-      await expect(restoringWallet.restore(TEST_WALLET.password)).to.be.rejectedWith('Invalid Password');
+      await expect(restoringWallet.restore(TEST_WALLET.password)).to.be.rejectedWith('Invalid password');
     });
 
     it('invalid password', async () => {
