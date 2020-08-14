@@ -102,6 +102,7 @@ export const App = () => {
                     onConnect={() => console.log('connected')}
                     onCreate={() => history.push('/onboarding/success')}
                     hideModal={() => history.push('/')}
+                    emailFlow={true}
                   />}
               />
               <Route
