@@ -15,6 +15,7 @@ import {WalletStorageService} from './WalletStorageService';
 import {RequestedCreatingWallet} from '../../api/wallet/RequestedCreatingWallet';
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
+import {RestoringWallet} from '../../api/wallet/RestoringWallet';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
@@ -93,6 +94,11 @@ export class WalletService {
 
   getRequestedRestoringWallet() {
     ensure(this.state.kind === 'RequestedRestoring', InvalidWalletState, 'RequestedCreating', this.state.kind);
+    return this.state.wallet;
+  }
+
+  getRestoringWallet() {
+    ensure(this.state.kind === 'Restoring', InvalidWalletState, 'Restoring', this.state.kind);
     return this.state.wallet;
   }
 
@@ -182,6 +188,11 @@ export class WalletService {
   setConfirmed(wallet: ConfirmedWallet) {
     ensure(this.state.kind === 'RequestedCreating', WalletOverridden);
     this.setState({kind: 'Confirmed', wallet});
+  }
+
+  setRestoring(wallet: RestoringWallet) {
+    ensure(this.state.kind === 'Restoring', WalletOverridden);
+    this.setState({kind: 'Restoring', wallet});
   }
 
   setFutureWallet(wallet: FutureWallet, name: string) {
@@ -329,6 +340,7 @@ export class WalletService {
     ensure(this.state.kind !== 'RequestedCreating', InvalidWalletState, 'not RequestedCreating', this.state.kind);
     ensure(this.state.kind !== 'RequestedRestoring', InvalidWalletState, 'not RequestedRestoring', this.state.kind);
     ensure(this.state.kind !== 'Confirmed', InvalidWalletState, 'not Confirmed', this.state.kind);
+    ensure(this.state.kind !== 'Restoring', InvalidWalletState, 'not Restoring', this.state.kind);
     return this.state.wallet.contractAddress;
   }
 }
