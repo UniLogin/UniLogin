@@ -77,7 +77,7 @@ export class WalletService {
   }
 
   async confirmCode(code: string) {
-    ensure(this.state.kind === 'RequestedCreating' || this.state.kind === 'RequestedRestoring', InvalidWalletState, 'RequestedCreating', this.state.kind);
+    ensure(this.state.kind === 'RequestedCreating' || this.state.kind === 'RequestedRestoring', InvalidWalletState, 'RequestedCreating or RequestedRestoring', this.state.kind);
     if (this.state.kind === 'RequestedCreating') {
       const confirmedWallet = await this.state.wallet.confirmEmail(code);
       this.setConfirmed(confirmedWallet);
