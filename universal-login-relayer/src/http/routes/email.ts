@@ -19,10 +19,10 @@ const emailConfirmationForRestoreRequest = (emailConfirmationHandler: EmailConfi
   };
 
 const emailConfirmationHandling = (emailConfirmationHandler: EmailConfirmationHandler) =>
-  async (data: {body: {email: string, code: string}}) => {
-    const {email, code} = data.body;
-    await emailConfirmationHandler.confirm(email, code);
-    return responseOf({email}, 201);
+  async (data: {body: {ensNameOrEmail: string, code: string}}) => {
+    const {ensNameOrEmail, code} = data.body;
+    await emailConfirmationHandler.confirm(ensNameOrEmail, code);
+    return responseOf({ensNameOrEmail}, 201);
   };
 
 export default (emailConfirmationHandler: EmailConfirmationHandler) => {
@@ -47,7 +47,7 @@ export default (emailConfirmationHandler: EmailConfirmationHandler) => {
   router.post('/confirmation', asyncHandler(
     sanitize({
       body: asObject({
-        email: asString,
+        ensNameOrEmail: asString,
         code: asString,
       }),
     }),

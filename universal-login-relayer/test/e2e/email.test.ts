@@ -30,7 +30,7 @@ describe('E2E: Relayer - Email Confirmation', () => {
 
     const notExpectedConfirmationResult = await chai.request(relayerUrl)
       .post('/email/confirmation')
-      .send({email, code: '123456'});
+      .send({ensNameOrEmail: email, code: '123456'});
     expect(notExpectedConfirmationResult.status).to.eq(404);
     expect(notExpectedConfirmationResult.body).to.deep.eq({
       error: `Error: Email confirmation not found for email: ${email}`,
@@ -46,7 +46,7 @@ describe('E2E: Relayer - Email Confirmation', () => {
     const invalidCode = '123456';
     const confirmationResultWrongCode = await chai.request(relayerUrl)
       .post('/email/confirmation')
-      .send({email, code: invalidCode});
+      .send({ensNameOrEmail: email, code: invalidCode});
     expect(confirmationResultWrongCode.status).to.eq(400);
     expect(confirmationResultWrongCode.body).to.deep.eq({
       error: `Error: Invalid code: ${invalidCode}`,
@@ -55,7 +55,7 @@ describe('E2E: Relayer - Email Confirmation', () => {
 
     const confirmationResult = await chai.request(relayerUrl)
       .post('/email/confirmation')
-      .send({email, code: relayer.sentCodes[email]});
+      .send({ensNameOrEmail: email, code: relayer.sentCodes[email]});
     expect(confirmationResult.status).to.eq(201);
   });
 
