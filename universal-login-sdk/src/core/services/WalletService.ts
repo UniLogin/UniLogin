@@ -77,14 +77,16 @@ export class WalletService {
   }
 
   async confirmCode(code: string) {
-    ensure(this.state.kind === 'RequestedCreating', InvalidWalletState, 'RequestedCreating', this.state.kind);
-    const {ensNameOrEmail} = await this.state.wallet.confirmEmail(code);
-    if (ensNameOrEmail) {
-      const confirmedWallet = new ConfirmedWallet(this.state.wallet.email, this.state.wallet.ensName, code);
+    ensure(this.state.kind === 'RequestedCreating' || this.state.kind === 'RequestedRestoring', InvalidWalletState, 'RequestedCreating or RequestedRestoring', this.state.kind);
+    if (this.state.kind === 'RequestedCreating') {
+      const confirmedWallet = await this.state.wallet.confirmEmail(code);
       this.setConfirmed(confirmedWallet);
       return confirmedWallet;
+    } else if (this.state.kind === 'RequestedRestoring') {
+      const restoringWallet = await this.state.wallet.confirmEmail(code);
+      this.setRestoring(restoringWallet);
+      return restoringWallet;
     }
-    return false;
   }
 
   getRequestedCreatingWallet() {
@@ -191,7 +193,7 @@ export class WalletService {
   }
 
   setRestoring(wallet: RestoringWallet) {
-    ensure(this.state.kind === 'Restoring', WalletOverridden);
+    ensure(this.state.kind === 'RequestedRestoring', WalletOverridden);
     this.setState({kind: 'Restoring', wallet});
   }
 

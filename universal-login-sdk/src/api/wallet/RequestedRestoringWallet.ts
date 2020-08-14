@@ -1,5 +1,6 @@
 import {SerializableRequestedRestoringWallet} from '@unilogin/commons';
 import UniLoginSdk from '../sdk';
+import {RestoringWallet} from './RestoringWallet';
 
 export class RequestedRestoringWallet implements SerializableRequestedRestoringWallet {
   constructor(
@@ -16,4 +17,9 @@ export class RequestedRestoringWallet implements SerializableRequestedRestoringW
   requestEmailConfirmation() {
     return this.sdk.relayerApi.requestEmailConfirmationForRestoring(this.asSerializableRequestedRestoringWallet);
   };
+
+  async confirmEmail(code: string) {
+    const {ensName, contractAddress, encryptedWallet} = await this.sdk.relayerApi.restoreWallet(code, this.ensNameOrEmail);
+    return new RestoringWallet(encryptedWallet, ensName, contractAddress, this.sdk);
+  }
 };

@@ -103,4 +103,11 @@ export class RelayerApi {
   storeEncryptedWallet(storedEncryptedWallet: StoredEncryptedWallet, code: string) {
     return this.http('POST', '/wallet/encrypted', storedEncryptedWallet, {...COMMON_HEADERS, code});
   }
+
+  restoreWallet(code: string, ensNameOrEmail: string) {
+    return this.http('GET', `/wallet/restore/${ensNameOrEmail}`, undefined, {...COMMON_HEADERS, code})
+      .catch((e: any) => {
+        throw new Error(e.error);
+      });
+  }
 }
