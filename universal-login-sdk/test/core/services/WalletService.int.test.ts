@@ -168,7 +168,7 @@ describe('INT: WalletService', () => {
       walletService.disconnect();
       await walletService.createRequestedRestoringWallet(email);
       expect(walletService.state.kind).eq('RequestedRestoring');
-      await walletService.restoreWallet(relayer.sentCodes[email]);
+      await walletService.confirmCode(relayer.sentCodes[email]);
       expect(walletService.state).to.deep.include({kind: 'Restoring'});
     });
 

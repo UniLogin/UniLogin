@@ -5,6 +5,7 @@ import {RelayerUnderTest} from '@unilogin/relayer';
 import {RequestedCreatingWallet} from '../../../src/api/wallet/RequestedCreatingWallet';
 import UniLoginSdk from '../../../src';
 import {setupSdk} from '../../helpers';
+import {ConfirmedWallet} from '../../../src/api/wallet/ConfirmedWallet';
 
 describe('INT: RequestedCreatingWallet', () => {
   let sdk: UniLoginSdk;
@@ -30,7 +31,8 @@ describe('INT: RequestedCreatingWallet', () => {
     expect(requestEmailConfirmationResult).deep.eq({email});
     const [, code] = sendConfirmationMailSpy.firstCall.args;
     const confirmEmailResult = await requestedWallet.confirmEmail(code);
-    expect(confirmEmailResult).deep.eq({ensNameOrEmail: email});
+    expect(confirmEmailResult).to.be.instanceOf(ConfirmedWallet);
+    expect(confirmEmailResult).to.deep.include({email, ensName, code});
   });
 
   afterEach(async () => {
