@@ -168,8 +168,8 @@ describe('INT: WalletService', () => {
       walletService.disconnect();
       await walletService.createRequestedRestoringWallet(email);
       expect(walletService.state.kind).eq('RequestedRestoring');
-      const confirmEmailResult2 = await walletService.confirmCode(relayer.sentCodes[email]);
-      console.log(confirmEmailResult2);
+      await walletService.restoreWallet(relayer.sentCodes[email]);
+      expect(walletService.state).to.deep.include({kind: 'Restoring'});
     });
 
     it('after send confirmation e-mail fails retry requestEmailConfirmation works', async () => {
