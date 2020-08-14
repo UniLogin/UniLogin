@@ -93,8 +93,8 @@ export class RelayerApi {
     };
   }
 
-  confirmCode(code: string, email: string) {
-    return this.http('POST', '/email/confirmation', {code, email})
+  confirmCode(code: string, ensNameOrEmail: string) {
+    return this.http('POST', '/email/confirmation', {code, ensNameOrEmail})
       .catch((e: any) => {
         throw new Error(e.error);
       });
