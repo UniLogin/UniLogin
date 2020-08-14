@@ -16,7 +16,7 @@ export class EncryptedWalletsStore {
 
   async get(emailOrEnsName: string): Promise<StoredEncryptedWallet> {
     const storedEncryptedWallet = await this.database(this.tableName)
-      .select(['email', 'ensName', 'walletJSON'])
+      .select(['email', 'ensName', 'walletJSON', 'contractAddress'])
       .where('email', emailOrEnsName)
       .orWhere('ensName', emailOrEnsName)
       .first();

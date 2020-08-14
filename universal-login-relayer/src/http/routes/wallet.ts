@@ -57,7 +57,7 @@ const encryptedWalletHandling = (encryptedWalletHandler: EncryptedWalletHandler)
 const restoreWalletHandling = (restoreWalletHandler: RestoreWalletHandler) =>
   async (data: {email: string, headers: {code: string}}) => {
     const storedEncryptedWallet = await restoreWalletHandler.handle(data.email, data.headers.code);
-    return responseOf({storedEncryptedWallet}, 200);
+    return responseOf(storedEncryptedWallet, 200);
   };
 
 export default (
