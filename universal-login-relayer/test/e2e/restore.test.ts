@@ -45,7 +45,7 @@ describe('E2E: Relayer - restore wallet', () => {
       .get(`/wallet/restore/${email}`)
       .set({code: relayer.sentCodes[email]});
     expect(restoreResult.status).to.eq(200);
-    expect(restoreResult.body.storedEncryptedWallet).to.deep.eq({email, ensName, walletJSON: TEST_ENCRYPTED_WALLET_JSON});
+    expect(restoreResult.body).to.deep.eq({email, ensName, walletJSON: TEST_ENCRYPTED_WALLET_JSON});
   });
 
   it('return 400 if confirmation code was not requested and previous code is used', async () => {
