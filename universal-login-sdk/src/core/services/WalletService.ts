@@ -77,12 +77,16 @@ export class WalletService {
   }
 
   async confirmCode(code: string) {
-    ensure(this.state.kind === 'RequestedCreating', InvalidWalletState, 'RequestedCreating', this.state.kind);
+    ensure(this.state.kind === 'RequestedCreating' || this.state.kind === 'RequestedRestoring', InvalidWalletState, 'RequestedCreating or RequestedRestoring', this.state.kind);
     const {ensNameOrEmail} = await this.state.wallet.confirmEmail(code);
     if (ensNameOrEmail) {
-      const confirmedWallet = new ConfirmedWallet(this.state.wallet.email, this.state.wallet.ensName, code);
-      this.setConfirmed(confirmedWallet);
-      return confirmedWallet;
+      if (this.state.kind === 'RequestedCreating') {
+        const confirmedWallet = new ConfirmedWallet(this.state.wallet.email, this.state.wallet.ensName, code);
+        this.setConfirmed(confirmedWallet);
+        return confirmedWallet;
+      } else if (this.state.kind === 'RequestedRestoring') {
+
+      }
     }
     return false;
   }

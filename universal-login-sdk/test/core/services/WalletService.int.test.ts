@@ -169,7 +169,7 @@ describe('INT: WalletService', () => {
       await walletService.createRequestedRestoringWallet(email);
       expect(walletService.state.kind).eq('RequestedRestoring');
       const confirmEmailResult2 = await walletService.confirmCode(relayer.sentCodes[email]);
-      console.log(confirmEmailResult2)
+      console.log(confirmEmailResult2);
     });
 
     it('after send confirmation e-mail fails retry requestEmailConfirmation works', async () => {

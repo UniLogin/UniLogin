@@ -16,4 +16,8 @@ export class RequestedRestoringWallet implements SerializableRequestedRestoringW
   requestEmailConfirmation() {
     return this.sdk.relayerApi.requestEmailConfirmationForRestoring(this.asSerializableRequestedRestoringWallet);
   };
+
+  confirmEmail(code: string) {
+    return this.sdk.relayerApi.confirmCode(code, this.ensNameOrEmail);
+  }
 };
