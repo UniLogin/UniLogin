@@ -30,7 +30,7 @@ describe('INT: RequestedCreatingWallet', () => {
     expect(requestEmailConfirmationResult).deep.eq({email});
     const [, code] = sendConfirmationMailSpy.firstCall.args;
     const confirmEmailResult = await requestedWallet.confirmEmail(code);
-    expect(confirmEmailResult).deep.eq({email});
+    expect(confirmEmailResult).deep.eq({ensNameOrEmail: email});
   });
 
   afterEach(async () => {
