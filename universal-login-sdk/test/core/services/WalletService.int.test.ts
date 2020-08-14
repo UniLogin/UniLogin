@@ -24,13 +24,10 @@ describe('INT: WalletService', () => {
   let wallet: Wallet;
   let mockToken: Contract;
 
-  before(async () => {
+  beforeEach(async () => {
     ([wallet] = new MockProvider().getWallets());
     ({sdk, relayer, mockToken, provider} = await setupSdk(wallet));
     await sdk.start();
-  });
-
-  beforeEach(() => {
     walletService = new WalletService(sdk);
   });
 
@@ -92,7 +89,7 @@ describe('INT: WalletService', () => {
     const ensName = 'name2.mylogin.eth';
     let existingDeployedWallet: DeployedWallet;
 
-    before(async () => {
+    beforeEach(async () => {
       existingDeployedWallet = await createWallet(ensName, sdk, wallet);
     });
 
@@ -161,6 +158,7 @@ describe('INT: WalletService', () => {
       expect(walletService.state).to.deep.include({kind: 'Confirmed'});
       const password = 'password123!';
       const {contractAddress} = await walletService.createFutureWalletWithPassword(password, ETHER_NATIVE_TOKEN.address);
+      console.log(contractAddress);
       expect(walletService.state.kind).eq('Future');
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
       await walletService.deployFutureWallet();
@@ -195,7 +193,7 @@ describe('INT: WalletService', () => {
     });
   });
 
-  after(async () => {
+  afterEach(async () => {
     sdk.stop();
     await relayer.stop();
   });
