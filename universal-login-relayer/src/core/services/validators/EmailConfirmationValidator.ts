@@ -15,8 +15,8 @@ export class EmailConfirmationValidator {
     ensure(storedCode === givenCode, InvalidCode, storedCode);
   }
 
-  validate(emailConfirmation: EmailConfirmation, email: string, code: string) {
-    ensure(!emailConfirmation.isConfirmed, UnexpectedConfirmation, email);
+  validate(emailConfirmation: EmailConfirmation, ensNameOrEmail: string, code: string) {
+    ensure(!emailConfirmation.isConfirmed, UnexpectedConfirmation, ensNameOrEmail);
     ensure(moment(emailConfirmation.createdAt).add(this.codeDurationInMinutes, 'm').isAfter(), CodeExpired);
     this.validateCode(emailConfirmation.code, code);
   }

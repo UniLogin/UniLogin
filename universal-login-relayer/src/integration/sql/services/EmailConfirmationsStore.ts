@@ -15,13 +15,14 @@ export class EmailConfirmationsStore {
       .returning('email'))[0];
   }
 
-  async get(email: string): Promise<EmailConfirmation> {
+  async get(ensNameOrEmail: string): Promise<EmailConfirmation> {
     const emailConfirmation = await this.database(this.tableName)
       .select(['email', 'ensName', 'code', 'created_at', 'isConfirmed'])
-      .where('email', email)
+      .where('email', ensNameOrEmail)
+      .orWhere('ensName', ensNameOrEmail)
       .orderBy('created_at', 'desc')
       .first();
-    ensureNotFalsy(emailConfirmation, EmailConfirmationNotFound, email);
+    ensureNotFalsy(emailConfirmation, EmailConfirmationNotFound, ensNameOrEmail);
     const {created_at, ...rest} = emailConfirmation;
     return {...rest, createdAt: created_at};
   }

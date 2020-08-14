@@ -27,7 +27,7 @@ describe('E2E: Relayer - restore wallet', () => {
 
     const confirmationResult = await chai.request(relayerUrl)
       .post('/email/confirmation')
-      .send({email, code: relayer.sentCodes[email]});
+      .send({ensNameOrEmail: email, code: relayer.sentCodes[email]});
     expect(confirmationResult.status).to.eq(201);
 
     const result = await chai.request(relayerUrl)
@@ -56,7 +56,7 @@ describe('E2E: Relayer - restore wallet', () => {
 
     const confirmationResult = await chai.request(relayerUrl)
       .post('/email/confirmation')
-      .send({email, code: relayer.sentCodes[email]});
+      .send({ensNameOrEmail: email, code: relayer.sentCodes[email]});
     expect(confirmationResult.status).to.eq(201);
 
     const result = await chai.request(relayerUrl)

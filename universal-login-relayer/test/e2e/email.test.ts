@@ -30,7 +30,7 @@ describe('E2E: Relayer - Email Confirmation', () => {
 
     const notExpectedConfirmationResult = await chai.request(relayerUrl)
       .post('/email/confirmation')
-      .send({email, code: '123456'});
+      .send({ensNameOrEmail: email, code: '123456'});
     expect(notExpectedConfirmationResult.status).to.eq(404);
     expect(notExpectedConfirmationResult.body).to.deep.eq({
       error: `Error: Email confirmation not found for email: ${email}`,
@@ -44,15 +44,38 @@ describe('E2E: Relayer - Email Confirmation', () => {
     expect(confirmationRequestResult.body).to.deep.eq({email});
 
     const invalidCode = '123456';
-    const confirmationResult = await chai.request(relayerUrl)
+    const confirmationResultWrongCode = await chai.request(relayerUrl)
       .post('/email/confirmation')
-      .send({email, code: invalidCode});
-    expect(confirmationResult.status).to.eq(400);
-    expect(confirmationResult.body).to.deep.eq({
+      .send({ensNameOrEmail: email, code: invalidCode});
+    expect(confirmationResultWrongCode.status).to.eq(400);
+    expect(confirmationResultWrongCode.body).to.deep.eq({
       error: `Error: Invalid code: ${invalidCode}`,
       type: 'InvalidCode',
     });
+
+    const confirmationResult = await chai.request(relayerUrl)
+      .post('/email/confirmation')
+      .send({ensNameOrEmail: email, code: relayer.sentCodes[email]});
+    expect(confirmationResult.status).to.eq(201);
   });
+
+  const email = 'name@unilogin.test';
+  const ensName = 'name.mylogin.eth';
+
+  for (const ensNameOrEmail of [email, ensName]) {
+    it(`email confirmation works for ${ensNameOrEmail}`, async () => {
+      const confirmationRequestResult = await chai.request(relayerUrl)
+        .post('/email/request/creating')
+        .send({email, ensName});
+      expect(confirmationRequestResult.status).to.eq(201);
+
+      const confirmationResult = await chai.request(relayerUrl)
+        .post('/email/confirmation')
+        .send({ensNameOrEmail, code: relayer.sentCodes[email]});
+      expect(confirmationResult.status).to.eq(201);
+      expect(confirmationResult.body).to.deep.eq({ensNameOrEmail});
+    });
+  }
 
   after(() => {
     relayer.stop();
