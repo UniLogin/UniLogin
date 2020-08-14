@@ -167,6 +167,9 @@ describe('INT: WalletService', () => {
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
       await walletService.deployFutureWallet();
       expect(walletService.state.kind).eq('Deployed');
+      walletService.disconnect();
+      await walletService.createRequestedRestoringWallet(email);
+      expect(walletService.state.kind).eq('RequestedRestoring');
     });
 
     it('after send confirmation e-mail fails retry requestEmailConfirmation works', async () => {

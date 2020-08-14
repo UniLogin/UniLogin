@@ -1,4 +1,4 @@
-import {expect} from 'chai'; ;
+import {expect} from 'chai';
 import sinon from 'sinon';
 import {MockProvider} from 'ethereum-waffle';
 import {RelayerUnderTest} from '@unilogin/relayer';
