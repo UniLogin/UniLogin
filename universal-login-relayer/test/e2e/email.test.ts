@@ -44,14 +44,19 @@ describe('E2E: Relayer - Email Confirmation', () => {
     expect(confirmationRequestResult.body).to.deep.eq({email});
 
     const invalidCode = '123456';
-    const confirmationResult = await chai.request(relayerUrl)
+    const confirmationResultWrongCode = await chai.request(relayerUrl)
       .post('/email/confirmation')
       .send({email, code: invalidCode});
-    expect(confirmationResult.status).to.eq(400);
-    expect(confirmationResult.body).to.deep.eq({
+    expect(confirmationResultWrongCode.status).to.eq(400);
+    expect(confirmationResultWrongCode.body).to.deep.eq({
       error: `Error: Invalid code: ${invalidCode}`,
       type: 'InvalidCode',
     });
+
+    const confirmationResult = await chai.request(relayerUrl)
+      .post('/email/confirmation')
+      .send({email, code: relayer.sentCodes[email]});
+    expect(confirmationResult.status).to.eq(201);
   });
 
   after(() => {
