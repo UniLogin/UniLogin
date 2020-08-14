@@ -168,6 +168,7 @@ describe('INT: WalletService', () => {
       walletService.disconnect();
       await walletService.createRequestedRestoringWallet(email);
       expect(walletService.state.kind).eq('RequestedRestoring');
+      await expect(walletService.confirmCode('12345')).to.be.rejectedWith('Error: Invalid code: 12345');
       await walletService.confirmCode(relayer.sentCodes[email]);
       expect(walletService.state).to.deep.include({kind: 'Restoring'});
     });
