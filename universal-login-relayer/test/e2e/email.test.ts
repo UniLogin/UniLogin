@@ -59,6 +59,24 @@ describe('E2E: Relayer - Email Confirmation', () => {
     expect(confirmationResult.status).to.eq(201);
   });
 
+  const email = 'name@unilogin.test';
+  const ensName = 'name.mylogin.eth';
+
+  for (const ensNameOrEmail of [email, ensName]) {
+    it(`email confirmation works for ${ensNameOrEmail}`, async () => {
+      const confirmationRequestResult = await chai.request(relayerUrl)
+        .post('/email/request/creating')
+        .send({email, ensName});
+      expect(confirmationRequestResult.status).to.eq(201);
+
+      const confirmationResult = await chai.request(relayerUrl)
+        .post('/email/confirmation')
+        .send({ensNameOrEmail, code: relayer.sentCodes[email]});
+      expect(confirmationResult.status).to.eq(201);
+      expect(confirmationResult.body).to.deep.eq({ensNameOrEmail});
+    });
+  }
+
   after(() => {
     relayer.stop();
   });
