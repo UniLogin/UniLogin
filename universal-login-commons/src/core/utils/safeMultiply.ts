@@ -1,11 +1,12 @@
 import {utils} from 'ethers';
-import {SAFE_MULTIPLY_UNITS_NORMALIZE} from '../constants/normalization';
 import {ensure} from './errors/ensure';
 
-export const safeMultiplyAndFormatEther = (valueInWei: utils.BigNumber, multiplier: utils.BigNumberish) => {
+const SAFE_MULTIPLY_UNITS_NORMALIZE = 18;
+
+export const safeMultiplyAndFormatEther = (valueInWei: utils.BigNumber, multiplier: utils.BigNumberish, decimals = 18) => {
   const normalizedMultiplier = utils.parseEther(multiplier.toString());
   const resultE18 = normalizedMultiplier.mul(valueInWei);
-  return utils.formatUnits(resultE18, SAFE_MULTIPLY_UNITS_NORMALIZE);
+  return utils.formatUnits(resultE18, SAFE_MULTIPLY_UNITS_NORMALIZE + decimals);
 };
 
 export const safeMultiplyDecimalsAndFormatEther = (value: utils.BigNumberish, multiplier: utils.BigNumberish) => {
