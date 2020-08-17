@@ -191,6 +191,14 @@ describe('INT: WalletService', () => {
       expect(confirmEmailResult).deep.include({email, code: sentCode!});
       expect(walletService.state).to.deep.include({kind: 'Confirmed'});
     });
+
+    it('if request confirmation fails, wallet service is None', async () => {
+      const notExistingEmail = 'not-existing@gmail.com';
+      await expect(
+        walletService.createRequestedRestoringWallet(notExistingEmail))
+        .to.be.rejectedWith(`Error: Stored encrypted wallet not found for: ${notExistingEmail}`);
+      expect(walletService.state).to.deep.eq({kind: 'None'});
+    });
   });
 
   afterEach(async () => {

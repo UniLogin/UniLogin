@@ -120,7 +120,12 @@ export class WalletService {
   async createRequestedRestoringWallet(ensNameOrEmail: string) {
     const requestedWallet = new RequestedRestoringWallet(this.sdk, ensNameOrEmail);
     this.setRequestedRestoring(requestedWallet);
-    return this.getRequestedRestoringWallet().requestEmailConfirmation();
+    try {
+      return await this.getRequestedRestoringWallet().requestEmailConfirmation();
+    } catch (e) {
+      this.disconnect();
+      throw e;
+    }
   }
 
   async createDeployingWallet(name: string): Promise<DeployingWallet> {
