@@ -56,11 +56,11 @@ describe('INT: RestoringWallet', () => {
     });
 
     it('throw error if key is not owner', async () => {
-      await expect(restoringWallet.restore(TEST_WALLET.password)).to.be.rejectedWith('Invalid password');
+      await expect(restoringWallet.restore(TEST_WALLET.password)).to.be.rejectedWith(`Private key is not contract's ${deployedWallet.contractAddress} owner`);
     });
 
     it('invalid password', async () => {
-      await expect(restoringWallet.restore('whaaaaat')).to.be.rejectedWith('Invalid password');
+      await expect(restoringWallet.restore('whaaaaat')).to.be.rejectedWith('invalid password');
     });
   });
 

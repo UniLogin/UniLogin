@@ -2,7 +2,7 @@ import {EncryptedWallet, SerializableRestoringWallet, ensure} from '@unilogin/co
 import {Wallet} from 'ethers';
 import UniLoginSdk from '../sdk';
 import {DeployedWallet} from './DeployedWallet';
-import {InvalidPrivateKey, InvalidPassword} from '../../core/utils/errors';
+import {InvalidPrivateKey} from '../../core/utils/errors';
 
 export class RestoringWallet {
   constructor(
@@ -20,21 +20,9 @@ export class RestoringWallet {
   }
 
   async restore(password: string) {
-    try {
-      const wallet = await Wallet.fromEncryptedJson(JSON.stringify(this.encryptedWallet), password);
-      const deployedWallet = new DeployedWallet(this.contractAddress, this.ensName, wallet.privateKey, this.sdk);
-      ensure(await deployedWallet.keyExist(wallet.address), InvalidPrivateKey, this.contractAddress);
-      return deployedWallet;
-    } catch (e) {
-      if (isInvalidPasswordError(e) || isInvlidPrivateKeyError(e, this.contractAddress)) {
-        throw new InvalidPassword();
-      } else {
-        throw Error(e);
-      }
-    }
+    const wallet = await Wallet.fromEncryptedJson(JSON.stringify(this.encryptedWallet), password);
+    const deployedWallet = new DeployedWallet(this.contractAddress, this.ensName, wallet.privateKey, this.sdk);
+    ensure(await deployedWallet.keyExist(wallet.address), InvalidPrivateKey, this.contractAddress);
+    return deployedWallet;
   }
 }
-
-const isInvlidPrivateKeyError = (e: Error, contractAddress: string) => e.message === `Private key is not contract's ${contractAddress} owner`;
-
-const isInvalidPasswordError = (e: Error) => e.message === 'invalid password';
