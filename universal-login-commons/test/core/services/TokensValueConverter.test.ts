@@ -3,7 +3,7 @@ import {utils} from 'ethers';
 import {TokenDetailsWithBalance} from '../../../src/core/models/TokenData';
 import {TokensValueConverter} from '../../../src/core/services/TokensValueConverter';
 import {ETHER_NATIVE_TOKEN} from '../../../src/core/constants/constants';
-import {TEST_CONTRACT_ADDRESS} from '../../../src/core/constants/test';
+import {TEST_CONTRACT_ADDRESS, TEST_TOKEN_ADDRESS} from '../../../src/core/constants/test';
 
 describe('UNIT: TokensValueConverter', () => {
   const tokensValueConverter = new TokensValueConverter(['USD', 'DAI', 'SAI', 'ETH']);
@@ -29,8 +29,8 @@ describe('UNIT: TokensValueConverter', () => {
       });
     });
 
-    it('2 ETH with 6 decimals', () => {
-      const actualEthTotalWorth = tokensValueConverter.getTokenTotalWorth({balance: utils.parseUnits('2', 6), ...ETHER_NATIVE_TOKEN, decimals: 6}, currencyToValue);
+    it('2 USDC with 6 decimals', () => {
+      const actualEthTotalWorth = tokensValueConverter.getTokenTotalWorth({balance: utils.parseUnits('2', 6), name: 'USDC', symbol: 'USDC', address: TEST_TOKEN_ADDRESS, decimals: 6}, currencyToValue);
 
       expect(actualEthTotalWorth).to.deep.eq({
         USD: 2 * currencyToValue.USD,
