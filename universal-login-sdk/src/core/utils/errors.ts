@@ -25,7 +25,7 @@ type ErrorType =
   'InvalidGasLimit' |
   'InvalidObserverState' |
   'SavingFutureWalletFailed' |
-  'InvalidPrivateKey' ;
+  'InvalidPrivateKey';
 
 export class SDKError extends Error {
   errorType: ErrorType;
