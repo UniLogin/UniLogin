@@ -11,6 +11,7 @@ const TEST_TRANSFER_DETAILS: TransferDetails = {
   to: '0x',
   amount: '',
   transferToken: '0x1',
+  decimals: 18,
   gasParameters: {
     gasToken: '0x',
     gasPrice: utils.parseUnits('1', 'gwei'),

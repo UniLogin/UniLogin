@@ -50,7 +50,8 @@ describe('INT: TransferService', () => {
     const to = TEST_ACCOUNT_ADDRESS;
     const amount = '1.0';
     const transferToken = mockTokenContract.address;
-    const {waitToBeSuccess} = await transferService.transfer({to, amount, transferToken, gasParameters});
+    const decimals = 18;
+    const {waitToBeSuccess} = await transferService.transfer({to, amount, transferToken, decimals, gasParameters});
     await waitToBeSuccess();
     expect(await mockTokenContract.balanceOf(to)).to.deep.eq(utils.parseEther(amount));
   });
@@ -58,7 +59,7 @@ describe('INT: TransferService', () => {
   it('Should transfer ether', async () => {
     const to = TEST_ACCOUNT_ADDRESS;
     const amount = '0.5';
-    const {waitToBeSuccess} = await transferService.transfer({to, amount, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters});
+    const {waitToBeSuccess} = await transferService.transfer({to, amount, transferToken: ETHER_NATIVE_TOKEN.address, decimals: ETHER_NATIVE_TOKEN.decimals, gasParameters});
     await waitToBeSuccess();
     expect(await provider.getBalance(to)).to.eq(utils.parseEther(amount));
   });
@@ -66,7 +67,7 @@ describe('INT: TransferService', () => {
   it('Should throw error if invalid address', async () => {
     const to = `${TEST_ACCOUNT_ADDRESS}3`;
     const amount = '0.5';
-    await expect(transferService.transfer({to, amount, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters})).to.be.rejectedWith(`${to} is not valid`);
+    await expect(transferService.transfer({to, amount, transferToken: ETHER_NATIVE_TOKEN.address, decimals: ETHER_NATIVE_TOKEN.decimals, gasParameters})).to.be.rejectedWith(`${to} is not valid`);
   });
 
   it('transfer ether to ens name', async () => {
@@ -74,7 +75,7 @@ describe('INT: TransferService', () => {
     const {contractAddress} = await createdDeployedWallet(targetENSName, sdk, wallet);
     const amount = '0.5';
     const initialTargetBalance = await provider.getBalance(contractAddress);
-    const {waitToBeSuccess} = await transferService.transfer({to: targetENSName, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters, amount});
+    const {waitToBeSuccess} = await transferService.transfer({to: targetENSName, transferToken: ETHER_NATIVE_TOKEN.address, decimals: ETHER_NATIVE_TOKEN.decimals, gasParameters, amount});
     await waitToBeSuccess();
     expect(await provider.getBalance(contractAddress)).to.eq(initialTargetBalance.add(utils.parseEther(amount)));
   });
@@ -83,7 +84,7 @@ describe('INT: TransferService', () => {
     const targetENSName = 'token.mylogin.eth';
     const {contractAddress} = await createdDeployedWallet(targetENSName, sdk, wallet);
     const amount = '0.5';
-    const {waitToBeSuccess} = await transferService.transfer({to: targetENSName, transferToken: mockTokenContract.address, gasParameters, amount});
+    const {waitToBeSuccess} = await transferService.transfer({to: targetENSName, transferToken: mockTokenContract.address, decimals: ETHER_NATIVE_TOKEN.decimals, gasParameters, amount});
     await waitToBeSuccess();
     expect(await mockTokenContract.balanceOf(contractAddress)).to.eq(utils.parseEther(amount));
   });
@@ -94,6 +95,7 @@ describe('INT: TransferService', () => {
     await expect(transferService.transfer({
       to: targetENSName,
       transferToken: mockTokenContract.address,
+      decimals: 18,
       gasParameters,
       amount,
     })).to.be.rejectedWith(`${targetENSName} is not valid`);
@@ -106,6 +108,7 @@ describe('INT: TransferService', () => {
     expect(await transferService.validateInputs({
       to: targetENSName,
       transferToken: mockTokenContract.address,
+      decimals: 18,
       gasParameters,
       amount,
     }, balance))
@@ -118,6 +121,7 @@ describe('INT: TransferService', () => {
     expect(await transferService.validateInputs({
       to: invalidAddress,
       transferToken: mockTokenContract.address,
+      decimals: 18,
       gasParameters,
       amount,
     }, balance))
@@ -130,6 +134,7 @@ describe('INT: TransferService', () => {
     expect(await transferService.validateInputs({
       to: invalidENSName,
       transferToken: mockTokenContract.address,
+      decimals: 18,
       gasParameters,
       amount,
     }, balance))
@@ -142,6 +147,7 @@ describe('INT: TransferService', () => {
     expect(await transferService.validateInputs({
       to: invalidENSName,
       transferToken: mockTokenContract.address,
+      decimals: 18,
       gasParameters,
       amount,
     }, balance))
@@ -151,7 +157,7 @@ describe('INT: TransferService', () => {
   it('get Ethereum max amount', async () => {
     const {address} = Wallet.createRandom();
     const amount = '0.5';
-    const {waitToBeSuccess} = await transferService.transfer({to: address, amount, transferToken: ETHER_NATIVE_TOKEN.address, gasParameters});
+    const {waitToBeSuccess} = await transferService.transfer({to: address, amount, transferToken: ETHER_NATIVE_TOKEN.address, decimals: ETHER_NATIVE_TOKEN.decimals, gasParameters});
     await waitToBeSuccess();
     const balance = await provider.getBalance(address);
     expect(transferService.getMaxAmount(gasParameters, utils.formatEther(balance))).to.eq('0.496');

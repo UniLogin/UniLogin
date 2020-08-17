@@ -22,7 +22,7 @@ export interface TransferProps {
 }
 
 export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferProps) => {
-  const [transferDetails, setTransferDetails] = useState<TransferDetails>({transferToken: ETHER_NATIVE_TOKEN.address, amount: '', to: '', gasParameters: INITIAL_GAS_PARAMETERS});
+  const [transferDetails, setTransferDetails] = useState<TransferDetails>({transferToken: ETHER_NATIVE_TOKEN.address, amount: '', to: '', decimals: 0, gasParameters: INITIAL_GAS_PARAMETERS});
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
   const [tokenDetailsWithBalance] = useBalances(transferService.deployedWallet);
   const selectedToken = transferService.getTokenDetails(transferDetails.transferToken);
@@ -35,7 +35,7 @@ export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferPr
     }
   };
 
-  const updateField = (field: string) => (value: string | GasParameters) => {
+  const updateField = (field: string) => (value: number | string | GasParameters) => {
     setTransferDetails({...transferDetails, ...{[field]: value}});
     setErrors({...errors, [field]: []});
   };
@@ -47,7 +47,10 @@ export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferPr
           sdk={transferService.deployedWallet.sdk}
           tokenDetailsWithBalance={tokenDetailsWithBalance}
           tokenDetails={selectedToken}
-          setToken={(token: TokenDetails) => updateField('transferToken')(token.address)}
+          setToken={(token: TokenDetails) => {
+            updateField('transferToken')(token.address);
+            updateField('decimals')(token.decimals);
+          }}
         />
         <TransferAmount
           value={transferDetails.amount}

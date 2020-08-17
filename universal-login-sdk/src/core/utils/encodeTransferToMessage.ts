@@ -7,7 +7,7 @@ interface TransferDetailsWithFrom extends TransferDetails {
   gasLimit: utils.BigNumber;
 }
 
-export const encodeTransferToMessage = ({from, to, amount, gasParameters, transferToken, gasLimit}: TransferDetailsWithFrom) => {
+export const encodeTransferToMessage = ({from, to, amount, gasParameters, transferToken, decimals, gasLimit}: TransferDetailsWithFrom) => {
   const base = {
     from,
     gasLimit,
@@ -26,11 +26,11 @@ export const encodeTransferToMessage = ({from, to, amount, gasParameters, transf
       ...base,
       to: transferToken,
       value: 0,
-      data: encodeERC20Transfer(to, amount),
+      data: encodeERC20Transfer(to, amount, decimals),
     };
   }
 };
 
-export function encodeERC20Transfer(to: string, amount: string) {
-  return new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseEther(amount)]);
+export function encodeERC20Transfer(to: string, amount: string, decimals: number) {
+  return new utils.Interface(IERC20.abi).functions.transfer.encode([to, utils.parseUnits(amount, decimals)]);
 }

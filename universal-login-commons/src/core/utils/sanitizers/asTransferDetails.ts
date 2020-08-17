@@ -1,4 +1,4 @@
-import {asObject, asString, Sanitizer} from '@restless/sanitizers';
+import {asObject, asString, Sanitizer, asNumber} from '@restless/sanitizers';
 import {TransferDetails} from '../../..';
 import {asGasParameters} from './asGasParameters';
 
@@ -6,5 +6,6 @@ export const asTransferDetails: Sanitizer<TransferDetails> = asObject<TransferDe
   to: asString,
   amount: asString,
   transferToken: asString,
+  decimals: asNumber,
   gasParameters: asGasParameters,
 });

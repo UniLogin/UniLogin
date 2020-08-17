@@ -5,6 +5,7 @@ export interface TransferDetails {
   to: string;
   amount: string;
   transferToken: string;
+  decimals: number;
   gasParameters: GasParameters;
 }
 
