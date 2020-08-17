@@ -120,7 +120,12 @@ export class WalletService {
   async createRequestedRestoringWallet(ensNameOrEmail: string) {
     const requestedWallet = new RequestedRestoringWallet(this.sdk, ensNameOrEmail);
     this.setRequestedRestoring(requestedWallet);
-    return this.getRequestedRestoringWallet().requestEmailConfirmation();
+    try {
+      return await this.getRequestedRestoringWallet().requestEmailConfirmation();
+    } catch (e) {
+      this.disconnect();
+      throw e;
+    }
   }
 
   async createDeployingWallet(name: string): Promise<DeployingWallet> {
@@ -351,5 +356,14 @@ export class WalletService {
     ensure(this.state.kind !== 'Confirmed', InvalidWalletState, 'not Confirmed', this.state.kind);
     ensure(this.state.kind !== 'Restoring', InvalidWalletState, 'not Restoring', this.state.kind);
     return this.state.wallet.contractAddress;
+  }
+
+  getEnsNameOrEmail() {
+    ensure(this.state.kind === 'RequestedCreating' || this.state.kind === 'RequestedRestoring', InvalidWalletState, 'RequestedRestoring or RequestedCreating', this.state.kind);
+    if (this.state.kind === 'RequestedCreating') {
+      return this.state.wallet.email;
+    } else {
+      return this.state.wallet.ensNameOrEmail;
+    }
   }
 }
