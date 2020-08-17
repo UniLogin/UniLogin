@@ -74,10 +74,10 @@ describe('E2E: Relayer - restore wallet', () => {
   });
 
   it('returns 404 if email/ensName not found', async () => {
-    const confirmationRequestResultForRestoring = await chai.request(relayerUrl)
-      .post('/email/request/restoring')
-      .send({ensNameOrEmail: 'notexisting.mylogin.eth'});
-    expect(confirmationRequestResultForRestoring.status).to.eq(404);
+    const restoreResult = await chai.request(relayerUrl)
+      .get('/wallet/restore/not-existing@gmail.com')
+      .set({code: '11111'});
+    expect(restoreResult.status).to.eq(404);
   });
 
   afterEach(() => {
