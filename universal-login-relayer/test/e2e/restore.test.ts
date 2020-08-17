@@ -73,6 +73,13 @@ describe('E2E: Relayer - restore wallet', () => {
     expect(restoreResult.body.error).to.eq(`Error: Unexpected confirmation from email: ${email}`);
   });
 
+  it('returns 404 if email/ensName not found', async () => {
+    const restoreResult = await chai.request(relayerUrl)
+      .get('/wallet/restore/not-existing@gmail.com')
+      .set({code: '11111'});
+    expect(restoreResult.status).to.eq(404);
+  });
+
   afterEach(() => {
     relayer.stop();
   });

@@ -77,6 +77,13 @@ describe('E2E: Relayer - Email Confirmation', () => {
     });
   }
 
+  it('returns 404 if email/ensName not found', async () => {
+    const confirmationRequestResultForRestoring = await chai.request(relayerUrl)
+      .post('/email/request/restoring')
+      .send({ensNameOrEmail: 'notexisting.mylogin.eth'});
+    expect(confirmationRequestResultForRestoring.status).to.eq(404);
+  });
+
   after(() => {
     relayer.stop();
   });
