@@ -89,6 +89,13 @@ export class WalletService {
     }
   }
 
+  async restoreWallet(password: string) {
+    ensure(this.state.kind === 'Restoring', InvalidWalletState, 'Restoring', this.state.kind);
+    const deployedWallet = await this.state.wallet.restore(password);
+    this.setWallet(deployedWallet);
+    return deployedWallet;
+  }
+
   getRequestedCreatingWallet() {
     ensure(this.state.kind === 'RequestedCreating', InvalidWalletState, 'RequestedCreating', this.state.kind);
     return this.state.wallet;
@@ -220,7 +227,7 @@ export class WalletService {
   }
 
   setWallet(wallet: ApplicationWallet) {
-    ensure(this.state.kind === 'None' || this.state.kind === 'Connecting', WalletOverridden);
+    ensure(this.state.kind === 'None' || this.state.kind === 'Connecting' || this.state.kind === 'Restoring', WalletOverridden);
     this.setState({
       kind: 'Deployed',
       wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
