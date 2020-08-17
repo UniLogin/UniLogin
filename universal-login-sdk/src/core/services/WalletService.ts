@@ -352,4 +352,13 @@ export class WalletService {
     ensure(this.state.kind !== 'Restoring', InvalidWalletState, 'not Restoring', this.state.kind);
     return this.state.wallet.contractAddress;
   }
+
+  getEnsNameOrEmail() {
+    ensure(this.state.kind === 'RequestedCreating' || this.state.kind === 'RequestedRestoring', InvalidWalletState, 'RequestedRestoring or RequestedCreating', this.state.kind);
+    if (this.state.kind === 'RequestedCreating') {
+      return this.state.wallet.email;
+    } else {
+      return this.state.wallet.ensNameOrEmail;
+    }
+  }
 }

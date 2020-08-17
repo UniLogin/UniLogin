@@ -19,7 +19,7 @@ export const ConfirmCodeScreen = ({hideModal, walletService, onConfirmCode}: Con
     message={walletService.sdk.getNotice()}
   >
     <ConfirmCode
-      email={walletService.getRequestedCreatingWallet().email}
+      email={walletService.getEnsNameOrEmail()}
       onConfirmCode={onConfirmCode}
       walletService={walletService}
     />
