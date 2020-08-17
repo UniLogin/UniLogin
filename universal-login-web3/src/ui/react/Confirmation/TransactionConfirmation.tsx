@@ -55,7 +55,7 @@ export const TransactionConfirmation = ({onConfirmationResponse, title, message,
               <DataLabel>Value:</DataLabel>
               <ValueRow>
                 <Highlighted>
-                  <Value>{transferDetails && utils.formatEther(transferDetails.value)} {transferDetails?.tokenDetails.symbol}</Value>
+                  <Value>{transferDetails && utils.formatUnits(transferDetails.value, transferDetails.tokenDetails.decimals)} {transferDetails?.tokenDetails.symbol}</Value>
                 </Highlighted>
                 <Value>{valueInUSD} USD</Value>
               </ValueRow>
