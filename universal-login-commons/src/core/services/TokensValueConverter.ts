@@ -1,4 +1,3 @@
-import {utils} from 'ethers';
 import {ObservedCurrency, TokensPrices, CurrencyToValue} from '../models/CurrencyData';
 import {TokenDetailsWithBalance} from '../models/TokenData';
 import {safeMultiplyAndFormatEther} from '../utils/safeMultiply';
@@ -15,13 +14,13 @@ export class TokensValueConverter {
   }
 
   getTokensTotalWorth(tokensDetailsWithBalance: TokenDetailsWithBalance[], tokensPrices: TokensPrices) {
-    return tokensDetailsWithBalance.map((token) => this.getTokenTotalWorth(token.balance, tokensPrices[token.symbol]));
+    return tokensDetailsWithBalance.map((token) => this.getTokenTotalWorth(token, tokensPrices[token.symbol]));
   }
 
-  getTokenTotalWorth(balance: utils.BigNumber, tokenPrices: CurrencyToValue) {
+  getTokenTotalWorth(token: TokenDetailsWithBalance, tokenPrices: CurrencyToValue) {
     const tokenValues = {} as CurrencyToValue;
     for (const symbol in tokenPrices) {
-      tokenValues[symbol as ObservedCurrency] = Number(safeMultiplyAndFormatEther(balance, tokenPrices[symbol as ObservedCurrency]));
+      tokenValues[symbol as ObservedCurrency] = Number(safeMultiplyAndFormatEther(token.balance, tokenPrices[symbol as ObservedCurrency], token.decimals));
     }
     return tokenValues;
   }

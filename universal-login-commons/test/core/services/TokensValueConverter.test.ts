@@ -13,13 +13,13 @@ describe('UNIT: TokensValueConverter', () => {
 
   context('getTokenTotalWorth', () => {
     it('0 ETH', () => {
-      const actualEthTotalWorth = tokensValueConverter.getTokenTotalWorth(utils.parseEther('0'), currencyToValue);
+      const actualEthTotalWorth = tokensValueConverter.getTokenTotalWorth({balance: utils.parseEther('0'), ...ETHER_NATIVE_TOKEN}, currencyToValue);
 
       expect(actualEthTotalWorth).to.deep.eq(currencyToValueWithZeros);
     });
 
     it('2 ETH', () => {
-      const actualEthTotalWorth = tokensValueConverter.getTokenTotalWorth(utils.parseEther('2'), currencyToValue);
+      const actualEthTotalWorth = tokensValueConverter.getTokenTotalWorth({balance: utils.parseEther('2'), ...ETHER_NATIVE_TOKEN}, currencyToValue);
 
       expect(actualEthTotalWorth).to.deep.eq({
         USD: 2 * currencyToValue.USD,
