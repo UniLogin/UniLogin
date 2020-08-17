@@ -28,6 +28,17 @@ describe('UNIT: TokensValueConverter', () => {
         ETH: 2 * currencyToValue.ETH,
       });
     });
+
+    it('2 ETH with 6 decimals', () => {
+      const actualEthTotalWorth = tokensValueConverter.getTokenTotalWorth({balance: utils.parseUnits('2', 6), ...ETHER_NATIVE_TOKEN, decimals: 6}, currencyToValue);
+
+      expect(actualEthTotalWorth).to.deep.eq({
+        USD: 2 * currencyToValue.USD,
+        DAI: 2 * currencyToValue.DAI,
+        SAI: 2 * currencyToValue.SAI,
+        ETH: 2 * currencyToValue.ETH,
+      });
+    });
   });
 
   context('addBalances', () => {
