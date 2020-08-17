@@ -1,5 +1,6 @@
 import Knex from 'knex';
-import {StoredEncryptedWallet} from '@unilogin/commons';
+import {StoredEncryptedWallet, ensureNotNullish} from '@unilogin/commons';
+import {StoredEncryptedWalletNotFound} from '../../../core/utils/errors';
 
 export class EncryptedWalletsStore {
   private tableName = 'encrypted_wallets';
@@ -20,6 +21,7 @@ export class EncryptedWalletsStore {
       .where('email', emailOrEnsName)
       .orWhere('ensName', emailOrEnsName)
       .first();
+    ensureNotNullish(storedEncryptedWallet, StoredEncryptedWalletNotFound, emailOrEnsName);
     storedEncryptedWallet.walletJSON = JSON.parse(storedEncryptedWallet.walletJSON);
     return storedEncryptedWallet;
   }

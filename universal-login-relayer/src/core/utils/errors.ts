@@ -30,6 +30,7 @@ type ErrorType =
   'PaymentError' |
   'SignatureNotFound' |
   'StatusNotFound' |
+  'StoredEncryptedWalletNotFound' |
   'TransactionHashNotFound' |
   'UnauthorisedAddress' |
   'UnsupportedToken';
@@ -183,6 +184,13 @@ export class EmailConfirmationNotFound extends NotFound {
   constructor(email: string) {
     super(`Email confirmation not found for email: ${email}`, 'EmailConfirmationNotFound');
     Object.setPrototypeOf(this, EmailConfirmationNotFound.prototype);
+  }
+}
+
+export class StoredEncryptedWalletNotFound extends NotFound {
+  constructor(emailOrEnsName: string) {
+    super(`Stored encrypted wallet not found for: ${emailOrEnsName}`, 'StoredEncryptedWalletNotFound');
+    Object.setPrototypeOf(this, StoredEncryptedWalletNotFound.prototype);
   }
 }
 
