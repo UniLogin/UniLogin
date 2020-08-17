@@ -12,6 +12,7 @@ export const NavigationColumn = () => (
       <li><Link to="/onboardingEmail">Onboarding - select flow</Link></li>
       <li><Link to="/chooseToken">ChooseTopUpToken</Link></li>
       <li><Link to="/logoButton">U</Link></li>
+      <li><Link to="/createEmail">U - email</Link></li>
     </ul>
     <ul>
       Atomic components
