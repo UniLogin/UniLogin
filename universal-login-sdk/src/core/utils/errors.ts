@@ -25,8 +25,7 @@ type ErrorType =
   'InvalidGasLimit' |
   'InvalidObserverState' |
   'SavingFutureWalletFailed' |
-  'InvalidPrivateKey' |
-  'InvalidPassword';
+  'InvalidPrivateKey' ;
 
 export class SDKError extends Error {
   errorType: ErrorType;
@@ -128,13 +127,6 @@ export class InvalidPrivateKey extends ValidationFailed {
   constructor(contractAddress: string) {
     super(`Private key is not contract's ${contractAddress} owner`, 'InvalidPrivateKey');
     Object.setPrototypeOf(this, InvalidPrivateKey.prototype);
-  }
-}
-
-export class InvalidPassword extends ValidationFailed {
-  constructor() {
-    super('Invalid password', 'InvalidPassword');
-    Object.setPrototypeOf(this, InvalidPassword.prototype);
   }
 }
 
