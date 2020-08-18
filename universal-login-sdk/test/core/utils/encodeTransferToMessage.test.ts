@@ -23,8 +23,10 @@ describe('UNIT: encodeTransferToMessage', () => {
       from,
       to,
       amount,
-      transferToken: ETHER_NATIVE_TOKEN.address,
-      decimals: 18,
+      token: {
+        address: ETHER_NATIVE_TOKEN.address,
+        decimals: 18,
+      },
       gasLimit,
       gasParameters,
     };
@@ -44,8 +46,10 @@ describe('UNIT: encodeTransferToMessage', () => {
       to,
       amount,
       gasLimit,
-      transferToken: ETHER_NATIVE_TOKEN.address,
-      decimals: 18,
+      token: {
+        address: ETHER_NATIVE_TOKEN.address,
+        decimals: 18,
+      },
       gasParameters,
     };
     const expectedMessage = {
@@ -64,8 +68,10 @@ describe('UNIT: encodeTransferToMessage', () => {
       to,
       amount,
       gasLimit,
-      transferToken: TEST_TOKEN_ADDRESS,
-      decimals: 18,
+      token: {
+        address: TEST_TOKEN_ADDRESS,
+        decimals: 18,
+      },
       gasParameters,
     };
     const expectedMessage = {
@@ -86,8 +92,10 @@ describe('UNIT: encodeTransferToMessage', () => {
       to,
       amount,
       gasLimit,
-      transferToken: TEST_TOKEN_ADDRESS,
-      decimals: 6,
+      token: {
+        address: TEST_TOKEN_ADDRESS,
+        decimals: 6,
+      },
       gasParameters,
     };
     const expectedMessage = {
@@ -108,8 +116,10 @@ describe('UNIT: encodeTransferToMessage', () => {
       to,
       amount,
       gasLimit,
-      transferToken: TEST_TOKEN_ADDRESS,
-      decimals: 18,
+      token: {
+        address: TEST_TOKEN_ADDRESS,
+        decimals: 18,
+      },
       gasParameters,
     };
     const expectedMessage = {

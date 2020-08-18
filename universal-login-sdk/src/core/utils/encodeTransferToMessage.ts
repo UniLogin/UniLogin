@@ -7,14 +7,14 @@ interface TransferDetailsWithFrom extends TransferDetails {
   gasLimit: utils.BigNumber;
 }
 
-export const encodeTransferToMessage = ({from, to, amount, gasParameters, transferToken, decimals, gasLimit}: TransferDetailsWithFrom) => {
+export const encodeTransferToMessage = ({from, to, amount, gasParameters, token, gasLimit}: TransferDetailsWithFrom) => {
   const base = {
     from,
     gasLimit,
     gasPrice: gasParameters.gasPrice,
     gasToken: gasParameters.gasToken,
   };
-  if (transferToken === ETHER_NATIVE_TOKEN.address) {
+  if (token.address === ETHER_NATIVE_TOKEN.address) {
     return {
       ...base,
       to,
@@ -24,9 +24,9 @@ export const encodeTransferToMessage = ({from, to, amount, gasParameters, transf
   } else {
     return {
       ...base,
-      to: transferToken,
+      to: token.address,
       value: 0,
-      data: encodeERC20Transfer(to, amount, decimals),
+      data: encodeERC20Transfer(to, amount, token.decimals),
     };
   }
 };

@@ -30,7 +30,7 @@ export {asSerializableRestoringWallet, SerializableRestoringWallet} from './core
 export {EncryptedWallet} from './core/models/wallets/EncryptedWallet';
 export {Suggestions} from './core/models/Suggestions';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
-export {TransactionOverrides, TransferDetails} from './core/models/transactions';
+export {TransactionOverrides, TransferDetails, TransferToken} from './core/models/transactions';
 export {StoredEncryptedWallet, asStoredEncryptedWallet} from './core/models/wallets/StoredEncryptedWallet';
 export {WalletSuggestionAction, WALLET_SUGGESTION_ALL_ACTIONS} from './core/models/WalletSuggestionAction';
 export {EmailConfirmation} from './core/models/EmailConfirmation';

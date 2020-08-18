@@ -7,8 +7,10 @@ it('asTransferDetails', () => {
   const expectedTransferDetails = {
     amount: '2',
     to: '0x43ECDb9cf0bd4345B009e8B279567e9B4F4631aF',
-    transferToken: '0x0000000000000000000000000000000000000000',
-    decimals: 18,
+    token: {
+      address: '0x0000000000000000000000000000000000000000',
+      decimals: 18,
+    },
     gasParameters: {
       gasPrice: utils.bigNumberify('2000000000'),
       gasToken: '0x0000000000000000000000000000000000000000',

@@ -9,7 +9,7 @@ export class AmountValidator implements Validator<TransferDetails> {
   }
 
   async validate(transferDetails: TransferDetails, errors: TransferErrors) {
-    const {amount, transferToken} = transferDetails;
+    const {amount, token} = transferDetails;
     if (!amount) {
       errors['amount'].push('Empty amount');
       return;
@@ -25,7 +25,7 @@ export class AmountValidator implements Validator<TransferDetails> {
     const amountWithFee = amountAsBigNumber.add(gasCostInWei);
     if (amountAsBigNumber.gt(balanceAsBigNumber)) {
       errors['amount'].push(`Insufficient funds. Sending ${formatEther(amountAsBigNumber)} eth, got only ${formatEther(balanceAsBigNumber)} eth`);
-    } else if (gasToken === transferToken && amountWithFee.gt(balanceAsBigNumber)) {
+    } else if (gasToken === token.address && amountWithFee.gt(balanceAsBigNumber)) {
       errors['amount'].push(`Insufficient funds. Sending ${formatEther(amountAsBigNumber)} eth + ${formatEther(gasCostInWei)} eth fee, got only ${formatEther(balanceAsBigNumber)} eth`);
     }
   }
