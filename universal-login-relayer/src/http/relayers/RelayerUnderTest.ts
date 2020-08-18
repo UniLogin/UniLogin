@@ -125,6 +125,7 @@ export class RelayerUnderTest extends Relayer {
 }
 
 export async function clearDatabase(knex: Knex) {
+  await knex('email_confirmations').del();
   await knex('encrypted_wallets').del();
   await knex('devices').del();
   await knex('future_wallets').del();
