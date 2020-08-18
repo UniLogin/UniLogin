@@ -34,7 +34,10 @@ describe('UNIT: TransferService', () => {
     await transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
-      transferToken: ETHER_NATIVE_TOKEN.address,
+      token: {
+        address: ETHER_NATIVE_TOKEN.address,
+        decimals: ETHER_NATIVE_TOKEN.decimals,
+      },
       gasParameters,
     });
 
@@ -57,7 +60,10 @@ describe('UNIT: TransferService', () => {
     await expect(transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
-      transferToken: ETHER_NATIVE_TOKEN.address,
+      token: {
+        address: ETHER_NATIVE_TOKEN.address,
+        decimals: ETHER_NATIVE_TOKEN.decimals,
+      },
       gasParameters,
     })).to.be.rejectedWith('Wallet not found');
   });
@@ -68,7 +74,10 @@ describe('UNIT: TransferService', () => {
     await transferService.transfer({
       to: recipient,
       amount: '123',
-      transferToken: 'TOKEN_ADDRESS',
+      token: {
+        address: 'TOKEN_ADDRESS',
+        decimals: 18,
+      },
       gasParameters,
     });
 
@@ -77,7 +86,7 @@ describe('UNIT: TransferService', () => {
         from: 'CONTRACT_ADDRESS',
         to: 'TOKEN_ADDRESS',
         value: 0,
-        data: encodeERC20Transfer(recipient, '123'),
+        data: encodeERC20Transfer(recipient, '123', 18),
         gasLimit: SEND_TRANSACTION_GAS_LIMIT,
         gasToken: gasParameters.gasToken,
         gasPrice: gasParameters.gasPrice,
@@ -93,7 +102,10 @@ describe('UNIT: TransferService', () => {
     await expect(transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
-      transferToken: 'TOKEN_ADDRESS',
+      token: {
+        address: 'TOKEN_ADDRESS',
+        decimals: 18,
+      },
       gasParameters,
     })).to.be.rejectedWith('Wallet not found');
   });
@@ -104,7 +116,10 @@ describe('UNIT: TransferService', () => {
     await expect(transferService.transfer({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '123',
-      transferToken: ETHER_NATIVE_TOKEN.address,
+      token: {
+        address: ETHER_NATIVE_TOKEN.address,
+        decimals: ETHER_NATIVE_TOKEN.decimals,
+      },
       gasParameters,
     })).to.be.rejectedWith('Not enough tokens');
   });
@@ -114,7 +129,10 @@ describe('UNIT: TransferService', () => {
     expect(await transferService.validateInputs({
       to: TEST_ACCOUNT_ADDRESS,
       amount: '350',
-      transferToken: ETHER_NATIVE_TOKEN.address,
+      token: {
+        address: ETHER_NATIVE_TOKEN.address,
+        decimals: ETHER_NATIVE_TOKEN.decimals,
+      },
       gasParameters,
     }, balance))
       .to.deep.eq({amount: ['Insufficient funds. Sending 350.0 eth, got only 300.0 eth'], to: []});
@@ -125,7 +143,10 @@ describe('UNIT: TransferService', () => {
     expect(await transferService.validateInputs({
       to: '0x',
       amount: '123',
-      transferToken: ETHER_NATIVE_TOKEN.address,
+      token: {
+        address: ETHER_NATIVE_TOKEN.address,
+        decimals: ETHER_NATIVE_TOKEN.decimals,
+      },
       gasParameters,
     }, balance))
       .to.deep.eq({to: ['0x is not a valid address'], amount: []});
@@ -136,7 +157,10 @@ describe('UNIT: TransferService', () => {
     expect(await transferService.validateInputs({
       to: 'test',
       amount: '123',
-      transferToken: ETHER_NATIVE_TOKEN.address,
+      token: {
+        address: ETHER_NATIVE_TOKEN.address,
+        decimals: ETHER_NATIVE_TOKEN.decimals,
+      },
       gasParameters,
     }, balance))
       .to.deep.eq({to: ['test is not a valid address or ENS name'], amount: []});

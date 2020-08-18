@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import UniLoginSdk, {TransferService, TransferErrors, Execution} from '@unilogin/sdk';
-import {TransferDetails, TokenDetails, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN, SEND_TRANSACTION_GAS_LIMIT, INITIAL_GAS_PARAMETERS} from '@unilogin/commons';
+import {TransferDetails, TokenDetails, GasParameters, getBalanceOf, ETHER_NATIVE_TOKEN, SEND_TRANSACTION_GAS_LIMIT, INITIAL_GAS_PARAMETERS, TransferToken} from '@unilogin/commons';
 import {FooterSection} from '../commons/FooterSection';
 import {GasPrice} from '../commons/GasPrice';
 import {TransferAmount} from './Amount/TransferAmount';
@@ -22,12 +22,11 @@ export interface TransferProps {
 }
 
 export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferProps) => {
-  const [transferDetails, setTransferDetails] = useState<TransferDetails>({transferToken: ETHER_NATIVE_TOKEN.address, amount: '', to: '', gasParameters: INITIAL_GAS_PARAMETERS});
+  const [transferDetails, setTransferDetails] = useState<TransferDetails>({token: {address: ETHER_NATIVE_TOKEN.address, decimals: 0}, amount: '', to: '', gasParameters: INITIAL_GAS_PARAMETERS});
   const [errors, setErrors] = useState<TransferErrors>({amount: [], to: []});
   const [tokenDetailsWithBalance] = useBalances(transferService.deployedWallet);
-  const selectedToken = transferService.getTokenDetails(transferDetails.transferToken);
+  const selectedToken = transferService.getTokenDetails(transferDetails.token.address);
   const balance = getBalanceOf(selectedToken.symbol, tokenDetailsWithBalance);
-
   const onTransferClick = async () => {
     setErrors(await transferService.validateInputs(transferDetails, balance));
     if (transferService.areInputsValid()) {
@@ -35,7 +34,7 @@ export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferPr
     }
   };
 
-  const updateField = (field: string) => (value: string | GasParameters) => {
+  const updateField = (field: string) => (value: TransferToken | string | GasParameters) => {
     setTransferDetails({...transferDetails, ...{[field]: value}});
     setErrors({...errors, [field]: []});
   };
@@ -47,7 +46,9 @@ export const Transfer = ({transferService, onTransferTriggered, sdk}: TransferPr
           sdk={transferService.deployedWallet.sdk}
           tokenDetailsWithBalance={tokenDetailsWithBalance}
           tokenDetails={selectedToken}
-          setToken={(token: TokenDetails) => updateField('transferToken')(token.address)}
+          setToken={(token: TokenDetails) => {
+            updateField('token')({address: token.address, decimals: token.decimals});
+          }}
         />
         <TransferAmount
           value={transferDetails.amount}
