@@ -2,16 +2,11 @@ import React, {useState} from 'react';
 import {utils, Wallet} from 'ethers';
 import {DEV_DEFAULT_PRIVATE_KEY, DEV_DAI_ADDRESS} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
-import {IERC20Interface} from '@unilogin/contracts';
+import {sendDevDai} from './sendDai';
 
 export interface CreateRandomInstanceProps {
   walletService: WalletService;
 }
-
-export const sendDevDai = async (wallet: Wallet, to: string, value: utils.BigNumberish) => {
-  const data = IERC20Interface.functions.transfer.encode([to, value]);
-  await wallet.sendTransaction({to: DEV_DAI_ADDRESS, data});
-};
 
 export const CreateRandomInstance = ({walletService}: CreateRandomInstanceProps) => {
   const [contractAddress, setContractAddress] = useState<string>('');
