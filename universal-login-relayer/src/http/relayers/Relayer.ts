@@ -134,7 +134,7 @@ class Relayer {
     const futureWalletStore = new FutureWalletStore(this.database);
     this.emailConfirmationStore = new EmailConfirmationsStore(this.database);
     this.emailService = new EmailService(this.config.email);
-    const emailConfirmationValidator = new EmailConfirmationValidator();
+    const emailConfirmationValidator = new EmailConfirmationValidator(this.config.codeExpirationTimeInMinutes);
     this.tokenPricesService = new TokenPricesService();
     const gasTokenValidator = new GasTokenValidator(this.gasPriceOracle);
     const tokenDetailsService = new TokenDetailsService(this.provider);

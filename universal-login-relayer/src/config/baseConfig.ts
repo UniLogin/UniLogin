@@ -35,4 +35,5 @@ export const baseConfig = {
     apiKey: getEnv('MANDRILL_API_KEY', ''),
     from: 'noreply@unilogin.io',
   },
+  codeExpirationTimeInMinutes: 30,
 };

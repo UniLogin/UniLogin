@@ -26,6 +26,7 @@ export interface Config {
   ipGeolocationApi: IPGeolocationApiConfig;
   httpsRedirect: boolean;
   email: EmailConfig;
+  codeExpirationTimeInMinutes: number;
 }
 
 export interface EmailConfig {
