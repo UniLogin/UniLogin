@@ -12,6 +12,7 @@ import '../styles/themes/Legacy/connectionFlowModalThemeLegacy.sass';
 import {ConfirmCodeScreen} from './ConfirmCodeScreen';
 import {EmailFlowChooserScreen} from './EmailFlowChooserScreen';
 import {ErrorMessage} from '../commons/ErrorMessage';
+import {EnterPassword} from './EnterPassword';
 
 export interface OnboardingProps {
   walletService: WalletService;
@@ -94,6 +95,15 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
               hideModal={props.hideModal}
               onConfirmCode={() => {history.push(location.state.redirectPath);}}
             />} />
+        <Route
+          path='/restore'
+          exact
+          render={() =>
+            <EnterPassword
+              hideModal={props.hideModal}
+              walletService={props.walletService}
+              onConfirm={async (password: string) => {await props.walletService.restoreWallet(password);}}
+            />}/>
         <Route
           exact
           path="/create"
