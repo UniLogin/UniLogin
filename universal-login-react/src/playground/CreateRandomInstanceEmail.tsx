@@ -28,15 +28,16 @@ export const CreateRandomInstanceEmail = ({walletService}: CreateRandomInstanceP
   const createRandomInstance = (token: 'ETH' | 'DAI') => async () => {
     ensureNotNullish(code, Error, 'Code not provided');
     await walletService.confirmCode(code);
-    setPassword(Math.random().toString(36).substring(7));
+    const generatedPassword = Math.random().toString(36).substring(7);
+    setPassword(generatedPassword);
     const wallet = new Wallet(DEV_DEFAULT_PRIVATE_KEY, walletService.sdk.provider);
     if (token === 'ETH') {
-      const {waitForBalance, contractAddress} = await walletService.createFutureWalletWithPassword(password);
+      const {waitForBalance, contractAddress} = await walletService.createFutureWalletWithPassword(generatedPassword);
       setStatus(`Waiting for intial funds in ${contractAddress}`);
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('4')});
       await waitForBalance();
     } else {
-      const {waitForBalance, contractAddress} = await walletService.createFutureWalletWithPassword(password, DEV_DAI_ADDRESS);
+      const {waitForBalance, contractAddress} = await walletService.createFutureWalletWithPassword(generatedPassword, DEV_DAI_ADDRESS);
       setStatus(`Waiting for intial funds in ${contractAddress}`);
       await sendDevDai(wallet, contractAddress, utils.parseEther('1000'));
       await waitForBalance();
