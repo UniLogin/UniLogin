@@ -29,7 +29,7 @@ import {EmailFlowChooserScreen} from '../ui/Onboarding/EmailFlowChooserScreen';
 import {CreatePassword} from '../ui/Onboarding/CreatePassword';
 import {EnterPassword} from '../ui/Onboarding/EnterPassword';
 import {ConfirmCodeScreen} from '../ui/Onboarding/ConfirmCodeScreen';
-import {CreateRandomInstanceEmail} from './CresteRandomInstanceEmail';
+import {CreateRandomInstanceEmail} from './CreateRandomInstanceEmail';
 
 export const App = () => {
   const [sdk] = useState(() => {
