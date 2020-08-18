@@ -4,7 +4,7 @@ import {UnexpectedConfirmation, InvalidCode, CodeExpired, EmailNotConfirmed} fro
 
 export class EmailConfirmationValidator {
   constructor(
-    private codeDurationInMinutes: number = 5,
+    private codeExpirationTimeInMinutes: number = 5,
   ) {}
 
   isEmailConfirmed(isConfirmed: boolean, email: string) {
@@ -17,7 +17,7 @@ export class EmailConfirmationValidator {
 
   validate(emailConfirmation: EmailConfirmation, ensNameOrEmail: string, code: string) {
     ensure(!emailConfirmation.isConfirmed, UnexpectedConfirmation, ensNameOrEmail);
-    ensure(moment(emailConfirmation.createdAt).add(this.codeDurationInMinutes, 'm').isAfter(), CodeExpired);
+    ensure(moment(emailConfirmation.createdAt).add(this.codeExpirationTimeInMinutes, 'm').isAfter(), CodeExpired);
     this.validateCode(emailConfirmation.code, code);
   }
 }
