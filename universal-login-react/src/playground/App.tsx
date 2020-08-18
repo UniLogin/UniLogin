@@ -29,6 +29,7 @@ import {EmailFlowChooserScreen} from '../ui/Onboarding/EmailFlowChooserScreen';
 import {CreatePassword} from '../ui/Onboarding/CreatePassword';
 import {EnterPassword} from '../ui/Onboarding/EnterPassword';
 import {ConfirmCodeScreen} from '../ui/Onboarding/ConfirmCodeScreen';
+import {CreateRandomInstanceEmail} from './CreateRandomInstanceEmail';
 
 export const App = () => {
   const [sdk] = useState(() => {
@@ -283,6 +284,18 @@ export const App = () => {
                     walletService={walletService}
                     onConfirmCode={() => {}}
                   />}
+              />
+              <Route
+                exact
+                path="/createEmail"
+                render={() =>
+                  <div>
+                    <CreateRandomInstanceEmail
+                      walletService={walletService}
+                    />
+                    <Dashboard walletService={walletService} />
+                  </div>
+                }
               />
               <Route component={() => (<p>not found</p>)} />
             </Switch>
