@@ -102,7 +102,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
             <EnterPassword
               hideModal={props.hideModal}
               walletService={props.walletService}
-              onConfirm={async (password: string) => {await props.walletService.restoreWallet(password);}}
+              onConfirm={(password: string) => props.walletService.restoreWallet(password)}
             />}/>
         <Route
           exact
