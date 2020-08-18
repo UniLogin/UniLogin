@@ -23,7 +23,10 @@ describe('UNIT: encodeTransferToMessage', () => {
       from,
       to,
       amount,
-      transferToken: ETHER_NATIVE_TOKEN.address,
+      token: {
+        address: ETHER_NATIVE_TOKEN.address,
+        decimals: 18,
+      },
       gasLimit,
       gasParameters,
     };
@@ -43,7 +46,10 @@ describe('UNIT: encodeTransferToMessage', () => {
       to,
       amount,
       gasLimit,
-      transferToken: ETHER_NATIVE_TOKEN.address,
+      token: {
+        address: ETHER_NATIVE_TOKEN.address,
+        decimals: 18,
+      },
       gasParameters,
     };
     const expectedMessage = {
@@ -62,12 +68,39 @@ describe('UNIT: encodeTransferToMessage', () => {
       to,
       amount,
       gasLimit,
-      transferToken: TEST_TOKEN_ADDRESS,
+      token: {
+        address: TEST_TOKEN_ADDRESS,
+        decimals: 18,
+      },
       gasParameters,
     };
     const expectedMessage = {
       ...basicMessage,
       data: IERC20Interface.functions.transfer.encode([to, utils.parseEther(amount)]),
+      value: 0,
+      to: TEST_TOKEN_ADDRESS,
+      gasPrice,
+      gasToken: gasParameters.gasToken,
+    };
+    expect(encodeTransferToMessage(transfer)).to.deep.eq(expectedMessage);
+  });
+
+  it('token transfer and ether refund', () => {
+    const gasParameters = {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice};
+    const transfer = {
+      from,
+      to,
+      amount,
+      gasLimit,
+      token: {
+        address: TEST_TOKEN_ADDRESS,
+        decimals: 6,
+      },
+      gasParameters,
+    };
+    const expectedMessage = {
+      ...basicMessage,
+      data: IERC20Interface.functions.transfer.encode([to, utils.parseUnits(amount, 6)]),
       value: 0,
       to: TEST_TOKEN_ADDRESS,
       gasPrice,
@@ -83,7 +116,10 @@ describe('UNIT: encodeTransferToMessage', () => {
       to,
       amount,
       gasLimit,
-      transferToken: TEST_TOKEN_ADDRESS,
+      token: {
+        address: TEST_TOKEN_ADDRESS,
+        decimals: 18,
+      },
       gasParameters,
     };
     const expectedMessage = {

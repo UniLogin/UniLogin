@@ -7,7 +7,10 @@ import {TransferErrors} from '../../../../src';
 const TEST_TRANSFER_DETAILS: TransferDetails = {
   to: '0x',
   amount: '',
-  transferToken: '0x1',
+  token: {
+    address: '0x1',
+    decimals: 18,
+  },
   gasParameters: {
     gasToken: '0x',
     gasPrice: utils.parseUnits('1', 'gwei'),
@@ -48,7 +51,7 @@ describe('UNIT: AmountValidator', () => {
   });
 
   it('balance too low with fee', async () => {
-    await new AmountValidator('1').validate({...TEST_TRANSFER_DETAILS, transferToken: '0x', amount: '1'}, errors);
+    await new AmountValidator('1').validate({...TEST_TRANSFER_DETAILS, token: {address: '0x', decimals: 18}, amount: '1'}, errors);
     expect(errors).to.deep.eq({amount: ['Insufficient funds. Sending 1.0 eth + 0.0002 eth fee, got only 1.0 eth'], to: []});
   });
 });
