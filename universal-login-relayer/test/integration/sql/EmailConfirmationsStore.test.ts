@@ -57,6 +57,48 @@ describe('INT: EmailConfirmationsStore', () => {
     expect(await emailConfirmationsStore.get(email2)).be.deep.eq(secondEmailConfirmation);
   });
 
+  describe('countConfirmed', () => {
+    const email = 'user@email.com';
+    const ensName = 'user.unilogin.eth';
+
+    const emailConfirmation: EmailConfirmation = {
+      email,
+      ensName,
+      code: '1234',
+      isConfirmed: true,
+      createdAt: new Date(),
+    };
+
+    it('0 confirmed', async () => {
+      await emailConfirmationsStore.add({...emailConfirmation, isConfirmed: false});
+      expect(await emailConfirmationsStore.countConfirmed(email, ensName)).eq(0);
+    });
+
+    describe('1 confirmed', () => {
+      it('by ensName', async () => {
+        await emailConfirmationsStore.add({...emailConfirmation, isConfirmed: false});
+        await emailConfirmationsStore.add(emailConfirmation);
+        expect(await emailConfirmationsStore.countConfirmed(email, 'not-existing.unilogin.eth')).eq(1);
+      });
+
+      it('by email', async () => {
+        await emailConfirmationsStore.add({...emailConfirmation, isConfirmed: false});
+        await emailConfirmationsStore.add(emailConfirmation);
+        expect(await emailConfirmationsStore.countConfirmed('not@existing.mail', ensName)).eq(1);
+      });
+    });
+
+    it('2 confirmed', async () => {
+      await emailConfirmationsStore.add(emailConfirmation);
+      await emailConfirmationsStore.add(emailConfirmation);
+      expect(await emailConfirmationsStore.countConfirmed(email, ensName)).eq(2);
+    });
+  });
+
+  afterEach(async () => {
+    await knex('email_confirmations').del();
+  });
+
   after(async () => {
     await knex.destroy();
   });

@@ -35,4 +35,12 @@ export class EmailConfirmationsStore {
         created_at: createdAt,
       });
   }
+
+  async countConfirmed(email: string, ensName: string) {
+    const emailConfirmations = await this.database(this.tableName)
+      .where({email, isConfirmed: true})
+      .orWhere({ensName, isConfirmed: true})
+      .select();
+    return emailConfirmations.length;
+  }
 }
