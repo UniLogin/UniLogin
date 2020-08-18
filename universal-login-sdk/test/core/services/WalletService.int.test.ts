@@ -158,7 +158,6 @@ describe('INT: WalletService', () => {
       expect(walletService.state).to.deep.include({kind: 'Confirmed'});
       const password = 'password123!';
       const {contractAddress} = await walletService.createFutureWalletWithPassword(password, ETHER_NATIVE_TOKEN.address);
-      console.log(contractAddress);
       expect(walletService.state.kind).eq('Future');
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('1')});
       await walletService.deployFutureWallet();
@@ -202,7 +201,7 @@ describe('INT: WalletService', () => {
   });
 
   afterEach(async () => {
-    sdk.stop();
+    await sdk.finalizeAndStop();
     await relayer.stop();
   });
 });
