@@ -13,6 +13,7 @@ import {ConfirmCodeScreen} from './ConfirmCodeScreen';
 import {EmailFlowChooserScreen} from './EmailFlowChooserScreen';
 import {ErrorMessage} from '../commons/ErrorMessage';
 import {EnterPassword} from './EnterPassword';
+import {getRedirectPathForConfirmCode} from '../../app/getRedirectPathForConfirmCode';
 
 export interface OnboardingProps {
   walletService: WalletService;
@@ -93,7 +94,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
             <ConfirmCodeScreen
               walletService={props.walletService}
               hideModal={props.hideModal}
-              onConfirmCode={() => {history.push(props.walletService.isKind('Confirmed') ? '/create' : '/restore');}}
+              onConfirmCode={() => history.push(getRedirectPathForConfirmCode(props.walletService.state.kind))}
             />} />
         <Route
           path='/restore'
