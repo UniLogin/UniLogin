@@ -8,7 +8,7 @@ import {AlreadyUsed} from '../../core/utils/errors';
 const emailConfirmationRequest = (handler: EmailConfirmationHandler) =>
   async (data: {body: SerializableRequestedCreatingWallet}) => {
     const {email, ensName} = data.body;
-    ensure(await handler.emailConfirmationStore.countConfirmed(email, ensName) === 0, AlreadyUsed, `${email} or ${ensName}`);
+    ensure(await handler.emailConfirmationStore.getConfirmedNumber(email, ensName) === 0, AlreadyUsed, `${email} or ${ensName}`);
     const result = await handler.request(email, ensName);
     return responseOf({email: result}, 201);
   };

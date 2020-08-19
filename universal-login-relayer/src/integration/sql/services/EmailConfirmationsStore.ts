@@ -36,7 +36,7 @@ export class EmailConfirmationsStore {
       });
   }
 
-  async countConfirmed(email: string, ensName: string) {
+  async getConfirmedNumber(email: string, ensName: string) {
     const emailConfirmations = await this.database(this.tableName)
       .where({email, isConfirmed: true})
       .orWhere({ensName, isConfirmed: true})
