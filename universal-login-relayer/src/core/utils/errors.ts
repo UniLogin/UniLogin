@@ -174,8 +174,8 @@ export class UnexpectedConfirmation extends ValidationFailed {
 }
 
 export class AlreadyUsed extends ValidationFailed {
-  constructor(target: string) {
-    super(`${target} already used`, 'AlreadyUsed');
+  constructor(object: string) {
+    super(`${object} already used`, 'AlreadyUsed');
     Object.setPrototypeOf(this, AlreadyUsed.prototype);
   }
 }
