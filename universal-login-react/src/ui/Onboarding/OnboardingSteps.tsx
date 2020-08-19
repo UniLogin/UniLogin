@@ -54,7 +54,10 @@ export function OnboardingSteps({walletService, onCreate, ensName}: OnboardingSt
     case 'Confirmed':
       return (
         <CreateFutureWallet
-          hideModal={() => history.push('/email')}
+          hideModal={() => {
+            walletService.disconnect();
+            history.push('/email');
+          }}
           walletService={walletService}
         />
       );
