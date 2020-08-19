@@ -63,8 +63,8 @@ describe('E2E: Relayer - Email Confirmation', () => {
       .send({email, ensName});
     expect(duplicatedConfirmationResult.status).to.eq(400, duplicatedConfirmationResult.body.error);
     expect(duplicatedConfirmationResult.body).to.deep.eq({
-      error: 'Error: Unexpected confirmation for: account@unilogin.test or name.mylogin.eth',
-      type: 'UnexpectedConfirmation',
+      error: 'Error: account@unilogin.test or name.mylogin.eth already used',
+      type: 'AlreadyUsed',
     });
   });
 
@@ -89,8 +89,8 @@ describe('E2E: Relayer - Email Confirmation', () => {
         .send({email, ensName});
       expect(duplicatedConfirmationResult.status).to.eq(400, duplicatedConfirmationResult.body.error);
       expect(duplicatedConfirmationResult.body).to.deep.eq({
-        error: 'Error: Unexpected confirmation for: name@unilogin.test or name.mylogin.eth',
-        type: 'UnexpectedConfirmation',
+        error: 'Error: name@unilogin.test or name.mylogin.eth already used',
+        type: 'AlreadyUsed',
       });
     });
   }

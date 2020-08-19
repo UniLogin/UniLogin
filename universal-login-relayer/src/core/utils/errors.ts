@@ -1,4 +1,5 @@
 type ErrorType =
+  'AlreadyUsed' |
   'UnexpectedConfirmation' |
   'DuplicatedSignature' |
   'DuplicatedExecution' |
@@ -169,6 +170,13 @@ export class UnexpectedConfirmation extends ValidationFailed {
   constructor(email: string) {
     super(`Unexpected confirmation from email: ${email}`, 'UnexpectedConfirmation');
     Object.setPrototypeOf(this, UnexpectedConfirmation.prototype);
+  }
+}
+
+export class AlreadyUsed extends ValidationFailed {
+  constructor(target: string) {
+    super(`${target} already used`, 'AlreadyUsed');
+    Object.setPrototypeOf(this, AlreadyUsed.prototype);
   }
 }
 
