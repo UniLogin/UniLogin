@@ -32,31 +32,31 @@ describe('INT: RestoreWalletHandler', () => {
     const emailConfirmationsStore = new EmailConfirmationsStore(knex);
     const encryptedWalletsStore = new EncryptedWalletsStore(knex);
     const validator = new EmailConfirmationValidator();
-    emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationsStore, mockEmailService((code: string) => {sentCode = code;}), validator, {} as any);
+    emailConfirmationHandler = new EmailConfirmationHandler(emailConfirmationsStore, mockEmailService((code: string) => {sentCode = code;}), validator, encryptedWalletsStore);
     encryptedWalletHandler = new EncryptedWalletHandler(emailConfirmationsStore, validator, encryptedWalletsStore);
     restoreWalletHandler = new RestoreWalletHandler(emailConfirmationsStore, validator, encryptedWalletsStore);
   });
 
   it('restore wallet roundtrip', async () => {
-    await emailConfirmationHandler.request(email, ensName);
+    await emailConfirmationHandler.requestCreating(email, ensName);
     storedEncryptedWallet = {
       email, ensName, walletJSON: TEST_ENCRYPTED_WALLET_JSON, contractAddress: TEST_CONTRACT_ADDRESS,
     };
     await emailConfirmationHandler.confirm(email, sentCode);
     await encryptedWalletHandler.handle(storedEncryptedWallet, sentCode);
-    await emailConfirmationHandler.request(email, ensName);
+    await emailConfirmationHandler.requestRestore(email);
     const result = await restoreWalletHandler.handle(email, sentCode);
     expect(result.walletJSON).be.deep.eq(TEST_ENCRYPTED_WALLET_JSON);
   });
 
   it('negative scenario of restoring wallet', async () => {
-    await emailConfirmationHandler.request(email, ensName);
+    await emailConfirmationHandler.requestCreating(email, ensName);
     storedEncryptedWallet = {
       email, ensName, walletJSON: TEST_ENCRYPTED_WALLET_JSON, contractAddress: TEST_CONTRACT_ADDRESS,
     };
     await emailConfirmationHandler.confirm(email, sentCode);
     await encryptedWalletHandler.handle(storedEncryptedWallet, sentCode);
-    await emailConfirmationHandler.request(email, ensName);
+    await emailConfirmationHandler.requestRestore(email);
     await expect(restoreWalletHandler.handle(email, '000000')).to.be.rejectedWith('Invalid code');
   });
 
