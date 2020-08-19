@@ -7,6 +7,7 @@ import {EmailConfirmationValidator} from '../../../src/core/services/validators/
 import {InvalidCode} from '../../../src/core/utils/errors';
 import {createTestEmailConfirmation} from '../../testhelpers/createTestEmailConfirmation';
 import {EncryptedWalletsStore} from '../../../src/integration/sql/services/EncryptedWalletsStore';
+import {describe} from 'mocha';
 
 describe('UNIT: EmailConfirmationHandler', () => {
   let emailConfirmationStoreStub: sinon.SinonStubbedInstance<EmailConfirmationsStore>;
@@ -18,10 +19,12 @@ describe('UNIT: EmailConfirmationHandler', () => {
   const emailConfirmation = createTestEmailConfirmation({});
   const invalidCode = '123456';
   const {email, code} = emailConfirmation;
+  const ensName = 'hello.unilogin.eth';
 
-  before(() => {
+  beforeEach(() => {
     emailConfirmationStoreStub = sinon.createStubInstance(EmailConfirmationsStore);
     emailConfirmationStoreStub.get.resolves(emailConfirmation);
+    emailConfirmationStoreStub.getConfirmedNumber.resolves(0);
 
     emailServiceStub = sinon.createStubInstance(EmailService);
 
@@ -44,20 +47,25 @@ describe('UNIT: EmailConfirmationHandler', () => {
     }
   });
 
-  it('request', async () => {
-    const ensName = 'hello.unilogin.eth';
+  describe('requestCreating', () => {
+    it('valid request', async () => {
+      const result = await emailConfirmationHandler.requestCreating(email, ensName);
+      expect(result).eq(email);
+      expect(emailConfirmationStoreStub.add.calledOnce);
 
-    const result = await emailConfirmationHandler.request(email, ensName);
-    expect(result).eq(email);
-    expect(emailConfirmationStoreStub.add.calledOnce);
+      const {code, createdAt, ...addArgs} = emailConfirmationStoreStub.add.firstCall.lastArg;
 
-    const {code, createdAt, ...addArgs} = emailConfirmationStoreStub.add.firstCall.lastArg;
+      expect(addArgs).deep.eq({email, ensName, isConfirmed: false});
+      expect(code).to.be.a('string').length(6);
+      expect(createdAt).to.be.a('date').below(new Date());
 
-    expect(addArgs).deep.eq({email, ensName, isConfirmed: false});
-    expect(code).to.be.a('string').length(6);
-    expect(createdAt).to.be.a('date').below(new Date());
+      expect(emailServiceStub.sendConfirmationMail).calledOnceWithExactly(email, code);
+    });
 
-    expect(emailServiceStub.sendConfirmationMail).calledOnceWithExactly(email, code);
+    it('duplicated request', async () => {
+      emailConfirmationStoreStub.getConfirmedNumber.resolves(1);
+      await expect(emailConfirmationHandler.requestCreating(email, ensName)).to.be.rejectedWith(`${email} or ${ensName} already used`);
+    });
   });
 
   describe('confirm', () => {
@@ -68,8 +76,12 @@ describe('UNIT: EmailConfirmationHandler', () => {
       expect(emailConfirmationStoreStub.updateIsConfirmed).calledOnceWithExactly(emailConfirmation, true);
     });
 
-    it('valid email confirmation', async () => {
+    it('invalid code', async () => {
       await expect(emailConfirmationHandler.confirm(email, invalidCode)).rejectedWith(`Invalid code: ${invalidCode}`);
     });
+  });
+
+  afterEach(() => {
+    sinon.reset();
   });
 });

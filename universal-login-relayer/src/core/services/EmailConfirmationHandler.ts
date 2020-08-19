@@ -1,3 +1,5 @@
+import {ensure} from '@unilogin/commons';
+import {AlreadyUsed} from '../utils/errors';
 import {EmailConfirmationsStore} from '../../integration/sql/services/EmailConfirmationsStore';
 import {EmailService} from '../../integration/ethereum/EmailService';
 import {EmailConfirmationValidator} from './validators/EmailConfirmationValidator';
@@ -16,7 +18,12 @@ export class EmailConfirmationHandler {
     return this.request(email, ensName);
   };
 
-  async request(email: string, ensName: string) {
+  async requestCreating(email: string, ensName: string) {
+    ensure(await this.emailConfirmationStore.getConfirmedNumber(email, ensName) === 0, AlreadyUsed, `${email} or ${ensName}`);
+    return this.request(email, ensName);
+  };
+
+  private async request(email: string, ensName: string) {
     const code = generateValidationCode(6);
     await this.emailConfirmationStore.add({
       email,
