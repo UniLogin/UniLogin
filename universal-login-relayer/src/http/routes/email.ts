@@ -2,12 +2,14 @@ import {Router} from 'express';
 import {asyncHandler, sanitize, responseOf} from '@restless/restless';
 import {asString, asObject} from '@restless/sanitizers';
 import {EmailConfirmationHandler} from '../../core/services/EmailConfirmationHandler';
-import {asSerializableRequestedCreatingWallet, SerializableRequestedCreatingWallet} from '@unilogin/commons';
+import {asSerializableRequestedCreatingWallet, SerializableRequestedCreatingWallet, ensure} from '@unilogin/commons';
+import {UnexpectedConfirmation} from '../../core/utils/errors';
 
-const emailConfirmationRequest = (emailConfirmationHandler: EmailConfirmationHandler) =>
+const emailConfirmationRequest = (handler: EmailConfirmationHandler) =>
   async (data: {body: SerializableRequestedCreatingWallet}) => {
     const {email, ensName} = data.body;
-    const result = await emailConfirmationHandler.request(email, ensName);
+    ensure(await handler.emailConfirmationStore.countConfirmed(email, ensName) === 0, UnexpectedConfirmation, `${email} or ${ensName}`);
+    const result = await handler.request(email, ensName);
     return responseOf({email: result}, 201);
   };
 

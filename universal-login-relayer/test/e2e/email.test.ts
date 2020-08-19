@@ -57,6 +57,15 @@ describe('E2E: Relayer - Email Confirmation', () => {
       .post('/email/confirmation')
       .send({ensNameOrEmail: email, code: relayer.sentCodes[email]});
     expect(confirmationResult.status).to.eq(201);
+
+    const duplicatedConfirmationResult = await chai.request(relayerUrl)
+      .post('/email/request/creating')
+      .send({email, ensName});
+    expect(duplicatedConfirmationResult.status).to.eq(400, duplicatedConfirmationResult.body.error);
+    expect(duplicatedConfirmationResult.body).to.deep.eq({
+      error: 'Error: Unexpected confirmation for: account@unilogin.test or name.mylogin.eth',
+      type: 'UnexpectedConfirmation',
+    });
   });
 
   const email = 'name@unilogin.test';
@@ -74,6 +83,15 @@ describe('E2E: Relayer - Email Confirmation', () => {
         .send({ensNameOrEmail, code: relayer.sentCodes[email]});
       expect(confirmationResult.status).to.eq(201);
       expect(confirmationResult.body).to.deep.eq({ensNameOrEmail});
+
+      const duplicatedConfirmationResult = await chai.request(relayerUrl)
+        .post('/email/request/creating')
+        .send({email, ensName});
+      expect(duplicatedConfirmationResult.status).to.eq(400, duplicatedConfirmationResult.body.error);
+      expect(duplicatedConfirmationResult.body).to.deep.eq({
+        error: 'Error: Unexpected confirmation for: name@unilogin.test or name.mylogin.eth',
+        type: 'UnexpectedConfirmation',
+      });
     });
   }
 
@@ -82,6 +100,10 @@ describe('E2E: Relayer - Email Confirmation', () => {
       .post('/email/request/restoring')
       .send({ensNameOrEmail: 'notexisting.mylogin.eth'});
     expect(confirmationRequestResultForRestoring.status).to.eq(404);
+  });
+
+  afterEach(async () => {
+    await relayer.clearDatabase();
   });
 
   after(() => {

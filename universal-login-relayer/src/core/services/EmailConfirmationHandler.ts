@@ -5,7 +5,7 @@ import {EncryptedWalletsStore} from '../../integration/sql/services/EncryptedWal
 
 export class EmailConfirmationHandler {
   constructor(
-    private emailConfirmationStore: EmailConfirmationsStore,
+    readonly emailConfirmationStore: EmailConfirmationsStore,
     private emailService: EmailService,
     private emailValidator: EmailConfirmationValidator,
     private encryptedWalletStore: EncryptedWalletsStore,
