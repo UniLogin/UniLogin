@@ -19,6 +19,7 @@ export interface OnboardingProps {
   walletService: WalletService;
   domains: string[];
   onConnect?: () => void;
+  onLogin?: () => void;
   onCreate?: (arg: ApplicationWallet) => void;
   hideModal?: () => void;
   className?: string;
@@ -103,7 +104,10 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
             <EnterPassword
               hideModal={props.hideModal}
               walletService={props.walletService}
-              onConfirm={(password: string) => props.walletService.restoreWallet(password)}
+              onConfirm={async (password: string) => {
+                await props.walletService.restoreWallet(password);
+                props.onLogin && props.onLogin();
+              }}
             />}/>
         <Route
           exact
