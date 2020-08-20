@@ -82,7 +82,7 @@ export const App = () => {
               </Route>
               <Route
                 exact
-                path="/onboarding/success"
+                path="/success"
                 render={({history}) => <>
                   <div> Success!!! </div>
                   <br />
@@ -100,8 +100,8 @@ export const App = () => {
                   <Onboarding
                     walletService={walletService}
                     domains={config.domains}
-                    onLogin={() => history.push('/onboarding/success')}
-                    onCreate={() => history.push('/onboarding/success')}
+                    onLogin={() => history.push('/success')}
+                    onCreate={() => history.push('/success')}
                     hideModal={() => history.push('/')}
                     emailFlow={true}
                   />}
@@ -114,7 +114,7 @@ export const App = () => {
                     walletService={walletService}
                     domains={config.domains}
                     onConnect={() => console.log('connected')}
-                    onCreate={() => history.push('/onboarding/success')}
+                    onCreate={() => history.push('/success')}
                     hideModal={() => history.push('/')}
                   />}
               />
