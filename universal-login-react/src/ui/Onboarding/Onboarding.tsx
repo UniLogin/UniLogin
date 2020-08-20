@@ -13,6 +13,7 @@ import {ConfirmCodeScreen} from './ConfirmCodeScreen';
 import {EmailFlowChooserScreen} from './EmailFlowChooserScreen';
 import {ErrorMessage} from '../commons/ErrorMessage';
 import {EnterPassword} from './EnterPassword';
+import {getRedirectPathForConfirmCode} from '../../app/getRedirectPathForConfirmCode';
 
 export interface OnboardingProps {
   walletService: WalletService;
@@ -70,7 +71,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
               onConnectClick={async (ensNameOrEmail: string) => {
                 try {
                   const waitForCode = props.walletService.createRequestedRestoringWallet(ensNameOrEmail);
-                  history.push('/code', {redirectPath: '/restore'});
+                  history.push('/code');
                   await waitForCode;
                 } catch (e) {
                   history.push('/error', {message: e.message});
@@ -79,7 +80,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
               onCreateClick={async (email: string, ensName: string) => {
                 try {
                   const requestPromise = props.walletService.createRequestedCreatingWallet(email, ensName);
-                  history.push('/code', {redirectPath: '/create'});
+                  history.push('/code');
                   await requestPromise;
                 } catch (e) {
                   history.push('/error', {message: e.message});
@@ -89,11 +90,11 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
         <Route
           path='/code'
           exact
-          render={({history, location}) =>
+          render={({history}) =>
             <ConfirmCodeScreen
               walletService={props.walletService}
               hideModal={props.hideModal}
-              onConfirmCode={() => {history.push(location.state.redirectPath);}}
+              onConfirmCode={() => history.push(getRedirectPathForConfirmCode(props.walletService.state.kind))}
             />} />
         <Route
           path='/restore'
