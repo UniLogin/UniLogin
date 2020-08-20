@@ -19,7 +19,7 @@ export class EmailConfirmationHandler {
   };
 
   async requestCreating(email: string, ensName: string) {
-    ensure(!await this.encryptedWalletStore.isSomeExist(email, ensName), AlreadyUsed, `${email} or ${ensName}`);
+    ensure(!await this.encryptedWalletStore.exists(email, ensName), AlreadyUsed, `${email} or ${ensName}`);
     return this.request(email, ensName);
   };
 

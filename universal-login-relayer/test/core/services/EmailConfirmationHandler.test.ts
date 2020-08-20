@@ -30,7 +30,7 @@ describe('UNIT: EmailConfirmationHandler', () => {
 
   beforeEach(() => {
     emailConfirmationStoreStub.get.resolves(emailConfirmation);
-    encryptedWalletStore.isSomeExist.resolves(false);
+    encryptedWalletStore.exists.resolves(false);
     emailConfirmationValidatorStub.validate.throws(new InvalidCode(invalidCode)).withArgs(emailConfirmation, emailConfirmation.email, emailConfirmation.code).resolves();
 
     emailConfirmationHandler = new EmailConfirmationHandler(
@@ -65,7 +65,7 @@ describe('UNIT: EmailConfirmationHandler', () => {
     });
 
     it('request with existing account', async () => {
-      encryptedWalletStore.isSomeExist.resolves(true);
+      encryptedWalletStore.exists.resolves(true);
       await expect(emailConfirmationHandler.requestCreating(email, ensName)).to.be.rejectedWith(`${email} or ${ensName} already used`);
     });
   });

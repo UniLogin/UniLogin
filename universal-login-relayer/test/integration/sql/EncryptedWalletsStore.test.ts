@@ -22,11 +22,11 @@ describe('INT: EncryptedWalletsStore', () => {
     expect(await encryptedWalletsStore.get(exampleEnsName)).be.deep.eq(encryptedWallet);
   });
 
-  it('isSomeExist', async () => {
+  it('exists', async () => {
     await encryptedWalletsStore.add(encryptedWallet);
-    expect(await encryptedWalletsStore.isSomeExist('not@exist.email', exampleEnsName)).to.be.true;
-    expect(await encryptedWalletsStore.isSomeExist(exampleEmail, 'not.exist.ens')).to.be.true;
-    expect(await encryptedWalletsStore.isSomeExist('not@exist.email', 'not.exist.ens')).to.be.false;
+    expect(await encryptedWalletsStore.exists('not@exist.email', exampleEnsName)).to.be.true;
+    expect(await encryptedWalletsStore.exists(exampleEmail, 'not.exist.ens')).to.be.true;
+    expect(await encryptedWalletsStore.exists('not@exist.email', 'not.exist.ens')).to.be.false;
   });
 
   it('Should fail when adding duplicated email', async () => {

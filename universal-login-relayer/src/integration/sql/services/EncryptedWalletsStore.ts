@@ -26,7 +26,7 @@ export class EncryptedWalletsStore {
     return storedEncryptedWallet;
   }
 
-  async isSomeExist(email: string, ensName: string) {
+  async exists(email: string, ensName: string) {
     return !!(await this.database(this.tableName)
       .select()
       .where({email})
