@@ -19,13 +19,9 @@ export class EmailConfirmationHandler {
   };
 
   async requestCreating(email: string, ensName: string) {
-    ensure(await this.isUniqueRequest(email, ensName), AlreadyUsed, `${email} or ${ensName}`);
+    ensure(!await this.encryptedWalletStore.exists(email, ensName), AlreadyUsed, `${email} or ${ensName}`);
     return this.request(email, ensName);
   };
-
-  private async isUniqueRequest(email: string, ensName: string) {
-    return await this.emailConfirmationStore.getConfirmedNumber(email, ensName) === 0;
-  }
 
   private async request(email: string, ensName: string) {
     const code = generateValidationCode(6);
