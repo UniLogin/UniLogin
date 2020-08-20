@@ -19,14 +19,13 @@ interface EnterPasswordProps {
 
 export const EnterPassword = ({hideModal, walletService, onConfirm}: EnterPasswordProps) => {
   const [password, setPassword] = useInputField(isProperPassword, '');
-  const [busy, setBusy] = useState(false);
+  const [loading, setLoading] = useState(false);
   const primaryButtonClassName = useClassFor('proceed-btn');
 
   const onConfirmClick = async () => {
     ensureNotFalsy(password, Error, 'Password missing');
-    setBusy(true);
+    setLoading(true);
     await onConfirm(password);
-    setBusy(false);
   };
 
   return <OnboardingStepsWrapper
@@ -52,7 +51,7 @@ export const EnterPassword = ({hideModal, walletService, onConfirm}: EnterPasswo
       </div>
     </div>
     <div className={classForComponent('buttons-wrapper')}>
-      {!busy
+      {!loading
         ? <><SecondaryButton
           text='Back'
           onClick={() => console.log('click')}

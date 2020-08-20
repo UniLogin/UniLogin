@@ -273,7 +273,7 @@ export const App = () => {
                 render={({history}) => <EnterPassword
                   hideModal={() => history.push('/')}
                   walletService={walletService}
-                  onConfirm={async (password) => {console.log({password});}}/>}
+                  onConfirm={async (password) => console.log({password})}/>}
               />
               <Route
                 exact
