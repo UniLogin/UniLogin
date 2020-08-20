@@ -1,7 +1,7 @@
 import React from 'react';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import {ConfirmCode} from './ConfirmCode';
-import {WalletService} from '@unilogin/sdk';
+import {WalletService, WalletState, InvalidWalletState} from '@unilogin/sdk';
 
 interface ConfirmCodeScreenProps {
   hideModal?: () => void;
@@ -9,9 +9,20 @@ interface ConfirmCodeScreenProps {
   onConfirmCode: () => void;
 }
 
+const getTitleForConfirmCode = (walletState: WalletState) => {
+  switch (walletState.kind) {
+    case 'RequestedCreating':
+      return 'Create account';
+    case 'RequestedRestoring':
+      return 'Log-in';
+    default:
+      throw new InvalidWalletState('RequestedCreating or RequestedRestoring', walletState.kind);
+  }
+};
+
 export const ConfirmCodeScreen = ({hideModal, walletService, onConfirmCode}: ConfirmCodeScreenProps) => (
   <OnboardingStepsWrapper
-    title={'Create account'}
+    title={getTitleForConfirmCode(walletService.state)}
     className='onboarding-confirm-code'
     hideModal={hideModal}
     steps={4}
