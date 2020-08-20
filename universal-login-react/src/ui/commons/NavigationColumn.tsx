@@ -9,14 +9,13 @@ export const NavigationColumn = () => (
     <ul>
       E2E flow
       <li><Link to="/onboarding">Onboarding</Link></li>
-      <li><Link to="/onboardingEmail">Onboarding - select flow</Link></li>
       <li><Link to="/onboardingLegacy">Onboarding - legacy</Link></li>
-      <li><Link to="/chooseToken">ChooseTopUpToken</Link></li>
-      <li><Link to="/logoButton">U</Link></li>
-      <li><Link to="/createEmail">U - email</Link></li>
+      <li><Link to="/createEmail">U</Link></li>
+      <li><Link to="/logoButton">U - legacy</Link></li>
     </ul>
     <ul>
       Atomic components
+      <li><Link to="/chooseToken">ChooseTopUpToken</Link></li>
       <li><Link to="/walletSelector">Wallet Selector</Link></li>
       <li><Link to="/createPassword">Enter Password - create</Link></li>
       <li><Link to="/enterPassword">Enter Password - connect</Link></li>

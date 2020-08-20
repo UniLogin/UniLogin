@@ -120,18 +120,6 @@ export const App = () => {
               />
               <Route
                 exact
-                path="/onboardingEmail"
-                render={({history}) =>
-                  <EmailFlowChooserScreen
-                    domain={config.domains[0]}
-                    walletService={walletService}
-                    hideModal={() => history.push('/')}
-                    onCreateClick={(ensName, email) => console.log('create', {ensName, email})}
-                    onConnectClick={(emailOrEnsName) => console.log('connect', {emailOrEnsName})}
-                  />}
-              />
-              <Route
-                exact
                 path="/chooseToken"
                 render={({history}) =>
                   <ModalWrapper hideModal={() => history.push('/waitForTransaction')} message="This is a test environment running on Ropsten network">
