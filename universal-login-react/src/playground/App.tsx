@@ -100,7 +100,7 @@ export const App = () => {
                   <Onboarding
                     walletService={walletService}
                     domains={config.domains}
-                    onLogin={() => history.push('/success')}
+                    onRestore={() => history.push('/success')}
                     onCreate={() => history.push('/success')}
                     hideModal={() => history.push('/')}
                     emailFlow={true}
