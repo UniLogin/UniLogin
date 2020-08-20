@@ -1,4 +1,4 @@
-import {SerializableFutureWallet, ensure, isValidEnsName, calculateInitializeSignature, DEPLOY_GAS_LIMIT, multiplyBy150Percent, BalanceChecker} from '@unilogin/commons';
+import {SerializableFutureWallet, ensure, isValidEnsName, calculateInitializeSignature, DEPLOY_GAS_LIMIT, BalanceChecker} from '@unilogin/commons';
 import {DeployingWallet} from './DeployingWallet';
 import {DeploymentReadyObserver} from '../../core/observers/DeploymentReadyObserver';
 import {InvalidAddressOrEnsName} from '../../core/utils/errors';
@@ -48,9 +48,7 @@ export class FutureWallet implements SerializableFutureWallet {
     return new DeployingWallet({deploymentHash, contractAddress: this.contractAddress, name: this.ensName, privateKey: this.privateKey}, this.sdk);
   };
 
-  getMinimalAmount = () => utils.formatEther(
-    multiplyBy150Percent(
-      utils.bigNumberify(this.gasPrice).mul(DEPLOY_GAS_LIMIT)));
+  getMinimalAmount = () => utils.formatEther(utils.bigNumberify(this.gasPrice).mul(DEPLOY_GAS_LIMIT));
 
   createIncomingTransactionObserver() {
     return new IncomingTransactionObserver(this.sdk.getNotifySdk(), this.contractAddress);
