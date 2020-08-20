@@ -96,6 +96,9 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
               walletService={props.walletService}
               hideModal={props.hideModal}
               onConfirmCode={() => history.push(getRedirectPathForConfirmCode(props.walletService.state.kind))}
+              onCancel={() => {
+                history.push('/email');
+              }}
             />} />
         <Route
           path='/restore'
@@ -108,7 +111,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
                 await props.walletService.restoreWallet(password);
                 props.onRestore?.();
               }}
-            />}/>
+            />} />
         <Route
           exact
           path="/create"

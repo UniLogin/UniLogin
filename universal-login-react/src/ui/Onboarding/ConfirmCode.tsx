@@ -15,6 +15,7 @@ const CODE_LENGTH = 6;
 interface ConfirmCodeProps {
   email: string;
   onConfirmCode: () => void;
+  onCancel: () => void;
   walletService: WalletService;
 }
 
@@ -29,7 +30,7 @@ const getSubText = (isValid: undefined | boolean) => {
   }
 };
 
-export const ConfirmCode = ({email, onConfirmCode, walletService}: ConfirmCodeProps) => {
+export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: ConfirmCodeProps) => {
   const [code, setCode] = useState<string | undefined>(undefined);
   const [isValid, setIsValid] = useState<boolean | undefined>(undefined);
 
@@ -57,22 +58,25 @@ export const ConfirmCode = ({email, onConfirmCode, walletService}: ConfirmCodePr
         <div><p className={classForComponent('onboarding-description')}>
           We sent an email to <span className={classForComponent('span-email')}>{email}</span>
         </p>
-        <ReactCodeInput
-          name='code-input'
-          inputMode='numeric'
-          type='number'
-          wrapperClassName={classForComponent('input-code-wrapper')}
-          inputClassName={classForComponent('input-code')}
-          fields={6}
-          value={code}
-          onChange={setCode}
-          disabled={isValid}
-        /></div>}
+          <ReactCodeInput
+            name='code-input'
+            inputMode='numeric'
+            type='number'
+            wrapperClassName={classForComponent('input-code-wrapper')}
+            inputClassName={classForComponent('input-code')}
+            fields={6}
+            value={code}
+            onChange={setCode}
+            disabled={isValid}
+          /></div>}
     </div>
     {!isValid && <div className={classForComponent('buttons-wrapper')}>
       <SecondaryButton
-        text='Back'
-        onClick={() => console.log('Back')}
+        text='Cancel'
+        onClick={() => {
+          walletService.disconnect();
+          onCancel();
+        }}
       />
       <PrimaryButton
         text='Confirm'

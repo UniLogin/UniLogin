@@ -6,6 +6,7 @@ import {WalletService, WalletState, InvalidWalletState} from '@unilogin/sdk';
 interface ConfirmCodeScreenProps {
   hideModal?: () => void;
   walletService: WalletService;
+  onCancel: () => void;
   onConfirmCode: () => void;
 }
 
@@ -20,7 +21,7 @@ const getTitleForConfirmCode = (walletState: WalletState) => {
   }
 };
 
-export const ConfirmCodeScreen = ({hideModal, walletService, onConfirmCode}: ConfirmCodeScreenProps) => (
+export const ConfirmCodeScreen = ({hideModal, walletService, onCancel, onConfirmCode}: ConfirmCodeScreenProps) => (
   <OnboardingStepsWrapper
     title={getTitleForConfirmCode(walletService.state)}
     className='onboarding-confirm-code'
@@ -31,6 +32,7 @@ export const ConfirmCodeScreen = ({hideModal, walletService, onConfirmCode}: Con
   >
     <ConfirmCode
       email={walletService.getEnsNameOrEmail()}
+      onCancel={onCancel}
       onConfirmCode={onConfirmCode}
       walletService={walletService}
     />
