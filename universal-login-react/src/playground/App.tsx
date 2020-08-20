@@ -108,6 +108,18 @@ export const App = () => {
               />
               <Route
                 exact
+                path="/onboardingLegacy"
+                render={({history}) =>
+                  <Onboarding
+                    walletService={walletService}
+                    domains={config.domains}
+                    onConnect={() => console.log('connected')}
+                    onCreate={() => history.push('/onboarding/success')}
+                    hideModal={() => history.push('/')}
+                  />}
+              />
+              <Route
+                exact
                 path="/onboardingEmail"
                 render={({history}) =>
                   <EmailFlowChooserScreen

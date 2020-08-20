@@ -1,4 +1,4 @@
-import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE, DEPLOY_GAS_LIMIT, multiplyBy150Percent, BalanceChecker, ProviderService} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_GAS_PRICE, DEPLOY_GAS_LIMIT, BalanceChecker, ProviderService} from '@unilogin/commons';
 import {expect} from 'chai';
 import {MockProvider} from 'ethereum-waffle';
 import {utils, Wallet} from 'ethers';
@@ -38,7 +38,7 @@ describe('UNIT: FutureWallet', () => {
   });
 
   it('returns minimal amount to deploy', () => {
-    const expectedMinimalAmount = utils.formatEther(multiplyBy150Percent(utils.bigNumberify(TEST_GAS_PRICE).mul(DEPLOY_GAS_LIMIT)));
+    const expectedMinimalAmount = utils.formatEther(utils.bigNumberify(TEST_GAS_PRICE).mul(DEPLOY_GAS_LIMIT));
     expect(futureWallet.getMinimalAmount()).to.eq(expectedMinimalAmount);
   });
 });

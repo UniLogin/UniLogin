@@ -1,6 +1,5 @@
 import {utils} from 'ethers';
 import {ETHER_NATIVE_TOKEN} from './constants';
-import {multiplyBy150Percent} from '../utils/multiplyBy150Percent';
 
 export const DEFAULT_GAS_PRICE = 20000000000;
 
@@ -13,8 +12,6 @@ export const DEFAULT_GAS_LIMIT_EXECUTION = 80000;
 export const DEPLOYMENT_REFUND = utils.bigNumberify(570000);
 
 export const GAS_BASE = 30000;
-
-export const MINIMAL_DEPLOYMENT_GAS_LIMIT = multiplyBy150Percent(DEPLOYMENT_REFUND);
 
 export const MAX_GAS_LIMIT = 500000;
 
