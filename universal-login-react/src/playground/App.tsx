@@ -82,7 +82,7 @@ export const App = () => {
               </Route>
               <Route
                 exact
-                path="/onboarding/success"
+                path="/success"
                 render={({history}) => <>
                   <div> Success!!! </div>
                   <br />
@@ -90,6 +90,7 @@ export const App = () => {
                     walletService.disconnect();
                     history.push('/onboarding');
                   }}>Disconnect</button>
+                  <Dashboard walletService={walletService}/>
                 </>}
               />
               <Route
@@ -99,8 +100,8 @@ export const App = () => {
                   <Onboarding
                     walletService={walletService}
                     domains={config.domains}
-                    onConnect={() => console.log('connected')}
-                    onCreate={() => history.push('/onboarding/success')}
+                    onRestore={() => history.push('/success')}
+                    onCreate={() => history.push('/success')}
                     hideModal={() => history.push('/')}
                     emailFlow={true}
                   />}
@@ -113,7 +114,7 @@ export const App = () => {
                     walletService={walletService}
                     domains={config.domains}
                     onConnect={() => console.log('connected')}
-                    onCreate={() => history.push('/onboarding/success')}
+                    onCreate={() => history.push('/success')}
                     hideModal={() => history.push('/')}
                   />}
               />
@@ -272,7 +273,7 @@ export const App = () => {
                 render={({history}) => <EnterPassword
                   hideModal={() => history.push('/')}
                   walletService={walletService}
-                  onConfirm={(password) => console.log({password})}/>}
+                  onConfirm={async (password) => console.log({password})}/>}
               />
               <Route
                 exact

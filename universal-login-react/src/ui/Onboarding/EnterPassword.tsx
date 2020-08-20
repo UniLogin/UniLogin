@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ensureNotFalsy, isProperPassword} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
@@ -9,19 +9,23 @@ import '../styles/base/enterPassword.sass';
 import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
 import pinCodeIcon from '../assets/icons/pin-code.svg';
 import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
+import Spinner from '../commons/Spinner';
 
 interface EnterPasswordProps {
   hideModal?: () => void;
   walletService: WalletService;
-  onConfirm: (password: string) => void;
+  onConfirm: (password: string) => Promise<void>;
 }
 
 export const EnterPassword = ({hideModal, walletService, onConfirm}: EnterPasswordProps) => {
   const [password, setPassword] = useInputField(isProperPassword, '');
+  const [loading, setLoading] = useState(false);
+  const primaryButtonClassName = useClassFor('proceed-btn');
 
-  const onConfirmClick = () => {
+  const onConfirmClick = async () => {
     ensureNotFalsy(password, Error, 'Password missing');
-    onConfirm(password);
+    setLoading(true);
+    await onConfirm(password);
   };
 
   return <OnboardingStepsWrapper
@@ -47,16 +51,18 @@ export const EnterPassword = ({hideModal, walletService, onConfirm}: EnterPasswo
       </div>
     </div>
     <div className={classForComponent('buttons-wrapper')}>
-      <SecondaryButton
-        text='Back'
-        onClick={() => console.log('click')}
-        className={classForComponent('back-btn')}/>
-      <PrimaryButton
-        text='Confirm'
-        disabled={password === ''}
-        onClick={onConfirmClick}
-        className={useClassFor('proceed-btn')}
-      />
+      {!loading
+        ? <><SecondaryButton
+          text='Back'
+          onClick={() => console.log('click')}
+          className={classForComponent('back-btn')}/>
+        <PrimaryButton
+          text='Confirm'
+          disabled={password === ''}
+          onClick={onConfirmClick}
+          className={primaryButtonClassName}
+        /></>
+        : <Spinner/>}
     </div>
   </OnboardingStepsWrapper>;
 };
