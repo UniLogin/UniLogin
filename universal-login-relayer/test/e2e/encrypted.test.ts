@@ -27,13 +27,21 @@ describe('E2E: Relayer - encrypted wallet', () => {
     code = emailConfirmation.code;
   });
 
-  it('returns 201 if encrypted wallet is valid', async () => {
+  it('valid encrypted wallet', async () => {
     const result = await chai.request(relayerUrl)
       .post('/wallet/encrypted')
       .set({code})
       .send(storedEncryptedWallet);
     expect(result.status).to.eq(201);
     expect(result.body).to.deep.eq({email: storedEncryptedWallet.email});
+
+    const duplicatedEmailRequestResult = await chai.request(relayerUrl)
+      .post('/email/request/creating')
+      .send({email, ensName: 'test.unilogin.io'});
+    expect(duplicatedEmailRequestResult.body).to.deep.eq({
+      error: 'Error: test@email.com or test.unilogin.io already used',
+      type: 'AlreadyUsed',
+    });
   });
 
   it('returns 404 if encrypted wallet email is not confirmed', async () => {
