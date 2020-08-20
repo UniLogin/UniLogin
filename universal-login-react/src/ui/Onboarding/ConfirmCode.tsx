@@ -36,34 +36,38 @@ export const ConfirmCode = ({email, onConfirmCode, walletService}: ConfirmCodePr
   const onConfirmClick = async () => {
     ensureNotFalsy(code, Error, 'Code is missing');
     ensure(code?.length === CODE_LENGTH, Error, 'Code is incomplete.');
-    await walletService.confirmCode(code);
-    setIsValid(true);
-    await sleep(1000);
-    onConfirmCode();
+    try {
+      await walletService.confirmCode(code);
+      setIsValid(true);
+      await sleep(1000);
+      onConfirmCode();
+    } catch {
+      setIsValid(false);
+    }
   };
 
   return <div className={useClassFor('onboarding-confirm-code-wrapper')}>
     <div className={classForComponent('onboarding-confirm-code-content')}>
       <div className={`${classForComponent('onboarding-icon-wrapper')} ${isValid && 'success'}`}>
-        <img src={!isValid ? emailIcon : emailSuccessIcon} alt="Email icon" className={classForComponent('onboarding-icon')}/>
+        <img src={!isValid ? emailIcon : emailSuccessIcon} alt="Email icon" className={classForComponent('onboarding-icon')} />
       </div>
       <h4 className={classForComponent('onboarding-subtitle')}>{getSubText(isValid)}</h4>
       {isValid && <p className={classForComponent('onboarding-description')}>E-mail confirmed</p>}
       {!isValid &&
-      <div><p className={classForComponent('onboarding-description')}>
-        We sent an email to <span className={classForComponent('span-email')}>{email}</span>
-      </p>
-      <ReactCodeInput
-        name='code-input'
-        inputMode='numeric'
-        type='number'
-        wrapperClassName={classForComponent('input-code-wrapper')}
-        inputClassName={classForComponent('input-code')}
-        fields={6}
-        value={code}
-        onChange={setCode}
-        disabled={isValid}
-      /></div>}
+        <div><p className={classForComponent('onboarding-description')}>
+          We sent an email to <span className={classForComponent('span-email')}>{email}</span>
+        </p>
+        <ReactCodeInput
+          name='code-input'
+          inputMode='numeric'
+          type='number'
+          wrapperClassName={classForComponent('input-code-wrapper')}
+          inputClassName={classForComponent('input-code')}
+          fields={6}
+          value={code}
+          onChange={setCode}
+          disabled={isValid}
+        /></div>}
     </div>
     {!isValid && <div className={classForComponent('buttons-wrapper')}>
       <SecondaryButton
