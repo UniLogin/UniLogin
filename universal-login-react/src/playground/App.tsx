@@ -25,7 +25,6 @@ import {ChooseTopUpToken} from '../ui/TopUp/ChooseTopUpToken';
 import config from './config';
 import {Dashboard} from '../ui/UFlow/Dashboard';
 import '../ui/styles/playground.sass';
-import {EmailFlowChooserScreen} from '../ui/Onboarding/EmailFlowChooserScreen';
 import {CreatePassword} from '../ui/Onboarding/CreatePassword';
 import {EnterPassword} from '../ui/Onboarding/EnterPassword';
 import {ConfirmCodeScreen} from '../ui/Onboarding/ConfirmCodeScreen';
