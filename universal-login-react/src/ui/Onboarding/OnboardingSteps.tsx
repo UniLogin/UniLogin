@@ -1,12 +1,13 @@
-import {useProperty} from '../..';
 import React, {useState} from 'react';
-import {WalletService} from '@unilogin/sdk';
-import {ApplicationWallet} from '@unilogin/commons';
 import {useHistory} from 'react-router';
+import {ApplicationWallet} from '@unilogin/commons';
+import {WalletService} from '@unilogin/sdk';
+import {useProperty} from '../..';
 import {OnboardingTopUp} from './OnboardingTopUp';
 import {OnboardingWaitForDeployment} from './OnboardingWaitForDeployment';
 import {ChooseTopUpToken} from '../TopUp/ChooseTopUpToken';
 import {CreatePassword} from './CreatePassword';
+import {confirmDisconnect} from '../../app/confirmDisconnect';
 
 interface OnboardingStepsProps {
   walletService: WalletService;
@@ -79,10 +80,3 @@ export function OnboardingSteps({walletService, onCreate, ensName}: OnboardingSt
       return null;
   }
 }
-
-const confirmDisconnect = (walletService: WalletService, action: Function) => {
-  if (confirm('Are you sure you want to leave? You will lose access to this account.')) {
-    walletService.disconnect();
-    action();
-  }
-};

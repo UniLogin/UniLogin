@@ -58,17 +58,17 @@ export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: Con
         <div><p className={classForComponent('onboarding-description')}>
           We sent an email to <span className={classForComponent('span-email')}>{email}</span>
         </p>
-          <ReactCodeInput
-            name='code-input'
-            inputMode='numeric'
-            type='number'
-            wrapperClassName={classForComponent('input-code-wrapper')}
-            inputClassName={classForComponent('input-code')}
-            fields={6}
-            value={code}
-            onChange={setCode}
-            disabled={isValid}
-          /></div>}
+        <ReactCodeInput
+          name='code-input'
+          inputMode='numeric'
+          type='number'
+          wrapperClassName={classForComponent('input-code-wrapper')}
+          inputClassName={classForComponent('input-code')}
+          fields={6}
+          value={code}
+          onChange={setCode}
+          disabled={isValid}
+        /></div>}
     </div>
     {!isValid && <div className={classForComponent('buttons-wrapper')}>
       <SecondaryButton
