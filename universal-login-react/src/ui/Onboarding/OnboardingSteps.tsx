@@ -54,10 +54,7 @@ export function OnboardingSteps({walletService, onCreate, ensName}: OnboardingSt
     case 'Confirmed':
       return (
         <CreateFutureWallet
-          hideModal={() => {
-            walletService.disconnect();
-            history.push('/email');
-          }}
+          hideModal={() => confirmDisconnect(walletService, () => history.push('/email'))}
           walletService={walletService}
         />
       );
@@ -65,12 +62,7 @@ export function OnboardingSteps({walletService, onCreate, ensName}: OnboardingSt
       return (
         <OnboardingTopUp
           walletService={walletService}
-          hideModal={async () => {
-            if (confirm('Are you sure you want to leave? You will lose access to this account.')) {
-              walletService.disconnect();
-              history.push('/selector');
-            }
-          }}
+          hideModal={() => confirmDisconnect(walletService, () => history.push('/selector'))}
           isModal
         />
       );
@@ -87,3 +79,10 @@ export function OnboardingSteps({walletService, onCreate, ensName}: OnboardingSt
       return null;
   }
 }
+
+const confirmDisconnect = (walletService: WalletService, action: Function) => {
+  if (confirm('Are you sure you want to leave? You will lose access to this account.')) {
+    walletService.disconnect();
+    action();
+  }
+};
