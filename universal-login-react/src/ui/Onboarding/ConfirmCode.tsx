@@ -15,6 +15,7 @@ const CODE_LENGTH = 6;
 interface ConfirmCodeProps {
   email: string;
   onConfirmCode: () => void;
+  onCancel: () => void;
   walletService: WalletService;
 }
 
@@ -29,7 +30,7 @@ const getSubText = (isValid: undefined | boolean) => {
   }
 };
 
-export const ConfirmCode = ({email, onConfirmCode, walletService}: ConfirmCodeProps) => {
+export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: ConfirmCodeProps) => {
   const [code, setCode] = useState<string | undefined>(undefined);
   const [isValid, setIsValid] = useState<boolean | undefined>(undefined);
 
@@ -71,8 +72,11 @@ export const ConfirmCode = ({email, onConfirmCode, walletService}: ConfirmCodePr
     </div>
     {!isValid && <div className={classForComponent('buttons-wrapper')}>
       <SecondaryButton
-        text='Back'
-        onClick={() => console.log('Back')}
+        text='Cancel'
+        onClick={() => {
+          walletService.disconnect();
+          onCancel();
+        }}
       />
       <PrimaryButton
         text='Confirm'

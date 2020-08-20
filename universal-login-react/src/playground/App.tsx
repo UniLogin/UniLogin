@@ -283,6 +283,7 @@ export const App = () => {
                     hideModal={() => history.push('/')}
                     walletService={walletService}
                     onConfirmCode={() => {}}
+                    onCancel={() => console.log('onCancel')}
                   />}
               />
               <Route
