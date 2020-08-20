@@ -6,21 +6,27 @@ import {EncryptedWalletsStore} from '../../../src/integration/sql/services/Encry
 describe('INT: EncryptedWalletsStore', () => {
   const knex = getKnexConfig();
   const encryptedWalletsStore = new EncryptedWalletsStore(knex);
+  const exampleEmail = 'encryptedWallet@email.com';
+  const exampleEnsName = 'bob.unilogin.eth';
+  const encryptedWallet: StoredEncryptedWallet = {
+    walletJSON: TEST_ENCRYPTED_WALLET_JSON,
+    email: exampleEmail,
+    ensName: exampleEnsName,
+    contractAddress: TEST_CONTRACT_ADDRESS,
+  };
 
   it('Should add encryptedWallet to database and get it from it by email and ensName', async () => {
-    const exampleEmail = 'encryptedWallet@email.com';
-    const exampleEnsName = 'bob.unilogin.eth';
-    const encryptedWallet: StoredEncryptedWallet = {
-      walletJSON: TEST_ENCRYPTED_WALLET_JSON,
-      email: exampleEmail,
-      ensName: exampleEnsName,
-      contractAddress: TEST_CONTRACT_ADDRESS,
-    };
-
     const email = await encryptedWalletsStore.add(encryptedWallet);
     expect(email).be.deep.eq(exampleEmail);
     expect(await encryptedWalletsStore.get(email)).be.deep.eq(encryptedWallet);
     expect(await encryptedWalletsStore.get(exampleEnsName)).be.deep.eq(encryptedWallet);
+  });
+
+  it('isSomeExist', async () => {
+    await encryptedWalletsStore.add(encryptedWallet);
+    expect(await encryptedWalletsStore.isSomeExist('not@exist.email', exampleEnsName)).to.be.true;
+    expect(await encryptedWalletsStore.isSomeExist(exampleEmail, 'not.exist.ens')).to.be.true;
+    expect(await encryptedWalletsStore.isSomeExist('not@exist.email', 'not.exist.ens')).to.be.false;
   });
 
   it('Should fail when adding duplicated email', async () => {
@@ -35,6 +41,10 @@ describe('INT: EncryptedWalletsStore', () => {
     const email = await encryptedWalletsStore.add(storedEncryptedWallet);
     expect(email).be.deep.eq(exampleEmail);
     await expect(encryptedWalletsStore.add(storedEncryptedWallet)).to.be.rejectedWith('duplicate key value violates unique constraint "encrypted_wallets_email_unique"');
+  });
+
+  afterEach(async () => {
+    await knex('encrypted_wallets').del();
   });
 
   after(async () => {

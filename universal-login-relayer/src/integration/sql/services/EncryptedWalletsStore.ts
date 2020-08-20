@@ -25,4 +25,12 @@ export class EncryptedWalletsStore {
     storedEncryptedWallet.walletJSON = JSON.parse(storedEncryptedWallet.walletJSON);
     return storedEncryptedWallet;
   }
+
+  async isSomeExist(email: string, ensName: string) {
+    return !!(await this.database(this.tableName)
+      .select()
+      .where({email})
+      .orWhere({ensName})
+      .first());
+  };
 }
