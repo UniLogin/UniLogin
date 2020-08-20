@@ -21,16 +21,18 @@ describe('UNIT: EmailConfirmationHandler', () => {
   const {email, code} = emailConfirmation;
   const ensName = 'hello.unilogin.eth';
 
-  beforeEach(() => {
+  before(() => {
     emailConfirmationStoreStub = sinon.createStubInstance(EmailConfirmationsStore);
-    emailConfirmationStoreStub.get.resolves(emailConfirmation);
-    emailConfirmationStoreStub.getConfirmedNumber.resolves(0);
-
+    encryptedWalletStore = sinon.createStubInstance(EncryptedWalletsStore);
     emailServiceStub = sinon.createStubInstance(EmailService);
-
     emailConfirmationValidatorStub = sinon.createStubInstance(EmailConfirmationValidator);
+  });
 
+  beforeEach(() => {
+    emailConfirmationStoreStub.get.resolves(emailConfirmation);
+    encryptedWalletStore.isSomeExist.resolves(false);
     emailConfirmationValidatorStub.validate.throws(new InvalidCode(invalidCode)).withArgs(emailConfirmation, emailConfirmation.email, emailConfirmation.code).resolves();
+
     emailConfirmationHandler = new EmailConfirmationHandler(
       emailConfirmationStoreStub as any,
       emailServiceStub as any,
@@ -62,8 +64,8 @@ describe('UNIT: EmailConfirmationHandler', () => {
       expect(emailServiceStub.sendConfirmationMail).calledOnceWithExactly(email, code);
     });
 
-    it('duplicated request', async () => {
-      emailConfirmationStoreStub.getConfirmedNumber.resolves(1);
+    it('request with existing account', async () => {
+      encryptedWalletStore.isSomeExist.resolves(true);
       await expect(emailConfirmationHandler.requestCreating(email, ensName)).to.be.rejectedWith(`${email} or ${ensName} already used`);
     });
   });
