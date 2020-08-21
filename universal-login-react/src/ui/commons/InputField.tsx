@@ -58,6 +58,16 @@ interface Validator {
   errorMessage: string;
 }
 
+export const areValid = async (validators: Validator[], value: string): Promise<[boolean, string[]]> => {
+  const errors = [];
+  for (const validator of validators) {
+    if (!await validator.validate(value)) {
+      errors.push(validator.errorMessage);
+    }
+  }
+  return [!(errors.length > 0), errors];
+};
+
 export const useInputFieldManyValidators = (validators: Validator[]): [string, (value: string) => void, string | undefined] => {
   const [value, setValue] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
@@ -65,16 +75,8 @@ export const useInputFieldManyValidators = (validators: Validator[]): [string, (
     if (!value) {
       setError('');
     } else {
-      let validationFailed = false;
-      for (const validator of validators) {
-        const isValid = await validator.validate(value);
-        if (isValid && !validationFailed) {
-          setError('');
-        } else if (!isValid) {
-          validationFailed = true;
-          setError(validator.errorMessage);
-        }
-      }
+      const [allValid, errors] = await areValid(validators, value);
+      allValid ? setError('') : setError(errors[0]);
     }
   };
   const debouncedHandleError = useCallback(debounce(handleError, 500), []);
