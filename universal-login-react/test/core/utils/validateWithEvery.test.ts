@@ -12,11 +12,11 @@ describe('UNIT: validateWithEvery', () => {
     errorMessage,
   };
 
-  it('retruns validateWithEvery and no error for always passing validator', async () => {
+  it('returns validateWithEvery and no error for always passing validator', async () => {
     expect(await validateWithEvery([alwaysPassingValidator], 'something')).to.deep.eq([true]);
   });
 
-  it('retruns validateWithEvery false and error for always failing validator', async () => {
+  it('returns validateWithEvery false and error for always failing validator', async () => {
     expect(await validateWithEvery([alwaysFailingValidator], 'something')).to.deep.eq([false, errorMessage]);
   });
 
