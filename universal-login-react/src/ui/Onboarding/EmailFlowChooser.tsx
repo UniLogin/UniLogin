@@ -3,7 +3,8 @@ import {isProperEmail, isValidEnsName} from '@unilogin/commons';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
-import {InputField, useInputFieldManyValidators} from '../commons/InputField';
+import {InputField} from '../commons/InputField';
+import {useInputField} from '../hooks/useInputField';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import UniLoginSdk, {WalletService} from '@unilogin/sdk';
 
@@ -41,10 +42,10 @@ const emailValidator = {
 };
 
 export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain, walletService}: EmailFlowChooserProps) => {
-  const [email, setEmail, emailError] = useInputFieldManyValidators([emailValidator]);
+  const [email, setEmail, emailError] = useInputField([emailValidator]);
   const [name, setName] = useState('');
-  const [ensName, setEnsName, ensError] = useInputFieldManyValidators(ensNameValidators(walletService.sdk));
-  const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputFieldManyValidators([ensNameOrEmailValidator]);
+  const [ensName, setEnsName, ensError] = useInputField(ensNameValidators(walletService.sdk));
+  const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputField([ensNameOrEmailValidator]);
   const [flow, setFlow] = useState<'create' | 'connect'>('create');
 
   useEffect(() => {

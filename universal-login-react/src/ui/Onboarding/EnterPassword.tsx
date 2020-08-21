@@ -1,15 +1,17 @@
 import React, {useState} from 'react';
-import {ensureNotFalsy, isProperPassword} from '@unilogin/commons';
+import {ensureNotFalsy} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import {useClassFor, classForComponent} from '../utils/classFor';
-import {InputField, useInputField} from '../commons/InputField';
+import {InputField} from '../commons/InputField';
+import {useInputField} from '../hooks/useInputField';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import '../styles/base/enterPassword.sass';
 import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
 import pinCodeIcon from '../assets/icons/pin-code.svg';
 import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 import Spinner from '../commons/Spinner';
+import {passwordValidator} from './CreatePassword';
 
 interface EnterPasswordProps {
   hideModal?: () => void;
@@ -18,7 +20,7 @@ interface EnterPasswordProps {
 }
 
 export const EnterPassword = ({hideModal, walletService, onConfirm}: EnterPasswordProps) => {
-  const [password, setPassword] = useInputField(isProperPassword, '');
+  const [password, setPassword] = useInputField([passwordValidator]);
   const [loading, setLoading] = useState(false);
   const primaryButtonClassName = useClassFor('proceed-btn');
 

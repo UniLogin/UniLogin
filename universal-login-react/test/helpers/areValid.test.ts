@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import {areValid} from '../../src/ui/commons/InputField';
+import {areValid} from '../../src/app/areValid';
 
-describe('areValid', () => {
+describe('UNIT: areValid', () => {
   const alwaysPassingValidator = {
     validate: () => true,
     errorMessage: 'Always pass',
