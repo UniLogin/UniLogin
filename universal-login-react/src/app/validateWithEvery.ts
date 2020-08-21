@@ -3,12 +3,11 @@ export interface Validator {
   errorMessage: string;
 }
 
-export const areValid = async (validators: Validator[], value: string): Promise<[boolean, string[]]> => {
-  const errors = [];
+export const validateWithEvery = async (validators: Validator[], value: string): Promise<[boolean, string?]> => {
   for (const validator of validators) {
     if (!await validator.validate(value)) {
-      errors.push(validator.errorMessage);
+      return [false, validator.errorMessage];
     }
   }
-  return [!(errors.length > 0), errors];
+  return [true];
 };

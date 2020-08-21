@@ -1,6 +1,6 @@
 import {useState, useCallback} from 'react';
 import {debounce} from '@unilogin/commons';
-import {Validator, areValid} from '../../app/areValid';
+import {Validator, validateWithEvery} from '../../app/validateWithEvery';
 
 export const useInputField = (validators: Validator[]): [string, (value: string) => void, string | undefined] => {
   const [value, setValue] = useState('');
@@ -9,8 +9,8 @@ export const useInputField = (validators: Validator[]): [string, (value: string)
     if (!value) {
       setError('');
     } else {
-      const [allValid, errors] = await areValid(validators, value);
-      allValid ? setError('') : setError(errors[0]);
+      const [isValid, error] = await validateWithEvery(validators, value);
+      isValid ? setError('') : setError(error);
     }
   };
   const debouncedHandleError = useCallback(debounce(handleError, 500), []);
