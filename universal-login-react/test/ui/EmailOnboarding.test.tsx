@@ -44,8 +44,8 @@ describe('INT: Email Onboarding', () => {
     expect(code).to.be.string;
     expect(code).length(6);
 
-    const chooseTopUpTokenPage = codeConfirmationPage.confirmCode(code);
-    await waitExpect(() => expect(chooseTopUpTokenPage.isProperPage()).to.be.true, 1300);
+    const createPasswordPage = codeConfirmationPage.confirmCode(code);
+    await waitExpect(() => expect(createPasswordPage.isProperPage()).to.be.true, 1300);
   });
 
   after(async () => {
