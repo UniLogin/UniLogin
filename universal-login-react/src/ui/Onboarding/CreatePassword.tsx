@@ -4,7 +4,8 @@ import {WalletService} from '@unilogin/sdk';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import {isConfirmPasswordButtonDisabled} from '../../app/isConfirmPasswordButtonDisabled';
-import {InputField, useInputField} from '../commons/InputField';
+import {InputField} from '../commons/InputField';
+import {useInputField} from '../hooks/useInputField';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import '../styles/base/enterPassword.sass';
 import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
@@ -16,8 +17,13 @@ interface CreatePasswordProps {
   onConfirm: (password: string) => void;
 }
 
+export const passwordValidator = {
+  validate: isProperPassword,
+  errorMessage: 'Password must have more than 10 letters and one capital letter',
+};
+
 export const CreatePassword = ({hideModal, walletService, onConfirm}: CreatePasswordProps) => {
-  const [password, setPassword, passwordError] = useInputField(isProperPassword, 'Password must have more than 10 letters and one capital letter');
+  const [password, setPassword, passwordError] = useInputField([passwordValidator]);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hint, setHint] = useState<string | undefined>(undefined);
   useEffect(() => {

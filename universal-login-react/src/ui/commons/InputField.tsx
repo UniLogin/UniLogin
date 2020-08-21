@@ -1,11 +1,11 @@
-import React, {useState, useCallback} from 'react';
+import React from 'react';
 import {useClassFor} from '../..';
 import {Label} from './Form/Label';
 import Input from './Input';
 import '../styles/base/inputField.sass';
 import '../styles/themes/UniLogin/inputFieldThemeUniLogin.sass';
 import {classForComponent} from '../utils/classFor';
-import {debounce, isClassName} from '@unilogin/commons';
+import {isClassName} from '@unilogin/commons';
 
 interface InputFieldProps {
   value: string;
@@ -31,24 +31,4 @@ export const InputField = ({value, setValue, label, description, id, className, 
     {description && <p className={descriptionClassName}>{description}</p>}
     {error && <p className={`${classForComponent('input-error-hint')}`}>{error}</p>}
   </div>);
-};
-
-export const useInputField = (validate: (value: string) => boolean, errorMessage: string): [string, (value: string) => void, string | undefined] => {
-  const [value, setValue] = useState('');
-  const [error, setError] = useState<string | undefined>(undefined);
-  const handleError = (value: string) => {
-    const isValid = validate(value);
-    if (value === '' || isValid) {
-      setError('');
-    } else if (!isValid) {
-      setError(errorMessage);
-    }
-  };
-  const debouncedHandleError = useCallback(debounce(handleError, 500), []);
-
-  const updateValue = (value: string) => {
-    setValue(value);
-    debouncedHandleError(value);
-  };
-  return [value, updateValue, error];
 };

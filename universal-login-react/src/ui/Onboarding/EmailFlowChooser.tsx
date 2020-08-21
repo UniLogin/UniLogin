@@ -3,27 +3,53 @@ import {isProperEmail, isValidEnsName} from '@unilogin/commons';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
-import {InputField, useInputField} from '../commons/InputField';
+import {InputField} from '../commons/InputField';
+import {useInputField} from '../hooks/useInputField';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
+import UniLoginSdk, {WalletService} from '@unilogin/sdk';
 
 export interface EmailFlowChooserProps {
   onCreateClick: (email: string, ensName: string) => void;
   onConnectClick: (emailOrEnsName: string) => void;
   domain: string;
+  walletService: WalletService;
 }
 
-export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain}: EmailFlowChooserProps) => {
-  const [email, setEmail, emailError] = useInputField(isProperEmail, 'Email is not valid');
+const isEnsNameTaken = (sdk: UniLoginSdk) => async (name: string) => {
+  return sdk.resolveName(name);
+};
+
+const ensNameValidators = (sdk: UniLoginSdk) => [
+  {
+    validate: isValidEnsName,
+    errorMessage: 'Ens name is not valid',
+  }, {
+    errorMessage: 'Ens name already taken',
+    validate: async (name: string) => !(await isEnsNameTaken(sdk)(name)),
+  },
+];
+
+const isValidEmailOrEnsName = (value: string) => isValidEnsName(value) || isProperEmail(value);
+
+const ensNameOrEmailValidator = {
+  validate: isValidEmailOrEnsName,
+  errorMessage: 'Invalid ENS name or email',
+};
+
+const emailValidator = {
+  validate: isProperEmail,
+  errorMessage: 'Email is not valid',
+};
+
+export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain, walletService}: EmailFlowChooserProps) => {
+  const [email, setEmail, emailError] = useInputField([emailValidator]);
   const [name, setName] = useState('');
-  const [ensName, setEnsName, ensError] = useInputField(isValidEnsName, 'Ens name is not valid');
-  const isValidEmailOrEnsName = (value: string) => isValidEnsName(value) || isProperEmail(value);
-  const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputField(value => isValidEmailOrEnsName(value), 'Write correct ens name or email');
+  const [ensName, setEnsName, ensError] = useInputField(ensNameValidators(walletService.sdk));
+  const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputField([ensNameOrEmailValidator]);
   const [flow, setFlow] = useState<'create' | 'connect'>('create');
 
   useEffect(() => {
-    if (name) {
-      setEnsName(`${name}.${domain}`);
-    }
+    name ? setEnsName(`${name}.${domain}`) : setEnsName('');
   }, [name]);
 
   const handleClick = () => flow === 'connect'
@@ -40,10 +66,10 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain}: EmailF
         <div className={useClassFor('user-tabs')}>
           <button
             onClick={() => setFlow('create')}
-            className={`${classForComponent('user-tab')} ${flow === 'create' ? 'active' : ''}`}>New user</button>
+            className={`${classForComponent('user-tab')} ${flow === 'create' && 'active'}`}>New user</button>
           <button
             onClick={() => setFlow('connect')}
-            className={`${classForComponent('user-tab')} ${flow === 'connect' ? 'active' : ''}`}>Existing user</button>
+            className={`${classForComponent('user-tab')} ${flow === 'connect' && 'active'}`}>Existing user</button>
         </div>
         <div className={useClassFor('flow-content')}>
           {flow === 'create' && <CreationContent
