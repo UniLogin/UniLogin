@@ -6,6 +6,7 @@ export interface StoredEncryptedWallet {
   ensName: string;
   walletJSON: EncryptedWallet;
   contractAddress: string;
+  publicKey: string;
 }
 
 export const asStoredEncryptedWallet = asObject<StoredEncryptedWallet>({
@@ -13,4 +14,5 @@ export const asStoredEncryptedWallet = asObject<StoredEncryptedWallet>({
   ensName: asString,
   walletJSON: asEncryptedWallet,
   contractAddress: asString,
+  publicKey: asString,
 });
