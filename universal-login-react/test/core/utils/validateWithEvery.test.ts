@@ -8,7 +8,7 @@ describe('UNIT: validateWithEvery', () => {
   };
   const errorMessage = 'Always failing';
   const alwaysFailingValidator = {
-    validate: () => false,
+    validate: async () => false,
     errorMessage,
   };
 
