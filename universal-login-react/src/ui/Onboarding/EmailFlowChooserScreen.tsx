@@ -19,6 +19,7 @@ export const EmailFlowChooserScreen = ({hideModal, walletService, onCreateClick,
       progress={1}>
       <div className="perspective">
         <EmailFlowChooser
+          walletService={walletService}
           domain={domain}
           onConnectClick={onConnectClick}
           onCreateClick={onCreateClick}
