@@ -3,7 +3,7 @@ import {isProperEmail, isValidEnsName} from '@unilogin/commons';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
-import {InputField, useInputField, useInputFieldManyValidators} from '../commons/InputField';
+import {InputField, useInputFieldManyValidators} from '../commons/InputField';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import UniLoginSdk, {WalletService} from '@unilogin/sdk';
 
@@ -28,12 +28,23 @@ const ensNameValidators = (sdk: UniLoginSdk) => [
   },
 ];
 
+const isValidEmailOrEnsName = (value: string) => isValidEnsName(value) || isProperEmail(value);
+
+const ensNameOrEmailValidator = {
+  validate: isValidEmailOrEnsName,
+  errorMessage: 'Invalid ENS name or email',
+};
+
+const emailValidator = {
+  validate: isProperEmail,
+  errorMessage: 'Email is not valid',
+};
+
 export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain, walletService}: EmailFlowChooserProps) => {
-  const [email, setEmail, emailError] = useInputField(isProperEmail, 'Email is not valid');
+  const [email, setEmail, emailError] = useInputFieldManyValidators([emailValidator]);
   const [name, setName] = useState('');
   const [ensName, setEnsName, ensError] = useInputFieldManyValidators(ensNameValidators(walletService.sdk));
-  const isValidEmailOrEnsName = (value: string) => isValidEnsName(value) || isProperEmail(value);
-  const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputField(value => isValidEmailOrEnsName(value), 'Write correct ens name or email');
+  const [emailOrEnsName, setEmailOrEnsName, emailOrEnsNameError] = useInputFieldManyValidators([ensNameOrEmailValidator]);
   const [flow, setFlow] = useState<'create' | 'connect'>('create');
 
   useEffect(() => {
@@ -54,10 +65,10 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain, walletS
         <div className={useClassFor('user-tabs')}>
           <button
             onClick={() => setFlow('create')}
-            className={`${classForComponent('user-tab')} ${flow === 'create' ? 'active' : ''}`}>New user</button>
+            className={`${classForComponent('user-tab')} ${flow === 'create' && 'active'}`}>New user</button>
           <button
             onClick={() => setFlow('connect')}
-            className={`${classForComponent('user-tab')} ${flow === 'connect' ? 'active' : ''}`}>Existing user</button>
+            className={`${classForComponent('user-tab')} ${flow === 'connect' && 'active'}`}>Existing user</button>
         </div>
         <div className={useClassFor('flow-content')}>
           {flow === 'create' && <CreationContent
