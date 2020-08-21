@@ -58,6 +58,7 @@ export class FutureWalletFactory {
       ensName,
       walletJSON: JSON.parse(await wallet.encrypt(password)),
       contractAddress: futureWallet.contractAddress,
+      publicKey: wallet.address,
     };
     await this.sdk.relayerApi.storeEncryptedWallet(storedEncryptedWallet, code);
     return futureWallet;

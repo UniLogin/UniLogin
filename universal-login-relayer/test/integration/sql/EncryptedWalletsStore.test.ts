@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {StoredEncryptedWallet, TEST_ENCRYPTED_WALLET_JSON, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
+import {StoredEncryptedWallet, TEST_CONTRACT_ADDRESS, TEST_WALLET} from '@unilogin/commons';
 import {getKnexConfig} from '../../testhelpers/knex';
 import {EncryptedWalletsStore} from '../../../src/integration/sql/services/EncryptedWalletsStore';
 
@@ -9,10 +9,11 @@ describe('INT: EncryptedWalletsStore', () => {
   const exampleEmail = 'encryptedWallet@email.com';
   const exampleEnsName = 'bob.unilogin.eth';
   const encryptedWallet: StoredEncryptedWallet = {
-    walletJSON: TEST_ENCRYPTED_WALLET_JSON,
+    walletJSON: TEST_WALLET.encryptedWallet,
     email: exampleEmail,
     ensName: exampleEnsName,
     contractAddress: TEST_CONTRACT_ADDRESS,
+    publicKey: TEST_WALLET.address,
   };
 
   it('Should add encryptedWallet to database and get it from it by email and ensName', async () => {
@@ -32,10 +33,11 @@ describe('INT: EncryptedWalletsStore', () => {
   it('Should fail when adding duplicated email', async () => {
     const exampleEmail = 'encryptedWallet2@email.com';
     const storedEncryptedWallet: StoredEncryptedWallet = {
-      walletJSON: TEST_ENCRYPTED_WALLET_JSON,
+      walletJSON: TEST_WALLET.encryptedWallet,
       email: exampleEmail,
       ensName: 'bob2.unilogin.eth',
       contractAddress: TEST_CONTRACT_ADDRESS,
+      publicKey: TEST_WALLET.address,
     };
 
     const email = await encryptedWalletsStore.add(storedEncryptedWallet);

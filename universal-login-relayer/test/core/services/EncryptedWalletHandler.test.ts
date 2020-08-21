@@ -2,7 +2,7 @@ import {getKnexConfig} from '../../testhelpers/knex';
 import {EmailConfirmationsStore} from '../../../src/integration/sql/services/EmailConfirmationsStore';
 import {EncryptedWalletsStore} from '../../../src/integration/sql/services/EncryptedWalletsStore';
 import {EncryptedWalletHandler} from '../../../src/core/services/EncryptedWalletHandler';
-import {TEST_ENCRYPTED_WALLET_JSON, StoredEncryptedWallet, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
+import {StoredEncryptedWallet, TEST_CONTRACT_ADDRESS, TEST_WALLET} from '@unilogin/commons';
 import {expect} from 'chai';
 import {createTestEmailConfirmation} from '../../testhelpers/createTestEmailConfirmation';
 import {EmailConfirmationValidator} from '../../../src/core/services/validators/EmailConfirmationValidator';
@@ -27,8 +27,9 @@ describe('INT: EncryptedWalletHandler', () => {
     storedEncryptedWallet = {
       email: notConfirmedEmail,
       ensName: emailConfirmation.ensName,
-      walletJSON: TEST_ENCRYPTED_WALLET_JSON,
+      walletJSON: TEST_WALLET.encryptedWallet,
       contractAddress: TEST_CONTRACT_ADDRESS,
+      publicKey: TEST_WALLET.address,
     };
 
     await emailConfirmationsStore.add(emailConfirmation);

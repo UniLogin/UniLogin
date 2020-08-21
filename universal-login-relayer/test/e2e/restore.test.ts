@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import {RelayerUnderTest} from '../../src';
 import {startRelayer} from '../testhelpers/http';
-import {StoredEncryptedWallet, TEST_ENCRYPTED_WALLET_JSON, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
+import {StoredEncryptedWallet, TEST_CONTRACT_ADDRESS, TEST_WALLET} from '@unilogin/commons';
 
 describe('E2E: Relayer - restore wallet', () => {
   let relayer: RelayerUnderTest;
@@ -12,8 +12,9 @@ describe('E2E: Relayer - restore wallet', () => {
   const storedEncryptedWallet: StoredEncryptedWallet = {
     email,
     ensName,
-    walletJSON: TEST_ENCRYPTED_WALLET_JSON,
+    walletJSON: TEST_WALLET.encryptedWallet,
     contractAddress: TEST_CONTRACT_ADDRESS,
+    publicKey: TEST_WALLET.address,
   };
 
   beforeEach(async () => {
@@ -46,7 +47,13 @@ describe('E2E: Relayer - restore wallet', () => {
       .get(`/wallet/restore/${email}`)
       .set({code: relayer.sentCodes[email]});
     expect(restoreResult.status).to.eq(200);
-    expect(restoreResult.body).to.deep.eq({email, ensName, walletJSON: TEST_ENCRYPTED_WALLET_JSON, contractAddress: TEST_CONTRACT_ADDRESS});
+    expect(restoreResult.body).to.deep.eq({
+      email,
+      ensName,
+      walletJSON: TEST_WALLET.encryptedWallet,
+      contractAddress: TEST_CONTRACT_ADDRESS,
+      publicKey: TEST_WALLET.address,
+    });
   });
 
   it('return 400 if confirmation code was not requested and previous code is used', async () => {
