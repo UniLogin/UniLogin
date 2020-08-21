@@ -12,7 +12,7 @@ import {Onboarding} from '../../src';
 
 describe('INT: Email Onboarding', () => {
   let reactWrapper: ReactWrapper;
-  const createSpy = sinon.spy();
+  const onCreateSpy = sinon.spy();
   let sdk: UniLoginSdk;
   let relayer: any;
 
@@ -24,7 +24,7 @@ describe('INT: Email Onboarding', () => {
     reactWrapper = mount(<Onboarding
       walletService={walletService}
       domains={relayer.config.ensRegistrars}
-      onCreate={() => createSpy()}
+      onCreate={() => onCreateSpy()}
       emailFlow={true}
     />);
   });
