@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {MockProvider} from 'ethereum-waffle';
-import {TEST_ENCRYPTED_WALLET_JSON, StoredEncryptedWallet, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
+import {StoredEncryptedWallet, TEST_CONTRACT_ADDRESS, TEST_WALLET} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import UniLoginSdk from '../../../src';
 import {setupSdk} from '../../helpers';
@@ -14,10 +14,11 @@ describe('INT: RequestedRestoringWallet', () => {
   const email = 'encryptedWallet@email.com';
   const ensName = 'bob.unilogin.eth';
   const encryptedWallet: StoredEncryptedWallet = {
-    walletJSON: TEST_ENCRYPTED_WALLET_JSON,
+    walletJSON: TEST_WALLET.encryptedWallet,
     email,
     ensName,
     contractAddress: TEST_CONTRACT_ADDRESS,
+    publicKey: TEST_WALLET.address,
   };
 
   beforeEach(async () => {

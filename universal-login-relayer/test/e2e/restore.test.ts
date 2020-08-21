@@ -52,6 +52,7 @@ describe('E2E: Relayer - restore wallet', () => {
       ensName,
       walletJSON: TEST_WALLET.encryptedWallet,
       contractAddress: TEST_CONTRACT_ADDRESS,
+      publicKey: TEST_WALLET.address,
     });
   });
 
