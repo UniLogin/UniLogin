@@ -6,7 +6,7 @@
 
 exports.up = async (knex) => {
   await knex.schema.alterTable('encrypted_wallets', (table) => {
-    table.string('publicKey').notNullable().defaultTo('0x0000000000000000000000000000000000000000');
+    table.string('publicKey', 42).notNullable().defaultTo('0x0000000000000000000000000000000000000000');
   });
 };
 
