@@ -63,7 +63,7 @@ export function OnboardingSteps({walletService, onCreate, ensName}: OnboardingSt
       return (
         <OnboardingTopUp
           walletService={walletService}
-          hideModal={() => confirmDisconnect(walletService, () => history.push('/selector'))}
+          hideModal={() => confirmDisconnect(walletService, () => history.push('/'))}
           isModal
         />
       );
