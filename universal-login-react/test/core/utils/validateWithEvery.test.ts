@@ -3,7 +3,7 @@ import {validateWithEvery} from '../../../src/app/validateWithEvery';
 
 describe('UNIT: validateWithEvery', () => {
   const alwaysPassingValidator = {
-    validate: () => true,
+    validate: async () => true,
     errorMessage: 'Always pass',
   };
   const errorMessage = 'Always failing';
