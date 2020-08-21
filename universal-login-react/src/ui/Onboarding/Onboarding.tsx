@@ -4,7 +4,7 @@ import {WalletSelector} from '../WalletSelector/WalletSelector';
 import {ApplicationWallet, WalletSuggestionAction} from '@unilogin/commons';
 import {ConnectionFlow, ModalWrapper} from '../..';
 import {OnboardingSteps} from './OnboardingSteps';
-import {Route, MemoryRouter} from 'react-router-dom';
+import {Route, MemoryRouter, Redirect} from 'react-router-dom';
 import {Switch} from 'react-router';
 import {getInitialOnboardingLocation, getInitialEmailOnboardingLocation} from '../../app/getInitialOnboardingLocation';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
@@ -145,6 +145,9 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
               />
             </ModalWrapper>
           } />
+        <Route path="/">
+          <Redirect to={emailFlow ? getInitialEmailOnboardingLocation(props.walletService.state) : getInitialOnboardingLocation(props.walletService.state)} />
+        </Route>
       </Switch>
     </MemoryRouter>
   );
