@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {ReactWrapper, mount} from 'enzyme';
 import {MockProvider} from 'ethereum-waffle';
-import {waitUntil} from '@unilogin/commons';
+import {waitUntil, TEST_PASSWORD} from '@unilogin/commons';
 import {waitExpect} from '@unilogin/commons/testutils';
 import {setupSdk} from '@unilogin/sdk/testutils';
 import UniLoginSdk, {WalletService} from '@unilogin/sdk';
@@ -20,6 +20,7 @@ describe('INT: Email Onboarding', () => {
     const [wallet] = new MockProvider().getWallets();
     ({sdk, relayer} = await setupSdk(wallet, '33113'));
     const walletService = new WalletService(sdk);
+    await sdk.start();
 
     reactWrapper = mount(<Onboarding
       walletService={walletService}
@@ -46,10 +47,14 @@ describe('INT: Email Onboarding', () => {
 
     const createPasswordPage = codeConfirmationPage.confirmCode(code);
     await waitExpect(() => expect(createPasswordPage.isProperPage()).to.be.true, 1300);
+    createPasswordPage.enterPassword(TEST_PASSWORD);
+    const chooseTopUpTokenPage = createPasswordPage.submit();
+    expect(chooseTopUpTokenPage.isProperPage()).to.be.true;
   });
 
   after(async () => {
     reactWrapper.unmount();
+    await sdk.finalizeAndStop();
     await relayer.stop();
   });
 });
