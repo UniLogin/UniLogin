@@ -1,6 +1,6 @@
 import {BasePage} from './BasePage';
-import {waitForUI} from '../..';
 import {ChooseTopUpToken} from '../../../src';
+import {TopUpPage} from './TopUpPage';
 
 export class ChooseTopUpTokenPage extends BasePage {
   isProperPage() {
@@ -8,8 +8,8 @@ export class ChooseTopUpTokenPage extends BasePage {
     return this.wrapper.exists(ChooseTopUpToken);
   };
 
-  async pickTopUpToken(token = 'ETH') {
+  pickTopUpToken(token = 'ETH') {
     this.wrapper.find(`#top-up-token-${token}`).simulate('click', {button: 0});
-    await waitForUI(this.wrapper, () => this.wrapper.text().includes('Choose a top-up method'));
+    return new TopUpPage(this.wrapper);
   };
 }

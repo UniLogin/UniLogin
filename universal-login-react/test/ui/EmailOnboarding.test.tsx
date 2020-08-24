@@ -9,17 +9,21 @@ import {setupSdk} from '@unilogin/sdk/testutils';
 import UniLoginSdk, {WalletService} from '@unilogin/sdk';
 import {EmailFowChooserPage} from '../helpers/pages/EmailFlowChooserPage';
 import {Onboarding} from '../../src';
+import {utils, Wallet} from 'ethers';
 
 describe('INT: Email Onboarding', () => {
-  let reactWrapper: ReactWrapper;
-  const onCreateSpy = sinon.spy();
   let sdk: UniLoginSdk;
+  let reactWrapper: ReactWrapper;
   let relayer: any;
+  let wallet: Wallet;
+  let walletService: WalletService;
+
+  const onCreateSpy = sinon.spy();
 
   before(async () => {
-    const [wallet] = new MockProvider().getWallets();
+    [wallet] = new MockProvider().getWallets();
     ({sdk, relayer} = await setupSdk(wallet, '33113'));
-    const walletService = new WalletService(sdk);
+    walletService = new WalletService(sdk);
     await sdk.start();
 
     reactWrapper = mount(<Onboarding
@@ -50,6 +54,19 @@ describe('INT: Email Onboarding', () => {
     createPasswordPage.enterPassword(TEST_PASSWORD);
     const chooseTopUpTokenPage = createPasswordPage.submit();
     expect(chooseTopUpTokenPage.isProperPage()).to.be.true;
+    const topUpPage = chooseTopUpTokenPage.pickTopUpToken();
+    await waitExpect(() => expect(topUpPage.isProperPage()).to.be.true, 3000);
+    topUpPage.chooseCryptoMethod();
+    const address = topUpPage.getAddress();
+    expect(walletService.state.kind).eq('Future');
+    expect(address).eq(walletService.getFutureWallet().contractAddress);
+    const minimalAmount = walletService.getRequiredDeploymentBalance();
+    await wallet.sendTransaction({
+      to: walletService.getFutureWallet().contractAddress,
+      value: utils.parseEther(minimalAmount),
+    });
+    await waitExpect(() => expect(walletService.state.kind).eq('Deploying'));
+    await waitExpect(() => expect(walletService.state.kind).eq('Deployed'));
   });
 
   after(async () => {
