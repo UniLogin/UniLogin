@@ -75,6 +75,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
                   history.push('/code');
                   await waitForCode;
                 } catch (e) {
+                  props.walletService.disconnect();
                   history.push('/error', {message: e.message});
                 }
               }}
@@ -84,6 +85,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
                   history.push('/code');
                   await requestPromise;
                 } catch (e) {
+                  props.walletService.disconnect();
                   history.push('/error', {message: e.message});
                 }
               }}
