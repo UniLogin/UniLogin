@@ -138,7 +138,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
         <Route
           path="/error"
           render={({history, location}) =>
-            <ModalWrapper message={props.walletService.sdk.getNotice()} hideModal={() => history.push('/selector')}>
+            <ModalWrapper message={props.walletService.sdk.getNotice()} hideModal={() => history.push('/')}>
               <ErrorMessage
                 title={'Something went wrong'}
                 message={location.state.message}
