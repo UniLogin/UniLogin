@@ -9,6 +9,7 @@ import emailIcon from '../assets/icons/e-mail.svg';
 import emailSuccessIcon from '../assets/icons/e-mail-success.svg';
 import '../styles/base/confirmCode.sass';
 import '../styles/themes/UniLogin/confirmCodeThemeUniLogin.sass';
+import {SnackBar} from '../commons/SnackBar';
 
 const CODE_LENGTH = 6;
 
@@ -55,20 +56,23 @@ export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: Con
       <h4 className={classForComponent('onboarding-subtitle')}>{getSubText(isValid)}</h4>
       {isValid && <p className={classForComponent('onboarding-description')}>E-mail confirmed</p>}
       {!isValid &&
-        <div><p className={classForComponent('onboarding-description')}>
-          We sent an email to <span className={classForComponent('span-email')}>{email}</span>
-        </p>
-        <ReactCodeInput
-          name='code-input'
-          inputMode='numeric'
-          type='number'
-          wrapperClassName={classForComponent('input-code-wrapper')}
-          inputClassName={classForComponent('input-code')}
-          fields={6}
-          value={code}
-          onChange={setCode}
-          disabled={isValid}
-        /></div>}
+        <div>
+          <p className={classForComponent('onboarding-description')}>
+            We sent an email to <span className={classForComponent('span-email')}>{email}</span>
+          </p>
+          <ReactCodeInput
+            name='code-input'
+            inputMode='numeric'
+            type='number'
+            wrapperClassName={classForComponent('input-code-wrapper')}
+            inputClassName={classForComponent('input-code')}
+            fields={6}
+            value={code}
+            onChange={setCode}
+            disabled={isValid}
+          />
+        </div>}
+      <SnackBar delay={5} message={'It can take some time... Be patient..'} />
     </div>
     {!isValid && <div className={classForComponent('buttons-wrapper')}>
       <SecondaryButton
