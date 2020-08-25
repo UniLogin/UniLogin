@@ -37,6 +37,9 @@ export type WalletState = {
   wallet: DeployingWallet;
   transactionHash?: string;
 } | {
+  kind: 'DeployedWithoutEmail';
+  wallet: DeployedWallet;
+} | {
   kind: 'Deployed';
   wallet: DeployedWallet;
 };
@@ -64,6 +67,9 @@ export type SerializedWalletState = {
   wallet: SerializedDeployingWallet;
 } | {
   kind: 'Connecting';
+  wallet: ApplicationWallet;
+} | {
+  kind: 'DeployedWithoutEmail';
   wallet: ApplicationWallet;
 } | {
   kind: 'Deployed';
