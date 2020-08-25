@@ -14,4 +14,9 @@ export class TopUpPage extends BasePage {
   getAddress() {
     return this.wrapper.find('.unilogin-component-input').prop('defaultValue');
   }
+
+  getMinimalAmount() {
+    const match = this.wrapper.text().match(/Send at least [0-9.]+/g);
+    return match?.pop()?.split(' ').pop() as string;
+  }
 };

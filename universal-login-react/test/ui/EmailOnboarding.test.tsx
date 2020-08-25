@@ -54,7 +54,7 @@ describe('INT: Email Onboarding', () => {
     const address = topUpPage.getAddress();
     expect(walletService.state.kind).eq('Future');
     expect(address).eq(walletService.getFutureWallet().contractAddress);
-    const minimalAmount = walletService.getRequiredDeploymentBalance();
+    const minimalAmount = topUpPage.getMinimalAmount();
     await wallet.sendTransaction({
       to: walletService.getFutureWallet().contractAddress,
       value: utils.parseEther(minimalAmount),
