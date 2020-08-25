@@ -75,6 +75,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
                   history.push('/code');
                   await waitForCode;
                 } catch (e) {
+                  props.walletService.disconnect();
                   history.push('/error', {message: e.message});
                 }
               }}
@@ -84,6 +85,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
                   history.push('/code');
                   await requestPromise;
                 } catch (e) {
+                  props.walletService.disconnect();
                   history.push('/error', {message: e.message});
                 }
               }}
@@ -138,7 +140,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
         <Route
           path="/error"
           render={({history, location}) =>
-            <ModalWrapper message={props.walletService.sdk.getNotice()} hideModal={() => history.push('/selector')}>
+            <ModalWrapper message={props.walletService.sdk.getNotice()} hideModal={() => history.push('/')}>
               <ErrorMessage
                 title={'Something went wrong'}
                 message={location.state.message}
