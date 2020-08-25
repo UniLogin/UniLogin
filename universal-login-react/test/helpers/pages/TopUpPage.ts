@@ -16,7 +16,8 @@ export class TopUpPage extends BasePage {
   }
 
   getMinimalAmount() {
-    const match = this.wrapper.text().match(/Send at least [0-9.]+/g);
-    return match?.pop()?.split(' ').pop() as string;
+    const minimalAmountRegex = /Send at least ([0-9.]+)/g;
+    const [, minimalAmount] = minimalAmountRegex.exec(this.wrapper.text());
+    return minimalAmount;
   }
 };
