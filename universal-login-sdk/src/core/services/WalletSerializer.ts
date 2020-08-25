@@ -81,6 +81,11 @@ export class WalletSerializer {
           kind: 'Deployed',
           wallet: state.wallet.asSerializedDeployedWallet,
         };
+      case 'DeployedWithoutEmail':
+        return {
+          kind: 'DeployedWithoutEmail',
+          wallet: state.wallet.asSerializedDeployedWallet,
+        };
     }
   }
 
@@ -127,6 +132,11 @@ export class WalletSerializer {
       case 'Deployed':
         return {
           kind: 'Deployed',
+          wallet: new DeployedWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey, this.sdk, state.wallet.email),
+        };
+      case 'DeployedWithoutEmail':
+        return {
+          kind: 'DeployedWithoutEmail',
           wallet: new DeployedWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey, this.sdk, state.wallet.email),
         };
       default:

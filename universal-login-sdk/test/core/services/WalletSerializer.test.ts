@@ -110,6 +110,16 @@ describe('UNIT: WalletSerializer', () => {
       });
     });
 
+    it('for DeployedWithoutEmail returns DeployedWithoutEmail', () => {
+      expect(walletSerializer.serialize({
+        kind: 'DeployedWithoutEmail',
+        wallet: TEST_DEPLOYED_WALLET,
+      })).to.deep.eq({
+        kind: 'DeployedWithoutEmail',
+        wallet: {...TEST_APPLICATION_WALLET, email: undefined},
+      });
+    });
+
     it('for Deploying state returns Deploying', () => {
       expect(walletSerializer.serialize({
         kind: 'Deploying',
@@ -208,6 +218,16 @@ describe('UNIT: WalletSerializer', () => {
       });
 
       expect(state.kind).to.eq('Deployed');
+      expect((state as any).wallet).to.deep.include({...TEST_APPLICATION_WALLET, email: undefined});
+    });
+
+    it('for DeployedWithoutEmail returns DeployedWithoutEmail', () => {
+      const state = walletSerializer.deserialize({
+        kind: 'DeployedWithoutEmail',
+        wallet: TEST_APPLICATION_WALLET,
+      });
+
+      expect(state.kind).to.eq('DeployedWithoutEmail');
       expect((state as any).wallet).to.deep.include({...TEST_APPLICATION_WALLET, email: undefined});
     });
 
