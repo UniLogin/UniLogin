@@ -1,5 +1,5 @@
 import {providers} from 'ethers';
-import {asAnyOf, asObject, asString, cast, asExactly} from '@restless/sanitizers';
+import {asAnyOf, asObject, asString, cast, asExactly, asOptional} from '@restless/sanitizers';
 import {ApplicationWallet, SerializableFutureWallet, Network, ProviderService, asSerializableConfirmedWallet, asSerializableRequestedCreatingWallet, asSerializableRequestedRestoringWallet, asSerializableRestoringWallet} from '@unilogin/commons';
 import {WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
@@ -55,7 +55,7 @@ const asSerializableFutureWallet = asObject<SerializableFutureWallet>({
   gasPrice: asString,
   ensName: asString,
   gasToken: asString,
-  email: asString,
+  email: asOptional(asString),
 });
 
 const asApplicationWallet = asObject<ApplicationWallet>({

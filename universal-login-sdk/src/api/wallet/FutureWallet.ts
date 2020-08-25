@@ -16,7 +16,7 @@ export class FutureWallet implements SerializableFutureWallet {
   gasPrice: string;
   ensName: string;
   gasToken: string;
-  email: string;
+  email?: string;
 
   constructor(
     serializableFutureWallet: SerializableFutureWallet,

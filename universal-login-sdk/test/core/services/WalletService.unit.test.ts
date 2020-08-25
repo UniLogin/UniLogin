@@ -70,7 +70,6 @@ describe('UNIT: WalletService', () => {
       ensName: 'justyna.mylogin.eth',
       gasPrice: TEST_GAS_PRICE,
       gasToken: ETHER_NATIVE_TOKEN.address,
-      email: '',
       deploy: sinon.stub().resolves(deployingWallet),
       waitForBalance: (async () => {}) as any,
     } as any;

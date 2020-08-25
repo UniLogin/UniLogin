@@ -47,7 +47,7 @@ export class FutureWalletFactory {
     };
     const result = await this.sdk.relayerApi.addFutureWallet(storedFutureWallet);
     ensure(result.contractAddress === contractAddress, SavingFutureWalletFailed);
-    return this.createFrom({privateKey, contractAddress, ensName, gasPrice, gasToken, email: email || ''});
+    return this.createFrom({privateKey, contractAddress, ensName, gasPrice, gasToken, email});
   }
 
   async createNewWithPassword({ensName, code, email}: SerializableConfirmedWallet, gasPrice: string, gasToken: string, password: string) {
