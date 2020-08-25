@@ -7,7 +7,7 @@ abstract class ObserverRunner {
   abstract async execute(): Promise<void>;
   tick = 1000;
   timeout: any = null;
-  private currentTask: Promise<any> = Promise.resolve();
+  private currentTask?: Promise<any>;
 
   async loop() {
     if (this.state === 'stop') {
