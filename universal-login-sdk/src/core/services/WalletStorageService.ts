@@ -55,6 +55,7 @@ const asSerializableFutureWallet = asObject<SerializableFutureWallet>({
   gasPrice: asString,
   ensName: asString,
   gasToken: asString,
+  email: asString,
 });
 
 const asApplicationWallet = asObject<ApplicationWallet>({

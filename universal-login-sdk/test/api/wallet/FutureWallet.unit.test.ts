@@ -13,6 +13,7 @@ describe('UNIT: FutureWallet', () => {
     ensName: 'name.mylogin.eth',
     gasPrice: TEST_GAS_PRICE,
     gasToken: ETHER_NATIVE_TOKEN.address,
+    email: 'name@gmail.com',
   };
   const minimalAmount = utils.parseEther('0.5').toString();
   let provider: MockProvider;

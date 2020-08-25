@@ -26,6 +26,7 @@ describe('UNIT: WalletSerializer', () => {
     ensName: 'name.mylogin.eth',
     gasPrice: TEST_GAS_PRICE,
     gasToken: ETHER_NATIVE_TOKEN.address,
+    email: 'name@gmail.com',
     deploy: (() => {}) as any,
     waitForBalance: (() => {}) as any,
   } as any;
@@ -92,6 +93,7 @@ describe('UNIT: WalletSerializer', () => {
           ensName: 'name.mylogin.eth',
           gasPrice: TEST_GAS_PRICE,
           gasToken: ETHER_NATIVE_TOKEN.address,
+          email: 'name@gmail.com',
         },
       });
     });
@@ -171,6 +173,7 @@ describe('UNIT: WalletSerializer', () => {
           ensName: 'name.mylogin.eth',
           gasPrice: TEST_GAS_PRICE,
           gasToken: ETHER_NATIVE_TOKEN.address,
+          email: 'name@gmail.com',
         },
       })).to.deep.eq({
         kind: 'Future',

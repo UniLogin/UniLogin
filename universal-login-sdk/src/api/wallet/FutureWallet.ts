@@ -16,6 +16,7 @@ export class FutureWallet implements SerializableFutureWallet {
   gasPrice: string;
   ensName: string;
   gasToken: string;
+  email: string;
 
   constructor(
     serializableFutureWallet: SerializableFutureWallet,
@@ -31,6 +32,7 @@ export class FutureWallet implements SerializableFutureWallet {
     this.gasPrice = serializableFutureWallet.gasPrice;
     this.ensName = serializableFutureWallet.ensName;
     this.gasToken = serializableFutureWallet.gasToken;
+    this.email = serializableFutureWallet.email;
     this.deploymentReadyObserver = new DeploymentReadyObserver(this.gasToken, this.getMinimalAmount(), balanceChecker);
   }
 
