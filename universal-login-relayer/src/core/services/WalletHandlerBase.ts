@@ -24,7 +24,7 @@ export abstract class WalletHandlerBase {
     return this.emailConfirmationValidator.validate(emailConfirmation, email, code);
   }
 
-  protected updateIsConfirmed(emailConfirmation: EmailConfirmation) {
+  protected markAsConfirmed(emailConfirmation: EmailConfirmation) {
     return this.emailConfirmationStore.updateIsConfirmed(emailConfirmation, true);
   }
 };

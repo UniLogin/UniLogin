@@ -15,7 +15,7 @@ export class RestoreWalletHandler extends WalletHandlerBase {
   async handle(email: string, code: string): Promise<StoredEncryptedWallet> {
     const emailConfirmation = await this.getEmailConfirmation(email);
     this.validate(emailConfirmation, email, code);
-    this.updateIsConfirmed(emailConfirmation);
+    this.markAsConfirmed(emailConfirmation);
     return this.encryptedWalletsStore.get(email);
   }
 }
