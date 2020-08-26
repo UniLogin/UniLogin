@@ -104,7 +104,7 @@ describe('UNIT: WalletSerializer', () => {
         wallet: TEST_DEPLOYED_WALLET,
       })).to.deep.eq({
         kind: 'Deployed',
-        wallet: TEST_APPLICATION_WALLET,
+        wallet: {...TEST_APPLICATION_WALLET, email: undefined},
       });
     });
 
@@ -206,7 +206,7 @@ describe('UNIT: WalletSerializer', () => {
       });
 
       expect(state.kind).to.eq('Deployed');
-      expect((state as any).wallet).to.deep.include(TEST_APPLICATION_WALLET);
+      expect((state as any).wallet).to.deep.include({...TEST_APPLICATION_WALLET, email: undefined});
     });
 
     it('for Restoring returns Restoring', () => {
