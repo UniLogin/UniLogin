@@ -29,7 +29,7 @@ describe('DisconnectAccountService', () => {
 
   beforeEach(async () => {
     walletService = new WalletService(deployedWallet.sdk);
-    walletService.setWallet(deployedWallet.asApplicationWallet);
+    walletService.setWallet(deployedWallet.asSerializedDeployedWallet);
     setErrors = sinon.stub();
     onAccountDisconnection = sinon.stub();
     onAccountDisconnected = sinon.stub();
@@ -50,7 +50,7 @@ describe('DisconnectAccountService', () => {
     expect(setErrors).to.be.calledOnce;
     expect(onAccountDisconnection).to.not.be.called;
     expect(onAccountDisconnected).to.not.be.called;
-    expect(walletService.getDeployedWallet()).to.deep.include(deployedWallet.asApplicationWallet);
+    expect(walletService.getDeployedWallet()).to.deep.include(deployedWallet.asSerializedDeployedWallet);
   });
 
   it('dont disconnect account if verifyField are invalid', async () => {
@@ -58,7 +58,7 @@ describe('DisconnectAccountService', () => {
     expect(setErrors).to.be.calledOnce;
     expect(onAccountDisconnection).to.not.be.called;
     expect(onAccountDisconnected).to.not.be.called;
-    expect(walletService.getDeployedWallet()).to.deep.include(deployedWallet.asApplicationWallet);
+    expect(walletService.getDeployedWallet()).to.deep.include(deployedWallet.asSerializedDeployedWallet);
   });
 
   after(async () => {

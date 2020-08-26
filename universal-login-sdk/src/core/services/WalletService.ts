@@ -1,4 +1,4 @@
-import {ensure, ApplicationWallet, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil} from '@unilogin/commons';
+import {ensure, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil} from '@unilogin/commons';
 import UniLoginSdk from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
@@ -6,7 +6,7 @@ import {ApiKeyMissing, InvalidWalletState, InvalidPassphrase, WalletOverridden, 
 import {utils, Wallet} from 'ethers';
 import {DeployedWallet, WalletStorage} from '../..';
 import {map, State, Property} from 'reactive-properties';
-import {WalletState} from '../models/WalletService';
+import {WalletState, SerializedDeployedWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {WalletSerializer} from './WalletSerializer';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
@@ -231,11 +231,11 @@ export class WalletService {
     this._stateProperty.set({kind: 'Connecting', wallet});
   }
 
-  setWallet(wallet: ApplicationWallet) {
+  setWallet(wallet: SerializedDeployedWallet) {
     ensure(this.state.kind === 'None' || this.state.kind === 'Connecting' || this.state.kind === 'Restoring', WalletOverridden);
     this.setState({
       kind: 'Deployed',
-      wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
+      wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk, wallet.email),
     });
   }
 
@@ -244,7 +244,7 @@ export class WalletService {
     const wallet = await this.walletFromPassphrase(name, passphrase);
     const deployedWallet = new DeployedWallet(contractAddress, name, wallet.privateKey, this.sdk);
     ensure(await deployedWallet.keyExist(wallet.address), InvalidPassphrase);
-    this.setWallet(deployedWallet.asApplicationWallet);
+    this.setWallet(deployedWallet.asSerializedDeployedWallet);
   }
 
   async initializeConnection(name: string): Promise<number[]> {
