@@ -11,6 +11,7 @@
 /universal-login-ops/dist
 /universal-login-ops/node_modules
 /universal-login-ops/yarn-error.log
+/universal-login-react/.env
 /universal-login-react/test/screenshots/*.png
 /universal-login-relayer/.env
 /universal-login-relayer/dist/
@@ -19,6 +20,7 @@
 /universal-login-sdk/dist/
 /universal-login-sdk/node_modules/
 /universal-login-sdk/yarn-error.log
+/universal-login-web3/.env
 /universal-login-web3/dist/
 /universal-login-web3/node_modules/
 /universal-login-web3/yarn-error.log
