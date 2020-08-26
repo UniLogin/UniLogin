@@ -8,6 +8,7 @@ export class DeployingWallet extends MineableFactory implements SerializedDeploy
   contractAddress: string;
   privateKey: string;
   deploymentHash: string;
+  email?: string;
 
   constructor(
     serializedDeployingWallet: SerializedDeployingWallet,
@@ -21,12 +22,13 @@ export class DeployingWallet extends MineableFactory implements SerializedDeploy
     this.deploymentHash = serializedDeployingWallet.deploymentHash;
     this.name = serializedDeployingWallet.name;
     this.privateKey = serializedDeployingWallet.privateKey;
+    this.email = serializedDeployingWallet.email;
   }
 
   waitForTransactionHash = () => this.createWaitForTransactionHash(this.deploymentHash)();
 
   waitToBeSuccess = async () => {
     await this.createWaitToBeSuccess(this.deploymentHash)();
-    return new DeployedWallet(this.contractAddress, this.name, this.privateKey, this.sdk);
+    return new DeployedWallet(this.contractAddress, this.name, this.privateKey, this.sdk, this.email);
   };
 };

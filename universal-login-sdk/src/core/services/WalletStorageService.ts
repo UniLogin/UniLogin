@@ -76,6 +76,7 @@ const asSerializedDeployingWallet = asObject<SerializedDeployingWallet>({
   name: asString,
   contractAddress: asString,
   privateKey: asString,
+  email: asOptional(asString),
 });
 
 const asSerializedState = asAnyOf([

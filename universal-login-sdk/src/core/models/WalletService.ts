@@ -8,7 +8,7 @@ import {RequestedCreatingWallet} from '../../api/wallet/RequestedCreatingWallet'
 import {RestoringWallet} from '../../api/wallet/RestoringWallet';
 import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
 
-export type SerializedDeployingWallet = ApplicationWallet & {deploymentHash: string};
+export type SerializedDeployingWallet = ApplicationWallet & {email?: string, deploymentHash: string};
 export type SerializedDeployedWallet = ApplicationWallet & {email?: string};
 
 export type WalletState = {

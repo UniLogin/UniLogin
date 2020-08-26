@@ -61,10 +61,10 @@ export class WalletSerializer {
           },
         };
       case 'Deploying':
-        const {name, privateKey, contractAddress, deploymentHash} = state.wallet;
+        const {name, privateKey, contractAddress, deploymentHash, email} = state.wallet;
         return {
           kind: 'Deploying',
-          wallet: {name, privateKey, contractAddress, deploymentHash},
+          wallet: {name, privateKey, contractAddress, deploymentHash, email},
         };
       case 'Connecting':
         return {

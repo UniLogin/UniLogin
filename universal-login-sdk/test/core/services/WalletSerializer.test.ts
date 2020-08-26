@@ -37,15 +37,16 @@ describe('UNIT: WalletSerializer', () => {
     privateKey: TEST_PRIVATE_KEY,
   };
 
-  const TEST_SERIALIZED_WALLET = {
+  const TEST_SERIALIZED_DEPLOYING_WALLET = {
     name: 'name.mylogin.eth',
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     deploymentHash: TEST_MESSAGE_HASH,
+    email: 'name@gmail.com',
   };
 
   const TEST_DEPLOYING_WALLET = new DeployingWallet(
-    TEST_SERIALIZED_WALLET,
+    TEST_SERIALIZED_DEPLOYING_WALLET,
     mockSDK,
   );
 
@@ -114,7 +115,7 @@ describe('UNIT: WalletSerializer', () => {
         wallet: TEST_DEPLOYING_WALLET,
       })).to.deep.eq({
         kind: 'Deploying',
-        wallet: TEST_SERIALIZED_WALLET,
+        wallet: TEST_SERIALIZED_DEPLOYING_WALLET,
       });
     });
 
