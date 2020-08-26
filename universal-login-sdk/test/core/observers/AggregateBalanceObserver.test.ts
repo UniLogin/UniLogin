@@ -120,5 +120,6 @@ describe('INT: AggregateBalanceObserver', () => {
 
   afterEach(async () => {
     await mockedAggregateBalanceObserver['priceObserver'].finalizeAndStop();
+    mockedAggregateBalanceObserver['balanceObserver'].stop();
   });
 });
