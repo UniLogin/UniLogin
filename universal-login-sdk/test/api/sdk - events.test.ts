@@ -48,9 +48,9 @@ describe('INT: Events', () => {
     await deployedWallet.addKey(publicKeyToAdd.toLowerCase(), {gasPrice, gasLimit, gasToken: mockToken.address});
     await mineBlock(wallet);
     await waitExpect(() => expect(keyCallback).to.have.been.calledOnce);
+    unsubscribe();
     await sdk.finalizeAndStop();
     await newKeySDK.finalizeAndStop();
-    unsubscribe();
     expect(keyCallback).to.have.been.calledWith({key: publicKeyToAdd});
     expect(connectionCallback).to.have.been.called;
   });
