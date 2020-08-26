@@ -26,7 +26,7 @@ describe('INT: RequestedMigratingWallet', () => {
       email,
       ensName,
       privateKey: requestedWallet.privateKey,
-      contractAddress: requestedWallet.contractAddress
+      contractAddress: requestedWallet.contractAddress,
     });
   });
 
@@ -35,6 +35,11 @@ describe('INT: RequestedMigratingWallet', () => {
     expect(requestEmailConfirmationResult).deep.eq({email});
     const confirmEmailResult = await requestedWallet.confirmEmail(relayer.sentCodes[email]);
     expect(confirmEmailResult).to.eq(email);
+  });
+
+  it('deployed wallet functions works', async () => {
+    const publicKey = requestedWallet.publicKey;
+    expect(await requestedWallet.keyExist(publicKey)).to.be.true;
   });
 
   afterEach(async () => {

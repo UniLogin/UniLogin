@@ -1,14 +1,17 @@
 import {SerializableRequestedMigratingWallet} from '@unilogin/commons';
 import UniLoginSdk from '../sdk';
+import {DeployedWallet} from './DeployedWallet';
 
-export class RequestedMigratingWallet implements SerializableRequestedMigratingWallet {
+export class RequestedMigratingWallet extends DeployedWallet implements SerializableRequestedMigratingWallet {
   constructor(
     readonly contractAddress: string,
     readonly ensName: string,
     readonly privateKey: string,
     readonly email: string,
     public readonly sdk: UniLoginSdk,
-  ) {};
+  ) {
+    super(contractAddress, ensName, privateKey, sdk, email);
+  };
 
   get asSerializableRequestedMigratingWallet(): SerializableRequestedMigratingWallet {
     return {
