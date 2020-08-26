@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import {ETHER_NATIVE_TOKEN, getEnv, UNILOGIN_LOGO_WITH_NAME_URL} from '@unilogin/commons';
-dotenv.config();
+import path from 'path';
+dotenv.config({path: path.resolve(__dirname, '../../.env')});
 
 export const baseConfig = {
   supportedTokens: [{

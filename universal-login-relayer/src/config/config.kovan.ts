@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
-dotenv.config();
-import {getEnv, DAI_KOVAN, UNIVERSAL_LOGIN_LOGO_URL, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import path from 'path';
+dotenv.config({path: path.resolve(__dirname, '../../.env')});
+import {getEnv, DAI_KOVAN, UNIVERSAL_LOGIN_LOGO_URL, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {baseConfig} from './baseConfig';
 
 export const getConfig = () => ({

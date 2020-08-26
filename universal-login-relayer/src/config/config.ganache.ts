@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
-dotenv.config();
-import {getEnv, UNIVERSAL_LOGIN_LOGO_URL, ETHER_NATIVE_TOKEN, NodeEnv, asNodeEnv, DEV_DAI_ADDRESS} from '@unilogin/commons';
 import path from 'path';
+dotenv.config({path: path.resolve(__dirname, '../../.env')});
+import {getEnv, UNIVERSAL_LOGIN_LOGO_URL, ETHER_NATIVE_TOKEN, NodeEnv, asNodeEnv, DEV_DAI_ADDRESS} from '@unilogin/commons';
 import {baseConfig} from './baseConfig';
 import {cast} from '@restless/sanitizers';
 
