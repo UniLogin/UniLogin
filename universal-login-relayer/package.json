@@ -35,8 +35,10 @@
   "scripts": {
     "prebuild": "yarn clean",
     "build": "yarn build:cjs && yarn build:esm",
-    "build:cjs": "tsc --outDir dist/cjs --declaration false --declarationMap false",
-    "build:esm": "tsc --outDir dist/esm --module ES6",
+    "build:cjs": "tsc --outDir dist/cjs --declaration false --declarationMap false && yarn copy:env:cjs",
+    "build:esm": "tsc --outDir dist/esm --module ES6 && yarn copy:env:esm",
+    "copy:env:cjs": "cpx \".env\" dist/cjs",
+    "copy:env:esm": "cpx \".env\" dist/esm",
     "start": "node dist/cjs/src/http/startScript.js",
     "start:email": "yarn build && nodemon ./dist/cjs/src/emailPlaygroundServer.js --watch ./dist",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register/transpile-only -t 10000 --exit 'test/**/*.{js,ts}'",
