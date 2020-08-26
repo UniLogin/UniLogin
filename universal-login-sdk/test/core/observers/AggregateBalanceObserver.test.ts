@@ -117,4 +117,8 @@ describe('INT: AggregateBalanceObserver', () => {
     expect(callback2.secondCall.args[0]).to.deep.eq({USD: 109.105, DAI: 97.19, SAI: 97.19, ETH: 0.009465});
     expect(callback2.thirdCall.args[0]).to.deep.eq({USD: 919.255, DAI: 747.355, SAI: 747.355, ETH: 0.049465});
   });
+
+  afterEach(async () => {
+    await mockedAggregateBalanceObserver['priceObserver'].finalizeAndStop();
+  });
 });
