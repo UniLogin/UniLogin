@@ -9,6 +9,7 @@ import {RestoringWallet} from '../../api/wallet/RestoringWallet';
 import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
 
 export type SerializedDeployingWallet = ApplicationWallet & {deploymentHash: string};
+export type SerializedDeployedWallet = ApplicationWallet & {email?: string};
 
 export type WalletState = {
   kind: 'None';
@@ -66,7 +67,7 @@ export type SerializedWalletState = {
   wallet: ApplicationWallet;
 } | {
   kind: 'Deployed';
-  wallet: ApplicationWallet;
+  wallet: SerializedDeployedWallet;
 };
 
 export interface WalletStorage {

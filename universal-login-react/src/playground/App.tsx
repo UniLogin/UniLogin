@@ -173,7 +173,7 @@ export const App = () => {
                 render={() => {
                   const topUpWalletService = new WalletService(sdk);
                   const topUpDeployedWallet = new DeployedWallet(TEST_CONTRACT_ADDRESS, 'bob.mylogin.eth', TEST_PRIVATE_KEY, sdk);
-                  topUpWalletService.setWallet(topUpDeployedWallet.asApplicationWallet);
+                  topUpWalletService.setWallet(topUpDeployedWallet.asSerializedDeployedWallet);
                   if (!relayerConfig) {
                     return <Spinner />;
                   }

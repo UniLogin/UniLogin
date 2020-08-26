@@ -1,4 +1,4 @@
-import {ApplicationWallet, DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage, Device, Procedure, GasMode} from '@unilogin/commons';
+import {DEFAULT_GAS_LIMIT, ExecutionOptions, generateBackupCode, Message, SdkExecutionOptions, walletFromBrain, ETHER_NATIVE_TOKEN, OperationType, ensure, SignedMessage, Device, Procedure, GasMode} from '@unilogin/commons';
 import {utils} from 'ethers';
 import {BigNumber} from 'ethers/utils';
 import {OnBalanceChange} from '../../core/observers/BalanceObserver';
@@ -10,6 +10,7 @@ import UniLoginSdk from '../sdk';
 import {Execution} from '../../core/services/ExecutionFactory';
 import {propertyFromSubscription} from '../../core/utils/propertyFromSubscription';
 import {OnErc721TokensChange} from '../../core/observers/Erc721TokensObserver';
+import {SerializedDeployedWallet} from '../../core/models/WalletService';
 
 export class DeployedWallet extends AbstractWallet {
   constructor(
@@ -17,15 +18,17 @@ export class DeployedWallet extends AbstractWallet {
     name: string,
     privateKey: string,
     public readonly sdk: UniLoginSdk,
+    readonly email?: string,
   ) {
     super(contractAddress, name, privateKey);
   }
 
-  get asApplicationWallet(): ApplicationWallet {
+  get asSerializedDeployedWallet(): SerializedDeployedWallet {
     return {
       contractAddress: this.contractAddress,
       name: this.name,
       privateKey: this.privateKey,
+      email: this.email,
     };
   }
 

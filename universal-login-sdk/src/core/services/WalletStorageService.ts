@@ -1,7 +1,7 @@
 import {providers} from 'ethers';
 import {asAnyOf, asObject, asString, cast, asExactly, asOptional} from '@restless/sanitizers';
 import {ApplicationWallet, SerializableFutureWallet, Network, ProviderService, asSerializableConfirmedWallet, asSerializableRequestedCreatingWallet, asSerializableRequestedRestoringWallet, asSerializableRestoringWallet} from '@unilogin/commons';
-import {WalletStorage, SerializedWalletState, SerializedDeployingWallet} from '../models/WalletService';
+import {WalletStorage, SerializedWalletState, SerializedDeployingWallet, SerializedDeployedWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';
 
@@ -27,7 +27,7 @@ export class WalletStorageService implements WalletStorage {
       if (data === null) return;
       const {wallet} = cast(JSON.parse(data), asObject({
         kind: asExactly('Deployed'),
-        wallet: asApplicationWallet,
+        wallet: asSerializedDeployedWallet,
       }));
       for (const network of ['mainnet', 'kovan', 'rinkeby', 'ropsten']) {
         const providerService = new ProviderService(getProviderForNetwork(network));
@@ -62,6 +62,13 @@ const asApplicationWallet = asObject<ApplicationWallet>({
   name: asString,
   contractAddress: asString,
   privateKey: asString,
+});
+
+const asSerializedDeployedWallet = asObject<SerializedDeployedWallet>({
+  name: asString,
+  contractAddress: asString,
+  privateKey: asString,
+  email: asOptional(asString),
 });
 
 const asSerializedDeployingWallet = asObject<SerializedDeployingWallet>({
@@ -106,7 +113,7 @@ const asSerializedState = asAnyOf([
   }),
   asObject<SerializedWalletState>({
     kind: asExactly('Deployed'),
-    wallet: asApplicationWallet,
+    wallet: asSerializedDeployedWallet,
   }),
 ], 'wallet state');
 

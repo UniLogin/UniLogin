@@ -78,7 +78,7 @@ export class WalletSerializer {
       case 'Deployed':
         return {
           kind: 'Deployed',
-          wallet: state.wallet.asApplicationWallet,
+          wallet: state.wallet.asSerializedDeployedWallet,
         };
     }
   }
@@ -126,7 +126,7 @@ export class WalletSerializer {
       case 'Deployed':
         return {
           kind: 'Deployed',
-          wallet: new DeployedWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey, this.sdk),
+          wallet: new DeployedWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey, this.sdk, state.wallet.email),
         };
       default:
         throw new TypeError('Invalid saved wallet state');

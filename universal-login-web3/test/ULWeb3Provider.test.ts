@@ -35,7 +35,7 @@ describe('INT: ULWeb3Provider', () => {
   describe('send transaction', () => {
     const deployWallet = async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.setWallet(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asSerializedDeployedWallet);
       return deployedWallet;
     };
 
@@ -123,7 +123,7 @@ describe('INT: ULWeb3Provider', () => {
 
     it('returns single address when wallet is connected', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.setWallet(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asSerializedDeployedWallet);
 
       expect(await web3.eth.getAccounts()).to.deep.eq([deployedWallet.contractAddress]);
     });
@@ -143,7 +143,7 @@ describe('INT: ULWeb3Provider', () => {
 
     it('returns single address when wallet is connected', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.setWallet(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asSerializedDeployedWallet);
 
       expect(await requestAccounts()).to.deep.eq([deployedWallet.contractAddress]);
     });
@@ -154,7 +154,7 @@ describe('INT: ULWeb3Provider', () => {
 
     it('web3.eth.sign', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.setWallet(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asSerializedDeployedWallet);
 
       const signature = await web3.eth.sign(message, deployedWallet.contractAddress);
 
@@ -164,7 +164,7 @@ describe('INT: ULWeb3Provider', () => {
 
     it('web3.eth.personal.sign', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.setWallet(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asSerializedDeployedWallet);
 
       // wrong library typedefs here
       const signature = await (web3.eth.personal.sign as any)(message, deployedWallet.contractAddress, '');
@@ -176,7 +176,7 @@ describe('INT: ULWeb3Provider', () => {
     it('web3.eth.personal.sign with not utf-8 message', async () => {
       const message = '0xb72f46d69997b8227e966cf4676220d00a5f6caa4a3cf9a5bb0542f593dd0bc6';
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.setWallet(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asSerializedDeployedWallet);
 
       const signature = await new Promise(resolve => ulProvider.send(
         {method: 'personal_sign', params: [message, deployedWallet.contractAddress, TEST_CONTRACT_ADDRESS]},
@@ -196,7 +196,7 @@ describe('INT: ULWeb3Provider', () => {
       await waitExpect(() => expect(services.uiController.activeModal.get()).to.deep.eq({kind: 'ONBOARDING'}));
 
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.setWallet(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asSerializedDeployedWallet);
 
       await promise;
       expect(services.uiController.activeModal.get()).to.deep.eq({kind: 'IDLE'});
@@ -204,7 +204,7 @@ describe('INT: ULWeb3Provider', () => {
 
     it('throw error if wallet is already there', async () => {
       const deployedWallet = await createWallet('bob.mylogin.eth', services.sdk, deployer);
-      services.walletService.setWallet(deployedWallet.asApplicationWallet);
+      services.walletService.setWallet(deployedWallet.asSerializedDeployedWallet);
 
       await expect(ulProvider.initOnboarding()).to.be.rejectedWith('Unexpected wallet state: Deployed');
       expect(services.uiController.activeModal.get()).to.deep.eq({kind: 'IDLE'});

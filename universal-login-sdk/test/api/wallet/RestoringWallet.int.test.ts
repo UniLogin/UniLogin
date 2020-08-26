@@ -41,7 +41,7 @@ describe('INT: RestoringWallet', () => {
 
     it('restore returns deployed wallet', async () => {
       const restoreResult = await restoringWallet.restore(TEST_WALLET.password);
-      expect(restoreResult.asApplicationWallet).to.deep.eq(deployedWallet.asApplicationWallet);
+      expect(restoreResult.asSerializedDeployedWallet).to.deep.eq(deployedWallet.asSerializedDeployedWallet);
     });
   });
 

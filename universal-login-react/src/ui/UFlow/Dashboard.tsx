@@ -65,6 +65,6 @@ function initializeWalletService(walletService?: WalletService, deployedWallet?:
   }
 
   const newWalletService = new WalletService(deployedWallet.sdk);
-  newWalletService.setWallet(deployedWallet.asApplicationWallet);
+  newWalletService.setWallet(deployedWallet.asSerializedDeployedWallet);
   return newWalletService;
 }
