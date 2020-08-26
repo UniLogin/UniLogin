@@ -57,6 +57,7 @@ export class WalletSerializer {
             ensName: state.wallet.ensName,
             gasPrice: state.wallet.gasPrice,
             gasToken: state.wallet.gasToken,
+            email: state.wallet.email,
           },
         };
       case 'Deploying':

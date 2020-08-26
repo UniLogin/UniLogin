@@ -7,6 +7,7 @@ export interface SerializableFutureWallet {
   gasPrice: string;
   ensName: string;
   gasToken: string;
+  email?: string;
 }
 
 export interface StoredFutureWallet {

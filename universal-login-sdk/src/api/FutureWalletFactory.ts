@@ -34,7 +34,7 @@ export class FutureWalletFactory {
     return createKeyPair();
   }
 
-  async createNew(ensName: string, gasPrice: string, gasToken: string): Promise<FutureWallet> {
+  async createNew(ensName: string, gasPrice: string, gasToken: string, email?: string): Promise<FutureWallet> {
     const {privateKey, publicKey} = this.getKeyPair();
     const initializeData = await setupInitData({publicKey, ensName, gasPrice, gasToken, ensService: this.ensService, relayerAddress: this.config.relayerAddress, fallbackHandler: this.config.fallbackHandlerAddress});
     const contractAddress = computeGnosisCounterfactualAddress(this.config.factoryAddress, 1, initializeData, this.config.walletContractAddress);
@@ -47,11 +47,11 @@ export class FutureWalletFactory {
     };
     const result = await this.sdk.relayerApi.addFutureWallet(storedFutureWallet);
     ensure(result.contractAddress === contractAddress, SavingFutureWalletFailed);
-    return this.createFrom({privateKey, contractAddress, ensName, gasPrice, gasToken});
+    return this.createFrom({privateKey, contractAddress, ensName, gasPrice, gasToken, email});
   }
 
   async createNewWithPassword({ensName, code, email}: SerializableConfirmedWallet, gasPrice: string, gasToken: string, password: string) {
-    const futureWallet = await this.createNew(ensName, gasPrice, gasToken);
+    const futureWallet = await this.createNew(ensName, gasPrice, gasToken, email);
     const wallet = new Wallet(futureWallet.privateKey);
     const storedEncryptedWallet: StoredEncryptedWallet = {
       email,

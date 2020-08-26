@@ -118,21 +118,13 @@ describe('UNIT: WalletService', () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
     walletService.setFutureWallet(futureWallet, 'justyna.mylogin.eth');
-    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet}));
     expect(storage.set).to.be.calledWith(
       TEST_STORAGE_KEY,
       JSON.stringify({
         kind: 'Future',
         name: 'justyna.mylogin.eth',
-        wallet: {
-          contractAddress: futureWallet.contractAddress,
-          privateKey: futureWallet.privateKey,
-          ensName: 'justyna.mylogin.eth',
-          gasPrice: TEST_GAS_PRICE,
-          gasToken: ETHER_NATIVE_TOKEN.address,
-        },
+        wallet: futureWallet,
       }));
-
     walletService.setDeployed();
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include({

@@ -18,6 +18,7 @@ describe('WalletStorageService', () => {
     gasPrice: TEST_GAS_PRICE,
     ensName: 'name.mylogin.eth',
     gasToken: ETHER_NATIVE_TOKEN.address,
+    email: 'name@gmail.com',
   };
   const applicationWallet: ApplicationWallet = {
     name: 'name',
