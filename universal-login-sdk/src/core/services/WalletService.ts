@@ -30,7 +30,7 @@ export class WalletService {
   private readonly _stateProperty = new State<WalletState>({kind: 'None'});
   readonly stateProperty: Property<WalletState> = this._stateProperty;
 
-  walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed'));
+  walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed' || state.kind === 'DeployedWithoutEmail'));
   isAuthorized = this.walletDeployed;
 
   get state() {
@@ -52,7 +52,7 @@ export class WalletService {
   }
 
   getDeployedWallet(): DeployedWallet {
-    ensure(this.state.kind === 'Deployed', InvalidWalletState, 'Deployed', this.state.kind);
+    ensure(this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail', InvalidWalletState, 'Deployed or DeployedWithoutEmail', this.state.kind);
     return this.state.wallet;
   }
 
@@ -168,7 +168,7 @@ export class WalletService {
   }
 
   async waitForTransactionHash() {
-    if (this.state.kind === 'Deployed') {
+    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') {
       return this.state.wallet;
     }
     const deployingWallet = this.getDeployingWallet();
@@ -179,7 +179,7 @@ export class WalletService {
   }
 
   async waitToBeSuccess() {
-    if (this.state.kind === 'Deployed') {
+    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') {
       return this.state.wallet;
     }
     const deployingWallet = this.getDeployingWallet();
@@ -255,7 +255,7 @@ export class WalletService {
   }
 
   async waitForConnection() {
-    if (this.state.kind === 'Deployed') return;
+    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') return;
     ensure(this.state.kind === 'Connecting', InvalidWalletState, 'Connecting', this.state.kind);
     const connectingWallet = this.getConnectingWallet();
     const filter = {
@@ -275,7 +275,7 @@ export class WalletService {
   }
 
   async cancelWaitForConnection(tick = 500, timeout = 1500) {
-    if (this.state.kind === 'Deployed') return;
+    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') return;
     await waitUntil(() => !!this.getConnectingWallet().unsubscribe, tick, timeout);
     this.getConnectingWallet().unsubscribe!();
     this.disconnect();
@@ -303,7 +303,7 @@ export class WalletService {
   }
 
   async removeWallet(executionOptions: ExecutionOptions) {
-    if (this.state.kind !== 'Deployed') {
+    if (this.state.kind !== 'Deployed' && this.state.kind !== 'DeployedWithoutEmail') {
       this.disconnect();
       return;
     }

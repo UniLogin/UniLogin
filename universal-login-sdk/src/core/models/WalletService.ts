@@ -70,7 +70,7 @@ export type SerializedWalletState = {
   wallet: ApplicationWallet;
 } | {
   kind: 'DeployedWithoutEmail';
-  wallet: ApplicationWallet;
+  wallet: SerializedDeployedWallet;
 } | {
   kind: 'Deployed';
   wallet: SerializedDeployedWallet;
