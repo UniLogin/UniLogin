@@ -3,7 +3,7 @@ import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import {DeployingWallet} from '../../../src/api/wallet/DeployingWallet';
 import {TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, TEST_TRANSACTION_HASH} from '@unilogin/commons';
-import {SerializedDeployingWallet, DeployedWallet} from '../../../src';
+import {SerializedDeployingWallet} from '../../../src';
 import {Wallet} from 'ethers';
 
 chai.use(sinonChai);
@@ -14,6 +14,7 @@ describe('UNIT: DeployingWallet', () => {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     deploymentHash: TEST_MESSAGE_HASH,
+    email: 'name@gmail.com',
   };
   const deploymentStatusWithoutHash = {
     deploymentHash: TEST_MESSAGE_HASH,
@@ -52,9 +53,8 @@ describe('UNIT: DeployingWallet', () => {
   });
 
   it('waits to be success', async () => {
-    const expectedDeployedWallet = new DeployedWallet(serializedDeployingWallet.contractAddress, serializedDeployingWallet.name, serializedDeployingWallet.privateKey, sdk);
     const deployedWallet = await deployingWallet.waitToBeSuccess();
-    expect(deployedWallet.contractAddress).to.deep.eq(expectedDeployedWallet.contractAddress);
-    expect(deployedWallet.name).to.deep.eq(expectedDeployedWallet.name);
+    const {deploymentHash, ...serializedDeployedWallet} = serializedDeployingWallet;
+    expect(deployedWallet.asSerializedDeployedWallet).to.deep.eq(serializedDeployedWallet);
   });
 });
