@@ -1,0 +1,45 @@
+.unilogin-component-snack-waiting.unilogin-theme-unilogin
+  max-width: 32.4rem
+  margin: 0 auto
+
+  .unilogin-component-snack-text
+    font-size: 1.4rem
+    font-weight: 500
+    line-height: 140%
+    color: #0F0C4A
+    margin: 2.75rem 0 .3rem
+
+  .unilogin-component-snack-progress-bar
+    position: relative
+    width: 100%
+    height: .4rem
+    background: linear-gradient(95.14deg, #00D6D9 0%, #455CDA 28.9%, #D55DFF 50%, #455CDA 71.09%, #00D6D9 100%)
+    animation: progress-animation 16s linear infinite
+    animation-direction: reverse
+    background-size: 400% 400% !important
+
+  .unilogin-component-snack-progress-bar::before,
+  .unilogin-component-snack-progress-bar::after
+    content: ''
+    height: 100%
+    width: 20%
+    position: absolute
+    top: 0
+
+  .unilogin-component-snack-progress-bar::before
+    left: 0
+    background: linear-gradient(90deg, #fff 0%, transparent 100%)
+
+  .unilogin-component-snack-progress-bar::after
+    right: 0
+    background: linear-gradient(90deg, transparent 0%, #fff 100%)
+
+  @keyframes progress-animation
+    0%
+      background-position: 0% 0%
+
+    50%
+      background-position: 200% 0%
+
+    100%
+      background-position: 400% 0%
