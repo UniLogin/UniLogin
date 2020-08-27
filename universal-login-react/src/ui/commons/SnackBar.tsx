@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {CloseButton} from './Buttons/CloseButton';
 import {SnackWaiting} from './SnackWaiting';
 
 export interface SnackBarProps {
@@ -15,9 +14,6 @@ export const SnackBar = ({delay, message}: SnackBarProps) => {
   }, []);
 
   return (visible
-    ? <div>
-      <SnackWaiting text={message}/>
-      <CloseButton onClick={() => setVisible(false)} />
-    </div>
+    ? <SnackWaiting text={message} />
     : null);
 };
