@@ -54,3 +54,4 @@ export {ChooseTopUpToken} from './ui/TopUp/ChooseTopUpToken';
 export {getTransactionInfo} from './app/getTransactionInfo';
 export {TransactionFeeChoose} from './ui/commons/GasPrice/TransactionFeeChoose';
 export {useClassFor} from './ui/utils/classFor';
+export {UnexpectedWalletState} from './core/utils/errors';

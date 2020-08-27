@@ -1,3 +1,11 @@
+const routesForDeployed = [
+  '/dashboard',
+  '/create/waiting',
+  '/connectionSuccess',
+  '/creationSuccess',
+  '/debugStorage',
+];
+
 export const urlMapping: Record<string, string[]> = {
   None: [
     '/welcome',
@@ -17,13 +25,8 @@ export const urlMapping: Record<string, string[]> = {
     '/create/waiting',
     '/debugStorage',
   ],
-  Deployed: [
-    '/dashboard',
-    '/create/waiting',
-    '/connectionSuccess',
-    '/creationSuccess',
-    '/debugStorage',
-  ],
+  Deployed: routesForDeployed,
+  DeployedWithoutEmail: routesForDeployed,
   Connecting: [
     '/connect/emoji',
     '/debugStorage',

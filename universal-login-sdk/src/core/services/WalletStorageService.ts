@@ -1,6 +1,5 @@
-import {providers} from 'ethers';
 import {asAnyOf, asObject, asString, cast, asExactly, asOptional} from '@restless/sanitizers';
-import {ApplicationWallet, SerializableFutureWallet, Network, ProviderService, asSerializableConfirmedWallet, asSerializableRequestedCreatingWallet, asSerializableRequestedRestoringWallet, asSerializableRestoringWallet} from '@unilogin/commons';
+import {ApplicationWallet, SerializableFutureWallet, Network, asSerializableConfirmedWallet, asSerializableRequestedCreatingWallet, asSerializableRequestedRestoringWallet, asSerializableRestoringWallet} from '@unilogin/commons';
 import {WalletStorage, SerializedWalletState, SerializedDeployingWallet, SerializedDeployedWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';
@@ -22,22 +21,20 @@ export class WalletStorageService implements WalletStorage {
   }
 
   async migrate() {
-    try {
-      const data = this.storageService.get(DEPRECATED_STORAGE_KEY);
-      if (data === null) return;
-      const {wallet} = cast(JSON.parse(data), asObject({
-        kind: asExactly('Deployed'),
-        wallet: asSerializedDeployedWallet,
-      }));
-      for (const network of ['mainnet', 'kovan', 'rinkeby', 'ropsten']) {
-        const providerService = new ProviderService(getProviderForNetwork(network));
-        if (await providerService.isContract(wallet.contractAddress)) {
-          this.storageService.remove(DEPRECATED_STORAGE_KEY);
-          this.storageService.set(`${DEPRECATED_STORAGE_KEY}-${network}`, data);
-          return;
+    for (const network of ['mainnet', 'kovan', 'rinkeby', 'ropsten']) {
+      try {
+        const data = this.storageService.get(`${DEPRECATED_STORAGE_KEY}-${network}`);
+        if (data === null) continue;
+        const state = cast(JSON.parse(data), asObject({
+          kind: asExactly('Deployed'),
+          wallet: asSerializedDeployedWallet,
+        }));
+        if (state?.kind !== 'Deployed') continue;
+        if (!state.wallet.email) {
+          this.storageService.set(`${DEPRECATED_STORAGE_KEY}-${network}`, JSON.stringify({...state, kind: 'DeployedWithoutEmail'}));
         }
-      }
-    } catch {}
+      } catch {}
+    }
   }
 
   load(): SerializedWalletState {
@@ -116,9 +113,8 @@ const asSerializedState = asAnyOf([
     kind: asExactly('Deployed'),
     wallet: asSerializedDeployedWallet,
   }),
+  asObject<SerializedWalletState>({
+    kind: asExactly('DeployedWithoutEmail'),
+    wallet: asSerializedDeployedWallet,
+  }),
 ], 'wallet state');
-
-function getProviderForNetwork(key: string) {
-  const network = key === 'mainnet' ? 'homestead' : key;
-  return new providers.InfuraProvider(network);
-};
