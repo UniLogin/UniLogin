@@ -72,7 +72,7 @@ export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: Con
             disabled={isValid}
           />
         </div>}
-      <SnackBar delay={5} message={'It can take some time... Be patient..'} />
+      <SnackBar delay={60} message={'It can take some time... Be patient...'} />
     </div>
     {!isValid && <div className={classForComponent('buttons-wrapper')}>
       <SecondaryButton
