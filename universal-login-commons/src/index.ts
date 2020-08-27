@@ -27,6 +27,7 @@ export {asSerializableRequestedCreatingWallet, SerializableRequestedCreatingWall
 export {asSerializableRequestedRestoringWallet, SerializableRequestedRestoringWallet} from './core/models/SerializableRequestedRestoringWallet';
 export {asSerializableConfirmedWallet, SerializableConfirmedWallet} from './core/models/wallets/SerializableConfirmedWallet';
 export {asSerializableRestoringWallet, SerializableRestoringWallet} from './core/models/wallets/SerializableRestoringWallet';
+export {asSerializableRequestedMigratingWallet, SerializableRequestedMigratingWallet} from './core/models/wallets/SerializableRequestedMigratingWallet';
 export {EncryptedWallet} from './core/models/wallets/EncryptedWallet';
 export {Suggestions} from './core/models/Suggestions';
 export {TokenDetails, TokenDetailsWithBalance} from './core/models/TokenData';
