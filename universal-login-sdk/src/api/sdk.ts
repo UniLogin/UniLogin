@@ -118,8 +118,8 @@ class UniLoginSdk {
     return this.futureWalletFactory!;
   }
 
-  createFutureWallet(ensName: string, gasPrice: string, gasToken: string): Promise<FutureWallet> {
-    return this.getFutureWalletFactory().createNew(ensName, gasPrice, gasToken);
+  createFutureWallet(ensName: string, gasPrice: string, gasToken: string, email?: string): Promise<FutureWallet> {
+    return this.getFutureWalletFactory().createNew(ensName, gasPrice, gasToken, email);
   }
 
   getMessageStatus(messageHash: string): Promise<MessageStatus> {
