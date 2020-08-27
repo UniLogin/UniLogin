@@ -43,6 +43,7 @@ export class WalletSerializer {
           kind: 'Restoring',
           wallet: {
             encryptedWallet: state.wallet.encryptedWallet,
+            email: state.wallet.email,
             ensName: state.wallet.ensName,
             contractAddress: state.wallet.contractAddress,
           },
@@ -105,7 +106,7 @@ export class WalletSerializer {
       case 'Restoring':
         return {
           kind: 'Restoring',
-          wallet: new RestoringWallet(state.wallet.encryptedWallet, state.wallet.ensName, state.wallet.contractAddress, this.sdk),
+          wallet: new RestoringWallet(state.wallet.encryptedWallet, state.wallet.email, state.wallet.ensName, state.wallet.contractAddress, this.sdk),
         };
       case 'Future':
         return {

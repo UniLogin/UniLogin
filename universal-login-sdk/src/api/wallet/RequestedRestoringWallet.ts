@@ -19,7 +19,7 @@ export class RequestedRestoringWallet implements SerializableRequestedRestoringW
   };
 
   async confirmEmail(code: string) {
-    const {ensName, contractAddress, walletJSON} = await this.sdk.relayerApi.restoreWallet(code, this.ensNameOrEmail);
-    return new RestoringWallet(walletJSON, ensName, contractAddress, this.sdk);
+    const {ensName, contractAddress, walletJSON, email} = await this.sdk.relayerApi.restoreWallet(code, this.ensNameOrEmail);
+    return new RestoringWallet(walletJSON, email, ensName, contractAddress, this.sdk);
   }
 };

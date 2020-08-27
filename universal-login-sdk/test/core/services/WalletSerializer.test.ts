@@ -63,9 +63,10 @@ describe('UNIT: WalletSerializer', () => {
     encryptedWallet: TEST_ENCRYPTED_WALLET_JSON,
     contractAddress: TEST_CONTRACT_ADDRESS,
     ensName: 'name.mylogin.eth',
+    email: 'user@unilogin.test',
   };
 
-  const TEST_RESTORING_WALLET = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, 'name.mylogin.eth', TEST_CONTRACT_ADDRESS, mockSDK);
+  const TEST_RESTORING_WALLET = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, 'user@unilogin.test', 'name.mylogin.eth', TEST_CONTRACT_ADDRESS, mockSDK);
 
   const TEST_REQUESTED_RESTORING = new RequestedRestoringWallet(mockSDK, 'name.mylogin.eth');
 

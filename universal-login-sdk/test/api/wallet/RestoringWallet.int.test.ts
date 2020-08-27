@@ -14,6 +14,7 @@ describe('INT: RestoringWallet', () => {
   let restoringWallet: RestoringWallet;
   let deployedWallet: DeployedWallet;
   let wallet: Wallet;
+  const email = 'user@unilogin.test';
 
   beforeEach(async () => {
     [wallet] = new MockProvider().getWallets();
@@ -26,8 +27,8 @@ describe('INT: RestoringWallet', () => {
     beforeEach(async () => {
       await sdk['fetchFutureWalletFactory']();
       sdk['futureWalletFactory']!['getKeyPair'] = () => ({privateKey: TEST_WALLET.privateKey, publicKey: TEST_WALLET.address});
-      deployedWallet = await createdDeployedWallet(ensName, sdk, wallet);
-      restoringWallet = new RestoringWallet(TEST_WALLET.encryptedWallet, deployedWallet.name, deployedWallet.contractAddress, sdk);
+      deployedWallet = await createdDeployedWallet(ensName, sdk, wallet, email);
+      restoringWallet = new RestoringWallet(TEST_WALLET.encryptedWallet, email, deployedWallet.name, deployedWallet.contractAddress, sdk);
     });
 
     it('asSerializable returns proper wallet', () => {
@@ -35,6 +36,7 @@ describe('INT: RestoringWallet', () => {
         encryptedWallet: TEST_WALLET.encryptedWallet,
         contractAddress: deployedWallet.contractAddress,
         ensName,
+        email,
       };
       expect(restoringWallet.asSerializableRestoringWallet).to.deep.eq(expectedRestoringWallet);
     });
@@ -52,7 +54,7 @@ describe('INT: RestoringWallet', () => {
       await sdk['fetchFutureWalletFactory']();
       sdk['futureWalletFactory']!['getKeyPair'] = createKeyPair;
       deployedWallet = await createdDeployedWallet(ensName, sdk, wallet);
-      restoringWallet = new RestoringWallet(TEST_WALLET.encryptedWallet, deployedWallet.name, deployedWallet.contractAddress, sdk);
+      restoringWallet = new RestoringWallet(TEST_WALLET.encryptedWallet, email, deployedWallet.name, deployedWallet.contractAddress, sdk);
     });
 
     it('throw error if key is not owner', async () => {

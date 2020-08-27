@@ -1,10 +1,10 @@
 import {Wallet, utils} from 'ethers';
+import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 import {WalletService} from '../../src/core/services/WalletService';
 import UniLoginSdk, {DeployedWallet} from '../../src';
-import {ETHER_NATIVE_TOKEN, TEST_GAS_PRICE} from '@unilogin/commons';
 
-export const createdDeployedWallet = async (name: string, sdk: UniLoginSdk, wallet: Wallet): Promise<DeployedWallet> => {
-  const {contractAddress, waitForBalance, deploy} = await sdk.createFutureWallet(name, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address);
+export const createdDeployedWallet = async (name: string, sdk: UniLoginSdk, wallet: Wallet, email?: string): Promise<DeployedWallet> => {
+  const {contractAddress, waitForBalance, deploy} = await sdk.createFutureWallet(name, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN.address, email);
   await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
   await waitForBalance();
   const {waitToBeSuccess} = await deploy();
