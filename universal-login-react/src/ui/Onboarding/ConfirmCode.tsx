@@ -9,7 +9,7 @@ import emailIcon from '../assets/icons/e-mail.svg';
 import emailSuccessIcon from '../assets/icons/e-mail-success.svg';
 import '../styles/base/confirmCode.sass';
 import '../styles/themes/UniLogin/confirmCodeThemeUniLogin.sass';
-import {SnackBar} from '../commons/SnackBar';
+import {RequestConfirmationRetry} from './RequestConfirmationRetry';
 
 const CODE_LENGTH = 6;
 
@@ -34,7 +34,6 @@ const getSubText = (isValid: undefined | boolean) => {
 export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: ConfirmCodeProps) => {
   const [code, setCode] = useState<string | undefined>(undefined);
   const [isValid, setIsValid] = useState<boolean | undefined>(undefined);
-
   const onConfirmClick = async () => {
     ensureNotFalsy(code, Error, 'Code is missing');
     ensure(code?.length === CODE_LENGTH, Error, 'Code is incomplete.');
@@ -47,7 +46,6 @@ export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: Con
       setIsValid(false);
     }
   };
-
   return <div className={useClassFor('onboarding-confirm-code-wrapper')}>
     <div className={classForComponent('onboarding-confirm-code-content')}>
       <div className={`${classForComponent('onboarding-icon-wrapper')} ${isValid && 'success'}`}>
@@ -72,7 +70,7 @@ export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: Con
             disabled={isValid}
           />
         </div>}
-      <SnackBar delay={60} message={'It can take some time... Be patient...'} />
+      <RequestConfirmationRetry walletService={walletService} />
     </div>
     {!isValid && <div className={classForComponent('buttons-wrapper')}>
       <SecondaryButton

@@ -128,6 +128,11 @@ export class WalletService {
     }
   }
 
+  async retryRequestEmailConfirmation() {
+    ensure(this.state.kind === 'RequestedRestoring' || this.state.kind === 'RequestedCreating', InvalidWalletState, this.state.kind, 'RequestedRestoring or RequestedCreating');
+    return this.state.wallet.requestEmailConfirmation();
+  }
+
   async createDeployingWallet(name: string): Promise<DeployingWallet> {
     ensure(this.sdk.isRefundPaid(), ApiKeyMissing);
     const futureWallet = await this.sdk.createFutureWallet(name, '0', ETHER_NATIVE_TOKEN.address);
