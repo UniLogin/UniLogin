@@ -24,11 +24,8 @@ export const TooMuchTimeAlert = ({walletService}: TooMuchTimeAlertProps) => {
   };
   return (!retried
     ? <SnackQueueBar snackQueue={[
-      {delay: 5, element: <SnackWaiting text={'It can take some time... Be patient...'} />},
-      {
-        delay: 5,
-        element: <SnackWithButton buttonText='Retry' text='No email yet?' onClick={handleRetry} />,
-      },
+      {delay: 60, element: <SnackWaiting text={'It can take some time... Be patient...'} />},
+      {delay: 420, element: <SnackWithButton buttonText='Retry' text='No email yet?' onClick={handleRetry} />},
     ]} />
     : null);
 };
