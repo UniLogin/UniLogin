@@ -21,7 +21,7 @@ export const RequestConfirmationRetry = ({walletService}: TooMuchTimeAlertProps)
         const timeoutId = setTimeout(() => setRetryState('RETRY'), 7 * 60 * 1000);
         return () => clearTimeout(timeoutId);
       }
-      default: return;
+      default:
     }
   }, [retryState]);
 
@@ -34,14 +34,14 @@ export const RequestConfirmationRetry = ({walletService}: TooMuchTimeAlertProps)
       walletService.disconnect();
       history.push('/error', {message: e.message});
     }
-  }
+  };
 
   switch (retryState) {
     case 'INITIAL':
-      return null
+      return null;
     case 'BE_PATIENT':
       return <SnackWaiting text={'It can take some time... Be patient...'} />;
     case 'RETRY':
       return <SnackWithButton buttonText='Retry' text='No email yet?' onClick={handleRetry} />;
   }
-}
+};
