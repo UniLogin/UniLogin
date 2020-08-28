@@ -14,7 +14,7 @@ export const TooMuchTimeAlert = ({walletService}: TooMuchTimeAlertProps) => {
   const history = useHistory();
   const handleRetry = async () => {
     try {
-      const promise = walletService.retryCreateRequested();
+      const promise = walletService.retryRequestEmailConfirmation();
       setRetried(true);
       await promise;
     } catch (e) {

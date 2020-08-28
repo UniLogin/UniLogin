@@ -153,7 +153,7 @@ describe('INT: WalletService', () => {
       expect(walletService.state).to.deep.include({kind: 'RequestedCreating'});
       await promise;
       await expect(walletService.confirmCode('12345')).to.be.rejectedWith('Error: Invalid code: 12345');
-      await walletService.retryCreateRequested();
+      await walletService.retryRequestEmailConfirmation();
       expect(walletService.state).to.deep.include({kind: 'RequestedCreating'});
       const confirmEmailResult = await walletService.confirmCode(relayer.sentCodes[email]);
       expect(confirmEmailResult).deep.include({email, code: relayer.sentCodes[email]});
@@ -168,7 +168,7 @@ describe('INT: WalletService', () => {
       await walletService.createRequestedRestoringWallet(email);
       expect(walletService.state.kind).eq('RequestedRestoring');
       await expect(walletService.confirmCode('12345')).to.be.rejectedWith('Error: Invalid code: 12345');
-      await walletService.retryCreateRequested();
+      await walletService.retryRequestEmailConfirmation();
       expect(walletService.state).to.deep.include({kind: 'RequestedRestoring'});
       await walletService.confirmCode(relayer.sentCodes[email]);
       expect(walletService.state).to.deep.include({kind: 'Restoring'});

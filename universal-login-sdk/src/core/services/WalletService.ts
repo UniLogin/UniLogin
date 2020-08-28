@@ -128,16 +128,9 @@ export class WalletService {
     }
   }
 
-  async retryCreateRequested() {
-    switch (this.state.kind) {
-      case 'RequestedRestoring':
-        return this.createRequestedRestoringWallet(this.state.wallet.ensNameOrEmail);
-      case 'RequestedCreating':
-        const {email, ensName} = this.state.wallet;
-        return this.createRequestedCreatingWallet(email, ensName);
-      default:
-        throw new InvalidWalletState(this.state.kind, 'RequestedRestoring or RequestedCreating');
-    }
+  async retryRequestEmailConfirmation() {
+    ensure(this.state.kind === 'RequestedRestoring' || this.state.kind === 'RequestedCreating', InvalidWalletState, this.state.kind, 'RequestedRestoring or RequestedCreating');
+    return this.state.wallet.requestEmailConfirmation();
   }
 
   async createDeployingWallet(name: string): Promise<DeployingWallet> {
