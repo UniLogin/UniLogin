@@ -195,12 +195,12 @@ export class WalletService {
   }
 
   setRequested(wallet: RequestedCreatingWallet) {
-    ensure(this.state.kind === 'None' || this.state.kind === 'RequestedCreating', WalletOverridden);
+    ensure(this.state.kind === 'None', WalletOverridden);
     this.setState({kind: 'RequestedCreating', wallet});
   }
 
   setRequestedRestoring(wallet: RequestedRestoringWallet) {
-    ensure(this.state.kind === 'None' || this.state.kind === 'RequestedRestoring', WalletOverridden);
+    ensure(this.state.kind === 'None', WalletOverridden);
     this.setState({kind: 'RequestedRestoring', wallet});
   }
 
