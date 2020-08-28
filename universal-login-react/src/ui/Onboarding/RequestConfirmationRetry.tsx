@@ -21,7 +21,6 @@ export const RequestConfirmationRetry = ({walletService}: TooMuchTimeAlertProps)
         const timeoutId = setTimeout(() => setRetryState('RETRY'), 7 * 60 * 1000);
         return () => clearTimeout(timeoutId);
       }
-      default:
     }
   }, [retryState]);
 
