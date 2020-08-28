@@ -9,11 +9,6 @@ import emailIcon from '../assets/icons/e-mail.svg';
 import emailSuccessIcon from '../assets/icons/e-mail-success.svg';
 import '../styles/base/confirmCode.sass';
 import '../styles/themes/UniLogin/confirmCodeThemeUniLogin.sass';
-import {SnackBar} from '../commons/SnackBar';
-import {SnackQueueBar} from '../commons/SnackBarQueue';
-import {SnackWaiting} from '../commons/SnackWaiting';
-import {SnackWithButton} from '../commons/SnackWithButton';
-import {useHistory} from 'react-router-dom';
 import {TooMuchTimeAlert} from './TooMuchTimeAlert';
 
 const CODE_LENGTH = 6;
@@ -75,7 +70,7 @@ export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: Con
             disabled={isValid}
           />
         </div>}
-      <TooMuchTimeAlert walletService={walletService} />,
+      <TooMuchTimeAlert walletService={walletService} />
     </div>
     {!isValid && <div className={classForComponent('buttons-wrapper')}>
       <SecondaryButton

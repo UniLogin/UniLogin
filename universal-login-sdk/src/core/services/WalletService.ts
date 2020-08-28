@@ -128,6 +128,18 @@ export class WalletService {
     }
   }
 
+  async retryCreateRequested() {
+    switch (this.state.kind) {
+      case 'RequestedRestoring':
+        return this.createRequestedRestoringWallet(this.state.wallet.ensNameOrEmail);
+      case 'RequestedCreating':
+        const {email, ensName} = this.state.wallet;
+        return this.createRequestedCreatingWallet(email, ensName);
+      default:
+        throw new InvalidWalletState(this.state.kind, 'RequestedRestoring or RequestedCreating');
+    }
+  }
+
   async createDeployingWallet(name: string): Promise<DeployingWallet> {
     ensure(this.sdk.isRefundPaid(), ApiKeyMissing);
     const futureWallet = await this.sdk.createFutureWallet(name, '0', ETHER_NATIVE_TOKEN.address);
@@ -190,12 +202,12 @@ export class WalletService {
   }
 
   setRequested(wallet: RequestedCreatingWallet) {
-    ensure(this.state.kind === 'None', WalletOverridden);
+    ensure(this.state.kind === 'None' || this.state.kind === 'RequestedCreating', WalletOverridden);
     this.setState({kind: 'RequestedCreating', wallet});
   }
 
   setRequestedRestoring(wallet: RequestedRestoringWallet) {
-    ensure(this.state.kind === 'None', WalletOverridden);
+    ensure(this.state.kind === 'None' || this.state.kind === 'RequestedRestoring', WalletOverridden);
     this.setState({kind: 'RequestedRestoring', wallet});
   }
 

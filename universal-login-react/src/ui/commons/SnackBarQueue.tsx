@@ -22,7 +22,7 @@ export const SnackQueueBar = ({snackQueue}: SnackBarQueueProps) => {
   const setTimeoutForIndex = (index: number) => {
     const timeout_id = setTimeout(() => setShowIndex(index), snackQueue[index].delay * 1000);
     return () => clearTimeout(timeout_id);
-  }
+  };
 
   return <>
     {showIndex !== null ? snackQueue[showIndex].element : null}

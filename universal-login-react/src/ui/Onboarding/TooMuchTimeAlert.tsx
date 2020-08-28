@@ -14,20 +14,14 @@ export const TooMuchTimeAlert = ({walletService}: TooMuchTimeAlertProps) => {
   const history = useHistory();
   const handleRetry = async () => {
     try {
-      let promise;
-      if (walletService.state.kind === 'RequestedRestoring') {
-        promise = walletService.createRequestedRestoringWallet(walletService.state.wallet.ensNameOrEmail);
-      } else if (walletService.state.kind === 'RequestedCreating') {
-        const {email, ensName} = walletService.state.wallet;
-        promise = walletService.createRequestedCreatingWallet(email, ensName);
-      }
-      setRetried(true)
+      const promise = walletService.retryCreateRequested();
+      setRetried(true);
       await promise;
     } catch (e) {
       walletService.disconnect();
       history.push('/error', {message: e.message});
     }
-  }
+  };
   return (!retried
     ? <SnackQueueBar snackQueue={[
       {delay: 5, element: <SnackWaiting text={'It can take some time... Be patient...'} />},
@@ -37,4 +31,4 @@ export const TooMuchTimeAlert = ({walletService}: TooMuchTimeAlertProps) => {
       },
     ]} />
     : null);
-}
+};
