@@ -9,7 +9,7 @@ import emailIcon from '../assets/icons/e-mail.svg';
 import emailSuccessIcon from '../assets/icons/e-mail-success.svg';
 import '../styles/base/confirmCode.sass';
 import '../styles/themes/UniLogin/confirmCodeThemeUniLogin.sass';
-import {TooMuchTimeAlert} from './TooMuchTimeAlert';
+import {RequestConfirmationRetry} from './RequestConfirmationRetry';
 
 const CODE_LENGTH = 6;
 
@@ -70,7 +70,7 @@ export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: Con
             disabled={isValid}
           />
         </div>}
-      <TooMuchTimeAlert walletService={walletService} />
+      <RequestConfirmationRetry walletService={walletService} />
     </div>
     {!isValid && <div className={classForComponent('buttons-wrapper')}>
       <SecondaryButton
