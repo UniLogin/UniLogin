@@ -115,7 +115,7 @@ describe('UNIT: WalletService', () => {
     expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: serializedDeployedWallet}));
   });
 
-  it('roundtrip', () => {
+  it('roundtrip', async () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
     walletService.setFutureWallet(futureWallet, 'justyna.mylogin.eth');
@@ -126,7 +126,8 @@ describe('UNIT: WalletService', () => {
         name: 'justyna.mylogin.eth',
         wallet: futureWallet,
       }));
-    walletService.setDeployed();
+    await walletService.deployFutureWallet();
+
     expect(walletService.state.kind).to.eq('Deployed');
     expect((walletService.state as any).wallet).to.deep.include({
       contractAddress: futureWallet.contractAddress,
@@ -142,10 +143,6 @@ describe('UNIT: WalletService', () => {
     expect((walletService.state as any).wallet).to.deep.include(serializedDeployedWallet);
 
     expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: serializedDeployedWallet}));
-  });
-
-  it('should throw if future wallet is not set', () => {
-    expect(() => walletService.setDeployed()).to.throw('Wallet state is None, but expected Future');
   });
 
   it('should throw if wallet is overridden', () => {

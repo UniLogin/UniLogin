@@ -219,13 +219,6 @@ export class WalletService {
     this.setState({kind: 'Future', name, wallet});
   }
 
-  setDeployed() {
-    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
-    const {name, wallet: {contractAddress, privateKey}} = this.state;
-    const wallet = new DeployedWallet(contractAddress, name, privateKey, this.sdk);
-    this.setState({kind: 'Deployed', wallet});
-  }
-
   setDeploying(wallet: DeployingWallet) {
     ensure(this.state.kind === 'None', WalletOverridden);
     this.setState({kind: 'Deploying', wallet});
