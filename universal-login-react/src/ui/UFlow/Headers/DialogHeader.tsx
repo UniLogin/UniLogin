@@ -1,10 +1,10 @@
 import React from 'react';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import {Nav} from '../../commons/Nav';
 import {CompanyLogo} from '../../commons/CompanyLogo';
 
 export interface DialogHeaderProps {
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
 }
 
 export const DialogHeader = ({deployedWallet}: DialogHeaderProps) => {

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import './../../styles/base/devices.sass';
 import './../../styles/themes/Legacy/devicesThemeLegacy.sass';
 import './../../styles/themes/UniLogin/devicesThemeUniLogin.sass';
@@ -17,7 +17,7 @@ import {FooterSection} from '../../commons/FooterSection';
 import {MissingParameter} from '../../../core/utils/errors';
 
 export interface DevicesListProps {
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
   devicesBasePath: string;
   className?: string;
 }

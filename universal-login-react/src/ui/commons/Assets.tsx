@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {utils} from 'ethers';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import {TokenDetailsWithBalance, ValueRounder} from '@unilogin/commons';
 import {Asset} from './Asset';
 import './../styles/base/assetsList.sass';
@@ -16,7 +16,7 @@ import Erc721Tokens from './Erc721Tokens';
 export type AssetState = 'COLLECTABLES' | 'TOKENS';
 
 export interface AssetsProps {
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
 }
 
 export const Assets = ({deployedWallet}: AssetsProps) => {

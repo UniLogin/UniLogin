@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import './../../styles/base/newDeviceMessage.sass';
 import './../../styles/themes/Legacy/newDeviceMessageThemeLegacy.sass';
 import './../../styles/themes/UniLogin/newDeviceMessageThemeUniLogin.sass';
@@ -9,7 +9,7 @@ import {useAsyncEffect} from '../../hooks/useAsyncEffect';
 import {ThemedComponent} from '../../commons/ThemedComponent';
 
 interface NewDeviceMessageProps {
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
   onManageClick: () => void;
   className?: string;
 }

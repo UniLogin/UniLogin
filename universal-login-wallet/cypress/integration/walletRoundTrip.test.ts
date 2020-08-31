@@ -13,7 +13,7 @@ describe('E2E: Wallet roundtrip', () => {
       cy.checkLocalStorageTokenProp('wallet-ganache', 'kind', 'Deploying');
       cy.ensureCorrectLocation('/creationSuccess');
       cy.goToDashboard();
-      cy.checkLocalStorageTokenProp('wallet-ganache', 'kind', 'Deployed');
+      cy.checkLocalStorageTokenProp('wallet-ganache', 'kind', 'DeployedWithoutEmail');
       cy.goToTopUp();
       cy.ensureCorrectLocation('/dashboard/topUp');
       cy.selectFiat();

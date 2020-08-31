@@ -1,6 +1,6 @@
 import {ensureNotFalsy, GasParameters, Nullable, TransferDetails, SEND_TRANSACTION_GAS_LIMIT, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {utils} from 'ethers';
-import {DeployedWallet} from '../../api/wallet/DeployedWallet';
+import {DeployedWithoutEmailWallet} from '../..';
 import {bigNumberMax} from '../utils/bigNumberMax';
 import {encodeTransferToMessage} from '../utils/encodeTransferToMessage';
 import {WalletNotFound} from '../utils/errors';
@@ -15,7 +15,7 @@ export type TransferErrors = Record<string, string[]>;
 export class TransferService {
   private errors: TransferErrors = {amount: [], to: []};
 
-  constructor(public deployedWallet: DeployedWallet) {}
+  constructor(public deployedWallet: DeployedWithoutEmailWallet) {}
 
   async transfer(transferDetails: TransferDetails) {
     ensureNotFalsy(this.deployedWallet, WalletNotFound);

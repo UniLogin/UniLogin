@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {NavLink} from 'react-router-dom';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 export interface NavProps {
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
 }
 
 export const Nav = ({deployedWallet}: NavProps) => {
