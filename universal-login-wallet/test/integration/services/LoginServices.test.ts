@@ -36,11 +36,10 @@ describe('Login', () => {
   describe('CreationService', () => {
     it('should create contract wallet', async () => {
       name = 'name.mylogin.eth';
-      const {contractAddress, waitForBalance, deploy, privateKey} = await walletService.createFutureWallet(name);
+      const {contractAddress, waitForBalance, privateKey} = await walletService.createFutureWallet(name);
       await wallet.sendTransaction({to: contractAddress, value: utils.parseEther('2.0')});
       await waitForBalance();
-      await deploy();
-      walletService.setDeployed();
+      await walletService.deployFutureWallet();
 
       expect(privateKey).to.not.be.null;
       expect(contractAddress).to.not.be.null;
