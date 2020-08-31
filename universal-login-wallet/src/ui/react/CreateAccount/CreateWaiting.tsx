@@ -11,7 +11,7 @@ interface CreateWaitingProps {
 export function CreateWaiting({walletState}: CreateWaitingProps) {
   const {walletService} = useServices();
 
-  if (walletState.kind === 'Deployed') {
+  if (walletState.kind === 'Deployed' || walletState.kind === 'DeployedWithoutEmail') {
     return <Redirect to='/creationSuccess'/>;
   } else {
     return (
