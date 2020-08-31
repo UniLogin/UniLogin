@@ -10,6 +10,7 @@ import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWalle
 
 export type SerializedDeployingWallet = ApplicationWallet & {email?: string, deploymentHash: string};
 export type SerializedDeployedWallet = ApplicationWallet & {email?: string};
+export type SerializedDeployedWithoutEmailWallet = ApplicationWallet;
 
 export type WalletState = {
   kind: 'None';
