@@ -69,7 +69,7 @@ describe('INT: WalletService', () => {
       expect(walletService.state.transactionHash).to.be.properHex(64);
 
       await walletService.waitToBeSuccess();
-      expect(walletService.state.kind).to.eq('Deployed');
+      expect(walletService.state.kind).to.eq('DeployedWithoutEmail');
       expect(walletService.getDeployedWallet().name).to.eq('name.mylogin.eth');
     });
 
@@ -81,7 +81,7 @@ describe('INT: WalletService', () => {
       await walletService.waitForTransactionHash();
       expect(walletService.state.kind).to.eq('Deploying');
       await walletService.waitToBeSuccess();
-      expect(walletService.state.kind).to.eq('Deployed');
+      expect(walletService.state.kind).to.eq('DeployedWithoutEmail');
     });
   });
 
