@@ -43,7 +43,7 @@ describe('Login', () => {
 
       expect(privateKey).to.not.be.null;
       expect(contractAddress).to.not.be.null;
-      expect(walletService.getDeployedWallet().asSerializedDeployedWallet).to.deep.eq({name, privateKey, contractAddress, email: undefined});
+      expect(walletService.getDeployedWallet().asSerializedDeployedWithoutEmailWallet).to.deep.eq({name, privateKey, contractAddress});
     });
   });
 

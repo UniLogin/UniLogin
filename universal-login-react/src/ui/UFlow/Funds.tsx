@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {CurrencyToValue} from '@unilogin/commons';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import {Balance} from '../commons/Balance';
 import {Assets} from '../commons/Assets';
 import './../styles/base/funds.sass';
@@ -13,7 +13,7 @@ import {ThemedComponent} from '../commons/ThemedComponent';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 
 interface FundsProps {
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
   onDeviceMessageClick: () => void;
   onTopUpClick: () => void;
   onSendClick: () => void;

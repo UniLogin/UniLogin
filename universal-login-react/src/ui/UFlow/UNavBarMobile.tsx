@@ -1,9 +1,9 @@
 import React from 'react';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import {Nav} from '../commons/Nav';
 
 export interface UNavBarMobileProps {
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
 }
 
 export const UNavBarMobile = ({deployedWallet}: UNavBarMobileProps) => (

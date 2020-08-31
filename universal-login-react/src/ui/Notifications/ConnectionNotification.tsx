@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Notification, GasParameters, ensureNotFalsy, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
 import {EmojiForm} from './EmojiForm';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import '../styles/base/emoji.sass';
 import '../styles/themes/Legacy/emojiThemeLegacy.sass';
 import '../styles/themes/UniLogin/emojiThemeUniLogin.sass';
@@ -16,7 +16,7 @@ import Spinner from '../commons/Spinner';
 import {ThemedComponent} from '../commons/ThemedComponent';
 
 interface ConnectNotificationProps {
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
   devicesBasePath: string;
   className?: string;
 }

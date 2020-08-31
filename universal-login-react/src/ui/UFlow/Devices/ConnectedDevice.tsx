@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {Device} from '@unilogin/commons';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import {ConnectedDeviceView} from './ConnectedDeviceView';
 
 export interface ConnectedDeviceProps extends Device {
   devicesAmount: number;
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
   confirmationsCount: string;
   setDeviceToRemove: (arg: string | undefined) => void;
 }
