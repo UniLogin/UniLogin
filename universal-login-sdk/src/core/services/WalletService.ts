@@ -1,4 +1,4 @@
-import {ensure, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil} from '@unilogin/commons';
+import {ensure, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil, PartialRequired} from '@unilogin/commons';
 import UniLoginSdk from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
@@ -234,20 +234,27 @@ export class WalletService {
     this._stateProperty.set({kind: 'Connecting', wallet});
   }
 
-  setWallet(wallet: SerializedDeployedWallet) {
+  setWallet(wallet: PartialRequired<SerializedDeployedWallet, 'contractAddress' | 'privateKey' | 'name'>) {
     ensure(this.state.kind === 'None' || this.state.kind === 'Connecting' || this.state.kind === 'Restoring', WalletOverridden);
-    this.setState({
-      kind: 'Deployed',
-      wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk, wallet.email),
-    });
+    if (wallet.email) {
+      this.setState({
+        kind: 'Deployed',
+        wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk, wallet.email),
+      });
+    } else {
+      this.setState({
+        kind: 'DeployedWithoutEmail',
+        wallet: new DeployedWithoutEmailWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
+      });
+    }
   }
 
   async recover(name: string, passphrase: string) {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const wallet = await this.walletFromPassphrase(name, passphrase);
-    const deployedWallet = new DeployedWallet(contractAddress, name, wallet.privateKey, this.sdk);
+    const deployedWallet = new DeployedWithoutEmailWallet(contractAddress, name, wallet.privateKey, this.sdk);
     ensure(await deployedWallet.keyExist(wallet.address), InvalidPassphrase);
-    this.setWallet(deployedWallet.asSerializedDeployedWallet);
+    this.setWallet(deployedWallet.asSerializedDeployedWithoutEmailWallet);
   }
 
   async initializeConnection(name: string): Promise<number[]> {

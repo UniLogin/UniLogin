@@ -1,6 +1,6 @@
 import {asAnyOf, asObject, asString, cast, asExactly, asOptional} from '@restless/sanitizers';
 import {ApplicationWallet, SerializableFutureWallet, Network, asSerializableConfirmedWallet, asSerializableRequestedCreatingWallet, asSerializableRequestedRestoringWallet, asSerializableRestoringWallet} from '@unilogin/commons';
-import {WalletStorage, SerializedWalletState, SerializedDeployingWallet, SerializedDeployedWallet} from '../models/WalletService';
+import {WalletStorage, SerializedWalletState, SerializedDeployingWallet, SerializedDeployedWallet, SerializedDeployedWithoutEmailWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';
 
@@ -27,7 +27,12 @@ export class WalletStorageService implements WalletStorage {
         if (data === null) continue;
         const state = cast(JSON.parse(data), asObject({
           kind: asExactly('Deployed'),
-          wallet: asSerializedDeployedWallet,
+          wallet: asObject({
+            name: asString,
+            contractAddress: asString,
+            privateKey: asString,
+            email: asOptional(asString),
+          }),
         }));
         if (state?.kind !== 'Deployed') continue;
         if (!state.wallet.email) {
@@ -65,7 +70,13 @@ const asSerializedDeployedWallet = asObject<SerializedDeployedWallet>({
   name: asString,
   contractAddress: asString,
   privateKey: asString,
-  email: asOptional(asString),
+  email: asString,
+});
+
+const asSerializedDeployedWithoutEmailWallet = asObject<SerializedDeployedWithoutEmailWallet>({
+  name: asString,
+  contractAddress: asString,
+  privateKey: asString,
 });
 
 const asSerializedDeployingWallet = asObject<SerializedDeployingWallet>({
@@ -115,6 +126,6 @@ const asSerializedState = asAnyOf([
   }),
   asObject<SerializedWalletState>({
     kind: asExactly('DeployedWithoutEmail'),
-    wallet: asSerializedDeployedWallet,
+    wallet: asSerializedDeployedWithoutEmailWallet,
   }),
 ], 'wallet state');

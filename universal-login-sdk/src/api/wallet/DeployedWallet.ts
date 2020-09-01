@@ -160,7 +160,7 @@ export class DeployedWallet extends DeployedWithoutEmailWallet {
     name: string,
     privateKey: string,
     public readonly sdk: UniLoginSdk,
-    readonly email?: string,
+    readonly email: string,
   ) {
     super(contractAddress, name, privateKey, sdk);
   }
