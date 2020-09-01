@@ -34,7 +34,6 @@ export class WalletStorageService implements WalletStorage {
             email: asOptional(asString),
           }),
         }));
-        if (state?.kind !== 'Deployed') continue;
         if (!state.wallet.email) {
           this.storageService.set(`${DEPRECATED_STORAGE_KEY}-${network}`, JSON.stringify({...state, kind: 'DeployedWithoutEmail'}));
         }
