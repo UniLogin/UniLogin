@@ -74,6 +74,18 @@ describe('UI: Startup from stored wallet state', () => {
     expect(appWrapper.text().includes('Collectables')).to.be.true;
   });
 
+  it('starts when storage is Deployed without email', async () => {
+    const {privateKey, contractAddress} = await createWallet(name, services.sdk, wallet);
+    services.storageService.set(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: {name, privateKey, contractAddress}}));
+    await services.walletService.loadFromStorage();
+    appWrapper = mountWithContext(<App/>, services, ['/dashboard']);
+    const appPage = new AppPage(appWrapper);
+    await appPage.dashboard().waitForDashboard();
+    expect(appWrapper.text().includes('Tokens')).to.be.true;
+    expect(appWrapper.text().includes('Collectables')).to.be.true;
+    expect(services.walletService.state.kind).to.eq('DeployedWithoutEmail');
+  });
+
   afterEach(async () => {
     appWrapper.unmount();
     await services.sdk.finalizeAndStop();

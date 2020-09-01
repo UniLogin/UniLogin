@@ -21,7 +21,7 @@ export class WalletStorageService implements WalletStorage {
   }
 
   async migrate() {
-    for (const network of ['mainnet', 'kovan', 'rinkeby', 'ropsten']) {
+    for (const network of ['mainnet', 'kovan', 'rinkeby', 'ropsten', 'ganache']) {
       try {
         const data = this.storageService.get(`${DEPRECATED_STORAGE_KEY}-${network}`);
         if (data === null) continue;
