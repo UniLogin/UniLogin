@@ -16,6 +16,7 @@ import {RequestedCreatingWallet} from '../../api/wallet/RequestedCreatingWallet'
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
 import {RestoringWallet} from '../../api/wallet/RestoringWallet';
+import {DeployedWithoutEmailWallet} from '../../api/wallet/DeployedWallet';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
@@ -51,7 +52,7 @@ export class WalletService {
     this.walletSerializer = new WalletSerializer(sdk);
   }
 
-  getDeployedWallet(): DeployedWallet {
+  getDeployedWallet(): DeployedWithoutEmailWallet {
     ensure(this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail', InvalidWalletState, 'Deployed or DeployedWithoutEmail', this.state.kind);
     return this.state.wallet;
   }
@@ -184,7 +185,11 @@ export class WalletService {
     }
     const deployingWallet = this.getDeployingWallet();
     const deployedWallet = await deployingWallet.waitToBeSuccess();
-    this.setState({kind: 'Deployed', wallet: deployedWallet});
+    if (deployedWallet instanceof DeployedWallet) {
+      this.setState({kind: 'Deployed', wallet: deployedWallet});
+    } else {
+      this.setState({kind: 'DeployedWithoutEmail', wallet: deployedWallet});
+    }
     return deployedWallet;
   }
 

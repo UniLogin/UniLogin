@@ -1,9 +1,9 @@
 import {utils} from 'ethers';
 import {Message, PartialRequired, isDataForFunctionCall, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
 import {IERC20Interface} from '@unilogin/contracts';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 
-export const getTransactionInfo = async (deployedWallet: DeployedWallet, transferDetails: PartialRequired<Pick<Message, 'to' | 'value' | 'data'>, 'to' | 'value'>) => {
+export const getTransactionInfo = async (deployedWallet: DeployedWithoutEmailWallet, transferDetails: PartialRequired<Pick<Message, 'to' | 'value' | 'data'>, 'to' | 'value'>) => {
   if (transferDetails.data && isDataForFunctionCall(transferDetails.data.toString(), IERC20Interface, 'transfer')) {
     const tokenTransfer = new utils.AbiCoder((_, value) => value).decode(
       ['address', 'uint256'],

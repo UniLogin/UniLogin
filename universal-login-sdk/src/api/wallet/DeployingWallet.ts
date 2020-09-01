@@ -1,5 +1,5 @@
 import {SerializedDeployingWallet} from '../..';
-import {DeployedWallet} from './DeployedWallet';
+import {DeployedWallet, DeployedWithoutEmailWallet} from './DeployedWallet';
 import {MineableFactory} from '../../core/services/MineableFactory';
 import UniLoginSdk from '../sdk';
 
@@ -29,6 +29,8 @@ export class DeployingWallet extends MineableFactory implements SerializedDeploy
 
   waitToBeSuccess = async () => {
     await this.createWaitToBeSuccess(this.deploymentHash)();
-    return new DeployedWallet(this.contractAddress, this.name, this.privateKey, this.sdk, this.email);
+    return this.email
+      ? new DeployedWallet(this.contractAddress, this.name, this.privateKey, this.sdk, this.email)
+      : new DeployedWithoutEmailWallet(this.contractAddress, this.name, this.privateKey, this.sdk);
   };
 };

@@ -1,4 +1,4 @@
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import {ensureNotFalsy, GasParameters, ensure} from '@unilogin/commons';
 import {State} from 'reactive-properties';
 import {MissingParameter} from '../../core/utils/errors';
@@ -20,7 +20,7 @@ export class BackupCodesService {
   state = new State<BackupCodesGenerationState>({kind: 'Initial'});
 
   constructor(
-    private deployedWallet: DeployedWallet,
+    private deployedWallet: DeployedWithoutEmailWallet,
   ) {}
 
   async generate(gasParameters: GasParameters | undefined) {

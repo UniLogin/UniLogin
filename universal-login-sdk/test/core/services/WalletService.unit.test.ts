@@ -4,13 +4,13 @@ import sinon from 'sinon';
 import {TEST_ACCOUNT_ADDRESS, TEST_CONTRACT_ADDRESS, TEST_PRIVATE_KEY, TEST_MESSAGE_HASH, ETHER_NATIVE_TOKEN, TEST_TRANSACTION_HASH, TEST_GAS_PRICE} from '@unilogin/commons';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet} from 'ethers';
-import {DeployedWallet} from '../../../src/api/wallet/DeployedWallet';
+import {DeployedWithoutEmailWallet} from '../../../src/api/wallet/DeployedWallet';
 import {FutureWallet} from '../../../src/api/wallet/FutureWallet';
 import {DeployingWallet} from '../../../src';
 import {TEST_STORAGE_KEY} from '../../helpers/constants';
 import {RequestedCreatingWallet} from '../../../src/api/wallet/RequestedCreatingWallet';
 import {ConfirmedWallet} from '../../../src/api/wallet/ConfirmedWallet';
-import {SerializedDeployedWallet} from '../../../src/core/models/WalletService';
+import {SerializedDeployedWithoutEmailWallet} from '../../../src/core/models/WalletService';
 
 chai.use(chaiAsPromised);
 
@@ -21,11 +21,11 @@ describe('UNIT: WalletService', () => {
   const walletFromPassphrase = sinon.stub();
   const keyExist = sinon.stub();
   let storage: any;
-  let deployedWallet: DeployedWallet;
+  let deployedWallet: DeployedWithoutEmailWallet;
   let futureWallet: FutureWallet;
   let sdk: any;
   let walletService: WalletService;
-  let serializedDeployedWallet: SerializedDeployedWallet;
+  let serializedDeployedWithoutEmailWallet: SerializedDeployedWithoutEmailWallet;
 
   before(() => {
     keyExist.resolves(false);
@@ -56,8 +56,8 @@ describe('UNIT: WalletService', () => {
       privateKey: TEST_PRIVATE_KEY,
     });
 
-    deployedWallet = new DeployedWallet(TEST_ACCOUNT_ADDRESS, 'justyna.mylogin.eth', TEST_PRIVATE_KEY, sdk);
-    serializedDeployedWallet = deployedWallet.asSerializedDeployedWallet;
+    deployedWallet = new DeployedWithoutEmailWallet(TEST_ACCOUNT_ADDRESS, 'justyna.mylogin.eth', TEST_PRIVATE_KEY, sdk);
+    serializedDeployedWithoutEmailWallet = deployedWallet.asSerializedDeployedWithoutEmailWallet;
     const deployingWallet = new DeployingWallet({
       contractAddress: TEST_ACCOUNT_ADDRESS,
       name: 'justyna.mylogin.eth',
@@ -76,7 +76,7 @@ describe('UNIT: WalletService', () => {
     } as any;
 
     storage = {
-      get: () => JSON.stringify({kind: 'Deployed', wallet: serializedDeployedWallet}),
+      get: () => JSON.stringify({kind: 'Deployed', wallet: serializedDeployedWithoutEmailWallet}),
       set: sinon.fake(),
       remove: sinon.fake(),
     };
@@ -102,17 +102,17 @@ describe('UNIT: WalletService', () => {
   });
 
   it('disconnect resets state to None', () => {
-    walletService.setWallet(serializedDeployedWallet);
+    walletService.setWallet(serializedDeployedWithoutEmailWallet);
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
     expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'None'}));
   });
 
   it('connect set state to Deployed', () => {
-    walletService.setWallet(serializedDeployedWallet);
+    walletService.setWallet(serializedDeployedWithoutEmailWallet);
     expect(walletService.state.kind).to.eq('Deployed');
-    expect((walletService.state as any).wallet).to.deep.include(serializedDeployedWallet);
-    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: serializedDeployedWallet}));
+    expect((walletService.state as any).wallet).to.deep.include(serializedDeployedWithoutEmailWallet);
+    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: serializedDeployedWithoutEmailWallet}));
   });
 
   it('roundtrip', async () => {
@@ -128,25 +128,25 @@ describe('UNIT: WalletService', () => {
       }));
     await walletService.deployFutureWallet();
 
-    expect(walletService.state.kind).to.eq('Deployed');
+    expect(walletService.state.kind).to.eq('DeployedWithoutEmail');
     expect((walletService.state as any).wallet).to.deep.include({
       contractAddress: futureWallet.contractAddress,
-      name: serializedDeployedWallet.name,
+      name: serializedDeployedWithoutEmailWallet.name,
       privateKey: futureWallet.privateKey,
     });
 
     walletService.disconnect();
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
-    walletService.setWallet(serializedDeployedWallet);
+    walletService.setWallet(serializedDeployedWithoutEmailWallet);
     expect(walletService.state.kind).to.eq('Deployed');
-    expect((walletService.state as any).wallet).to.deep.include(serializedDeployedWallet);
+    expect((walletService.state as any).wallet).to.deep.include(serializedDeployedWithoutEmailWallet);
 
-    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: serializedDeployedWallet}));
+    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: serializedDeployedWithoutEmailWallet}));
   });
 
   it('should throw if wallet is overridden', () => {
-    walletService.setWallet(serializedDeployedWallet);
+    walletService.setWallet(serializedDeployedWithoutEmailWallet);
     expect(() => walletService.setFutureWallet(futureWallet, 'name.mylogin.eth')).to.throw('Wallet cannot be overridden');
   });
 
@@ -165,7 +165,7 @@ describe('UNIT: WalletService', () => {
   it('should load from storage', async () => {
     await walletService.loadFromStorage();
     expect(walletService.state.kind).to.eq('Deployed');
-    expect((walletService.state as any).wallet).to.deep.include(serializedDeployedWallet);
+    expect((walletService.state as any).wallet).to.deep.include(serializedDeployedWithoutEmailWallet);
   });
 
   it('deployFutureWallet returns deployedWallet', async () => {
@@ -173,6 +173,6 @@ describe('UNIT: WalletService', () => {
 
     walletService.setFutureWallet(futureWallet, 'justyna.mylogin.eth');
     expect(walletService.state).to.deep.eq({kind: 'Future', name: 'justyna.mylogin.eth', wallet: futureWallet});
-    expect(await walletService.deployFutureWallet()).to.deep.include(serializedDeployedWallet);
+    expect(await walletService.deployFutureWallet()).to.deep.include(serializedDeployedWithoutEmailWallet);
   });
 });
