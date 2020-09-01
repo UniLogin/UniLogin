@@ -1,4 +1,4 @@
-const routesForDeployed = [
+const pathsForDeployed = [
   '/dashboard',
   '/create/waiting',
   '/connectionSuccess',
@@ -25,8 +25,8 @@ export const urlMapping: Record<string, string[]> = {
     '/create/waiting',
     '/debugStorage',
   ],
-  Deployed: routesForDeployed,
-  DeployedWithoutEmail: routesForDeployed,
+  Deployed: pathsForDeployed,
+  DeployedWithoutEmail: pathsForDeployed,
   Connecting: [
     '/connect/emoji',
     '/debugStorage',
