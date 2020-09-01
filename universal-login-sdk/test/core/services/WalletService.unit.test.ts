@@ -76,9 +76,7 @@ describe('UNIT: WalletService', () => {
     } as any;
 
     storage = {
-      get: () => {
-        return JSON.stringify({kind: 'DeployedWithoutEmail', wallet: serializedDeployedWithoutEmailWallet});
-      },
+      get: () => JSON.stringify({kind: 'DeployedWithoutEmail', wallet: serializedDeployedWithoutEmailWallet}),
       set: sinon.fake(),
       remove: sinon.fake(),
     };
