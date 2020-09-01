@@ -47,7 +47,7 @@ describe('UI: Transfer', () => {
     ({appWrapper, appPage, services} = await setupUI(relayer, wallet, mockTokenContract.address));
     ({contractAddress: receiverAddress} = await createAndSetWallet(receiverEnsName, new WalletService(services.sdk), wallet, services.sdk));
     initialReceiverEthBalance = await provider.getBalance(receiverAddress);
-    senderAddress = services.walletService.state.kind === 'Deployed'
+    senderAddress = services.walletService.state.kind === 'DeployedWithoutEmail'
       ? services.walletService.getDeployedWallet().contractAddress
       : '0x0';
   });

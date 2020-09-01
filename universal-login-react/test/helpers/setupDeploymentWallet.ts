@@ -6,6 +6,6 @@ export const setupDeployedWallet = async (wallet: Wallet, ensName: string, overr
   const {relayer, sdk, mockToken} = await setupSdk(wallet, '33113', overrideSdkConfig);
   await sdk.start();
   const {contractAddress, privateKey} = await createWallet(ensName, sdk, wallet);
-  const deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
+  const deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk, 'user@unilogin.test');
   return {deployedWallet, relayer, sdk, mockToken};
 };

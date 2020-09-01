@@ -44,7 +44,7 @@ describe('UI: Connection flow', () => {
     appPage.connection().clickConnectWithAnotherDevice();
     await appPage.connection().waitForEmojiView();
     const publicKey = (new Wallet(services.walletService.getConnectingWallet().privateKey)).address;
-    const deployedWallet = new DeployedWallet(contractAddress, name, privateKey, services.sdk);
+    const deployedWallet = new DeployedWallet(contractAddress, name, privateKey, services.sdk, 'name@unilogin.test');
     await deployedWallet.addKey(publicKey, {gasPrice, gasLimit, gasToken});
     await waitExpect(() => expect(services.walletPresenter.getName()).to.eq(name));
     await appPage.login().waitForCongratulations();

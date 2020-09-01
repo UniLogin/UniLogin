@@ -76,7 +76,9 @@ describe('UNIT: WalletService', () => {
     } as any;
 
     storage = {
-      get: () => JSON.stringify({kind: 'Deployed', wallet: serializedDeployedWithoutEmailWallet}),
+      get: () => {
+        return JSON.stringify({kind: 'DeployedWithoutEmail', wallet: serializedDeployedWithoutEmailWallet});
+      },
       set: sinon.fake(),
       remove: sinon.fake(),
     };
@@ -89,7 +91,7 @@ describe('UNIT: WalletService', () => {
 
   it('successful recover', async () => {
     await walletService.recover(name, passphrase);
-    expect(walletService.state.kind).to.eq('Deployed');
+    expect(walletService.state.kind).to.eq('DeployedWithoutEmail');
     expect((walletService.state as any).wallet).to.include({
       contractAddress: TEST_CONTRACT_ADDRESS,
       name,
@@ -108,11 +110,11 @@ describe('UNIT: WalletService', () => {
     expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'None'}));
   });
 
-  it('connect set state to Deployed', () => {
+  it('connect set state to DeployedWithoutEmail', () => {
     walletService.setWallet(serializedDeployedWithoutEmailWallet);
-    expect(walletService.state.kind).to.eq('Deployed');
+    expect(walletService.state.kind).to.eq('DeployedWithoutEmail');
     expect((walletService.state as any).wallet).to.deep.include(serializedDeployedWithoutEmailWallet);
-    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: serializedDeployedWithoutEmailWallet}));
+    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'DeployedWithoutEmail', wallet: serializedDeployedWithoutEmailWallet}));
   });
 
   it('roundtrip', async () => {
@@ -139,10 +141,10 @@ describe('UNIT: WalletService', () => {
     expect(walletService.state).to.deep.eq({kind: 'None'});
 
     walletService.setWallet(serializedDeployedWithoutEmailWallet);
-    expect(walletService.state.kind).to.eq('Deployed');
+    expect(walletService.state.kind).to.eq('DeployedWithoutEmail');
     expect((walletService.state as any).wallet).to.deep.include(serializedDeployedWithoutEmailWallet);
 
-    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'Deployed', wallet: serializedDeployedWithoutEmailWallet}));
+    expect(storage.set).to.be.calledWith(TEST_STORAGE_KEY, JSON.stringify({kind: 'DeployedWithoutEmail', wallet: serializedDeployedWithoutEmailWallet}));
   });
 
   it('should throw if wallet is overridden', () => {
@@ -164,7 +166,7 @@ describe('UNIT: WalletService', () => {
 
   it('should load from storage', async () => {
     await walletService.loadFromStorage();
-    expect(walletService.state.kind).to.eq('Deployed');
+    expect(walletService.state.kind).to.eq('DeployedWithoutEmail');
     expect((walletService.state as any).wallet).to.deep.include(serializedDeployedWithoutEmailWallet);
   });
 

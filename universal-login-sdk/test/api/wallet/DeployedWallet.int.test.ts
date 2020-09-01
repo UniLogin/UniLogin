@@ -33,12 +33,13 @@ describe('INT: DeployedWallet', () => {
   let sdk: UniLoginSdk;
   const publicKey = createKeyPair().publicKey;
   const publicKey2 = createKeyPair().publicKey;
+  const email = 'user@unilogin.test';
 
   beforeEach(async () => {
     const {...rest} = await loadFixture(basicSDK) as any;
     ({wallet, sdk, provider, otherWallet, relayer, walletContract, contractAddress, privateKey, mockToken, ensName} = rest);
     await relayer.setupTestPartner();
-    deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk);
+    deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, sdk, email);
     message = {...transferMessage, from: contractAddress, gasToken: ETHER_NATIVE_TOKEN.address, data: '0x'};
   });
 
@@ -130,7 +131,7 @@ describe('INT: DeployedWallet', () => {
       const startingBalance = (await provider.getBalance(message.from!));
       const refundPaidSdk = new UniLoginSdk(relayer.url(), provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
       await refundPaidSdk.start();
-      deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, refundPaidSdk);
+      deployedWallet = new DeployedWallet(contractAddress, ensName, privateKey, refundPaidSdk, 'user@unilogin.test');
       const {waitToBeSuccess} = await deployedWallet.execute(message);
       await waitToBeSuccess();
       expect(await provider.getBalance(message.from!)).to.eq(startingBalance.sub(utils.parseEther('0.5')));
@@ -159,14 +160,14 @@ describe('INT: DeployedWallet', () => {
     it('Throws when the gas limit is above the relayers maxGasLimit', async () => {
       const {sdk: secondSdk} = await loadFixture(basicSDK);
       message.gasLimit = secondSdk.getRelayerConfig().maxGasLimit + 1;
-      const secondDeployedWallet = new DeployedWallet(contractAddress, '', privateKey, secondSdk);
+      const secondDeployedWallet = new DeployedWallet(contractAddress, '', privateKey, secondSdk, '');
       await expect(secondDeployedWallet.execute(message)).to.be.eventually
         .rejectedWith('Invalid gas limit. 500001 provided, when relayer\'s max gas limit is 500000');
     });
 
     it('Passes when the gas limit is equal to the relayers maxGasLimit', async () => {
       const {sdk: secondSdk} = await loadFixture(basicSDK);
-      const secondDeployedWallet = new DeployedWallet(contractAddress, '', privateKey, secondSdk);
+      const secondDeployedWallet = new DeployedWallet(contractAddress, '', privateKey, secondSdk, '');
       const {waitToBeSuccess} = await secondDeployedWallet.execute(message);
       await expect(waitToBeSuccess()).to.be.eventually.fulfilled;
     });

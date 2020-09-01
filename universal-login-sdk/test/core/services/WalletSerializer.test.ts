@@ -37,6 +37,11 @@ describe('UNIT: WalletSerializer', () => {
     privateKey: TEST_PRIVATE_KEY,
   };
 
+  const TEST_SERIALIZED_DEPLOYED_WALlET = {
+    ...TEST_APPLICATION_WALLET,
+    email: 'user@unilogin.test',
+  };
+
   const TEST_SERIALIZED_DEPLOYING_WALLET = {
     name: 'name.mylogin.eth',
     contractAddress: TEST_CONTRACT_ADDRESS,
@@ -55,6 +60,7 @@ describe('UNIT: WalletSerializer', () => {
     'name.mylogin.eth',
     TEST_PRIVATE_KEY,
     mockSDK,
+    'user@unilogin.test',
   );
 
   const TEST_CONNECTING_WALLET = new ConnectingWallet(TEST_CONTRACT_ADDRESS, 'name.mylogin.eth', TEST_PRIVATE_KEY, {} as any);
@@ -106,7 +112,7 @@ describe('UNIT: WalletSerializer', () => {
         wallet: TEST_DEPLOYED_WALLET,
       })).to.deep.eq({
         kind: 'Deployed',
-        wallet: {...TEST_APPLICATION_WALLET, email: undefined},
+        wallet: TEST_SERIALIZED_DEPLOYED_WALlET,
       });
     });
 
@@ -116,7 +122,7 @@ describe('UNIT: WalletSerializer', () => {
         wallet: TEST_DEPLOYED_WALLET,
       })).to.deep.eq({
         kind: 'DeployedWithoutEmail',
-        wallet: {...TEST_APPLICATION_WALLET},
+        wallet: TEST_APPLICATION_WALLET,
       });
     });
 
@@ -214,11 +220,11 @@ describe('UNIT: WalletSerializer', () => {
     it('for Deployed returns Deployed', () => {
       const state = walletSerializer.deserialize({
         kind: 'Deployed',
-        wallet: TEST_APPLICATION_WALLET,
+        wallet: TEST_SERIALIZED_DEPLOYED_WALlET,
       });
 
       expect(state.kind).to.eq('Deployed');
-      expect((state as any).wallet).to.deep.include({...TEST_APPLICATION_WALLET, email: undefined});
+      expect((state as any).wallet).to.deep.include(TEST_SERIALIZED_DEPLOYED_WALlET);
     });
 
     it('for DeployedWithoutEmail returns DeployedWithoutEmail', () => {
