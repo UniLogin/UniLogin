@@ -1,9 +1,9 @@
-import {SerializableConfirmedMigratingWallet, StoredEncryptedWallet} from '@unilogin/commons';
-import UniLoginSdk from '../sdk';
-import {DeployedWallet} from './DeployedWallet';
 import {Wallet} from 'ethers';
+import {SerializableConfirmedMigratingWallet, StoredEncryptedWallet, ensure} from '@unilogin/commons';
+import UniLoginSdk from '../sdk';
+import {DeployedWithoutEmailWallet, DeployedWallet} from './DeployedWallet';
 
-export class ConfirmedMigratingWallet extends DeployedWallet implements SerializableConfirmedMigratingWallet {
+export class ConfirmedMigratingWallet extends DeployedWithoutEmailWallet implements SerializableConfirmedMigratingWallet {
   constructor(
     readonly contractAddress: string,
     readonly ensName: string,
@@ -12,7 +12,7 @@ export class ConfirmedMigratingWallet extends DeployedWallet implements Serializ
     readonly code: string,
     public readonly sdk: UniLoginSdk,
   ) {
-    super(contractAddress, ensName, privateKey, sdk, email);
+    super(contractAddress, ensName, privateKey, sdk);
   };
 
   get asSerializableConfirmedMigratingWallet(): SerializableConfirmedMigratingWallet {
@@ -34,9 +34,7 @@ export class ConfirmedMigratingWallet extends DeployedWallet implements Serializ
       contractAddress: this.contractAddress,
       publicKey: wallet.address,
     };
-    const {email} = await this.sdk.relayerApi.storeEncryptedWallet(storedEncryptedWallet, this.code);
-    if (email === this.email) {
-      return new DeployedWallet(this.contractAddress, this.ensName, this.privateKey, this.sdk, this.email);
-    }
+    await this.sdk.relayerApi.storeEncryptedWallet(storedEncryptedWallet, this.code);
+    return new DeployedWallet(this.contractAddress, this.ensName, this.privateKey, this.sdk, this.email);
   }
 };
