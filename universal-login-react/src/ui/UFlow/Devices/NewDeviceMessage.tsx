@@ -11,10 +11,9 @@ import {ThemedComponent} from '../../commons/ThemedComponent';
 interface NewDeviceMessageProps {
   deployedWallet: DeployedWithoutEmailWallet;
   onManageClick: () => void;
-  className?: string;
 }
 
-export const NewDeviceMessage = ({deployedWallet, onManageClick, className}: NewDeviceMessageProps) => {
+export const NewDeviceMessage = ({deployedWallet, onManageClick}: NewDeviceMessageProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
   useAsyncEffect(() => deployedWallet.subscribeAuthorisations(setNotifications), []);
 

@@ -17,10 +17,9 @@ interface FundsProps {
   onDeviceMessageClick: () => void;
   onTopUpClick: () => void;
   onSendClick: () => void;
-  className?: string;
 }
 
-export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, onDeviceMessageClick}: FundsProps) => {
+export const Funds = ({deployedWallet, onTopUpClick, onSendClick, onDeviceMessageClick}: FundsProps) => {
   const {sdk, contractAddress} = deployedWallet;
 
   const [totalTokensValue, setTotalTokensValue] = useState<CurrencyToValue>({} as CurrencyToValue);
@@ -32,7 +31,6 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, className, onD
         <NewDeviceMessage
           deployedWallet={deployedWallet}
           onManageClick={onDeviceMessageClick}
-          className={className}
         />
         <div className="balance-wrapper">
           <Balance amount={totalTokensValue['USD']} />

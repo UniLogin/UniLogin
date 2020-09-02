@@ -10,13 +10,12 @@ import {EmojiInput} from './EmojiInput';
 
 export interface EmojiFormProps {
   hideHeader?: () => void;
-  className?: string;
   notifications: Notification[];
   onDenyClick: () => void;
   setPublicKey: (arg: string) => void;
 }
 
-export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, setPublicKey}: EmojiFormProps) => {
+export const EmojiForm = ({hideHeader, notifications, onDenyClick, setPublicKey}: EmojiFormProps) => {
   const [enteredCode, setEnteredCode] = useState<number[]>([]);
   const [soleAddress, setSoleAddress] = useState<string | undefined>(undefined);
 
@@ -52,7 +51,6 @@ export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, se
             <EmojiPlaceholders
               enteredCode={enteredCode}
               publicKey={soleAddress}
-              className={className}
             />
           </div>
           <p className="correct-input-confirmation-text">Confirm connecting new device</p>
@@ -63,7 +61,6 @@ export const EmojiForm = ({hideHeader, className, notifications, onDenyClick, se
             value={enteredCode}
             onChange={setEnteredCode}
             publicKey={soleAddress}
-            className={className}
           />
           <div className="emoji-form-reject-wrapper">
             <button

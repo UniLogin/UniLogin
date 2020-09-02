@@ -18,10 +18,9 @@ import {ThemedComponent} from '../commons/ThemedComponent';
 interface ConnectNotificationProps {
   deployedWallet: DeployedWithoutEmailWallet;
   devicesBasePath: string;
-  className?: string;
 }
 
-export const ConnectionNotification = ({deployedWallet, devicesBasePath, className}: ConnectNotificationProps) => {
+export const ConnectionNotification = ({deployedWallet, devicesBasePath}: ConnectNotificationProps) => {
   const [notifications, setNotifications] = useState([] as Notification[]);
   const [showHeader, setShowHeader] = useState(true);
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
@@ -53,7 +52,7 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
   };
 
   return notifications.length !== 0 ? (
-    <ThemedComponent id="notifications" className={className} name="emoji">
+    <ThemedComponent id="notifications" name="emoji">
       <div className="approve-device">
         {showHeader &&
           <>
@@ -63,7 +62,6 @@ export const ConnectionNotification = ({deployedWallet, devicesBasePath, classNa
         }
         <EmojiForm
           hideHeader={() => setShowHeader(false)}
-          className={className}
           notifications={notifications}
           onDenyClick={() => deployedWallet.denyRequests()}
           setPublicKey={setPublicKey}
