@@ -19,6 +19,10 @@ Deploying --> Deployed: waitForSuccess
 Deploying --> Deploying: waitForTransactionHash
 Deployed --> None: disconnect
 
+DeployedWithoutEmail --> RequestedMigrating: requestEmailConfirmation
+RequestedMigrating --> ConfirmedMigrating: confirm code
+ConfirmedMigrating --> Deployed: setPassword
+
 RequestedCreating: * e-mail
 RequestedCreating: * ensName
 
@@ -31,7 +35,7 @@ RequestedRestoring: * ensName
 
 Restoring: * walletJSON
 Restoring: * contractAddress
-Restoring: * name
+Restoring: * ensName
 
 Future: * contractAddress
 Future: * privateKey
@@ -50,6 +54,21 @@ Connecting: * name
 Deployed: * contractAddress
 Deployed: * privateKey
 Deployed: * name
+Deployed: * e-mail
 
+DeployedWithoutEmail: * contractAddress
+DeployedWithoutEmail: * privateKey
+DeployedWithoutEmail: * name
+
+RequestedMigrating: * contractAddress
+RequestedMigrating: * privateKey
+RequestedMigrating: * name
+RequestedMigrating: * e-mail
+
+ConfirmedMigrating: * contractAddress
+ConfirmedMigrating: * privateKey
+ConfirmedMigrating: * name
+ConfirmedMigrating: * e-mail
+ConfirmedMigrating: * code
 
 @enduml
