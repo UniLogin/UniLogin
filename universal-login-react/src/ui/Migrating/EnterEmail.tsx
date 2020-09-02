@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {ensureNotFalsy, isProperEmail} from '@unilogin/commons';
+import {useHistory} from 'react-router';
+import {ensureNotFalsy} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import {InputField} from '../commons/InputField';
@@ -11,12 +12,7 @@ import emailIcon from '../assets/icons/e-mail.svg';
 import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 import Spinner from '../commons/Spinner';
 import {OnboardingStepsWrapper} from '../Onboarding/OnboardingStepsWrapper';
-import {useHistory} from 'react-router';
-
-const emailValidator = {
-  validate: isProperEmail,
-  errorMessage: 'Email is not valid',
-};
+import {emailValidator} from '../../app/inputValidators/emailValidator';
 
 interface EnterEmailProps {
   hideModal?: () => void;
