@@ -11,7 +11,7 @@ import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
 import pinCodeIcon from '../assets/icons/pin-code.svg';
 import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 import Spinner from '../commons/Spinner';
-import {passwordValidator} from './CreatePassword';
+import {passwordValidator} from '../../app/inputValidators/passwordValidator';
 
 interface EnterPasswordProps {
   hideModal?: () => void;
