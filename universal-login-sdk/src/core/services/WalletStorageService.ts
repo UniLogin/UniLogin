@@ -1,5 +1,5 @@
 import {asAnyOf, asObject, asString, cast, asExactly, asOptional} from '@restless/sanitizers';
-import {ApplicationWallet, SerializableFutureWallet, Network, asSerializableConfirmedWallet, asSerializableRequestedCreatingWallet, asSerializableRequestedRestoringWallet, asSerializableRestoringWallet} from '@unilogin/commons';
+import {ApplicationWallet, SerializableFutureWallet, Network, asSerializableConfirmedWallet, asSerializableRequestedCreatingWallet, asSerializableRequestedRestoringWallet, asSerializableRestoringWallet, asSerializableRequestedMigratingWallet, asSerializableConfirmedMigratingWallet} from '@unilogin/commons';
 import {WalletStorage, SerializedWalletState, SerializedDeployingWallet, SerializedDeployedWallet, SerializedDeployedWithoutEmailWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';
@@ -126,5 +126,13 @@ const asSerializedState = asAnyOf([
   asObject<SerializedWalletState>({
     kind: asExactly('DeployedWithoutEmail'),
     wallet: asSerializedDeployedWithoutEmailWallet,
+  }),
+  asObject<SerializedWalletState>({
+    kind: asExactly('RequestedMigrating'),
+    wallet: asSerializableRequestedMigratingWallet,
+  }),
+  asObject<SerializedWalletState>({
+    kind: asExactly('ConfirmedMigrating'),
+    wallet: asSerializableConfirmedMigratingWallet,
   }),
 ], 'wallet state');

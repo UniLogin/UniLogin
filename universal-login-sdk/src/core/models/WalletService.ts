@@ -1,4 +1,4 @@
-import {ApplicationWallet, SerializableFutureWallet, SerializableConfirmedWallet, SerializableRequestedCreatingWallet, SerializableRequestedRestoringWallet, SerializableRestoringWallet} from '@unilogin/commons';
+import {ApplicationWallet, SerializableFutureWallet, SerializableConfirmedWallet, SerializableRequestedCreatingWallet, SerializableRequestedRestoringWallet, SerializableRestoringWallet, SerializableRequestedMigratingWallet, SerializableConfirmedMigratingWallet} from '@unilogin/commons';
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 import {DeployedWallet, DeployedWithoutEmailWallet} from '../../api/wallet/DeployedWallet';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
@@ -7,6 +7,8 @@ import {DeployingWallet} from '../../api/wallet/DeployingWallet';
 import {RequestedCreatingWallet} from '../../api/wallet/RequestedCreatingWallet';
 import {RestoringWallet} from '../../api/wallet/RestoringWallet';
 import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
+import {ConfirmedMigratingWallet} from '../../api/wallet/ConfirmedMigratingWallet';
+import {RequestedMigratingWallet} from '../../api/wallet/RequestedMigrating';
 
 export type SerializedDeployingWallet = ApplicationWallet & {email?: string, deploymentHash: string};
 export type SerializedDeployedWallet = ApplicationWallet & {email: string};
@@ -43,6 +45,12 @@ export type WalletState = {
 } | {
   kind: 'Deployed';
   wallet: DeployedWallet;
+} | {
+  kind: 'RequestedMigrating';
+  wallet: RequestedMigratingWallet;
+} | {
+  kind: 'ConfirmedMigrating';
+  wallet: ConfirmedMigratingWallet;
 };
 
 export type SerializedWalletState = {
@@ -75,6 +83,12 @@ export type SerializedWalletState = {
 } | {
   kind: 'Deployed';
   wallet: SerializedDeployedWallet;
+} | {
+  kind: 'RequestedMigrating';
+  wallet: SerializableRequestedMigratingWallet;
+} | {
+  kind: 'ConfirmedMigrating';
+  wallet: SerializableConfirmedMigratingWallet;
 };
 
 export interface WalletStorage {
