@@ -12,10 +12,9 @@ interface EmojiPlaceholdersProps {
   enteredCode: number[];
   publicKey?: string;
   onEmojiClick?: (index: number) => void;
-  className?: string;
 }
 
-export const EmojiPlaceholders = ({enteredCode, publicKey, onEmojiClick, className}: EmojiPlaceholdersProps) => {
+export const EmojiPlaceholders = ({enteredCode, publicKey, onEmojiClick}: EmojiPlaceholdersProps) => {
   const renderEmojis = () =>
     enteredCode.map((code: number, i: number) => (
       <li className="emoji-item" key={i}>
@@ -36,7 +35,7 @@ export const EmojiPlaceholders = ({enteredCode, publicKey, onEmojiClick, classNa
   };
 
   return (
-    <ThemedComponent name="emoji" className={className}>
+    <ThemedComponent name="emoji">
       <div className="emoji-placeholders-container">
         <ul className="emoji-placeholders-list">
           {renderPlaceholderPanel()}
