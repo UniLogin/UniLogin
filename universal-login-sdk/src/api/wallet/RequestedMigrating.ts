@@ -1,6 +1,7 @@
 import {SerializableRequestedMigratingWallet} from '@unilogin/commons';
 import UniLoginSdk from '../sdk';
 import {DeployedWallet} from './DeployedWallet';
+import {ConfirmedMigratingWallet} from './ConfirmedMigratingWallet';
 
 export class RequestedMigratingWallet extends DeployedWallet implements SerializableRequestedMigratingWallet {
   constructor(
@@ -27,7 +28,7 @@ export class RequestedMigratingWallet extends DeployedWallet implements Serializ
   };
 
   async confirmEmail(code: string) {
-    const {ensNameOrEmail} = await this.sdk.relayerApi.confirmCode(code, this.email);
-    return ensNameOrEmail;
+    await this.sdk.relayerApi.confirmCode(code, this.email);
+    return new ConfirmedMigratingWallet(this.contractAddress, this.ensName, this.privateKey, this.email, code, this.sdk);
   }
 };
