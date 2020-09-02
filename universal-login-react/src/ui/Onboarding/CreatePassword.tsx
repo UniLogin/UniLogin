@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {ensure, ensureNotFalsy, isProperPassword} from '@unilogin/commons';
+import {ensure, ensureNotFalsy} from '@unilogin/commons';
 import {WalletService} from '@unilogin/sdk';
 import {OnboardingStepsWrapper} from './OnboardingStepsWrapper';
 import {useClassFor, classForComponent} from '../utils/classFor';
@@ -10,17 +10,13 @@ import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import '../styles/base/enterPassword.sass';
 import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
 import pinCodeIcon from '../assets/icons/pin-code.svg';
+import {passwordValidator} from '../../app/inputValidators/passwordValidator';
 
 interface CreatePasswordProps {
   hideModal?: () => void;
   walletService: WalletService;
   onConfirm: (password: string) => void;
 }
-
-export const passwordValidator = {
-  validate: isProperPassword,
-  errorMessage: 'Password must have more than 10 letters and one capital letter',
-};
 
 export const CreatePassword = ({hideModal, walletService, onConfirm}: CreatePasswordProps) => {
   const [password, setPassword, passwordError] = useInputField([passwordValidator]);

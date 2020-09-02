@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import {isProperEmail, isValidEnsName} from '@unilogin/commons';
+import {WalletService} from '@unilogin/sdk';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
 import {InputField} from '../commons/InputField';
 import {useInputField} from '../hooks/useInputField';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
-import UniLoginSdk, {WalletService} from '@unilogin/sdk';
+import {ensNameValidators} from '../../app/inputValidators/ensNameValidators';
+import {emailValidator} from '../../app/inputValidators/emailValidator';
+import {ensNameOrEmailValidator, isValidEmailOrEnsName} from '../../app/inputValidators/emailOrEnsNameValidator';
 
 export interface EmailFlowChooserProps {
   onCreateClick: (email: string, ensName: string) => void;
@@ -14,32 +17,6 @@ export interface EmailFlowChooserProps {
   domain: string;
   walletService: WalletService;
 }
-
-const isEnsNameTaken = (sdk: UniLoginSdk) => async (name: string) => {
-  return sdk.resolveName(name);
-};
-
-const ensNameValidators = (sdk: UniLoginSdk) => [
-  {
-    validate: isValidEnsName,
-    errorMessage: 'Ens name is not valid',
-  }, {
-    errorMessage: 'Ens name already taken',
-    validate: async (name: string) => !(await isEnsNameTaken(sdk)(name)),
-  },
-];
-
-const isValidEmailOrEnsName = (value: string) => isValidEnsName(value) || isProperEmail(value);
-
-const ensNameOrEmailValidator = {
-  validate: isValidEmailOrEnsName,
-  errorMessage: 'Invalid ENS name or email',
-};
-
-const emailValidator = {
-  validate: isProperEmail,
-  errorMessage: 'Email is not valid',
-};
 
 export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain, walletService}: EmailFlowChooserProps) => {
   const [email, setEmail, emailError] = useInputField([emailValidator]);
