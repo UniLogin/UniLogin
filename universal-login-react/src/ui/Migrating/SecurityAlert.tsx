@@ -24,7 +24,7 @@ export const SecurityAlert = ({walletService, onClick}: SecurityAlert) => {
     ? <ThemedComponent name="security-alert">
       <div className="security-alert-row">
         <div className="security-alert-description">
-          <h3 className="security-alert-title">Secure your account with password</h3>
+          <h3 className="security-alert-title">Secure your account with email and password</h3>
         </div>
         {isLoading ? (
           <Spinner />
