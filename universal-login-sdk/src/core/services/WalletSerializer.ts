@@ -6,6 +6,7 @@ import {RequestedCreatingWallet} from '../../api/wallet/RequestedCreatingWallet'
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 import {RestoringWallet} from '../../api/wallet/RestoringWallet';
 import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
+import {DeployedWithoutEmailWallet} from '../../api/wallet/DeployedWallet';
 
 export class WalletSerializer {
   constructor(
@@ -81,6 +82,11 @@ export class WalletSerializer {
           kind: 'Deployed',
           wallet: state.wallet.asSerializedDeployedWallet,
         };
+      case 'DeployedWithoutEmail':
+        return {
+          kind: 'DeployedWithoutEmail',
+          wallet: state.wallet.asSerializedDeployedWithoutEmailWallet,
+        };
     }
   }
 
@@ -128,6 +134,11 @@ export class WalletSerializer {
         return {
           kind: 'Deployed',
           wallet: new DeployedWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey, this.sdk, state.wallet.email),
+        };
+      case 'DeployedWithoutEmail':
+        return {
+          kind: 'DeployedWithoutEmail',
+          wallet: new DeployedWithoutEmailWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey, this.sdk),
         };
       default:
         throw new TypeError('Invalid saved wallet state');

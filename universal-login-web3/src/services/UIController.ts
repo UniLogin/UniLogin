@@ -93,6 +93,7 @@ export class UIController {
 
   requireWallet() {
     ensure(this.walletService.state.kind !== 'Deployed', UnexpectedWalletState, 'Deployed');
+    ensure(this.walletService.state.kind !== 'DeployedWithoutEmail', UnexpectedWalletState, 'DeployedWithoutEmail');
     this.activeModal.set({kind: 'ONBOARDING'});
   }
 

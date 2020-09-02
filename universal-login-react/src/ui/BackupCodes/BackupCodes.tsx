@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import BackupCodesView from './BackupCodesView';
 import {Prompt} from 'react-router-dom';
 import './../styles/base/backup.sass';
@@ -14,7 +14,7 @@ import {BackupCodesService} from '../../core/services/BackupCodesService';
 import {useProperty} from '../hooks/useProperty';
 
 export interface BackupProps {
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
   className?: string;
 }
 

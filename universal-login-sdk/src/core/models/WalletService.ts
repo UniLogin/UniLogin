@@ -1,6 +1,6 @@
 import {ApplicationWallet, SerializableFutureWallet, SerializableConfirmedWallet, SerializableRequestedCreatingWallet, SerializableRequestedRestoringWallet, SerializableRestoringWallet} from '@unilogin/commons';
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
-import {DeployedWallet} from '../../api/wallet/DeployedWallet';
+import {DeployedWallet, DeployedWithoutEmailWallet} from '../../api/wallet/DeployedWallet';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {ConnectingWallet} from '../../api/wallet/ConnectingWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
@@ -9,7 +9,8 @@ import {RestoringWallet} from '../../api/wallet/RestoringWallet';
 import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
 
 export type SerializedDeployingWallet = ApplicationWallet & {email?: string, deploymentHash: string};
-export type SerializedDeployedWallet = ApplicationWallet & {email?: string};
+export type SerializedDeployedWallet = ApplicationWallet & {email: string};
+export type SerializedDeployedWithoutEmailWallet = ApplicationWallet;
 
 export type WalletState = {
   kind: 'None';
@@ -36,6 +37,9 @@ export type WalletState = {
   kind: 'Deploying';
   wallet: DeployingWallet;
   transactionHash?: string;
+} | {
+  kind: 'DeployedWithoutEmail';
+  wallet: DeployedWithoutEmailWallet;
 } | {
   kind: 'Deployed';
   wallet: DeployedWallet;
@@ -65,6 +69,9 @@ export type SerializedWalletState = {
 } | {
   kind: 'Connecting';
   wallet: ApplicationWallet;
+} | {
+  kind: 'DeployedWithoutEmail';
+  wallet: SerializedDeployedWithoutEmailWallet;
 } | {
   kind: 'Deployed';
   wallet: SerializedDeployedWallet;

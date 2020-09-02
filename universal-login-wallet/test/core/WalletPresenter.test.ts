@@ -34,6 +34,6 @@ describe('WalletPresenter', () => {
 
   it('return empty string if applicationWallet not exist', () => {
     expect(() => walletPresenter.getContractAddress())
-      .throws('Invalid wallet state: expected Deployed, Connecting or Future wallet');
+      .throws('Invalid wallet state: expected Deployed, DeployedWithoutEmail, Connecting or Future wallet');
   });
 });

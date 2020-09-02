@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import {DEFAULT_GAS_PRICE} from '@unilogin/commons';
 import {useAsync} from '../../..';
 
 interface ConfirmationsEditProps {
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
   devicesAmount: number;
   confirmationsCount: string;
   setConfirmationsCount: (confirmations: string) => void;

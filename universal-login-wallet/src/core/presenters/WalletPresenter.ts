@@ -9,6 +9,7 @@ export class WalletPresenter {
     switch (this.walletService.state.kind) {
       case 'Connecting':
       case 'Deployed':
+      case 'DeployedWithoutEmail':
         return this.walletService.state.wallet.privateKey;
       default:
         throw new Error('Invalid wallet state: expected Deployed or Connecting wallet');
@@ -19,6 +20,7 @@ export class WalletPresenter {
     switch (this.walletService.state.kind) {
       case 'Connecting':
       case 'Deployed':
+      case 'DeployedWithoutEmail':
         return this.walletService.state.wallet.name;
       default:
         throw new Error('Invalid wallet state: expected Deployed or Connecting wallet');
@@ -28,11 +30,12 @@ export class WalletPresenter {
   getContractAddress(): string {
     switch (this.walletService.state.kind) {
       case 'Connecting':
+      case 'DeployedWithoutEmail':
       case 'Deployed':
       case 'Future':
         return this.walletService.state.wallet.contractAddress;
       default:
-        throw new Error('Invalid wallet state: expected Deployed, Connecting or Future wallet');
+        throw new Error('Invalid wallet state: expected Deployed, DeployedWithoutEmail, Connecting or Future wallet');
     }
   }
 }

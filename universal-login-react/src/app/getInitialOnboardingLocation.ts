@@ -17,8 +17,10 @@ export const getInitialOnboardingLocation = (state: WalletState): string | Locat
     case 'RequestedRestoring':
     case 'RequestedCreating':
     case 'Confirmed':
+    case 'DeployedWithoutEmail':
     case 'Deployed':
     case 'Restoring':
+    default:
       throw new UnexpectedWalletState(state.kind);
   }
 };
@@ -36,7 +38,9 @@ export const getInitialEmailOnboardingLocation = (state: WalletState): string | 
     case 'Deploying':
       return '/create';
     case 'Deployed':
+    case 'DeployedWithoutEmail':
     case 'Connecting':
+    default:
       throw new UnexpectedWalletState(state.kind);
   }
 };

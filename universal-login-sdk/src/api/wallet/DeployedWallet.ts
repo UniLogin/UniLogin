@@ -10,25 +10,23 @@ import UniLoginSdk from '../sdk';
 import {Execution} from '../../core/services/ExecutionFactory';
 import {propertyFromSubscription} from '../../core/utils/propertyFromSubscription';
 import {OnErc721TokensChange} from '../../core/observers/Erc721TokensObserver';
-import {SerializedDeployedWallet} from '../../core/models/WalletService';
+import {SerializedDeployedWallet, SerializedDeployedWithoutEmailWallet} from '../../core/models/WalletService';
 
-export class DeployedWallet extends AbstractWallet {
+export class DeployedWithoutEmailWallet extends AbstractWallet {
   constructor(
     contractAddress: string,
     name: string,
     privateKey: string,
     public readonly sdk: UniLoginSdk,
-    readonly email?: string,
   ) {
     super(contractAddress, name, privateKey);
   }
 
-  get asSerializedDeployedWallet(): SerializedDeployedWallet {
+  get asSerializedDeployedWithoutEmailWallet(): SerializedDeployedWithoutEmailWallet {
     return {
       contractAddress: this.contractAddress,
       name: this.name,
       privateKey: this.privateKey,
-      email: this.email,
     };
   }
 
@@ -155,3 +153,24 @@ export class DeployedWallet extends AbstractWallet {
     return () => unsubscribe();
   }
 }
+
+export class DeployedWallet extends DeployedWithoutEmailWallet {
+  constructor(
+    contractAddress: string,
+    name: string,
+    privateKey: string,
+    public readonly sdk: UniLoginSdk,
+    readonly email: string,
+  ) {
+    super(contractAddress, name, privateKey, sdk);
+  }
+
+  get asSerializedDeployedWallet(): SerializedDeployedWallet {
+    return {
+      contractAddress: this.contractAddress,
+      name: this.name,
+      privateKey: this.privateKey,
+      email: this.email,
+    };
+  }
+};

@@ -35,7 +35,7 @@ describe('INT: Events', () => {
     ({sdk, relayer, mockToken, privateKey, contractAddress, wallet, provider} = await loadFixture(basicSDK));
     await sdk.start();
     unsubscribe = await sdk.subscribeAuthorisations(contractAddress, privateKey, connectionCallback);
-    deployedWallet = new DeployedWallet(contractAddress, '', privateKey, sdk);
+    deployedWallet = new DeployedWallet(contractAddress, '', privateKey, sdk, '');
   });
 
   it('create, request connection, addKey roundtrip', async () => {

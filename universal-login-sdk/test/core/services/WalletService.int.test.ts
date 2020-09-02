@@ -69,7 +69,7 @@ describe('INT: WalletService', () => {
       expect(walletService.state.transactionHash).to.be.properHex(64);
 
       await walletService.waitToBeSuccess();
-      expect(walletService.state.kind).to.eq('Deployed');
+      expect(walletService.state.kind).to.eq('DeployedWithoutEmail');
       expect(walletService.getDeployedWallet().name).to.eq('name.mylogin.eth');
     });
 
@@ -81,7 +81,7 @@ describe('INT: WalletService', () => {
       await walletService.waitForTransactionHash();
       expect(walletService.state.kind).to.eq('Deploying');
       await walletService.waitToBeSuccess();
-      expect(walletService.state.kind).to.eq('Deployed');
+      expect(walletService.state.kind).to.eq('DeployedWithoutEmail');
     });
   });
 
@@ -103,7 +103,7 @@ describe('INT: WalletService', () => {
       expect(walletService.state.wallet.privateKey).to.be.properHex(64);
       existingDeployedWallet.addKey(walletService.getConnectingWallet().publicKey, TEST_EXECUTION_OPTIONS);
       await walletService.waitForConnection();
-      expect(walletService.state).to.deep.include({kind: 'Deployed'});
+      expect(walletService.state).to.deep.include({kind: 'DeployedWithoutEmail'});
     });
 
     it('cancelation', async () => {
@@ -124,11 +124,11 @@ describe('INT: WalletService', () => {
       const execution = await existingDeployedWallet.addKey(walletService.getConnectingWallet().publicKey, TEST_EXECUTION_OPTIONS);
       await execution.waitToBeSuccess();
       await waitForConnectionPromise;
-      expect(walletService.state).to.deep.include({kind: 'Deployed'});
+      expect(walletService.state.kind).eq('DeployedWithoutEmail');
       await walletService.waitForConnection();
-      expect(walletService.state).to.deep.include({kind: 'Deployed'});
+      expect(walletService.state.kind).eq('DeployedWithoutEmail');
       await walletService.cancelWaitForConnection();
-      expect(walletService.state).to.deep.include({kind: 'Deployed'});
+      expect(walletService.state.kind).eq('DeployedWithoutEmail');
     });
 
     it('cancelWaitForConnection doesn`t disconnect Deployed wallet', async () => {
@@ -140,7 +140,7 @@ describe('INT: WalletService', () => {
       await waitForConnectionPromise;
       await walletService.waitForConnection();
       await walletService.cancelWaitForConnection();
-      expect(walletService.state).to.deep.include({kind: 'Deployed'});
+      expect(walletService.state.kind).eq('DeployedWithoutEmail');
     });
   });
 

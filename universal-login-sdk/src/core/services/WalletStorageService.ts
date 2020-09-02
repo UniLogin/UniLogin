@@ -1,7 +1,6 @@
-import {providers} from 'ethers';
 import {asAnyOf, asObject, asString, cast, asExactly, asOptional} from '@restless/sanitizers';
-import {ApplicationWallet, SerializableFutureWallet, Network, ProviderService, asSerializableConfirmedWallet, asSerializableRequestedCreatingWallet, asSerializableRequestedRestoringWallet, asSerializableRestoringWallet} from '@unilogin/commons';
-import {WalletStorage, SerializedWalletState, SerializedDeployingWallet, SerializedDeployedWallet} from '../models/WalletService';
+import {ApplicationWallet, SerializableFutureWallet, Network, asSerializableConfirmedWallet, asSerializableRequestedCreatingWallet, asSerializableRequestedRestoringWallet, asSerializableRestoringWallet} from '@unilogin/commons';
+import {WalletStorage, SerializedWalletState, SerializedDeployingWallet, SerializedDeployedWallet, SerializedDeployedWithoutEmailWallet} from '../models/WalletService';
 import {IStorageService} from '../models/IStorageService';
 import {StorageEntry} from './StorageEntry';
 
@@ -22,22 +21,24 @@ export class WalletStorageService implements WalletStorage {
   }
 
   async migrate() {
-    try {
-      const data = this.storageService.get(DEPRECATED_STORAGE_KEY);
-      if (data === null) return;
-      const {wallet} = cast(JSON.parse(data), asObject({
-        kind: asExactly('Deployed'),
-        wallet: asSerializedDeployedWallet,
-      }));
-      for (const network of ['mainnet', 'kovan', 'rinkeby', 'ropsten']) {
-        const providerService = new ProviderService(getProviderForNetwork(network));
-        if (await providerService.isContract(wallet.contractAddress)) {
-          this.storageService.remove(DEPRECATED_STORAGE_KEY);
-          this.storageService.set(`${DEPRECATED_STORAGE_KEY}-${network}`, data);
-          return;
+    for (const network of ['mainnet', 'kovan', 'rinkeby', 'ropsten', 'ganache']) {
+      try {
+        const data = this.storageService.get(`${DEPRECATED_STORAGE_KEY}-${network}`);
+        if (data === null) continue;
+        const state = cast(JSON.parse(data), asObject({
+          kind: asExactly('Deployed'),
+          wallet: asObject({
+            name: asString,
+            contractAddress: asString,
+            privateKey: asString,
+            email: asOptional(asString),
+          }),
+        }));
+        if (!state.wallet.email) {
+          this.storageService.set(`${DEPRECATED_STORAGE_KEY}-${network}`, JSON.stringify({...state, kind: 'DeployedWithoutEmail'}));
         }
-      }
-    } catch {}
+      } catch {}
+    }
   }
 
   load(): SerializedWalletState {
@@ -68,7 +69,13 @@ const asSerializedDeployedWallet = asObject<SerializedDeployedWallet>({
   name: asString,
   contractAddress: asString,
   privateKey: asString,
-  email: asOptional(asString),
+  email: asString,
+});
+
+const asSerializedDeployedWithoutEmailWallet = asObject<SerializedDeployedWithoutEmailWallet>({
+  name: asString,
+  contractAddress: asString,
+  privateKey: asString,
 });
 
 const asSerializedDeployingWallet = asObject<SerializedDeployingWallet>({
@@ -116,9 +123,8 @@ const asSerializedState = asAnyOf([
     kind: asExactly('Deployed'),
     wallet: asSerializedDeployedWallet,
   }),
+  asObject<SerializedWalletState>({
+    kind: asExactly('DeployedWithoutEmail'),
+    wallet: asSerializedDeployedWithoutEmailWallet,
+  }),
 ], 'wallet state');
-
-function getProviderForNetwork(key: string) {
-  const network = key === 'mainnet' ? 'homestead' : key;
-  return new providers.InfuraProvider(network);
-};

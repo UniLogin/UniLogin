@@ -1,6 +1,6 @@
 import UniLoginSdk from './api/sdk';
 export default UniLoginSdk;
-export {DeployedWallet} from './api/wallet/DeployedWallet';
+export {DeployedWallet, DeployedWithoutEmailWallet} from './api/wallet/DeployedWallet';
 export {DeployingWallet} from './api/wallet/DeployingWallet';
 export {FutureWallet} from './api/wallet/FutureWallet';
 export {SdkConfig, asSdkConfigOverrides} from './config/SdkConfig';

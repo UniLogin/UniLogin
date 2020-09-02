@@ -1,13 +1,13 @@
 import React from 'react';
 import {ensure} from '@unilogin/commons';
-import {InvalidWalletState, WalletService, DeployedWallet} from '@unilogin/sdk';
+import {InvalidWalletState, WalletService, DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import {WaitingForTransactionProps, WaitingForDeployment} from '../commons/WaitingForTransaction';
 import {ModalWrapper} from '../Modals/ModalWrapper';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 
 interface OnboardingWaitForDeploymentProps extends WaitingForTransactionProps {
   walletService: WalletService;
-  onSuccess?: (wallet: DeployedWallet) => void;
+  onSuccess?: (wallet: DeployedWithoutEmailWallet) => void;
 }
 
 export function OnboardingWaitForDeployment({walletService, onSuccess}: OnboardingWaitForDeploymentProps) {

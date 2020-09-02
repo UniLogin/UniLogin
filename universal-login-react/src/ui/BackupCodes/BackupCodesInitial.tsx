@@ -1,5 +1,5 @@
 import React from 'react';
-import {DeployedWallet} from '@unilogin/sdk';
+import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
 import {OnGasParametersChanged, DEFAULT_GAS_LIMIT} from '@unilogin/commons';
 import {BackupCodesWrapper} from './BackupCodesWrapper';
 import {FooterSection} from '../commons/FooterSection';
@@ -8,7 +8,7 @@ import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 
 interface BackupCodesInitialProps {
   generateBackupCodes: () => void;
-  deployedWallet: DeployedWallet;
+  deployedWallet: DeployedWithoutEmailWallet;
   setGasParameters: OnGasParametersChanged;
   isButtonDisabled: boolean;
   className?: string;

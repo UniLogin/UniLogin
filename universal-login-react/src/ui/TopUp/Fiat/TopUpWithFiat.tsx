@@ -78,7 +78,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, logoC
             currency={currency}
             config={relayerConfig.onRampProviders.wyre}
             onBack={() => setModal('none')}
-            isDeployed={walletService.isKind('Deployed')}
+            isDeployed={walletService.isKind('Deployed') || walletService.isKind('DeployedWithoutEmail')}
           />
         </>);
     case TopUpProvider.SAFELLO:
@@ -89,7 +89,7 @@ export const TopUpWithFiat = ({hideModal, setHeaderVisible, walletService, logoC
         crypto="eth"
       />;
     case 'wait':
-      return walletService.isKind('Deployed')
+      return walletService.isKind('Deployed') || walletService.isKind('DeployedWithoutEmail')
         ? <OnRampSuccessInfo
           onRampProvider={paymentMethod!}
           amount={amount}

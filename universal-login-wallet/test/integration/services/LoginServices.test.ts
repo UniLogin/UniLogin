@@ -43,7 +43,7 @@ describe('Login', () => {
 
       expect(privateKey).to.not.be.null;
       expect(contractAddress).to.not.be.null;
-      expect(walletService.getDeployedWallet().asSerializedDeployedWallet).to.deep.eq({name, privateKey, contractAddress, email: undefined});
+      expect(walletService.getDeployedWallet().asSerializedDeployedWithoutEmailWallet).to.deep.eq({name, privateKey, contractAddress});
     });
   });
 
@@ -60,7 +60,7 @@ describe('Login', () => {
       const newPublicKey = utils.computeAddress((walletServiceForConnect.state as any).wallet.privateKey);
       const expectedSecurityCode = generateCode(newPublicKey);
       expect(unsubscribe).to.not.be.null;
-      const deployedWallet = new DeployedWallet(contractAddress, '', privateKey, sdk);
+      const deployedWallet = new DeployedWallet(contractAddress, '', privateKey, sdk, '');
       const {waitToBeSuccess} = await deployedWallet.addKey(newPublicKey, {gasToken: ETHER_NATIVE_TOKEN.address, gasPrice: DEFAULT_GAS_PRICE, gasLimit: DEFAULT_GAS_LIMIT});
       await waitToBeSuccess();
       await waitExpect(() => expect(!!callback.firstCall).to.be.true);

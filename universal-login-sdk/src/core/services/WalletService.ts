@@ -1,4 +1,4 @@
-import {ensure, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil} from '@unilogin/commons';
+import {ensure, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil, PartialRequired} from '@unilogin/commons';
 import UniLoginSdk from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
@@ -16,6 +16,7 @@ import {RequestedCreatingWallet} from '../../api/wallet/RequestedCreatingWallet'
 import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
 import {RestoringWallet} from '../../api/wallet/RestoringWallet';
+import {DeployedWithoutEmailWallet} from '../../api/wallet/DeployedWallet';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
@@ -30,7 +31,7 @@ export class WalletService {
   private readonly _stateProperty = new State<WalletState>({kind: 'None'});
   readonly stateProperty: Property<WalletState> = this._stateProperty;
 
-  walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed'));
+  walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed' || state.kind === 'DeployedWithoutEmail'));
   isAuthorized = this.walletDeployed;
 
   get state() {
@@ -51,8 +52,8 @@ export class WalletService {
     this.walletSerializer = new WalletSerializer(sdk);
   }
 
-  getDeployedWallet(): DeployedWallet {
-    ensure(this.state.kind === 'Deployed', InvalidWalletState, 'Deployed', this.state.kind);
+  getDeployedWallet(): DeployedWithoutEmailWallet {
+    ensure(this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail', InvalidWalletState, 'Deployed or DeployedWithoutEmail', this.state.kind);
     return this.state.wallet;
   }
 
@@ -168,7 +169,7 @@ export class WalletService {
   }
 
   async waitForTransactionHash() {
-    if (this.state.kind === 'Deployed') {
+    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') {
       return this.state.wallet;
     }
     const deployingWallet = this.getDeployingWallet();
@@ -179,12 +180,16 @@ export class WalletService {
   }
 
   async waitToBeSuccess() {
-    if (this.state.kind === 'Deployed') {
+    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') {
       return this.state.wallet;
     }
     const deployingWallet = this.getDeployingWallet();
     const deployedWallet = await deployingWallet.waitToBeSuccess();
-    this.setState({kind: 'Deployed', wallet: deployedWallet});
+    if (deployedWallet instanceof DeployedWallet) {
+      this.setState({kind: 'Deployed', wallet: deployedWallet});
+    } else {
+      this.setState({kind: 'DeployedWithoutEmail', wallet: deployedWallet});
+    }
     return deployedWallet;
   }
 
@@ -229,20 +234,27 @@ export class WalletService {
     this._stateProperty.set({kind: 'Connecting', wallet});
   }
 
-  setWallet(wallet: SerializedDeployedWallet) {
+  setWallet(wallet: PartialRequired<SerializedDeployedWallet, 'contractAddress' | 'privateKey' | 'name'>) {
     ensure(this.state.kind === 'None' || this.state.kind === 'Connecting' || this.state.kind === 'Restoring', WalletOverridden);
-    this.setState({
-      kind: 'Deployed',
-      wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk, wallet.email),
-    });
+    if (wallet.email) {
+      this.setState({
+        kind: 'Deployed',
+        wallet: new DeployedWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk, wallet.email),
+      });
+    } else {
+      this.setState({
+        kind: 'DeployedWithoutEmail',
+        wallet: new DeployedWithoutEmailWallet(wallet.contractAddress, wallet.name, wallet.privateKey, this.sdk),
+      });
+    }
   }
 
   async recover(name: string, passphrase: string) {
     const contractAddress = await this.sdk.getWalletContractAddress(name);
     const wallet = await this.walletFromPassphrase(name, passphrase);
-    const deployedWallet = new DeployedWallet(contractAddress, name, wallet.privateKey, this.sdk);
+    const deployedWallet = new DeployedWithoutEmailWallet(contractAddress, name, wallet.privateKey, this.sdk);
     ensure(await deployedWallet.keyExist(wallet.address), InvalidPassphrase);
-    this.setWallet(deployedWallet.asSerializedDeployedWallet);
+    this.setWallet(deployedWallet.asSerializedDeployedWithoutEmailWallet);
   }
 
   async initializeConnection(name: string): Promise<number[]> {
@@ -255,7 +267,7 @@ export class WalletService {
   }
 
   async waitForConnection() {
-    if (this.state.kind === 'Deployed') return;
+    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') return;
     ensure(this.state.kind === 'Connecting', InvalidWalletState, 'Connecting', this.state.kind);
     const connectingWallet = this.getConnectingWallet();
     const filter = {
@@ -275,7 +287,7 @@ export class WalletService {
   }
 
   async cancelWaitForConnection(tick = 500, timeout = 1500) {
-    if (this.state.kind === 'Deployed') return;
+    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') return;
     await waitUntil(() => !!this.getConnectingWallet().unsubscribe, tick, timeout);
     this.getConnectingWallet().unsubscribe!();
     this.disconnect();
@@ -303,7 +315,7 @@ export class WalletService {
   }
 
   async removeWallet(executionOptions: ExecutionOptions) {
-    if (this.state.kind !== 'Deployed') {
+    if (this.state.kind !== 'Deployed' && this.state.kind !== 'DeployedWithoutEmail') {
       this.disconnect();
       return;
     }

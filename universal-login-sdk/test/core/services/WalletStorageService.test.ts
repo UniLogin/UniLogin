@@ -72,23 +72,27 @@ describe('WalletStorageService', () => {
 
   it('can migrate data from previous versions', async () => {
     const {storage, service} = setup();
-    const deployedRinkebyState = {
+    const previousDeployedState = {
       kind: 'Deployed',
       wallet: {
-        contractAddress: '0xCE824eA5d5a3810563B6e02114C66feFd0CaD13e',
         name: 'test.unilogin.test',
+        contractAddress: '0xCE824eA5d5a3810563B6e02114C66feFd0CaD13e',
         privateKey: '0xe7f0024cb894893c855d5ba516969cb4c40838762c0dd0e5e730bfd4aa27b719',
       },
     };
-    let savedState = JSON.stringify(deployedRinkebyState);
-    storage.get = sinon.fake(() => savedState);
+    let savedState = JSON.stringify(previousDeployedState);
+    storage.get = sinon.fake((key: string) => key === 'wallet-mainnet' ? savedState : null);
     storage.set = sinon.fake((key: string, val: string) => {
       savedState = val;
     });
+    const savedDeployedWithoutEmail = JSON.stringify({...previousDeployedState, kind: 'DeployedWithoutEmail'});
     await service.migrate();
-    expect(storage.get).to.be.calledWith('wallet');
-    expect(storage.remove).to.be.calledWith('wallet');
-    expect(storage.set).to.be.calledWith('wallet-rinkeby', savedState);
+    expect(storage.get).to.be.calledWith('wallet-mainnet');
+    expect(storage.get).to.be.calledWith('wallet-kovan');
+    expect(storage.get).to.be.calledWith('wallet-ropsten');
+    expect(storage.get).to.be.calledWith('wallet-rinkeby');
+    expect(storage.set).to.be.calledOnceWith('wallet-mainnet', savedDeployedWithoutEmail);
+    expect(savedState).eq(savedDeployedWithoutEmail);
   });
 
   it('roundtrip', () => {
