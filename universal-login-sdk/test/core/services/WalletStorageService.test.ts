@@ -125,4 +125,33 @@ describe('WalletStorageService', () => {
     service.save({kind: 'Confirmed', wallet: {email: 'name@gmail.com', ensName: 'name.unilogin.eth', code: '123456'}});
     expect(service.load()).to.deep.eq({kind: 'Confirmed', wallet: {email: 'name@gmail.com', ensName: 'name.unilogin.eth', code: '123456'}});
   });
+
+  it('saves and loads RequestedMigrating', () => {
+    const storage = new MemoryStorageService();
+    const service = new WalletStorageService(storage, 'ganache');
+    expect(service.load()).to.deep.eq({kind: 'None'});
+    const serializableRequestedMigratingWallet = {
+      email: 'name@gmail.com',
+      ensName: 'name.unilogin.eth',
+      privateKey: '0x123',
+      contractAddress: '0x123',
+    };
+    service.save({kind: 'RequestedMigrating', wallet: serializableRequestedMigratingWallet});
+    expect(service.load()).to.deep.eq({kind: 'RequestedMigrating', wallet: serializableRequestedMigratingWallet});
+  });
+
+  it('saves and loads ConfirmedMigratingWallet', () => {
+    const storage = new MemoryStorageService();
+    const service = new WalletStorageService(storage, 'ganache');
+    expect(service.load()).to.deep.eq({kind: 'None'});
+    const serializableConfirmedMigratingWallet = {
+      email: 'name@gmail.com',
+      ensName: 'name.unilogin.eth',
+      code: '123456',
+      privateKey: '0x123',
+      contractAddress: '0x123',
+    };
+    service.save({kind: 'ConfirmedMigrating', wallet: serializableConfirmedMigratingWallet});
+    expect(service.load()).to.deep.eq({kind: 'ConfirmedMigrating', wallet: serializableConfirmedMigratingWallet});
+  });
 });

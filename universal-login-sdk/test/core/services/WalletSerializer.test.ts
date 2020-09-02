@@ -7,6 +7,8 @@ import {Wallet} from 'ethers';
 import {ConnectingWallet} from '../../../src/api/wallet/ConnectingWallet';
 import {RestoringWallet} from '../../../src/api/wallet/RestoringWallet';
 import {RequestedRestoringWallet} from '../../../src/api/wallet/RequestedRestoringWallet';
+import {RequestedMigratingWallet} from '../../../src/api/wallet/RequestedMigrating';
+import {ConfirmedMigratingWallet} from '../../../src/api/wallet/ConfirmedMigratingWallet';
 
 describe('UNIT: WalletSerializer', () => {
   const mockSDK = {
@@ -79,6 +81,17 @@ describe('UNIT: WalletSerializer', () => {
   const TEST_SERIALIZED_REQUESTED_RESTORING_WALLET = {
     ensNameOrEmail: TEST_ENS_NAME,
   };
+
+  const TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET = {
+    email: 'name@gmail.com',
+    ensName: 'name.unilogin.eth',
+    privateKey: '0x123',
+    contractAddress: '0x123',
+  };
+
+  const TEST_SERIALIZED_CONFIRMED_MIGRATING_WALLET = {...TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET, code: '123456'};
+
+  const TEST_REQUESTED_MIGRATING = new RequestedMigratingWallet('0x123', )
 
   describe('serialize', () => {
     const walletSerializer = new WalletSerializer(mockSDK);
@@ -164,6 +177,34 @@ describe('UNIT: WalletSerializer', () => {
         kind: 'RequestedRestoring',
         wallet: TEST_SERIALIZED_REQUESTED_RESTORING_WALLET,
       });
+    });
+
+    it('for RequestedMigrating returns RequestedMigrating', () => {
+      expect(walletSerializer.serialize({
+        kind: 'RequestedMigrating',
+        wallet: TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET,
+      })).to.deep.eq({
+        kind: 'RequestedMigrating',
+        wallet: TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET,
+      });
+
+      const state = walletSerializer.deserialize({
+        kind: 'RequestedMigrating',
+        wallet: TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET,
+      });
+      expect(state.kind).to.eq('RequestedMigrating');
+      expect((state as any).wallet).to.to.be.an.instanceof(RequestedMigratingWallet);
+      expect((state as any).wallet).to.deep.include(TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET);
+    });
+
+    it('for ConfirmedMigrating returns ConfirmedMigrating', () => {
+      const state = walletSerializer.deserialize({
+        kind: 'ConfirmedMigrating',
+        wallet: TEST_SERIALIZED_CONFIRMED_MIGRATING_WALLET,
+      });
+      expect(state.kind).to.eq('ConfirmedMigrating');
+      expect((state as any).wallet).to.to.be.an.instanceof(ConfirmedMigratingWallet);
+      expect((state as any).wallet).to.deep.include(TEST_SERIALIZED_CONFIRMED_MIGRATING_WALLET);
     });
   });
 
@@ -255,6 +296,26 @@ describe('UNIT: WalletSerializer', () => {
       expect(state.kind).to.eq('RequestedRestoring');
       expect((state as any).wallet).to.to.be.an.instanceof(RequestedRestoringWallet);
       expect((state as any).wallet).to.deep.include(TEST_SERIALIZED_REQUESTED_RESTORING_WALLET);
+    });
+
+    it('for RequestedMigrating returns RequestedMigrating', () => {
+      const state = walletSerializer.deserialize({
+        kind: 'RequestedMigrating',
+        wallet: TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET,
+      });
+      expect(state.kind).to.eq('RequestedMigrating');
+      expect((state as any).wallet).to.to.be.an.instanceof(RequestedMigratingWallet);
+      expect((state as any).wallet).to.deep.include(TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET);
+    });
+
+    it('for ConfirmedMigrating returns ConfirmedMigrating', () => {
+      const state = walletSerializer.deserialize({
+        kind: 'ConfirmedMigrating',
+        wallet: TEST_SERIALIZED_CONFIRMED_MIGRATING_WALLET,
+      });
+      expect(state.kind).to.eq('ConfirmedMigrating');
+      expect((state as any).wallet).to.to.be.an.instanceof(ConfirmedMigratingWallet);
+      expect((state as any).wallet).to.deep.include(TEST_SERIALIZED_CONFIRMED_MIGRATING_WALLET);
     });
   });
 });
