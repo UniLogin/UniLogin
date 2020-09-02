@@ -16,6 +16,10 @@ export const TEST_CONTRACT_ADDRESS = '0xd9822CF2a4C3AccD2AF175A5dF0376D46Dcb848d
 
 export const TEST_PRIVATE_KEY = '0x63f01680950dc70f2eb8f373de0c360fcbb89ef437f2f6f2f0a1797979e490a4';
 
+export const TEST_ENS_NAME = 'name.mylogin.eth';
+
+export const TEST_EMAIL = 'name@gmail.com';
+
 export const TEST_MESSAGE_HASH = '0x06c81cd35a49c66824bc0b84bff850d1a2a56a09260c6fd332ee22a8b15fc9ca';
 
 export const TEST_TRANSACTION_HASH = '0x06c81cd35a49c66824bc0b84bff850d1a2a56a09260c6fd332ee22a8b15fc9ca';
