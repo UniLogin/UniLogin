@@ -7,6 +7,8 @@ import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 import {RestoringWallet} from '../../api/wallet/RestoringWallet';
 import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
 import {DeployedWithoutEmailWallet} from '../../api/wallet/DeployedWallet';
+import {RequestedMigratingWallet} from '../../api/wallet/RequestedMigrating';
+import {ConfirmedMigratingWallet} from '../../api/wallet/ConfirmedMigratingWallet';
 
 export class WalletSerializer {
   constructor(
@@ -87,6 +89,16 @@ export class WalletSerializer {
           kind: 'DeployedWithoutEmail',
           wallet: state.wallet.asSerializedDeployedWithoutEmailWallet,
         };
+      case 'RequestedMigrating':
+        return {
+          kind: 'RequestedMigrating',
+          wallet: state.wallet.asSerializableRequestedMigratingWallet,
+        };
+      case 'ConfirmedMigrating':
+        return {
+          kind: 'ConfirmedMigrating',
+          wallet: state.wallet.asSerializableConfirmedMigratingWallet,
+        };
     }
   }
 
@@ -139,6 +151,16 @@ export class WalletSerializer {
         return {
           kind: 'DeployedWithoutEmail',
           wallet: new DeployedWithoutEmailWallet(state.wallet.contractAddress, state.wallet.name, state.wallet.privateKey, this.sdk),
+        };
+      case 'RequestedMigrating':
+        return {
+          kind: 'RequestedMigrating',
+          wallet: new RequestedMigratingWallet(state.wallet.contractAddress, state.wallet.ensName, state.wallet.privateKey, state.wallet.email, this.sdk),
+        };
+      case 'ConfirmedMigrating':
+        return {
+          kind: 'ConfirmedMigrating',
+          wallet: new ConfirmedMigratingWallet(state.wallet.contractAddress, state.wallet.ensName, state.wallet.privateKey, state.wallet.email, state.wallet.code, this.sdk),
         };
       default:
         throw new TypeError('Invalid saved wallet state');
