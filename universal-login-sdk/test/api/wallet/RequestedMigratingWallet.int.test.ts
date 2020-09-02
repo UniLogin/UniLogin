@@ -5,6 +5,7 @@ import {RequestedMigratingWallet} from '../../../src/api/wallet/RequestedMigrati
 import UniLoginSdk from '../../../src';
 import {setupSdk} from '../../helpers';
 import {createdDeployedWallet} from '../../helpers/createDeployedWallet';
+import {ConfirmedMigratingWallet} from '../../../src/api/wallet/ConfirmedMigratingWallet';
 
 describe('INT: RequestedMigratingWallet', () => {
   let sdk: UniLoginSdk;
@@ -33,8 +34,8 @@ describe('INT: RequestedMigratingWallet', () => {
   it('roundtrip', async () => {
     const requestEmailConfirmationResult = await requestedWallet.requestEmailConfirmation();
     expect(requestEmailConfirmationResult).deep.eq({email});
-    const confirmEmailResult = await requestedWallet.confirmEmail(relayer.sentCodes[email]);
-    expect(confirmEmailResult).to.eq(email);
+    const confirmedMigratingWallet = await requestedWallet.confirmEmail(relayer.sentCodes[email]);
+    expect(confirmedMigratingWallet instanceof ConfirmedMigratingWallet).to.be.true;
   });
 
   it('deployed wallet functions works', async () => {
