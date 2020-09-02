@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {ETHER_NATIVE_TOKEN, TEST_CONTRACT_ADDRESS, TEST_KEY, TokenPricesService, TokenDetailsService, TEST_TOKEN_ADDRESS, TEST_TOKEN_DETAILS} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, TEST_CONTRACT_ADDRESS, TEST_KEY, TokenPricesService, TokenDetailsService, TEST_TOKEN_ADDRESS, TEST_TOKEN_DETAILS, TEST_ENS_NAME, TEST_GAS_PRICE} from '@unilogin/commons';
 import {FutureWalletHandler} from '../../../src/core/services/FutureWalletHandler';
 import {FutureWalletStore} from '../../../src/integration/sql/services/FutureWalletStore';
 import getKnexConfig from '../../testhelpers/knex';
@@ -28,8 +28,8 @@ describe('INT: FutureWalletHandler', () => {
     const futureWallet = {
       contractAddress: TEST_CONTRACT_ADDRESS,
       publicKey: TEST_KEY,
-      ensName: 'name.mylogin.eth',
-      gasPrice: '1',
+      ensName: TEST_ENS_NAME,
+      gasPrice: TEST_GAS_PRICE,
       gasToken: ETHER_NATIVE_TOKEN.address,
     };
     const [contractAddress] = await futureWalletHandler.handle(futureWallet);
@@ -44,8 +44,8 @@ describe('INT: FutureWalletHandler', () => {
     const futureWallet = {
       contractAddress: TEST_CONTRACT_ADDRESS,
       publicKey: TEST_KEY,
-      ensName: 'name.mylogin.eth',
-      gasPrice: '1',
+      ensName: TEST_ENS_NAME,
+      gasPrice: TEST_GAS_PRICE,
       gasToken: TEST_TOKEN_ADDRESS,
     };
     const [contractAddress] = await futureWalletHandler.handle(futureWallet);
