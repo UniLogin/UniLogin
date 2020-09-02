@@ -1,5 +1,5 @@
 import {Wallet} from 'ethers';
-import {SerializableConfirmedMigratingWallet, StoredEncryptedWallet, ensure} from '@unilogin/commons';
+import {SerializableConfirmedMigratingWallet, StoredEncryptedWallet} from '@unilogin/commons';
 import UniLoginSdk from '../sdk';
 import {DeployedWithoutEmailWallet, DeployedWallet} from './DeployedWallet';
 
