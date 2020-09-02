@@ -22,28 +22,23 @@ describe('UNIT: WalletSerializer', () => {
     },
   } as any;
 
-  const TEST_FUTURE_WALLET: FutureWallet = {
+  const TEST_SERIALIZED_FUTURE_WALLET = {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     ensName: TEST_ENS_NAME,
     gasPrice: TEST_GAS_PRICE,
     gasToken: ETHER_NATIVE_TOKEN.address,
     email: TEST_EMAIL,
-    deploy: (() => {}) as any,
-    waitForBalance: (() => {}) as any,
-  } as any;
-
+  };
   const TEST_APPLICATION_WALLET = {
     name: TEST_ENS_NAME,
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
   };
-
   const TEST_SERIALIZED_DEPLOYED_WALlET = {
     ...TEST_APPLICATION_WALLET,
     email: TEST_EMAIL,
   };
-
   const TEST_SERIALIZED_DEPLOYING_WALLET = {
     name: TEST_ENS_NAME,
     contractAddress: TEST_CONTRACT_ADDRESS,
@@ -51,7 +46,29 @@ describe('UNIT: WalletSerializer', () => {
     deploymentHash: TEST_MESSAGE_HASH,
     email: TEST_EMAIL,
   };
+  const TEST_SERIALIZED_RESTORING = {
+    encryptedWallet: TEST_ENCRYPTED_WALLET_JSON,
+    contractAddress: TEST_CONTRACT_ADDRESS,
+    ensName: TEST_ENS_NAME,
+    email: TEST_EMAIL,
+  };
+  const TEST_SERIALIZED_REQUESTED_RESTORING_WALLET = {
+    ensNameOrEmail: TEST_ENS_NAME,
+  };
+  const TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET = {
+    email: TEST_EMAIL,
+    ensName: TEST_ENS_NAME,
+    privateKey: TEST_PRIVATE_KEY,
+    contractAddress: TEST_CONTRACT_ADDRESS,
+  };
+  const TEST_SERIALIZED_CONFIRMED_MIGRATING_WALLET = {...TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET, code: '123456'};
 
+  const TEST_FUTURE_WALLET: FutureWallet = new FutureWallet(TEST_SERIALIZED_FUTURE_WALLET, mockSDK, {} as any, '', '', {} as any);
+  const TEST_CONNECTING_WALLET = new ConnectingWallet(TEST_CONTRACT_ADDRESS, TEST_ENS_NAME, TEST_PRIVATE_KEY, {} as any);
+  const TEST_RESTORING_WALLET = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, TEST_EMAIL, TEST_ENS_NAME, TEST_CONTRACT_ADDRESS, mockSDK);
+  const TEST_REQUESTED_RESTORING = new RequestedRestoringWallet(mockSDK, TEST_ENS_NAME);
+  const TEST_REQUESTED_MIGRATING = new RequestedMigratingWallet(TEST_CONTRACT_ADDRESS, TEST_ENS_NAME, TEST_PRIVATE_KEY, TEST_EMAIL, {} as any);
+  const TEST_CONFIRMED_MIGRATING = new ConfirmedMigratingWallet(TEST_CONTRACT_ADDRESS, TEST_ENS_NAME, TEST_PRIVATE_KEY, TEST_EMAIL, '123456', {} as any)
   const TEST_DEPLOYING_WALLET = new DeployingWallet(
     TEST_SERIALIZED_DEPLOYING_WALLET,
     mockSDK,
@@ -64,34 +81,6 @@ describe('UNIT: WalletSerializer', () => {
     mockSDK,
     TEST_EMAIL,
   );
-
-  const TEST_CONNECTING_WALLET = new ConnectingWallet(TEST_CONTRACT_ADDRESS, TEST_ENS_NAME, TEST_PRIVATE_KEY, {} as any);
-
-  const TEST_SERIALIZED_RESTORING = {
-    encryptedWallet: TEST_ENCRYPTED_WALLET_JSON,
-    contractAddress: TEST_CONTRACT_ADDRESS,
-    ensName: TEST_ENS_NAME,
-    email: TEST_EMAIL,
-  };
-
-  const TEST_RESTORING_WALLET = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, TEST_EMAIL, TEST_ENS_NAME, TEST_CONTRACT_ADDRESS, mockSDK);
-
-  const TEST_REQUESTED_RESTORING = new RequestedRestoringWallet(mockSDK, TEST_ENS_NAME);
-
-  const TEST_SERIALIZED_REQUESTED_RESTORING_WALLET = {
-    ensNameOrEmail: TEST_ENS_NAME,
-  };
-
-  const TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET = {
-    email: 'name@gmail.com',
-    ensName: 'name.unilogin.eth',
-    privateKey: '0x123',
-    contractAddress: '0x123',
-  };
-
-  const TEST_SERIALIZED_CONFIRMED_MIGRATING_WALLET = {...TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET, code: '123456'};
-
-  const TEST_REQUESTED_MIGRATING = new RequestedMigratingWallet('0x123', )
 
   describe('serialize', () => {
     const walletSerializer = new WalletSerializer(mockSDK);
@@ -108,14 +97,7 @@ describe('UNIT: WalletSerializer', () => {
       })).to.deep.eq({
         kind: 'Future',
         name: TEST_ENS_NAME,
-        wallet: {
-          contractAddress: TEST_CONTRACT_ADDRESS,
-          privateKey: TEST_PRIVATE_KEY,
-          ensName: TEST_ENS_NAME,
-          gasPrice: TEST_GAS_PRICE,
-          gasToken: ETHER_NATIVE_TOKEN.address,
-          email: TEST_EMAIL,
-        },
+        wallet: TEST_SERIALIZED_FUTURE_WALLET,
       });
     });
 
@@ -182,29 +164,21 @@ describe('UNIT: WalletSerializer', () => {
     it('for RequestedMigrating returns RequestedMigrating', () => {
       expect(walletSerializer.serialize({
         kind: 'RequestedMigrating',
-        wallet: TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET,
+        wallet: TEST_REQUESTED_MIGRATING,
       })).to.deep.eq({
         kind: 'RequestedMigrating',
         wallet: TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET,
       });
-
-      const state = walletSerializer.deserialize({
-        kind: 'RequestedMigrating',
-        wallet: TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET,
-      });
-      expect(state.kind).to.eq('RequestedMigrating');
-      expect((state as any).wallet).to.to.be.an.instanceof(RequestedMigratingWallet);
-      expect((state as any).wallet).to.deep.include(TEST_SERIALIZED_REQUESTED_MIGRATING_WALLET);
     });
 
     it('for ConfirmedMigrating returns ConfirmedMigrating', () => {
-      const state = walletSerializer.deserialize({
+      expect(walletSerializer.serialize({
+        kind: 'ConfirmedMigrating',
+        wallet: TEST_CONFIRMED_MIGRATING,
+      })).to.deep.eq({
         kind: 'ConfirmedMigrating',
         wallet: TEST_SERIALIZED_CONFIRMED_MIGRATING_WALLET,
       });
-      expect(state.kind).to.eq('ConfirmedMigrating');
-      expect((state as any).wallet).to.to.be.an.instanceof(ConfirmedMigratingWallet);
-      expect((state as any).wallet).to.deep.include(TEST_SERIALIZED_CONFIRMED_MIGRATING_WALLET);
     });
   });
 
