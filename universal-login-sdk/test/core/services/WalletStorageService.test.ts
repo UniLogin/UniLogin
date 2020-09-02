@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {Wallet} from 'ethers';
-import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_GAS_PRICE} from '@unilogin/commons';
+import {ETHER_NATIVE_TOKEN, SerializableFutureWallet, TEST_GAS_PRICE, TEST_ENS_NAME, TEST_EMAIL, TEST_PRIVATE_KEY, TEST_CONTRACT_ADDRESS} from '@unilogin/commons';
 import {IStorageService} from '../../../src/core/models/IStorageService';
 import {WalletStorageService} from '../../../src/core/services/WalletStorageService';
 import {MemoryStorageService} from '../../../src/core/services/MemoryStorageService';
@@ -17,13 +17,13 @@ describe('WalletStorageService', () => {
   const futureWallet: SerializableFutureWallet = {
     ...baseWallet,
     gasPrice: TEST_GAS_PRICE,
-    ensName: 'name.mylogin.eth',
+    ensName: TEST_ENS_NAME,
     gasToken: ETHER_NATIVE_TOKEN.address,
-    email: 'name@gmail.com',
+    email: TEST_EMAIL,
   };
   const serializedWallet: SerializedDeployedWallet = {
     name: 'name',
-    email: 'name@gmail.com',
+    email: TEST_EMAIL,
     ...baseWallet,
   };
 
@@ -53,8 +53,8 @@ describe('WalletStorageService', () => {
 
   it('can load future state', () => {
     const {storage, service} = setup();
-    storage.get = sinon.fake.returns(JSON.stringify({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet}));
-    expect(service.load()).to.deep.eq({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet});
+    storage.get = sinon.fake.returns(JSON.stringify({kind: 'Future', name: TEST_ENS_NAME, wallet: futureWallet}));
+    expect(service.load()).to.deep.eq({kind: 'Future', name: TEST_ENS_NAME, wallet: futureWallet});
     expect(storage.get).to.be.calledWith(TEST_STORAGE_KEY);
   });
 
@@ -101,8 +101,8 @@ describe('WalletStorageService', () => {
 
     expect(service.load()).to.deep.eq({kind: 'None'});
 
-    service.save({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet});
-    expect(service.load()).to.deep.eq({kind: 'Future', name: 'name.mylogin.eth', wallet: futureWallet});
+    service.save({kind: 'Future', name: TEST_ENS_NAME, wallet: futureWallet});
+    expect(service.load()).to.deep.eq({kind: 'Future', name: TEST_ENS_NAME, wallet: futureWallet});
 
     service.save({kind: 'Deployed', wallet: serializedWallet});
     expect(service.load()).to.deep.eq({kind: 'Deployed', wallet: serializedWallet});
@@ -113,8 +113,8 @@ describe('WalletStorageService', () => {
     const service = new WalletStorageService(storage, 'ganache');
     expect(service.load()).to.deep.eq({kind: 'None'});
 
-    service.save({kind: 'RequestedCreating', wallet: {email: 'name@gmail.com', ensName: 'name.unilogin.eth'}});
-    expect(service.load()).to.deep.eq({kind: 'RequestedCreating', wallet: {email: 'name@gmail.com', ensName: 'name.unilogin.eth'}});
+    service.save({kind: 'RequestedCreating', wallet: {email: TEST_EMAIL, ensName: TEST_ENS_NAME}});
+    expect(service.load()).to.deep.eq({kind: 'RequestedCreating', wallet: {email: TEST_EMAIL, ensName: TEST_ENS_NAME}});
   });
 
   it('saves and loads ConfirmedWallet', () => {
@@ -122,8 +122,8 @@ describe('WalletStorageService', () => {
     const service = new WalletStorageService(storage, 'ganache');
     expect(service.load()).to.deep.eq({kind: 'None'});
 
-    service.save({kind: 'Confirmed', wallet: {email: 'name@gmail.com', ensName: 'name.unilogin.eth', code: '123456'}});
-    expect(service.load()).to.deep.eq({kind: 'Confirmed', wallet: {email: 'name@gmail.com', ensName: 'name.unilogin.eth', code: '123456'}});
+    service.save({kind: 'Confirmed', wallet: {email: TEST_EMAIL, ensName: TEST_ENS_NAME, code: '123456'}});
+    expect(service.load()).to.deep.eq({kind: 'Confirmed', wallet: {email: TEST_EMAIL, ensName: TEST_ENS_NAME, code: '123456'}});
   });
 
   it('saves and loads RequestedMigrating', () => {
@@ -131,10 +131,10 @@ describe('WalletStorageService', () => {
     const service = new WalletStorageService(storage, 'ganache');
     expect(service.load()).to.deep.eq({kind: 'None'});
     const serializableRequestedMigratingWallet = {
-      email: 'name@gmail.com',
-      ensName: 'name.unilogin.eth',
-      privateKey: '0x123',
-      contractAddress: '0x123',
+      email: TEST_EMAIL,
+      ensName: TEST_ENS_NAME,
+      privateKey: TEST_PRIVATE_KEY,
+      contractAddress: TEST_CONTRACT_ADDRESS,
     };
     service.save({kind: 'RequestedMigrating', wallet: serializableRequestedMigratingWallet});
     expect(service.load()).to.deep.eq({kind: 'RequestedMigrating', wallet: serializableRequestedMigratingWallet});
@@ -145,11 +145,11 @@ describe('WalletStorageService', () => {
     const service = new WalletStorageService(storage, 'ganache');
     expect(service.load()).to.deep.eq({kind: 'None'});
     const serializableConfirmedMigratingWallet = {
-      email: 'name@gmail.com',
-      ensName: 'name.unilogin.eth',
+      email: TEST_EMAIL,
+      ensName: TEST_ENS_NAME,
       code: '123456',
-      privateKey: '0x123',
-      contractAddress: '0x123',
+      privateKey: TEST_PRIVATE_KEY,
+      contractAddress: TEST_CONTRACT_ADDRESS,
     };
     service.save({kind: 'ConfirmedMigrating', wallet: serializableConfirmedMigratingWallet});
     expect(service.load()).to.deep.eq({kind: 'ConfirmedMigrating', wallet: serializableConfirmedMigratingWallet});
