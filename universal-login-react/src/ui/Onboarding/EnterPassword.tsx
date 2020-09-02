@@ -25,7 +25,7 @@ export const EnterPassword = ({hideModal, walletService, onConfirm}: EnterPasswo
   const primaryButtonClassName = useClassFor('proceed-btn');
 
   const onConfirmClick = async () => {
-    ensureNotFalsy(password, Error, 'Password missing');
+    ensureNotFalsy(password, Error, 'Password is missing');
     setLoading(true);
     await onConfirm(password);
   };
