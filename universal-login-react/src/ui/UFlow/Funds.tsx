@@ -18,9 +18,10 @@ interface FundsProps {
   onDeviceMessageClick: () => void;
   onTopUpClick: () => void;
   onSendClick: () => void;
+  securityAlert?: boolean;
 }
 
-export const Funds = ({walletService, onTopUpClick, onSendClick, onDeviceMessageClick}: FundsProps) => {
+export const Funds = ({walletService, onTopUpClick, onSendClick, onDeviceMessageClick, securityAlert = false}: FundsProps) => {
   const deployedWallet = walletService.getDeployedWallet();
   const {sdk, contractAddress} = deployedWallet;
 
@@ -34,7 +35,7 @@ export const Funds = ({walletService, onTopUpClick, onSendClick, onDeviceMessage
           deployedWallet={deployedWallet}
           onManageClick={onDeviceMessageClick}
         />
-        <SecurityAlert walletService={walletService} onClick={() => console.log('clicked')} />
+        {securityAlert && <SecurityAlert walletService={walletService} onClick={() => {}} />}
         <div className="balance-wrapper">
           <Balance amount={totalTokensValue['USD']} />
           <div className="funds-buttons">
