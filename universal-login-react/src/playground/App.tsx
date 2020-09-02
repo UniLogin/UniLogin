@@ -29,6 +29,7 @@ import {CreatePassword} from '../ui/Onboarding/CreatePassword';
 import {EnterPassword} from '../ui/Onboarding/EnterPassword';
 import {ConfirmCodeScreen} from '../ui/Onboarding/ConfirmCodeScreen';
 import {CreateRandomInstanceEmail} from './CreateRandomInstanceEmail';
+import {EnterEmail} from '../ui/Migrating/EnterEmail';
 
 export const App = () => {
   const [sdk] = useState(() => {
@@ -274,6 +275,14 @@ export const App = () => {
                   hideModal={() => history.push('/')}
                   walletService={walletService}
                   onConfirm={async (password) => console.log({password})}/>}
+              />
+              <Route
+                exact
+                path="/enterEmail"
+                render={({history}) => <EnterEmail
+                  hideModal={() => history.push('/')}
+                  walletService={walletService}
+                  onConfirm={async (email) => console.log({email})}/>}
               />
               <Route
                 exact

@@ -19,6 +19,7 @@ export const NavigationColumn = () => (
       <li><Link to="/walletSelector">Wallet Selector</Link></li>
       <li><Link to="/createPassword">Enter Password - create</Link></li>
       <li><Link to="/enterPassword">Enter Password - connect</Link></li>
+      <li><Link to="/enterEmail">Enter Email</Link></li>
       <li><Link to="/confirmCode">Confirm Code</Link></li>
       <li><Link to="/keyboard">Keyboard</Link></li>
       <li><Link to="/topUp">Topup</Link></li>
