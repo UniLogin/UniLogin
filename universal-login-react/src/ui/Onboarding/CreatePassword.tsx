@@ -33,7 +33,7 @@ export const CreatePassword = ({hideModal, walletService, onConfirm}: CreatePass
   }, [password, confirmPassword]);
 
   const onConfirmClick = () => {
-    ensureNotFalsy(password, Error, 'Password missing');
+    ensureNotFalsy(password, Error, 'Password is missing');
     ensureNotFalsy(confirmPassword, Error, 'Password confirmation missing');
     ensure(password === confirmPassword, Error, 'Password and password confirmation are different');
     onConfirm(password);
