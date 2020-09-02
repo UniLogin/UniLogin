@@ -9,6 +9,9 @@ import {RestoringWallet} from '../../../src/api/wallet/RestoringWallet';
 import {RequestedRestoringWallet} from '../../../src/api/wallet/RequestedRestoringWallet';
 
 describe('UNIT: WalletSerializer', () => {
+  const ensName = 'name.mylogin.eth';
+  const email = 'name@gmail.com';
+
   const mockSDK = {
     provider: Wallet.createRandom(),
     relayerApi: {
@@ -23,31 +26,31 @@ describe('UNIT: WalletSerializer', () => {
   const TEST_FUTURE_WALLET: FutureWallet = {
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
-    ensName: 'name.mylogin.eth',
+    ensName,
     gasPrice: TEST_GAS_PRICE,
     gasToken: ETHER_NATIVE_TOKEN.address,
-    email: 'name@gmail.com',
+    email,
     deploy: (() => {}) as any,
     waitForBalance: (() => {}) as any,
   } as any;
 
   const TEST_APPLICATION_WALLET = {
-    name: 'name.mylogin.eth',
+    name: ensName,
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
   };
 
   const TEST_SERIALIZED_DEPLOYED_WALlET = {
     ...TEST_APPLICATION_WALLET,
-    email: 'user@unilogin.test',
+    email,
   };
 
   const TEST_SERIALIZED_DEPLOYING_WALLET = {
-    name: 'name.mylogin.eth',
+    name: ensName,
     contractAddress: TEST_CONTRACT_ADDRESS,
     privateKey: TEST_PRIVATE_KEY,
     deploymentHash: TEST_MESSAGE_HASH,
-    email: 'name@gmail.com',
+    email,
   };
 
   const TEST_DEPLOYING_WALLET = new DeployingWallet(
@@ -57,27 +60,27 @@ describe('UNIT: WalletSerializer', () => {
 
   const TEST_DEPLOYED_WALLET = new DeployedWallet(
     TEST_CONTRACT_ADDRESS,
-    'name.mylogin.eth',
+    ensName,
     TEST_PRIVATE_KEY,
     mockSDK,
-    'user@unilogin.test',
+    email,
   );
 
-  const TEST_CONNECTING_WALLET = new ConnectingWallet(TEST_CONTRACT_ADDRESS, 'name.mylogin.eth', TEST_PRIVATE_KEY, {} as any);
+  const TEST_CONNECTING_WALLET = new ConnectingWallet(TEST_CONTRACT_ADDRESS, ensName, TEST_PRIVATE_KEY, {} as any);
 
   const TEST_SERIALIZED_RESTORING = {
     encryptedWallet: TEST_ENCRYPTED_WALLET_JSON,
     contractAddress: TEST_CONTRACT_ADDRESS,
-    ensName: 'name.mylogin.eth',
-    email: 'user@unilogin.test',
+    ensName,
+    email,
   };
 
-  const TEST_RESTORING_WALLET = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, 'user@unilogin.test', 'name.mylogin.eth', TEST_CONTRACT_ADDRESS, mockSDK);
+  const TEST_RESTORING_WALLET = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, email, ensName, TEST_CONTRACT_ADDRESS, mockSDK);
 
-  const TEST_REQUESTED_RESTORING = new RequestedRestoringWallet(mockSDK, 'name.mylogin.eth');
+  const TEST_REQUESTED_RESTORING = new RequestedRestoringWallet(mockSDK, ensName);
 
   const TEST_SERIALIZED_REQUESTED_RESTORING_WALLET = {
-    ensNameOrEmail: 'name.mylogin.eth',
+    ensNameOrEmail: ensName,
   };
 
   describe('serialize', () => {
@@ -90,18 +93,18 @@ describe('UNIT: WalletSerializer', () => {
     it('for Future returns Future', () => {
       expect(walletSerializer.serialize({
         kind: 'Future',
-        name: 'name.mylogin.eth',
+        name: ensName,
         wallet: TEST_FUTURE_WALLET,
       })).to.deep.eq({
         kind: 'Future',
-        name: 'name.mylogin.eth',
+        name: ensName,
         wallet: {
           contractAddress: TEST_CONTRACT_ADDRESS,
           privateKey: TEST_PRIVATE_KEY,
-          ensName: 'name.mylogin.eth',
+          ensName,
           gasPrice: TEST_GAS_PRICE,
           gasToken: ETHER_NATIVE_TOKEN.address,
-          email: 'name@gmail.com',
+          email,
         },
       });
     });
@@ -184,18 +187,18 @@ describe('UNIT: WalletSerializer', () => {
     it('for Future returns Future', () => {
       expect(walletSerializer.deserialize({
         kind: 'Future',
-        name: 'name.mylogin.eth',
+        name: ensName,
         wallet: {
           contractAddress: TEST_CONTRACT_ADDRESS,
           privateKey: TEST_PRIVATE_KEY,
-          ensName: 'name.mylogin.eth',
+          ensName,
           gasPrice: TEST_GAS_PRICE,
           gasToken: ETHER_NATIVE_TOKEN.address,
-          email: 'name@gmail.com',
+          email,
         },
       })).to.deep.eq({
         kind: 'Future',
-        name: 'name.mylogin.eth',
+        name: ensName,
         wallet: TEST_FUTURE_WALLET,
       });
     });
