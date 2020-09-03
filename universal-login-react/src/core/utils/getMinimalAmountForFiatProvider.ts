@@ -49,7 +49,7 @@ export const getMinimalAmount = (walletService: WalletService, paymentMethod: To
   if (walletService.isKind('Future')) {
     const requiredDeploymentBalance = walletService.getRequiredDeploymentBalance();
     return getMinimalAmountForFiatProvider(paymentMethod, requiredDeploymentBalance, tokenPricesService, currencyDetails);
-  } else if (walletService.isKind('Deployed') || walletService.isKind('DeployedWithoutEmail')) {
+  } else if (walletService.walletDeployed.get()) {
     return getMinimalAmountForFiatProvider(paymentMethod, '0', tokenPricesService, currencyDetails);
   }
   throw new InvalidWalletState('Future or Deployed', walletService.state.kind);
