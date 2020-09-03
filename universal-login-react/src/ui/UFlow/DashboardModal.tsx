@@ -12,6 +12,7 @@ import {Funds} from './Funds';
 import {Transfer} from '../Transfer/Transfer';
 import {useClassFor} from '../utils/classFor';
 import {join} from 'path';
+import {MigrationFlow} from '../Migrating/MigrationFlow';
 
 export interface DashboardModalProps {
   walletService: WalletService;
@@ -59,12 +60,20 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
                   onTopUpClick={() => history.push(join(basePath, 'topUp'))}
                   onSendClick={() => history.push(join(basePath, 'transferAmount'))}
                   onDeviceMessageClick={() => history.push(join(basePath, 'devices/approveDevice'))}
-                  onSecurityAlert={() => {}}
+                  onSecurityAlert={() => history.push(join(basePath, 'migration'))}
                 />
               </DialogWrapper>
             </ModalWrapper>
           )}
         />
+        <Route path={join(basePath, 'migration')} exact>
+          <SubDialogWrapper message={notice} ensName={name}>
+            <MigrationFlow
+              walletService={walletService}
+              hideModal={onClose}
+            />
+          </SubDialogWrapper>
+        </Route>
         <Route path={join(basePath, 'topUp')} exact>
           <ModalWrapper hideModal={onClose} modalClassName="udashboard-modal">
             <SubDialogWrapper message={notice} ensName={name}>

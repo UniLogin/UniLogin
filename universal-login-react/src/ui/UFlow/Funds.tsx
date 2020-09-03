@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {CurrencyToValue} from '@unilogin/commons';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import {WalletService} from '@unilogin/sdk';
-import {useHistory} from 'react-router';
 import {Balance} from '../commons/Balance';
 import {Assets} from '../commons/Assets';
 import './../styles/base/funds.sass';
