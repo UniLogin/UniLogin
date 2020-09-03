@@ -34,7 +34,7 @@ export class WalletService {
   private readonly _stateProperty = new State<WalletState>({kind: 'None'});
   readonly stateProperty: Property<WalletState> = this._stateProperty;
 
-  walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed' || state.kind === 'DeployedWithoutEmail'));
+  walletDeployed = this.stateProperty.pipe(map((state) => state.kind === 'Deployed' || state.kind === 'DeployedWithoutEmail' || state.kind === 'RequestedMigrating' || state.kind === 'ConfirmedMigrating'));
   isAuthorized = this.walletDeployed;
 
   get state() {
@@ -60,7 +60,7 @@ export class WalletService {
   }
 
   getDeployedWallet(): DeployedWithoutEmailWallet {
-    ensureKind(this.state, 'Deployed', 'DeployedWithoutEmail');
+    ensureKind(this.state, 'Deployed', 'DeployedWithoutEmail', 'RequestedMigrating', 'ConfirmedMigrating');
     return this.state.wallet;
   }
 
