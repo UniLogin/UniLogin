@@ -1,8 +1,9 @@
 import React from 'react';
-import {Switch, useRouteMatch, Route, Redirect, useHistory} from 'react-router-dom';
-import path from 'path';
 import {WalletService} from '@unilogin/sdk';
 import {EnterEmail} from './EnterEmail';
+import {CreatePassword} from '../Onboarding/CreatePassword';
+import {ConfirmCodeScreen} from '../Onboarding/ConfirmCodeScreen';
+import {UnexpectedWalletState} from '../../core/utils/errors';
 
 export interface MigrationFlowProps {
   walletService: WalletService;
@@ -10,19 +11,27 @@ export interface MigrationFlowProps {
 };
 
 export const MigrationFlow = ({walletService, hideModal}: MigrationFlowProps) => {
-  const match = useRouteMatch();
-  const history = useHistory();
-
-  return <Switch>
-    <Route exact path={match.path}>
-      <EnterEmail
-        onConfirm={(email) => history.push(path.join(match.path, 'confirm'), {email})}
+  switch (walletService.state.kind) {
+    case 'DeployedWithoutEmail':
+      return <EnterEmail
+        onConfirm={(email) => walletService.createRequestedMigratingWallet(email)}
         hideModal={hideModal}
         walletService={walletService}
-      />
-    </Route>
-    <Route exact path={path.join(match.path, 'confirm')}>
-    </Route>
-    <Redirect exact from={match.path} to={path.join(match.path, 'email')} />
-  </Switch>
+      />;
+    case 'RequestedMigrating':
+      return <ConfirmCodeScreen
+        onCancel={() => walletService.migrationRollback()}
+        walletService={walletService}
+      />;
+    case 'ConfirmedMigrating':
+      return <CreatePassword
+        walletService={walletService}
+        hideModal={hideModal}
+        onConfirm={(password) => walletService.createPassword(password)}
+      />;
+    case 'Deployed':
+      return <div>Success</div>;
+    default:
+      throw new UnexpectedWalletState(walletService.state.kind);
+  }
 };

@@ -15,7 +15,7 @@ const CODE_LENGTH = 6;
 
 interface ConfirmCodeProps {
   email: string;
-  onConfirmCode: () => void;
+  onConfirmCode?: () => void;
   onCancel: () => void;
   walletService: WalletService;
 }
@@ -41,7 +41,7 @@ export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: Con
       await walletService.confirmCode(code);
       setIsValid(true);
       await sleep(1000);
-      onConfirmCode();
+      onConfirmCode?.();
     } catch {
       setIsValid(false);
     }

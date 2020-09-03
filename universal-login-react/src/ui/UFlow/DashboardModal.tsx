@@ -66,7 +66,7 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
             </ModalWrapper>
           )}
         />
-        <Route path={join(basePath, 'migration')} exact>
+        <Route path={join(basePath, 'migration')}>
           <SubDialogWrapper message={notice} ensName={name}>
             <MigrationFlow
               walletService={walletService}

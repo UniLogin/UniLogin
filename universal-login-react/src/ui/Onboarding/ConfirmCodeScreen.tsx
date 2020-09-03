@@ -7,7 +7,7 @@ interface ConfirmCodeScreenProps {
   hideModal?: () => void;
   walletService: WalletService;
   onCancel: () => void;
-  onConfirmCode: () => void;
+  onConfirmCode?: () => void;
 }
 
 const getTitleForConfirmCode = (walletState: WalletState) => {
@@ -16,6 +16,8 @@ const getTitleForConfirmCode = (walletState: WalletState) => {
       return 'Create account';
     case 'RequestedRestoring':
       return 'Log-in';
+    case 'RequestedMigrating':
+      return 'Secure wallet';
     default:
       throw new InvalidWalletState('RequestedCreating or RequestedRestoring', walletState.kind);
   }
