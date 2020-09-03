@@ -2,7 +2,7 @@ import {ensure} from '@unilogin/commons';
 import {WalletState} from '../models/WalletService';
 import {InvalidWalletState} from './errors';
 
-type Choose<T, K> = T extends { kind: K } ? T : never;
+export type Choose<T, K> = T extends { kind: K } ? T : never;
 
 type Kind = WalletState['kind'];
 
