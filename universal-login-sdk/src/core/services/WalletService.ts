@@ -1,4 +1,4 @@
-import {ensure, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil, PartialRequired} from '@unilogin/commons';
+import {ensure, Choose, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil, PartialRequired} from '@unilogin/commons';
 import UniLoginSdk from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
@@ -17,7 +17,7 @@ import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
 import {RestoringWallet} from '../../api/wallet/RestoringWallet';
 import {DeployedWithoutEmailWallet} from '../../api/wallet/DeployedWallet';
-import {ensureKind, Choose} from '../utils/ensureKind';
+import {ensureKind} from '../utils/ensureKind';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
