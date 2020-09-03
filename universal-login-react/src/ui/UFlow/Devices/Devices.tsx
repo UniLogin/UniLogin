@@ -13,10 +13,9 @@ export interface DevicesProps {
   walletService: WalletService;
   onAccountDisconnected: () => void;
   basePath?: string;
-  className?: string;
 }
 
-export const Devices = ({walletService, onAccountDisconnected, className, basePath = ''}: DevicesProps) => {
+export const Devices = ({walletService, onAccountDisconnected, basePath = ''}: DevicesProps) => {
   const deployedWallet = walletService.getDeployedWallet();
   const relayerConfig = walletService.sdk.getRelayerConfig();
   const history = useHistory();
@@ -27,18 +26,16 @@ export const Devices = ({walletService, onAccountDisconnected, className, basePa
         <DevicesList
           deployedWallet={deployedWallet}
           devicesBasePath={basePath}
-          className={className}
         />
       </Route>
       <Route path={join(basePath, 'approveDevice')} exact>
         <ConnectionNotification
           deployedWallet={deployedWallet}
           devicesBasePath={basePath}
-          className={className}
         />
       </Route>
       <Route path={join(basePath, 'connectionSuccess')} exact>
-        <ConnectionSuccessNotification basePath={basePath} className={className} />
+        <ConnectionSuccessNotification basePath={basePath} />
       </Route>
       <Route
         path={join(basePath, 'connectionFailed')}
@@ -55,7 +52,6 @@ export const Devices = ({walletService, onAccountDisconnected, className, basePa
           onDisconnectProgress={transactionHash => history.replace(join(basePath, 'waitingForDeletingAccount'), {transactionHash})}
           onAccountDisconnected={onAccountDisconnected}
           onCancelClick={() => history.replace(`${basePath}/`)}
-          className={className}
         />
       </Route>
       <Route

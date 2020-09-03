@@ -13,10 +13,9 @@ export interface DisconnectAccountProps {
   onAccountDisconnected: () => void;
   onDisconnectProgress: (transactionHash?: string) => void;
   onCancelClick: () => void;
-  className?: string;
 }
 
-export const DisconnectAccount = ({walletService, onDisconnectProgress, onAccountDisconnected, onCancelClick, className}: DisconnectAccountProps) => {
+export const DisconnectAccount = ({walletService, onDisconnectProgress, onAccountDisconnected, onCancelClick}: DisconnectAccountProps) => {
   const [inputs, setInputs] = useState({username: '', verifyField: ''});
   const [errors, setErrors] = useState({usernameError: false, verifyFieldError: false});
 

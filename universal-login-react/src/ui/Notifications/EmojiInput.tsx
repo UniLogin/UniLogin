@@ -11,7 +11,7 @@ export interface EmojiInputProps {
   className?: string;
 }
 
-export const EmojiInput = ({value, onChange, publicKey, className}: EmojiInputProps) => {
+export const EmojiInput = ({value, onChange, publicKey}: EmojiInputProps) => {
   const onEmojiAdd = (code: number) => {
     if (value.length < SECURITY_CODE_LENGTH) {
       onChange([...value, code]);
@@ -30,17 +30,15 @@ export const EmojiInput = ({value, onChange, publicKey, className}: EmojiInputPr
         enteredCode={value}
         publicKey={publicKey}
         onEmojiClick={onEmojiRemove}
-        className={className}
       />
       {publicKey
         ? (
           <EmojiPanelWithFakes
             publicKey={publicKey}
             onEmojiClick={onEmojiAdd}
-            className={className}
           />
         )
-        : <EmojiKeyboard onEmojiClick={onEmojiAdd} className={className}/>
+        : <EmojiKeyboard onEmojiClick={onEmojiAdd}/>
       }
     </>
   );

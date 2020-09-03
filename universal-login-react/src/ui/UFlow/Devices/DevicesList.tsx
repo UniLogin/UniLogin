@@ -19,10 +19,9 @@ import {MissingParameter} from '../../../core/utils/errors';
 export interface DevicesListProps {
   deployedWallet: DeployedWithoutEmailWallet;
   devicesBasePath: string;
-  className?: string;
 }
 
-export const DevicesList = ({deployedWallet, devicesBasePath, className}: DevicesListProps) => {
+export const DevicesList = ({deployedWallet, devicesBasePath}: DevicesListProps) => {
   const [devices] = useAsync(async () => deployedWallet.getConnectedDevices(), []);
   const [gasParameters, setGasParameters] = useState<GasParameters | undefined>(undefined);
   const [deviceToRemove, setDeviceToRemove] = useState<string | undefined>(undefined);
@@ -46,7 +45,6 @@ export const DevicesList = ({deployedWallet, devicesBasePath, className}: Device
       <NewDeviceMessage
         deployedWallet={deployedWallet}
         onManageClick={() => history.push(join(devicesBasePath, 'approveDevice'))}
-        className={className}
       />
       <div className="devices-inner">
         {devices
