@@ -165,9 +165,14 @@ export class WalletService {
     try {
       return await this.getRequestedMigrating().requestEmailConfirmation();
     } catch (e) {
-      this.disconnect();
+      this.migrationRollback();
       throw e;
     }
+  }
+
+  migrationRollback() {
+    ensureKind(this.state, 'RequestedMigrating', 'ConfirmedMigrating');
+    this.setWallet(this.state.wallet.asSerializedDeployedWithoutEmailWallet);
   }
 
   async retryRequestEmailConfirmation() {
@@ -286,7 +291,7 @@ export class WalletService {
   }
 
   setWallet(wallet: PartialRequired<SerializedDeployedWallet, 'contractAddress' | 'privateKey' | 'name'>) {
-    ensureKind(this.state, 'None', 'Connecting', 'Restoring', 'ConfirmedMigrating');
+    ensureKind(this.state, 'None', 'Connecting', 'Restoring', 'RequestedMigrating', 'ConfirmedMigrating');
     if (wallet.email) {
       this.setState({
         kind: 'Deployed',
@@ -420,8 +425,8 @@ export class WalletService {
   }
 
   getEnsNameOrEmail() {
-    ensureKind(this.state, 'RequestedCreating', 'RequestedRestoring');
-    if (this.state.kind === 'RequestedCreating') {
+    ensureKind(this.state, 'RequestedCreating', 'RequestedRestoring', 'RequestedMigrating');
+    if (this.state.kind === 'RequestedCreating' || this.state.kind === 'RequestedMigrating') {
       return this.state.wallet.email;
     } else {
       return this.state.wallet.ensNameOrEmail;

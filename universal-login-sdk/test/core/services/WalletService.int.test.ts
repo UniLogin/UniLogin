@@ -213,6 +213,10 @@ describe('INT: WalletService', () => {
       expect(walletService.state).to.deep.include({kind: 'DeployedWithoutEmail'});
       await walletService.createRequestedMigratingWallet(TEST_EMAIL);
       expect(walletService.state).to.deep.include({kind: 'RequestedMigrating'});
+      walletService.migrationRollback();
+      expect(walletService.state).to.deep.include({kind: 'DeployedWithoutEmail'});
+      await walletService.createRequestedMigratingWallet(TEST_EMAIL);
+      expect(walletService.state).to.deep.include({kind: 'RequestedMigrating'});
       await walletService.confirmCode(relayer.sentCodes[TEST_EMAIL]);
       expect(walletService.state).to.deep.include({kind: 'ConfirmedMigrating'});
       await walletService.createPassword(TEST_PASSWORD);
