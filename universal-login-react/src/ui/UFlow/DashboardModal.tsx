@@ -55,10 +55,11 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
             <ModalWrapper hideModal={onClose} modalClassName="udashboard-modal">
               <DialogWrapper message={notice} deployedWallet={deployedWallet}>
                 <Funds
-                  deployedWallet={deployedWallet}
+                  walletService={walletService}
                   onTopUpClick={() => history.push(join(basePath, 'topUp'))}
                   onSendClick={() => history.push(join(basePath, 'transferAmount'))}
                   onDeviceMessageClick={() => history.push(join(basePath, 'devices/approveDevice'))}
+                  securityAlert={false}
                 />
               </DialogWrapper>
             </ModalWrapper>

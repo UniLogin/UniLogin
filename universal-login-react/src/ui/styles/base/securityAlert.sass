@@ -1,0 +1,79 @@
+@import ../helpers/breakpoints
+
+.unilogin-component-security-alert
+  position: relative
+  width: 100%
+  padding: 20px 30px
+  margin-top: 24px
+  border: 1px solid #DDEBF1
+  border-radius: 4px
+  margin-top: 24px
+  padding: 16px 24px
+
+  +media(s)
+    padding: 15px
+    border-radius: 3px
+
+  .security-alert-row
+    position: relative
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding-left: 53px
+
+    +media(s)
+      flex-direction: column
+      padding: 0
+
+  .security-alert-row::before
+    content: ''
+    position: absolute
+    top: 50%
+    left: 0
+    transform: translateY(-50%)
+    width: 42px
+    height: 42px
+    background: url('../../assets/icons/secure.svg') center no-repeat
+
+    +media(s)
+      display: none
+
+  .security-alert-description
+    max-width: 430px
+    margin-right: 15px
+
+  .security-alert-title
+    margin: 0 0 8px
+    font-weight: 500
+    font-size: 14px
+    line-height: 17px
+
+  .security-alert-text
+    margin: 0
+    font-size: 12px
+    line-height: 140%
+
+  .security-alert-button
+    width: 102px
+    height: 45px
+    border-radius: 3px
+    font-weight: 500
+    font-size: 14px
+    text-align: center
+    border-radius: 4px
+
+  .security-alert-buttons-row
+    display: flex
+    align-items: center
+
+    +media(s)
+      margin-top: 10px
+
+  .security-alert-cancel
+    margin: 0 0 0 25px
+    font-size: 12px
+    line-height: 18px
+    border: none
+    background: none
+    cursor: pointer
+    opacity: 0.6
