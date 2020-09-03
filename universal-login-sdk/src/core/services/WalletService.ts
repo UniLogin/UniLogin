@@ -17,6 +17,7 @@ import {ConfirmedWallet} from '../../api/wallet/ConfirmedWallet';
 import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWallet';
 import {RestoringWallet} from '../../api/wallet/RestoringWallet';
 import {DeployedWithoutEmailWallet} from '../../api/wallet/DeployedWallet';
+import {ensureKind} from '../utils/ensureKind';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
@@ -53,37 +54,37 @@ export class WalletService {
   }
 
   getDeployedWallet(): DeployedWithoutEmailWallet {
-    ensure(this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail', InvalidWalletState, 'Deployed or DeployedWithoutEmail', this.state.kind);
+    ensureKind(this.state, 'Deployed', 'DeployedWithoutEmail');
     return this.state.wallet;
   }
 
   getFutureWallet() {
-    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
+    ensureKind(this.state, 'Future');
     return this.state.wallet;
   }
 
   private getDeployingWallet(): DeployingWallet {
-    ensure(this.state.kind === 'Deploying', InvalidWalletState, 'Deploying', this.state.kind);
+    ensureKind(this.state, 'Deploying');
     return this.state.wallet;
   }
 
   getConnectingWallet(): ConnectingWallet {
-    ensure(this.state.kind === 'Connecting', InvalidWalletState, 'Connecting', this.state.kind);
+    ensureKind(this.state, 'Connecting');
     return this.state.wallet;
   }
 
   getConfirmedWallet(): ConfirmedWallet {
-    ensure(this.state.kind === 'Confirmed', InvalidWalletState, 'Confirmed', this.state.kind);
+    ensureKind(this.state, 'Confirmed');
     return this.state.wallet;
   }
 
   async confirmCode(code: string) {
-    ensure(this.state.kind === 'RequestedCreating' || this.state.kind === 'RequestedRestoring', InvalidWalletState, 'RequestedCreating or RequestedRestoring', this.state.kind);
+    ensureKind(this.state, 'RequestedCreating', 'RequestedRestoring');
     if (this.state.kind === 'RequestedCreating') {
       const confirmedWallet = await this.state.wallet.confirmEmail(code);
       this.setConfirmed(confirmedWallet);
       return confirmedWallet;
-    } else if (this.state.kind === 'RequestedRestoring') {
+    } else {
       const restoringWallet = await this.state.wallet.confirmEmail(code);
       this.setRestoring(restoringWallet);
       return restoringWallet;
@@ -91,24 +92,24 @@ export class WalletService {
   }
 
   async restoreWallet(password: string) {
-    ensure(this.state.kind === 'Restoring', InvalidWalletState, 'Restoring', this.state.kind);
+    ensureKind(this.state, 'Restoring');
     const deployedWallet = await this.state.wallet.restore(password);
     this.setWallet(deployedWallet);
     return deployedWallet;
   }
 
   getRequestedCreatingWallet() {
-    ensure(this.state.kind === 'RequestedCreating', InvalidWalletState, 'RequestedCreating', this.state.kind);
+    ensureKind(this.state, 'RequestedCreating');
     return this.state.wallet;
   }
 
   getRequestedRestoringWallet() {
-    ensure(this.state.kind === 'RequestedRestoring', InvalidWalletState, 'RequestedCreating', this.state.kind);
+    ensureKind(this.state, 'RequestedRestoring');
     return this.state.wallet;
   }
 
   getRestoringWallet() {
-    ensure(this.state.kind === 'Restoring', InvalidWalletState, 'Restoring', this.state.kind);
+    ensureKind(this.state, 'Restoring');
     return this.state.wallet;
   }
 
@@ -130,7 +131,7 @@ export class WalletService {
   }
 
   async retryRequestEmailConfirmation() {
-    ensure(this.state.kind === 'RequestedRestoring' || this.state.kind === 'RequestedCreating', InvalidWalletState, this.state.kind, 'RequestedRestoring or RequestedCreating');
+    ensureKind(this.state, 'RequestedRestoring', 'RequestedCreating');
     return this.state.wallet.requestEmailConfirmation();
   }
 
@@ -143,7 +144,7 @@ export class WalletService {
   }
 
   async createFutureWallet(name: string, gasToken = ETHER_NATIVE_TOKEN.address): Promise<FutureWallet> {
-    ensure(this.state.kind === 'None', InvalidWalletState, 'None', this.state.kind);
+    ensureKind(this.state, 'None');
     const gasModes = await this.sdk.getGasModes();
     const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, gasToken);
     const futureWallet = await this.sdk.createFutureWallet(name, gasOption.gasPrice.toString(), gasToken);
@@ -152,7 +153,7 @@ export class WalletService {
   }
 
   async createFutureWalletWithPassword(password: string, gasToken = ETHER_NATIVE_TOKEN.address): Promise<FutureWallet> {
-    ensure(this.state.kind === 'Confirmed', InvalidWalletState, 'Confirmed', this.state.kind);
+    ensureKind(this.state, 'Confirmed');
     const gasModes = await this.sdk.getGasModes();
     const gasOption = findGasOption(gasModes[FAST_GAS_MODE_INDEX].gasOptions, gasToken);
     const futureWallet = await this.sdk.getFutureWalletFactory().createNewWithPassword(this.state.wallet.asSerializableConfirmedWallet, gasOption.gasPrice.toString(), gasToken, password);
@@ -161,7 +162,7 @@ export class WalletService {
   }
 
   async initDeploy() {
-    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
+    ensureKind(this.state, 'Future');
     const {wallet: {deploy}} = this.state;
     const deployingWallet = await deploy();
     this.setState({kind: 'Deploying', wallet: deployingWallet});
@@ -235,7 +236,7 @@ export class WalletService {
   }
 
   setWallet(wallet: PartialRequired<SerializedDeployedWallet, 'contractAddress' | 'privateKey' | 'name'>) {
-    ensure(this.state.kind === 'None' || this.state.kind === 'Connecting' || this.state.kind === 'Restoring', WalletOverridden);
+    ensureKind(this.state, 'None', 'Connecting', 'Restoring');
     if (wallet.email) {
       this.setState({
         kind: 'Deployed',
@@ -268,7 +269,7 @@ export class WalletService {
 
   async waitForConnection() {
     if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') return;
-    ensure(this.state.kind === 'Connecting', InvalidWalletState, 'Connecting', this.state.kind);
+    ensureKind(this.state, 'Connecting');
     const connectingWallet = this.getConnectingWallet();
     const filter = {
       contractAddress: connectingWallet.contractAddress,
@@ -351,7 +352,7 @@ export class WalletService {
   }
 
   getRequiredDeploymentBalance() {
-    ensure(this.state.kind === 'Future', InvalidWalletState, 'Future', this.state.kind);
+    ensureKind(this.state, 'Future');
     return this.state.wallet.getMinimalAmount();
   }
 
@@ -369,7 +370,7 @@ export class WalletService {
   }
 
   getEnsNameOrEmail() {
-    ensure(this.state.kind === 'RequestedCreating' || this.state.kind === 'RequestedRestoring', InvalidWalletState, 'RequestedRestoring or RequestedCreating', this.state.kind);
+    ensureKind(this.state, 'RequestedCreating', 'RequestedRestoring');
     if (this.state.kind === 'RequestedCreating') {
       return this.state.wallet.email;
     } else {
