@@ -29,10 +29,11 @@ const HomeScreen = () => {
               <Switch>
                 <Route path={basePath} exact>
                   <Funds
-                    deployedWallet={deployedWallet}
+                    walletService={walletService}
                     onTopUpClick={() => history.push(join(basePath, 'topUp'))}
                     onSendClick={() => history.push(join(basePath, 'transfer'))}
                     onDeviceMessageClick={() => history.push(join(basePath, 'devices', 'approveDevice'))}
+                    securityAlert={false}
                   />
                 </Route>
                 <Route path={join(basePath, 'devices')}>
@@ -43,7 +44,7 @@ const HomeScreen = () => {
                   />
                 </Route>
                 <Route path={join(basePath, 'backup')}>
-                  <BackupCodes deployedWallet={deployedWallet}/>
+                  <BackupCodes deployedWallet={deployedWallet} />
                 </Route>
                 <Route path={join(basePath, 'topUp')}>
                   <TopUp

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {CurrencyToValue} from '@unilogin/commons';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
-import {DeployedWithoutEmailWallet} from '@unilogin/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {Balance} from '../commons/Balance';
 import {Assets} from '../commons/Assets';
 import './../styles/base/funds.sass';
@@ -11,15 +11,18 @@ import './../styles/themes/Jarvis/fundsThemeJarvis.sass';
 import {NewDeviceMessage} from './Devices/NewDeviceMessage';
 import {ThemedComponent} from '../commons/ThemedComponent';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
+import {SecurityAlert} from '../Migrating/SecurityAlert';
 
 interface FundsProps {
-  deployedWallet: DeployedWithoutEmailWallet;
+  walletService: WalletService;
   onDeviceMessageClick: () => void;
   onTopUpClick: () => void;
   onSendClick: () => void;
+  securityAlert?: boolean;
 }
 
-export const Funds = ({deployedWallet, onTopUpClick, onSendClick, onDeviceMessageClick}: FundsProps) => {
+export const Funds = ({walletService, onTopUpClick, onSendClick, onDeviceMessageClick, securityAlert = false}: FundsProps) => {
+  const deployedWallet = walletService.getDeployedWallet();
   const {sdk, contractAddress} = deployedWallet;
 
   const [totalTokensValue, setTotalTokensValue] = useState<CurrencyToValue>({} as CurrencyToValue);
@@ -32,11 +35,12 @@ export const Funds = ({deployedWallet, onTopUpClick, onSendClick, onDeviceMessag
           deployedWallet={deployedWallet}
           onManageClick={onDeviceMessageClick}
         />
+        {securityAlert && <SecurityAlert walletService={walletService} onClick={() => {}} />}
         <div className="balance-wrapper">
           <Balance amount={totalTokensValue['USD']} />
           <div className="funds-buttons">
-            <PrimaryButton text='Top-up' className="funds-btn funds-topup" onClick={onTopUpClick}/>
-            <PrimaryButton text='Send' id="transferFunds" className="funds-btn funds-send" onClick={onSendClick}/>
+            <PrimaryButton text='Top-up' className="funds-btn funds-topup" onClick={onTopUpClick} />
+            <PrimaryButton text='Send' id="transferFunds" className="funds-btn funds-send" onClick={onSendClick} />
           </div>
         </div>
         <Assets deployedWallet={deployedWallet} />
