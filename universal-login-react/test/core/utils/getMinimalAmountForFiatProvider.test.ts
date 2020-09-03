@@ -85,6 +85,7 @@ describe('UNIT: getMinimalAmount', () => {
   it('returns 30 for Safello and deployed wallet', async () => {
     const walletService = {
       isKind: (state: string) => state === 'Deployed',
+      isDeployed: () => true,
     };
     const paymentMethod = TopUpProvider.SAFELLO;
     expect((await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).generalMinimalAmount).to.eq('30');
@@ -93,6 +94,7 @@ describe('UNIT: getMinimalAmount', () => {
   it('returns general 0.6 and Revolut 2 for Ramp and deployed wallet', async () => {
     const walletService = {
       isKind: (state: string) => state === 'Deployed',
+      isDeployed: () => true,
     };
     const paymentMethod = TopUpProvider.RAMP;
     const {generalMinimalAmount, minimalAmountForRevolut} = await getMinimalAmount(walletService as any, paymentMethod, tokenPricesService);
@@ -104,6 +106,7 @@ describe('UNIT: getMinimalAmount', () => {
     const walletService = {
       state: {kind: 'None'},
       isKind: (state: string) => state === 'None',
+      isDeployed: () => false,
     };
     const paymentMethod = TopUpProvider.RAMP;
     expect(() => getMinimalAmount(walletService as any, paymentMethod, tokenPricesService)).to.throw('Wallet state is None, but expected Future or Deployed');
