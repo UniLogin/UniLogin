@@ -18,6 +18,8 @@ import {RequestedRestoringWallet} from '../../api/wallet/RequestedRestoringWalle
 import {RestoringWallet} from '../../api/wallet/RestoringWallet';
 import {DeployedWithoutEmailWallet} from '../../api/wallet/DeployedWallet';
 import {ensureKind} from '../utils/ensureKind';
+import {RequestedMigratingWallet} from '../../api/wallet/RequestedMigrating';
+import {ConfirmedMigratingWallet} from '../../api/wallet/ConfirmedMigratingWallet';
 
 type WalletFromBackupCodes = (username: string, password: string) => Promise<Wallet>;
 
@@ -83,16 +85,27 @@ export class WalletService {
   }
 
   async confirmCode(code: string) {
-    ensureKind(this.state, 'RequestedCreating', 'RequestedRestoring');
+    ensureKind(this.state, 'RequestedCreating', 'RequestedRestoring', 'RequestedMigrating');
     if (this.state.kind === 'RequestedCreating') {
       const confirmedWallet = await this.state.wallet.confirmEmail(code);
       this.setConfirmed(confirmedWallet);
       return confirmedWallet;
-    } else {
+    } else if (this.state.kind === 'RequestedRestoring') {
       const restoringWallet = await this.state.wallet.confirmEmail(code);
       this.setRestoring(restoringWallet);
       return restoringWallet;
+    } else {
+      const confirmedMigratingWallet = await this.state.wallet.confirmEmail(code);
+      this.setConfirmedMigrating(confirmedMigratingWallet);
+      return confirmedMigratingWallet;
     }
+  }
+
+  async createPassword(password: string) {
+    ensureKind(this.state, 'ConfirmedMigrating');
+    const deployedWallet = await this.state.wallet.setPassword(password);
+    this.setWallet(deployedWallet);
+    return deployedWallet;
   }
 
   async restoreWallet(password: string) {
@@ -104,6 +117,11 @@ export class WalletService {
 
   getRequestedCreatingWallet() {
     ensureKind(this.state, 'RequestedCreating');
+    return this.state.wallet;
+  }
+
+  getRequestedMigrating() {
+    ensureKind(this.state, 'RequestedMigrating');
     return this.state.wallet;
   }
 
@@ -128,6 +146,24 @@ export class WalletService {
     this.setRequestedRestoring(requestedWallet);
     try {
       return await this.getRequestedRestoringWallet().requestEmailConfirmation();
+    } catch (e) {
+      this.disconnect();
+      throw e;
+    }
+  }
+
+  async createRequestedMigratingWallet(email: string) {
+    ensureKind(this.state, 'DeployedWithoutEmail');
+    const requestedMigrating = new RequestedMigratingWallet(
+      this.state.wallet.contractAddress,
+      this.state.wallet.name,
+      this.state.wallet.privateKey,
+      email,
+      this.sdk,
+    );
+    this.setRequestedMigrating(requestedMigrating);
+    try {
+      return await this.getRequestedMigrating().requestEmailConfirmation();
     } catch (e) {
       this.disconnect();
       throw e;
@@ -204,6 +240,16 @@ export class WalletService {
     return this.waitToBeSuccess();
   }
 
+  setRequestedMigrating(wallet: RequestedMigratingWallet) {
+    ensureKind(this.state, 'DeployedWithoutEmail');
+    this.setState({kind: 'RequestedMigrating', wallet});
+  }
+
+  setConfirmedMigrating(wallet: ConfirmedMigratingWallet) {
+    ensureKind(this.state, 'RequestedMigrating');
+    this.setState({kind: 'ConfirmedMigrating', wallet});
+  }
+
   setRequested(wallet: RequestedCreatingWallet) {
     ensure(this.state.kind === 'None', WalletOverridden);
     this.setState({kind: 'RequestedCreating', wallet});
@@ -240,7 +286,7 @@ export class WalletService {
   }
 
   setWallet(wallet: PartialRequired<SerializedDeployedWallet, 'contractAddress' | 'privateKey' | 'name'>) {
-    ensureKind(this.state, 'None', 'Connecting', 'Restoring');
+    ensureKind(this.state, 'None', 'Connecting', 'Restoring', 'ConfirmedMigrating');
     if (wallet.email) {
       this.setState({
         kind: 'Deployed',

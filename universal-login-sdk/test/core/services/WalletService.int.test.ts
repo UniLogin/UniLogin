@@ -5,7 +5,7 @@ import {setupSdk} from '../../helpers/setupSdk';
 import UniLoginSdk from '../../../src/api/sdk';
 import {WalletService} from '../../../src/core/services/WalletService';
 import {Wallet, utils, Contract, providers} from 'ethers';
-import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {ensure, TEST_EXECUTION_OPTIONS, TEST_REFUND_PAYER, TEST_SDK_CONFIG, ETHER_NATIVE_TOKEN, TEST_EMAIL, TEST_ENS_NAME, TEST_PASSWORD} from '@unilogin/commons';
 import {createWallet} from '../../helpers';
 import {DeployedWallet} from '../../../src';
 
@@ -203,6 +203,26 @@ describe('INT: WalletService', () => {
         walletService.createRequestedRestoringWallet(notExistingEmail))
         .to.be.rejectedWith(`Error: Stored encrypted wallet not found for: ${notExistingEmail}`);
       expect(walletService.state).to.deep.eq({kind: 'None'});
+    });
+
+    it('migrating to email flow roundtrip', async () => {
+      const futureWallet = await walletService.createFutureWallet(TEST_ENS_NAME);
+      await wallet.sendTransaction({to: futureWallet.contractAddress, value: utils.parseEther('4')});
+      await walletService.initDeploy();
+      await walletService.waitToBeSuccess();
+      expect(walletService.state).to.deep.include({kind: 'DeployedWithoutEmail'});
+      await walletService.createRequestedMigratingWallet(TEST_EMAIL);
+      expect(walletService.state).to.deep.include({kind: 'RequestedMigrating'});
+      await walletService.confirmCode(relayer.sentCodes[TEST_EMAIL]);
+      expect(walletService.state).to.deep.include({kind: 'ConfirmedMigrating'});
+      await walletService.createPassword(TEST_PASSWORD);
+      expect(walletService.state).to.deep.include({kind: 'Deployed'});
+      walletService.disconnect();
+      await walletService.createRequestedRestoringWallet(TEST_EMAIL);
+      await walletService.confirmCode(relayer.sentCodes[TEST_EMAIL]);
+      await walletService.restoreWallet(TEST_PASSWORD);
+      expect(walletService.state).to.deep.include({kind: 'Deployed'});
+      expect((walletService.state as any).wallet!).to.deep.include({contractAddress: futureWallet.contractAddress, name: TEST_ENS_NAME});
     });
   });
 
