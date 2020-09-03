@@ -9,3 +9,5 @@ export type PartialRequired<T, TRequired extends keyof T> = Partial<T> & Pick<T,
 export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
 
 export type Nullable<T> = T | null;
+
+export type Choose<T, K> = T extends { kind: K } ? T : never;

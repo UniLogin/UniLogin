@@ -40,7 +40,7 @@ export {DebouncedSuggestionsService} from './core/services/DebouncedSuggestionsS
 export {TokenPricesService} from './core/services/TokenPricesService';
 export {SuggestionsService, WalletExistenceVerifier} from './core/services/SuggestionsService';
 export {TokensValueConverter} from './core/services/TokensValueConverter';
-export {DeepPartial, Nullable, Omit, PartialRequired, Predicate, Procedure} from './core/types/common';
+export {DeepPartial, Nullable, Omit, PartialRequired, Predicate, Procedure, Choose} from './core/types/common';
 export {array8bitTo16bit, deepArrayStartWith, shuffle, slices, arrayRemove} from './core/utils/arrays';
 export {normalizeBigNumber, bigNumberifyDecimal} from './core/utils/bigNumbers';
 export {calculateInitializeSignature, calculateInitializeWithENSSignature, getInitializeSigner} from './core/utils/calculateSignature';

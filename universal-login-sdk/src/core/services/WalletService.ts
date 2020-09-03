@@ -1,4 +1,4 @@
-import {ensure, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil, PartialRequired} from '@unilogin/commons';
+import {ensure, Choose, walletFromBrain, Procedure, ExecutionOptions, ensureNotFalsy, findGasOption, FAST_GAS_MODE_INDEX, ETHER_NATIVE_TOKEN, waitUntil, PartialRequired} from '@unilogin/commons';
 import UniLoginSdk from '../../api/sdk';
 import {FutureWallet} from '../../api/wallet/FutureWallet';
 import {DeployingWallet} from '../../api/wallet/DeployingWallet';
@@ -51,6 +51,10 @@ export class WalletService {
   ) {
     this.walletStorage = new WalletStorageService(storageService, sdk.config.network);
     this.walletSerializer = new WalletSerializer(sdk);
+  }
+
+  isDeployed(state = this.state): state is Choose<WalletState, 'Deployed' | 'DeployedWithotEmail'> {
+    return this.walletDeployed.get();
   }
 
   getDeployedWallet(): DeployedWithoutEmailWallet {
@@ -170,7 +174,7 @@ export class WalletService {
   }
 
   async waitForTransactionHash() {
-    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') {
+    if (this.isDeployed(this.state)) {
       return this.state.wallet;
     }
     const deployingWallet = this.getDeployingWallet();
@@ -181,7 +185,7 @@ export class WalletService {
   }
 
   async waitToBeSuccess() {
-    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') {
+    if (this.isDeployed(this.state)) {
       return this.state.wallet;
     }
     const deployingWallet = this.getDeployingWallet();
@@ -268,7 +272,7 @@ export class WalletService {
   }
 
   async waitForConnection() {
-    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') return;
+    if (this.isDeployed(this.state)) return;
     ensureKind(this.state, 'Connecting');
     const connectingWallet = this.getConnectingWallet();
     const filter = {
@@ -288,7 +292,7 @@ export class WalletService {
   }
 
   async cancelWaitForConnection(tick = 500, timeout = 1500) {
-    if (this.state.kind === 'Deployed' || this.state.kind === 'DeployedWithoutEmail') return;
+    if (this.isDeployed(this.state)) return;
     await waitUntil(() => !!this.getConnectingWallet().unsubscribe, tick, timeout);
     this.getConnectingWallet().unsubscribe!();
     this.disconnect();
@@ -316,7 +320,7 @@ export class WalletService {
   }
 
   async removeWallet(executionOptions: ExecutionOptions) {
-    if (this.state.kind !== 'Deployed' && this.state.kind !== 'DeployedWithoutEmail') {
+    if (!this.isDeployed(this.state)) {
       this.disconnect();
       return;
     }
