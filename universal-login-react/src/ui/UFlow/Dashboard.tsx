@@ -23,7 +23,7 @@ export const Dashboard = (props: DashboardProps) => {
   const [dashboardVisibility, setDashboardVisibility] = useState(false);
 
   const state = useProperty(walletService.stateProperty);
-  const deployedWallet = state.kind === 'Deployed' || state.kind === 'DeployedWithoutEmail' ? state.wallet : undefined;
+  const deployedWallet = walletService.isDeployed(state) ? state.wallet : undefined;
 
   const [newNotifications, setNewNotifications] = useState<Notification[]>([]);
   useAsyncEffect(async () => deployedWallet?.subscribeAuthorisations(setNewNotifications) as Promise<() => void>, [deployedWallet]);
