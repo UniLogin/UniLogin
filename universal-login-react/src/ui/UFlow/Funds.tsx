@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {CurrencyToValue} from '@unilogin/commons';
 import {useAsyncEffect} from '../hooks/useAsyncEffect';
 import {WalletService} from '@unilogin/sdk';
+import {useHistory} from 'react-router';
 import {Balance} from '../commons/Balance';
 import {Assets} from '../commons/Assets';
 import './../styles/base/funds.sass';
@@ -18,10 +19,10 @@ interface FundsProps {
   onDeviceMessageClick: () => void;
   onTopUpClick: () => void;
   onSendClick: () => void;
-  securityAlert?: boolean;
+  onSecurityAlert?: () => void;
 }
 
-export const Funds = ({walletService, onTopUpClick, onSendClick, onDeviceMessageClick, securityAlert = false}: FundsProps) => {
+export const Funds = ({walletService, onTopUpClick, onSendClick, onDeviceMessageClick, onSecurityAlert}: FundsProps) => {
   const deployedWallet = walletService.getDeployedWallet();
   const {sdk, contractAddress} = deployedWallet;
 
@@ -35,7 +36,7 @@ export const Funds = ({walletService, onTopUpClick, onSendClick, onDeviceMessage
           deployedWallet={deployedWallet}
           onManageClick={onDeviceMessageClick}
         />
-        {securityAlert && <SecurityAlert walletService={walletService} onClick={() => {}} />}
+        {onSecurityAlert && <SecurityAlert walletService={walletService} onClick={onSecurityAlert} />}
         <div className="balance-wrapper">
           <Balance amount={totalTokensValue['USD']} />
           <div className="funds-buttons">
