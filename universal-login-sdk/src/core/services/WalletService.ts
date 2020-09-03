@@ -53,7 +53,7 @@ export class WalletService {
     this.walletSerializer = new WalletSerializer(sdk);
   }
 
-  isDeployed(x = this.state): x is Choose<WalletState, 'Deployed' | 'DeployedWithotEmail'> {
+  isDeployed(state = this.state): state is Choose<WalletState, 'Deployed' | 'DeployedWithotEmail'> {
     return this.walletDeployed.get();
   }
 
