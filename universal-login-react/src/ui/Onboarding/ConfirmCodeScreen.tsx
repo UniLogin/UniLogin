@@ -16,8 +16,11 @@ const getTitleForConfirmCode = (walletState: WalletState) => {
       return 'Create account';
     case 'RequestedRestoring':
       return 'Log-in';
+    case 'RequestedMigrating':
+    case 'ConfirmedMigrating':
+      return 'Secure wallet';
     default:
-      throw new InvalidWalletState('RequestedCreating or RequestedRestoring', walletState.kind);
+      throw new InvalidWalletState('RequestedCreating or RequestedRestoring or RequestedMigrating or ConfirmedMigrating', walletState.kind);
   }
 };
 

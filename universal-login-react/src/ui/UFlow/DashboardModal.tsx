@@ -12,6 +12,8 @@ import {Funds} from './Funds';
 import {Transfer} from '../Transfer/Transfer';
 import {useClassFor} from '../utils/classFor';
 import {join} from 'path';
+import {MigrationFlow} from '../Migrating/MigrationFlow';
+import {ErrorMessage} from '../..';
 
 export interface DashboardModalProps {
   walletService: WalletService;
@@ -59,12 +61,19 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
                   onTopUpClick={() => history.push(join(basePath, 'topUp'))}
                   onSendClick={() => history.push(join(basePath, 'transferAmount'))}
                   onDeviceMessageClick={() => history.push(join(basePath, 'devices/approveDevice'))}
-                  securityAlert={false}
                 />
               </DialogWrapper>
             </ModalWrapper>
           )}
         />
+        <Route path={join(basePath, 'migration')}>
+          <MigrationFlow
+            onSuccess={() => history.push(join(basePath, 'funds'))}
+            walletService={walletService}
+            hideModal={onClose}
+            onError={(e) => history.push(join(basePath, 'error'), {message: e.message})}
+          />
+        </Route>
         <Route path={join(basePath, 'topUp')} exact>
           <ModalWrapper hideModal={onClose} modalClassName="udashboard-modal">
             <SubDialogWrapper message={notice} ensName={name}>
@@ -116,6 +125,16 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
             </DialogWrapper>
           </ModalWrapper>
         </Route>
+        <Route
+          path={join(basePath, 'error')}
+          render={({history, location}) =>
+            <ModalWrapper hideModal={() => history.push(join(basePath, 'funds'))}>
+              <ErrorMessage
+                title={'Something went wrong'}
+                message={location.state.message}
+              />
+            </ModalWrapper>
+          } />
       </Switch>
     </div>
   );
