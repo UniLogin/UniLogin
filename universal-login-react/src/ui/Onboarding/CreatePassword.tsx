@@ -12,6 +12,7 @@ import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
 import pinCodeIcon from '../assets/icons/pin-code.svg';
 import {passwordValidator} from '../../app/inputValidators/passwordValidator';
 import {Spinner} from '../..';
+import {Hint} from '../commons/PasswordHint';
 
 interface CreatePasswordProps {
   hideModal?: () => void;
@@ -89,8 +90,4 @@ export const CreatePassword = ({hideModal, walletService, onConfirm}: CreatePass
         : <Spinner />}
     </div>
   </OnboardingStepsWrapper>;
-};
-
-const Hint = ({text}: {text: string}) => {
-  return <div className={useClassFor('info-text-hint')}>{text}</div>;
 };
