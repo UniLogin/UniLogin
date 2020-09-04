@@ -9,11 +9,11 @@ import {WalletService} from '@unilogin/sdk';
 
 interface MigrationSuccessProps {
   walletService: WalletService;
-  onMigrationSuccess: () => void;
+  onConfirm: () => void;
   hideModal: () => void;
 }
 
-export const MigrationSuccess = ({onMigrationSuccess, hideModal, walletService}: MigrationSuccessProps) => {
+export const MigrationSuccess = ({onConfirm, hideModal, walletService}: MigrationSuccessProps) => {
   return <OnboardingStepsWrapper
     title="Migration succeed!"
     className='migration-success'
@@ -33,7 +33,7 @@ export const MigrationSuccess = ({onMigrationSuccess, hideModal, walletService}:
       <div className={classForComponent('buttons-wrapper')}>
         <PrimaryButton
           text='Confirm'
-          onClick={onMigrationSuccess}
+          onClick={onConfirm}
         />
       </div>
     </div>
