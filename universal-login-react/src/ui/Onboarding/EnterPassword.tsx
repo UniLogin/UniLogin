@@ -17,9 +17,10 @@ interface EnterPasswordProps {
   hideModal?: () => void;
   walletService: WalletService;
   onConfirm: (password: string) => Promise<void>;
+  onCancel: () => void;
 }
 
-export const EnterPassword = ({hideModal, walletService, onConfirm}: EnterPasswordProps) => {
+export const EnterPassword = ({hideModal, walletService, onCancel, onConfirm}: EnterPasswordProps) => {
   const [password, setPassword] = useInputField([passwordValidator]);
   const [loading, setLoading] = useState(false);
   const primaryButtonClassName = useClassFor('proceed-btn');
@@ -55,8 +56,8 @@ export const EnterPassword = ({hideModal, walletService, onConfirm}: EnterPasswo
     <div className={classForComponent('buttons-wrapper')}>
       {!loading
         ? <><SecondaryButton
-          text='Back'
-          onClick={() => console.log('click')}
+          text='Cancel'
+          onClick={onCancel}
           className={classForComponent('back-btn')}/>
         <PrimaryButton
           text='Confirm'
