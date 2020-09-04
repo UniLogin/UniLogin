@@ -14,7 +14,7 @@ import Spinner from '../commons/Spinner';
 import {OnboardingStepsWrapper} from '../Onboarding/OnboardingStepsWrapper';
 import {emailValidator} from '../../app/inputValidators/emailValidator';
 
-interface EnterEmailProps {
+export interface EnterEmailProps {
   hideModal?: () => void;
   walletService: WalletService;
   onConfirm: (email: string) => Promise<void>;
