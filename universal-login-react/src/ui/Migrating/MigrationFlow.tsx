@@ -6,6 +6,7 @@ import {WalletService} from '@unilogin/sdk';
 import {EnterEmail} from './EnterEmail';
 import {CreatePassword} from '../Onboarding/CreatePassword';
 import {ConfirmCodeScreen} from '../Onboarding/ConfirmCodeScreen';
+import {MigrationSuccess} from './MigrationSuccess';
 
 export interface MigrationFlowProps {
   walletService: WalletService;
@@ -22,8 +23,9 @@ export const MigrationFlow = ({walletService, onSuccess, hideModal}: MigrationFl
       <Route exact path={path.join(match.path, 'email')}>
         <EnterEmail
           onConfirm={async (email) => {
-            history.push(path.join(match.path, 'confirm'));
-            await walletService.createRequestedMigratingWallet(email);
+            const promise = walletService.createRequestedMigratingWallet(email);
+            history.replace(path.join(match.path, 'confirm'));
+            await promise;
           }}
           hideModal={hideModal}
           walletService={walletService}
@@ -31,10 +33,10 @@ export const MigrationFlow = ({walletService, onSuccess, hideModal}: MigrationFl
       </Route>
       <Route exact path={path.join(match.path, 'confirm')}>
         <ConfirmCodeScreen
-          onConfirmCode={() => history.push(path.join(match.path, 'password'))}
+          onConfirmCode={() => history.replace(path.join(match.path, 'password'))}
           onCancel={() => {
+            history.replace(path.join(match.path, 'email'));
             walletService.migrationRollback();
-            history.push(path.join(match.path, 'email'));
           }}
           walletService={walletService}
         />
@@ -45,8 +47,15 @@ export const MigrationFlow = ({walletService, onSuccess, hideModal}: MigrationFl
           hideModal={hideModal}
           onConfirm={async (password) => {
             await walletService.createPassword(password);
-            onSuccess();
+            history.replace(path.join(match.path, 'success'));
           }}
+        />
+      </Route>
+      <Route exact path={path.join(match.path, 'success')}>
+        <MigrationSuccess
+          walletService={walletService}
+          hideModal={hideModal}
+          onConfirm={onSuccess}
         />
       </Route>
       <Redirect exact from={match.path} to={path.join(match.path, 'email')} />
