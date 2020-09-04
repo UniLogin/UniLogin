@@ -1,0 +1,42 @@
+.unilogin-component-migration-success.unilogin-theme-unilogin
+  .unilogin-component-migration-success-icon-wrapper
+    position: relative
+
+  .unilogin-component-migration-success-icon-wrapper > img
+    position: relative
+    z-index: 100
+
+    @media only screen and (max-width: 600px)
+      width: 5.2rem
+      height: 5.2rem
+
+    @media only screen and (max-width: 350px)
+      width: 4.2rem
+      height: 4.2rem
+
+  .unilogin-component-migration-success-icon-wrapper::before
+    content: ''
+    position: absolute
+    top: -59%
+    left: 50%
+    width: 17rem
+    height: 14rem
+    background: linear-gradient(#00BFD9, #527EEE)
+    border: 2px solid red
+    opacity: 0.15
+    filter: blur(44px)
+    transform: rotate(-25.33deg) translate(-45%, -25%)
+
+  .unilogin-component-migration-success-icon-wrapper.success::before
+    background: linear-gradient(92.02deg, #0ADBC2 0%, #07D1D1 100%)
+
+  .unilogin-component-migration-success-subtitle,
+  .unilogin-component-migration-success-description
+    color: #0F0C4A
+
+  .unilogin-component-migration-success-description
+    @media only screen and (max-width: 400px)
+      font-size: 15px
+
+  .unilogin-component-span-email
+    color: #7D7C9C
