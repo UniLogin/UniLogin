@@ -69,6 +69,7 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
         <Route path={join(basePath, 'migration')}>
           <SubDialogWrapper message={notice} ensName={name}>
             <MigrationFlow
+              onSuccess={() => history.push(join(basePath, 'funds'))}
               walletService={walletService}
               hideModal={onClose}
             />
