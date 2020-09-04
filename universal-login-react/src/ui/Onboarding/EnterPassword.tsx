@@ -12,6 +12,7 @@ import pinCodeIcon from '../assets/icons/pin-code.svg';
 import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 import Spinner from '../commons/Spinner';
 import {passwordValidator} from '../../app/inputValidators/passwordValidator';
+import {Hint} from '../commons/PasswordHint';
 
 interface EnterPasswordProps {
   hideModal?: () => void;
@@ -23,12 +24,23 @@ interface EnterPasswordProps {
 export const EnterPassword = ({hideModal, walletService, onCancel, onConfirm}: EnterPasswordProps) => {
   const [password, setPassword] = useInputField([passwordValidator]);
   const [loading, setLoading] = useState(false);
+  const [hint, setHint] = useState<string | undefined>(undefined);
   const primaryButtonClassName = useClassFor('proceed-btn');
 
   const onConfirmClick = async () => {
+    setHint(undefined);
     ensureNotFalsy(password, Error, 'Password is missing');
     setLoading(true);
-    await onConfirm(password);
+    try {
+      await onConfirm(password);
+    } catch (e) {
+      if (e.message === 'invalid password') {
+        setHint('Password is invalid');
+      } else {
+        throw e;
+      }
+    }
+    setLoading(false);
   };
 
   return <OnboardingStepsWrapper
@@ -52,6 +64,7 @@ export const EnterPassword = ({hideModal, walletService, onCancel, onConfirm}: E
           setValue={setPassword}
         />
       </div>
+      {hint !== undefined ? <Hint text={hint} /> : <div className={classForComponent('info-text-hint-placeholder')} />}
     </div>
     <div className={classForComponent('buttons-wrapper')}>
       {!loading
