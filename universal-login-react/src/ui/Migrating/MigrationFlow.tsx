@@ -12,9 +12,10 @@ export interface MigrationFlowProps {
   walletService: WalletService;
   onSuccess: () => void;
   hideModal: () => void;
+  onError?: (e: Error) => void;
 };
 
-export const MigrationFlow = ({walletService, onSuccess, hideModal}: MigrationFlowProps) => {
+export const MigrationFlow = ({walletService, onSuccess, hideModal, onError}: MigrationFlowProps) => {
   const match = useRouteMatch();
   const history = useHistory();
 
@@ -23,9 +24,13 @@ export const MigrationFlow = ({walletService, onSuccess, hideModal}: MigrationFl
       <Route exact path={path.join(match.path, 'email')}>
         <EnterEmail
           onConfirm={async (email) => {
-            const promise = walletService.createRequestedMigratingWallet(email);
-            history.replace(path.join(match.path, 'confirm'));
-            await promise;
+            try {
+              const promise = walletService.createRequestedMigratingWallet(email);
+              history.replace(path.join(match.path, 'confirm'));
+              await promise;
+            } catch (e) {
+              onError?.(e);
+            }
           }}
           hideModal={hideModal}
           walletService={walletService}
