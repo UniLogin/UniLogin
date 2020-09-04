@@ -33,7 +33,6 @@ const HomeScreen = () => {
                     onTopUpClick={() => history.push(join(basePath, 'topUp'))}
                     onSendClick={() => history.push(join(basePath, 'transfer'))}
                     onDeviceMessageClick={() => history.push(join(basePath, 'devices', 'approveDevice'))}
-                    securityAlert={false}
                   />
                 </Route>
                 <Route path={join(basePath, 'devices')}>

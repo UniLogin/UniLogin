@@ -91,7 +91,7 @@ export const App = () => {
                     walletService.disconnect();
                     history.push('/onboarding');
                   }}>Disconnect</button>
-                  <Dashboard walletService={walletService}/>
+                  <Dashboard walletService={walletService} />
                 </>}
               />
               <Route
@@ -266,7 +266,7 @@ export const App = () => {
                 render={({history}) => <CreatePassword
                   hideModal={() => history.push('/')}
                   walletService={walletService}
-                  onConfirm={(password) => console.log({password})}/>}
+                  onConfirm={(password) => console.log({password})} />}
               />
               <Route
                 exact
@@ -274,7 +274,9 @@ export const App = () => {
                 render={({history}) => <EnterPassword
                   hideModal={() => history.push('/')}
                   walletService={walletService}
-                  onConfirm={async (password) => console.log({password})}/>}
+                  onConfirm={async (password) => console.log({password})}
+                  onCancel={() => history.push('/')}
+                />}
               />
               <Route
                 exact
@@ -282,7 +284,7 @@ export const App = () => {
                 render={({history}) => <EnterEmail
                   hideModal={() => history.push('/')}
                   walletService={walletService}
-                  onConfirm={async (email) => console.log({email})}/>}
+                  onConfirm={async (email) => console.log({email})} />}
               />
               <Route
                 exact

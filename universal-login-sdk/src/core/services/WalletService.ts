@@ -176,7 +176,7 @@ export class WalletService {
   }
 
   async retryRequestEmailConfirmation() {
-    ensureKind(this.state, 'RequestedRestoring', 'RequestedCreating');
+    ensureKind(this.state, 'RequestedRestoring', 'RequestedCreating', 'RequestedMigrating');
     return this.state.wallet.requestEmailConfirmation();
   }
 
@@ -425,8 +425,8 @@ export class WalletService {
   }
 
   getEnsNameOrEmail() {
-    ensureKind(this.state, 'RequestedCreating', 'RequestedRestoring', 'RequestedMigrating');
-    if (this.state.kind === 'RequestedCreating' || this.state.kind === 'RequestedMigrating') {
+    ensureKind(this.state, 'RequestedCreating', 'RequestedRestoring', 'RequestedMigrating', 'ConfirmedMigrating');
+    if (this.state.kind === 'RequestedCreating' || this.state.kind === 'RequestedMigrating' || this.state.kind === 'ConfirmedMigrating') {
       return this.state.wallet.email;
     } else {
       return this.state.wallet.ensNameOrEmail;
