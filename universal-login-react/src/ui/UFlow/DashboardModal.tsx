@@ -60,7 +60,7 @@ export const DashboardModal = ({walletService, onClose, basePath = '/dashboard'}
                   onTopUpClick={() => history.push(join(basePath, 'topUp'))}
                   onSendClick={() => history.push(join(basePath, 'transferAmount'))}
                   onDeviceMessageClick={() => history.push(join(basePath, 'devices/approveDevice'))}
-                  onSecurityAlert={() => history.push(join(basePath, 'migration'))}
+                  // onSecurityAlert={() => history.push(join(basePath, 'migration'))}
                 />
               </DialogWrapper>
             </ModalWrapper>
