@@ -7,7 +7,7 @@ interface ConfirmCodeScreenProps {
   hideModal?: () => void;
   walletService: WalletService;
   onCancel: () => void;
-  onConfirmCode?: () => void;
+  onConfirmCode: () => void;
 }
 
 const getTitleForConfirmCode = (walletState: WalletState) => {

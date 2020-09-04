@@ -15,7 +15,7 @@ const CODE_LENGTH = 6;
 
 interface ConfirmCodeProps {
   email: string;
-  onConfirmCode?: () => void;
+  onConfirmCode: () => void;
   onCancel: () => void;
   walletService: WalletService;
 }
