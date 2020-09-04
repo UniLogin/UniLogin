@@ -11,6 +11,7 @@ import '../styles/base/enterPassword.sass';
 import '../styles/themes/UniLogin/enterPasswordThemeUniLogin.sass';
 import pinCodeIcon from '../assets/icons/pin-code.svg';
 import {passwordValidator} from '../../app/inputValidators/passwordValidator';
+import {Spinner} from '../..';
 
 interface CreatePasswordProps {
   hideModal?: () => void;
@@ -21,7 +22,10 @@ interface CreatePasswordProps {
 export const CreatePassword = ({hideModal, walletService, onConfirm}: CreatePasswordProps) => {
   const [password, setPassword, passwordError] = useInputField([passwordValidator]);
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [hint, setHint] = useState<string | undefined>(undefined);
+  const buttonClass = useClassFor('proceed-btn');
+
   useEffect(() => {
     if (confirmPassword && password.length > confirmPassword.length) {
       setHint('Keep typing, password and password confirmation are different.');
@@ -37,6 +41,7 @@ export const CreatePassword = ({hideModal, walletService, onConfirm}: CreatePass
     ensureNotFalsy(confirmPassword, Error, 'Password confirmation missing');
     ensure(password === confirmPassword, Error, 'Password and password confirmation are different');
     onConfirm(password);
+    setLoading(true);
   };
 
   return <OnboardingStepsWrapper
@@ -48,7 +53,7 @@ export const CreatePassword = ({hideModal, walletService, onConfirm}: CreatePass
     progress={3}>
     <div className={`${classForComponent('onboarding-content-wrapper')}`}>
       <div className={classForComponent('onboarding-icon-wrapper')}>
-        <img src={pinCodeIcon} alt="pin-code icon" className={classForComponent('oboarding-pin-code-icon')}/>
+        <img src={pinCodeIcon} alt="pin-code icon" className={classForComponent('oboarding-pin-code-icon')} />
       </div>
       <div className={`${classForComponent('input-item')}`}>
         <InputField
@@ -74,12 +79,14 @@ export const CreatePassword = ({hideModal, walletService, onConfirm}: CreatePass
       </div>
     </div>
     <div className={classForComponent('buttons-wrapper')}>
-      <PrimaryButton
-        text='Confirm'
-        disabled={isConfirmPasswordButtonDisabled(password, confirmPassword)}
-        onClick={onConfirmClick}
-        className={useClassFor('proceed-btn')}
-      />
+      {!loading
+        ? <PrimaryButton
+          text='Confirm'
+          disabled={isConfirmPasswordButtonDisabled(password, confirmPassword)}
+          onClick={onConfirmClick}
+          className={buttonClass}
+        />
+        : <Spinner />}
     </div>
   </OnboardingStepsWrapper>;
 };
