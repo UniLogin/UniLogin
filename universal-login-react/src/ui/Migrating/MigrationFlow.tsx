@@ -2,7 +2,7 @@
 import React from 'react';
 import path from 'path';
 import {useRouteMatch, useHistory, Switch, Route, Redirect} from 'react-router-dom';
-import {WalletService} from '@unilogin/sdk';
+import {WalletService, WalletState, InvalidWalletState} from '@unilogin/sdk';
 import {EnterEmail} from './EnterEmail';
 import {CreatePassword} from '../Onboarding/CreatePassword';
 import {ConfirmCodeScreen} from '../Onboarding/ConfirmCodeScreen';
@@ -63,7 +63,22 @@ export const MigrationFlow = ({walletService, onSuccess, hideModal, onError}: Mi
           onConfirm={onSuccess}
         />
       </Route>
-      <Redirect exact from={match.path} to={path.join(match.path, 'email')} />
+      <Redirect exact from={match.path} to={getRedirectPath(walletService.state, match.path)} />
     </Switch>
   );
+};
+
+const getRedirectPath = (walletState: WalletState, basePath: string) => {
+  switch (walletState.kind) {
+    case 'DeployedWithoutEmail':
+      return path.join(basePath, 'email');
+    case 'RequestedMigrating':
+      return path.join(basePath, 'confirm');
+    case 'ConfirmedMigrating':
+      return path.join(basePath, 'password');
+    case 'Deployed':
+      return path.join(basePath, 'success');
+    default:
+      throw new InvalidWalletState('DeployedWithoutEmail, RequestedMigrating, ConfirmedMigrating  or Deployed', walletState.kind);
+  }
 };
