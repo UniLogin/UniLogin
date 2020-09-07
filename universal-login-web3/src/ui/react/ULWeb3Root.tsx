@@ -34,6 +34,7 @@ export const ULWeb3Root = ({sdk, walletService, uiController, domains}: ULWeb3Ro
         walletService={walletService}
         domains={domains}
         hideModal={hideModal}
+        emailFlow={true}
       />;
     case 'SIGN_CONFIRMATION':
       return <SignConfirmation message={message} {...modal.props} />;
