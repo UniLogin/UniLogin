@@ -75,10 +75,7 @@ export const ConfirmCode = ({email, onCancel, onConfirmCode, walletService}: Con
     {!isValid && <div className={classForComponent('buttons-wrapper')}>
       <SecondaryButton
         text='Cancel'
-        onClick={() => {
-          walletService.disconnect();
-          onCancel();
-        }}
+        onClick={onCancel}
       />
       <PrimaryButton
         text='Confirm'

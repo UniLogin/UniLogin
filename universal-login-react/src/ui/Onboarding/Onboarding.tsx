@@ -99,6 +99,7 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
               hideModal={props.hideModal}
               onConfirmCode={() => history.push(getRedirectPathForConfirmCode(props.walletService.state.kind))}
               onCancel={() => {
+                props.walletService.disconnect();
                 history.push('/email');
               }}
             />} />
