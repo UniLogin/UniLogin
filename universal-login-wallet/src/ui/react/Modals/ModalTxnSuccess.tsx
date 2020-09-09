@@ -33,7 +33,7 @@ export const ModalTxnSuccess = ({operation, text}: ModalTxnSuccessProps) => {
         <p className="congratulation-text">
           Congratulations! {text}
         </p>
-        <Link to="/wallet" className="button-primary modal-success-btn">Go to your wallet</Link>
+        <Link to="/dashboard" className="button-primary modal-success-btn">Go to your wallet</Link>
       </div>
     </>
   );
