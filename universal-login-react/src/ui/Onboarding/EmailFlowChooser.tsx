@@ -4,6 +4,7 @@ import {WalletService} from '@unilogin/sdk';
 import {useClassFor, classForComponent} from '../utils/classFor';
 import '../styles/base/onboardingSelectFlow.sass';
 import '../styles/themes/UniLogin/onboardingSelectFlowThemeUniLogin.sass';
+import '../styles/themes/Jarvis/onboardingSelectFlowThemeJarvis.sass';
 import {InputField} from '../commons/InputField';
 import {useInputField} from '../hooks/useInputField';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';

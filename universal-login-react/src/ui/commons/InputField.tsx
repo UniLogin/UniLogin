@@ -1,11 +1,12 @@
 import React from 'react';
+import {isClassName} from '@unilogin/commons';
 import {useClassFor} from '../..';
 import {Label} from './Form/Label';
 import Input from './Input';
 import '../styles/base/inputField.sass';
 import '../styles/themes/UniLogin/inputFieldThemeUniLogin.sass';
+import '../styles/themes/Jarvis/inputFieldThemeJarvis.sass';
 import {classForComponent} from '../utils/classFor';
-import {isClassName} from '@unilogin/commons';
 
 interface InputFieldProps {
   value: string;
