@@ -1,24 +1,25 @@
 import React from 'react';
-import {Route, Redirect, RouteProps, RouteComponentProps} from 'react-router-dom';
+import {Route, Redirect, RouteProps, RouteComponentProps, useLocation} from 'react-router-dom';
 import {getDefaultPathForWalletState} from '../../app/getDefaultPathForWalletState';
-import {WalletState} from '@unilogin/sdk';
+import {WalletService} from '@unilogin/sdk';
 import {needRedirect} from '../../app/needRedirect';
 
 export interface WalletRouteProps extends RouteProps {
-  walletState: WalletState;
+  walletService: WalletService;
   component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
 }
 
-export const WalletRoute = ({walletState, component, render, ...restProps}: WalletRouteProps) => (
-  <Route
-    {...restProps}
-    render={props => needRedirect(walletState, props.location.pathname)
-      ? (<Redirect
-        to={{
-          pathname: getDefaultPathForWalletState(walletState),
-          state: {from: props.location},
-        }}
-      />)
-      : React.createElement(component, {...props, walletState})}
-  />
-);
+export const WalletRoute = ({walletService, component, render, ...restProps}: WalletRouteProps) => {
+  const location = useLocation();
+  return needRedirect(walletService.state, location.pathname)
+    ? <Redirect
+      from={location.pathname}
+      to={{
+        pathname: getDefaultPathForWalletState(walletService.state),
+        state: {from: location},
+      }} />
+    : <Route
+      {...restProps}
+      render={props => React.createElement(component, {...props, walletState: walletService.state})}
+    />;
+};
