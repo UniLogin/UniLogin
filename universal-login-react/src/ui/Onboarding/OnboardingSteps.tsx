@@ -34,7 +34,13 @@ const CreateFutureWallet = ({walletService, hideModal}: CreateFutureWalletProps)
     : <CreatePassword
       walletService={walletService}
       hideModal={hideModal}
-      onConfirm={setPassword}
+      onConfirm={(password) => {
+        if (walletService.sdk.isRefundPaid()) {
+          walletService.createDeployingWalletWithPassword(password);
+        } else {
+          setPassword(password);
+        }
+      }}
     />;
 };
 

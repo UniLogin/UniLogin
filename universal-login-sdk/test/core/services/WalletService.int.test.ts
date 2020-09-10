@@ -228,6 +228,26 @@ describe('INT: WalletService', () => {
       expect(walletService.state).to.deep.include({kind: 'Deployed'});
       expect((walletService.state as any).wallet!).to.deep.include({contractAddress: futureWallet.contractAddress, name: TEST_ENS_NAME});
     });
+
+    it('free deployment with email', async () => {
+      const email = 'name@gmail.com';
+      const ensName = 'user.mylogin.eth';
+      const refundPaidSdk = new UniLoginSdk(relayer.url(), provider, {...TEST_SDK_CONFIG, mineableFactoryTimeout: 3000, apiKey: TEST_REFUND_PAYER.apiKey});
+      walletService = new WalletService(refundPaidSdk);
+      await refundPaidSdk.fetchRelayerConfig();
+      expect(walletService.state).to.deep.eq({kind: 'None'});
+      const promise = walletService.createRequestedCreatingWallet(email, ensName);
+      expect(walletService.state).to.deep.include({kind: 'RequestedCreating'});
+      await promise;
+      const confirmEmailResult = await walletService.confirmCode(relayer.sentCodes[email]);
+      expect(confirmEmailResult).deep.include({email, code: relayer.sentCodes[email]});
+      expect(walletService.state).to.deep.include({kind: 'Confirmed'});
+      const password = 'password123!';
+      await walletService.createDeployingWalletWithPassword(password);
+      expect(walletService.state.kind).to.eq('Deploying');
+      await walletService.waitToBeSuccess();
+      expect(walletService.state.kind).eq('Deployed');
+    });
   });
 
   afterEach(async () => {
