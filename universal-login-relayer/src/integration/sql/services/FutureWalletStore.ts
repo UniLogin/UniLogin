@@ -18,4 +18,12 @@ export class FutureWalletStore {
       .where('contractAddress', contractAddress)
       .first();
   }
+
+  getByEnsName(ensName: string) {
+    return this.database
+      .select(['contractAddress', 'ensName', 'gasPrice', 'gasToken', 'publicKey', 'tokenPriceInETH'])
+      .from('future_wallets')
+      .where({ensName})
+      .first();
+  }
 }
