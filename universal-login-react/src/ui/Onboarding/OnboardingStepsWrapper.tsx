@@ -4,6 +4,7 @@ import {useClassFor, classForComponent} from '../utils/classFor';
 import {ModalProgressBar} from '../commons/ModalProgressBar';
 import '../styles/base/onboardingModal.sass';
 import '../styles/themes/UniLogin/onboardingModalThemeUniLogin.sass';
+import '../styles/themes/Jarvis/onboardingModalThemeJarvis.sass';
 import {ModalWrapperProps, ModalWrapper} from '../Modals/ModalWrapper';
 
 interface OnboardingStepsWrapperProps extends ModalWrapperProps {
