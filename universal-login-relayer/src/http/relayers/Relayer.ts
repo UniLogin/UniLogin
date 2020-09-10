@@ -154,7 +154,7 @@ class Relayer {
     this.encryptedWalletsStore = new EncryptedWalletsStore(this.database);
     const emailConfirmationHandler = new EmailConfirmationHandler(this.emailConfirmationStore, this.emailService, emailConfirmationValidator, this.encryptedWalletsStore);
     const encryptedWalletHandler = new EncryptedWalletHandler(this.emailConfirmationStore, emailConfirmationValidator, this.encryptedWalletsStore);
-    const restoreWalletHandler = new RestoreWalletHandler(this.emailConfirmationStore, emailConfirmationValidator, this.encryptedWalletsStore);
+    const restoreWalletHandler = new RestoreWalletHandler(this.emailConfirmationStore, emailConfirmationValidator, this.encryptedWalletsStore, futureWalletStore);
 
     this.app.use(bodyParser.json());
     this.app.use('/email', EmailRouter(emailConfirmationHandler));
