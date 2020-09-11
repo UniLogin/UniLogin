@@ -112,7 +112,11 @@ export const Onboarding = ({emailFlow = false, ...props}: OnboardingProps) => {
               walletService={props.walletService}
               onConfirm={async (password: string) => {
                 await props.walletService.restoreWallet(password);
-                props.onRestore?.();
+                if (props.walletService.isKind('Future')) {
+                  history.push('/create');
+                } else {
+                  props.onRestore?.();
+                }
               }}
               onCancel={() => {
                 props.walletService.disconnect();

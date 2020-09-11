@@ -32,8 +32,9 @@ export const getInitialEmailOnboardingLocation = (state: WalletState): string | 
     case 'RequestedCreating':
     case 'RequestedRestoring':
       return '/code';
-    case 'Confirmed':
     case 'Restoring':
+      return '/restore';
+    case 'Confirmed':
     case 'Future':
     case 'Deploying':
       return '/create';
