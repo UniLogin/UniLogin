@@ -197,6 +197,15 @@ export class WalletService {
     return futureWallet;
   }
 
+  async createDeployingWalletWithPassword(password: string): Promise<DeployingWallet> {
+    ensure(this.sdk.isRefundPaid(), ApiKeyMissing);
+    ensureKind(this.state, 'Confirmed');
+    const futureWallet = await this.sdk.getFutureWalletFactory().createNewWithPassword(this.state.wallet.asSerializableConfirmedWallet, '0', ETHER_NATIVE_TOKEN.address, password);
+    const deployingWallet = await futureWallet.deploy();
+    this.setDeploying(deployingWallet);
+    return deployingWallet;
+  }
+
   async createFutureWalletWithPassword(password: string, gasToken = ETHER_NATIVE_TOKEN.address): Promise<FutureWallet> {
     ensureKind(this.state, 'Confirmed');
     const gasModes = await this.sdk.getGasModes();
@@ -281,7 +290,7 @@ export class WalletService {
   }
 
   setDeploying(wallet: DeployingWallet) {
-    ensure(this.state.kind === 'None', WalletOverridden);
+    ensureKind(this.state, 'None', 'Confirmed');
     this.setState({kind: 'Deploying', wallet});
   }
 
