@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet} from 'ethers';
 import {MockProvider} from 'ethereum-waffle';
-import {SerializableRestoringWallet, TEST_WALLET, createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN} from '@unilogin/commons';
+import {SerializableRestoringWallet, TEST_WALLET, createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, ensure} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {RestoringWallet} from '../../../src/api/wallet/RestoringWallet';
 import UniLoginSdk, {DeployedWallet} from '../../../src';
@@ -45,6 +45,7 @@ describe('INT: RestoringWallet', () => {
 
     it('restore returns deployed wallet', async () => {
       const restoreResult = await restoringWallet.restore(TEST_WALLET.password);
+      ensure(restoreResult instanceof DeployedWallet, Error, 'expected DeployedWallet');
       expect(restoreResult.asSerializedDeployedWallet).to.deep.eq(deployedWallet.asSerializedDeployedWallet);
     });
   });

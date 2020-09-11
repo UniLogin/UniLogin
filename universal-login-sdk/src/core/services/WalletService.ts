@@ -110,9 +110,13 @@ export class WalletService {
 
   async restoreWallet(password: string) {
     ensureKind(this.state, 'Restoring');
-    const deployedWallet = await this.state.wallet.restore(password);
-    this.setWallet(deployedWallet);
-    return deployedWallet;
+    const wallet = await this.state.wallet.restore(password);
+    if (wallet instanceof DeployedWallet) {
+      this.setWallet(wallet);
+    } else {
+      this.setFutureWallet(wallet, wallet.ensName);
+    }
+    return wallet;
   }
 
   getRequestedCreatingWallet() {
@@ -285,7 +289,7 @@ export class WalletService {
   }
 
   setFutureWallet(wallet: FutureWallet, name: string) {
-    ensure(this.state.kind === 'None' || this.state.kind === 'Confirmed', WalletOverridden);
+    ensure(this.state.kind === 'None' || this.state.kind === 'Confirmed' || this.state.kind === 'Restoring', WalletOverridden);
     this.setState({kind: 'Future', name, wallet});
   }
 

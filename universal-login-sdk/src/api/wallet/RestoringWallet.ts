@@ -27,8 +27,19 @@ export class RestoringWallet {
 
   async restore(password: string) {
     const wallet = await Wallet.fromEncryptedJson(JSON.stringify(this.encryptedWallet), password);
-    const deployedWallet = new DeployedWallet(this.contractAddress, this.ensName, wallet.privateKey, this.sdk, this.email);
-    ensure(await deployedWallet.keyExist(wallet.address), InvalidPrivateKey, this.contractAddress);
-    return deployedWallet;
+    if (await this.sdk.providerService.isContract(this.contractAddress)) {
+      const deployedWallet = new DeployedWallet(this.contractAddress, this.ensName, wallet.privateKey, this.sdk, this.email);
+      ensure(await deployedWallet.keyExist(wallet.address), InvalidPrivateKey, this.contractAddress);
+      return deployedWallet;
+    } else {
+      return this.sdk.getFutureWalletFactory().createFrom({
+        privateKey: wallet.privateKey,
+        contractAddress: this.contractAddress,
+        ensName: this.ensName,
+        gasPrice: this.gasPrice,
+        gasToken: this.gasToken,
+        email: this.email,
+      });
+    }
   }
 }
