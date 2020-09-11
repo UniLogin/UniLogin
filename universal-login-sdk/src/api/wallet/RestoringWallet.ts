@@ -10,6 +10,8 @@ export class RestoringWallet {
     readonly email: string,
     readonly ensName: string,
     readonly contractAddress: string,
+    readonly gasToken: string,
+    readonly gasPrice: string,
     private sdk: UniLoginSdk) {}
 
   get asSerializableRestoringWallet(): SerializableRestoringWallet {
@@ -18,6 +20,8 @@ export class RestoringWallet {
       ensName: this.ensName,
       contractAddress: this.contractAddress,
       email: this.email,
+      gasToken: this.gasToken,
+      gasPrice: this.gasPrice,
     };
   }
 
