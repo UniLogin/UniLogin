@@ -1,5 +1,6 @@
 import express, {Application} from 'express';
 import WalletRouter from '../routes/wallet';
+import CoingeckoRouter from '../routes/coingecko';
 import ConfigRouter, {getPublicConfig} from '../routes/config';
 import RequestAuthorisationRouter from '../routes/authorisation';
 import DevicesRouter from '../routes/devices';
@@ -25,7 +26,7 @@ import {MessageStatusService} from '../../core/services/execution/messages/Messa
 import {Beta2Service} from '../../integration/ethereum/Beta2Service';
 import MessageExecutionValidator from '../../integration/ethereum/validators/MessageExecutionValidator';
 import MessageExecutor from '../../integration/ethereum/MessageExecutor';
-import {BalanceChecker, GasPriceOracle, PublicRelayerConfig, TokenPricesService, TokenDetailsService, ProviderService} from '@unilogin/commons';
+import {BalanceChecker, GasPriceOracle, PublicRelayerConfig, TokenPricesService, TokenDetailsService, ProviderService, CoingeckoApi} from '@unilogin/commons';
 import {DevicesStore} from '../../integration/sql/services/DevicesStore';
 import {DevicesService} from '../../core/services/DevicesService';
 import DeploymentHandler from '../../core/services/execution/deployment/DeploymentHandler';
@@ -161,6 +162,7 @@ class Relayer {
     this.app.use('/config', ConfigRouter(this.publicConfig));
     this.app.use('/authorisation', RequestAuthorisationRouter(authorisationService));
     this.app.use('/devices', DevicesRouter(devicesService));
+    this.app.use('/coingecko', CoingeckoRouter(new CoingeckoApi()));
     this.app.use(errorHandler);
     this.server = this.app.listen(this.port);
   }

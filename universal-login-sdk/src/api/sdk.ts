@@ -1,4 +1,4 @@
-import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle, TokenPricesService, ProviderService, Erc721TokensService} from '@unilogin/commons';
+import {addCodesToNotifications, BalanceChecker, createKeyPair, deepMerge, DeepPartial, ensure, ensureNotFalsy, generateCode, Notification, PublicRelayerConfig, resolveName, TokenDetailsService, TokensValueConverter, SufficientBalanceValidator, Nullable, GasMode, MessageStatus, Network, asNetwork, Lazy, GasPriceOracle, TokenPricesService, ProviderService, Erc721TokensService, CoingeckoRelayerApi, Coingecko} from '@unilogin/commons';
 import {ContractService} from '@unilogin/contracts';
 import {providers} from 'ethers';
 import {SdkConfig} from '../config/SdkConfig';
@@ -79,7 +79,7 @@ class UniLoginSdk {
     this.sufficientBalanceValidator = new SufficientBalanceValidator(this.providerService);
     this.tokenDetailsService = new TokenDetailsService(this.provider, this.config.saiTokenAddress);
     this.tokensDetailsStore = new TokensDetailsStore(this.tokenDetailsService, this.config.observedTokensAddresses);
-    this.tokenPricesService = new TokenPricesService();
+    this.tokenPricesService = new TokenPricesService(new Coingecko(new CoingeckoRelayerApi(relayerUrl)));
     this.erc721TokensService = new Erc721TokensService(this.config.network);
     this.priceObserver = new PriceObserver(this.tokensDetailsStore, this.tokenPricesService, this.config.priceObserverTick);
     this.gasPriceOracle = new GasPriceOracle();
