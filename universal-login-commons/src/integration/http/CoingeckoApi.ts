@@ -1,6 +1,6 @@
 import {asArray, asNumber, asObject, asString, cast, Sanitizer} from '@restless/sanitizers';
 import {fetch, http} from '../..';
-import {CoingeckoToken} from './Coingecko';
+import {CoingeckoToken} from '../../core/models/CoingeckoToken';
 
 export interface CoingeckoApiInterface {
   getTokensList: () => Promise<CoingeckoToken[]>;

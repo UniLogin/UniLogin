@@ -1,13 +1,6 @@
-import {Sanitizer, asObject} from '@restless/sanitizers';
-import {} from './http';
 import {ObservedCurrency, TokenDetails} from '../..';
+import {CoingeckoToken} from '../../core/models/CoingeckoToken';
 import {CoingeckoApi, CoingeckoApiInterface} from './CoingeckoApi';
-
-export interface CoingeckoToken {
-  id: string;
-  symbol: string;
-  name: string;
-};
 
 export interface TokenDetailsWithCoingeckoId extends TokenDetails {
   coingeckoId: string;

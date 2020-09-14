@@ -1,5 +1,6 @@
 import {ObservedCurrency, TokensPrices, TokenDetails, ETHER_NATIVE_TOKEN} from '../../';
-import {Coingecko, TokenDetailsWithCoingeckoId, CoingeckoToken} from '../../integration/http/Coingecko';
+import {Coingecko, TokenDetailsWithCoingeckoId} from '../../integration/http/Coingecko';
+import {CoingeckoToken} from '../models/CoingeckoToken';
 const cryptocompare = require('cryptocompare');
 
 const aaveTokens = [
