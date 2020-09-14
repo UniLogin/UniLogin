@@ -1,6 +1,7 @@
-import {cast, Sanitizer, asNumber, asObject, asString, asArray} from '@restless/sanitizers';
-import {http} from './http';
-import {fetch, ObservedCurrency, TokenDetails} from '../..';
+import {Sanitizer, asObject} from '@restless/sanitizers';
+import {} from './http';
+import {ObservedCurrency, TokenDetails} from '../..';
+import {CoingeckoApi, CoingeckoApiInterface} from './CoingeckoApi';
 
 export interface CoingeckoToken {
   id: string;
@@ -13,16 +14,12 @@ export interface TokenDetailsWithCoingeckoId extends TokenDetails {
 };
 
 export class Coingecko {
-  private _http = http(fetch)('https://api.coingecko.com/api/v3');
   private static tokensList: Promise<CoingeckoToken[]>;
 
-  getTokensList = async () => {
-    const result = await this._http('GET', '/coins/list');
-    return cast(result, asCoingeckoTokens);
-  };
+  constructor(private coingeckoApi: CoingeckoApiInterface = new CoingeckoApi()) {}
 
   lazyGetTokensList = (): Promise<CoingeckoToken[]> => {
-    Coingecko.tokensList = Coingecko.tokensList || this.getTokensList();
+    Coingecko.tokensList = Coingecko.tokensList || this.coingeckoApi.getTokensList();
     return Coingecko.tokensList;
   };
 
@@ -40,16 +37,12 @@ export class Coingecko {
 
   fetchTokenImageUrl = async (token: TokenDetails) => {
     const coingeckoId = await this.getCoingeckoId(token);
-    const response = await this._http('GET', `/coins/${coingeckoId}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`);
-    return response.image.small;
+    return this.coingeckoApi.getTokenImageUrl(coingeckoId);
   };
 
   fetchTokenInfo = async (tokenDetails: TokenDetailsWithCoingeckoId[], currencies: ObservedCurrency[]) => {
     const tokens = this.removeDuplications(tokenDetails).map(token => token.coingeckoId);
-    const query = `ids=${tokens.join(',')}&vs_currencies=${currencies.join(',')}`;
-    const result = await this._http('GET', `/simple/price?${query}`);
-    const asTokenPrices = this.asRecord(tokens, this.asRecord(currencies.map(currency => currency.toLowerCase()), asNumber));
-    return cast(result, asTokenPrices);
+    return this.coingeckoApi.getTokenInfo(tokens, currencies);
   };
 
   private removeDuplications = (tokens: TokenDetailsWithCoingeckoId[]) => tokens.filter((token, index, tokens) => tokens.findIndex(t => t.symbol === token.symbol) === index);
@@ -62,11 +55,3 @@ export class Coingecko {
     return asObject(schema);
   }
 };
-
-const asCoingeckoToken = asObject<CoingeckoToken>({
-  name: asString,
-  symbol: asString,
-  id: asString,
-});
-
-const asCoingeckoTokens = asArray(asCoingeckoToken);
