@@ -12,7 +12,7 @@ export interface TokenDetailsWithCoingeckoId extends TokenDetails {
   coingeckoId: string;
 };
 
-export class CoingeckoApi {
+export class Coingecko {
   private _http = http(fetch)('https://api.coingecko.com/api/v3');
   private static tokensList: Promise<CoingeckoToken[]>;
 
@@ -22,8 +22,8 @@ export class CoingeckoApi {
   };
 
   lazyGetTokensList = (): Promise<CoingeckoToken[]> => {
-    CoingeckoApi.tokensList = CoingeckoApi.tokensList || this.getTokensList();
-    return CoingeckoApi.tokensList;
+    Coingecko.tokensList = Coingecko.tokensList || this.getTokensList();
+    return Coingecko.tokensList;
   };
 
   findIdBySymbol(tokensList: CoingeckoToken[], token: TokenDetails) {

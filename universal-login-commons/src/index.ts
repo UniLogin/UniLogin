@@ -107,7 +107,7 @@ export {fetch} from './integration/http/fetch';
 export {NodeEnv, asNodeEnv} from './core/models/NodeEnv';
 export {ProviderService} from './integration/ethereum/ProviderService';
 export {fetchHardforkVersion} from './integration/ethereum/fetchHardforkVersion';
-export {CoingeckoApi} from './integration/http/CoingeckoApi';
+export {Coingecko} from './integration/http/Coingecko';
 export {IErc721Token, IBasicErc721Token as IBasicToken} from './core/models/Erc721Token';
 export {Erc721TokensService} from './core/services/Erc721TokensService';
 export {isAddressIncludedInLog} from './core/utils/isAddressIncludedInLog';
