@@ -1,67 +1,56 @@
-import {cast, Sanitizer, asNumber, asObject, asString, asArray} from '@restless/sanitizers';
-import {http} from './http';
-import {fetch, ObservedCurrency, TokenDetails} from '../..';
+import {asArray, asNumber, asObject, asString, cast, Sanitizer} from '@restless/sanitizers';
+import {fetch, http, HttpFunction} from '../..';
+import {CoingeckoToken} from '../../core/models/CoingeckoToken';
 
-export interface CoingeckoToken {
-  id: string;
-  symbol: string;
-  name: string;
+export interface CoingeckoApiInterface {
+  getTokensList: () => Promise<CoingeckoToken[]>;
+  getTokenImageUrl: (coingeckoId: string) => Promise<string>;
+  getTokenInfo: (tokens: string[], currencies: string[]) => Promise<Record<string, Record<string, number>>>;
 };
 
-export interface TokenDetailsWithCoingeckoId extends TokenDetails {
-  coingeckoId: string;
-};
-
-export class CoingeckoApi {
+export class CoingeckoApi implements CoingeckoApiInterface {
   private _http = http(fetch)('https://api.coingecko.com/api/v3');
-  private static tokensList: Promise<CoingeckoToken[]>;
 
   getTokensList = async () => {
     const result = await this._http('GET', '/coins/list');
     return cast(result, asCoingeckoTokens);
   };
 
-  lazyGetTokensList = (): Promise<CoingeckoToken[]> => {
-    CoingeckoApi.tokensList = CoingeckoApi.tokensList || this.getTokensList();
-    return CoingeckoApi.tokensList;
-  };
-
-  findIdBySymbol(tokensList: CoingeckoToken[], token: TokenDetails) {
-    const symbol = token.symbol.toLowerCase();
-    const matchedTokens = tokensList.filter(token => token.symbol === symbol);
-    return matchedTokens.length === 1 ? matchedTokens[0].id : this.generateIdFromName(token.name);
-  }
-
-  private generateIdFromName = (name: string) => name.split(' ').join('-').toLowerCase();
-
-  getCoingeckoId = async (token: TokenDetails) => {
-    return this.findIdBySymbol(await this.lazyGetTokensList(), token);
-  };
-
-  fetchTokenImageUrl = async (token: TokenDetails) => {
-    const coingeckoId = await this.getCoingeckoId(token);
+  async getTokenImageUrl(coingeckoId: string) {
     const response = await this._http('GET', `/coins/${coingeckoId}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`);
     return response.image.small;
-  };
+  }
 
-  fetchTokenInfo = async (tokenDetails: TokenDetailsWithCoingeckoId[], currencies: ObservedCurrency[]) => {
-    const tokens = this.removeDuplications(tokenDetails).map(token => token.coingeckoId);
+  async getTokenInfo(tokens: string[], currencies: string[]) {
     const query = `ids=${tokens.join(',')}&vs_currencies=${currencies.join(',')}`;
     const result = await this._http('GET', `/simple/price?${query}`);
-    const asTokenPrices = this.asRecord(tokens, this.asRecord(currencies.map(currency => currency.toLowerCase()), asNumber));
+    const asTokenPrices = asRecord(tokens, asRecord(currencies.map(currency => currency.toLowerCase()), asNumber));
     return cast(result, asTokenPrices);
-  };
-
-  private removeDuplications = (tokens: TokenDetailsWithCoingeckoId[]) => tokens.filter((token, index, tokens) => tokens.findIndex(t => t.symbol === token.symbol) === index);
-
-  private asRecord<K extends keyof any, V>(keys: K[], valueSanitizer: Sanitizer<V>): Sanitizer<Record<K, V>> {
-    const schema: Record<K, Sanitizer<V>> = {} as any;
-    for (const key of keys) {
-      schema[key] = valueSanitizer;
-    }
-    return asObject(schema);
   }
 };
+
+export class CoingeckoRelayerApi implements CoingeckoApiInterface {
+  private readonly http: HttpFunction;
+  constructor(relayerUrl: string) {
+    this.http = http(fetch)(relayerUrl);
+  }
+
+  async getTokensList() {
+    const result = await this.http('GET', '/coingecko/tokensList');
+    return cast(result, asCoingeckoTokens);
+  };
+
+  async getTokenImageUrl(coingeckoId: string) {
+    const result = await this.http('GET', `/coingecko/imageUrl:${coingeckoId}`);
+    return cast(result, asString);
+  };
+
+  async getTokenInfo(tokens: string[], currencies: string[]) {
+    const result = await this.http('GET', `/coingecko/tokenInfo?tokens=${tokens.join(',')}&currencies=${currencies.join(',')}`);
+    const asTokenPrices = asRecord(tokens, asRecord(currencies.map(currency => currency.toLowerCase()), asNumber));
+    return cast(result, asTokenPrices);
+  };
+}
 
 const asCoingeckoToken = asObject<CoingeckoToken>({
   name: asString,
@@ -70,3 +59,11 @@ const asCoingeckoToken = asObject<CoingeckoToken>({
 });
 
 const asCoingeckoTokens = asArray(asCoingeckoToken);
+
+const asRecord = <K extends keyof any, V>(keys: K[], valueSanitizer: Sanitizer<V>): Sanitizer<Record<K, V>> => {
+  const schema: Record<K, Sanitizer<V>> = {} as any;
+  for (const key of keys) {
+    schema[key] = valueSanitizer;
+  }
+  return asObject(schema);
+};

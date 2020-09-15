@@ -1,5 +1,5 @@
 import React from 'react';
-import {CoingeckoApi, TokenDetails} from '@unilogin/commons';
+import {Coingecko, TokenDetails} from '@unilogin/commons';
 import {useClassFor} from '../utils/classFor';
 import './../styles/themes/UniLogin/erc20IconThemeUnilogin.sass';
 import './../styles/themes/Jarvis/erc20IconThemeJarvis.sass';
@@ -27,7 +27,7 @@ export interface Erc20SymbolProps {
 }
 
 const Erc20CoingeckoToken = ({className, token}: Erc20IconProps) => {
-  const [imageUrl] = useAsync(() => new CoingeckoApi().fetchTokenImageUrl(token), [token]);
+  const [imageUrl] = useAsync(() => new Coingecko().fetchTokenImageUrl(token), [token]);
   if (imageUrl) {
     return <img src={imageUrl} alt={token.symbol} className={className} />;
   } else {
