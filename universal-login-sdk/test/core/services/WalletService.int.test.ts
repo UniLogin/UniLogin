@@ -181,6 +181,27 @@ describe('INT: WalletService', () => {
       expect((walletService.state as any).wallet!).to.deep.include({contractAddress, name: ensName});
     });
 
+    it('restore when future', async () => {
+      const email = 'name@gmail.com';
+      const ensName = 'user.mylogin.eth';
+      expect(walletService.state).to.deep.eq({kind: 'None'});
+      const promise = walletService.createRequestedCreatingWallet(email, ensName);
+      expect(walletService.state.kind).eq('RequestedCreating');
+      await promise;
+      await walletService.confirmCode(relayer.sentCodes[email]);
+      expect(walletService.state.kind).eq('Confirmed');
+      const password = 'password123!';
+      await walletService.createFutureWalletWithPassword(password, ETHER_NATIVE_TOKEN.address);
+      expect(walletService.state.kind).eq('Future');
+      walletService.disconnect();
+      await walletService.createRequestedRestoringWallet(email);
+      expect(walletService.state.kind).eq('RequestedRestoring');
+      await walletService.confirmCode(relayer.sentCodes[email]);
+      expect(walletService.state.kind).eq('Restoring');
+      await walletService.restoreWallet(password);
+      expect(walletService.state.kind).eq('Future');
+    });
+
     it('after send confirmation e-mail fails retry requestEmailConfirmation works', async () => {
       const email = 'name@gmail.com';
       expect(walletService.state).to.deep.eq({kind: 'None'});

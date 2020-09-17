@@ -1,14 +1,14 @@
 import chai, {expect} from 'chai';
 import {RelayerUnderTest} from '../../src';
 import {startRelayer} from '../testhelpers/http';
-import {StoredEncryptedWallet, TEST_CONTRACT_ADDRESS, TEST_WALLET} from '@unilogin/commons';
+import {StoredEncryptedWallet, TEST_CONTRACT_ADDRESS, TEST_WALLET, TEST_STORED_FUTURE_WALLET, TEST_EMAIL, TEST_ENS_NAME} from '@unilogin/commons';
 
 describe('E2E: Relayer - restore wallet', () => {
   let relayer: RelayerUnderTest;
   const relayerPort = '33111';
   const relayerUrl = `http://localhost:${relayerPort}`;
-  const email = 'name@gmail.com';
-  const ensName = 'hello.mylogin.eth';
+  const email = TEST_EMAIL;
+  const ensName = TEST_ENS_NAME;
   const storedEncryptedWallet: StoredEncryptedWallet = {
     email,
     ensName,
@@ -38,6 +38,11 @@ describe('E2E: Relayer - restore wallet', () => {
       .send(storedEncryptedWallet);
     expect(result.status).to.eq(201);
 
+    const futureWalletResult = await chai.request(relayerUrl)
+      .post('/wallet/future')
+      .send(TEST_STORED_FUTURE_WALLET);
+    expect(futureWalletResult.status).to.eq(201);
+
     const confirmationRequestResultForRestoring = await chai.request(relayerUrl)
       .post('/email/request/restoring')
       .send({ensNameOrEmail: ensName});
@@ -46,13 +51,15 @@ describe('E2E: Relayer - restore wallet', () => {
     const restoreResult = await chai.request(relayerUrl)
       .get(`/wallet/restore/${email}`)
       .set({code: relayer.sentCodes[email]});
-    expect(restoreResult.status).to.eq(200);
+    expect(restoreResult.status).to.eq(200, restoreResult.body.error);
     expect(restoreResult.body).to.deep.eq({
       email,
       ensName,
       walletJSON: TEST_WALLET.encryptedWallet,
       contractAddress: TEST_CONTRACT_ADDRESS,
       publicKey: TEST_WALLET.address,
+      gasPrice: TEST_STORED_FUTURE_WALLET.gasPrice,
+      gasToken: TEST_STORED_FUTURE_WALLET.gasToken,
     });
   });
 

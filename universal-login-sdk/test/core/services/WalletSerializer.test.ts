@@ -48,6 +48,8 @@ describe('UNIT: WalletSerializer', () => {
     contractAddress: TEST_CONTRACT_ADDRESS,
     ensName: TEST_ENS_NAME,
     email: TEST_EMAIL,
+    gasPrice: TEST_GAS_PRICE,
+    gasToken: ETHER_NATIVE_TOKEN.address,
   };
   const TEST_SERIALIZED_REQUESTED_RESTORING_WALLET = {
     ensNameOrEmail: TEST_ENS_NAME,
@@ -65,7 +67,7 @@ describe('UNIT: WalletSerializer', () => {
 
   const TEST_FUTURE_WALLET = new FutureWallet(TEST_SERIALIZED_FUTURE_WALLET, mockSDK, {} as any, '', '', {} as any);
   const TEST_CONNECTING_WALLET = new ConnectingWallet(TEST_CONTRACT_ADDRESS, TEST_ENS_NAME, TEST_PRIVATE_KEY, {} as any);
-  const TEST_RESTORING_WALLET = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, TEST_EMAIL, TEST_ENS_NAME, TEST_CONTRACT_ADDRESS, mockSDK);
+  const TEST_RESTORING_WALLET = new RestoringWallet(TEST_ENCRYPTED_WALLET_JSON, TEST_EMAIL, TEST_ENS_NAME, TEST_CONTRACT_ADDRESS, ETHER_NATIVE_TOKEN.address, TEST_GAS_PRICE, mockSDK);
   const TEST_REQUESTED_RESTORING = new RequestedRestoringWallet(mockSDK, TEST_ENS_NAME);
   const TEST_REQUESTED_MIGRATING = new RequestedMigratingWallet(TEST_CONTRACT_ADDRESS, TEST_ENS_NAME, TEST_PRIVATE_KEY, TEST_EMAIL, mockSDK);
   const TEST_CONFIRMED_MIGRATING = new ConfirmedMigratingWallet(TEST_CONTRACT_ADDRESS, TEST_ENS_NAME, TEST_PRIVATE_KEY, TEST_EMAIL, '123456', mockSDK);

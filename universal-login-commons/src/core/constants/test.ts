@@ -176,3 +176,12 @@ export const TEST_WALLET = {
   privateKey: '0xbaecec27b151e3aace7cdded79a95cef51a0586689d9e8ea1ce52d54a2c26acc',
   address: '0x76010666821749B24145D6d792a3038A6de0cD71',
 };
+
+export const TEST_STORED_FUTURE_WALLET = {
+  contractAddress: TEST_CONTRACT_ADDRESS,
+  publicKey: TEST_KEY,
+  ensName: TEST_ENS_NAME,
+  gasPrice: TEST_GAS_PRICE,
+  gasToken: ETHER_NATIVE_TOKEN.address,
+  tokenPriceInETH: '0.7',
+};

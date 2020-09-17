@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Wallet} from 'ethers';
 import {MockProvider} from 'ethereum-waffle';
-import {SerializableRestoringWallet, TEST_WALLET, createKeyPair} from '@unilogin/commons';
+import {SerializableRestoringWallet, TEST_WALLET, createKeyPair, TEST_GAS_PRICE, ETHER_NATIVE_TOKEN, ensure} from '@unilogin/commons';
 import {RelayerUnderTest} from '@unilogin/relayer';
 import {RestoringWallet} from '../../../src/api/wallet/RestoringWallet';
 import UniLoginSdk, {DeployedWallet} from '../../../src';
@@ -28,7 +28,7 @@ describe('INT: RestoringWallet', () => {
       await sdk['fetchFutureWalletFactory']();
       sdk['futureWalletFactory']!['getKeyPair'] = () => ({privateKey: TEST_WALLET.privateKey, publicKey: TEST_WALLET.address});
       deployedWallet = await createdDeployedWallet(ensName, sdk, wallet, email);
-      restoringWallet = new RestoringWallet(TEST_WALLET.encryptedWallet, email, deployedWallet.name, deployedWallet.contractAddress, sdk);
+      restoringWallet = new RestoringWallet(TEST_WALLET.encryptedWallet, email, deployedWallet.name, deployedWallet.contractAddress, ETHER_NATIVE_TOKEN.address, TEST_GAS_PRICE, sdk);
     });
 
     it('asSerializable returns proper wallet', () => {
@@ -37,12 +37,15 @@ describe('INT: RestoringWallet', () => {
         contractAddress: deployedWallet.contractAddress,
         ensName,
         email,
+        gasPrice: TEST_GAS_PRICE,
+        gasToken: ETHER_NATIVE_TOKEN.address,
       };
       expect(restoringWallet.asSerializableRestoringWallet).to.deep.eq(expectedRestoringWallet);
     });
 
     it('restore returns deployed wallet', async () => {
       const restoreResult = await restoringWallet.restore(TEST_WALLET.password);
+      ensure(restoreResult instanceof DeployedWallet, Error, 'expected DeployedWallet');
       expect(restoreResult.asSerializedDeployedWallet).to.deep.eq(deployedWallet.asSerializedDeployedWallet);
     });
   });
@@ -54,7 +57,7 @@ describe('INT: RestoringWallet', () => {
       await sdk['fetchFutureWalletFactory']();
       sdk['futureWalletFactory']!['getKeyPair'] = createKeyPair;
       deployedWallet = await createdDeployedWallet(ensName, sdk, wallet);
-      restoringWallet = new RestoringWallet(TEST_WALLET.encryptedWallet, email, deployedWallet.name, deployedWallet.contractAddress, sdk);
+      restoringWallet = new RestoringWallet(TEST_WALLET.encryptedWallet, email, deployedWallet.name, deployedWallet.contractAddress, ETHER_NATIVE_TOKEN.address, TEST_GAS_PRICE, sdk);
     });
 
     it('throw error if key is not owner', async () => {

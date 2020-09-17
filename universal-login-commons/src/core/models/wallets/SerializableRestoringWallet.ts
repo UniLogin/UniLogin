@@ -6,6 +6,8 @@ export interface SerializableRestoringWallet {
   encryptedWallet: EncryptedWallet;
   ensName: string;
   email: string;
+  gasToken: string;
+  gasPrice: string;
 }
 
 export const asSerializableRestoringWallet = asObject<SerializableRestoringWallet>({
@@ -13,4 +15,6 @@ export const asSerializableRestoringWallet = asObject<SerializableRestoringWalle
   encryptedWallet: asEncryptedWallet,
   ensName: asString,
   email: asString,
+  gasToken: asString,
+  gasPrice: asString,
 });
