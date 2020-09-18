@@ -9,12 +9,14 @@ import {TermsAndConditionsScreen} from './Home/TermsAndConditionsScreen';
 import {PrivacyPolicy} from './Home/PrivacyPolicy';
 import {Wallet} from './Wallet';
 import {OnboardingRoutes} from './OnboardingRoutes';
+import {OnboardingScreen} from './OnboardingScreen';
 
 const App = () => {
   const {walletService} = useServices();
 
   return (
     <Switch>
+      <WalletRoute exact walletService={walletService} path="/onboarding" component={OnboardingScreen} />
       <WalletRoute exact walletService={walletService} path="/welcome" component={WelcomeScreen} />
       <WalletRoute exact walletService={walletService} path="/terms" component={TermsAndConditionsScreen} />
       <WalletRoute exact walletService={walletService} path="/privacy" component={PrivacyPolicy} />

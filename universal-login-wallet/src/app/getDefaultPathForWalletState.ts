@@ -9,7 +9,12 @@ export const getDefaultPathForWalletState = ({kind}: WalletState) => {
     case 'DeployedWithoutEmail':
       return '/dashboard';
     case 'None':
-      return '/welcome';
+    case 'RequestedRestoring':
+    case 'RequestedCreating':
+      return '/onboarding';
+    case 'RequestedMigrating':
+    case 'ConfirmedMigrating':
+      return '/dashboard/migration';
     case 'Deploying':
       return '/create/waiting';
     case 'Connecting':

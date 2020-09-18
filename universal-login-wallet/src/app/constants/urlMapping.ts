@@ -6,8 +6,17 @@ const pathsForDeployed = [
   '/debugStorage',
 ];
 
+const pathsForOnboarding = [
+  '/onboarding',
+];
+
+const pathsForMigrating = [
+  '/dashboard/migration',
+];
+
 export const urlMapping: Record<string, string[]> = {
   None: [
+    '/onboarding',
     '/welcome',
     '/privacy',
     '/terms',
@@ -25,6 +34,12 @@ export const urlMapping: Record<string, string[]> = {
     '/create/waiting',
     '/debugStorage',
   ],
+  RequestedCreating: pathsForOnboarding,
+  RequestedRestoring: pathsForOnboarding,
+  Confirmed: pathsForOnboarding,
+  Restoring: pathsForOnboarding,
+  RequestedMigrating: pathsForMigrating,
+  ConfirmedMigrating: pathsForMigrating,
   Deployed: pathsForDeployed,
   DeployedWithoutEmail: pathsForDeployed,
   Connecting: [

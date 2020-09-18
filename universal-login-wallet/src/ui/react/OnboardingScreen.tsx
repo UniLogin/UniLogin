@@ -16,6 +16,7 @@ export const OnboardingScreen = () => {
         emailFlow={true}
         onCreate={() => history.push('/dashboard')}
         onConnect={() => history.push('/dashboard')}
+        onRestore={() => history.push('/dashboard')}
       />
     </div>
   );

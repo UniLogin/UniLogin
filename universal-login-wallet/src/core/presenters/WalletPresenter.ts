@@ -10,9 +10,11 @@ export class WalletPresenter {
       case 'Connecting':
       case 'Deployed':
       case 'DeployedWithoutEmail':
+      case 'RequestedMigrating':
+      case 'ConfirmedMigrating':
         return this.walletService.state.wallet.privateKey;
       default:
-        throw new Error('Invalid wallet state: expected Deployed or Connecting wallet');
+        throw new Error('Invalid wallet state: expected Migrating, Deployed or Connecting wallet');
     }
   }
 
@@ -21,9 +23,11 @@ export class WalletPresenter {
       case 'Connecting':
       case 'Deployed':
       case 'DeployedWithoutEmail':
+      case 'RequestedMigrating':
+      case 'ConfirmedMigrating':
         return this.walletService.state.wallet.name;
       default:
-        throw new Error('Invalid wallet state: expected Deployed or Connecting wallet');
+        throw new Error('Invalid wallet state: expected Deployed, Migrating, or Connecting wallet');
     }
   }
 
@@ -33,9 +37,11 @@ export class WalletPresenter {
       case 'DeployedWithoutEmail':
       case 'Deployed':
       case 'Future':
+      case 'RequestedMigrating':
+      case 'ConfirmedMigrating':
         return this.walletService.state.wallet.contractAddress;
       default:
-        throw new Error('Invalid wallet state: expected Deployed, DeployedWithoutEmail, Connecting or Future wallet');
+        throw new Error('Invalid wallet state: expected Deployed, DeployedWithoutEmail, Migrating, Connecting or Future wallet');
     }
   }
 }

@@ -1,7 +1,7 @@
 import {join} from 'path';
 import React from 'react';
 import {Route, Switch, useHistory} from 'react-router';
-import {Funds, Devices, BackupCodes, Notice, TopUp, useAsyncEffect, useThemeClassFor} from '@unilogin/react';
+import {Funds, Devices, BackupCodes, Notice, TopUp, MigrationFlow, useAsyncEffect, useThemeClassFor} from '@unilogin/react';
 import {Header} from './Header';
 import {useServices} from '../../hooks';
 import ModalTransfer from '../Modals/Transfer/ModalTransfer';
@@ -33,6 +33,7 @@ const HomeScreen = () => {
                     onTopUpClick={() => history.push(join(basePath, 'topUp'))}
                     onSendClick={() => history.push(join(basePath, 'transfer'))}
                     onDeviceMessageClick={() => history.push(join(basePath, 'devices', 'approveDevice'))}
+                    onSecurityAlert={() => history.push(join(basePath, 'migration'))}
                   />
                 </Route>
                 <Route path={join(basePath, 'devices')}>
@@ -56,6 +57,14 @@ const HomeScreen = () => {
                   path={join(basePath, 'transfer')}
                   render={() => <ModalTransfer basePath={join(basePath, 'transfer')} />}
                 />
+                <Route path={join(basePath, 'migration')}>
+                  <MigrationFlow
+                    onSuccess={() => history.push(basePath)}
+                    walletService={walletService}
+                    hideModal={() => history.push('/dashboard')}
+                    onError={(e) => history.push(join(basePath, 'error'), {message: e.message})}
+                  />
+                </Route>
               </Switch>
             </div>
           </div>
