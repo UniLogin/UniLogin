@@ -8,6 +8,7 @@ import {useInputField} from '../hooks/useInputField';
 import {PrimaryButton} from '../commons/Buttons/PrimaryButton';
 import '../styles/base/enterEmail.sass';
 import '../styles/themes/UniLogin/enterEmailThemeUniLogin.sass';
+import '../styles/themes/Jarvis/enterEmailThemeJarvis.sass';
 import emailIcon from '../assets/icons/e-mail.svg';
 import {SecondaryButton} from '../commons/Buttons/SecondaryButton';
 import Spinner from '../commons/Spinner';
