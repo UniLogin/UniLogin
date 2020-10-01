@@ -102,10 +102,7 @@ class UniLoginSdk {
   }
 
   getNotice() {
-    if (this.config.network === 'mainnet') {
-      return 'This is beta version running on mainnet - deposit only small amounts for now';
-    }
-    return `This is beta version running on ${this.config.network}`;
+    return `running on ${this.config.network}`;
   }
 
   isRefundPaid() {
