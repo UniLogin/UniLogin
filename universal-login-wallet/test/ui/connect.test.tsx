@@ -1,3 +1,4 @@
+import 'jsdom-global/register';
 import {MockProvider} from 'ethereum-waffle';
 import {ReactWrapper} from 'enzyme';
 import chai, {expect} from 'chai';
