@@ -54,4 +54,3 @@ export const EmailFlowChooser = ({onCreateClick, onConnectClick, domain, walletS
     </div >
   );
 };
-
