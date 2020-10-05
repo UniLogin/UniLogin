@@ -11,7 +11,7 @@ describe('UNIT: needRedirect', () => {
   });
 
   it('Non-default path for the state', () => {
-    expect(needRedirect({kind: 'None'} as any, '/terms')).to.be.false;
+    expect(needRedirect({kind: 'None'} as any, '/welcome')).to.be.false;
     expect(needRedirect({kind: 'Deployed'} as any, '/dashboard/devices')).to.be.false;
     expect(needRedirect({kind: 'DeployedWithoutEmail'} as any, '/dashboard/devices')).to.be.false;
   });

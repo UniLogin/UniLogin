@@ -18,10 +18,6 @@ export const WelcomeScreen = () => {
             <button onClick={() => history.push('/connect/selector')} className="welcome-box-connect">
               Connect to existing account
             </button>
-            <div className="row justify-content-center align-items-center">
-              <p className="welcome-box-text">No account yet?</p>
-              <button onClick={() => history.push('/terms')} className="welcome-box-create">Create one</button>
-            </div>
           </div>
         </div>
       </div>
