@@ -31,7 +31,7 @@
     "ethers": "^4.0.47",
     "ganache-cli": "^6.4.5",
     "ganache-core": "^2.6.1",
-    "knex": "^0.20.0",
+    "knex": "^2.4.0",
     "lodash.clonedeep": "^4.5.0",
     "yargs": "^12.0.5"
   },
